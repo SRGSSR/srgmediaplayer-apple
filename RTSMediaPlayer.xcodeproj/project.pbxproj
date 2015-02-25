@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */; };
 		C201D9011A9DC1A40016C629 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */; };
+		C201D9341A9DC9C30016C629 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */; };
+		C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,7 @@
 			dstSubfolderSpec = 16;
 			files = (
 				C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */,
+				C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +41,8 @@
 		C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRTSMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayer.h; sourceTree = "<group>"; };
 		C201D9001A9DC1A40016C629 /* RTSMediaPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerController.h; sourceTree = "<group>"; };
+		C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +86,8 @@
 			isa = PBXGroup;
 			children = (
 				C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */,
+				C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */,
+				C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */,
 			);
 			path = RTSMediaPlayer;
 			sourceTree = "<group>";
@@ -180,6 +187,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C201D9341A9DC9C30016C629 /* RTSMediaPlayerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

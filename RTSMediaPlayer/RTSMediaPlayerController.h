@@ -3,4 +3,8 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import <RTSMediaPlayer/RTSMediaPlayerController.h>
+#import <Foundation/Foundation.h>
+
+@interface RTSMediaPlayerController : NSObject
+
+@end
