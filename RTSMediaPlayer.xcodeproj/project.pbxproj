@@ -1,0 +1,371 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */; };
+		C201D8FB1A9DC1A40016C629 /* RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C201D8FA1A9DC1A40016C629 /* RTSMediaPlayer.m */; };
+		C201D9011A9DC1A40016C629 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C201D9021A9DC1A40016C629 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C201D8ED1A9DC1A40016C629 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C201D8F41A9DC1A40016C629;
+			remoteInfo = RTSMediaPlayer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C201D8F31A9DC1A40016C629 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRTSMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayer.h; sourceTree = "<group>"; };
+		C201D8FA1A9DC1A40016C629 /* RTSMediaPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayer.m; sourceTree = "<group>"; };
+		C201D9001A9DC1A40016C629 /* RTSMediaPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C201D9061A9DC1A40016C629 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C201D8F21A9DC1A40016C629 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C201D8FD1A9DC1A40016C629 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C201D9011A9DC1A40016C629 /* libRTSMediaPlayer.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C201D8EC1A9DC1A40016C629 = {
+			isa = PBXGroup;
+			children = (
+				C201D8F71A9DC1A40016C629 /* RTSMediaPlayer */,
+				C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */,
+				C201D8F61A9DC1A40016C629 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C201D8F61A9DC1A40016C629 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */,
+				C201D9001A9DC1A40016C629 /* RTSMediaPlayerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C201D8F71A9DC1A40016C629 /* RTSMediaPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */,
+				C201D8FA1A9DC1A40016C629 /* RTSMediaPlayer.m */,
+			);
+			path = RTSMediaPlayer;
+			sourceTree = "<group>";
+		};
+		C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */ = {
+			isa = PBXGroup;
+			children = (
+				C201D9051A9DC1A40016C629 /* Supporting Files */,
+			);
+			path = RTSMediaPlayerTests;
+			sourceTree = "<group>";
+		};
+		C201D9051A9DC1A40016C629 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C201D9061A9DC1A40016C629 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C201D8F41A9DC1A40016C629 /* RTSMediaPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C201D9091A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "RTSMediaPlayer" */;
+			buildPhases = (
+				C201D8F11A9DC1A40016C629 /* Sources */,
+				C201D8F21A9DC1A40016C629 /* Frameworks */,
+				C201D8F31A9DC1A40016C629 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RTSMediaPlayer;
+			productName = RTSMediaPlayer;
+			productReference = C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		C201D8FF1A9DC1A40016C629 /* RTSMediaPlayerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C201D90C1A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "RTSMediaPlayerTests" */;
+			buildPhases = (
+				C201D8FC1A9DC1A40016C629 /* Sources */,
+				C201D8FD1A9DC1A40016C629 /* Frameworks */,
+				C201D8FE1A9DC1A40016C629 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C201D9031A9DC1A40016C629 /* PBXTargetDependency */,
+			);
+			name = RTSMediaPlayerTests;
+			productName = RTSMediaPlayerTests;
+			productReference = C201D9001A9DC1A40016C629 /* RTSMediaPlayerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C201D8ED1A9DC1A40016C629 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = RTS;
+				TargetAttributes = {
+					C201D8F41A9DC1A40016C629 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					C201D8FF1A9DC1A40016C629 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+				};
+			};
+			buildConfigurationList = C201D8F01A9DC1A40016C629 /* Build configuration list for PBXProject "RTSMediaPlayer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C201D8EC1A9DC1A40016C629;
+			productRefGroup = C201D8F61A9DC1A40016C629 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C201D8F41A9DC1A40016C629 /* RTSMediaPlayer */,
+				C201D8FF1A9DC1A40016C629 /* RTSMediaPlayerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C201D8FE1A9DC1A40016C629 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C201D8F11A9DC1A40016C629 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C201D8FB1A9DC1A40016C629 /* RTSMediaPlayer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C201D8FC1A9DC1A40016C629 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C201D9031A9DC1A40016C629 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C201D8F41A9DC1A40016C629 /* RTSMediaPlayer */;
+			targetProxy = C201D9021A9DC1A40016C629 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C201D9071A9DC1A40016C629 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		C201D9081A9DC1A40016C629 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C201D90A1A9DC1A40016C629 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C201D90B1A9DC1A40016C629 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		C201D90D1A9DC1A40016C629 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = RTSMediaPlayerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C201D90E1A9DC1A40016C629 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = RTSMediaPlayerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C201D8F01A9DC1A40016C629 /* Build configuration list for PBXProject "RTSMediaPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C201D9071A9DC1A40016C629 /* Debug */,
+				C201D9081A9DC1A40016C629 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C201D9091A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "RTSMediaPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C201D90A1A9DC1A40016C629 /* Debug */,
+				C201D90B1A9DC1A40016C629 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C201D90C1A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "RTSMediaPlayerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C201D90D1A9DC1A40016C629 /* Debug */,
+				C201D90E1A9DC1A40016C629 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C201D8ED1A9DC1A40016C629 /* Project object */;
+}
