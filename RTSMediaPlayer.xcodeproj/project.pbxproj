@@ -11,6 +11,7 @@
 		C201D9011A9DC1A40016C629 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */; };
 		C201D9341A9DC9C30016C629 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */; };
 		C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */; };
+		C201D9371A9DDF260016C629 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 			files = (
 				C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */,
 				C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */,
+				C201D9371A9DDF260016C629 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +45,7 @@
 		C201D9001A9DC1A40016C629 /* RTSMediaPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerController.h; sourceTree = "<group>"; };
 		C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerController.m; sourceTree = "<group>"; };
+		C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerControllerDataSource.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */,
+				C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */,
 				C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */,
 				C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */,
 			);
@@ -106,9 +110,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C201D9091A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "RTSMediaPlayer" */;
 			buildPhases = (
+				C201D8F31A9DC1A40016C629 /* CopyFiles */,
 				C201D8F11A9DC1A40016C629 /* Sources */,
 				C201D8F21A9DC1A40016C629 /* Frameworks */,
-				C201D8F31A9DC1A40016C629 /* CopyFiles */,
 			);
 			buildRules = (
 			);
