@@ -3,16 +3,29 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 
 /**
- *  - Like MPMoviePlayerController
- *  - Notification based, @see notifications
- *  - State
- *  - Error, also handles the error from the dataSource
+ *  RTSMediaPlayerController is inspired by the MPMoviePlayerController class.
+ *  A media player (of type RTSMediaPlayerController) manages the playback of a media from a file or a network stream. You can incorporate a media player’s view into a view hierarchy owned by your app, or use a RTSMediaPlayerViewController object to manage the presentation for you.
+ *
+ *  The media player controller posts several notifications, see the notifications section.
+ *
+ *  Errors are handled through the `RTSMediaPlayerPlaybackDidFinishNotification` notification. There are two possible source of errors: either the error comes from the dataSource (see `RTSMediaPlayerControllerDataSource`) or from the network (playback error).
+ *
+ *  The media player controller manages its overlays visibility. See the `overlayViews` property.
  */
+
+/**
+ *  -------------------
+ *  @name Notifications
+ *  -------------------
+ */
+
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishNotification;
+
 @interface RTSMediaPlayerController : NSObject
 
 /**
@@ -52,19 +65,27 @@
 @property (readonly) id<RTSMediaPlayerControllerDataSource> dataSource;
 
 /**
- *  <#Description#>
+ *  <#Description#> Use this identifier to identify the media through notifications
  */
 @property (readonly) NSString *identifier;
 
 /**
- *  ----------------------
- *  @name Playback Control
- *  ----------------------
+ *  --------------------------
+ *  @name Controlling Playback
+ *  --------------------------
  */
 
 - (void) play;
 - (void) playIdentifier:(NSString *)identifier;
 - (void) pause;
 - (void) seekToTime:(NSTimeInterval)time;
+
+/**
+ *  ----------------------------
+ *  @name Managing Overlay Views
+ *  ----------------------------
+ */
+
+@property (copy) IBOutletCollection(UIView) NSArray *overlayViews;
 
 @end

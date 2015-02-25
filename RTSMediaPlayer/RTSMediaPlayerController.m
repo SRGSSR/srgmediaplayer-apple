@@ -5,6 +5,8 @@
 
 #import "RTSMediaPlayerController.h"
 
+NSString * const RTSMediaPlayerPlaybackDidFinishNotification = @"RTSMediaPlayerPlaybackDidFinish";
+
 @implementation RTSMediaPlayerController
 
 - (instancetype) initWithContentURL:(NSURL *)contentURL
