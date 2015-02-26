@@ -166,11 +166,31 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
  */
 
 /**
- *  Start playing media.
+ *  Start playing the current media.
+ *
+ *  @see identifier
  */
 - (void) play;
+
+/**
+ *  Start playing media specified with its identifier.
+ *
+ *  @param identifier the identifier of the media to be played.
+ *
+ *  @discussion the dataSource will be used to determine the URL of the media.
+ */
 - (void) playIdentifier:(NSString *)identifier;
+
+/**
+ *  Pause the currently playing media.
+ */
 - (void) pause;
+
+/**
+ *  Moves the playback cursor to a given time.
+ *
+ *  @param time The time to which to move the playback cursor.
+ */
 - (void) seekToTime:(NSTimeInterval)time;
 
 /**
