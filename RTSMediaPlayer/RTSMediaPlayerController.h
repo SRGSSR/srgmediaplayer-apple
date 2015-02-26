@@ -137,6 +137,19 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
 @property(readonly) AVPlayer *player;
 
 /**
+ *  ------------------------
+ *  @name Accessing the View
+ *  ------------------------
+ */
+
+/**
+ *  The view containing the movie content.
+ *
+ *  @discussion This property contains the view used for presenting the video content. To embed the view into your own view hierarchies, add it as a subview to one of your existing views.
+ */
+@property(readonly) UIView *view;
+
+/**
  *  --------------------------------
  *  @name Accessing Media Properties
  *  --------------------------------
