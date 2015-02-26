@@ -19,12 +19,35 @@
  */
 
 /**
+ *  ---------------
+ *  @name Constants
+ *  ---------------
+ */
+
+// Enumeration of the possible playback states.
+typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
+	RTSMediaPlaybackStatePreparingPlay, // before playing when loading datasource or buffering media
+	RTSMediaPlaybackStatePlaying,
+	RTSMediaPlaybackStatePaused,
+	RTSMediaPlaybackStateEnded			// ends either when ends of media is reached or if an error occurs
+};
+
+// Enumeration of the possible finished reasons used by `RTSMediaPlayerPlaybackDidFinishNotification`.
+typedef NS_ENUM(NSInteger, RTSMediaFinishReason) {
+	RTSMediaFinishReasonPlaybackEnded,	// ended because playerreached the end of the stream
+	RTSMediaFinishReasonPlaybackError,	// ended due to an error
+	RTSMediaFinishReasonUserExited		// ended without error and also without reaching the end of the stream
+};
+
+/**
  *  -------------------
  *  @name Notifications
  *  -------------------
  */
 
+// Posted when movie playback ends or a user exits playback.
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey; // NSNumber (RTSMediaFinishReason)
 
 @interface RTSMediaPlayerController : NSObject
 
@@ -68,6 +91,11 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishNotification;
  *  <#Description#> Use this identifier to identify the media through notifications
  */
 @property (readonly) NSString *identifier;
+
+/**
+ *  <#Description#> Returns the current playback state of the media player.
+ */
+@property (readonly) RTSMediaPlaybackState playbackState;
 
 /**
  *  --------------------------
