@@ -113,6 +113,7 @@
 				C201D8F31A9DC1A40016C629 /* CopyFiles */,
 				C201D8F11A9DC1A40016C629 /* Sources */,
 				C201D8F21A9DC1A40016C629 /* Frameworks */,
+				B6383CCC1A9F2CE00080A68D /* Generate documentation */,
 			);
 			buildRules = (
 			);
@@ -185,6 +186,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B6383CCC1A9F2CE00080A68D /* Generate documentation */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate documentation";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "APPLEDOC_PATH=`which appledoc`\nif [ $APPLEDOC_PATH ]; then\n\n$APPLEDOC_PATH \\\n--project-name \"${PROJECT_NAME}\" \\\n--project-company \"RTS\" \\\n--company-id \"ch.rts\" \\\n--ignore \".m\" \\\n--ignore \"Pods\" \\\n--ignore \"RTSMediaPlayerDemo\" \\\n--explicit-crossref \\\n--keep-intermediate-files \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--no-repeat-first-par \\\n--no-warn-missing-arg \\\n--no-warn-undocumented-object \\\n--no-warn-undocumented-member \\\n--no-warn-empty-description \\\n--no-warn-invalid-crossref \\\n--docset-bundle-id ${PROJECT_NAME} \\\n--docset-bundle-name ${PROJECT_NAME} \\\n--docset-install-path \"docs\" \\\n--docset-platform-family \"iphoneos\" \\\n--output \"docs\"  \\\n--exit-threshold 2 \\\n${PROJECT_DIR}\n\nfi";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C201D8F11A9DC1A40016C629 /* Sources */ = {
@@ -340,6 +359,7 @@
 				C201D90B1A9DC1A40016C629 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C201D90C1A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "RTSMediaPlayerTests" */ = {
 			isa = XCConfigurationList;
@@ -348,6 +368,7 @@
 				C201D90E1A9DC1A40016C629 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
