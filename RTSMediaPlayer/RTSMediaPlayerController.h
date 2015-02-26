@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 	/**
 	 *  Before playing when loading datasource or buffering media
 	 */
-	RTSMediaPlaybackStatePreparingPlay,
+	RTSMediaPlaybackStatePendingPlay,
 	
 	/**
 	 *  Media is playing
