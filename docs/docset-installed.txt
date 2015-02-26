@@ -1,0 +1,4 @@
+Documentation set was installed to Xcode!
+
+Path: docs/ch.rts.RTSMediaPlayer.docset
+Time: 2015-02-26 14:36:55 +0000
