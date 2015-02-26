@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
  */
 typedef NS_ENUM(NSInteger, RTSMediaFinishReason) {
 	/**
-	 *  Ended because playerreached the end of the stream
+	 *  Ended because player reached the end of the media
 	 */
 	RTSMediaFinishReasonPlaybackEnded,
 	
