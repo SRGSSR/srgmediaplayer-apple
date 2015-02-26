@@ -46,10 +46,33 @@ typedef NS_ENUM(NSInteger, RTSMediaFinishReason) {
  *  -------------------
  */
 
-// Posted when movie playback ends or a user exits playback.
+/**
+ *  Posted when movie playback ends or a user exits playback.
+ */
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishNotification;
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey; // NSNumber (RTSMediaFinishReason)
 
+/**
+ *  Posted when the playback state changes, either programatically or by the user.
+ */
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;
+
+/**
+ *  Posted when the currently playing movie changes. Used when calling `playIdentifier:`
+ */
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification;
+
+
+/**
+ *  RTSMediaPlayerController is inspired by the MPMoviePlayerController class.
+ *  A media player (of type RTSMediaPlayerController) manages the playback of a media from a file or a network stream. You can incorporate a media player’s view into a view hierarchy owned by your app, or use a RTSMediaPlayerViewController object to manage the presentation for you.
+ *
+ *  The media player controller posts several notifications, see the notifications section.
+ *
+ *  Errors are handled through the `RTSMediaPlayerPlaybackDidFinishNotification` notification. There are two possible source of errors: either the error comes from the dataSource (see `RTSMediaPlayerControllerDataSource`) or from the network (playback error).
+ *
+ *  The media player controller manages its overlays visibility. See the `overlayViews` property.
+ */
 @interface RTSMediaPlayerController : NSObject
 
 /**
