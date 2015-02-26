@@ -4,6 +4,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 
@@ -75,6 +76,19 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfo
  *  @return <#return value description#>
  */
 - (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource NS_DESIGNATED_INITIALIZER OS_NONNULL_ALL;
+
+/**
+ *  -------------------
+ *  @name Player Object
+ *  -------------------
+ */
+
+/**
+ *  The player that provides the media content.
+ *
+ *  @discussion This can be used for exemple to listen to `addPeriodicTimeObserverForInterval:queue:usingBlock:` or to implement advanced behaviors
+ */
+@property(readonly) AVPlayer *player;
 
 /**
  *  --------------------------------
