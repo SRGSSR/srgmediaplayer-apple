@@ -38,7 +38,6 @@
 		C2F54A001A9F713300496C59 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C2F54A031A9F713300496C59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		C2F54A091A9F713300496C59 /* RTSMediaPlayer DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RTSMediaPlayer DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2F54A0E1A9F713300496C59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayer_DemoTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,17 +105,8 @@
 			isa = PBXGroup;
 			children = (
 				C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */,
-				C2F54A0D1A9F713300496C59 /* Supporting Files */,
 			);
 			path = "RTSMediaPlayer DemoTests";
-			sourceTree = "<group>";
-		};
-		C2F54A0D1A9F713300496C59 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				C2F54A0E1A9F713300496C59 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -373,7 +363,6 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "RTSMediaPlayer DemoTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RTSMediaPlayer Demo.app/RTSMediaPlayer Demo";
@@ -388,7 +377,6 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "RTSMediaPlayer DemoTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RTSMediaPlayer Demo.app/RTSMediaPlayer Demo";
@@ -414,6 +402,7 @@
 				C2F54A151A9F713300496C59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C2F54A161A9F713300496C59 /* Build configuration list for PBXNativeTarget "RTSMediaPlayer DemoTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +411,7 @@
 				C2F54A181A9F713300496C59 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
