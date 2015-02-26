@@ -74,6 +74,7 @@ typedef NS_ENUM(NSInteger, RTSMediaFinishReason) {
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishNotification;
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey; // NSNumber (RTSMediaFinishReason)
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey; // NSError
 
 /**
  *  Posted when the playback state changes, either programatically or by the user.

@@ -12,6 +12,7 @@
 		C201D9341A9DC9C30016C629 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */; };
 		C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */; };
 		C201D9371A9DDF260016C629 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */; };
+		C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerController.h; sourceTree = "<group>"; };
 		C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerController.m; sourceTree = "<group>"; };
 		C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerControllerDataSource.h; sourceTree = "<group>"; };
+		C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerPlaybackTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaPlayerPlaybackTestCase.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */ = {
 			isa = PBXGroup;
 			children = (
+				C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */,
 			);
 			path = RTSMediaPlayerTests;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
