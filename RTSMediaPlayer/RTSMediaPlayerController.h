@@ -86,6 +86,9 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishNotification;
  *  ----------------------------
  */
 
+/**
+ *  <#Description#> A collection of views that will be shown/hidden automatically or manually when user interacts with the view.
+ */
 @property (copy) IBOutletCollection(UIView) NSArray *overlayViews;
 
 @end
