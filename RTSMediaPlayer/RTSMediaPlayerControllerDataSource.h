@@ -5,6 +5,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class RTSMediaPlayerController;
+
 @protocol RTSMediaPlayerControllerDataSource <NSObject>
 
 @required
