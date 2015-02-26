@@ -14,6 +14,7 @@
 		C2F54A011A9F713300496C59 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2F54A001A9F713300496C59 /* Images.xcassets */; };
 		C2F54A041A9F713300496C59 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2F54A021A9F713300496C59 /* LaunchScreen.xib */; };
 		C2F54A101A9F713300496C59 /* RTSMediaPlayer_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */; };
+		C2F54A1E1A9F742900496C59 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2F54A191A9F72E900496C59 /* libRTSMediaPlayer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +40,7 @@
 		C2F54A031A9F713300496C59 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		C2F54A091A9F713300496C59 /* RTSMediaPlayer DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RTSMediaPlayer DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayer_DemoTests.m; sourceTree = "<group>"; };
+		C2F54A191A9F72E900496C59 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRTSMediaPlayer.a; path = "../Debug-iphonesimulator/libRTSMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2F54A1E1A9F742900496C59 /* libRTSMediaPlayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +67,7 @@
 			children = (
 				C2F549F21A9F713300496C59 /* RTSMediaPlayer Demo */,
 				C2F54A0C1A9F713300496C59 /* RTSMediaPlayer DemoTests */,
+				C2F54A1B1A9F730300496C59 /* Frameworks */,
 				C2F549F11A9F713300496C59 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,6 +111,14 @@
 				C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */,
 			);
 			path = "RTSMediaPlayer DemoTests";
+			sourceTree = "<group>";
+		};
+		C2F54A1B1A9F730300496C59 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C2F54A191A9F72E900496C59 /* libRTSMediaPlayer.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
