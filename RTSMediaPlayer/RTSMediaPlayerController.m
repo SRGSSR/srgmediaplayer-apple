@@ -50,6 +50,11 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 	return self;
 }
 
+- (void) dealloc
+{
+	self.player = nil;
+}
+
 - (void) postPlaybackDidFinishErrorNotification:(NSError *)error
 {
 	NSDictionary *userInfo = @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonPlaybackError),
