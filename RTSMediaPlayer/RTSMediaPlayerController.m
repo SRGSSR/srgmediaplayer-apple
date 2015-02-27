@@ -5,6 +5,8 @@
 
 #import "RTSMediaPlayerController.h"
 
+#import <TransitionKit/TransitionKit.h>
+
 NSString * const RTSMediaPlayerPlaybackDidFinishNotification = @"RTSMediaPlayerPlaybackDidFinish";
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
 NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification = @"RTSMediaPlayerNowPlayingMediaDidChange";
@@ -14,9 +16,10 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 @interface RTSMediaPlayerController ()
 
+@property (readonly) TKStateMachine *loadStateMachine;
+
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
-@property AVAsset *asset;
 
 @end
 
@@ -55,6 +58,106 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 	self.player = nil;
 }
 
+@synthesize loadStateMachine = _loadStateMachine;
+
+static const NSString *ResultKey = @"Result";
+static const NSString *ShouldPlayKey = @"ShouldPlay";
+
+static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying> key, id value)
+{
+	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:transition.userInfo];
+	userInfo[key] = value;
+	return [userInfo copy];
+}
+
+- (TKStateMachine *) loadStateMachine
+{
+	if (_loadStateMachine)
+		return _loadStateMachine;
+
+	_loadStateMachine = [TKStateMachine new];
+	TKState *none = [TKState stateWithName:@"None"];
+	TKState *loadingContentURL = [TKState stateWithName:@"Loading Content URL"];
+	TKState *contentURLLoaded = [TKState stateWithName:@"Content URL Loaded"];
+	TKState *loadingAsset = [TKState stateWithName:@"Loading Asset"];
+	TKState *assetLoaded = [TKState stateWithName:@"Asset Loaded"];
+	[_loadStateMachine addStates:@[ none, loadingContentURL, contentURLLoaded, loadingAsset, assetLoaded ]];
+	_loadStateMachine.initialState = none;
+	
+	TKEvent *loadContentURL = [TKEvent eventWithName:@"Load Content URL" transitioningFromStates:@[ none ] toState:loadingContentURL];
+	TKEvent *loadContentURLFailure = [TKEvent eventWithName:@"Load Content URL Failure" transitioningFromStates:@[ loadingContentURL ] toState:none];
+	TKEvent *loadContentURLSuccess = [TKEvent eventWithName:@"Load Content URL Success" transitioningFromStates:@[ loadingContentURL ] toState:contentURLLoaded];
+	TKEvent *loadAsset = [TKEvent eventWithName:@"Load Asset" transitioningFromStates:@[ contentURLLoaded ] toState:loadingAsset];
+	TKEvent *loadAssetFailure = [TKEvent eventWithName:@"Load Asset Failure" transitioningFromStates:@[ loadingAsset ] toState:contentURLLoaded];
+	TKEvent *loadAssetSuccess = [TKEvent eventWithName:@"Load Asset Success" transitioningFromStates:@[ loadingAsset ] toState:assetLoaded];
+	[_loadStateMachine addEvents:@[ loadContentURL, loadContentURLFailure, loadContentURLSuccess, loadAsset, loadAssetFailure, loadAssetSuccess ]];
+	
+	void (^postError)(TKState *, TKTransition *) = ^(TKState *state, TKTransition *transition) {
+		id result = transition.userInfo[ResultKey];
+		if ([result isKindOfClass:[NSError class]])
+			[self postPlaybackDidFinishErrorNotification:result];
+	};
+	
+	[loadingContentURL setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		if (!self.dataSource)
+			@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"RTSMediaPlayerController dataSource can not be nil." userInfo:nil];
+		
+		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
+			if (contentURL)
+			{
+				[_loadStateMachine fireEvent:loadContentURLSuccess userInfo:TransitionUserInfo(transition, ResultKey, contentURL) error:NULL];
+			}
+			else if (error)
+			{
+				[_loadStateMachine fireEvent:loadContentURLFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
+			}
+			else
+			{
+				@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error." userInfo:nil];
+			}
+		}];
+	}];
+	
+	[loadingContentURL setDidExitStateBlock:postError];
+	
+	[contentURLLoaded setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		if (transition.sourceState == loadingContentURL)
+			[_loadStateMachine fireEvent:loadAsset userInfo:transition.userInfo error:NULL];
+	}];
+	
+	[loadingAsset setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		NSURL *contentURL = transition.userInfo[ResultKey];
+		AVURLAsset *asset = [AVURLAsset URLAssetWithURL:contentURL options:@{ AVURLAssetPreferPreciseDurationAndTimingKey: @(YES) }];
+		static NSString *assetStatusKey = @"duration";
+		[asset loadValuesAsynchronouslyForKeys:@[ assetStatusKey ] completionHandler:^{
+			NSError *valueStatusError = nil;
+			AVKeyValueStatus status = [asset statusOfValueForKey:assetStatusKey error:&valueStatusError];
+			if (status == AVKeyValueStatusLoaded)
+			{
+				[_loadStateMachine fireEvent:loadAssetSuccess userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
+			}
+			else
+			{
+				NSError *error = valueStatusError ?: [NSError errorWithDomain:@"XXX" code:0 userInfo:nil];
+				[_loadStateMachine fireEvent:loadAssetFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
+			}
+		}];
+	}];
+	
+	[loadingAsset setDidExitStateBlock:postError];
+	
+	[assetLoaded setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		AVAsset *asset = transition.userInfo[ResultKey];
+		self.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
+		if ([transition.userInfo[ShouldPlayKey] boolValue])
+			[self.player play];
+	}];
+	
+	[_loadStateMachine activate];
+	
+	return _loadStateMachine;
+}
+
 - (void) postPlaybackDidFinishErrorNotification:(NSError *)error
 {
 	NSDictionary *userInfo = @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonPlaybackError),
@@ -70,45 +173,22 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 	}
 	else
 	{
-		static NSString *assetStatusKey = @"duration";
-		AVKeyValueStatus tracksStatus = [self.asset statusOfValueForKey:assetStatusKey error:NULL];
-		if (self.asset && (tracksStatus == AVKeyValueStatusLoading || tracksStatus == AVKeyValueStatusLoaded))
-			return;
-		
-		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error)
-		{
-			if (contentURL)
-			{
-				self.asset = [AVURLAsset URLAssetWithURL:contentURL options:@{ AVURLAssetPreferPreciseDurationAndTimingKey: @(YES) }];
-				[self.asset loadValuesAsynchronouslyForKeys:@[ assetStatusKey ] completionHandler:^
-				{
-					dispatch_async(dispatch_get_main_queue(), ^
-					{
-						NSError *valueStatusError = nil;
-						AVKeyValueStatus status = [self.asset statusOfValueForKey:assetStatusKey error:&valueStatusError];
-						if (status == AVKeyValueStatusLoaded)
-						{
-							self.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:self.asset]];
-							//self.playerView.player = self.player;
-							[self.player play];
-						}
-						else if (status == AVKeyValueStatusFailed)
-						{
-							[self postPlaybackDidFinishErrorNotification:valueStatusError];
-						}
-					});
-				}];
-			}
-			else if (error)
-			{
-				[self postPlaybackDidFinishErrorNotification:error];
-			}
-			else
-			{
-				@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error." userInfo:nil];
-			}
-		}];
+		[self loadAndPlay:YES];
 	}
+}
+
+- (void) prepareToPlay
+{
+	[self loadAndPlay:NO];
+}
+
+- (void) loadAndPlay:(BOOL)shouldPlay
+{
+	NSDictionary *userInfo = TransitionUserInfo(nil, ShouldPlayKey, @(shouldPlay));
+	if ([self.loadStateMachine.currentState.name isEqualToString:@"None"])
+		[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:userInfo error:NULL];
+	else if ([self.loadStateMachine.currentState.name isEqualToString:@"Content URL Loaded"])
+		[self.loadStateMachine fireEvent:@"Load Asset" userInfo:userInfo error:NULL];
 }
 
 - (void) playIdentifier:(NSString *)identifier
