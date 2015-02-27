@@ -1,0 +1,10 @@
+PODS:
+  - TransitionKit (2.1.1)
+
+DEPENDENCIES:
+  - TransitionKit (= 2.1.1)
+
+SPEC CHECKSUMS:
+  TransitionKit: 9ce324caba25cb0a4c9f3334302d89685595455c
+
+COCOAPODS: 0.36.0.rc.1
