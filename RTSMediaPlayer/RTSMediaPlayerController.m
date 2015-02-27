@@ -17,6 +17,10 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 @interface RTSMediaPlayerController ()
 
 @property (readonly) TKStateMachine *loadStateMachine;
+@property (readonly) TKState *noneState;
+@property (readonly) TKState *contentURLLoadedState;
+@property (readonly) TKEvent *loadContentURLEvent;
+@property (readonly) TKEvent *loadAssetEvent;
 
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
@@ -74,15 +78,15 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 {
 	if (_loadStateMachine)
 		return _loadStateMachine;
-
-	_loadStateMachine = [TKStateMachine new];
+	
+	TKStateMachine *loadStateMachine = [TKStateMachine new];
 	TKState *none = [TKState stateWithName:@"None"];
 	TKState *loadingContentURL = [TKState stateWithName:@"Loading Content URL"];
 	TKState *contentURLLoaded = [TKState stateWithName:@"Content URL Loaded"];
 	TKState *loadingAsset = [TKState stateWithName:@"Loading Asset"];
 	TKState *assetLoaded = [TKState stateWithName:@"Asset Loaded"];
-	[_loadStateMachine addStates:@[ none, loadingContentURL, contentURLLoaded, loadingAsset, assetLoaded ]];
-	_loadStateMachine.initialState = none;
+	[loadStateMachine addStates:@[ none, loadingContentURL, contentURLLoaded, loadingAsset, assetLoaded ]];
+	loadStateMachine.initialState = none;
 	
 	TKEvent *loadContentURL = [TKEvent eventWithName:@"Load Content URL" transitioningFromStates:@[ none ] toState:loadingContentURL];
 	TKEvent *loadContentURLFailure = [TKEvent eventWithName:@"Load Content URL Failure" transitioningFromStates:@[ loadingContentURL ] toState:none];
@@ -90,7 +94,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	TKEvent *loadAsset = [TKEvent eventWithName:@"Load Asset" transitioningFromStates:@[ contentURLLoaded ] toState:loadingAsset];
 	TKEvent *loadAssetFailure = [TKEvent eventWithName:@"Load Asset Failure" transitioningFromStates:@[ loadingAsset ] toState:contentURLLoaded];
 	TKEvent *loadAssetSuccess = [TKEvent eventWithName:@"Load Asset Success" transitioningFromStates:@[ loadingAsset ] toState:assetLoaded];
-	[_loadStateMachine addEvents:@[ loadContentURL, loadContentURLFailure, loadContentURLSuccess, loadAsset, loadAssetFailure, loadAssetSuccess ]];
+	[loadStateMachine addEvents:@[ loadContentURL, loadContentURLFailure, loadContentURLSuccess, loadAsset, loadAssetFailure, loadAssetSuccess ]];
 	
 	void (^postError)(TKState *, TKTransition *) = ^(TKState *state, TKTransition *transition) {
 		id result = transition.userInfo[ResultKey];
@@ -105,11 +109,11 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
 			if (contentURL)
 			{
-				[_loadStateMachine fireEvent:loadContentURLSuccess userInfo:TransitionUserInfo(transition, ResultKey, contentURL) error:NULL];
+				[loadStateMachine fireEvent:loadContentURLSuccess userInfo:TransitionUserInfo(transition, ResultKey, contentURL) error:NULL];
 			}
 			else if (error)
 			{
-				[_loadStateMachine fireEvent:loadContentURLFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
+				[loadStateMachine fireEvent:loadContentURLFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
 			}
 			else
 			{
@@ -122,7 +126,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	
 	[contentURLLoaded setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		if (transition.sourceState == loadingContentURL)
-			[_loadStateMachine fireEvent:loadAsset userInfo:transition.userInfo error:NULL];
+			[loadStateMachine fireEvent:loadAsset userInfo:transition.userInfo error:NULL];
 	}];
 	
 	[loadingAsset setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
@@ -134,12 +138,12 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 			AVKeyValueStatus status = [asset statusOfValueForKey:assetStatusKey error:&valueStatusError];
 			if (status == AVKeyValueStatusLoaded)
 			{
-				[_loadStateMachine fireEvent:loadAssetSuccess userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
+				[loadStateMachine fireEvent:loadAssetSuccess userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
 			}
 			else
 			{
 				NSError *error = valueStatusError ?: [NSError errorWithDomain:@"XXX" code:0 userInfo:nil];
-				[_loadStateMachine fireEvent:loadAssetFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
+				[loadStateMachine fireEvent:loadAssetFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
 			}
 		}];
 	}];
@@ -153,7 +157,13 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 			[self.player play];
 	}];
 	
-	[_loadStateMachine activate];
+	[loadStateMachine activate];
+	
+	_loadStateMachine = loadStateMachine;
+	_noneState = none;
+	_contentURLLoadedState = contentURLLoaded;
+	_loadContentURLEvent = loadContentURL;
+	_loadAssetEvent = loadAsset;
 	
 	return _loadStateMachine;
 }
@@ -184,11 +194,11 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 
 - (void) loadAndPlay:(BOOL)shouldPlay
 {
-	NSDictionary *userInfo = TransitionUserInfo(nil, ShouldPlayKey, @(shouldPlay));
-	if ([self.loadStateMachine.currentState.name isEqualToString:@"None"])
-		[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:userInfo error:NULL];
-	else if ([self.loadStateMachine.currentState.name isEqualToString:@"Content URL Loaded"])
-		[self.loadStateMachine fireEvent:@"Load Asset" userInfo:userInfo error:NULL];
+	NSDictionary *userInfo = @{ ShouldPlayKey, @(shouldPlay) };
+	if ([self.loadStateMachine.currentState isEqual:self.noneState])
+		[self.loadStateMachine fireEvent:self.loadContentURLEvent userInfo:userInfo error:NULL];
+	else if ([self.loadStateMachine.currentState isEqual:self.contentURLLoadedState])
+		[self.loadStateMachine fireEvent:self.loadAssetEvent userInfo:userInfo error:NULL];
 }
 
 - (void) playIdentifier:(NSString *)identifier
