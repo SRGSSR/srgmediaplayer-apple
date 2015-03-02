@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4D75FB8C34246E7C52E6FB53 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE77ECC145A247C85E459918 /* libPods.a */; };
+		B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */; };
+		B60440FC1AA210C900C7DA57 /* RTSMediaPlayerView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */; };
 		B6EC77FF1AA4B214009AE043 /* NSObject+KVOBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = B6EC77FE1AA4B214009AE043 /* NSObject+KVOBlock.m */; };
 		C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */; };
 		C201D9011A9DC1A40016C629 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */; };
@@ -37,6 +39,7 @@
 				C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */,
 				C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */,
 				C201D9371A9DDF260016C629 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */,
+				B60440FC1AA210C900C7DA57 /* RTSMediaPlayerView.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +49,8 @@
 		559BC0455BC1DF1FE905B939 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		AC58192CC077B1DFAD6E2769 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AE77ECC145A247C85E459918 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerView.h; sourceTree = "<group>"; };
+		B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerView.m; sourceTree = "<group>"; };
 		B6EC77FD1AA4B214009AE043 /* NSObject+KVOBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+KVOBlock.h"; path = "RTSMediaPlayer Tests/Categories/NSObject+KVOBlock.h"; sourceTree = SOURCE_ROOT; };
 		B6EC77FE1AA4B214009AE043 /* NSObject+KVOBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+KVOBlock.m"; path = "RTSMediaPlayer Tests/Categories/NSObject+KVOBlock.m"; sourceTree = SOURCE_ROOT; };
 		C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRTSMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +126,8 @@
 				C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */,
 				C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */,
 				C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */,
+				B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */,
+				B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */,
 			);
 			path = RTSMediaPlayer;
 			sourceTree = "<group>";
@@ -282,6 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */,
 				C201D9341A9DC9C30016C629 /* RTSMediaPlayerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

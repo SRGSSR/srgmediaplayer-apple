@@ -4,3 +4,4 @@
 //
 
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
+#import <RTSMediaPlayer/RTSMediaPlayerView.h>
