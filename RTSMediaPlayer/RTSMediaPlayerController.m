@@ -227,7 +227,13 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 
 - (void) playIdentifier:(NSString *)identifier
 {
+	if (![_identifier isEqualToString:identifier])
+	{
+		_identifier = identifier;
+		[self.loadStateMachine fireEvent:self.resetLoadStateMachineEvent userInfo:nil error:NULL];
+	}
 	
+	[self loadAndPlay:YES];
 }
 
 - (void) pause
