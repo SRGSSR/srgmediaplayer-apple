@@ -112,4 +112,13 @@
 	[self.mediaPlayerController unobserveKeyPath:@"playbackState"];
 }
 
+- (void) testPlayingMovieWithIdentifier
+{
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+	}];
+	[self.mediaPlayerController playIdentifier:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
+	[self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
 @end
