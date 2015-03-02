@@ -203,7 +203,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 
 - (void) loadAndPlay:(BOOL)shouldPlay
 {
-	NSDictionary *userInfo = @{ ShouldPlayKey, @(shouldPlay) };
+	NSDictionary *userInfo = @{ ShouldPlayKey: @(shouldPlay) };
 	if ([self.loadStateMachine.currentState isEqual:self.noneState])
 		[self.loadStateMachine fireEvent:self.loadContentURLEvent userInfo:userInfo error:NULL];
 	else if ([self.loadStateMachine.currentState isEqual:self.contentURLLoadedState])
