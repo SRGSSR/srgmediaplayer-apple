@@ -96,24 +96,28 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	TKEvent *loadAssetSuccess = [TKEvent eventWithName:@"Load Asset Success" transitioningFromStates:@[ loadingAsset ] toState:assetLoaded];
 	[loadStateMachine addEvents:@[ loadContentURL, loadContentURLFailure, loadContentURLSuccess, loadAsset, loadAssetFailure, loadAssetSuccess ]];
 	
+	__weak __typeof__(self) weakSelf = self;
 	void (^postError)(TKState *, TKTransition *) = ^(TKState *state, TKTransition *transition) {
+		__typeof__(self) strongSelf = weakSelf;
 		id result = transition.userInfo[ResultKey];
 		if ([result isKindOfClass:[NSError class]])
-			[self postPlaybackDidFinishErrorNotification:result];
+			[strongSelf postPlaybackDidFinishErrorNotification:result];
 	};
 	
 	[loadingContentURL setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		if (!self.dataSource)
+		__typeof__(self) strongSelf = weakSelf;
+		
+		if (!strongSelf.dataSource)
 			@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"RTSMediaPlayerController dataSource can not be nil." userInfo:nil];
 		
-		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
+		[strongSelf.dataSource mediaPlayerController:strongSelf contentURLForIdentifier:strongSelf.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
 			if (contentURL)
 			{
-				[loadStateMachine fireEvent:loadContentURLSuccess userInfo:TransitionUserInfo(transition, ResultKey, contentURL) error:NULL];
+				[strongSelf.loadStateMachine fireEvent:loadContentURLSuccess userInfo:TransitionUserInfo(transition, ResultKey, contentURL) error:NULL];
 			}
 			else if (error)
 			{
-				[loadStateMachine fireEvent:loadContentURLFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
+				[strongSelf.loadStateMachine fireEvent:loadContentURLFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
 			}
 			else
 			{
@@ -125,11 +129,13 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	[loadingContentURL setDidExitStateBlock:postError];
 	
 	[contentURLLoaded setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		__typeof__(self) strongSelf = weakSelf;
 		if (transition.sourceState == loadingContentURL)
-			[loadStateMachine fireEvent:loadAsset userInfo:transition.userInfo error:NULL];
+			[strongSelf.loadStateMachine fireEvent:loadAsset userInfo:transition.userInfo error:NULL];
 	}];
 	
 	[loadingAsset setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		__typeof__(self) strongSelf = weakSelf;
 		NSURL *contentURL = transition.userInfo[ResultKey];
 		AVURLAsset *asset = [AVURLAsset URLAssetWithURL:contentURL options:@{ AVURLAssetPreferPreciseDurationAndTimingKey: @(YES) }];
 		static NSString *assetStatusKey = @"duration";
@@ -138,12 +144,12 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 			AVKeyValueStatus status = [asset statusOfValueForKey:assetStatusKey error:&valueStatusError];
 			if (status == AVKeyValueStatusLoaded)
 			{
-				[loadStateMachine fireEvent:loadAssetSuccess userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
+				[strongSelf.loadStateMachine fireEvent:loadAssetSuccess userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
 			}
 			else
 			{
 				NSError *error = valueStatusError ?: [NSError errorWithDomain:@"XXX" code:0 userInfo:nil];
-				[loadStateMachine fireEvent:loadAssetFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
+				[strongSelf.loadStateMachine fireEvent:loadAssetFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
 			}
 		}];
 	}];
@@ -151,10 +157,12 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	[loadingAsset setDidExitStateBlock:postError];
 	
 	[assetLoaded setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		__typeof__(self) strongSelf = weakSelf;
+		
 		AVAsset *asset = transition.userInfo[ResultKey];
-		self.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
+		strongSelf.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
-			[self.player play];
+			[strongSelf.player play];
 	}];
 	
 	[loadStateMachine activate];
