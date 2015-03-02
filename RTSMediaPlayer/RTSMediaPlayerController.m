@@ -180,8 +180,17 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 
 - (void) postPlaybackDidFinishErrorNotification:(NSError *)error
 {
-	NSDictionary *userInfo = @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonPlaybackError),
-	                            RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey: error };
+	[self postPlaybackDidFinishNotification:RTSMediaFinishReasonPlaybackError error:error];
+}
+
+- (void) postPlaybackDidFinishNotification:(RTSMediaFinishReason)reason error:(NSError *)error
+{
+	NSMutableDictionary *userInfo = [NSMutableDictionary new];
+	[userInfo setObject:@(reason) forKey:RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey];
+	
+	if (error)
+		[userInfo setObject:error forKey:RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey];
+	
 	[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification object:self userInfo:userInfo];
 }
 
