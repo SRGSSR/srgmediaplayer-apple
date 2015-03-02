@@ -217,7 +217,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 
 - (void) pause
 {
-	
+	[self.player pause];
 }
 
 - (void) seekToTime:(NSTimeInterval)time
