@@ -121,4 +121,16 @@
 	[self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void) testPlayingMissingMovieSendsPlaybackDidFinishNotificationWithError
+{
+	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		NSError *error =notification.userInfo[RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey];
+		RTSMediaFinishReason reason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
+		BOOL reasonPlaybackError = (reason == RTSMediaFinishReasonPlaybackError);
+		return reasonPlaybackError && error != nil;
+	}];
+	[self.mediaPlayerController playIdentifier:@"https://xxx.xxx.xxx/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
+	[self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
 @end
