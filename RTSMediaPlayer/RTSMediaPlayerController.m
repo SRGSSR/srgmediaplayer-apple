@@ -21,6 +21,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 @property (readonly) TKState *contentURLLoadedState;
 @property (readonly) TKEvent *loadContentURLEvent;
 @property (readonly) TKEvent *loadAssetEvent;
+@property (readonly) TKEvent *resetLoadStateMachineEvent;
 
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
@@ -94,8 +95,10 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	TKEvent *loadAsset = [TKEvent eventWithName:@"Load Asset" transitioningFromStates:@[ contentURLLoaded ] toState:loadingAsset];
 	TKEvent *loadAssetFailure = [TKEvent eventWithName:@"Load Asset Failure" transitioningFromStates:@[ loadingAsset ] toState:contentURLLoaded];
 	TKEvent *loadAssetSuccess = [TKEvent eventWithName:@"Load Asset Success" transitioningFromStates:@[ loadingAsset ] toState:assetLoaded];
-	[loadStateMachine addEvents:@[ loadContentURL, loadContentURLFailure, loadContentURLSuccess, loadAsset, loadAssetFailure, loadAssetSuccess ]];
+	TKEvent *resetLoadStateMachine = [TKEvent eventWithName:@"Load Asset Success" transitioningFromStates:@[ loadingContentURL, contentURLLoaded, loadingAsset, assetLoaded ] toState:none];
 	
+	[loadStateMachine addEvents:@[ loadContentURL, loadContentURLFailure, loadContentURLSuccess, loadAsset, loadAssetFailure, loadAssetSuccess ]];
+
 	__weak __typeof__(self) weakSelf = self;
 	void (^postError)(TKState *, TKTransition *) = ^(TKState *state, TKTransition *transition) {
 		__typeof__(self) strongSelf = weakSelf;
@@ -165,6 +168,11 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 			[strongSelf.player play];
 	}];
 	
+	[assetLoaded setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
+		__typeof__(self) strongSelf = weakSelf;
+		strongSelf.player = nil;
+	}];
+	
 	[loadStateMachine activate];
 	
 	_loadStateMachine = loadStateMachine;
@@ -172,6 +180,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	_contentURLLoadedState = contentURLLoaded;
 	_loadContentURLEvent = loadContentURL;
 	_loadAssetEvent = loadAsset;
+	_resetLoadStateMachineEvent = resetLoadStateMachine;
 	
 	return _loadStateMachine;
 }
