@@ -296,7 +296,9 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 	if (context == AVPlayerRateContext)
 	{
 		BOOL paused = self.player.rate == 0.f;
-		self.playbackState = paused ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
+		RTSMediaPlaybackState newState = paused ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
+		if (self.playbackState != newState)
+			self.playbackState = newState;
 	}
 	else
 	{
