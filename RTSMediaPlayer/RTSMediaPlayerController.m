@@ -4,6 +4,7 @@
 //
 
 #import "RTSMediaPlayerController.h"
+#import "RTSMediaPlayerView.h"
 
 #import <TransitionKit/TransitionKit.h>
 
@@ -25,6 +26,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
+@property (readwrite) UIView *view;
 
 @end
 
@@ -55,6 +57,8 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 	_identifier = identifier;
 	_dataSource = dataSource;
 	
+	_view = [[RTSMediaPlayerView alloc] initWithFrame:CGRectZero];
+
 	return self;
 }
 
@@ -158,6 +162,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	[assetLoaded setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		AVAsset *asset = transition.userInfo[ResultKey];
 		weakSelf.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
+		[(RTSMediaPlayerView *)weakSelf.view setPlayer:weakSelf.player];
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
 			[weakSelf.player play];
 	}];
