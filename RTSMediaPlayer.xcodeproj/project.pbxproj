@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4D75FB8C34246E7C52E6FB53 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE77ECC145A247C85E459918 /* libPods.a */; };
+		B6EC77FF1AA4B214009AE043 /* NSObject+KVOBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = B6EC77FE1AA4B214009AE043 /* NSObject+KVOBlock.m */; };
 		C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */; };
 		C201D9011A9DC1A40016C629 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */; };
 		C201D9341A9DC9C30016C629 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */; };
@@ -45,6 +46,8 @@
 		559BC0455BC1DF1FE905B939 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		AC58192CC077B1DFAD6E2769 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AE77ECC145A247C85E459918 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6EC77FD1AA4B214009AE043 /* NSObject+KVOBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+KVOBlock.h"; path = "RTSMediaPlayer Tests/Categories/NSObject+KVOBlock.h"; sourceTree = SOURCE_ROOT; };
+		B6EC77FE1AA4B214009AE043 /* NSObject+KVOBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+KVOBlock.m"; path = "RTSMediaPlayer Tests/Categories/NSObject+KVOBlock.m"; sourceTree = SOURCE_ROOT; };
 		C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRTSMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayer.h; sourceTree = "<group>"; };
 		C201D9001A9DC1A40016C629 /* RTSMediaPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +85,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B6EC77FC1AA4B1DE009AE043 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				B6EC77FD1AA4B214009AE043 /* NSObject+KVOBlock.h */,
+				B6EC77FE1AA4B214009AE043 /* NSObject+KVOBlock.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		C201D8EC1A9DC1A40016C629 = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +128,7 @@
 		C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */ = {
 			isa = PBXGroup;
 			children = (
+				B6EC77FC1AA4B1DE009AE043 /* Categories */,
 				C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */,
 			);
 			path = RTSMediaPlayerTests;
@@ -277,6 +290,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6EC77FF1AA4B214009AE043 /* NSObject+KVOBlock.m in Sources */,
 				C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
