@@ -201,6 +201,11 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
 - (void) pause;
 
 /**
+ *  Stop playing the current media.
+ */
+- (void) stop;
+
+/**
  *  Moves the playback cursor to a given time.
  *
  *  @param time The time to which to move the playback cursor.

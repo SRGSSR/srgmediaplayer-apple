@@ -60,6 +60,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 - (void) dealloc
 {
+	[self stop];
 	self.player = nil;
 }
 
@@ -218,6 +219,13 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 - (void) pause
 {
 	[self.player pause];
+}
+
+- (void) stop
+{
+	self.playbackState = RTSMediaPlaybackStateEnded;
+	[self postPlaybackDidFinishNotification:RTSMediaFinishReasonUserExited error:nil];
+	[_loadStateMachine fireEvent:self.resetLoadStateMachineEvent userInfo:nil error:nil];
 }
 
 - (void) seekToTime:(NSTimeInterval)time
