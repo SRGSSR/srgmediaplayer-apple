@@ -79,7 +79,7 @@
 	}];
 	
 	[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 
@@ -101,7 +101,7 @@
 	}];
 	
 	[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 
@@ -128,7 +128,7 @@
 	}];
 	
 	[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 }
 
@@ -152,7 +152,7 @@
 	}];
 	
 	[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 
@@ -168,13 +168,13 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController play];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused && [self.loadStateMachine.currentState.name isEqualToString:@"Asset Loaded"];
 	}];
 	[self.mediaPlayerController pause];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 - (void) testPlayerStopAndStateMachineIsReset
@@ -186,13 +186,13 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController play];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	[self expectationForStateMachineFromState:@"Asset Loaded" toState:@"None" completionHandler:^{
 		XCTAssertNil(self.mediaPlayerController.player);
 	}];
 	[self.mediaPlayerController stop];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 - (void) testPlayIdentifierResetStateMachineAndLoadNewAsset
@@ -207,7 +207,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController play];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	// Play another stream
 	NSString *appleStreamingAdvancedSampleIdentifier = [RTSMediaPlayerTestDataSource contentURLForContentType:RTSDataSourceTestContentTypeAppleStreamingAdvancedSample].absoluteString;
@@ -221,7 +221,7 @@
 		}];
 	}];
 	[self.mediaPlayerController playIdentifier:appleStreamingAdvancedSampleIdentifier];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 @end

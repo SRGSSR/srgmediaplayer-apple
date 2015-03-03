@@ -43,7 +43,7 @@
 		return reasonUserExited;
 	}];
 	self.mediaPlayerController = nil;
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 - (void) testPlayAndCheckPlayerState
@@ -52,14 +52,14 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController play];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
 	}];
 	[self.mediaPlayerController pause];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
@@ -69,14 +69,14 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded;
 	}];
 	[self.mediaPlayerController stop];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController play];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 - (void) testMultiplePlayDoesNotUpdatePlaybackStateAndDoesNotSendNotifications
@@ -98,7 +98,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController play];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	[self.mediaPlayerController play];
 	[self.mediaPlayerController play];
@@ -107,7 +107,7 @@
 		return playbackStateKVOChangeCount == 1 && playbackStateNotificationChangeCount == 1;
 	}];
 	[self.mediaPlayerController stop];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	[self.mediaPlayerController unobserveKeyPath:@"playbackState"];
 }
@@ -118,7 +118,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 - (void) testPlayingMissingMovieSendsPlaybackDidFinishNotificationWithError
@@ -130,7 +130,7 @@
 		return reasonPlaybackError && error != nil;
 	}];
 	[self.mediaPlayerController playIdentifier:@"https://xxx.xxx.xxx/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
-	[self waitForExpectationsWithTimeout:5 handler:nil];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
 @end
