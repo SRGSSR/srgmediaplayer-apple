@@ -159,7 +159,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	
 	[loadingAsset setDidExitStateBlock:postError];
 	
-	[assetLoaded setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+	[assetLoaded setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		AVAsset *asset = transition.userInfo[ResultKey];
 		weakSelf.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
 		[(RTSMediaPlayerView *)weakSelf.view setPlayer:weakSelf.player];
@@ -167,7 +167,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 			[weakSelf.player play];
 	}];
 	
-	[assetLoaded setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
+	[assetLoaded setWillExitStateBlock:^(TKState *state, TKTransition *transition) {
 		weakSelf.player = nil;
 	}];
 	
