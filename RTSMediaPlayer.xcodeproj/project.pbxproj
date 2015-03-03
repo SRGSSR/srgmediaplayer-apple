@@ -12,23 +12,14 @@
 		B60440FC1AA210C900C7DA57 /* RTSMediaPlayerView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */; };
 		B6EC77FF1AA4B214009AE043 /* NSObject+KVOBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = B6EC77FE1AA4B214009AE043 /* NSObject+KVOBlock.m */; };
 		B6EC78011AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */; };
+		B6EC78081AA5ABE7009AE043 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */; };
+		B6EC78091AA5ABEB009AE043 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */; };
 		C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */; };
-		C201D9011A9DC1A40016C629 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */; };
 		C201D9341A9DC9C30016C629 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */; };
 		C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */; };
 		C201D9371A9DDF260016C629 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */; };
 		C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		C201D9021A9DC1A40016C629 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C201D8ED1A9DC1A40016C629 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C201D8F41A9DC1A40016C629;
-			remoteInfo = RTSMediaPlayer;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		C201D8F31A9DC1A40016C629 /* CopyFiles */ = {
@@ -77,7 +68,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C201D9011A9DC1A40016C629 /* libRTSMediaPlayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,7 +177,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				C201D9031A9DC1A40016C629 /* PBXTargetDependency */,
 			);
 			name = RTSMediaPlayerTests;
 			productName = RTSMediaPlayerTests;
@@ -301,25 +290,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6EC78091AA5ABEB009AE043 /* RTSMediaPlayerView.m in Sources */,
 				B6EC78011AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m in Sources */,
 				B6EC77FF1AA4B214009AE043 /* NSObject+KVOBlock.m in Sources */,
 				C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */,
+				B6EC78081AA5ABE7009AE043 /* RTSMediaPlayerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		C201D9031A9DC1A40016C629 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C201D8F41A9DC1A40016C629 /* RTSMediaPlayer */;
-			targetProxy = C201D9021A9DC1A40016C629 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
 		C201D9071A9DC1A40016C629 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 559BC0455BC1DF1FE905B939 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -352,6 +336,7 @@
 		};
 		C201D9081A9DC1A40016C629 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC58192CC077B1DFAD6E2769 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -384,7 +369,6 @@
 		};
 		C201D90A1A9DC1A40016C629 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 559BC0455BC1DF1FE905B939 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -393,7 +377,6 @@
 		};
 		C201D90B1A9DC1A40016C629 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AC58192CC077B1DFAD6E2769 /* Pods.release.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
