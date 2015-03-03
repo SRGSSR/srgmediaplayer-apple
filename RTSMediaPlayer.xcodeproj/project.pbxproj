@@ -10,6 +10,7 @@
 		4D75FB8C34246E7C52E6FB53 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE77ECC145A247C85E459918 /* libPods.a */; };
 		B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */; };
 		B60440FC1AA210C900C7DA57 /* RTSMediaPlayerView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */; };
+		B61E18391AA5CD9A00E4FAB9 /* RTSMediaPlayerTestDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18371AA5C4D600E4FAB9 /* RTSMediaPlayerTestDataSource.m */; };
 		B6EC77FF1AA4B214009AE043 /* NSObject+KVOBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = B6EC77FE1AA4B214009AE043 /* NSObject+KVOBlock.m */; };
 		B6EC78011AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */; };
 		B6EC78081AA5ABE7009AE043 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */; };
@@ -43,6 +44,8 @@
 		AE77ECC145A247C85E459918 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerView.h; sourceTree = "<group>"; };
 		B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerView.m; sourceTree = "<group>"; };
+		B61E18361AA5C4D600E4FAB9 /* RTSMediaPlayerTestDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTSMediaPlayerTestDataSource.h; path = "RTSMediaPlayer Tests/Sources/RTSMediaPlayerTestDataSource.h"; sourceTree = SOURCE_ROOT; };
+		B61E18371AA5C4D600E4FAB9 /* RTSMediaPlayerTestDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerTestDataSource.m; path = "RTSMediaPlayer Tests/Sources/RTSMediaPlayerTestDataSource.m"; sourceTree = SOURCE_ROOT; };
 		B6EC77FD1AA4B214009AE043 /* NSObject+KVOBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+KVOBlock.h"; path = "RTSMediaPlayer Tests/Categories/NSObject+KVOBlock.h"; sourceTree = SOURCE_ROOT; };
 		B6EC77FE1AA4B214009AE043 /* NSObject+KVOBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+KVOBlock.m"; path = "RTSMediaPlayer Tests/Categories/NSObject+KVOBlock.m"; sourceTree = SOURCE_ROOT; };
 		B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerLoadStateTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaPlayerLoadStateTestCase.m"; sourceTree = SOURCE_ROOT; };
@@ -80,6 +83,15 @@
 				AE77ECC145A247C85E459918 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B61E18351AA5C4AC00E4FAB9 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				B61E18361AA5C4D600E4FAB9 /* RTSMediaPlayerTestDataSource.h */,
+				B61E18371AA5C4D600E4FAB9 /* RTSMediaPlayerTestDataSource.m */,
+			);
+			name = Sources;
 			sourceTree = "<group>";
 		};
 		B6EC77FC1AA4B1DE009AE043 /* Categories */ = {
@@ -127,6 +139,7 @@
 		C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */ = {
 			isa = PBXGroup;
 			children = (
+				B61E18351AA5C4AC00E4FAB9 /* Sources */,
 				B6EC77FC1AA4B1DE009AE043 /* Categories */,
 				C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */,
 				B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */,
@@ -294,6 +307,7 @@
 				B6EC78011AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m in Sources */,
 				B6EC77FF1AA4B214009AE043 /* NSObject+KVOBlock.m in Sources */,
 				C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */,
+				B61E18391AA5CD9A00E4FAB9 /* RTSMediaPlayerTestDataSource.m in Sources */,
 				B6EC78081AA5ABE7009AE043 /* RTSMediaPlayerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
