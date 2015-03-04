@@ -1,10 +1,13 @@
 PODS:
+  - MAKVONotificationCenter (0.0.2)
   - TransitionKit (2.1.1)
 
 DEPENDENCIES:
+  - MAKVONotificationCenter (= 0.0.2)
   - TransitionKit (= 2.1.1)
 
 SPEC CHECKSUMS:
+  MAKVONotificationCenter: b3ee281ae2ab7895fb93dbb9faec781b2d1b4a94
   TransitionKit: 9ce324caba25cb0a4c9f3334302d89685595455c
 
 COCOAPODS: 0.36.0.rc.1
