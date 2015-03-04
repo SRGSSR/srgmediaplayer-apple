@@ -5,7 +5,7 @@
 
 #import <XCTest/XCTest.h>
 #import <RTSMediaPlayer/RTSMediaPlayer.h>
-#import "NSObject+KVOBlock.h"
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 @interface RTSMediaPlayerPlaybackTestCase : XCTestCase
 @property RTSMediaPlayerController *mediaPlayerController;
@@ -82,7 +82,8 @@
 - (void) testMultiplePlayDoesNotUpdatePlaybackStateAndDoesNotSendNotifications
 {
 	__block NSInteger playbackStateKVOChangeCount = 0;
-	[self.mediaPlayerController observeKeyPath:@"playbackState" withBlock:^(RTSMediaPlayerController *mediaPlayerController, NSString *keyPath, NSDictionary *changes) {
+	[self.mediaPlayerController addObservationKeyPath:@"playbackState" options:(NSKeyValueObservingOptions)0 block:^(MAKVONotification *notification) {
+		RTSMediaPlayerController *mediaPlayerController = notification.target;
 		if (mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying)
 			playbackStateKVOChangeCount++;
 	}];
@@ -108,8 +109,6 @@
 	}];
 	[self.mediaPlayerController stop];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
-	
-	[self.mediaPlayerController unobserveKeyPath:@"playbackState"];
 }
 
 - (void) testPlayingMovieWithIdentifier
