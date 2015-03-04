@@ -431,10 +431,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 42CBA752E07E72B0CBDF3ADE /* Pods-RTSMediaPlayerTests.debug.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -448,10 +444,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E0A64A82F87DE7222F4220DD /* Pods-RTSMediaPlayerTests.release.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
