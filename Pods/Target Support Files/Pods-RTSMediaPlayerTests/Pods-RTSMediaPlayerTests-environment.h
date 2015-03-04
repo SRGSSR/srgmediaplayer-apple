@@ -12,3 +12,9 @@
 #define COCOAPODS_VERSION_MINOR_MAKVONotificationCenter 0
 #define COCOAPODS_VERSION_PATCH_MAKVONotificationCenter 2
 
+// TransitionKit
+#define COCOAPODS_POD_AVAILABLE_TransitionKit
+#define COCOAPODS_VERSION_MAJOR_TransitionKit 2
+#define COCOAPODS_VERSION_MINOR_TransitionKit 1
+#define COCOAPODS_VERSION_PATCH_TransitionKit 1
+
