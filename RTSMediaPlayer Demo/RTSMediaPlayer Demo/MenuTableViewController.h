@@ -5,6 +5,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface MenuTableViewController : UITableViewController
 
 @end

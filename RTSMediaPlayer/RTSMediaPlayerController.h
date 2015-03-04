@@ -159,7 +159,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
 /**
  *  <#Description#>
  */
-@property (readonly) id<RTSMediaPlayerControllerDataSource> dataSource;
+@property (weak) IBOutlet id<RTSMediaPlayerControllerDataSource> dataSource;
 
 /**
  *  Use this identifier to identify the media through notifications
