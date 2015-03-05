@@ -57,8 +57,6 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 	_identifier = identifier;
 	_dataSource = dataSource;
 	
-	_view = [[RTSMediaPlayerView alloc] initWithFrame:CGRectZero];
-
 	return self;
 }
 
@@ -322,6 +320,9 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 {
 	if (self.view.superview)
 		[self.view removeFromSuperview];
+
+	if (!self.view)
+		_view = [[RTSMediaPlayerView alloc] initWithFrame:CGRectZero];
 	
 	self.view.frame = CGRectMake(0, 0, CGRectGetWidth(containerView.bounds), CGRectGetHeight(containerView.bounds));
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
