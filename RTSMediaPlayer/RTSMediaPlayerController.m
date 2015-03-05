@@ -168,6 +168,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	}];
 	
 	[assetLoaded setWillExitStateBlock:^(TKState *state, TKTransition *transition) {
+		[(RTSMediaPlayerView *)weakSelf.view setPlayer:nil];
 		weakSelf.player = nil;
 	}];
 	
@@ -315,6 +316,17 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 	{
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
+}
+
+- (void) attachPlayerToView:(UIView *)containerView
+{
+	if (self.view.superview)
+		[self.view removeFromSuperview];
+	
+	self.view.frame = CGRectMake(0, 0, CGRectGetWidth(containerView.bounds), CGRectGetHeight(containerView.bounds));
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.view.backgroundColor = containerView.backgroundColor;
+	[containerView insertSubview:self.view atIndex:0];
 }
 
 @end

@@ -151,6 +151,13 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
 @property(readonly) UIView *view;
 
 /**
+ *  Attach the player view into specified container view with default autoresizing mask. The player view will have the same frame and background color as its `containerView`
+ *
+ *  @param containerView The parent view in hierarchy what will contains the player layer
+ */
+- (void) attachPlayerToView:(UIView *)containerView;
+
+/**
  *  --------------------------------
  *  @name Accessing Media Properties
  *  --------------------------------
