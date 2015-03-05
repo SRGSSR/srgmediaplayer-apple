@@ -7,6 +7,12 @@
 
 @implementation DemoInlineViewController
 
+- (void) viewDidLoad
+{
+	[super viewDidLoad];
+	[self.mediaPlayerController attachPlayerToView:self.videoContainerView];
+}
+
 - (IBAction) play:(id)sender
 {
 	[self.mediaPlayerController playIdentifier:self.mediaURL.absoluteString];
