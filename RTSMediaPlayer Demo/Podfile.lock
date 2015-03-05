@@ -1,0 +1,17 @@
+PODS:
+  - RTSMediaPlayer (0.0.1):
+    - TransitionKit (= 2.1.1)
+  - TransitionKit (2.1.1)
+
+DEPENDENCIES:
+  - RTSMediaPlayer (from `..`)
+
+EXTERNAL SOURCES:
+  RTSMediaPlayer:
+    :path: ..
+
+SPEC CHECKSUMS:
+  RTSMediaPlayer: 1fbd2b1bfb860a99b4c6cc788ec16c56262de48c
+  TransitionKit: 9ce324caba25cb0a4c9f3334302d89685595455c
+
+COCOAPODS: 0.36.0.rc.1

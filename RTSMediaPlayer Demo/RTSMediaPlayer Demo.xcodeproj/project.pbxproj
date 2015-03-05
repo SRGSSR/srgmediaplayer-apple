@@ -14,7 +14,7 @@
 		C2F54A011A9F713300496C59 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2F54A001A9F713300496C59 /* Images.xcassets */; };
 		C2F54A041A9F713300496C59 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2F54A021A9F713300496C59 /* LaunchScreen.xib */; };
 		C2F54A101A9F713300496C59 /* RTSMediaPlayer_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */; };
-		C2F54A1E1A9F742900496C59 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2F54A191A9F72E900496C59 /* libRTSMediaPlayer.a */; };
+		F1536D37F2B26BFCC2338E2B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EDF724E125EA9C73C8FF7D /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +28,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		08BF0CF9070BEEC4A6668371 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		1487E37CA72135C51E06BD09 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		97EDF724E125EA9C73C8FF7D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F549F01A9F713300496C59 /* RTSMediaPlayer Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RTSMediaPlayer Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F549F41A9F713300496C59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2F549F51A9F713300496C59 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -48,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2F54A1E1A9F742900496C59 /* libRTSMediaPlayer.a in Frameworks */,
+				F1536D37F2B26BFCC2338E2B /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +72,7 @@
 				C2F54A0C1A9F713300496C59 /* RTSMediaPlayer DemoTests */,
 				C2F54A1B1A9F730300496C59 /* Frameworks */,
 				C2F549F11A9F713300496C59 /* Products */,
+				D844D24494C6F540C6C93811 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -117,8 +121,18 @@
 			isa = PBXGroup;
 			children = (
 				C2F54A191A9F72E900496C59 /* libRTSMediaPlayer.a */,
+				97EDF724E125EA9C73C8FF7D /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D844D24494C6F540C6C93811 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				08BF0CF9070BEEC4A6668371 /* Pods.debug.xcconfig */,
+				1487E37CA72135C51E06BD09 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,9 +142,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C2F54A131A9F713300496C59 /* Build configuration list for PBXNativeTarget "RTSMediaPlayer Demo" */;
 			buildPhases = (
+				118D0E59901B71F4EED14BF6 /* Check Pods Manifest.lock */,
 				C2F549EC1A9F713300496C59 /* Sources */,
 				C2F549ED1A9F713300496C59 /* Frameworks */,
 				C2F549EE1A9F713300496C59 /* Resources */,
+				58F4454980DBE7C7BF493E6A /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -215,6 +231,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		118D0E59901B71F4EED14BF6 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		58F4454980DBE7C7BF493E6A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C2F549EC1A9F713300496C59 /* Sources */ = {
@@ -345,6 +394,7 @@
 		};
 		C2F54A141A9F713300496C59 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 08BF0CF9070BEEC4A6668371 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "RTSMediaPlayer Demo/Info.plist";
@@ -355,6 +405,7 @@
 		};
 		C2F54A151A9F713300496C59 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1487E37CA72135C51E06BD09 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "RTSMediaPlayer Demo/Info.plist";
