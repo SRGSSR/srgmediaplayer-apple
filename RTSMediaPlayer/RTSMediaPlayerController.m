@@ -15,6 +15,18 @@ NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification = @"RTSMedia
 NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey = @"Reason";
 NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
+@interface RTSMediaPlayerControllerURLDataSource : NSObject <RTSMediaPlayerControllerDataSource>
+@end
+
+@implementation RTSMediaPlayerControllerURLDataSource
+
+- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
+{
+	completionHandler([NSURL URLWithString:identifier], nil);
+}
+
+@end
+
 @interface RTSMediaPlayerController ()
 
 @property (readonly) TKStateMachine *loadStateMachine;
@@ -28,17 +40,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 @property (readwrite) AVPlayer *player;
 @property (readwrite) UIView *view;
 
-@end
-
-@interface RTSMediaPlayerControllerURLDataSource : NSObject <RTSMediaPlayerControllerDataSource>
-@end
-
-@implementation RTSMediaPlayerControllerURLDataSource
-
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
-{
-	completionHandler([NSURL URLWithString:identifier], nil);
-}
+@property RTSMediaPlayerControllerURLDataSource *contentURLDataSource;
 
 @end
 
@@ -46,7 +48,14 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 - (instancetype) initWithContentURL:(NSURL *)contentURL
 {
-	return [self initWithContentIdentifier:contentURL.absoluteString dataSource:[RTSMediaPlayerControllerURLDataSource new]];
+	if (!(self = [super init]))
+		return nil;
+	
+	_identifier = contentURL.absoluteString;
+	_contentURLDataSource = [RTSMediaPlayerControllerURLDataSource new];
+	_dataSource = _contentURLDataSource;
+	
+	return self;
 }
 
 - (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
