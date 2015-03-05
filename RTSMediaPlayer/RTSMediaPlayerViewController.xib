@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
@@ -54,10 +55,36 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m4e-aB-8GY" userLabel="Bottom Bar View">
-                    <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                    <rect key="frame" x="0.0" y="520" width="600" height="80"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="orZ-GR-Obh" customClass="RTSPlayPauseButton">
+                            <rect key="frame" x="289" y="15" width="22" height="22"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="22" id="Jf3-q0-NQb"/>
+                                <constraint firstAttribute="width" constant="22" id="fDj-a1-d5l"/>
+                            </constraints>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="drawColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="hightlightColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="togglePlayPause:" destination="-1" eventType="touchUpInside" id="pdL-3O-Kab"/>
+                            </connections>
+                        </button>
+                    </subviews>
                     <color key="backgroundColor" red="0.40000000596046448" green="0.40000000596046448" blue="0.40000000596046448" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="l55-Ns-7FI"/>
+                        <constraint firstItem="orZ-GR-Obh" firstAttribute="top" secondItem="m4e-aB-8GY" secondAttribute="top" constant="15" id="79V-2E-3vt"/>
+                        <constraint firstAttribute="height" constant="80" id="l55-Ns-7FI"/>
+                        <constraint firstAttribute="centerX" secondItem="orZ-GR-Obh" secondAttribute="centerX" id="tp9-ea-bQv"/>
                     </constraints>
                 </view>
             </subviews>
@@ -70,7 +97,7 @@
                 <constraint firstAttribute="bottom" secondItem="m4e-aB-8GY" secondAttribute="bottom" id="mxb-hA-Ktf"/>
                 <constraint firstItem="kqK-gI-E5v" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="t4d-IC-SHd"/>
             </constraints>
-            <point key="canvasLocation" x="154" y="-66"/>
+            <point key="canvasLocation" x="13" y="-98"/>
         </view>
     </objects>
 </document>

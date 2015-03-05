@@ -50,6 +50,18 @@
 	return UIStatusBarStyleDefault;
 }
 
+- (IBAction) togglePlayPause:(id)sender
+{
+	if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying)
+	{
+		[self.mediaPlayerController pause];
+	}
+	else
+	{
+		[self.mediaPlayerController play];
+	}
+}
+
 - (IBAction) dismiss:(id)sender
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
