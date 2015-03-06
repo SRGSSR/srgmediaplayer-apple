@@ -87,8 +87,10 @@
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	
-	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded;
+	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		RTSMediaFinishReason reason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
+		BOOL reasonUserExited = (reason == RTSMediaFinishReasonUserExited);
+		return reasonUserExited;
 	}];
 	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded;
