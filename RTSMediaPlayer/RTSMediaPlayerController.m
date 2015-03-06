@@ -246,9 +246,13 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 
 - (void) stop
 {
+	[_loadStateMachine fireEvent:self.resetLoadStateMachineEvent userInfo:nil error:nil];
+	
+	if (self.playbackState == RTSMediaPlaybackStateIdle || self.playbackState == RTSMediaPlaybackStateEnded)
+		return;
+	
 	self.playbackState = RTSMediaPlaybackStateEnded;
 	[self postPlaybackDidFinishNotification:RTSMediaFinishReasonUserExited error:nil];
-	[_loadStateMachine fireEvent:self.resetLoadStateMachineEvent userInfo:nil error:nil];
 }
 
 - (void) seekToTime:(NSTimeInterval)time

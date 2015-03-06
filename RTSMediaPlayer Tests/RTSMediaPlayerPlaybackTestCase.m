@@ -29,21 +29,46 @@
 	XCTAssertEqual(self.mediaPlayerController.playbackState, RTSMediaPlaybackStateIdle);
 }
 
-- (void) testDestroyPlayerControllerSendsNotification
+- (void) testStopPlayerControllerDoesNotSendNotificationIfNothingHasBeenPlayed
 {
-	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:nil handler:^BOOL(NSNotification *notification) {
-		RTSMediaPlayerController *mediaPlayerController = notification.object;
-		BOOL stateEnded = (mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded);
-		return stateEnded;
+	// Count notifications
+	__block NSInteger mediaPlayerPlaybackDidFinishNotificationCount = 0;
+	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
+		mediaPlayerPlaybackDidFinishNotificationCount++;
+	}];
+	__block NSInteger mediaPlayerPlaybackStateDidChangeNotificationCount = 0;
+	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
+		if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded)
+			mediaPlayerPlaybackStateDidChangeNotificationCount++;
 	}];
 	
-	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:nil handler:^BOOL(NSNotification *notification) {
-		RTSMediaFinishReason reason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
-		BOOL reasonUserExited = (reason == RTSMediaFinishReasonUserExited);
-		return reasonUserExited;
+	// Force stop with nothing played
+	[self.mediaPlayerController stop];
+	
+	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2.1f]];
+	XCTAssertEqual(mediaPlayerPlaybackDidFinishNotificationCount, 0);
+	XCTAssertEqual(mediaPlayerPlaybackStateDidChangeNotificationCount, 0);
+}
+
+- (void) testDestroyPlayerControllerDoesNotSendNotificationIfNothingHasBeenPlayed
+{
+	// Count notifications
+	__block NSInteger mediaPlayerPlaybackDidFinishNotificationCount = 0;
+	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
+		mediaPlayerPlaybackDidFinishNotificationCount++;
 	}];
+	__block NSInteger mediaPlayerPlaybackStateDidChangeNotificationCount = 0;
+	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
+		if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded)
+			mediaPlayerPlaybackStateDidChangeNotificationCount++;
+	}];
+	
+	// Force stop with nothing played
 	self.mediaPlayerController = nil;
-	[self waitForExpectationsWithTimeout:15 handler:nil];
+	
+	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2.1f]];
+	XCTAssertEqual(mediaPlayerPlaybackDidFinishNotificationCount, 0);
+	XCTAssertEqual(mediaPlayerPlaybackStateDidChangeNotificationCount, 0);
 }
 
 - (void) testPlayAndCheckPlayerState
