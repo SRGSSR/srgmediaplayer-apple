@@ -24,7 +24,7 @@
  *
  *  @return A media player view controller
  */
-- (instancetype) initWithContentURL:(NSURL *)contentURL NS_DESIGNATED_INITIALIZER OS_NONNULL_ALL;
+- (instancetype) initWithContentURL:(NSURL *)contentURL OS_NONNULL_ALL;
 
 /**
  *  Returns a RTSMediaPlayerController object initialized with a datasource and a media identifier which mimics the standard MPMoviePlayerViewController style.

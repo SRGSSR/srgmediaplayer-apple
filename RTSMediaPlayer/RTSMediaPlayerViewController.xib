@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTSMediaPlayerViewController">
             <connections>
+                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="1fS-p7-nwe"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ERh-xZ-n9v"/>
             </connections>
         </placeholder>
@@ -99,5 +100,6 @@
             </constraints>
             <point key="canvasLocation" x="13" y="-98"/>
         </view>
+        <customObject id="rfJ-1C-Ygo" customClass="RTSMediaPlayerController"/>
     </objects>
 </document>

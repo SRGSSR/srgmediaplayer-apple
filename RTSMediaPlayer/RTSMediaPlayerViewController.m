@@ -7,23 +7,24 @@
 //
 
 #import "RTSMediaPlayerViewController.h"
+
+#import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 
-@interface RTSMediaPlayerViewController ()
-@property RTSMediaPlayerController *mediaPlayerController;
+@interface RTSMediaPlayerViewController () <RTSMediaPlayerControllerDataSource>
+
+@property (nonatomic, weak) id<RTSMediaPlayerControllerDataSource> dataSource;
+@property (nonatomic, strong) NSString *identifier;
+
+@property (nonatomic, strong) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+
 @end
 
 @implementation RTSMediaPlayerViewController
 
 - (instancetype) initWithContentURL:(NSURL *)contentURL
 {
-	NSURL *bundleURL = [[NSBundle mainBundle] URLForResource:@"RTSMediaPlayer" withExtension:@"bundle"];
-	if (!(self = [super initWithNibName:NSStringFromClass(self.class) bundle:[NSBundle bundleWithURL:bundleURL]]))
-		return nil;
-	
-	_mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:contentURL];
-	
-	return self;
+	return [self initWithContentIdentifier:contentURL.absoluteString dataSource:self];
 }
 
 - (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
@@ -32,7 +33,8 @@
 	if (!(self = [super initWithNibName:NSStringFromClass(self.class) bundle:[NSBundle bundleWithURL:bundleURL]]))
 		return nil;
 	
-	_mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:identifier dataSource:dataSource];
+	_dataSource = dataSource;
+	_identifier = identifier;
 	
 	return self;
 }
@@ -40,15 +42,19 @@
 - (void) viewDidLoad
 {
 	[super viewDidLoad];
+
+	[self.mediaPlayerController setDataSource:_dataSource];
 	
 	[self.mediaPlayerController attachPlayerToView:self.view];
-	[self.mediaPlayerController play];
+	[self.mediaPlayerController playIdentifier:_identifier];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
 	return UIStatusBarStyleDefault;
 }
+
+#pragma mark - Actions
 
 - (IBAction) togglePlayPause:(id)sender
 {
@@ -65,6 +71,13 @@
 - (IBAction) dismiss:(id)sender
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - RTSMediaPlayerControllerDataSource
+
+- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
+{
+	completionHandler([NSURL URLWithString:_identifier], nil);
 }
 
 @end
