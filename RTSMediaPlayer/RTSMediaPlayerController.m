@@ -116,6 +116,8 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		if (!weakSelf.dataSource)
 			@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"RTSMediaPlayerController dataSource can not be nil." userInfo:nil];
 		
+		weakSelf.playbackState = RTSMediaPlaybackStatePendingPlay;
+		
 		[weakSelf.dataSource mediaPlayerController:weakSelf contentURLForIdentifier:weakSelf.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
 			if (contentURL)
 			{
@@ -164,7 +166,6 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		AVAsset *asset = transition.userInfo[ResultKey];
 		weakSelf.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
 		[(RTSMediaPlayerView *)weakSelf.view setPlayer:weakSelf.player];
-		weakSelf.playbackState = RTSMediaPlaybackStatePendingPlay;
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
 			[weakSelf.player play];
 	}];
