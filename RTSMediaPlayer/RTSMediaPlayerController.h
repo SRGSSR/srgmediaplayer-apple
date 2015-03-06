@@ -21,7 +21,12 @@
  */
 typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 	/**
-	 *  Before playing when loading datasource or buffering media
+	 *  Default state when controller is initialized
+	 */
+	RTSMediaPlaybackStateIdle,
+	
+	/**
+	 *  Player is ready to play or buffering media, the AVPlayer object has been loaded
 	 */
 	RTSMediaPlaybackStatePendingPlay,
 	

@@ -164,6 +164,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		AVAsset *asset = transition.userInfo[ResultKey];
 		weakSelf.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
 		[(RTSMediaPlayerView *)weakSelf.view setPlayer:weakSelf.player];
+		weakSelf.playbackState = RTSMediaPlaybackStatePendingPlay;
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
 			[weakSelf.player play];
 	}];

@@ -24,9 +24,9 @@
 	self.mediaPlayerController = nil;
 }
 
-- (void) testInitialPlayerStateIsPendingPlay
+- (void) testInitialPlayerStateIsIdle
 {
-	XCTAssertEqual(self.mediaPlayerController.playbackState, RTSMediaPlaybackStatePendingPlay);
+	XCTAssertEqual(self.mediaPlayerController.playbackState, RTSMediaPlaybackStateIdle);
 }
 
 - (void) testDestroyPlayerControllerSendsNotification
