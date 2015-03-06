@@ -48,14 +48,8 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 - (instancetype) initWithContentURL:(NSURL *)contentURL
 {
-	if (!(self = [super init]))
-		return nil;
-	
-	_identifier = contentURL.absoluteString;
 	_contentURLDataSource = [RTSMediaPlayerControllerURLDataSource new];
-	_dataSource = _contentURLDataSource;
-	
-	return self;
+	return [self initWithContentIdentifier:contentURL.absoluteString dataSource:_contentURLDataSource];
 }
 
 - (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
