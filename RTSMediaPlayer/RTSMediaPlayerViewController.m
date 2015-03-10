@@ -8,6 +8,8 @@
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 
+
+
 @interface RTSMediaPlayerViewController () <RTSMediaPlayerControllerDataSource>
 
 @property (nonatomic, weak) id<RTSMediaPlayerControllerDataSource> dataSource;
@@ -15,7 +17,14 @@
 
 @property (nonatomic, strong) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
+@property (weak) IBOutlet UIActivityIndicatorView *loadingIndicator;
+@property (weak) IBOutlet RTSPlayPauseButton *playPauseButton;
+@property (weak) IBOutlet RTSTimeSlider *timeSlider;
+@property (weak) IBOutlet RTSVolumeView *volumeView;
+
 @end
+
+
 
 @implementation RTSMediaPlayerViewController
 
@@ -44,31 +53,17 @@
 	
 	[self.mediaPlayerController attachPlayerToView:self.view];
 	[self.mediaPlayerController playIdentifier:_identifier];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackDidFinishNotification:) name:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChangeNotification:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
+- (UIStatusBarStyle) preferredStatusBarStyle
 {
 	return UIStatusBarStyleDefault;
 }
 
-#pragma mark - Actions
 
-- (IBAction) togglePlayPause:(id)sender
-{
-	if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying)
-	{
-		[self.mediaPlayerController pause];
-	}
-	else
-	{
-		[self.mediaPlayerController play];
-	}
-}
-
-- (IBAction) dismiss:(id)sender
-{
-	[self dismissViewControllerAnimated:YES completion:nil];
-}
 
 #pragma mark - RTSMediaPlayerControllerDataSource
 
@@ -76,5 +71,36 @@
 {
 	completionHandler([NSURL URLWithString:_identifier], nil);
 }
+
+
+
+#pragma mark - Notifications
+
+- (void) mediaPlayerPlaybackDidFinishNotification:(NSNotification *)notification
+{
+	RTSMediaFinishReason reason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
+	if (reason == RTSMediaFinishReasonPlaybackEnded)
+		[self dismiss:nil];
+}
+
+- (void) mediaPlayerPlaybackStateDidChangeNotification:(NSNotification *)notification
+{
+	RTSMediaPlayerController *mediaPlayerController = notification.object;
+	if (mediaPlayerController.playbackState == RTSMediaPlaybackStatePendingPlay)
+		[self.loadingIndicator startAnimating];
+	else
+		[self.loadingIndicator stopAnimating];
+}
+
+
+
+#pragma mark - Actions
+
+- (IBAction) dismiss:(id)sender
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 
 @end
