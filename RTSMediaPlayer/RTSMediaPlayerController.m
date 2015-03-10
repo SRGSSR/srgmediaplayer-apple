@@ -148,17 +148,19 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		AVURLAsset *asset = [AVURLAsset URLAssetWithURL:contentURL options:@{ AVURLAssetPreferPreciseDurationAndTimingKey: @(YES) }];
 		static NSString *assetStatusKey = @"duration";
 		[asset loadValuesAsynchronouslyForKeys:@[ assetStatusKey ] completionHandler:^{
-			NSError *valueStatusError = nil;
-			AVKeyValueStatus status = [asset statusOfValueForKey:assetStatusKey error:&valueStatusError];
-			if (status == AVKeyValueStatusLoaded)
-			{
-				[weakSelf.loadStateMachine fireEvent:loadAssetSuccess userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
-			}
-			else
-			{
-				NSError *error = valueStatusError ?: [NSError errorWithDomain:@"XXX" code:0 userInfo:nil];
-				[weakSelf.loadStateMachine fireEvent:loadAssetFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
-			}
+			dispatch_async(dispatch_get_main_queue(), ^{
+				NSError *valueStatusError = nil;
+				AVKeyValueStatus status = [asset statusOfValueForKey:assetStatusKey error:&valueStatusError];
+				if (status == AVKeyValueStatusLoaded)
+				{
+					[weakSelf.loadStateMachine fireEvent:loadAssetSuccess userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
+				}
+				else
+				{
+					NSError *error = valueStatusError ?: [NSError errorWithDomain:@"XXX" code:0 userInfo:nil];
+					[weakSelf.loadStateMachine fireEvent:loadAssetFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
+				}
+			});
 		}];
 	}];
 	
