@@ -19,6 +19,14 @@
 
 @implementation MenuTableViewController
 
+- (void) viewDidLoad
+{
+	[super viewDidLoad];
+	self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+}
+
+
+
 #pragma mark - Data
 
 - (NSArray *) movies
