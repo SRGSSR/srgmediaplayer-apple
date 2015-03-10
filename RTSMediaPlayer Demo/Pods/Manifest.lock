@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
     :path: ..
 
 SPEC CHECKSUMS:
-  RTSMediaPlayer: 1fbd2b1bfb860a99b4c6cc788ec16c56262de48c
+  RTSMediaPlayer: b35344c3e09ae6eb04ccd013a324a37793fb0823
   TransitionKit: 9ce324caba25cb0a4c9f3334302d89685595455c
 
 COCOAPODS: 0.36.0.rc.1

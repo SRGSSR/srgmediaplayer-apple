@@ -20,7 +20,8 @@
   "public_header_files": "RTSMediaPlayer/*.h",
   "resource_bundles": {
     "RTSMediaPlayer": [
-      "RTSMediaPlayer/*.xib"
+      "RTSMediaPlayer/*.xib",
+      "RTSMediaPlayer/RTSMediaPlayer.xcassets/**/*.png"
     ]
   },
   "dependencies": {
