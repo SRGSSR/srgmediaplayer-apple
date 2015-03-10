@@ -176,6 +176,12 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	}];
 	
 	[assetLoaded setWillExitStateBlock:^(TKState *state, TKTransition *transition) {
+		RTSMediaPlaybackState playbackState = weakSelf.playbackState;
+		if (playbackState == RTSMediaPlaybackStatePlaying || playbackState == RTSMediaPlaybackStatePaused)
+			[weakSelf postPlaybackDidFinishNotification:RTSMediaFinishReasonUserExited error:nil];
+		
+		weakSelf.playbackState = RTSMediaPlaybackStateEnded;
+		
 		[(RTSMediaPlayerView *)weakSelf.view setPlayer:nil];
 		weakSelf.player = nil;
 	}];
@@ -253,12 +259,6 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 - (void) stop
 {
 	[_loadStateMachine fireEvent:self.resetLoadStateMachineEvent userInfo:nil error:nil];
-	
-	if (self.playbackState == RTSMediaPlaybackStateIdle || self.playbackState == RTSMediaPlaybackStateEnded)
-		return;
-	
-	self.playbackState = RTSMediaPlaybackStateEnded;
-	[self postPlaybackDidFinishNotification:RTSMediaFinishReasonUserExited error:nil];
 }
 
 - (void) seekToTime:(NSTimeInterval)time
