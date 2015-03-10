@@ -11,6 +11,8 @@
 NSString * const RTSMediaPlayerPlaybackDidFinishNotification = @"RTSMediaPlayerPlaybackDidFinish";
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
 NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification = @"RTSMediaPlayerNowPlayingMediaDidChange";
+NSString * const RTSMediaPlayerReadyToPlayNotification = @"RTSMediaPlayerReadyToPlay";
+
 
 NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey = @"Reason";
 NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
@@ -166,6 +168,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		AVAsset *asset = transition.userInfo[ResultKey];
 		weakSelf.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
 		[(RTSMediaPlayerView *)weakSelf.view setPlayer:weakSelf.player];
+		[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerReadyToPlayNotification object:weakSelf];
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
 			[weakSelf.player play];
 	}];
