@@ -5,9 +5,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class RTSMediaPlayerController;
+
 IB_DESIGNABLE
 @interface RTSPlayPauseButton : UIButton
 
+/**
+ *  <#Description#>
+ */
+@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+
+@property (nonatomic) IBInspectable BOOL keepLoading;
 @property (nonatomic) IBInspectable UIColor *drawColor;
 @property (nonatomic) IBInspectable UIColor *hightlightColor;
 

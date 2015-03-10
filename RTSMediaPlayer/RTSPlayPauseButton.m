@@ -25,7 +25,8 @@
 - (void) awakeFromNib
 {
 	[super awakeFromNib];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChangeNotification:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:nil];
+	[self setNeedsUpdateAction];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChangeNotification:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
 }
 
 - (UIColor *) hightlightColor
@@ -38,6 +39,7 @@
 	_playbackState = playbackState;
 	
 	dispatch_async(dispatch_get_main_queue(), ^{
+		[self setNeedsUpdateAction];
 		[self setNeedsDisplay];
 	});
 }
@@ -46,6 +48,31 @@
 {
 	[super setHighlighted:highlighted];
 	[self setNeedsDisplay];
+}
+
+
+
+#pragma mark - Actions
+
+- (void) setNeedsUpdateAction
+{
+	SEL action = self.playbackState == RTSMediaPlaybackStatePlaying ? @selector(pause:) : @selector(play:);
+	
+	[self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+	[self addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void) play:(id)sender
+{
+	[self.mediaPlayerController play];
+}
+
+- (void) pause:(id)sender
+{
+	if (self.keepLoading)
+		[self.mediaPlayerController pause];
+	else
+		[self.mediaPlayerController stop];
 }
 
 
@@ -84,14 +111,12 @@
 		CGFloat width = middle - margin;
 		CGFloat height = CGRectGetHeight(self.frame);
 		
-		// Subpath for 1.
 		[_pauseBezierPath moveToPoint:CGPointMake(margin/2, 0)];
 		[_pauseBezierPath addLineToPoint:CGPointMake(width, 0)];
 		[_pauseBezierPath addLineToPoint:CGPointMake(width, height)];
 		[_pauseBezierPath addLineToPoint:CGPointMake(margin/2, height)];
 		[_pauseBezierPath closePath];
 		
-		// Subpath for 2.
 		[_pauseBezierPath moveToPoint:CGPointMake(middle+margin/2, 0)];
 		[_pauseBezierPath addLineToPoint:CGPointMake(middle+width, 0)];
 		[_pauseBezierPath addLineToPoint:CGPointMake(middle+width, height)];
