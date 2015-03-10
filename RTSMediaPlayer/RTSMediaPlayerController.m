@@ -263,7 +263,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 
 - (void) seekToTime:(NSTimeInterval)time
 {
-	
+	[self.player seekToTime:CMTimeMakeWithSeconds(time, 1000) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:NULL];
 }
 
 @synthesize playbackState = _playbackState;
