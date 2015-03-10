@@ -344,4 +344,25 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 	[containerView insertSubview:self.view atIndex:0];
 }
 
+- (void) showOverlays
+{
+	for (UIView<RTSOverlayViewProtocol> *view in self.overlayViews)
+	{
+		[view mediaPlayerController:self overlayHidden:NO];
+	}
+	
+	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+}
+
+- (void) hideOverlays
+{
+	for (UIView<RTSOverlayViewProtocol> *view in self.overlayViews)
+	{
+		[view mediaPlayerController:self overlayHidden:YES];
+	}
+	
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+}
+
+
 @end

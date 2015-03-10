@@ -6,6 +6,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+#import <RTSMediaPlayer/RTSOverlayViewProtocol.h>
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 
 /**
@@ -237,6 +238,9 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerReadyToPlayNotification;
 /**
  *  A collection of views that will be shown/hidden automatically or manually when user interacts with the view.
  */
-@property (copy) IBOutletCollection(UIView) NSArray *overlayViews;
+@property (copy) IBOutletCollection(UIView<RTSOverlayViewProtocol>) NSArray *overlayViews;
+
+- (void) showOverlays;
+- (void) hideOverlays;
 
 @end
