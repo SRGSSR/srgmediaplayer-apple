@@ -13,16 +13,11 @@
 	[self.mediaPlayerController attachPlayerToView:self.videoContainerView];
 }
 
-- (IBAction) play:(id)sender
-{
-	[self.mediaPlayerController playIdentifier:self.mediaURL.absoluteString];
-}
-
 #pragma mark - RTSMediaPlayerControllerDataSource
 
 - (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
 {
-	completionHandler([NSURL URLWithString:identifier], nil);
+	completionHandler(self.mediaURL, nil);
 }
 
 @end

@@ -117,28 +117,49 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ofL-MW-ZaL">
-                                <rect key="frame" x="100" y="20" width="400" height="225"/>
+                                <rect key="frame" x="75" y="20" width="450" height="253"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XuL-Cc-bGM">
+                                        <rect key="frame" x="0.0" y="209" width="450" height="44"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40p-mn-vlm" customClass="RTSPlayPauseButton">
+                                                <rect key="frame" x="8" y="9" width="25" height="25"/>
+                                                <state key="normal">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="drawColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="hightlightColor">
+                                                        <color key="value" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="keepLoading" value="NO"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outlet property="mediaPlayerController" destination="o6Z-DB-FCH" id="ANg-r9-KeN"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="MfH-i0-Ddn"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="XuL-Cc-bGM" firstAttribute="leading" secondItem="ofL-MW-ZaL" secondAttribute="leading" id="e8g-H7-ufY"/>
+                                    <constraint firstAttribute="bottom" secondItem="XuL-Cc-bGM" secondAttribute="bottom" id="mgY-eT-zSx"/>
                                     <constraint firstAttribute="width" secondItem="ofL-MW-ZaL" secondAttribute="height" multiplier="16:9" id="z42-Wy-Sjn"/>
+                                    <constraint firstAttribute="trailing" secondItem="XuL-Cc-bGM" secondAttribute="trailing" id="zKL-Mh-GpG"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40p-mn-vlm">
-                                <rect key="frame" x="285" y="486" width="30" height="30"/>
-                                <state key="normal" title="Play">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="play:" destination="u4g-ie-3Oi" eventType="touchUpInside" id="Xot-ge-cMF"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="szv-pg-w7E" firstAttribute="top" secondItem="40p-mn-vlm" secondAttribute="bottom" constant="20" id="2nL-gB-PaF"/>
                             <constraint firstAttribute="centerX" secondItem="ofL-MW-ZaL" secondAttribute="centerX" id="5Sn-aO-5ho"/>
-                            <constraint firstItem="ofL-MW-ZaL" firstAttribute="width" secondItem="eZU-lX-We1" secondAttribute="width" multiplier="2/3" id="G6G-GP-Yh6"/>
-                            <constraint firstAttribute="centerX" secondItem="40p-mn-vlm" secondAttribute="centerX" id="l5L-qS-FeP"/>
+                            <constraint firstItem="ofL-MW-ZaL" firstAttribute="width" secondItem="eZU-lX-We1" secondAttribute="width" multiplier="3/4" id="G6G-GP-Yh6"/>
                             <constraint firstItem="ofL-MW-ZaL" firstAttribute="top" secondItem="UoE-Cq-25M" secondAttribute="bottom" constant="20" id="wre-Fc-cEx"/>
                         </constraints>
                     </view>
@@ -167,7 +188,38 @@
                     <view key="view" contentMode="scaleToFill" id="PGj-Bo-H5J">
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Feh-Hf-U4f">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TRz-ws-ccK">
+                                        <rect key="frame" x="0.0" y="51" width="600" height="556"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                            </scrollView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xi8-JJ-hv9">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="PFQ-lz-sqG"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="Title" id="M05-yR-pJr">
+                                        <barButtonItem key="leftBarButtonItem" title="X" id="bbn-jo-vgq">
+                                            <connections>
+                                                <action selector="dismiss:" destination="vZa-cs-A01" id="s2r-WR-ELB"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xi8-JJ-hv9" firstAttribute="leading" secondItem="PGj-Bo-H5J" secondAttribute="leading" id="7Ag-E4-dJp"/>
+                            <constraint firstItem="xi8-JJ-hv9" firstAttribute="top" secondItem="f3d-Ss-NJp" secondAttribute="bottom" id="JVX-Uv-1Ii"/>
+                            <constraint firstAttribute="trailing" secondItem="xi8-JJ-hv9" secondAttribute="trailing" id="hcs-5B-kch"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eWd-8J-8Ll" userLabel="First Responder" sceneMemberID="firstResponder"/>
