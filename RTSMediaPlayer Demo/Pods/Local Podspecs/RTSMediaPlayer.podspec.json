@@ -5,7 +5,7 @@
   "homepage": "ssh://git@bitbucket.org:rtsmb/rtsmediaplayer-ios.git",
   "authors": {
     "Frédéric Humbert-Droz": "fred.hd@me.com",
-    "Cédric Luthi": "cedric.luthi@gmail.com"
+    "Cédric Luthi": "cedric.luthi@rts.ch"
   },
   "source": {
     "git": "ssh://git@bitbucket.org:rtsmb/rtsmediaplayer-ios.git",
@@ -24,8 +24,11 @@
     ]
   },
   "dependencies": {
+    "libextobjc/EXTScope": [
+      "~> 0.4.1"
+    ],
     "TransitionKit": [
-      "2.1.1"
+      "~> 2.1.1"
     ]
   }
 }

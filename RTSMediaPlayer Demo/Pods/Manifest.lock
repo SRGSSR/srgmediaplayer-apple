@@ -1,6 +1,10 @@
 PODS:
+  - libextobjc/EXTScope (0.4.1):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/RuntimeExtensions (0.4.1)
   - RTSMediaPlayer (0.0.1):
-    - TransitionKit (= 2.1.1)
+    - libextobjc/EXTScope (~> 0.4.1)
+    - TransitionKit (~> 2.1.1)
   - TransitionKit (2.1.1)
 
 DEPENDENCIES:
@@ -11,7 +15,8 @@ EXTERNAL SOURCES:
     :path: ..
 
 SPEC CHECKSUMS:
-  RTSMediaPlayer: 1fbd2b1bfb860a99b4c6cc788ec16c56262de48c
+  libextobjc: d6146fce3ebea986b7f75fcb4c967639200b88b0
+  RTSMediaPlayer: 3872b639e55d7b1c3d88d903708010066c1d09ee
   TransitionKit: 9ce324caba25cb0a4c9f3334302d89685595455c
 
-COCOAPODS: 0.36.0.rc.1
+COCOAPODS: 0.36.0
