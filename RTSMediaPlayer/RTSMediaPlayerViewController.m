@@ -50,10 +50,10 @@
 {
 	[super viewDidLoad];
 
-	[self.mediaPlayerController setDataSource:_dataSource];
+	[self.mediaPlayerController setDataSource:self.dataSource];
 	
 	[self.mediaPlayerController attachPlayerToView:self.view];
-	[self.mediaPlayerController playIdentifier:_identifier];
+	[self.mediaPlayerController playIdentifier:self.identifier];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackDidFinishNotification:) name:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChangeNotification:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
@@ -70,7 +70,7 @@
 
 - (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
 {
-	completionHandler([NSURL URLWithString:_identifier], nil);
+	completionHandler([NSURL URLWithString:self.identifier], nil);
 }
 
 

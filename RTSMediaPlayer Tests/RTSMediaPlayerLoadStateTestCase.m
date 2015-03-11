@@ -22,7 +22,7 @@
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
 	_mediaPlayerController = mediaPlayerController;
-	_loadStateMachine = [_mediaPlayerController valueForKeyPath:@"loadStateMachine"];
+	self.loadStateMachine = [_mediaPlayerController valueForKeyPath:@"loadStateMachine"];
 }
 
 - (void) expectationForStateMachineFromState:(NSString *)oldStateName toState:(NSString *)newStateName completionHandler:(void (^)(void))completionHandler

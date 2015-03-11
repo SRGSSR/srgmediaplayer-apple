@@ -31,7 +31,7 @@
 
 - (UIColor *) hightlightColor
 {
-	return _hightlightColor ?: _drawColor;
+	return _hightlightColor ?: self.drawColor;
 }
 
 - (void) setPlaybackState:(RTSMediaPlaybackState)playbackState
@@ -89,61 +89,55 @@
 
 #pragma mark - Draw view
 
+- (UIBezierPath *) pauseBezierPath
+{
+	if (!_pauseBezierPath)
+	{
+		CGFloat middle = CGRectGetMidX(self.bounds);
+		CGFloat margin = middle * 1/3;
+		CGFloat width = middle - margin;
+		CGFloat height = CGRectGetHeight(self.bounds);
+		
+		_pauseBezierPath = [UIBezierPath bezierPath];
+		[_pauseBezierPath moveToPoint:CGPointMake(margin / 2, 0)];
+		[_pauseBezierPath addLineToPoint:CGPointMake(width, 0)];
+		[_pauseBezierPath addLineToPoint:CGPointMake(width, height)];
+		[_pauseBezierPath addLineToPoint:CGPointMake(margin / 2, height)];
+		[_pauseBezierPath closePath];
+		
+		[_pauseBezierPath moveToPoint:CGPointMake(middle + margin / 2, 0)];
+		[_pauseBezierPath addLineToPoint:CGPointMake(middle + width, 0)];
+		[_pauseBezierPath addLineToPoint:CGPointMake(middle + width, height)];
+		[_pauseBezierPath addLineToPoint:CGPointMake(middle + margin / 2, height)];
+		[_pauseBezierPath closePath];
+	}
+	return _pauseBezierPath;
+}
+
+- (UIBezierPath *) playBezierPath
+{
+	if (!_playBezierPath)
+	{
+		CGFloat width = CGRectGetWidth(self.bounds);
+		CGFloat height = CGRectGetHeight(self.bounds);
+		
+		_playBezierPath = [UIBezierPath bezierPath];
+		[_playBezierPath moveToPoint:CGPointMake(0, 0)];
+		[_playBezierPath addLineToPoint:CGPointMake(width, height / 2)];
+		[_playBezierPath addLineToPoint:CGPointMake(0, height)];
+		[_playBezierPath closePath];
+	}
+	return _playBezierPath;
+}
+
 - (void) drawRect:(CGRect)rect
 {
 	UIColor *color = self.isHighlighted ? self.hightlightColor : self.drawColor;
-	if (color)
-		[color set];
-
-	if (self.playbackState == RTSMediaPlaybackStatePlaying)
-		[self drawPauseBezierPath];
-	else
-		[self drawPlayBezierPath];
-}
-
-- (void) drawPauseBezierPath
-{
-	if (!_pauseBezierPath) {
-		_pauseBezierPath = [UIBezierPath bezierPath];
-		
-		CGFloat middle = CGRectGetWidth(self.frame)/2;
-		CGFloat margin = middle * 1/3;
-		CGFloat width = middle - margin;
-		CGFloat height = CGRectGetHeight(self.frame);
-		
-		[_pauseBezierPath moveToPoint:CGPointMake(margin/2, 0)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(width, 0)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(width, height)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(margin/2, height)];
-		[_pauseBezierPath closePath];
-		
-		[_pauseBezierPath moveToPoint:CGPointMake(middle+margin/2, 0)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(middle+width, 0)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(middle+width, height)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(middle+margin/2, height)];
-		[_pauseBezierPath closePath];
-	}
+	[color set];
 	
-	[_pauseBezierPath fill];
-	[_pauseBezierPath stroke];
-}
-
-- (void) drawPlayBezierPath
-{
-	if (!_playBezierPath) {
-		_playBezierPath = [UIBezierPath bezierPath];
-		
-		CGFloat width = CGRectGetWidth(self.frame);
-		CGFloat height = CGRectGetHeight(self.frame);
-		
-		[_playBezierPath moveToPoint:CGPointMake(0, 0)];
-		[_playBezierPath addLineToPoint:CGPointMake(width, height/2)];
-		[_playBezierPath addLineToPoint:CGPointMake(0.0, height)];
-		[_playBezierPath closePath];
-	}
-	
-	[_playBezierPath fill];
-	[_playBezierPath stroke];
+	UIBezierPath *bezierPath = self.playbackState == RTSMediaPlaybackStatePlaying ? self.pauseBezierPath : self.playBezierPath;
+	[bezierPath fill];
+	[bezierPath stroke];
 }
 
 @end

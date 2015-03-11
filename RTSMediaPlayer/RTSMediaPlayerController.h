@@ -190,7 +190,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerReadyToPlayNotification;
  *
  *  @see initWithContentIdentifier:dataSource:
  */
-@property (readonly) NSString *identifier;
+@property (copy) NSString *identifier;
 
 /**
  *  Returns the current playback state of the media player.

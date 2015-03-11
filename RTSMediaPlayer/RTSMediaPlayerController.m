@@ -33,11 +33,11 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 @interface RTSMediaPlayerController ()
 
 @property (readonly) TKStateMachine *loadStateMachine;
-@property (readonly) TKState *noneState;
-@property (readonly) TKState *contentURLLoadedState;
-@property (readonly) TKEvent *loadContentURLEvent;
-@property (readonly) TKEvent *loadAssetEvent;
-@property (readonly) TKEvent *resetLoadStateMachineEvent;
+@property (readwrite) TKState *noneState;
+@property (readwrite) TKState *contentURLLoadedState;
+@property (readwrite) TKEvent *loadContentURLEvent;
+@property (readwrite) TKEvent *loadAssetEvent;
+@property (readwrite) TKEvent *resetLoadStateMachineEvent;
 
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
@@ -196,12 +196,13 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	
 	[loadStateMachine activate];
 	
+	self.noneState = none;
+	self.contentURLLoadedState = contentURLLoaded;
+	self.loadContentURLEvent = loadContentURL;
+	self.loadAssetEvent = loadAsset;
+	self.resetLoadStateMachineEvent = resetLoadStateMachine;
+	
 	_loadStateMachine = loadStateMachine;
-	_noneState = none;
-	_contentURLLoadedState = contentURLLoaded;
-	_loadContentURLEvent = loadContentURL;
-	_loadAssetEvent = loadAsset;
-	_resetLoadStateMachineEvent = resetLoadStateMachine;
 	
 	return _loadStateMachine;
 }
@@ -250,9 +251,9 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 
 - (void) playIdentifier:(NSString *)identifier
 {
-	if (![_identifier isEqualToString:identifier])
+	if (![self.identifier isEqualToString:identifier])
 	{
-		_identifier = identifier;
+		self.identifier = identifier;
 		[self.loadStateMachine fireEvent:self.resetLoadStateMachineEvent userInfo:nil error:NULL];
 	}
 	
@@ -266,7 +267,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 
 - (void) stop
 {
-	[_loadStateMachine fireEvent:self.resetLoadStateMachineEvent userInfo:nil error:nil];
+	[self.loadStateMachine fireEvent:self.resetLoadStateMachineEvent userInfo:nil error:nil];
 }
 
 - (void) seekToTime:(NSTimeInterval)time
@@ -345,7 +346,7 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 
 	if (!self.view)
 	{
-		_view = [[RTSMediaPlayerView alloc] initWithFrame:CGRectZero];
+		self.view = [[RTSMediaPlayerView alloc] initWithFrame:CGRectZero];
 		self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewWasTaped:)];
 	}
 	
