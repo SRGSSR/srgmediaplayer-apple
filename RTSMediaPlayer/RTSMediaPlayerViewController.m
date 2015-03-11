@@ -35,8 +35,9 @@
 
 - (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
 {
-	NSURL *bundleURL = [[NSBundle mainBundle] URLForResource:@"RTSMediaPlayer" withExtension:@"bundle"];
-	if (!(self = [super initWithNibName:NSStringFromClass(self.class) bundle:[NSBundle bundleWithURL:bundleURL]]))
+	NSURL *mediaPlayerBundleURL = [[NSBundle mainBundle] URLForResource:@"RTSMediaPlayer" withExtension:@"bundle"];
+	NSAssert(mediaPlayerBundleURL != nil, @"RTSMediaPlayer.bundle not found in the main bundle's resources");
+	if (!(self = [super initWithNibName:NSStringFromClass(self.class) bundle:[NSBundle bundleWithURL:mediaPlayerBundleURL]]))
 		return nil;
 	
 	_dataSource = dataSource;
