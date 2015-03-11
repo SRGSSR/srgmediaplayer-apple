@@ -7,6 +7,7 @@
 #import "RTSMediaPlayerView.h"
 
 #import <TransitionKit/TransitionKit.h>
+#import <libextobjc/EXTScope.h>
 
 NSString * const RTSMediaPlayerPlaybackDidFinishNotification = @"RTSMediaPlayerPlaybackDidFinish";
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
@@ -106,28 +107,31 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	TKEvent *resetLoadStateMachine = [TKEvent eventWithName:@"Reset" transitioningFromStates:@[ loadingContentURL, contentURLLoaded, loadingAsset, assetLoaded ] toState:none];
 	
 	[loadStateMachine addEvents:@[ loadContentURL, loadContentURLFailure, loadContentURLSuccess, loadAsset, loadAssetFailure, loadAssetSuccess ]];
-
-	__weak __typeof__(self) weakSelf = self;
+	
+	@weakify(self)
+	
 	void (^postError)(TKState *, TKTransition *) = ^(TKState *state, TKTransition *transition) {
+		@strongify(self)
 		id result = transition.userInfo[ResultKey];
 		if ([result isKindOfClass:[NSError class]])
-			[weakSelf postPlaybackDidFinishErrorNotification:result];
+			[self postPlaybackDidFinishErrorNotification:result];
 	};
 	
 	[loadingContentURL setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		if (!weakSelf.dataSource)
+		@strongify(self)
+		if (!self.dataSource)
 			@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"RTSMediaPlayerController dataSource can not be nil." userInfo:nil];
 		
-		weakSelf.playbackState = RTSMediaPlaybackStatePendingPlay;
+		self.playbackState = RTSMediaPlaybackStatePendingPlay;
 		
-		[weakSelf.dataSource mediaPlayerController:weakSelf contentURLForIdentifier:weakSelf.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
+		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
 			if (contentURL)
 			{
-				[weakSelf.loadStateMachine fireEvent:loadContentURLSuccess userInfo:TransitionUserInfo(transition, ResultKey, contentURL) error:NULL];
+				[self.loadStateMachine fireEvent:loadContentURLSuccess userInfo:TransitionUserInfo(transition, ResultKey, contentURL) error:NULL];
 			}
 			else if (error)
 			{
-				[weakSelf.loadStateMachine fireEvent:loadContentURLFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
+				[self.loadStateMachine fireEvent:loadContentURLFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
 			}
 			else
 			{
@@ -139,11 +143,13 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	[loadingContentURL setDidExitStateBlock:postError];
 	
 	[contentURLLoaded setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
 		if (transition.sourceState == loadingContentURL)
-			[weakSelf.loadStateMachine fireEvent:loadAsset userInfo:transition.userInfo error:NULL];
+			[self.loadStateMachine fireEvent:loadAsset userInfo:transition.userInfo error:NULL];
 	}];
 	
 	[loadingAsset setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
 		NSURL *contentURL = transition.userInfo[ResultKey];
 		AVURLAsset *asset = [AVURLAsset URLAssetWithURL:contentURL options:@{ AVURLAssetPreferPreciseDurationAndTimingKey: @(YES) }];
 		static NSString *assetStatusKey = @"duration";
@@ -153,12 +159,12 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 				AVKeyValueStatus status = [asset statusOfValueForKey:assetStatusKey error:&valueStatusError];
 				if (status == AVKeyValueStatusLoaded)
 				{
-					[weakSelf.loadStateMachine fireEvent:loadAssetSuccess userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
+					[self.loadStateMachine fireEvent:loadAssetSuccess userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
 				}
 				else
 				{
 					NSError *error = valueStatusError ?: [NSError errorWithDomain:@"XXX" code:0 userInfo:nil];
-					[weakSelf.loadStateMachine fireEvent:loadAssetFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
+					[self.loadStateMachine fireEvent:loadAssetFailure userInfo:TransitionUserInfo(transition, ResultKey, error) error:NULL];
 				}
 			});
 		}];
@@ -167,23 +173,25 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	[loadingAsset setDidExitStateBlock:postError];
 	
 	[assetLoaded setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
 		AVAsset *asset = transition.userInfo[ResultKey];
-		weakSelf.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
-		[(RTSMediaPlayerView *)weakSelf.view setPlayer:weakSelf.player];
-		[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerReadyToPlayNotification object:weakSelf];
+		self.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
+		[(RTSMediaPlayerView *)self.view setPlayer:self.player];
+		[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerReadyToPlayNotification object:self];
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
-			[weakSelf.player play];
+			[self.player play];
 	}];
 	
 	[assetLoaded setWillExitStateBlock:^(TKState *state, TKTransition *transition) {
-		RTSMediaPlaybackState playbackState = weakSelf.playbackState;
+		@strongify(self)
+		RTSMediaPlaybackState playbackState = self.playbackState;
 		if (playbackState == RTSMediaPlaybackStatePlaying || playbackState == RTSMediaPlaybackStatePaused)
-			[weakSelf postPlaybackDidFinishNotification:RTSMediaFinishReasonUserExited error:nil];
+			[self postPlaybackDidFinishNotification:RTSMediaFinishReasonUserExited error:nil];
 		
-		weakSelf.playbackState = RTSMediaPlaybackStateEnded;
+		self.playbackState = RTSMediaPlaybackStateEnded;
 		
-		[(RTSMediaPlayerView *)weakSelf.view setPlayer:nil];
-		weakSelf.player = nil;
+		[(RTSMediaPlayerView *)self.view setPlayer:nil];
+		self.player = nil;
 	}];
 	
 	[loadStateMachine activate];
