@@ -25,8 +25,8 @@
 - (void) awakeFromNib
 {
 	[super awakeFromNib];
-	[self setNeedsUpdateAction];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChangeNotification:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
+	[self updateAction];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
 }
 
 - (UIColor *) hightlightColor
@@ -39,7 +39,7 @@
 	_playbackState = playbackState;
 	
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[self setNeedsUpdateAction];
+		[self updateAction];
 		[self setNeedsDisplay];
 	});
 }
@@ -54,7 +54,7 @@
 
 #pragma mark - Actions
 
-- (void) setNeedsUpdateAction
+- (void) updateAction
 {
 	SEL action = self.playbackState == RTSMediaPlaybackStatePlaying ? @selector(pause:) : @selector(play:);
 	
@@ -79,7 +79,7 @@
 
 #pragma mark - Notifications
 
-- (void) mediaPlayerPlaybackStateDidChangeNotification:(NSNotification *)notification
+- (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
 	RTSMediaPlayerController *mediaPlayerController = notification.object;
 	self.playbackState = mediaPlayerController.playbackState;
