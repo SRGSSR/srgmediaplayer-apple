@@ -15,5 +15,6 @@ Pod::Spec.new do |s|
   
   s.resource_bundle       = { "RTSMediaPlayer" => ["RTSMediaPlayer/*.xib"] }
 
-  s.dependency "TransitionKit", "2.1.1"
+  s.dependency "libextobjc/EXTScope", "~> 0.4.1"
+  s.dependency "TransitionKit", "~> 2.1.1"
 end
