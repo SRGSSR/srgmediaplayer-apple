@@ -336,12 +336,40 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 		[self.view removeFromSuperview];
 
 	if (!self.view)
+	{
 		_view = [[RTSMediaPlayerView alloc] initWithFrame:CGRectZero];
+		self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewWasTaped:)];
+	}
 	
 	self.view.frame = CGRectMake(0, 0, CGRectGetWidth(containerView.bounds), CGRectGetHeight(containerView.bounds));
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.view.backgroundColor = containerView.backgroundColor;
 	[containerView insertSubview:self.view atIndex:0];
+}
+
+- (void) setTapGesture:(UITapGestureRecognizer *)tapGesture
+{
+	for (UIGestureRecognizer *recognizer in self.view.gestureRecognizers)
+	{
+		[self.view removeGestureRecognizer:recognizer];
+	}
+	
+	_tapGesture = tapGesture;
+	
+	[self.view addGestureRecognizer:tapGesture];
+}
+
+#pragma mark - Overlays
+
+- (void) viewWasTaped:(id)sender
+{
+	//TODO : fix for inline player
+	if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+		[self showOverlays];
+	}
+	else{
+		[self hideOverlays];
+	}
 }
 
 - (void) showOverlays
