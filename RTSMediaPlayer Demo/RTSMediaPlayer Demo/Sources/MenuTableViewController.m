@@ -9,6 +9,7 @@
 #import <RTSMediaPlayer/RTSMediaPlayer.h>
 
 #import "DemoInlineViewController.h"
+#import "DemoMultiPlayersViewController.h"
 
 @interface MenuTableViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -53,7 +54,8 @@
 	return @[ @"CellDefaultIOS",
 			  @"CellDefaultRTS",
 			  @"CellInline",
-			  @"CellFullscreen" ];
+			  @"CellFullscreen",
+			  @"CellMultiPlayers"];
 }
 
 
@@ -72,6 +74,16 @@
 	{
 		DemoInlineViewController *demoInlineViewController = segue.destinationViewController;
 		demoInlineViewController.mediaURL = mediaURL;
+	}
+	else if ([segue.identifier isEqualToString:@"DemoMultiPlayers"])
+	{
+		DemoMultiPlayersViewController *demoMultiPlayerViewController = segue.destinationViewController;
+		demoMultiPlayerViewController.mediaURLs = @[
+                                                     [NSURL URLWithString:@"https://srgssruni9ch-lh.akamaihd.net/i/enc9uni_ch@191320/master.m3u8"], //RTS 1
+                                                     [NSURL URLWithString:@"https://srgssruni10ch-lh.akamaihd.net/i/enc10uni_ch@191367/master.m3u8"], // RTS 2
+                                                     [NSURL URLWithString:@"https://srgssruni7ch-lh.akamaihd.net/i/enc7uni_ch@191283/master.m3u8"], // WEB STREAM
+                                                     [NSURL URLWithString:@"https://srgssruni11ch-lh.akamaihd.net/i/enc11uni_ch@191455/master.m3u8"], // RTS en continu
+												  ];
 	}
 }
 

@@ -16,6 +16,7 @@
 		B61E18EC1AA863B700E4FAB9 /* DemoInlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18E81AA863B700E4FAB9 /* DemoInlineViewController.m */; };
 		B61E18ED1AA863B700E4FAB9 /* MenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18EA1AA863B700E4FAB9 /* MenuTableViewController.m */; };
 		B61E18EF1AA8643500E4FAB9 /* MediaURLs.plist in Resources */ = {isa = PBXBuildFile; fileRef = B61E18EE1AA8643500E4FAB9 /* MediaURLs.plist */; };
+		B688832B1AAF72B500B9E34E /* DemoMultiPlayersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B688832A1AAF72B500B9E34E /* DemoMultiPlayersViewController.m */; };
 		BA4B72E4FE913D2B122AE45D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D788BC2A5047FE0337DA5123 /* libPods.a */; };
 		C2F54A101A9F713300496C59 /* RTSMediaPlayer_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,8 @@
 		B61E18E91AA863B700E4FAB9 /* MenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuTableViewController.h; sourceTree = "<group>"; };
 		B61E18EA1AA863B700E4FAB9 /* MenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuTableViewController.m; sourceTree = "<group>"; };
 		B61E18EE1AA8643500E4FAB9 /* MediaURLs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MediaURLs.plist; sourceTree = "<group>"; };
+		B68883291AAF72B500B9E34E /* DemoMultiPlayersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoMultiPlayersViewController.h; sourceTree = "<group>"; };
+		B688832A1AAF72B500B9E34E /* DemoMultiPlayersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoMultiPlayersViewController.m; sourceTree = "<group>"; };
 		C2F549F01A9F713300496C59 /* RTSMediaPlayer Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RTSMediaPlayer Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A091A9F713300496C59 /* RTSMediaPlayer DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RTSMediaPlayer DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayer_DemoTests.m; sourceTree = "<group>"; };
@@ -84,6 +87,8 @@
 				B61E18E61AA863B700E4FAB9 /* DemoFullScreenViewController.m */,
 				B61E18E71AA863B700E4FAB9 /* DemoInlineViewController.h */,
 				B61E18E81AA863B700E4FAB9 /* DemoInlineViewController.m */,
+				B68883291AAF72B500B9E34E /* DemoMultiPlayersViewController.h */,
+				B688832A1AAF72B500B9E34E /* DemoMultiPlayersViewController.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -310,6 +315,7 @@
 			files = (
 				B61E18EC1AA863B700E4FAB9 /* DemoInlineViewController.m in Sources */,
 				B61E18D51AA8607200E4FAB9 /* main.m in Sources */,
+				B688832B1AAF72B500B9E34E /* DemoMultiPlayersViewController.m in Sources */,
 				B61E18EB1AA863B700E4FAB9 /* DemoFullScreenViewController.m in Sources */,
 				B61E18CF1AA8605200E4FAB9 /* AppDelegate.m in Sources */,
 				B61E18ED1AA863B700E4FAB9 /* MenuTableViewController.m in Sources */,
