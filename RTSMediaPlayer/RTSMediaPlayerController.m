@@ -363,33 +363,31 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 
 - (void) viewWasTaped:(id)sender
 {
-	//TODO : fix for inline player
-	if ([[UIApplication sharedApplication] isStatusBarHidden]) {
-		[self showOverlays];
-	}
-	else{
-		[self hideOverlays];
-	}
+	[self setOverlaysHidden:![[UIApplication sharedApplication] isStatusBarHidden]];
 }
 
 - (void) showOverlays
 {
-	for (UIView<RTSOverlayViewProtocol> *view in self.overlayViews)
-	{
-		[view mediaPlayerController:self overlayHidden:NO];
-	}
-	
-	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+	[self setOverlaysHidden:NO];
 }
 
 - (void) hideOverlays
 {
+	[self setOverlaysHidden:YES];
+}
+
+- (void) setOverlaysHidden:(BOOL)hidden
+{
 	for (UIView<RTSOverlayViewProtocol> *view in self.overlayViews)
 	{
-		[view mediaPlayerController:self overlayHidden:YES];
+		if ([view respondsToSelector:@selector(mediaPlayerController:overlayHidden:)])
+			[view mediaPlayerController:self overlayHidden:hidden];
+		else
+			[view setHidden:hidden];
 	}
 	
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+	//TODO : fix for inline player
+	[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
 }
 
 

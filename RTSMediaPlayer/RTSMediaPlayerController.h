@@ -247,7 +247,9 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerReadyToPlayNotification;
  */
 @property (copy) IBOutletCollection(UIView<RTSOverlayViewProtocol>) NSArray *overlayViews;
 
-- (void) showOverlays;
-- (void) hideOverlays;
+/**
+ *  Change the overlays visibility
+ */
+- (void) setOverlaysHidden:(BOOL)hidden;
 
 @end
