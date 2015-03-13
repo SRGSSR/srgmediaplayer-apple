@@ -6,6 +6,8 @@
 #import "RTSTimeSlider.h"
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 
+#import <libextobjc/EXTScope.h>
+
 #define SLIDER_VERTICAL_CENTER self.frame.size.height/2
 
 @interface UIBezierPath (Image)
@@ -167,36 +169,37 @@ static const void * const AVPlayerItemContext = &AVPlayerItemContext;
 	RTSMediaPlayerController *mediaPlayerController = notification.object;
 	self.player = mediaPlayerController.player;
 
-	__weak __typeof__(self) weakSelf = self;
+	@weakify(self)
 	self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 5) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-		if (weakSelf.isTracking)
+		@strongify(self)
+		if (self.isTracking)
 			return;
 		
-		CMTime endTime = CMTimeConvertScale (weakSelf.player.currentItem.asset.duration, weakSelf.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+		CMTime endTime = CMTimeConvertScale (self.player.currentItem.asset.duration, self.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
 		if (CMTimeCompare(endTime, kCMTimeZero) != 0)
 		{
-			Float64 duration = CMTimeGetSeconds(weakSelf.player.currentItem.asset.duration);
-			weakSelf.maximumValue = !isnan(duration) ? duration : 0.0f;
-			weakSelf.maximumValueLabel.text = RTSTimeFormat(duration);
+			Float64 duration = CMTimeGetSeconds(self.player.currentItem.asset.duration);
+			self.maximumValue = !isnan(duration) ? duration : 0.0f;
+			self.maximumValueLabel.text = RTSTimeFormat(duration);
 			
-			Float64 currentTime = CMTimeGetSeconds(weakSelf.player.currentTime);
+			Float64 currentTime = CMTimeGetSeconds(self.player.currentTime);
 			if (currentTime < 0)
 				return;
 			
-			weakSelf.value = currentTime;
-			weakSelf.valueLabel.text = RTSTimeFormat(currentTime);
-			weakSelf.timeLeftValueLabel.text = RTSTimeFormat(currentTime - duration);
+			self.value = currentTime;
+			self.valueLabel.text = RTSTimeFormat(currentTime);
+			self.timeLeftValueLabel.text = RTSTimeFormat(currentTime - duration);
 			
-			[weakSelf setNeedsDisplay];
+			[self setNeedsDisplay];
 		}
 		else
 		{
-			weakSelf.maximumValue = 0;
-			weakSelf.value = 0;
+			self.maximumValue = 0;
+			self.value = 0;
 		
-			weakSelf.maximumValueLabel.text = @"--:--";
-			weakSelf.valueLabel.text = @"--:--";
-			weakSelf.timeLeftValueLabel.text = @"--:--";
+			self.maximumValueLabel.text = @"--:--";
+			self.valueLabel.text = @"--:--";
+			self.timeLeftValueLabel.text = @"--:--";
 		}
 	}];
 }
