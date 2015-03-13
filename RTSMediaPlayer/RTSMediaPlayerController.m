@@ -41,7 +41,6 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
-@property (readwrite) UIView *view;
 
 @property RTSMediaPlayerControllerURLDataSource *contentURLDataSource;
 
@@ -343,32 +342,36 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 {
 	if (self.view.superview)
 		[self.view removeFromSuperview];
-
-	if (!self.view)
-	{
-		self.view = [[RTSMediaPlayerView alloc] initWithFrame:CGRectZero];
-		self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewWasTaped:)];
-	}
 	
 	self.view.frame = CGRectMake(0, 0, CGRectGetWidth(containerView.bounds), CGRectGetHeight(containerView.bounds));
-	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.view.backgroundColor = containerView.backgroundColor;
 	[containerView insertSubview:self.view atIndex:0];
 }
 
-- (void) setTapGesture:(UITapGestureRecognizer *)tapGesture
+@synthesize view = _view;
+
+- (UIView *) view
 {
-	for (UIGestureRecognizer *recognizer in self.view.gestureRecognizers)
+	if (!_view)
 	{
-		[self.view removeGestureRecognizer:recognizer];
+		_view = [RTSMediaPlayerView new];
+		_view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[_view addGestureRecognizer:self.tapGestureRecognizer];
 	}
-	
-	_tapGesture = tapGesture;
-	
-	[self.view addGestureRecognizer:tapGesture];
+	return _view;
 }
 
 #pragma mark - Overlays
+
+@synthesize tapGestureRecognizer = _tapGestureRecognizer;
+
+- (UITapGestureRecognizer *) tapGestureRecognizer
+{
+	if (!_tapGestureRecognizer)
+	{
+		_tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewWasTaped:)];
+	}
+	return _tapGestureRecognizer;
+}
 
 - (void) viewWasTaped:(id)sender
 {

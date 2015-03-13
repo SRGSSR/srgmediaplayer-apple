@@ -161,14 +161,16 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerReadyToPlayNotification;
 @property(readonly) UIView *view;
 
 /**
- *  Gesture recognizer attached to the player view when calling `-attachPlayerToView:`
+ *  Tap gesture recognizer attached to the player view
  *
- *  @discussion By default the tap gesture toggle overlays visibility, call `-setTapGesture:` to replace the default behaviour.
+ *  @discussion The tap gesture recognizer's action toggles overlays visibility.
+ *
+ *  @see `@property view`
  */
-@property UITapGestureRecognizer *tapGesture;
+@property(readonly) UITapGestureRecognizer *tapGestureRecognizer;
 
 /**
- *  Attach the player view into specified container view with default autoresizing mask. The player view will have the same frame and background color as its `containerView`
+ *  Attach the player view into specified container view with default autoresizing mask. The player view will have the same frame as its `containerView`
  *
  *  @param containerView The parent view in hierarchy what will contains the player layer
  */
