@@ -60,7 +60,7 @@
 	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeAppleStreamingBasicSample];
 	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
 
-	XCTAssertEqualObjects(self.loadStateMachine.currentState.name, @"None");
+	XCTAssertEqualObjects(self.loadStateMachine.currentState.name, @"Idle");
 }
 
 - (void) testStateMachineEvents
@@ -68,7 +68,7 @@
 	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeAppleStreamingBasicSample];
 	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
 
-	[self expectationForStateMachineFromState:@"None" toState:@"Loading Content URL" completionHandler:^{
+	[self expectationForStateMachineFromState:@"Idle" toState:@"Loading Content URL" completionHandler:^{
 		[self expectationForStateMachineFromState:@"Loading Content URL" toState:@"Content URL Loaded" completionHandler:^{
 			[self expectationForStateMachineFromState:@"Content URL Loaded" toState:@"Loading Asset" completionHandler:^{
 				[self expectationForStateMachineFromState:@"Loading Asset" toState:@"Asset Loaded" completionHandler:^{
@@ -91,8 +91,8 @@
 	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeContentURLError];
 	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
 
-	[self expectationForStateMachineFromState:@"None" toState:@"Loading Content URL" completionHandler:^{
-		[self expectationForStateMachineFromState:@"Loading Content URL" toState:@"None" completionHandler:nil];
+	[self expectationForStateMachineFromState:@"Idle" toState:@"Loading Content URL" completionHandler:^{
+		[self expectationForStateMachineFromState:@"Loading Content URL" toState:@"Idle" completionHandler:nil];
 	}];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
@@ -113,7 +113,7 @@
 	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeAsset404Error];
 	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
 
-	[self expectationForStateMachineFromState:@"None" toState:@"Loading Content URL" completionHandler:^{
+	[self expectationForStateMachineFromState:@"Idle" toState:@"Loading Content URL" completionHandler:^{
 		[self expectationForStateMachineFromState:@"Loading Content URL" toState:@"Content URL Loaded" completionHandler:^{
 			[self expectationForStateMachineFromState:@"Content URL Loaded" toState:@"Loading Asset" completionHandler:^{
 				[self expectationForStateMachineFromState:@"Loading Asset" toState:@"Content URL Loaded" completionHandler:nil];
@@ -137,7 +137,7 @@
 	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeAsset403Error];
 	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
 	
-	[self expectationForStateMachineFromState:@"None" toState:@"Loading Content URL" completionHandler:^{
+	[self expectationForStateMachineFromState:@"Idle" toState:@"Loading Content URL" completionHandler:^{
 		[self expectationForStateMachineFromState:@"Loading Content URL" toState:@"Content URL Loaded" completionHandler:^{
 			[self expectationForStateMachineFromState:@"Content URL Loaded" toState:@"Loading Asset" completionHandler:^{
 				[self expectationForStateMachineFromState:@"Loading Asset" toState:@"Content URL Loaded" completionHandler:nil];
@@ -188,7 +188,7 @@
 	[self.mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
-	[self expectationForStateMachineFromState:@"Asset Loaded" toState:@"None" completionHandler:^{
+	[self expectationForStateMachineFromState:@"Asset Loaded" toState:@"Idle" completionHandler:^{
 		XCTAssertNil(self.mediaPlayerController.player);
 	}];
 	[self.mediaPlayerController stop];
@@ -211,8 +211,8 @@
 	
 	// Play another stream
 	NSString *appleStreamingAdvancedSampleIdentifier = [RTSMediaPlayerTestDataSource contentURLForContentType:RTSDataSourceTestContentTypeAppleStreamingAdvancedSample].absoluteString;
-	[self expectationForStateMachineFromState:@"Asset Loaded" toState:@"None" completionHandler:^{
-		[self expectationForStateMachineFromState:@"None" toState:@"Loading Content URL" completionHandler:^{
+	[self expectationForStateMachineFromState:@"Asset Loaded" toState:@"Idle" completionHandler:^{
+		[self expectationForStateMachineFromState:@"Idle" toState:@"Loading Content URL" completionHandler:^{
 			[self expectationForStateMachineFromState:@"Loading Content URL" toState:@"Content URL Loaded" completionHandler:^{
 				[self expectationForStateMachineFromState:@"Content URL Loaded" toState:@"Loading Asset" completionHandler:^{
 					[self expectationForStateMachineFromState:@"Loading Asset" toState:@"Asset Loaded" completionHandler:nil];

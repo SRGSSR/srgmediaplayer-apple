@@ -33,7 +33,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 @interface RTSMediaPlayerController ()
 
 @property (readonly) TKStateMachine *loadStateMachine;
-@property (readwrite) TKState *noneState;
+@property (readwrite) TKState *idleState;
 @property (readwrite) TKState *contentURLLoadedState;
 @property (readwrite) TKEvent *loadContentURLEvent;
 @property (readwrite) TKEvent *loadAssetEvent;
@@ -97,21 +97,21 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		return _loadStateMachine;
 	
 	TKStateMachine *loadStateMachine = [TKStateMachine new];
-	TKState *none = [TKState stateWithName:@"None"];
+	TKState *idle = [TKState stateWithName:@"Idle"];
 	TKState *loadingContentURL = [TKState stateWithName:@"Loading Content URL"];
 	TKState *contentURLLoaded = [TKState stateWithName:@"Content URL Loaded"];
 	TKState *loadingAsset = [TKState stateWithName:@"Loading Asset"];
 	TKState *assetLoaded = [TKState stateWithName:@"Asset Loaded"];
-	[loadStateMachine addStates:@[ none, loadingContentURL, contentURLLoaded, loadingAsset, assetLoaded ]];
-	loadStateMachine.initialState = none;
+	[loadStateMachine addStates:@[ idle, loadingContentURL, contentURLLoaded, loadingAsset, assetLoaded ]];
+	loadStateMachine.initialState = idle;
 	
-	TKEvent *loadContentURL = [TKEvent eventWithName:@"Load Content URL" transitioningFromStates:@[ none ] toState:loadingContentURL];
-	TKEvent *loadContentURLFailure = [TKEvent eventWithName:@"Load Content URL Failure" transitioningFromStates:@[ loadingContentURL ] toState:none];
+	TKEvent *loadContentURL = [TKEvent eventWithName:@"Load Content URL" transitioningFromStates:@[ idle ] toState:loadingContentURL];
+	TKEvent *loadContentURLFailure = [TKEvent eventWithName:@"Load Content URL Failure" transitioningFromStates:@[ loadingContentURL ] toState:idle];
 	TKEvent *loadContentURLSuccess = [TKEvent eventWithName:@"Load Content URL Success" transitioningFromStates:@[ loadingContentURL ] toState:contentURLLoaded];
 	TKEvent *loadAsset = [TKEvent eventWithName:@"Load Asset" transitioningFromStates:@[ contentURLLoaded ] toState:loadingAsset];
 	TKEvent *loadAssetFailure = [TKEvent eventWithName:@"Load Asset Failure" transitioningFromStates:@[ loadingAsset ] toState:contentURLLoaded];
 	TKEvent *loadAssetSuccess = [TKEvent eventWithName:@"Load Asset Success" transitioningFromStates:@[ loadingAsset ] toState:assetLoaded];
-	TKEvent *resetLoadStateMachine = [TKEvent eventWithName:@"Reset" transitioningFromStates:@[ loadingContentURL, contentURLLoaded, loadingAsset, assetLoaded ] toState:none];
+	TKEvent *resetLoadStateMachine = [TKEvent eventWithName:@"Reset" transitioningFromStates:@[ loadingContentURL, contentURLLoaded, loadingAsset, assetLoaded ] toState:idle];
 	
 	[loadStateMachine addEvents:@[ loadContentURL, loadContentURLFailure, loadContentURLSuccess, loadAsset, loadAssetFailure, loadAssetSuccess ]];
 	
@@ -203,7 +203,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	
 	[loadStateMachine activate];
 	
-	self.noneState = none;
+	self.idleState = idle;
 	self.contentURLLoadedState = contentURLLoaded;
 	self.loadContentURLEvent = loadContentURL;
 	self.loadAssetEvent = loadAsset;
@@ -247,7 +247,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 - (void) loadAndPlay:(BOOL)shouldPlay
 {
 	NSDictionary *userInfo = @{ ShouldPlayKey: @(shouldPlay) };
-	if ([self.loadStateMachine.currentState isEqual:self.noneState])
+	if ([self.loadStateMachine.currentState isEqual:self.idleState])
 		[self.loadStateMachine fireEvent:self.loadContentURLEvent userInfo:userInfo error:NULL];
 	else if ([self.loadStateMachine.currentState isEqual:self.contentURLLoadedState])
 		[self.loadStateMachine fireEvent:self.loadAssetEvent userInfo:userInfo error:NULL];
