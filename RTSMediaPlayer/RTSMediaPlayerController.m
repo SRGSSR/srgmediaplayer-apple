@@ -48,6 +48,14 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 @implementation RTSMediaPlayerController
 
+@synthesize player = _player;
+@synthesize view = _view;
+@synthesize tapGestureRecognizer = _tapGestureRecognizer;
+@synthesize playbackState = _playbackState;
+@synthesize loadStateMachine = _loadStateMachine;
+
+#pragma mark - Initialization
+
 - (instancetype) initWithContentURL:(NSURL *)contentURL
 {
 	_contentURLDataSource = [RTSMediaPlayerControllerURLDataSource new];
@@ -71,7 +79,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 	self.player = nil;
 }
 
-@synthesize loadStateMachine = _loadStateMachine;
+#pragma mark - Loading
 
 static const NSString *ResultKey = @"Result";
 static const NSString *ShouldPlayKey = @"ShouldPlay";
@@ -113,7 +121,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		@strongify(self)
 		id result = transition.userInfo[ResultKey];
 		if ([result isKindOfClass:[NSError class]])
-			[self postPlaybackDidFinishErrorNotification:result];
+			[self postPlaybackDidFinishNotification:RTSMediaFinishReasonPlaybackError error:result];
 	};
 	
 	[loadingContentURL setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
@@ -206,11 +214,6 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	return _loadStateMachine;
 }
 
-- (void) postPlaybackDidFinishErrorNotification:(NSError *)error
-{
-	[self postPlaybackDidFinishNotification:RTSMediaFinishReasonPlaybackError error:error];
-}
-
 - (void) postPlaybackDidFinishNotification:(RTSMediaFinishReason)reason error:(NSError *)error
 {
 	NSMutableDictionary *userInfo = [NSMutableDictionary new];
@@ -221,6 +224,8 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification object:self userInfo:userInfo];
 }
+
+#pragma mark - Playback
 
 - (void) play
 {
@@ -274,8 +279,6 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	[self.player seekToTime:CMTimeMakeWithSeconds(time, 1000) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:NULL];
 }
 
-@synthesize playbackState = _playbackState;
-
 - (RTSMediaPlaybackState) playbackState
 {
 	@synchronized(self)
@@ -300,8 +303,6 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 #pragma mark - AVPlayer
 
 static const void * const AVPlayerRateContext = &AVPlayerRateContext;
-
-@synthesize player = _player;
 
 - (AVPlayer *) player
 {
@@ -338,6 +339,8 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 	}
 }
 
+#pragma mark - View
+
 - (void) attachPlayerToView:(UIView *)containerView
 {
 	if (self.view.superview)
@@ -346,8 +349,6 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 	self.view.frame = CGRectMake(0, 0, CGRectGetWidth(containerView.bounds), CGRectGetHeight(containerView.bounds));
 	[containerView insertSubview:self.view atIndex:0];
 }
-
-@synthesize view = _view;
 
 - (UIView *) view
 {
@@ -361,8 +362,6 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 }
 
 #pragma mark - Overlays
-
-@synthesize tapGestureRecognizer = _tapGestureRecognizer;
 
 - (UITapGestureRecognizer *) tapGestureRecognizer
 {
