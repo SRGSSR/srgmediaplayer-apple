@@ -160,8 +160,6 @@ NSString *RTSTimeFormat(NSTimeInterval seconds)
 
 #pragma mark - Notifications
 
-static const void * const AVPlayerItemContext = &AVPlayerItemContext;
-
 - (void) mediaPlayerReadyToPlayNotification:(NSNotification *)notification
 {
 	[self.player removeTimeObserver:self.periodicTimeObserver];
