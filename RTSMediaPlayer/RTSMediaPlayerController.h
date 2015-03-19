@@ -6,7 +6,6 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-#import <RTSMediaPlayer/RTSOverlayViewProtocol.h>
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 
 /**
@@ -76,7 +75,7 @@ typedef NS_ENUM(NSInteger, RTSMediaFinishReason) {
  */
 
 /**
- *  Posted when movie playback ends or a user exits playback.
+ *  Posted when media playback ends or a user exits playback.
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishNotification;
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey; // NSNumber (RTSMediaFinishReason)
@@ -88,7 +87,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoK
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;
 
 /**
- *  Posted when the currently playing movie changes. Used when calling `playIdentifier:`
+ *  Posted when the currently playing media changes. Used when calling `playIdentifier:`
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification;
 
@@ -154,20 +153,15 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerReadyToPlayNotification;
  */
 
 /**
- *  The view containing the movie content.
+ *  The view containing the media content.
  *
- *  @discussion This property contains the view used for presenting the video content. To embed the view into your own view hierarchies, add it as a subview to one of your existing views.
+ *  @discussion This property contains the view used for presenting the media content. To display the view into your own view hierarchy, use the `attachPlayerToView:` method.
+ *  This view has two gesture recognziers: a single tap gesture recognizer and a double tap gesture recognizer which respectively toggle overlays visibility and toggle the video of aspect between `AVLayerVideoGravityResizeAspectFill` and `AVLayerVideoGravityResizeAspect`.
+ *  If you want to handle taps yourself, you can remove the gesture recognizers from the view and add your own gesture recognizer instead.
+ *
+ *  @see attachPlayerToView:
  */
 @property(readonly) UIView *view;
-
-/**
- *  Tap gesture recognizer attached to the player view
- *
- *  @discussion The tap gesture recognizer's action toggles overlays visibility.
- *
- *  @see `@property view`
- */
-@property(readonly) UITapGestureRecognizer *tapGestureRecognizer;
 
 /**
  *  Attach the player view into specified container view with default autoresizing mask. The player view will have the same frame as its `containerView`
@@ -247,11 +241,6 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerReadyToPlayNotification;
 /**
  *  A collection of views that will be shown/hidden automatically or manually when user interacts with the view.
  */
-@property (copy) IBOutletCollection(UIView<RTSOverlayViewProtocol>) NSArray *overlayViews;
-
-/**
- *  Change the overlays visibility
- */
-- (void) setOverlaysHidden:(BOOL)hidden;
+@property (copy) IBOutletCollection(UIView) NSArray *overlayViews;
 
 @end

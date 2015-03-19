@@ -4,11 +4,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@class AVPlayer;
+#import <AVFoundation/AVFoundation.h>
 
 @interface RTSMediaPlayerView : UIView
 
-- (void)setPlayer:(AVPlayer *)player;
+@property (strong) AVPlayer *player;
+
+@property (readonly) AVPlayerLayer *playerLayer;
 
 @end

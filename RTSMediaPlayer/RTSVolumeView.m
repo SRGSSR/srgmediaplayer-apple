@@ -26,13 +26,4 @@
 	[self.mpVolumeView setHidden:hidden];
 }
 
-
-
-#pragma mark - RTSOverlayViewProtocol
-
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController overlayHidden:(BOOL)hidden
-{
-	[self setHidden:hidden];
-}
-
 @end

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1066" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTSMediaPlayerViewController">
@@ -19,7 +20,7 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqK-gI-E5v" userLabel="Navigation Bar View" customClass="RTSOverlayView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqK-gI-E5v" userLabel="Navigation Bar View">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BEG-pM-Pvu">
@@ -55,7 +56,7 @@
                                             </connections>
                                         </slider>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzH-xw-G6y">
-                                            <rect key="frame" x="5" y="7" width="35" height="15.5"/>
+                                            <rect key="frame" x="5" y="7" width="35" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="LD7-6d-ZRT"/>
                                             </constraints>
@@ -63,7 +64,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdH-jj-nfU">
-                                            <rect key="frame" x="499" y="7" width="35" height="15.5"/>
+                                            <rect key="frame" x="499" y="7" width="35" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="G8R-4I-uxy"/>
                                             </constraints>
@@ -104,7 +105,7 @@
                         <constraint firstItem="BEG-pM-Pvu" firstAttribute="leading" secondItem="kqK-gI-E5v" secondAttribute="leading" id="fuo-hn-ij3"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m4e-aB-8GY" userLabel="Bottom Bar View" customClass="RTSOverlayView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m4e-aB-8GY" userLabel="Bottom Bar View">
                     <rect key="frame" x="0.0" y="520" width="600" height="80"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="orZ-GR-Obh" customClass="RTSPlayPauseButton">

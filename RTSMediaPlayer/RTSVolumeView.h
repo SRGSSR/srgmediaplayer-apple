@@ -4,11 +4,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <RTSMediaPlayer/RTSOverlayViewProtocol.h>
 
 @class RTSMediaPlayerController;
 
-@interface RTSVolumeView : UIView <RTSOverlayViewProtocol>
+@interface RTSVolumeView : UIView
 
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 

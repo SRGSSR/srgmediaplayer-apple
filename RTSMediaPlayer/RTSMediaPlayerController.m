@@ -42,6 +42,8 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
 
+@property (readonly) RTSMediaPlayerView *playerView;
+
 @property RTSMediaPlayerControllerURLDataSource *contentURLDataSource;
 
 @end
@@ -50,7 +52,6 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 @synthesize player = _player;
 @synthesize view = _view;
-@synthesize tapGestureRecognizer = _tapGestureRecognizer;
 @synthesize playbackState = _playbackState;
 @synthesize loadStateMachine = _loadStateMachine;
 
@@ -183,7 +184,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		@strongify(self)
 		AVAsset *asset = transition.userInfo[ResultKey];
 		self.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
-		[(RTSMediaPlayerView *)self.view setPlayer:self.player];
+		[self.playerView setPlayer:self.player];
 		[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerReadyToPlayNotification object:self];
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
 			[self.player play];
@@ -356,50 +357,50 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 	{
 		_view = [RTSMediaPlayerView new];
 		_view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[_view addGestureRecognizer:self.tapGestureRecognizer];
+		
+		UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleOverlays)];
+		UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleAspect)];
+		doubleTapGestureRecognizer.numberOfTapsRequired = 2;
+		[singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
+		
+		[_view addGestureRecognizer:singleTapGestureRecognizer];
+		[_view addGestureRecognizer:doubleTapGestureRecognizer];
 	}
 	return _view;
 }
 
+- (RTSMediaPlayerView *) playerView
+{
+	return (RTSMediaPlayerView *)self.view;
+}
+
 #pragma mark - Overlays
 
-- (UITapGestureRecognizer *) tapGestureRecognizer
+- (void) toggleOverlays
 {
-	if (!_tapGestureRecognizer)
-	{
-		_tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewWasTaped:)];
-	}
-	return _tapGestureRecognizer;
-}
-
-- (void) viewWasTaped:(id)sender
-{
-	[self setOverlaysHidden:![[UIApplication sharedApplication] isStatusBarHidden]];
-}
-
-- (void) showOverlays
-{
-	[self setOverlaysHidden:NO];
-}
-
-- (void) hideOverlays
-{
-	[self setOverlaysHidden:YES];
-}
-
-- (void) setOverlaysHidden:(BOOL)hidden
-{
-	for (UIView<RTSOverlayViewProtocol> *view in self.overlayViews)
-	{
-		if ([view respondsToSelector:@selector(mediaPlayerController:overlayHidden:)])
-			[view mediaPlayerController:self overlayHidden:hidden];
-		else
-			[view setHidden:hidden];
-	}
+	UIView *firstOverlayView = [self.overlayViews firstObject];
+	if (!firstOverlayView || !self.playerView.playerLayer.isReadyForDisplay)
+		return;
 	
-	//TODO : fix for inline player
-	[[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationFade];
+	BOOL hidden = !firstOverlayView.hidden;
+	for (UIView *overlayView in self.overlayViews)
+	{
+		overlayView.hidden = hidden;
+	}
 }
 
+#pragma mark - Resize Aspect
+
+- (void) toggleAspect
+{
+	AVPlayerLayer *playerLayer = self.playerView.playerLayer;
+	if (!playerLayer.isReadyForDisplay)
+		return;
+	
+	if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect])
+		playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+	else
+		playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+}
 
 @end
