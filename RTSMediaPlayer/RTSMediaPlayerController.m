@@ -56,6 +56,8 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 	_identifier = identifier;
 	_dataSource = dataSource;
 	
+	[self.loadStateMachine activate];
+	
 	return self;
 }
 
@@ -194,8 +196,6 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		[(RTSMediaPlayerView *)self.view setPlayer:nil];
 		self.player = nil;
 	}];
-	
-	[loadStateMachine activate];
 	
 	self.idleState = idle;
 	self.contentURLLoadedState = contentURLLoaded;
