@@ -18,19 +18,7 @@ NSString * const RTSMediaPlayerReadyToPlayNotification = @"RTSMediaPlayerReadyTo
 NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey = @"Reason";
 NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
-@interface RTSMediaPlayerControllerURLDataSource : NSObject <RTSMediaPlayerControllerDataSource>
-@end
-
-@implementation RTSMediaPlayerControllerURLDataSource
-
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
-{
-	completionHandler([NSURL URLWithString:identifier], nil);
-}
-
-@end
-
-@interface RTSMediaPlayerController ()
+@interface RTSMediaPlayerController () <RTSMediaPlayerControllerDataSource>
 
 @property (readonly) TKStateMachine *loadStateMachine;
 @property (readwrite) TKState *idleState;
@@ -43,8 +31,6 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 @property (readwrite) AVPlayer *player;
 
 @property (readonly) RTSMediaPlayerView *playerView;
-
-@property RTSMediaPlayerControllerURLDataSource *contentURLDataSource;
 
 @end
 
@@ -59,8 +45,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 - (instancetype) initWithContentURL:(NSURL *)contentURL
 {
-	_contentURLDataSource = [RTSMediaPlayerControllerURLDataSource new];
-	return [self initWithContentIdentifier:contentURL.absoluteString dataSource:_contentURLDataSource];
+	return [self initWithContentIdentifier:contentURL.absoluteString dataSource:self];
 }
 
 - (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
@@ -78,6 +63,14 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 {
 	[self stop];
 	self.player = nil;
+}
+
+#pragma mark - RTSMediaPlayerControllerDataSource 
+
+// Used when initialized with `initWithContentURL:`
+- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
+{
+	completionHandler([NSURL URLWithString:identifier], nil);
 }
 
 #pragma mark - Loading
