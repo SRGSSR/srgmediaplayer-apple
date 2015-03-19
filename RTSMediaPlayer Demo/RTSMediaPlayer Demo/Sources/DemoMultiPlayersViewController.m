@@ -145,8 +145,8 @@
 	mediaPlayerController.player.muted = NO;
 	[mediaPlayerController play];
 	
-	UITapGestureRecognizer *toggleOverlays = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleOverlays:)];
-	[mediaPlayerController setTapGesture:toggleOverlays];
+//	UITapGestureRecognizer *toggleOverlays = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleOverlays:)];
+//	[mediaPlayerController setTapGesture:toggleOverlays];
 	
 	[self.playPauseButton setMediaPlayerController:mediaPlayerController];
 }
@@ -158,8 +158,8 @@
 	mediaPlayerController.player.muted = YES;
 	[mediaPlayerController play];
 
-	UITapGestureRecognizer *switchPlayerGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchMainPlayer:)];
-	[mediaPlayerController setTapGesture:switchPlayerGesture];
+//	UITapGestureRecognizer *switchPlayerGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchMainPlayer:)];
+//	[mediaPlayerController setTapGesture:switchPlayerGesture];
 }
 
 - (RTSMediaPlayerController *) mediaPlayerControllerForPlayerView:(UIView *)playerView
