@@ -43,6 +43,14 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 #pragma mark - Initialization
 
+- (instancetype) init
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
+	return [self initWithContentURL:nil];
+#pragma clang diagnostic pop
+}
+
 - (instancetype) initWithContentURL:(NSURL *)contentURL
 {
 	return [self initWithContentIdentifier:contentURL.absoluteString dataSource:self];
@@ -72,6 +80,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 // Used when initialized with `initWithContentURL:`
 - (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
 {
+	// TODO: throw exception if identifier == nil ?
 	completionHandler([NSURL URLWithString:identifier], nil);
 }
 
