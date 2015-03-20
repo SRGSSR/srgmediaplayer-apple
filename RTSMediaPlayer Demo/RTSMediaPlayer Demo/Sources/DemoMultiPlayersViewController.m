@@ -187,11 +187,11 @@
 
 #pragma mark - Gestures
 
-- (void) toggleOverlays:(UITapGestureRecognizer *)gesture
-{
-	RTSMediaPlayerController *mediaPlayerController = [self mediaPlayerControllerForPlayerView:gesture.view];
-	[mediaPlayerController setOverlaysHidden:![[UIApplication sharedApplication] isStatusBarHidden]];
-}
+//- (void) toggleOverlays:(UITapGestureRecognizer *)gesture
+//{
+//	RTSMediaPlayerController *mediaPlayerController = [self mediaPlayerControllerForPlayerView:gesture.view];
+//	[mediaPlayerController setOverlaysHidden:![[UIApplication sharedApplication] isStatusBarHidden]];
+//}
 
 - (void) switchMainPlayer:(UITapGestureRecognizer *)gesture
 {
