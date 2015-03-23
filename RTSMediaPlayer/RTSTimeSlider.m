@@ -65,7 +65,7 @@
 
 @implementation RTSTimeSlider
 
-NSString *RTSTimeFormat(NSTimeInterval seconds)
+NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	if (isnan(seconds))
 		return @"NaN";
@@ -178,15 +178,15 @@ NSString *RTSTimeFormat(NSTimeInterval seconds)
 		{
 			Float64 duration = CMTimeGetSeconds(self.player.currentItem.asset.duration);
 			self.maximumValue = !isnan(duration) ? duration : 0.0f;
-			self.maximumValueLabel.text = RTSTimeFormat(duration);
+			self.maximumValueLabel.text = RTSTimeSliderFormatter(duration);
 			
 			Float64 currentTime = CMTimeGetSeconds(self.player.currentTime);
 			if (currentTime < 0)
 				return;
 			
 			self.value = currentTime;
-			self.valueLabel.text = RTSTimeFormat(currentTime);
-			self.timeLeftValueLabel.text = RTSTimeFormat(currentTime - duration);
+			self.valueLabel.text = RTSTimeSliderFormatter(currentTime);
+			self.timeLeftValueLabel.text = RTSTimeSliderFormatter(currentTime - duration);
 			
 			[self setNeedsDisplay];
 		}
