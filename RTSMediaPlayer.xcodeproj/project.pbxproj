@@ -84,7 +84,6 @@
 		C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerController.m; sourceTree = "<group>"; };
 		C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerControllerDataSource.h; sourceTree = "<group>"; };
 		C2AB24E41ABC184A00EB51B8 /* RTSMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2AB24E71ABC184A00EB51B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerPlaybackTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaPlayerPlaybackTestCase.m"; sourceTree = SOURCE_ROOT; };
 		E0A64A82F87DE7222F4220DD /* Pods-RTSMediaPlayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RTSMediaPlayerTests/Pods-RTSMediaPlayerTests.release.xcconfig"; sourceTree = "<group>"; };
 		E77390DBA03B25138BDBA95F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -161,7 +160,6 @@
 			children = (
 				C201D8F71A9DC1A40016C629 /* RTSMediaPlayer */,
 				C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */,
-				C2AB24E51ABC184A00EB51B8 /* RTSMediaPlayer Resources */,
 				C201D8F61A9DC1A40016C629 /* Products */,
 				F6E7F12E1877CFD34FD0CFC5 /* Pods */,
 				36FB7B0F1FDA6E3158166504 /* Frameworks */,
@@ -196,22 +194,6 @@
 				B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */,
 			);
 			path = RTSMediaPlayerTests;
-			sourceTree = "<group>";
-		};
-		C2AB24E51ABC184A00EB51B8 /* RTSMediaPlayer Resources */ = {
-			isa = PBXGroup;
-			children = (
-				C2AB24E61ABC184A00EB51B8 /* Supporting Files */,
-			);
-			path = "RTSMediaPlayer Resources";
-			sourceTree = "<group>";
-		};
-		C2AB24E61ABC184A00EB51B8 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				C2AB24E71ABC184A00EB51B8 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		F6E7F12E1877CFD34FD0CFC5 /* Pods */ = {
