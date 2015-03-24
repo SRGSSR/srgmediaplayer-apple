@@ -201,7 +201,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		
 		self.playbackState = RTSMediaPlaybackStateEnded;
 		
-		[(RTSMediaPlayerView *)self.view setPlayer:nil];
+		[self.playerView setPlayer:nil];
 		self.player = nil;
 	}];
 	
