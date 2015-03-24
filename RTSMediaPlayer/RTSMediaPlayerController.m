@@ -196,10 +196,11 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	[assetLoaded setWillExitStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		RTSMediaPlaybackState playbackState = self.playbackState;
-		if (playbackState == RTSMediaPlaybackStatePlaying || playbackState == RTSMediaPlaybackStatePaused)
-			[self postPlaybackDidFinishNotification:RTSMediaFinishReasonUserExited error:nil];
 		
 		self.playbackState = RTSMediaPlaybackStateEnded;
+		
+		if (playbackState == RTSMediaPlaybackStatePlaying || playbackState == RTSMediaPlaybackStatePaused)
+			[self postPlaybackDidFinishNotification:RTSMediaFinishReasonUserExited error:nil];
 		
 		[self.playerView setPlayer:nil];
 		self.player = nil;
