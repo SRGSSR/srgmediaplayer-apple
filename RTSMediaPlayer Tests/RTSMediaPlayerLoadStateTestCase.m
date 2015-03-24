@@ -8,9 +8,20 @@
 
 #import <XCTest/XCTest.h>
 #import <RTSMediaPlayer/RTSMediaPlayer.h>
-#import "RTSMediaPlayerTestDataSource.h"
 
 #import <TransitionKit/TransitionKit.h>
+
+
+@interface DataSourceReturningError : NSObject <RTSMediaPlayerControllerDataSource>
+@end
+
+@implementation DataSourceReturningError
+- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+{
+	completionHandler(nil, [NSError errorWithDomain:@"Domain" code:-1 userInfo:nil]);
+}
+@end
+
 
 @interface RTSMediaPlayerLoadStateTestCase : XCTestCase
 @property (nonatomic, strong) TKStateMachine *loadStateMachine;
@@ -25,9 +36,9 @@
 	self.loadStateMachine = [_mediaPlayerController valueForKeyPath:@"loadStateMachine"];
 }
 
-- (void) expectationForStateMachineFromState:(NSString *)oldStateName toState:(NSString *)newStateName completionHandler:(void (^)(void))completionHandler
+- (XCTestExpectation *) expectationForStateMachineFromState:(NSString *)oldStateName toState:(NSString *)newStateName completionHandler:(void (^)(void))completionHandler
 {
-	[self keyValueObservingExpectationForObject:self.loadStateMachine keyPath:@"currentState" handler:^BOOL(TKStateMachine *stateMachine, NSDictionary *change)
+	return [self keyValueObservingExpectationForObject:self.loadStateMachine keyPath:@"currentState" handler:^BOOL(TKStateMachine *stateMachine, NSDictionary *change)
 	{
 		TKState *oldState = change[NSKeyValueChangeOldKey];
 		TKState *newState = change[NSKeyValueChangeNewKey];
@@ -57,16 +68,14 @@
 
 - (void) testInitialLoadStateMachine
 {
-	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeAppleStreamingBasicSample];
-	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
-
+	self.mediaPlayerController = [RTSMediaPlayerController new];
 	XCTAssertEqualObjects(self.loadStateMachine.currentState.name, @"Idle");
 }
 
 - (void) testStateMachineEvents
 {
-	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeAppleStreamingBasicSample];
-	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
+	NSURL *basicHLSStreamURL = [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"];
+	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:basicHLSStreamURL];
 
 	[self expectationForStateMachineFromState:@"Idle" toState:@"Loading Content URL" completionHandler:^{
 		[self expectationForStateMachineFromState:@"Loading Content URL" toState:@"Content URL Loaded" completionHandler:^{
@@ -88,7 +97,7 @@
 
 - (void) testDataSourceThatReturnsContentURLError
 {
-	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeContentURLError];
+	DataSourceReturningError *dataSource = [DataSourceReturningError new];
 	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
 
 	[self expectationForStateMachineFromState:@"Idle" toState:@"Loading Content URL" completionHandler:^{
@@ -101,7 +110,7 @@
 	}];
 	
 	[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
-	[self waitForExpectationsWithTimeout:15 handler:nil];
+	[self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 
@@ -110,8 +119,7 @@
 
 - (void) testAssetDoesNotExistsReturns404
 {
-	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeAsset404Error];
-	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
+	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:[NSURL URLWithString:@"http://httpbin.org/status/404"]];
 
 	[self expectationForStateMachineFromState:@"Idle" toState:@"Loading Content URL" completionHandler:^{
 		[self expectationForStateMachineFromState:@"Loading Content URL" toState:@"Content URL Loaded" completionHandler:^{
@@ -134,8 +142,7 @@
 
 - (void) testAssetIsNotAccessibleReturns403
 {
-	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeAsset403Error];
-	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
+	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:[NSURL URLWithString:@"http://httpbin.org/status/403"]];
 	
 	[self expectationForStateMachineFromState:@"Idle" toState:@"Loading Content URL" completionHandler:^{
 		[self expectationForStateMachineFromState:@"Loading Content URL" toState:@"Content URL Loaded" completionHandler:^{
@@ -161,8 +168,8 @@
 
 - (void) testPlayerPauseAndStateMachineKeepItsState
 {
-	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeAppleStreamingBasicSample];
-	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
+	NSURL *basicHLSStreamURL = [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"];
+	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:basicHLSStreamURL];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
@@ -179,8 +186,8 @@
 
 - (void) testPlayerStopAndStateMachineIsReset
 {
-	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeAppleStreamingBasicSample];
-	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"id1" dataSource:dataSource];
+	NSURL *basicHLSStreamURL = [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"];
+	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:basicHLSStreamURL];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
@@ -197,10 +204,8 @@
 
 - (void) testPlayIdentifierResetStateMachineAndLoadNewAsset
 {
-	NSString *appleStreamingBasicSampleIdentifier = [RTSMediaPlayerTestDataSource contentURLForContentType:RTSDataSourceTestContentTypeAppleStreamingBasicSample].absoluteString;
-	
-	RTSMediaPlayerTestDataSource *dataSource = [[RTSMediaPlayerTestDataSource alloc] initWithContentType:RTSDataSourceTestContentTypeIdentifier];
-	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:appleStreamingBasicSampleIdentifier dataSource:dataSource];
+	NSURL *basicHLSStreamURL = [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"];
+	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:basicHLSStreamURL];
 
 	// Start playing
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
@@ -210,7 +215,6 @@
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	// Play another stream
-	NSString *appleStreamingAdvancedSampleIdentifier = [RTSMediaPlayerTestDataSource contentURLForContentType:RTSDataSourceTestContentTypeAppleStreamingAdvancedSample].absoluteString;
 	[self expectationForStateMachineFromState:@"Asset Loaded" toState:@"Idle" completionHandler:^{
 		[self expectationForStateMachineFromState:@"Idle" toState:@"Loading Content URL" completionHandler:^{
 			[self expectationForStateMachineFromState:@"Loading Content URL" toState:@"Content URL Loaded" completionHandler:^{
@@ -220,7 +224,8 @@
 			}];
 		}];
 	}];
-	[self.mediaPlayerController playIdentifier:appleStreamingAdvancedSampleIdentifier];
+	NSString *advancedHLSStream = @"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8";
+	[self.mediaPlayerController playIdentifier:advancedHLSStream];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 

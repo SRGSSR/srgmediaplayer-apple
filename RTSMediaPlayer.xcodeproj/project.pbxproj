@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */; };
 		B60440FC1AA210C900C7DA57 /* RTSMediaPlayerView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */; };
-		B61E18391AA5CD9A00E4FAB9 /* RTSMediaPlayerTestDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18371AA5C4D600E4FAB9 /* RTSMediaPlayerTestDataSource.m */; };
 		B61E18C11AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18BF1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m */; };
 		B61E18C21AA750F900E4FAB9 /* RTSMediaPlayerViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B61E18BE1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.h */; };
 		B61E18F51AA87D8E00E4FAB9 /* RTSPlayPauseButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18F41AA87D8E00E4FAB9 /* RTSPlayPauseButton.m */; };
@@ -68,8 +67,6 @@
 		B2E49E1A9B522BC1DFB61954 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerView.h; sourceTree = "<group>"; };
 		B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerView.m; sourceTree = "<group>"; };
-		B61E18361AA5C4D600E4FAB9 /* RTSMediaPlayerTestDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTSMediaPlayerTestDataSource.h; path = "RTSMediaPlayer Tests/Sources/RTSMediaPlayerTestDataSource.h"; sourceTree = SOURCE_ROOT; };
-		B61E18371AA5C4D600E4FAB9 /* RTSMediaPlayerTestDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerTestDataSource.m; path = "RTSMediaPlayer Tests/Sources/RTSMediaPlayerTestDataSource.m"; sourceTree = SOURCE_ROOT; };
 		B61E18BE1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerViewController.h; sourceTree = "<group>"; };
 		B61E18BF1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerViewController.m; sourceTree = "<group>"; };
 		B61E18C01AA750CC00E4FAB9 /* RTSMediaPlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RTSMediaPlayerViewController.xib; sourceTree = "<group>"; };
@@ -122,15 +119,6 @@
 				7314D9A587D56BA6E7F89FB2 /* libPods-RTSMediaPlayerTests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		B61E18351AA5C4AC00E4FAB9 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				B61E18361AA5C4D600E4FAB9 /* RTSMediaPlayerTestDataSource.h */,
-				B61E18371AA5C4D600E4FAB9 /* RTSMediaPlayerTestDataSource.m */,
-			);
-			name = Sources;
 			sourceTree = "<group>";
 		};
 		B61E18F01AA87D2E00E4FAB9 /* Core */ = {
@@ -204,7 +192,6 @@
 		C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */ = {
 			isa = PBXGroup;
 			children = (
-				B61E18351AA5C4AC00E4FAB9 /* Sources */,
 				C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */,
 				B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */,
 			);
@@ -452,7 +439,6 @@
 				B6EC78091AA5ABEB009AE043 /* RTSMediaPlayerView.m in Sources */,
 				B6EC78011AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m in Sources */,
 				C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */,
-				B61E18391AA5CD9A00E4FAB9 /* RTSMediaPlayerTestDataSource.m in Sources */,
 				B6EC78081AA5ABE7009AE043 /* RTSMediaPlayerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -627,6 +613,7 @@
 				C2AB24E91ABC184A00EB51B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
