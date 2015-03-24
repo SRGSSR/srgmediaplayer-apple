@@ -77,7 +77,9 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 // Used when initialized with `initWithContentURL:`
 - (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
 {
-	// TODO: throw exception if identifier == nil ?
+	if (!identifier)
+		@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Trying to play a media with a nil identifier." userInfo:nil];
+	
 	completionHandler([NSURL URLWithString:identifier], nil);
 }
 
