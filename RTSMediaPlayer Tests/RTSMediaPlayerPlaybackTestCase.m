@@ -45,7 +45,7 @@
 	// Force stop with nothing played
 	[self.mediaPlayerController stop];
 	
-	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2.1f]];
+	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5f]];
 	XCTAssertEqual(mediaPlayerPlaybackDidFinishNotificationCount, 0);
 	XCTAssertEqual(mediaPlayerPlaybackStateDidChangeNotificationCount, 0);
 }
@@ -66,7 +66,7 @@
 	// Force stop with nothing played
 	self.mediaPlayerController = nil;
 	
-	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2.1f]];
+	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5f]];
 	XCTAssertEqual(mediaPlayerPlaybackDidFinishNotificationCount, 0);
 	XCTAssertEqual(mediaPlayerPlaybackStateDidChangeNotificationCount, 0);
 }
