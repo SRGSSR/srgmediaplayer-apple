@@ -45,10 +45,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 - (instancetype) init
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wnonnull"
-	return [self initWithContentURL:nil];
-#pragma clang diagnostic pop
+	return [self initWithContentURL:[NSURL URLWithString:nil]];
 }
 
 - (instancetype) initWithContentURL:(NSURL *)contentURL
