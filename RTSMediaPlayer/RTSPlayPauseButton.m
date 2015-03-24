@@ -11,8 +11,6 @@
 @property (nonatomic, strong) UIBezierPath *pauseBezierPath;
 @property (nonatomic, strong) UIBezierPath *playBezierPath;
 
-@property (nonatomic, assign) RTSMediaPlaybackState playbackState;
-
 @end
 
 @implementation RTSPlayPauseButton
@@ -34,16 +32,6 @@
 	return _hightlightColor ?: self.drawColor;
 }
 
-- (void) setPlaybackState:(RTSMediaPlaybackState)playbackState
-{
-	_playbackState = playbackState;
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[self updateAction];
-		[self setNeedsDisplay];
-	});
-}
-
 - (void) setHighlighted:(BOOL)highlighted
 {
 	[super setHighlighted:highlighted];
@@ -56,7 +44,7 @@
 
 - (void) updateAction
 {
-	SEL action = self.playbackState == RTSMediaPlaybackStatePlaying ? @selector(pause:) : @selector(play:);
+	SEL action = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying ? @selector(pause:) : @selector(play:);
 	
 	[self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
 	[self addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
@@ -81,8 +69,8 @@
 
 - (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
-	RTSMediaPlayerController *mediaPlayerController = notification.object;
-	self.playbackState = mediaPlayerController.playbackState;
+	[self updateAction];
+	[self setNeedsDisplay];
 }
 
 
@@ -135,7 +123,7 @@
 	UIColor *color = self.isHighlighted ? self.hightlightColor : self.drawColor;
 	[color set];
 	
-	UIBezierPath *bezierPath = self.playbackState == RTSMediaPlaybackStatePlaying ? self.pauseBezierPath : self.playBezierPath;
+	UIBezierPath *bezierPath = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying ? self.pauseBezierPath : self.playBezierPath;
 	[bezierPath fill];
 	[bezierPath stroke];
 }

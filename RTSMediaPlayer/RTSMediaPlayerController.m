@@ -188,7 +188,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		AVAsset *asset = transition.userInfo[ResultKey];
 		self.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
 		[self.playerView setPlayer:self.player];
-		[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerReadyToPlayNotification object:self];
+		[self postNotificationName:RTSMediaPlayerReadyToPlayNotification userInfo:nil];
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
 			[self.player play];
 	}];
@@ -225,7 +225,15 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 	if (error)
 		[userInfo setObject:error forKey:RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey];
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification object:self userInfo:userInfo];
+	[self postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification userInfo:userInfo];
+}
+
+#pragma mark - Notifications
+
+- (void) postNotificationName:(NSString *)notificationName userInfo:(NSDictionary *)userInfo
+{
+	NSNotification *notification = [NSNotification notificationWithName:notificationName object:self userInfo:userInfo];
+	[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:YES];
 }
 
 #pragma mark - Playback
@@ -299,7 +307,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		
 		_playbackState = playbackState;
 		
-		[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackStateDidChangeNotification object:self userInfo:nil];
+		[self postNotificationName:RTSMediaPlayerPlaybackStateDidChangeNotification userInfo:nil];
 	}
 }
 
