@@ -15,6 +15,11 @@ NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPl
 NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification = @"RTSMediaPlayerNowPlayingMediaDidChange";
 NSString * const RTSMediaPlayerReadyToPlayNotification = @"RTSMediaPlayerReadyToPlay";
 
+NSString * const RTSMediaPlayerWillShowControlOverlaysNotification = @"RTSMediaPlayerWillShowControlOverlays";
+NSString * const RTSMediaPlayerDidShowControlOverlaysNotification = @"RTSMediaPlayerDidShowControlOverlays";
+NSString * const RTSMediaPlayerWillHideControlOverlaysNotification = @"RTSMediaPlayerWillHideControlOverlays";
+NSString * const RTSMediaPlayerDidHideControlOverlaysNotification = @"RTSMediaPlayerDidHideControlOverlays";
+
 
 NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey = @"Reason";
 NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
@@ -410,10 +415,12 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 
 - (void) setOverlaysVisible:(BOOL)visible
 {
+	[self postNotificationName:visible ? RTSMediaPlayerWillShowControlOverlaysNotification : RTSMediaPlayerWillHideControlOverlaysNotification userInfo:nil];
 	for (UIView *overlayView in self.overlayViews)
 	{
 		overlayView.hidden = !visible;
 	}
+	[self postNotificationName:visible ? RTSMediaPlayerDidShowControlOverlaysNotification : RTSMediaPlayerDidHideControlOverlaysNotification userInfo:nil];
 }
 
 - (void) toggleOverlays

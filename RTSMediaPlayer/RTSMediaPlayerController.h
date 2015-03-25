@@ -238,6 +238,11 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerReadyToPlayNotification;
  *  -------------------
  */
 
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerWillShowControlOverlaysNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerDidShowControlOverlaysNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerWillHideControlOverlaysNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerDidHideControlOverlaysNotification;
+
 /**
  *  <#Description#>
  */
