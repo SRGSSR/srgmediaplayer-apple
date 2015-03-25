@@ -368,8 +368,8 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 		_view = [RTSMediaPlayerView new];
 		_view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		
-		UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleOverlays)];
-		UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleAspect)];
+		UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
+		UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap)];
 		doubleTapGestureRecognizer.numberOfTapsRequired = 2;
 		[singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
 		
@@ -386,27 +386,44 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 
 #pragma mark - Overlays
 
+- (void) handleSingleTap
+{
+	if (!self.playerView.playerLayer.isReadyForDisplay)
+		return;
+	
+	[self toggleOverlays];
+}
+
+- (void) setOverlaysVisible:(BOOL)visible
+{
+	for (UIView *overlayView in self.overlayViews)
+	{
+		overlayView.hidden = !visible;
+	}
+}
+
 - (void) toggleOverlays
 {
 	UIView *firstOverlayView = [self.overlayViews firstObject];
-	if (!firstOverlayView || !self.playerView.playerLayer.isReadyForDisplay)
+	if (!firstOverlayView)
 		return;
 	
-	BOOL hidden = !firstOverlayView.hidden;
-	for (UIView *overlayView in self.overlayViews)
-	{
-		overlayView.hidden = hidden;
-	}
+	[self setOverlaysVisible:firstOverlayView.hidden];
 }
 
 #pragma mark - Resize Aspect
 
+- (void) handleDoubleTap
+{
+	if (!self.playerView.playerLayer.isReadyForDisplay)
+		return;
+	
+	[self toggleAspect];
+}
+
 - (void) toggleAspect
 {
 	AVPlayerLayer *playerLayer = self.playerView.playerLayer;
-	if (!playerLayer.isReadyForDisplay)
-		return;
-	
 	if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect])
 		playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
 	else
