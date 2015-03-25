@@ -55,8 +55,8 @@
 	[self.mediaPlayerController attachPlayerToView:self.view];
 	[self.mediaPlayerController playIdentifier:self.identifier];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackDidFinishNotification:) name:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChangeNotification:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackDidFinish:) name:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
 }
 
 - (UIStatusBarStyle) preferredStatusBarStyle
@@ -77,14 +77,14 @@
 
 #pragma mark - Notifications
 
-- (void) mediaPlayerPlaybackDidFinishNotification:(NSNotification *)notification
+- (void) mediaPlayerPlaybackDidFinish:(NSNotification *)notification
 {
 	RTSMediaFinishReason reason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
 	if (reason == RTSMediaFinishReasonPlaybackEnded)
 		[self dismiss:nil];
 }
 
-- (void) mediaPlayerPlaybackStateDidChangeNotification:(NSNotification *)notification
+- (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
 	RTSMediaPlayerController *mediaPlayerController = notification.object;
 	if (mediaPlayerController.playbackState == RTSMediaPlaybackStatePendingPlay)

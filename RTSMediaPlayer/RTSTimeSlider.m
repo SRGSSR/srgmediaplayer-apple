@@ -130,8 +130,8 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self setThumbImage:[self thumbImage] forState:UIControlStateNormal];
 	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerReadyToPlayNotification:) name:RTSMediaPlayerIsReadyToPlayNotification object:self.mediaPlayerController];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackDidFinishNotification:) name:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerIsReadyToPlay:) name:RTSMediaPlayerIsReadyToPlayNotification object:self.mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackDidFinish:) name:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController];
 }
 
 
@@ -160,7 +160,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark - Notifications
 
-- (void) mediaPlayerReadyToPlayNotification:(NSNotification *)notification
+- (void) mediaPlayerIsReadyToPlay:(NSNotification *)notification
 {
 	[self.player removeTimeObserver:self.periodicTimeObserver];
 	
@@ -202,7 +202,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}];
 }
 
-- (void) mediaPlayerPlaybackDidFinishNotification:(NSNotification *)notification
+- (void) mediaPlayerPlaybackDidFinish:(NSNotification *)notification
 {
 	[self.player removeTimeObserver:self.periodicTimeObserver];
 }
