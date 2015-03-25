@@ -187,7 +187,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		@strongify(self)
 		AVAsset *asset = transition.userInfo[ResultKey];
 		self.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
-		[self.playerView setPlayer:self.player];
+		self.playerView.player = self.player;
 		[self postNotificationName:RTSMediaPlayerReadyToPlayNotification userInfo:nil];
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
 			[self.player play];
@@ -202,7 +202,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		if (playbackState == RTSMediaPlaybackStatePlaying || playbackState == RTSMediaPlaybackStatePaused)
 			[self postPlaybackDidFinishNotification:RTSMediaFinishReasonUserExited error:nil];
 		
-		[self.playerView setPlayer:nil];
+		self.playerView.player = nil;
 		self.player = nil;
 	}];
 	
