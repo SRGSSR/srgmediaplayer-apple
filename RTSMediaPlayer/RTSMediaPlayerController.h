@@ -94,7 +94,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
 /**
  *  Posted when the AVPlayer instances has been created and is ready to play the media`
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerReadyToPlayNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerIsReadyToPlayNotification;
 
 /**
  *  RTSMediaPlayerController is inspired by the MPMoviePlayerController class.

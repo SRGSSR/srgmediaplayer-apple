@@ -13,7 +13,7 @@
 NSString * const RTSMediaPlayerPlaybackDidFinishNotification = @"RTSMediaPlayerPlaybackDidFinish";
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
 NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification = @"RTSMediaPlayerNowPlayingMediaDidChange";
-NSString * const RTSMediaPlayerReadyToPlayNotification = @"RTSMediaPlayerReadyToPlay";
+NSString * const RTSMediaPlayerIsReadyToPlayNotification = @"RTSMediaPlayerIsReadyToPlay";
 
 NSString * const RTSMediaPlayerWillShowControlOverlaysNotification = @"RTSMediaPlayerWillShowControlOverlays";
 NSString * const RTSMediaPlayerDidShowControlOverlaysNotification = @"RTSMediaPlayerDidShowControlOverlays";
@@ -197,7 +197,6 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 		AVAsset *asset = transition.userInfo[ResultKey];
 		self.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
 		self.playerView.player = self.player;
-		[self postNotificationName:RTSMediaPlayerReadyToPlayNotification userInfo:nil];
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
 			[self.player play];
 	}];
@@ -323,6 +322,7 @@ static NSDictionary * TransitionUserInfo(TKTransition *transition, id<NSCopying>
 #pragma mark - AVPlayer
 
 static const void * const AVPlayerRateContext = &AVPlayerRateContext;
+static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 
 - (AVPlayer *) player
 {
@@ -337,10 +337,12 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 	@synchronized(self)
 	{
 		[_player removeObserver:self forKeyPath:@"rate" context:(void *)AVPlayerRateContext];
+		[_player removeObserver:self forKeyPath:@"currentItem.status" context:(void *)AVPlayerItemStatusContext];
 		
 		_player = player;
 		
 		[_player addObserver:self forKeyPath:@"rate" options:0 context:(void *)AVPlayerRateContext];
+		[_player addObserver:self forKeyPath:@"currentItem.status" options:0 context:(void *)AVPlayerItemStatusContext];
 	}
 }
 
@@ -352,6 +354,10 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 		RTSMediaPlaybackState newState = paused ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
 		if (self.playbackState != newState)
 			self.playbackState = newState;
+	}
+	else if (context == AVPlayerItemStatusContext)
+	{
+		[self postNotificationName:RTSMediaPlayerIsReadyToPlayNotification userInfo:nil];
 	}
 	else
 	{

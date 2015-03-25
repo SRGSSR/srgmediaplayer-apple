@@ -46,7 +46,7 @@
 {
 	[super viewDidLoad];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerReadyToPlayNotification:) name:RTSMediaPlayerReadyToPlayNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerReadyToPlayNotification:) name:RTSMediaPlayerIsReadyToPlayNotification object:nil];
 	
 	[self setSelectedIndex:0];
 	
