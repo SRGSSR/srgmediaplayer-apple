@@ -157,7 +157,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerReadyToPlayNotification;
  *
  *  @discussion This property contains the view used for presenting the media content. To display the view into your own view hierarchy, use the `attachPlayerToView:` method.
  *  This view has two gesture recognziers: a single tap gesture recognizer and a double tap gesture recognizer which respectively toggle overlays visibility and toggle the video of aspect between `AVLayerVideoGravityResizeAspectFill` and `AVLayerVideoGravityResizeAspect`.
- *  If you want to handle taps yourself, you can remove the gesture recognizers from the view and add your own gesture recognizer instead.
+ *  If you want to handle taps yourself, you can disable these gesture recognizers and add your own gesture recognizer.
  *
  *  @see attachPlayerToView:
  */
