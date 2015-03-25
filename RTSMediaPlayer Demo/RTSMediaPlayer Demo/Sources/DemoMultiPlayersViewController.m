@@ -59,7 +59,7 @@
 	[self.mediaPlayerControllers makeObjectsPerformSelector:@selector(stop)];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
 	[super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 	[coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
@@ -75,7 +75,6 @@
 
 - (void) play
 {
-
 	[self.mediaPlayerControllers makeObjectsPerformSelector:@selector(play)];
 }
 
