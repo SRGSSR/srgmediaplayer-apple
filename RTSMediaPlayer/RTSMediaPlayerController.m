@@ -5,6 +5,7 @@
 
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerView.h"
+#import "RTSActivityGestureRecognizer.h"
 
 #import <TransitionKit/TransitionKit.h>
 #import <libextobjc/EXTScope.h>
@@ -18,7 +19,7 @@ NSString * const RTSMediaPlayerReadyToPlayNotification = @"RTSMediaPlayerReadyTo
 NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey = @"Reason";
 NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
-@interface RTSMediaPlayerController () <RTSMediaPlayerControllerDataSource>
+@interface RTSMediaPlayerController () <RTSMediaPlayerControllerDataSource, UIGestureRecognizerDelegate>
 
 @property (readonly) TKStateMachine *loadStateMachine;
 @property (readwrite) TKState *idleState;
@@ -32,6 +33,8 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 @property (readonly) RTSMediaPlayerView *playerView;
 
+@property (readonly) dispatch_source_t idleTimer;
+
 @end
 
 @implementation RTSMediaPlayerController
@@ -40,6 +43,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 @synthesize view = _view;
 @synthesize playbackState = _playbackState;
 @synthesize loadStateMachine = _loadStateMachine;
+@synthesize idleTimer = _idleTimer;
 
 #pragma mark - Initialization
 
@@ -373,10 +377,20 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 		doubleTapGestureRecognizer.numberOfTapsRequired = 2;
 		[singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
 		
+		UIView *activityView = self.activityView ?: _view;
+		RTSActivityGestureRecognizer *activityGestureRecognizer = [[RTSActivityGestureRecognizer alloc] initWithTarget:self action:@selector(resetIdleTimer)];
+		activityGestureRecognizer.delegate = self;
+		[activityView addGestureRecognizer:activityGestureRecognizer];
+		
 		[_view addGestureRecognizer:singleTapGestureRecognizer];
 		[_view addGestureRecognizer:doubleTapGestureRecognizer];
 	}
 	return _view;
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer;
+{
+	return [gestureRecognizer isKindOfClass:[RTSActivityGestureRecognizer class]];
 }
 
 - (RTSMediaPlayerView *) playerView
@@ -409,6 +423,28 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 		return;
 	
 	[self setOverlaysVisible:firstOverlayView.hidden];
+}
+
+- (dispatch_source_t) idleTimer
+{
+	if (!_idleTimer)
+	{
+		_idleTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+		@weakify(self)
+		dispatch_source_set_event_handler(_idleTimer, ^{
+			@strongify(self)
+			[self setOverlaysVisible:NO];
+		});
+		dispatch_resume(_idleTimer);
+	}
+	return _idleTimer;
+}
+
+- (void) resetIdleTimer
+{
+	int64_t delayInNanoseconds = 5 * NSEC_PER_SEC;
+	int64_t toleranceInNanoseconds = 0.1 * NSEC_PER_SEC;
+	dispatch_source_set_timer(self.idleTimer, dispatch_time(DISPATCH_TIME_NOW, delayInNanoseconds), DISPATCH_TIME_FOREVER, toleranceInNanoseconds);
 }
 
 #pragma mark - Resize Aspect

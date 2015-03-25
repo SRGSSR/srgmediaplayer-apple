@@ -233,10 +233,15 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerReadyToPlayNotification;
 - (void) seekToTime:(NSTimeInterval)time;
 
 /**
- *  ----------------------------
- *  @name Managing Overlay Views
- *  ----------------------------
+ *  -------------------
+ *  @name Overlay Views
+ *  -------------------
  */
+
+/**
+ *  <#Description#>
+ */
+@property (weak) IBOutlet UIView *activityView;
 
 /**
  *  A collection of views that will be shown/hidden automatically or manually when user interacts with the view.
