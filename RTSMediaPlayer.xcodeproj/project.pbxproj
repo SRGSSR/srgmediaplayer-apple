@@ -24,6 +24,7 @@
 		C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */; };
 		C201D9371A9DDF260016C629 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */; };
 		C2246DEC1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */; };
+		C2246E321AC4237A000E03C7 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */; };
 		C2AB24EB1ABC186100EB51B8 /* RTSMediaPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B61E18C01AA750CC00E4FAB9 /* RTSMediaPlayerViewController.xib */; };
 		C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */; };
 		D3B5AC69ED94D4C40D93B0F7 /* libPods-RTSMediaPlayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7314D9A587D56BA6E7F89FB2 /* libPods-RTSMediaPlayerTests.a */; };
@@ -424,6 +425,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2246E321AC4237A000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
 				B6EC78091AA5ABEB009AE043 /* RTSMediaPlayerView.m in Sources */,
 				B6EC78011AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m in Sources */,
 				C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */,
