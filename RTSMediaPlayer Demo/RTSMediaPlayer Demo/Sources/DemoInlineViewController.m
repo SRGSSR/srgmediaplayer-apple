@@ -20,4 +20,14 @@
 	completionHandler(self.mediaURL, nil);
 }
 
+- (IBAction) prepareToPlay:(id)sender
+{
+	[self.mediaPlayerController prepareToPlay];
+}
+
+- (IBAction) play:(id)sender
+{
+	[self.mediaPlayerController play];
+}
+
 @end
