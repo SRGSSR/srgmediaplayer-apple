@@ -24,7 +24,7 @@
 
 
 @interface RTSMediaPlayerLoadStateTestCase : XCTestCase
-@property (nonatomic, strong) TKStateMachine *loadStateMachine;
+@property (nonatomic, strong) TKStateMachine *stateMachine;
 @property (nonatomic, strong) RTSMediaPlayerController *mediaPlayerController;
 @end
 
@@ -33,12 +33,12 @@
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
 	_mediaPlayerController = mediaPlayerController;
-	self.loadStateMachine = [_mediaPlayerController valueForKeyPath:@"loadStateMachine"];
+	self.stateMachine = [_mediaPlayerController valueForKeyPath:@"stateMachine"];
 }
 
 - (XCTestExpectation *) expectationForStateMachineFromState:(NSString *)oldStateName toState:(NSString *)newStateName completionHandler:(void (^)(void))completionHandler
 {
-	return [self keyValueObservingExpectationForObject:self.loadStateMachine keyPath:@"currentState" handler:^BOOL(TKStateMachine *stateMachine, NSDictionary *change)
+	return [self keyValueObservingExpectationForObject:self.stateMachine keyPath:@"currentState" handler:^BOOL(TKStateMachine *stateMachine, NSDictionary *change)
 	{
 		TKState *oldState = change[NSKeyValueChangeOldKey];
 		TKState *newState = change[NSKeyValueChangeNewKey];
@@ -66,10 +66,10 @@
 
 #pragma mark - State Machine
 
-- (void) testInitialLoadStateMachine
+- (void) testInitialstateMachine
 {
 	self.mediaPlayerController = [RTSMediaPlayerController new];
-	XCTAssertEqualObjects(self.loadStateMachine.currentState.name, @"Idle");
+	XCTAssertEqualObjects(self.stateMachine.currentState.name, @"Idle");
 }
 
 - (void) testStateMachineEvents
@@ -87,7 +87,7 @@
 		}];
 	}];
 	
-	[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
+	[self.stateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
@@ -109,7 +109,7 @@
 		return (reason == RTSMediaFinishReasonPlaybackError);
 	}];
 	
-	[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
+	[self.stateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
 	[self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
@@ -135,7 +135,7 @@
 		return (reason == RTSMediaFinishReasonPlaybackError) && error.code == NSURLErrorFileDoesNotExist;
 	}];
 	
-	[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
+	[self.stateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 }
@@ -158,7 +158,7 @@
 		return (reason == RTSMediaFinishReasonPlaybackError) && error.code == -11800;
 	}];
 	
-	[self.loadStateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
+	[self.stateMachine fireEvent:@"Load Content URL" userInfo:nil error:nil];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
@@ -178,7 +178,7 @@
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused && [self.loadStateMachine.currentState.name isEqualToString:@"Asset Loaded"];
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused && [self.stateMachine.currentState.name isEqualToString:@"Asset Loaded"];
 	}];
 	[self.mediaPlayerController pause];
 	[self waitForExpectationsWithTimeout:15 handler:nil];

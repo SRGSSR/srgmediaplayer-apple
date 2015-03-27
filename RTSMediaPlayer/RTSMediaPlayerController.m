@@ -26,7 +26,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 @interface RTSMediaPlayerController () <RTSMediaPlayerControllerDataSource, UIGestureRecognizerDelegate>
 
-@property (readonly) TKStateMachine *loadStateMachine;
+@property (readonly) TKStateMachine *stateMachine;
 @property (readwrite) TKState *idleState;
 @property (readwrite) TKState *readyToPlayState;
 @property (readwrite) TKState *playingState;
@@ -55,7 +55,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 @synthesize player = _player;
 @synthesize view = _view;
 @synthesize playbackState = _playbackState;
-@synthesize loadStateMachine = _loadStateMachine;
+@synthesize stateMachine = _stateMachine;
 @synthesize idleTimer = _idleTimer;
 
 #pragma mark - Initialization
@@ -81,7 +81,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 	_previousPlaybackTime = kCMTimeInvalid;
 	_playerItemStatusSemaphore = dispatch_semaphore_create(0);
 	
-	[self.loadStateMachine activate];
+	[self.stateMachine activate];
 	
 	return self;
 }
@@ -127,12 +127,12 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	          RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey: error ?: unknownError };
 }
 
-- (TKStateMachine *) loadStateMachine
+- (TKStateMachine *) stateMachine
 {
-	if (_loadStateMachine)
-		return _loadStateMachine;
+	if (_stateMachine)
+		return _stateMachine;
 	
-	TKStateMachine *loadStateMachine = [TKStateMachine new];
+	TKStateMachine *stateMachine = [TKStateMachine new];
 	TKState *idle = [TKState stateWithName:@"Idle"];
 	TKState *loadingContentURL = [TKState stateWithName:@"Loading Content URL"];
 	TKState *loadingAsset = [TKState stateWithName:@"Loading Asset"];
@@ -140,8 +140,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKState *readyToPlay = [TKState stateWithName:@"Ready To Play"];
 	TKState *playing = [TKState stateWithName:@"Playing"];
 	TKState *buffering = [TKState stateWithName:@"Buffering"];
-	[loadStateMachine addStates:@[ idle, loadingContentURL, loadingAsset, loadingPlayerItem, readyToPlay, playing, buffering ]];
-	loadStateMachine.initialState = idle;
+	[stateMachine addStates:@[ idle, loadingContentURL, loadingAsset, loadingPlayerItem, readyToPlay, playing, buffering ]];
+	stateMachine.initialState = idle;
 	
 	TKEvent *loadContentURL = [TKEvent eventWithName:@"Load Content URL" transitioningFromStates:@[ idle ] toState:loadingContentURL];
 	TKEvent *loadAsset = [TKEvent eventWithName:@"Load Asset" transitioningFromStates:@[ loadingContentURL ] toState:loadingAsset];
@@ -151,11 +151,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ playing, buffering ] toState:readyToPlay];
 	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:buffering];
 	TKEvent *resume = [TKEvent eventWithName:@"Resume" transitioningFromStates:@[ buffering ] toState:playing];
-	NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:loadStateMachine.states];
+	NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
 	[allStatesButIdle removeObject:idle];
 	TKEvent *reset = [TKEvent eventWithName:@"Reset" transitioningFromStates:[allStatesButIdle allObjects] toState:idle];
 	
-	[loadStateMachine addEvents:@[ loadContentURL, loadAsset, loadPlayerItem, loadSuccess, play, pause, stall, resume, reset ]];
+	[stateMachine addEvents:@[ loadContentURL, loadAsset, loadPlayerItem, loadSuccess, play, pause, stall, resume, reset ]];
 	
 	@weakify(self)
 	
@@ -169,11 +169,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
 			if (contentURL)
 			{
-				[self.loadStateMachine fireEvent:loadAsset userInfo:TransitionUserInfo(transition, ResultKey, contentURL) error:NULL];
+				[self.stateMachine fireEvent:loadAsset userInfo:TransitionUserInfo(transition, ResultKey, contentURL) error:NULL];
 			}
 			else
 			{
-				[self.loadStateMachine fireEvent:reset userInfo:ErrorUserInfo(error, @"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error.") error:NULL];
+				[self.stateMachine fireEvent:reset userInfo:ErrorUserInfo(error, @"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error.") error:NULL];
 			}
 		}];
 	}];
@@ -188,11 +188,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 			AVKeyValueStatus status = [asset statusOfValueForKey:assetStatusKey error:&valueStatusError];
 			if (status == AVKeyValueStatusLoaded)
 			{
-				[self.loadStateMachine fireEvent:loadPlayerItem userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
+				[self.stateMachine fireEvent:loadPlayerItem userInfo:TransitionUserInfo(transition, ResultKey, asset) error:NULL];
 			}
 			else
 			{
-				[self.loadStateMachine fireEvent:reset userInfo:ErrorUserInfo(valueStatusError, @"The `statusOfValueForKey:error:` method did not return an error.") error:NULL];
+				[self.stateMachine fireEvent:reset userInfo:ErrorUserInfo(valueStatusError, @"The `statusOfValueForKey:error:` method did not return an error.") error:NULL];
 			}
 		}];
 	}];
@@ -203,7 +203,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		self.player = [AVPlayer playerWithPlayerItem:[AVPlayerItem playerItemWithAsset:asset]];
 		self.playerView.player = self.player;
 		dispatch_semaphore_wait(self.playerItemStatusSemaphore, DISPATCH_TIME_FOREVER);
-		[self.loadStateMachine fireEvent:loadSuccess userInfo:TransitionUserInfo(transition, ResultKey, nil) error:NULL];
+		[self.stateMachine fireEvent:loadSuccess userInfo:TransitionUserInfo(transition, ResultKey, nil) error:NULL];
 	}];
 	
 	[loadSuccess setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
@@ -211,7 +211,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		[self registerPeriodicTimeObserver];
 		[self postNotificationName:RTSMediaPlayerIsReadyToPlayNotification userInfo:nil];
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
-			[self.loadStateMachine fireEvent:play userInfo:nil error:NULL];
+			[self.stateMachine fireEvent:play userInfo:nil error:NULL];
 	}];
 	
 	[play setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
@@ -244,9 +244,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	self.resumeEvent = resume;
 	self.resetEvent = reset;
 	
-	_loadStateMachine = loadStateMachine;
+	_stateMachine = stateMachine;
 	
-	return _loadStateMachine;
+	return _stateMachine;
 }
 
 #pragma mark - Notifications
@@ -271,10 +271,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void) loadAndPlay:(BOOL)shouldPlay
 {
-	if ([self.loadStateMachine.currentState isEqual:self.idleState])
-		[self.loadStateMachine fireEvent:self.loadContentURLEvent userInfo:@{ ShouldPlayKey: @(shouldPlay) } error:NULL];
-	else if ([self.loadStateMachine.currentState isEqual:self.readyToPlayState])
-		[self.loadStateMachine fireEvent:self.playEvent userInfo:nil error:NULL];
+	if ([self.stateMachine.currentState isEqual:self.idleState])
+		[self.stateMachine fireEvent:self.loadContentURLEvent userInfo:@{ ShouldPlayKey: @(shouldPlay) } error:NULL];
+	else if ([self.stateMachine.currentState isEqual:self.readyToPlayState])
+		[self.stateMachine fireEvent:self.playEvent userInfo:nil error:NULL];
 }
 
 - (void) playIdentifier:(NSString *)identifier
@@ -282,7 +282,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	if (![self.identifier isEqualToString:identifier])
 	{
 		self.identifier = identifier;
-		[self.loadStateMachine fireEvent:self.resetEvent userInfo:nil error:NULL];
+		[self.stateMachine fireEvent:self.resetEvent userInfo:nil error:NULL];
 	}
 	
 	[self loadAndPlay:YES];
@@ -290,12 +290,12 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void) pause
 {
-	[self.loadStateMachine fireEvent:self.pauseEvent userInfo:nil error:NULL];
+	[self.stateMachine fireEvent:self.pauseEvent userInfo:nil error:NULL];
 }
 
 - (void) stop
 {
-	[self.loadStateMachine fireEvent:self.resetEvent userInfo:nil error:nil];
+	[self.stateMachine fireEvent:self.resetEvent userInfo:nil error:nil];
 }
 
 - (void) seekToTime:(NSTimeInterval)time
@@ -361,13 +361,13 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 			if (CMTIME_COMPARE_INLINE(self.previousPlaybackTime, ==, playbackTime))
 			{
 				if (self.player.rate != 0)
-					[self.loadStateMachine fireEvent:self.stallEvent userInfo:nil error:NULL];
+					[self.stateMachine fireEvent:self.stallEvent userInfo:nil error:NULL];
 				else
-					[self.loadStateMachine fireEvent:self.pauseEvent userInfo:nil error:NULL];
+					[self.stateMachine fireEvent:self.pauseEvent userInfo:nil error:NULL];
 			}
-			else if (![self.loadStateMachine.currentState isEqual:self.playingState])
+			else if (![self.stateMachine.currentState isEqual:self.playingState])
 			{
-				[self.loadStateMachine fireEvent:self.resumeEvent userInfo:nil error:NULL];
+				[self.stateMachine fireEvent:self.resumeEvent userInfo:nil error:NULL];
 			}
 		}
 		self.previousPlaybackTime = playbackTime;
@@ -385,7 +385,7 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 		}
 		else if (playerItem.status == AVPlayerItemStatusFailed)
 		{
-			[self.loadStateMachine fireEvent:self.resetEvent userInfo:ErrorUserInfo(playerItem.error, @"The AVPlayerItem did report a failed status without an error.") error:NULL];
+			[self.stateMachine fireEvent:self.resetEvent userInfo:ErrorUserInfo(playerItem.error, @"The AVPlayerItem did report a failed status without an error.") error:NULL];
 		}
 	}
 	else
@@ -397,7 +397,7 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 - (void) playerItemDidPlayToEndTime:(NSNotification *)notification
 {
 	NSDictionary *userInfo = @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonPlaybackEnded) };
-	[self.loadStateMachine fireEvent:self.resetEvent userInfo:userInfo error:nil];
+	[self.stateMachine fireEvent:self.resetEvent userInfo:userInfo error:nil];
 }
 
 #pragma mark - View
