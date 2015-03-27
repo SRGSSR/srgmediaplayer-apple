@@ -173,7 +173,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 			}
 			else
 			{
-				[self.stateMachine fireEvent:reset userInfo:ErrorUserInfo(error, @"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error.") error:NULL];
+				[self.stateMachine fireEvent:self.resetEvent userInfo:ErrorUserInfo(error, @"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error.") error:NULL];
 			}
 		}];
 	}];
@@ -192,7 +192,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 			}
 			else
 			{
-				[self.stateMachine fireEvent:reset userInfo:ErrorUserInfo(valueStatusError, @"The `statusOfValueForKey:error:` method did not return an error.") error:NULL];
+				[self.stateMachine fireEvent:self.resetEvent userInfo:ErrorUserInfo(valueStatusError, @"The `statusOfValueForKey:error:` method did not return an error.") error:NULL];
 			}
 		}];
 	}];
@@ -211,7 +211,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		[self registerPeriodicTimeObserver];
 		[self postNotificationName:RTSMediaPlayerIsReadyToPlayNotification userInfo:nil];
 		if ([transition.userInfo[ShouldPlayKey] boolValue])
-			[self.stateMachine fireEvent:play userInfo:nil error:NULL];
+			[self.stateMachine fireEvent:self.playEvent userInfo:nil error:NULL];
 	}];
 	
 	[play setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
