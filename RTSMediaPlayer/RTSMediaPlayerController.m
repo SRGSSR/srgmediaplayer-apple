@@ -159,12 +159,30 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	@weakify(self)
 	
+	[idle setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
+		self.playbackState = RTSMediaPlaybackStateIdle;
+	}];
+	
+	[idle setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
+		self.playbackState = RTSMediaPlaybackStatePendingPlay;
+	}];
+	
+	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
+		self.playbackState = RTSMediaPlaybackStatePlaying;
+	}];
+	
+	[playing setDidExitStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
+		self.playbackState = RTSMediaPlaybackStatePendingPlay;
+	}];
+	
 	[loadContentURL setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		if (!self.dataSource)
 			@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"RTSMediaPlayerController dataSource can not be nil." userInfo:nil];
-		
-		self.playbackState = RTSMediaPlaybackStatePendingPlay;
 		
 		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
 			if (contentURL)
@@ -222,6 +240,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[pause setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		[self.player pause];
+		self.playbackState = RTSMediaPlaybackStatePaused;
 	}];
 	
 	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
@@ -262,7 +281,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 - (void) postNotificationName:(NSString *)notificationName userInfo:(NSDictionary *)userInfo
 {
 	NSNotification *notification = [NSNotification notificationWithName:notificationName object:self userInfo:userInfo];
-	[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:YES];
+	[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
 }
 
 #pragma mark - Playback
