@@ -254,7 +254,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	NSError *error;
 	BOOL success = [self.stateMachine fireEvent:event userInfo:userInfo error:&error];
 	if (!success)
-		NSLog(@"%@", error.localizedFailureReason);
+		NSLog(@"Transition Error: %@", error.localizedFailureReason);
 }
 
 #pragma mark - Notifications
