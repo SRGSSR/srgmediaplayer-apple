@@ -341,7 +341,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void) stop
 {
-	[self fireEvent:self.resetEvent userInfo:nil];
+	if (![self.stateMachine.currentState isEqual:self.idleState])
+	{
+		[self fireEvent:self.resetEvent userInfo:nil];
+	}
 }
 
 - (void) seekToTime:(NSTimeInterval)time
