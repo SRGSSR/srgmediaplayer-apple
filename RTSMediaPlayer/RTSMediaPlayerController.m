@@ -332,8 +332,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 {
 	if (![self.identifier isEqualToString:identifier])
 	{
+		[self stop];
 		self.identifier = identifier;
-		[self fireEvent:self.resetEvent userInfo:nil];
 	}
 	
 	[self play];
