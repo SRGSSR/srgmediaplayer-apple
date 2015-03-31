@@ -13,7 +13,6 @@
 NSString * const RTSMediaPlayerPlaybackDidFinishNotification = @"RTSMediaPlayerPlaybackDidFinish";
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
 NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification = @"RTSMediaPlayerNowPlayingMediaDidChange";
-NSString * const RTSMediaPlayerIsReadyToPlayNotification = @"RTSMediaPlayerIsReadyToPlay";
 
 NSString * const RTSMediaPlayerWillShowControlOverlaysNotification = @"RTSMediaPlayerWillShowControlOverlays";
 NSString * const RTSMediaPlayerDidShowControlOverlaysNotification = @"RTSMediaPlayerDidShowControlOverlays";
@@ -28,7 +27,7 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 @property (readonly) TKStateMachine *stateMachine;
 @property (readwrite) TKState *idleState;
-@property (readwrite) TKState *readyToPlayState;
+@property (readwrite) TKState *readyState;
 @property (readwrite) TKState *playingState;
 @property (readwrite) TKState *stalledState;
 @property (readwrite) TKEvent *loadContentURLEvent;
@@ -144,19 +143,19 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKState *loadingContentURL = [TKState stateWithName:@"Loading Content URL"];
 	TKState *loadingAsset = [TKState stateWithName:@"Loading Asset"];
 	TKState *loadingPlayerItem = [TKState stateWithName:@"Loading Player Item"];
-	TKState *readyToPlay = [TKState stateWithName:@"Ready To Play"];
+	TKState *ready = [TKState stateWithName:@"Ready"];
 	TKState *playing = [TKState stateWithName:@"Playing"];
 	TKState *paused = [TKState stateWithName:@"Paused"];
 	TKState *stalled = [TKState stateWithName:@"Stalled"];
 	TKState *ended = [TKState stateWithName:@"Ended"];
-	[stateMachine addStates:@[ idle, loadingContentURL, loadingAsset, loadingPlayerItem, readyToPlay, playing, paused, stalled, ended ]];
+	[stateMachine addStates:@[ idle, loadingContentURL, loadingAsset, loadingPlayerItem, ready, playing, paused, stalled, ended ]];
 	stateMachine.initialState = idle;
 	
 	TKEvent *loadContentURL = [TKEvent eventWithName:@"Load Content URL" transitioningFromStates:@[ idle ] toState:loadingContentURL];
 	TKEvent *loadAsset = [TKEvent eventWithName:@"Load Asset" transitioningFromStates:@[ loadingContentURL ] toState:loadingAsset];
 	TKEvent *loadPlayerItem = [TKEvent eventWithName:@"Load Player Item" transitioningFromStates:@[ loadingAsset ] toState:loadingPlayerItem];
-	TKEvent *loadSuccess = [TKEvent eventWithName:@"Load Success" transitioningFromStates:@[ loadingPlayerItem ] toState:readyToPlay];
-	TKEvent *play = [TKEvent eventWithName:@"Play" transitioningFromStates:@[ readyToPlay, paused, stalled, ended ] toState:playing];
+	TKEvent *loadSuccess = [TKEvent eventWithName:@"Load Success" transitioningFromStates:@[ loadingPlayerItem ] toState:ready];
+	TKEvent *play = [TKEvent eventWithName:@"Play" transitioningFromStates:@[ ready, paused, stalled, ended ] toState:playing];
 	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ playing ] toState:paused];
 	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:ended];
 	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:stalled];
@@ -178,7 +177,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		self.playbackState = RTSMediaPlaybackStatePreparing;
 	}];
 	
-	[readyToPlay setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+	[ready setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		self.playbackState = RTSMediaPlaybackStateReady;
 	}];
@@ -250,7 +249,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[loadSuccess setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		[self registerPeriodicTimeObserver];
-		[self postNotificationName:RTSMediaPlayerIsReadyToPlayNotification userInfo:nil];
 		if (self.playWhenLoaded)
 			[self play];
 	}];
@@ -265,7 +263,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}];
 	
 	self.idleState = idle;
-	self.readyToPlayState = readyToPlay;
+	self.readyState = ready;
 	self.playingState = playing;
 	self.stalledState = stalled;
 	

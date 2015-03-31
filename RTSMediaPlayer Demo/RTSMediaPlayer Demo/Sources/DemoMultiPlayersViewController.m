@@ -46,7 +46,7 @@
 {
 	[super viewDidLoad];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerIsReadyToPlay:) name:RTSMediaPlayerIsReadyToPlayNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:nil];
 	
 	[self setSelectedIndex:0];
 	
@@ -200,11 +200,13 @@
 
 #pragma mark - Notifications
 
-- (void) mediaPlayerIsReadyToPlay:(NSNotification *)notification
+- (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
-	RTSMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[self.selectedIndex];
-	
 	RTSMediaPlayerController *mediaPlayerController = notification.object;
+	if (mediaPlayerController.playbackState != RTSMediaPlaybackStateReady)
+		return;
+	
+	RTSMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[self.selectedIndex];
 	mediaPlayerController.player.muted = ![mediaPlayerController.identifier isEqualToString:mainMediaPlayerController.identifier];
 }
 

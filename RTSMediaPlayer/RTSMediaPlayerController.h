@@ -102,11 +102,6 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotificat
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification;
 
 /**
- *  Posted when the AVPlayer instances has been created and is ready to play the media`
- */
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerIsReadyToPlayNotification;
-
-/**
  *  RTSMediaPlayerController is inspired by the MPMoviePlayerController class.
  *  A media player (of type RTSMediaPlayerController) manages the playback of a media from a file or a network stream. You can incorporate a media player’s view into a view hierarchy owned by your app, or use a RTSMediaPlayerViewController object to manage the presentation for you.
  *
