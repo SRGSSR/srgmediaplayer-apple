@@ -26,9 +26,14 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 	RTSMediaPlaybackStateIdle,
 	
 	/**
-	 *  Player is preparing to play the media. It will load everything needed to play the media. This can typically take some time under bad network conditions.
+	 *  The player is preparing to play the media. It will load everything needed to play the media. This can typically take some time under bad network conditions.
 	 */
 	RTSMediaPlaybackStatePreparing,
+	
+	/**
+	 *  The player is ready to play the media. The `player` property becomes available (i.e. is non-nil) upon entering this state.
+	 */
+	RTSMediaPlaybackStateReady,
 	
 	/**
 	 *  The media is playing, i.e. you can hear sound and/or see a video playing.

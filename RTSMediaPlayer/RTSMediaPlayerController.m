@@ -146,17 +146,19 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKState *loadingPlayerItem = [TKState stateWithName:@"Loading Player Item"];
 	TKState *readyToPlay = [TKState stateWithName:@"Ready To Play"];
 	TKState *playing = [TKState stateWithName:@"Playing"];
+	TKState *paused = [TKState stateWithName:@"Paused"];
 	TKState *stalled = [TKState stateWithName:@"Stalled"];
-	[stateMachine addStates:@[ idle, loadingContentURL, loadingAsset, loadingPlayerItem, readyToPlay, playing, stalled ]];
+	TKState *ended = [TKState stateWithName:@"Ended"];
+	[stateMachine addStates:@[ idle, loadingContentURL, loadingAsset, loadingPlayerItem, readyToPlay, playing, paused, stalled, ended ]];
 	stateMachine.initialState = idle;
 	
 	TKEvent *loadContentURL = [TKEvent eventWithName:@"Load Content URL" transitioningFromStates:@[ idle ] toState:loadingContentURL];
 	TKEvent *loadAsset = [TKEvent eventWithName:@"Load Asset" transitioningFromStates:@[ loadingContentURL ] toState:loadingAsset];
 	TKEvent *loadPlayerItem = [TKEvent eventWithName:@"Load Player Item" transitioningFromStates:@[ loadingAsset ] toState:loadingPlayerItem];
 	TKEvent *loadSuccess = [TKEvent eventWithName:@"Load Success" transitioningFromStates:@[ loadingPlayerItem ] toState:readyToPlay];
-	TKEvent *play = [TKEvent eventWithName:@"Play" transitioningFromStates:@[ readyToPlay, stalled ] toState:playing];
-	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ playing, stalled ] toState:readyToPlay];
-	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:readyToPlay];
+	TKEvent *play = [TKEvent eventWithName:@"Play" transitioningFromStates:@[ readyToPlay, paused, stalled, ended ] toState:playing];
+	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ playing ] toState:paused];
+	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:ended];
 	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:stalled];
 	NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
 	[allStatesButIdle removeObject:idle];
@@ -176,12 +178,17 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		self.playbackState = RTSMediaPlaybackStatePreparing;
 	}];
 	
+	[readyToPlay setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
+		self.playbackState = RTSMediaPlaybackStateReady;
+	}];
+	
 	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		self.playbackState = RTSMediaPlaybackStatePlaying;
 	}];
 	
-	[pause setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
+	[paused setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		self.playbackState = RTSMediaPlaybackStatePaused;
 	}];
@@ -191,7 +198,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		self.playbackState = RTSMediaPlaybackStateStalled;
 	}];
 	
-	[end setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
+	[ended setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		self.playbackState = RTSMediaPlaybackStateEnded;
 	}];
