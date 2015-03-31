@@ -212,7 +212,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
-   Copyright 2009-2012 The RestKit Project
+   Copyright 2013-2014 Blake Watters
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
