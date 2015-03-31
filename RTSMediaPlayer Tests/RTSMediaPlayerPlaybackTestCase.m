@@ -36,18 +36,12 @@
 	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
 		mediaPlayerPlaybackDidFinishNotificationCount++;
 	}];
-	__block NSInteger mediaPlayerPlaybackStateDidChangeNotificationCount = 0;
-	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
-		if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded)
-			mediaPlayerPlaybackStateDidChangeNotificationCount++;
-	}];
 	
 	// Force stop with nothing played
 	[self.mediaPlayerController stop];
 	
 	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5f]];
 	XCTAssertEqual(mediaPlayerPlaybackDidFinishNotificationCount, 0);
-	XCTAssertEqual(mediaPlayerPlaybackStateDidChangeNotificationCount, 0);
 }
 
 - (void) testDestroyPlayerControllerDoesNotSendNotificationIfNothingHasBeenPlayed
@@ -57,18 +51,12 @@
 	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
 		mediaPlayerPlaybackDidFinishNotificationCount++;
 	}];
-	__block NSInteger mediaPlayerPlaybackStateDidChangeNotificationCount = 0;
-	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
-		if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded)
-			mediaPlayerPlaybackStateDidChangeNotificationCount++;
-	}];
 	
 	// Force stop with nothing played
 	self.mediaPlayerController = nil;
 	
 	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5f]];
 	XCTAssertEqual(mediaPlayerPlaybackDidFinishNotificationCount, 0);
-	XCTAssertEqual(mediaPlayerPlaybackStateDidChangeNotificationCount, 0);
 }
 
 - (void) testPlayAndCheckPlayerState
