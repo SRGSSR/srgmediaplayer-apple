@@ -25,7 +25,7 @@
 
 - (AVPlayerLayer *) playerLayer
 {
-	return (AVPlayerLayer *)[self layer];
+	return (AVPlayerLayer *)self.layer;
 }
 
 @end
