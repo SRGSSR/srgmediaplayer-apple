@@ -133,6 +133,19 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		return _stateMachine;
 	
 	TKStateMachine *stateMachine = [TKStateMachine new];
+	
+	if ([[[[NSProcessInfo processInfo] environment] objectForKey:@"RTSMEDIAPLAYER_DEBUG_STATE_MACHINE"] boolValue])
+	{
+		[[NSNotificationCenter defaultCenter] addObserverForName:TKStateMachineDidChangeStateNotification object:stateMachine queue:[NSOperationQueue new] usingBlock:^(NSNotification *notification) {
+			TKTransition *transition = notification.userInfo[TKStateMachineDidChangeStateTransitionUserInfoKey];
+			NSLog(@"(%@) ----%@----> (%@)", transition.sourceState.name, transition.event.name, transition.destinationState.name);
+			if (transition.userInfo)
+			{
+				NSLog(@"UserInfo: %@", transition.userInfo);
+			}
+		}];
+	}
+	
 	TKState *idle = [TKState stateWithName:@"Idle"];
 	TKState *loadingContentURL = [TKState stateWithName:@"Loading Content URL"];
 	TKState *loadingAsset = [TKState stateWithName:@"Loading Asset"];
