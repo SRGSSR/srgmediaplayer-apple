@@ -401,11 +401,16 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 			if (CMTIME_COMPARE_INLINE(self.previousPlaybackTime, ==, playbackTime))
 			{
 				if (self.player.rate != 0)
-					[self fireEvent:self.stallEvent userInfo:nil];
+				{
+					if (![self.stateMachine.currentState isEqual:self.stalledState])
+						[self fireEvent:self.stallEvent userInfo:nil];
+				}
 				else
+				{
 					[self fireEvent:self.pauseEvent userInfo:nil];
+				}
 			}
-			else
+			else if (![self.stateMachine.currentState isEqual:self.playingState])
 			{
 				[self fireEvent:self.playEvent userInfo:nil];
 			}
