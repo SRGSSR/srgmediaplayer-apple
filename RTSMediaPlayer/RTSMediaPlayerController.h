@@ -41,9 +41,9 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 	RTSMediaPlaybackStatePaused,
 	
 	/**
-	 *  The player is buffering, i.e. it is waiting for the media to resume playing.
+	 *  The player is stalled, i.e. it is waiting for the media to resume playing.
 	 */
-	RTSMediaPlaybackStateBuffering,
+	RTSMediaPlaybackStateStalled,
 	
 	/**
 	 *  The player is in the ended state when the media has reached its end. For a live media, this state is impossible.
