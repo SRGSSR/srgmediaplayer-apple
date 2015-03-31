@@ -87,7 +87,7 @@
 - (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
 	RTSMediaPlayerController *mediaPlayerController = notification.object;
-	if (mediaPlayerController.playbackState == RTSMediaPlaybackStatePendingPlay)
+	if (mediaPlayerController.playbackState == RTSMediaPlaybackStatePreparing || mediaPlayerController.playbackState == RTSMediaPlaybackStateStalled)
 		[self.loadingIndicator startAnimating];
 	else
 		[self.loadingIndicator stopAnimating];
