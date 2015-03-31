@@ -21,27 +21,32 @@
  */
 typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 	/**
-	 *  Default state when controller is initialized
+	 *  Default state when controller is initialized. The player also returns to the idle state when an error occurs or when the `stop` method is called.
 	 */
 	RTSMediaPlaybackStateIdle,
 	
 	/**
-	 *  Player is ready to play or buffering media, the AVPlayer object has been loaded
+	 *  Player is preparing to play the media. It will load everything needed to play the media. This can typically take some time under bad network conditions.
 	 */
-	RTSMediaPlaybackStatePendingPlay,
+	RTSMediaPlaybackStatePreparing,
 	
 	/**
-	 *  Media is playing
+	 *  The media is playing, i.e. you can hear sound and/or see a video playing.
 	 */
 	RTSMediaPlaybackStatePlaying,
 	
 	/**
-	 *  Media is paused
+	 *  The player is paused at the user request.
 	 */
 	RTSMediaPlaybackStatePaused,
 	
 	/**
-	 *  Ends either when the media's end is reached, if an error occurs or if the user dismiss it's enclosing view controller
+	 *  The player is buffering, i.e. it is waiting for the media to resume playing.
+	 */
+	RTSMediaPlaybackStateBuffering,
+	
+	/**
+	 *  The player is in the ended state when the media has reached its end. For a live media, this state is impossible.
 	 */
 	RTSMediaPlaybackStateEnded
 };
