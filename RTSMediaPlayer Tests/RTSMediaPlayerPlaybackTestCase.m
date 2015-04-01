@@ -120,7 +120,9 @@
 	[self.mediaPlayerController play];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return playbackStateKVOChangeCount == 1 && playbackStateNotificationChangeCount == 1;
+		XCTAssertEqual(playbackStateKVOChangeCount, 1);
+		XCTAssertEqual(playbackStateNotificationChangeCount, 1);
+		return YES;
 	}];
 	[self.mediaPlayerController stop];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
