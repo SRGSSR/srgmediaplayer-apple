@@ -410,7 +410,9 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 			{
 				if (self.player.rate != 0)
 				{
-					if (![self.stateMachine.currentState isEqual:self.stalledState])
+					BOOL hasPlayed = CMTIME_COMPARE_INLINE(playbackTime, >, kCMTimeZero);
+					BOOL isStalled = [self.stateMachine.currentState isEqual:self.stalledState];
+					if (hasPlayed && !isStalled)
 						[self fireEvent:self.stallEvent userInfo:nil];
 				}
 				else
