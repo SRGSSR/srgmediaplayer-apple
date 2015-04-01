@@ -107,7 +107,7 @@
 	_selectedIndex = selectedIndex;
 	
 	RTSMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[selectedIndex];
-	[self setMainMediaPlayerController:mainMediaPlayerController];
+	[self attachPlayer:mainMediaPlayerController toView:self.mainPlayerView];
 	
 	[self.playerViewsContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 	[self.playerViewsContainer layoutIfNeeded];
@@ -124,7 +124,7 @@
 		[self.playerViewsContainer addSubview:playerView];
 		
 		RTSMediaPlayerController *thumbnailMediaPlayerController = self.mediaPlayerControllers[index];
-		[self setThumbnailPlayer:thumbnailMediaPlayerController toView:playerView];
+		[self attachPlayer:thumbnailMediaPlayerController toView:playerView];
 	}
 }
 
@@ -139,32 +139,20 @@
 	return CGRectMake(x+5, y, playerWidth-10, playerHeight);
 }
 
-- (void) setMainMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+- (void) attachPlayer:(RTSMediaPlayerController *)mediaPlayerController toView:(UIView *)playerView
 {
-	mediaPlayerController.overlayViews = [NSArray arrayWithArray:self.overlayViews];
-	[mediaPlayerController attachPlayerToView:self.mainPlayerView];
-	mediaPlayerController.player.muted = NO;
-	[mediaPlayerController play];
+	BOOL isMainPlayer = playerView == self.mainPlayerView;
+	if (isMainPlayer)
+		[self.playPauseButton setMediaPlayerController:mediaPlayerController];
 	
-	UITapGestureRecognizer *defaultTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.firstObject;
-	UITapGestureRecognizer *switchTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.lastObject;
-	defaultTapGestureRecognizer.enabled = YES;
-	switchTapGestureRecognizer.enabled = NO;
-	
-	[self.playPauseButton setMediaPlayerController:mediaPlayerController];
-}
-
-- (void) setThumbnailPlayer:(RTSMediaPlayerController *)mediaPlayerController toView:(UIView *)playerView
-{
-	mediaPlayerController.overlayViews = nil;
+	mediaPlayerController.overlayViews = isMainPlayer ? self.overlayViews : nil;
 	[mediaPlayerController attachPlayerToView:playerView];
-	mediaPlayerController.player.muted = YES;
-	[mediaPlayerController play];
-
+	mediaPlayerController.player.muted = !isMainPlayer;
+	
 	UITapGestureRecognizer *defaultTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.firstObject;
 	UITapGestureRecognizer *switchTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.lastObject;
-	defaultTapGestureRecognizer.enabled = NO;
-	switchTapGestureRecognizer.enabled = YES;
+	defaultTapGestureRecognizer.enabled = isMainPlayer;
+	switchTapGestureRecognizer.enabled = !isMainPlayer;
 }
 
 - (RTSMediaPlayerController *) mediaPlayerControllerForPlayerView:(UIView *)playerView
