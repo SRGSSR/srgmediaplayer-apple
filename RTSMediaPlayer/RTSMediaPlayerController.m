@@ -23,6 +23,8 @@ NSString * const RTSMediaPlayerDidHideControlOverlaysNotification = @"RTSMediaPl
 NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey = @"Reason";
 NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
+NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlaybackState";
+
 @interface RTSMediaPlayerController () <RTSMediaPlayerControllerDataSource, UIGestureRecognizerDelegate>
 
 @property (readonly) TKStateMachine *stateMachine;
@@ -366,9 +368,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		if (_playbackState == playbackState)
 			return;
 		
+		NSDictionary *userInfo = @{ RTSMediaPlayerPreviousPlaybackStateUserInfoKey: @(_playbackState) };
+		
 		_playbackState = playbackState;
 		
-		[self postNotificationName:RTSMediaPlayerPlaybackStateDidChangeNotification userInfo:nil];
+		[self postNotificationName:RTSMediaPlayerPlaybackStateDidChangeNotification userInfo:userInfo];
 	}
 }
 

@@ -90,6 +90,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoK
  *  Posted when the playback state changes, either programatically or by the user.
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey; // NSNumber (RTSMediaPlaybackState)
 
 /**
  *  Posted when the currently playing media changes. Used when calling `playIdentifier:`
