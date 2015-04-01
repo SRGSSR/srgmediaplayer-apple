@@ -28,7 +28,8 @@
 	
 	_mediaPlayerController = mediaPlayerController;
 	
-	[defaultCenter addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
+	if (mediaPlayerController)
+		[defaultCenter addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
 }
 
 - (void) awakeFromNib
