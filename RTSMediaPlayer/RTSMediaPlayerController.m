@@ -41,7 +41,6 @@ NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
 
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
-@property (readwrite) BOOL playWhenLoaded;
 @property (readwrite) id periodicTimeObserver;
 @property (readwrite) CMTime previousPlaybackTime;
 
@@ -249,7 +248,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[loadSuccess setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		[self registerPeriodicTimeObserver];
-		if (self.playWhenLoaded)
+		if (self.playWhenReady)
 			[self play];
 	}];
 	
@@ -306,7 +305,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 	else
 	{
-		self.playWhenLoaded = YES;
+		self.playWhenReady = YES;
 		[self prepareToPlay];
 	}
 }
@@ -319,7 +318,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 	else
 	{
-		self.playWhenLoaded = NO;
+		self.playWhenReady = NO;
 	}
 }
 

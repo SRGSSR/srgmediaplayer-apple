@@ -208,6 +208,8 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
 
 - (void) prepareToPlay;
 
+@property BOOL playWhenReady;
+
 /**
  *  Start playing media specified with its identifier.
  *
