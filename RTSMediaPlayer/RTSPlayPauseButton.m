@@ -20,11 +20,21 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+{
+	NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+	
+	[defaultCenter removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
+	
+	_mediaPlayerController = mediaPlayerController;
+	
+	[defaultCenter addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
+}
+
 - (void) awakeFromNib
 {
 	[super awakeFromNib];
 	[self updateAction];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
 }
 
 - (UIColor *) hightlightColor
