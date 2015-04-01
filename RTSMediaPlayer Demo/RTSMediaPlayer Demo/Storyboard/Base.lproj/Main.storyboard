@@ -151,7 +151,6 @@
                                                     <userDefinedRuntimeAttribute type="color" keyPath="hightlightColor">
                                                         <color key="value" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="keepLoading" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outlet property="mediaPlayerController" destination="o6Z-DB-FCH" id="ANg-r9-KeN"/>
@@ -280,9 +279,6 @@
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="keepLoading" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
                                     </button>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eo9-on-ibq">
                                         <rect key="frame" x="8" y="14" width="51" height="31"/>
