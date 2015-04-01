@@ -155,7 +155,7 @@
                     <rect key="frame" x="290" y="290" width="20" height="20"/>
                 </activityIndicatorView>
             </subviews>
-            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="kqK-gI-E5v" secondAttribute="trailing" id="13J-fR-tYI"/>
                 <constraint firstItem="m4e-aB-8GY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EjJ-Y6-i5x"/>
@@ -170,10 +170,10 @@
         </view>
         <customObject id="rfJ-1C-Ygo" customClass="RTSMediaPlayerController">
             <connections>
+                <outlet property="activityView" destination="iN0-l3-epB" id="SBs-0U-4c0"/>
                 <outletCollection property="overlayViews" destination="kqK-gI-E5v" id="loX-MY-6Bg"/>
                 <outletCollection property="overlayViews" destination="m4e-aB-8GY" id="6Yh-NX-pIr"/>
                 <outletCollection property="overlayViews" destination="14B-nw-cM3" id="vtV-N5-t6X"/>
-                <outlet property="activityView" destination="iN0-l3-epB" id="SBs-0U-4c0"/>
             </connections>
         </customObject>
     </objects>
