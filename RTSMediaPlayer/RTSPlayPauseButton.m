@@ -67,10 +67,7 @@
 
 - (void) pause:(id)sender
 {
-	if (self.keepLoading)
-		[self.mediaPlayerController pause];
-	else
-		[self.mediaPlayerController stop];
+	[self.mediaPlayerController pause];
 }
 
 

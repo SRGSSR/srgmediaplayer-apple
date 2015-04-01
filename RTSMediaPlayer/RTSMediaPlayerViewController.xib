@@ -125,7 +125,6 @@
                                 <userDefinedRuntimeAttribute type="color" keyPath="hightlightColor">
                                     <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="keepLoading" value="YES"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
                                 <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="joE-pC-wnt"/>
