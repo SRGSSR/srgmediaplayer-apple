@@ -49,6 +49,11 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 	 *  The player is stalled, i.e. it is waiting for the media to resume playing.
 	 */
 	RTSMediaPlaybackStateStalled,
+	
+	/**
+	 *  The player has reached the end of the media and has automatically stopped playback. Upon entering this state, the `RTSMediaPlayerPlaybackDidFinishNotification` is posted with `RTSMediaFinishReasonPlaybackEnded`.
+	 */
+	RTSMediaPlaybackStateEnded,
 };
 
 /**
