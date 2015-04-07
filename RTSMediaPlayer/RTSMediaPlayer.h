@@ -3,6 +3,6 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
+#import <RTSMediaPlayer/RTSMediaPlayerError.h>
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
-#import <RTSMediaPlayer/RTSMediaPlayerView.h>
 #import <RTSMediaPlayer/RTSMediaPlayerViewController.h>

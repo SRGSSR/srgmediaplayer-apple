@@ -3,12 +3,15 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
+#import "RTSMediaPlayerError.h"
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerView.h"
 #import "RTSActivityGestureRecognizer.h"
 
 #import <TransitionKit/TransitionKit.h>
 #import <libextobjc/EXTScope.h>
+
+NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
 
 NSString * const RTSMediaPlayerPlaybackDidFinishNotification = @"RTSMediaPlayerPlaybackDidFinish";
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
@@ -117,7 +120,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 {
 	NSDictionary *userInfo = @{ NSLocalizedFailureReasonErrorKey: failureReason ?: @"Unknown failure reason.",
 	                            NSLocalizedDescriptionKey: @"An unknown error occured." };
-	NSError *unknownError = [NSError errorWithDomain:@"RTSMediaPlayerErrorDomain" code:0 userInfo:userInfo];
+	NSError *unknownError = [NSError errorWithDomain:RTSMediaPlayerErrorDomain code:RTSMediaPlayerErrorUnknown userInfo:userInfo];
 	return @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonPlaybackError),
 	          RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey: error ?: unknownError };
 }
