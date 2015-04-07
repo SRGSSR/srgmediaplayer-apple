@@ -49,7 +49,7 @@
 		B61E18EE1AA8643500E4FAB9 /* MediaURLs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MediaURLs.plist; sourceTree = "<group>"; };
 		B68883291AAF72B500B9E34E /* DemoMultiPlayersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoMultiPlayersViewController.h; sourceTree = "<group>"; };
 		B688832A1AAF72B500B9E34E /* DemoMultiPlayersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoMultiPlayersViewController.m; sourceTree = "<group>"; };
-		C2AB24EE1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RTSMediaPlayer.bundle; path = "RTSMediaPlayer.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2AB24EE1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RTSMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2CF7FAC1ABC0F7B0005FE51 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRTSMediaPlayer.a; path = "../build/Debug-iphoneos/libRTSMediaPlayer.a"; sourceTree = "<group>"; };
 		C2F549F01A9F713300496C59 /* RTSMediaPlayer Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RTSMediaPlayer Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A091A9F713300496C59 /* RTSMediaPlayer DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RTSMediaPlayer DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
