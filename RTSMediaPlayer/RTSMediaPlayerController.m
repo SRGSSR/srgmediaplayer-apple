@@ -109,13 +109,6 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlay
 
 #pragma mark - Loading
 
-static const NSString *ResultKey = @"Result";
-
-static NSDictionary * SuccessErrorInfo(id result)
-{
-	return @{ ResultKey: result };
-}
-
 static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 {
 	NSDictionary *userInfo = @{ NSLocalizedFailureReasonErrorKey: failureReason ?: @"Unknown failure reason.",
@@ -407,7 +400,7 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 		switch (playerItem.status)
 		{
 			case AVPlayerItemStatusReadyToPlay:
-				[self fireEvent:self.loadSuccessEvent userInfo:SuccessErrorInfo(playerItem)];
+				[self fireEvent:self.loadSuccessEvent userInfo:nil];
 				break;
 			case AVPlayerItemStatusFailed:
 				[self fireEvent:self.resetEvent userInfo:ErrorUserInfo(playerItem.error, @"The AVPlayerItem did report a failed status without an error.")];
