@@ -41,6 +41,7 @@ NSString *const TKStateMachineDidChangeStateNotification = @"TKStateMachineDidCh
 NSString *const TKStateMachineDidChangeStateOldStateUserInfoKey = @"old";
 NSString *const TKStateMachineDidChangeStateNewStateUserInfoKey = @"new";
 NSString *const TKStateMachineDidChangeStateEventUserInfoKey = @"event";
+NSString *const TKStateMachineDidChangeStateTransitionUserInfoKey = @"transition";
 
 NSString *const TKStateMachineIsImmutableException = @"TKStateMachineIsImmutableException";
 
@@ -88,13 +89,6 @@ static NSString *TKQuoteString(NSString *string)
         self.lock = [NSRecursiveLock new];
     }
     return self;
-}
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"<%@:%p %ld States, %ld Events. currentState=%@, initialState='%@', isActive=%@>",
-            NSStringFromClass([self class]), self, (unsigned long) [self.mutableStates count], (unsigned long) [self.mutableEvents count],
-            TKQuoteString(self.currentState.name), self.initialState.name, self.isActive ? @"YES" : @"NO"];
 }
 
 - (void)setInitialState:(TKState *)initialState
@@ -235,17 +229,22 @@ static NSString *TKQuoteString(NSString *string)
     if (oldState.willExitStateBlock) oldState.willExitStateBlock(oldState, transition);
     if (newState.willEnterStateBlock) newState.willEnterStateBlock(newState, transition);
     self.currentState = newState;
+    
+    NSMutableDictionary *notificationInfo = [userInfo mutableCopy] ?: [NSMutableDictionary dictionary];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    [notificationInfo addEntriesFromDictionary:@{ TKStateMachineDidChangeStateOldStateUserInfoKey: oldState,
+                                                  TKStateMachineDidChangeStateNewStateUserInfoKey: newState,
+                                                  TKStateMachineDidChangeStateEventUserInfoKey: event,
+#pragma clang diagnostic pop
+                                                  TKStateMachineDidChangeStateTransitionUserInfoKey: transition }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:TKStateMachineDidChangeStateNotification object:self userInfo:notificationInfo];
+    
     if (oldState.didExitStateBlock) oldState.didExitStateBlock(oldState, transition);
     if (newState.didEnterStateBlock) newState.didEnterStateBlock(newState, transition);
     
     if (event.didFireEventBlock) event.didFireEventBlock(event, transition);
     [self.lock unlock];
-
-    NSMutableDictionary *notificationInfo = [userInfo mutableCopy] ?: [NSMutableDictionary dictionary];
-    [notificationInfo addEntriesFromDictionary:@{ TKStateMachineDidChangeStateOldStateUserInfoKey: oldState,
-                                                  TKStateMachineDidChangeStateNewStateUserInfoKey: newState,
-                                                  TKStateMachineDidChangeStateEventUserInfoKey: event }];
-    [[NSNotificationCenter defaultCenter] postNotificationName:TKStateMachineDidChangeStateNotification object:self userInfo:notificationInfo];
     
     return YES;
 }
@@ -299,6 +298,33 @@ static NSString *TKQuoteString(NSString *string)
         [copiedStateMachine addEvent:copiedEvent];
     }
     return copiedStateMachine;
+}
+
+#pragma mark - Description
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@:%p %ld States, %ld Events. currentState=%@, initialState='%@', isActive=%@>",
+            NSStringFromClass([self class]), self, (unsigned long) [self.mutableStates count], (unsigned long) [self.mutableEvents count],
+            TKQuoteString(self.currentState.name), self.initialState.name, self.isActive ? @"YES" : @"NO"];
+}
+
+- (NSString *)dotDescription
+{
+    NSMutableString *dotDescription = [[NSMutableString alloc] initWithString:@"digraph StateMachine {\n"];
+    if (self.initialState) {
+        [dotDescription appendFormat:@"  \"\" [style=\"invis\"]; \"\" -> \"%@\" [dir=both, arrowtail=dot]; // Initial State\n", self.initialState.name];
+    }
+    if (self.currentState) {
+        [dotDescription appendFormat:@"  \"%@\" [style=bold]; // Current State\n", self.currentState.name];
+    }
+    for (TKEvent *event in self.events) {
+        for (TKState *sourceState in event.sourceStates) {
+            [dotDescription appendFormat:@"  \"%@\" -> \"%@\" [label=\"%@\", fontname=\"Menlo Italic\", fontsize=9];\n", sourceState.name, event.destinationState.name, event.name];
+        }
+    }
+    [dotDescription appendString:@"}"];
+    return [dotDescription copy];
 }
 
 @end

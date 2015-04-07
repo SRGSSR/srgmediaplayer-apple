@@ -1,13 +1,38 @@
 PODS:
+  - CocoaLumberjack (2.0.0):
+    - CocoaLumberjack/Default (= 2.0.0)
+    - CocoaLumberjack/Extensions (= 2.0.0)
+  - CocoaLumberjack/Core (2.0.0)
+  - CocoaLumberjack/Default (2.0.0):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.0.0):
+    - CocoaLumberjack/Default
+  - libextobjc/EXTScope (0.4.1):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/RuntimeExtensions (0.4.1)
   - MAKVONotificationCenter (0.0.2)
   - TransitionKit (2.1.1)
 
 DEPENDENCIES:
+  - CocoaLumberjack (~> 2.0.0)
+  - libextobjc/EXTScope (= 0.4.1)
   - MAKVONotificationCenter (= 0.0.2)
-  - TransitionKit (= 2.1.1)
+  - TransitionKit (from `https://github.com/0xced/TransitionKit.git`, commit `6874dea2229bdefb89f6c8f708f1fae467ee5ba2`)
+
+EXTERNAL SOURCES:
+  TransitionKit:
+    :commit: 6874dea2229bdefb89f6c8f708f1fae467ee5ba2
+    :git: https://github.com/0xced/TransitionKit.git
+
+CHECKOUT OPTIONS:
+  TransitionKit:
+    :commit: 6874dea2229bdefb89f6c8f708f1fae467ee5ba2
+    :git: https://github.com/0xced/TransitionKit.git
 
 SPEC CHECKSUMS:
-  MAKVONotificationCenter: b3ee281ae2ab7895fb93dbb9faec781b2d1b4a94
-  TransitionKit: 9ce324caba25cb0a4c9f3334302d89685595455c
+  CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
+  libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
+  MAKVONotificationCenter: eddfb85e77040323ee43a0fddbe616926ec005a8
+  TransitionKit: 3a14b6acc7cf2d1dd3e454e24dbad1cfab9a1ef1
 
-COCOAPODS: 0.36.0.rc.1
+COCOAPODS: 0.36.0

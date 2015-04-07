@@ -21,24 +21,39 @@
  */
 typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 	/**
-	 *  Before playing when loading datasource or buffering media
+	 *  Default state when controller is initialized. The player also returns to the idle state when an error occurs or when the `stop` method is called.
 	 */
-	RTSMediaPlaybackStatePendingPlay,
+	RTSMediaPlaybackStateIdle,
 	
 	/**
-	 *  Media is playing
+	 *  The player is preparing to play the media. It will load everything needed to play the media. This can typically take some time under bad network conditions.
+	 */
+	RTSMediaPlaybackStatePreparing,
+	
+	/**
+	 *  The player is ready to play the media. The `player` property becomes available (i.e. is non-nil) upon entering this state.
+	 */
+	RTSMediaPlaybackStateReady,
+	
+	/**
+	 *  The media is playing, i.e. you can hear sound and/or see a video playing.
 	 */
 	RTSMediaPlaybackStatePlaying,
 	
 	/**
-	 *  Media is paused
+	 *  The player is paused at the user request.
 	 */
 	RTSMediaPlaybackStatePaused,
 	
 	/**
-	 *  Ends either when the media's end is reached, if an error occurs or if the user dismiss it's enclosing view controller
+	 *  The player is stalled, i.e. it is waiting for the media to resume playing.
 	 */
-	RTSMediaPlaybackStateEnded
+	RTSMediaPlaybackStateStalled,
+	
+	/**
+	 *  The player has reached the end of the media and has automatically stopped playback. Upon entering this state, the `RTSMediaPlayerPlaybackDidFinishNotification` is posted with `RTSMediaFinishReasonPlaybackEnded`.
+	 */
+	RTSMediaPlaybackStateEnded,
 };
 
 /**
@@ -70,7 +85,7 @@ typedef NS_ENUM(NSInteger, RTSMediaFinishReason) {
  */
 
 /**
- *  Posted when movie playback ends or a user exits playback.
+ *  Posted when media playback ends or a user exits playback.
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishNotification;
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey; // NSNumber (RTSMediaFinishReason)
@@ -80,12 +95,12 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoK
  *  Posted when the playback state changes, either programatically or by the user.
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey; // NSNumber (RTSMediaPlaybackState)
 
 /**
- *  Posted when the currently playing movie changes. Used when calling `playIdentifier:`
+ *  Posted when the currently playing media changes. Used when calling `playIdentifier:`
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification;
-
 
 /**
  *  RTSMediaPlayerController is inspired by the MPMoviePlayerController class.
@@ -144,11 +159,22 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
  */
 
 /**
- *  The view containing the movie content.
+ *  The view containing the media content.
  *
- *  @discussion This property contains the view used for presenting the video content. To embed the view into your own view hierarchies, add it as a subview to one of your existing views.
+ *  @discussion This property contains the view used for presenting the media content. To display the view into your own view hierarchy, use the `attachPlayerToView:` method.
+ *  This view has two gesture recognziers: a single tap gesture recognizer and a double tap gesture recognizer which respectively toggle overlays visibility and toggle the video of aspect between `AVLayerVideoGravityResizeAspectFill` and `AVLayerVideoGravityResizeAspect`.
+ *  If you want to handle taps yourself, you can disable these gesture recognizers and add your own gesture recognizer.
+ *
+ *  @see attachPlayerToView:
  */
 @property(readonly) UIView *view;
+
+/**
+ *  Attach the player view into specified container view with default autoresizing mask. The player view will have the same frame as its `containerView`
+ *
+ *  @param containerView The parent view in hierarchy what will contains the player layer
+ */
+- (void) attachPlayerToView:(UIView *)containerView;
 
 /**
  *  --------------------------------
@@ -166,7 +192,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
  *
  *  @see initWithContentIdentifier:dataSource:
  */
-@property (readonly) NSString *identifier;
+@property (copy) NSString *identifier;
 
 /**
  *  Returns the current playback state of the media player.
@@ -185,6 +211,10 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
  *  @see identifier
  */
 - (void) play;
+
+- (void) prepareToPlay;
+
+@property BOOL playWhenReady;
 
 /**
  *  Start playing media specified with its identifier.
@@ -213,10 +243,20 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
 - (void) seekToTime:(NSTimeInterval)time;
 
 /**
- *  ----------------------------
- *  @name Managing Overlay Views
- *  ----------------------------
+ *  -------------------
+ *  @name Overlay Views
+ *  -------------------
  */
+
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerWillShowControlOverlaysNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerDidShowControlOverlaysNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerWillHideControlOverlaysNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerDidHideControlOverlaysNotification;
+
+/**
+ *  <#Description#>
+ */
+@property (weak) IBOutlet UIView *activityView;
 
 /**
  *  A collection of views that will be shown/hidden automatically or manually when user interacts with the view.

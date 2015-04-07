@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Movies</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>RTS1 Live</string>
+			<key>url</key>
+			<string>https://srgssruni9ch-lh.akamaihd.net/i/enc9uni_ch@191320/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>RTS2 Live</string>
+			<key>url</key>
+			<string>https://srgssruni10ch-lh.akamaihd.net/i/enc10uni_ch@191367/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>RTS en continu</string>
+			<key>url</key>
+			<string>https://srgssruni11ch-lh.akamaihd.net/i/enc11uni_ch@191455/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Apple Basic Stream</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Apple Advanced Stream</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Big Buck Bunny (640×360 m4v)</string>
+			<key>url</key>
+			<string>http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Big Buck Bunny (1920x1080 mp4 30 fps)</string>
+			<key>url</key>
+			<string>http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Bidoum</string>
+			<key>url</key>
+			<string>http://stream-i.rts.ch/i/bidbi/2007/bidbi_01082007-,450,k.mp4.csmil/master.m3u8</string>
+		</dict>
+	</array>
+</dict>
+</plist>
