@@ -183,7 +183,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[end setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
-		[self postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification userInfo:transition.userInfo];
+		NSDictionary *userInfo = @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonPlaybackEnded) };
+		[self postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification userInfo:userInfo];
 	}];
 	
 	[load setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
@@ -420,8 +421,7 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 
 - (void) playerItemDidPlayToEndTime:(NSNotification *)notification
 {
-	NSDictionary *userInfo = @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonPlaybackEnded) };
-	[self fireEvent:self.endEvent userInfo:userInfo];
+	[self fireEvent:self.endEvent userInfo:nil];
 }
 
 #pragma mark - View
