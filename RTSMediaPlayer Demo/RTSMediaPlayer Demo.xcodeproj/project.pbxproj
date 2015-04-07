@@ -127,7 +127,10 @@
 				C2F54A1B1A9F730300496C59 /* Frameworks */,
 				C2F549F11A9F713300496C59 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 1;
 		};
 		C2F549F11A9F713300496C59 /* Products */ = {
 			isa = PBXGroup;

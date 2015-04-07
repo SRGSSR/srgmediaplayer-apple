@@ -170,7 +170,10 @@
 				F6E7F12E1877CFD34FD0CFC5 /* Pods */,
 				36FB7B0F1FDA6E3158166504 /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 1;
 		};
 		C201D8F61A9DC1A40016C629 /* Products */ = {
 			isa = PBXGroup;
