@@ -163,41 +163,22 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[stateMachine addEvents:@[ load, loadSuccess, play, pause, end, stall, reset ]];
 	
+	NSDictionary *states = @{ idle.name:      @(RTSMediaPlaybackStateIdle),
+	                          preparing.name: @(RTSMediaPlaybackStatePreparing),
+	                          ready.name:     @(RTSMediaPlaybackStateReady),
+	                          playing.name:   @(RTSMediaPlaybackStatePlaying),
+	                          paused.name:    @(RTSMediaPlaybackStatePaused),
+	                          stalled.name:   @(RTSMediaPlaybackStateStalled),
+	                          ended.name:     @(RTSMediaPlaybackStateEnded) };
+	
+	NSCAssert(states.allKeys.count == stateMachine.states.count, @"Must handle all states");
+	
 	@weakify(self)
 	
-	[idle setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+	[[NSNotificationCenter defaultCenter] addObserverForName:TKStateMachineDidChangeStateNotification object:stateMachine queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
 		@strongify(self)
-		self.playbackState = RTSMediaPlaybackStateIdle;
-	}];
-	
-	[preparing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		self.playbackState = RTSMediaPlaybackStatePreparing;
-	}];
-	
-	[ready setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		self.playbackState = RTSMediaPlaybackStateReady;
-	}];
-	
-	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		self.playbackState = RTSMediaPlaybackStatePlaying;
-	}];
-	
-	[paused setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		self.playbackState = RTSMediaPlaybackStatePaused;
-	}];
-	
-	[stalled setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		self.playbackState = RTSMediaPlaybackStateStalled;
-	}];
-	
-	[ended setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		self.playbackState = RTSMediaPlaybackStateEnded;
+		TKTransition *transition = notification.userInfo[TKStateMachineDidChangeStateTransitionUserInfoKey];
+		self.playbackState = [states[transition.destinationState.name] integerValue];
 	}];
 	
 	[end setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
