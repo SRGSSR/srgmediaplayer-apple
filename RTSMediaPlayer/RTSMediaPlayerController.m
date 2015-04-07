@@ -227,8 +227,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
-		NSDictionary *userInfo = transition.userInfo ?: @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonUserExited) };
-		[self postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification userInfo:userInfo];
+		if ([@[ playing, paused, stalled ] containsObject:transition.sourceState])
+		{
+			NSDictionary *userInfo = transition.userInfo ?: @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonUserExited) };
+			[self postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification userInfo:userInfo];
+		}
 		
 		self.playerView.player = nil;
 		self.player = nil;
