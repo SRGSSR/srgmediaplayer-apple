@@ -59,6 +59,23 @@
 	XCTAssertEqual(mediaPlayerPlaybackDidFinishNotificationCount, 0);
 }
 
+- (void) testDestroyPlayerControllerSendsPlaybackDidFinishNotification
+{
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+	}];
+	[self.mediaPlayerController.player play];
+	[self waitForExpectationsWithTimeout:15 handler:nil];
+	
+	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		NSNumber *finishReason = notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey];
+		XCTAssertEqualObjects(finishReason, @(RTSMediaFinishReasonUserExited));
+		return YES;
+	}];
+	self.mediaPlayerController = nil;
+	[self waitForExpectationsWithTimeout:15 handler:nil];
+}
+
 - (void) testPlayAndCheckPlayerState
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
