@@ -58,6 +58,21 @@
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
+- (void) testPlayThenResetDoesNotPlayTheMedia
+{
+	__block NSInteger playbackStateKVOChangeCount = 0;
+	[self.mediaPlayerController addObservationKeyPath:@"playbackState" options:(NSKeyValueObservingOptions)0 block:^(MAKVONotification *notification) {
+		RTSMediaPlayerController *mediaPlayerController = notification.target;
+		if (mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying)
+			playbackStateKVOChangeCount++;
+	}];
+	
+	[self.mediaPlayerController.player play];
+	[self.mediaPlayerController reset];
+	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
+	XCTAssertEqual(playbackStateKVOChangeCount, 0);
+}
+
 - (void) testMultiplePlayDoesNotUpdatePlaybackState
 {
 	__block NSInteger playbackStateKVOChangeCount = 0;

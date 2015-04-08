@@ -273,6 +273,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void) reset
 {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(prepareToPlay) object:nil];
 	if (![self.stateMachine.currentState isEqual:self.idleState])
 	{
 		[self fireEvent:self.resetEvent userInfo:nil];
@@ -312,11 +313,7 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 	{
 		if ([_player isProxy])
 		{
-			@weakify(self)
-			dispatch_async(dispatch_get_main_queue(), ^{
-				@strongify(self);
-				[self prepareToPlay];
-			});
+			[self performSelector:@selector(prepareToPlay) withObject:nil afterDelay:0];
 		}
 		return _player;
 	}
