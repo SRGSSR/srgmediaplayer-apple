@@ -29,55 +29,6 @@
 	XCTAssertEqual(self.mediaPlayerController.playbackState, RTSMediaPlaybackStateIdle);
 }
 
-- (void) testStopPlayerControllerDoesNotSendNotificationIfNothingHasBeenPlayed
-{
-	// Count notifications
-	__block NSInteger mediaPlayerPlaybackDidFinishNotificationCount = 0;
-	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
-		mediaPlayerPlaybackDidFinishNotificationCount++;
-	}];
-	
-	// Force stop with nothing played
-	[self.mediaPlayerController reset];
-	
-	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5f]];
-	XCTAssertEqual(mediaPlayerPlaybackDidFinishNotificationCount, 0);
-}
-
-- (void) testDestroyPlayerControllerDoesNotSendNotificationIfNothingHasBeenPlayed
-{
-	// Count notifications
-	__block NSInteger mediaPlayerPlaybackDidFinishNotificationCount = 0;
-	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
-		mediaPlayerPlaybackDidFinishNotificationCount++;
-	}];
-	
-	// Force stop with nothing played
-	self.mediaPlayerController = nil;
-	
-	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5f]];
-	XCTAssertEqual(mediaPlayerPlaybackDidFinishNotificationCount, 0);
-}
-
-- (void) testDestroyPlayerControllerSendsPlaybackDidFinishNotification
-{
-	// We pass nil as object for this test in order not to retain the `mediaPlayerController`
-	// so that its dealloc is called right when we do `self.mediaPlayerController = nil;`
-	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:nil handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
-	}];
-	[self.mediaPlayerController.player play];
-	[self waitForExpectationsWithTimeout:15 handler:nil];
-	
-	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:nil handler:^BOOL(NSNotification *notification) {
-		NSNumber *finishReason = notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey];
-		XCTAssertEqualObjects(finishReason, @(RTSMediaFinishReasonUserExited));
-		return YES;
-	}];
-	self.mediaPlayerController = nil;
-	[self waitForExpectationsWithTimeout:15 handler:nil];
-}
-
 - (void) testPlayAndCheckPlayerState
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
@@ -93,13 +44,7 @@
 	[self.mediaPlayerController.player pause];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
-	
-	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		RTSMediaFinishReason reason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
-		BOOL reasonUserExited = (reason == RTSMediaFinishReasonUserExited);
-		return reasonUserExited;
-	}];
-	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle;
 	}];
 	[self.mediaPlayerController reset];
@@ -113,20 +58,13 @@
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
-- (void) testMultiplePlayDoesNotUpdatePlaybackStateAndDoesNotSendNotifications
+- (void) testMultiplePlayDoesNotUpdatePlaybackState
 {
 	__block NSInteger playbackStateKVOChangeCount = 0;
 	[self.mediaPlayerController addObservationKeyPath:@"playbackState" options:(NSKeyValueObservingOptions)0 block:^(MAKVONotification *notification) {
 		RTSMediaPlayerController *mediaPlayerController = notification.target;
 		if (mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying)
 			playbackStateKVOChangeCount++;
-	}];
-	
-	__block NSInteger playbackStateNotificationChangeCount = 0;
-	[[NSNotificationCenter defaultCenter] addObserverForName:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification *notification) {
-		RTSMediaPlayerController *mediaPlayerController = notification.object;
-		if (mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying)
-			playbackStateNotificationChangeCount++;
 	}];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
@@ -138,10 +76,9 @@
 	[self.mediaPlayerController.player play];
 	[self.mediaPlayerController.player play];
 	
-	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		XCTAssertEqual(playbackStateKVOChangeCount, 1);
-		XCTAssertEqual(playbackStateNotificationChangeCount, 1);
-		return YES;
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle;
 	}];
 	[self.mediaPlayerController reset];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
@@ -156,12 +93,10 @@
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
-- (void) testPlayingMissingMovieSendsPlaybackDidFinishNotificationWithError
+- (void) testPlayingMissingMovieSendsPlaybackDidFailNotificationWithError
 {
-	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		RTSMediaFinishReason finishReason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
-		XCTAssertEqual(finishReason, RTSMediaFinishReasonPlaybackError);
-		NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey];
+	[self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
 		XCTAssertEqualObjects(error.domain, AVFoundationErrorDomain);
 		XCTAssertEqual(error.code, AVErrorUnknown);
 		return YES;

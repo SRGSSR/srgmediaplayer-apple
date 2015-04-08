@@ -20,6 +20,18 @@
 	completionHandler(self.mediaURL, nil);
 }
 
+#pragma mark - UIViewController
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+	
+	if ([self isMovingFromParentViewController])
+		[self.mediaPlayerController reset];
+}
+
+#pragma mark - Actions
+
 - (IBAction) prepareToPlay:(id)sender
 {
 	[self.mediaPlayerController prepareToPlay];

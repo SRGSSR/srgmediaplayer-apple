@@ -14,9 +14,8 @@
 
 NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
 
-NSString * const RTSMediaPlayerPlaybackDidFinishNotification = @"RTSMediaPlayerPlaybackDidFinish";
+NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFail";
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
-NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotification = @"RTSMediaPlayerNowPlayingMediaDidChange";
 
 NSString * const RTSMediaPlayerWillShowControlOverlaysNotification = @"RTSMediaPlayerWillShowControlOverlays";
 NSString * const RTSMediaPlayerDidShowControlOverlaysNotification = @"RTSMediaPlayerDidShowControlOverlays";
@@ -24,8 +23,7 @@ NSString * const RTSMediaPlayerWillHideControlOverlaysNotification = @"RTSMediaP
 NSString * const RTSMediaPlayerDidHideControlOverlaysNotification = @"RTSMediaPlayerDidHideControlOverlays";
 
 
-NSString * const RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey = @"Reason";
-NSString * const RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey = @"Error";
+NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey = @"Error";
 
 NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlaybackState";
 
@@ -91,7 +89,10 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlay
 
 - (void) dealloc
 {
-	[self resetWithUserInfo:nil];
+	if (![self.stateMachine.currentState isEqual:self.idleState])
+	{
+		NSLog(@"WARNING: The media player controller reached dealloc while still playing. You should call the `reset` method.");
+	}
 	self.player = nil;
 }
 
@@ -113,8 +114,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	NSDictionary *userInfo = @{ NSLocalizedFailureReasonErrorKey: failureReason ?: @"Unknown failure reason.",
 	                            NSLocalizedDescriptionKey: @"An unknown error occured." };
 	NSError *unknownError = [NSError errorWithDomain:RTSMediaPlayerErrorDomain code:RTSMediaPlayerErrorUnknown userInfo:userInfo];
-	return @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonPlaybackError),
-	          RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey: error ?: unknownError };
+	return @{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey: error ?: unknownError };
 }
 
 - (TKStateMachine *) stateMachine
@@ -182,12 +182,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		self.player = (AVPlayer *)[[RTSInvocationRecorder alloc] initWithTargetClass:[AVPlayer class]];
 	}];
 	
-	[end setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
-		@strongify(self)
-		NSDictionary *userInfo = @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonPlaybackEnded) };
-		[self postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification userInfo:userInfo];
-	}];
-	
 	[load setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		if (!self.dataSource)
@@ -214,7 +208,12 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
-		[self resetWithUserInfo:transition.userInfo];
+		NSDictionary *errorUserInfo = transition.userInfo;
+		if (errorUserInfo)
+		{
+			[self postNotificationName:RTSMediaPlayerPlaybackDidFailNotification userInfo:errorUserInfo];
+		}
+		self.playerView.player = nil;
 	}];
 	
 	self.idleState = idle;
@@ -278,17 +277,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	{
 		[self fireEvent:self.resetEvent userInfo:nil];
 	}
-}
-
-- (void) resetWithUserInfo:(NSDictionary *)userInfo
-{
-	//if ([@[ playing, paused, stalled ] containsObject:transition.sourceState])
-	{
-		userInfo = userInfo ?: @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonUserExited) };
-		[self postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification userInfo:userInfo];
-	}
-	
-	self.playerView.player = nil;
 }
 
 - (RTSMediaPlaybackState) playbackState

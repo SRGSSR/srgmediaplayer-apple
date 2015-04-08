@@ -55,7 +55,6 @@
 	[self.mediaPlayerController attachPlayerToView:self.view];
 	[self.mediaPlayerController playIdentifier:self.identifier];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackDidFinish:) name:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
 }
 
@@ -77,20 +76,21 @@
 
 #pragma mark - Notifications
 
-- (void) mediaPlayerPlaybackDidFinish:(NSNotification *)notification
-{
-	RTSMediaFinishReason reason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
-	if (reason == RTSMediaFinishReasonPlaybackEnded)
-		[self dismiss:nil];
-}
-
 - (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
 	RTSMediaPlayerController *mediaPlayerController = notification.object;
-	if (mediaPlayerController.playbackState == RTSMediaPlaybackStatePreparing || mediaPlayerController.playbackState == RTSMediaPlaybackStateStalled)
-		[self.loadingIndicator startAnimating];
-	else
-		[self.loadingIndicator stopAnimating];
+	switch (mediaPlayerController.playbackState)
+	{
+		case RTSMediaPlaybackStateEnded:
+			[self dismiss:nil];
+			break;
+		case RTSMediaPlaybackStatePreparing:
+		case RTSMediaPlaybackStateStalled:
+			[self.loadingIndicator startAnimating];
+		default:
+			[self.loadingIndicator stopAnimating];
+			break;
+	}
 }
 
 
@@ -99,6 +99,7 @@
 
 - (IBAction) dismiss:(id)sender
 {
+	[self.mediaPlayerController reset];
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 

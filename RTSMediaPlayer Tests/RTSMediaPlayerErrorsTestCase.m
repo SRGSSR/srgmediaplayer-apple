@@ -38,10 +38,8 @@
 {
 	id<RTSMediaPlayerControllerDataSource> dataSource = [DataSourceReturningError new];
 	RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"" dataSource:dataSource];
-	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		RTSMediaFinishReason finishReason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
-		XCTAssertEqual(finishReason, RTSMediaFinishReasonPlaybackError);
-		NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey];
+	[self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
 		XCTAssertEqualObjects(error.domain, @"AppDomain");
 		XCTAssertEqual(error.code, -1);
 		return YES;
@@ -54,10 +52,8 @@
 {
 	id<RTSMediaPlayerControllerDataSource> dataSource = [InvalidDataSource new];
 	RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"" dataSource:dataSource];
-	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		RTSMediaFinishReason finishReason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
-		XCTAssertEqual(finishReason, RTSMediaFinishReasonPlaybackError);
-		NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey];
+	[self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
 		XCTAssertEqualObjects(error.domain, RTSMediaPlayerErrorDomain);
 		XCTAssertEqual(error.code, RTSMediaPlayerErrorUnknown);
 		XCTAssertEqualObjects(error.localizedDescription, @"An unknown error occured.");
@@ -72,10 +68,8 @@
 {
 	NSURL *url = [NSURL URLWithString:@"http://httpbin.org/status/403"];
 	RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:url];
-	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		RTSMediaFinishReason finishReason = [notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
-		XCTAssertEqual(finishReason, RTSMediaFinishReasonPlaybackError);
-		NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFinishErrorUserInfoKey];
+	[self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
 		XCTAssertEqualObjects(error.domain, AVFoundationErrorDomain);
 		XCTAssertEqual(error.code, AVErrorUnknown);
 		return YES;
