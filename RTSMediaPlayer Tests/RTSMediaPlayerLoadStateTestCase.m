@@ -198,7 +198,7 @@
 	[self expectationForStateMachineFromState:@"Asset Loaded" toState:@"Idle" completionHandler:^{
 		XCTAssertNil(self.mediaPlayerController.player);
 	}];
-	[self.mediaPlayerController stop];
+	[self.mediaPlayerController reset];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 

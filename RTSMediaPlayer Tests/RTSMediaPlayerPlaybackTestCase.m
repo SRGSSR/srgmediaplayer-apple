@@ -38,7 +38,7 @@
 	}];
 	
 	// Force stop with nothing played
-	[self.mediaPlayerController stop];
+	[self.mediaPlayerController reset];
 	
 	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5f]];
 	XCTAssertEqual(mediaPlayerPlaybackDidFinishNotificationCount, 0);
@@ -61,13 +61,15 @@
 
 - (void) testDestroyPlayerControllerSendsPlaybackDidFinishNotification
 {
-	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+	// We pass nil as object for this test in order not to retain the `mediaPlayerController`
+	// so that its dealloc is called right when we do `self.mediaPlayerController = nil;`
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:nil handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController.player play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
-	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:nil handler:^BOOL(NSNotification *notification) {
 		NSNumber *finishReason = notification.userInfo[RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey];
 		XCTAssertEqualObjects(finishReason, @(RTSMediaFinishReasonUserExited));
 		return YES;
@@ -100,7 +102,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle;
 	}];
-	[self.mediaPlayerController stop];
+	[self.mediaPlayerController reset];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	
@@ -141,7 +143,7 @@
 		XCTAssertEqual(playbackStateNotificationChangeCount, 1);
 		return YES;
 	}];
-	[self.mediaPlayerController stop];
+	[self.mediaPlayerController reset];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 

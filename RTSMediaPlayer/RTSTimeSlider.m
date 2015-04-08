@@ -89,12 +89,6 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self.player removeTimeObserver:self.periodicTimeObserver];
-	
-	self.maximumValueLabel = nil;
-	self.valueLabel = nil;
-	
-	self.player = nil;
-	self.periodicTimeObserver = nil;
 }
 
 
@@ -131,7 +125,6 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackDidFinish:) name:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController];
 }
 
 
@@ -202,11 +195,6 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 			self.timeLeftValueLabel.text = @"--:--";
 		}
 	}];
-}
-
-- (void) mediaPlayerPlaybackDidFinish:(NSNotification *)notification
-{
-	[self.player removeTimeObserver:self.periodicTimeObserver];
 }
 
 

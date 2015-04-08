@@ -84,9 +84,6 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlay
 	_identifier = identifier;
 	_dataSource = dataSource;
 	
-	_previousPlaybackTime = kCMTimeInvalid;
-	_player = (AVPlayer *)[[RTSInvocationRecorder alloc] initWithTargetClass:[AVPlayer class]];
-	
 	[self.stateMachine activate];
 	
 	return self;
@@ -94,7 +91,7 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlay
 
 - (void) dealloc
 {
-	[self stop];
+	[self resetWithUserInfo:nil];
 	self.player = nil;
 }
 
@@ -179,6 +176,12 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		self.playbackState = [states[transition.destinationState.name] integerValue];
 	}];
 	
+	[idle setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
+		self.previousPlaybackTime = kCMTimeInvalid;
+		self.player = (AVPlayer *)[[RTSInvocationRecorder alloc] initWithTargetClass:[AVPlayer class]];
+	}];
+	
 	[end setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		NSDictionary *userInfo = @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonPlaybackEnded) };
@@ -211,14 +214,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
-		if ([@[ playing, paused, stalled ] containsObject:transition.sourceState])
-		{
-			NSDictionary *userInfo = transition.userInfo ?: @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonUserExited) };
-			[self postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification userInfo:userInfo];
-		}
-		
-		self.playerView.player = nil;
-		self.player = nil;
+		[self resetWithUserInfo:transition.userInfo];
 	}];
 	
 	self.idleState = idle;
@@ -252,7 +248,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 - (void) postNotificationName:(NSString *)notificationName userInfo:(NSDictionary *)userInfo
 {
 	NSNotification *notification = [NSNotification notificationWithName:notificationName object:self userInfo:userInfo];
-	[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
+	if ([NSThread isMainThread])
+		[[NSNotificationCenter defaultCenter] postNotification:notification];
+	else
+		[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
 }
 
 #pragma mark - Playback
@@ -266,19 +265,30 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 {
 	if (![self.identifier isEqualToString:identifier])
 	{
-		[self stop];
+		[self reset];
 		self.identifier = identifier;
 	}
 	
 	[self.player play];
 }
 
-- (void) stop
+- (void) reset
 {
 	if (![self.stateMachine.currentState isEqual:self.idleState])
 	{
 		[self fireEvent:self.resetEvent userInfo:nil];
 	}
+}
+
+- (void) resetWithUserInfo:(NSDictionary *)userInfo
+{
+	//if ([@[ playing, paused, stalled ] containsObject:transition.sourceState])
+	{
+		userInfo = userInfo ?: @{ RTSMediaPlayerPlaybackDidFinishReasonUserInfoKey: @(RTSMediaFinishReasonUserExited) };
+		[self postNotificationName:RTSMediaPlayerPlaybackDidFinishNotification userInfo:userInfo];
+	}
+	
+	self.playerView.player = nil;
 }
 
 - (RTSMediaPlaybackState) playbackState
@@ -314,7 +324,11 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 	{
 		if ([_player isProxy])
 		{
-			[self performSelector:@selector(prepareToPlay) withObject:nil afterDelay:0];
+			@weakify(self)
+			dispatch_async(dispatch_get_main_queue(), ^{
+				@strongify(self);
+				[self prepareToPlay];
+			});
 		}
 		return _player;
 	}
@@ -340,8 +354,11 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 		
 		_player = player;
 		
-		[_player addObserver:self forKeyPath:@"currentItem.status" options:0 context:(void *)AVPlayerItemStatusContext];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+		if (![_player isProxy])
+		{
+			[_player addObserver:self forKeyPath:@"currentItem.status" options:0 context:(void *)AVPlayerItemStatusContext];
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+		}
 	}
 }
 

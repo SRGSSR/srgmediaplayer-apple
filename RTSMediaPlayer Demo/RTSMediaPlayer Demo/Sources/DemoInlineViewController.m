@@ -30,4 +30,9 @@
 	[self.mediaPlayerController.player play];
 }
 
+- (IBAction) reset:(id)sender
+{
+	[self.mediaPlayerController reset];
+}
+
 @end

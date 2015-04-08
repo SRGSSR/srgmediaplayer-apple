@@ -219,7 +219,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerNowPlayingMediaDidChangeNotific
 /**
  *  Stop playing the current media.
  */
-- (void) stop;
+- (void) reset;
 
 /**
  *  -------------------
