@@ -318,7 +318,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void) endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	if (self.tracking)
-		[self.mediaPlayerController seekToTime:self.value];
+		[self.mediaPlayerController.player seekToTime:CMTimeMakeWithSeconds(self.value, 1)];
 	
 	[super endTrackingWithTouch:touch withEvent:event];
 }

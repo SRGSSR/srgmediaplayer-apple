@@ -27,6 +27,8 @@
 		C2246DEC1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */; };
 		C2246E321AC4237A000E03C7 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */; };
 		C2AB24EB1ABC186100EB51B8 /* RTSMediaPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B61E18C01AA750CC00E4FAB9 /* RTSMediaPlayerViewController.xib */; };
+		C2DDAB511AD5227B00BA8061 /* RTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */; };
+		C2DDAB521AD525A200BA8061 /* RTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */; };
 		C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */; };
 		D3B5AC69ED94D4C40D93B0F7 /* libPods-RTSMediaPlayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7314D9A587D56BA6E7F89FB2 /* libPods-RTSMediaPlayerTests.a */; };
 		F7DD624B58EB1E3EF79D59F7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE77ECC145A247C85E459918 /* libPods.a */; };
@@ -92,6 +94,8 @@
 		C2246DEA1AC1C570000E03C7 /* RTSActivityGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSActivityGestureRecognizer.h; sourceTree = "<group>"; };
 		C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSActivityGestureRecognizer.m; sourceTree = "<group>"; };
 		C2AB24E41ABC184A00EB51B8 /* RTSMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSInvocationRecorder.h; sourceTree = "<group>"; };
+		C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSInvocationRecorder.m; sourceTree = "<group>"; };
 		C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerPlaybackTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaPlayerPlaybackTestCase.m"; sourceTree = SOURCE_ROOT; };
 		E0A64A82F87DE7222F4220DD /* Pods-RTSMediaPlayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RTSMediaPlayerTests/Pods-RTSMediaPlayerTests.release.xcconfig"; sourceTree = "<group>"; };
 		E77390DBA03B25138BDBA95F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -137,6 +141,8 @@
 				C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */,
 				B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */,
 				B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */,
+				C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */,
+				C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -423,6 +429,7 @@
 				B61E18FC1AA9EEDB00E4FAB9 /* RTSTimeSlider.m in Sources */,
 				B61E18F51AA87D8E00E4FAB9 /* RTSPlayPauseButton.m in Sources */,
 				B61E18C11AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m in Sources */,
+				C2DDAB511AD5227B00BA8061 /* RTSInvocationRecorder.m in Sources */,
 				B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */,
 				B61E19081AA9F3B900E4FAB9 /* RTSVolumeView.m in Sources */,
 				C2246DEC1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
@@ -434,6 +441,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2DDAB521AD525A200BA8061 /* RTSInvocationRecorder.m in Sources */,
 				C2150B461AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m in Sources */,
 				C2246E321AC4237A000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
 				B6EC78091AA5ABEB009AE043 /* RTSMediaPlayerView.m in Sources */,

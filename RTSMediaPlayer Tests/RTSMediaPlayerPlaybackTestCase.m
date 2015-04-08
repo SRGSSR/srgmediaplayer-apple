@@ -64,14 +64,14 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self.mediaPlayerController play];
+	[self.mediaPlayerController.player play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
 	}];
-	[self.mediaPlayerController pause];
+	[self.mediaPlayerController.player pause];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	
@@ -90,7 +90,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self.mediaPlayerController play];
+	[self.mediaPlayerController.player play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
@@ -113,11 +113,11 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self.mediaPlayerController play];
+	[self.mediaPlayerController.player play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
-	[self.mediaPlayerController play];
-	[self.mediaPlayerController play];
+	[self.mediaPlayerController.player play];
+	[self.mediaPlayerController.player play];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackDidFinishNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		XCTAssertEqual(playbackStateKVOChangeCount, 1);

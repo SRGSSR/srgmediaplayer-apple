@@ -63,12 +63,12 @@
 
 - (void) play:(id)sender
 {
-	[self.mediaPlayerController play];
+	[self.mediaPlayerController.player play];
 }
 
 - (void) pause:(id)sender
 {
-	[self.mediaPlayerController pause];
+	[self.mediaPlayerController.player pause];
 }
 
 

@@ -7,6 +7,7 @@
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerView.h"
 #import "RTSActivityGestureRecognizer.h"
+#import "RTSInvocationRecorder.h"
 
 #import <TransitionKit/TransitionKit.h>
 #import <libextobjc/EXTScope.h>
@@ -84,6 +85,7 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlay
 	_dataSource = dataSource;
 	
 	_previousPlaybackTime = kCMTimeInvalid;
+	_player = (AVPlayer *)[[RTSInvocationRecorder alloc] initWithTargetClass:[AVPlayer class]];
 	
 	[self.stateMachine activate];
 	
@@ -205,8 +207,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[loadSuccess setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		[self registerPeriodicTimeObserver];
-		if (self.playWhenReady)
-			[self play];
 	}];
 	
 	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
@@ -257,31 +257,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 #pragma mark - Playback
 
-- (void) play
-{
-	if (self.player)
-	{
-		[self.player play];
-	}
-	else
-	{
-		self.playWhenReady = YES;
-		[self prepareToPlay];
-	}
-}
-
-- (void) pause
-{
-	if (self.player)
-	{
-		[self.player pause];
-	}
-	else
-	{
-		self.playWhenReady = NO;
-	}
-}
-
 - (void) prepareToPlay
 {
 	[self fireEvent:self.loadEvent userInfo:nil];
@@ -295,7 +270,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		self.identifier = identifier;
 	}
 	
-	[self play];
+	[self.player play];
 }
 
 - (void) stop
@@ -304,11 +279,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	{
 		[self fireEvent:self.resetEvent userInfo:nil];
 	}
-}
-
-- (void) seekToTime:(NSTimeInterval)time
-{
-	[self.player seekToTime:CMTimeMakeWithSeconds(time, 1000) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:NULL];
 }
 
 - (RTSMediaPlaybackState) playbackState
@@ -342,6 +312,10 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 {
 	@synchronized(self)
 	{
+		if ([_player isProxy])
+		{
+			[self performSelector:@selector(prepareToPlay) withObject:nil afterDelay:0];
+		}
 		return _player;
 	}
 }
@@ -350,9 +324,19 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 {
 	@synchronized(self)
 	{
-		[_player removeObserver:self forKeyPath:@"currentItem.status" context:(void *)AVPlayerItemStatusContext];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
-		[_player removeTimeObserver:self.periodicTimeObserver];
+		if ([_player isProxy])
+		{
+			for (NSInvocation *invocation in ((RTSInvocationRecorder *)_player).invocations)
+			{
+				[invocation invokeWithTarget:player];
+			}
+		}
+		else
+		{
+			[_player removeObserver:self forKeyPath:@"currentItem.status" context:(void *)AVPlayerItemStatusContext];
+			[[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+			[_player removeTimeObserver:self.periodicTimeObserver];
+		}
 		
 		_player = player;
 		

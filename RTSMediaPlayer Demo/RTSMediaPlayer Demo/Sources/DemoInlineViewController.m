@@ -27,7 +27,7 @@
 
 - (IBAction) play:(id)sender
 {
-	[self.mediaPlayerController play];
+	[self.mediaPlayerController.player play];
 }
 
 @end
