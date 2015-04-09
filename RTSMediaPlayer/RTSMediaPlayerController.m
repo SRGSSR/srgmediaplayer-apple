@@ -127,7 +127,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[[NSNotificationCenter defaultCenter] addObserverForName:TKStateMachineDidChangeStateNotification object:stateMachine queue:[NSOperationQueue new] usingBlock:^(NSNotification *notification) {
 		TKTransition *transition = notification.userInfo[TKStateMachineDidChangeStateTransitionUserInfoKey];
-		DDLogDebug(@"(%@) ----%@----> (%@)", transition.sourceState.name, transition.event.name, transition.destinationState.name);
+		DDLogDebug(@"(%@) ---[%@]---> (%@)", transition.sourceState.name, transition.event.name.lowercaseString, transition.destinationState.name);
 	}];
 	
 	TKState *idle = [TKState stateWithName:@"Idle"];
