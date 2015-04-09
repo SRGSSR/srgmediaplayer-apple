@@ -128,10 +128,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[[NSNotificationCenter defaultCenter] addObserverForName:TKStateMachineDidChangeStateNotification object:stateMachine queue:[NSOperationQueue new] usingBlock:^(NSNotification *notification) {
 		TKTransition *transition = notification.userInfo[TKStateMachineDidChangeStateTransitionUserInfoKey];
 		DDLogDebug(@"(%@) ----%@----> (%@)", transition.sourceState.name, transition.event.name, transition.destinationState.name);
-		if (transition.userInfo)
-		{
-			DDLogDebug(@"UserInfo: %@", transition.userInfo);
-		}
 	}];
 	
 	TKState *idle = [TKState stateWithName:@"Idle"];
@@ -209,6 +205,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		NSDictionary *errorUserInfo = transition.userInfo;
 		if (errorUserInfo)
 		{
+			DDLogError(@"Playback did fail: %@", errorUserInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey]);
 			[self postNotificationName:RTSMediaPlayerPlaybackDidFailNotification userInfo:errorUserInfo];
 		}
 		self.playerView.player = nil;
