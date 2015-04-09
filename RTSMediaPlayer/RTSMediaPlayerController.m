@@ -185,6 +185,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
 			if (contentURL)
 			{
+				DDLogInfo(@"Player URL: %@", contentURL);
 				self.player = [AVPlayer playerWithURL:contentURL];
 				self.playerView.player = self.player;
 				// The player observes its "currentItem.status" keyPath, see callback in `observeValueForKeyPath:ofObject:change:context:`
