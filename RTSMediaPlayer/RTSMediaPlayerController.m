@@ -323,6 +323,7 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 {
 	@synchronized(self)
 	{
+		NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
 		if ([_player isProxy])
 		{
 			for (NSInvocation *invocation in ((RTSInvocationRecorder *)_player).invocations)
@@ -333,7 +334,8 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 		else
 		{
 			[_player removeObserver:self forKeyPath:@"currentItem.status" context:(void *)AVPlayerItemStatusContext];
-			[[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+			[defaultCenter removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+			[defaultCenter removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:_player.currentItem];
 			[_player removeTimeObserver:self.periodicTimeObserver];
 		}
 		
@@ -342,7 +344,8 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 		if (![_player isProxy])
 		{
 			[_player addObserver:self forKeyPath:@"currentItem.status" options:0 context:(void *)AVPlayerItemStatusContext];
-			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:_player.currentItem];
 		}
 	}
 }
@@ -404,6 +407,12 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 - (void) playerItemDidPlayToEndTime:(NSNotification *)notification
 {
 	[self fireEvent:self.endEvent userInfo:nil];
+}
+
+- (void) playerItemFailedToPlayToEndTime:(NSNotification *)notification
+{
+	NSError *error = notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey];
+	[self fireEvent:self.resetEvent userInfo:ErrorUserInfo(error, @"AVPlayerItemFailedToPlayToEndTimeNotification did not provide an error.")];
 }
 
 #pragma mark - View
