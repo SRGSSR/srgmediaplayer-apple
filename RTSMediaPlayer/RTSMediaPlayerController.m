@@ -9,6 +9,7 @@
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSInvocationRecorder.h"
 
+#import <objc/runtime.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import <TransitionKit/TransitionKit.h>
 #import <libextobjc/EXTScope.h>
@@ -333,6 +334,10 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 			[_player removeObserver:self forKeyPath:@"currentItem.status" context:(void *)AVPlayerItemStatusContext];
 			[defaultCenter removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
 			[defaultCenter removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:_player.currentItem];
+			[defaultCenter removeObserver:self name:AVPlayerItemTimeJumpedNotification object:_player.currentItem];
+			[defaultCenter removeObserver:self name:AVPlayerItemPlaybackStalledNotification object:_player.currentItem];
+			[defaultCenter removeObserver:self name:AVPlayerItemNewAccessLogEntryNotification object:_player.currentItem];
+			[defaultCenter removeObserver:self name:AVPlayerItemNewErrorLogEntryNotification object:_player.currentItem];
 			[_player removeTimeObserver:self.periodicTimeObserver];
 		}
 		
@@ -343,6 +348,10 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 			[_player addObserver:self forKeyPath:@"currentItem.status" options:0 context:(void *)AVPlayerItemStatusContext];
 			[defaultCenter addObserver:self selector:@selector(playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
 			[defaultCenter addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:_player.currentItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemTimeJumped:) name:AVPlayerItemTimeJumpedNotification object:_player.currentItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemPlaybackStalled:) name:AVPlayerItemPlaybackStalledNotification object:_player.currentItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemNewAccessLogEntry:) name:AVPlayerItemNewAccessLogEntryNotification object:_player.currentItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemNewErrorLogEntry:) name:AVPlayerItemNewErrorLogEntryNotification object:_player.currentItem];
 		}
 	}
 }
@@ -410,6 +419,43 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 {
 	NSError *error = notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey];
 	[self fireEvent:self.resetEvent userInfo:ErrorUserInfo(error, @"AVPlayerItemFailedToPlayToEndTimeNotification did not provide an error.")];
+}
+
+- (void) playerItemTimeJumped:(NSNotification *)notification
+{
+	DDLogDebug(@"%@ %@", THIS_METHOD, notification.userInfo);
+}
+
+- (void) playerItemPlaybackStalled:(NSNotification *)notification
+{
+	DDLogDebug(@"%@ %@", THIS_METHOD, notification.userInfo);
+}
+
+static void LogProperties(id object)
+{
+	unsigned int count;
+	objc_property_t *properties = class_copyPropertyList([object class], &count);
+	for (unsigned int i = 0; i < count; i++)
+	{
+		objc_property_t property = properties[i];
+		NSString *propertyName = @(property_getName(property));
+		DDLogVerbose(@"    %@: %@", propertyName, [object valueForKey:propertyName]);
+	}
+	free(properties);
+}
+
+- (void) playerItemNewAccessLogEntry:(NSNotification *)notification
+{
+	DDLogDebug(@"%@ %@", THIS_METHOD, notification.userInfo);
+	AVPlayerItem *playerItem = notification.object;
+	LogProperties(playerItem.accessLog.events.lastObject);
+}
+
+- (void) playerItemNewErrorLogEntry:(NSNotification *)notification
+{
+	DDLogDebug(@"%@ %@", THIS_METHOD, notification.userInfo);
+	AVPlayerItem *playerItem = notification.object;
+	LogProperties(playerItem.errorLog.events.lastObject);
 }
 
 #pragma mark - View
