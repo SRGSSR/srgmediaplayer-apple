@@ -9,6 +9,7 @@
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSInvocationRecorder.h"
 
+#import <CocoaLumberjack/CocoaLumberjack.h>
 #import <TransitionKit/TransitionKit.h>
 #import <libextobjc/EXTScope.h>
 
@@ -91,7 +92,7 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlay
 {
 	if (![self.stateMachine.currentState isEqual:self.idleState])
 	{
-		NSLog(@"WARNING: The media player controller reached dealloc while still playing. You should call the `reset` method.");
+		DDLogWarn(@"The media player controller reached dealloc while still active. You should call the `reset` method before reaching dealloc.");
 	}
 	self.player = nil;
 }
@@ -124,17 +125,14 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	TKStateMachine *stateMachine = [TKStateMachine new];
 	
-	if ([[[[NSProcessInfo processInfo] environment] objectForKey:@"RTSMEDIAPLAYER_DEBUG_STATE_MACHINE"] boolValue])
-	{
-		[[NSNotificationCenter defaultCenter] addObserverForName:TKStateMachineDidChangeStateNotification object:stateMachine queue:[NSOperationQueue new] usingBlock:^(NSNotification *notification) {
-			TKTransition *transition = notification.userInfo[TKStateMachineDidChangeStateTransitionUserInfoKey];
-			NSLog(@"(%@) ----%@----> (%@)", transition.sourceState.name, transition.event.name, transition.destinationState.name);
-			if (transition.userInfo)
-			{
-				NSLog(@"UserInfo: %@", transition.userInfo);
-			}
-		}];
-	}
+	[[NSNotificationCenter defaultCenter] addObserverForName:TKStateMachineDidChangeStateNotification object:stateMachine queue:[NSOperationQueue new] usingBlock:^(NSNotification *notification) {
+		TKTransition *transition = notification.userInfo[TKStateMachineDidChangeStateTransitionUserInfoKey];
+		DDLogDebug(@"(%@) ----%@----> (%@)", transition.sourceState.name, transition.event.name, transition.destinationState.name);
+		if (transition.userInfo)
+		{
+			DDLogDebug(@"UserInfo: %@", transition.userInfo);
+		}
+	}];
 	
 	TKState *idle = [TKState stateWithName:@"Idle"];
 	TKState *preparing = [TKState stateWithName:@"Preparing"];
@@ -239,7 +237,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	NSError *error;
 	BOOL success = [self.stateMachine fireEvent:event userInfo:userInfo error:&error];
 	if (!success)
-		NSLog(@"Transition Error: %@", error.localizedFailureReason);
+	{
+		DDLogWarn(@"Invalid Transition: %@", error.localizedFailureReason);
+	}
 }
 
 #pragma mark - Notifications
