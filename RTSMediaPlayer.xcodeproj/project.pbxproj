@@ -99,6 +99,7 @@
 		C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSActivityGestureRecognizer.m; sourceTree = "<group>"; };
 		C2731F4F1AD6A69D00434743 /* NSBundle+RTSMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+RTSMediaPlayer.h"; sourceTree = "<group>"; };
 		C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+RTSMediaPlayer.m"; sourceTree = "<group>"; };
+		C2731F551AD6A8FF00434743 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2AB24E41ABC184A00EB51B8 /* RTSMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSInvocationRecorder.h; sourceTree = "<group>"; };
 		C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSInvocationRecorder.m; sourceTree = "<group>"; };
@@ -207,6 +208,7 @@
 		C201D8F71A9DC1A40016C629 /* RTSMediaPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				C2731F551AD6A8FF00434743 /* Info.plist */,
 				C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */,
 				B61E18F01AA87D2E00E4FAB9 /* Core */,
 				B61E18F11AA87D4500E4FAB9 /* Movie Player Controller */,
@@ -580,6 +582,7 @@
 		C2AB24E81ABC184A00EB51B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				INFOPLIST_FILE = RTSMediaPlayer/Info.plist;
 				PRODUCT_NAME = RTSMediaPlayer;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -588,6 +591,7 @@
 		C2AB24E91ABC184A00EB51B8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				INFOPLIST_FILE = RTSMediaPlayer/Info.plist;
 				PRODUCT_NAME = RTSMediaPlayer;
 				WRAPPER_EXTENSION = bundle;
 			};
