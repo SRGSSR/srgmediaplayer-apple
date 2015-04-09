@@ -439,8 +439,7 @@ static void LogProperties(id object)
 	objc_property_t *properties = class_copyPropertyList([object class], &count);
 	for (unsigned int i = 0; i < count; i++)
 	{
-		objc_property_t property = properties[i];
-		NSString *propertyName = @(property_getName(property));
+		NSString *propertyName = @(property_getName(properties[i]));
 		DDLogVerbose(@"    %@: %@", propertyName, [object valueForKey:propertyName]);
 	}
 	free(properties);
