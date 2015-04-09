@@ -460,9 +460,6 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 
 - (void) handleSingleTap
 {
-	if (!self.playerView.playerLayer.isReadyForDisplay)
-		return;
-	
 	[self toggleOverlays];
 }
 
