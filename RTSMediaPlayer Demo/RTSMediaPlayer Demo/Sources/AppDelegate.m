@@ -36,7 +36,7 @@
 	DDTTYLogger *ttyLogger = [DDTTYLogger sharedInstance];
 	ttyLogger.colorsEnabled = YES;
 	ttyLogger.logFormatter = [LogFormatter new];
-	[DDLog addLogger:ttyLogger];
+	[DDLog addLogger:ttyLogger withLevel:DDLogLevelInfo];
 	return YES;
 }
 
