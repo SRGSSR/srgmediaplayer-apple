@@ -5,6 +5,7 @@
 
 #import "RTSMediaPlayerViewController.h"
 
+#import <RTSMediaPlayer/NSBundle+RTSMediaPlayer.h>
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 
@@ -35,9 +36,7 @@
 
 - (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
 {
-	NSURL *mediaPlayerBundleURL = [[NSBundle mainBundle] URLForResource:@"RTSMediaPlayer" withExtension:@"bundle"];
-	NSAssert(mediaPlayerBundleURL != nil, @"RTSMediaPlayer.bundle not found in the main bundle's resources");
-	if (!(self = [super initWithNibName:@"RTSMediaPlayerViewController" bundle:[NSBundle bundleWithURL:mediaPlayerBundleURL]]))
+	if (!(self = [super initWithNibName:@"RTSMediaPlayerViewController" bundle:[NSBundle RTSMediaPlayerBundle]]))
 		return nil;
 	
 	_dataSource = dataSource;

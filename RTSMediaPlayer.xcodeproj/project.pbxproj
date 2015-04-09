@@ -26,6 +26,9 @@
 		C2150B481AD400C2004A08CE /* RTSMediaPlayerError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2150B471AD4007C004A08CE /* RTSMediaPlayerError.h */; };
 		C2246DEC1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */; };
 		C2246E321AC4237A000E03C7 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */; };
+		C2731F511AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */; };
+		C2731F521AD6A73900434743 /* NSBundle+RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2731F4F1AD6A69D00434743 /* NSBundle+RTSMediaPlayer.h */; };
+		C2731F531AD6A80B00434743 /* NSBundle+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */; };
 		C2AB24EB1ABC186100EB51B8 /* RTSMediaPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B61E18C01AA750CC00E4FAB9 /* RTSMediaPlayerViewController.xib */; };
 		C2DDAB511AD5227B00BA8061 /* RTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */; };
 		C2DDAB521AD525A200BA8061 /* RTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */; };
@@ -59,6 +62,7 @@
 				B61E18C21AA750F900E4FAB9 /* RTSMediaPlayerViewController.h in CopyFiles */,
 				B61E19021AA9F2D500E4FAB9 /* RTSPlayPauseButton.h in CopyFiles */,
 				B61E19031AA9F2D800E4FAB9 /* RTSTimeSlider.h in CopyFiles */,
+				C2731F521AD6A73900434743 /* NSBundle+RTSMediaPlayer.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +97,8 @@
 		C2150B471AD4007C004A08CE /* RTSMediaPlayerError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerError.h; sourceTree = "<group>"; };
 		C2246DEA1AC1C570000E03C7 /* RTSActivityGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSActivityGestureRecognizer.h; sourceTree = "<group>"; };
 		C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSActivityGestureRecognizer.m; sourceTree = "<group>"; };
+		C2731F4F1AD6A69D00434743 /* NSBundle+RTSMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+RTSMediaPlayer.h"; sourceTree = "<group>"; };
+		C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+RTSMediaPlayer.m"; sourceTree = "<group>"; };
 		C2AB24E41ABC184A00EB51B8 /* RTSMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSInvocationRecorder.h; sourceTree = "<group>"; };
 		C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSInvocationRecorder.m; sourceTree = "<group>"; };
@@ -143,6 +149,8 @@
 				B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */,
 				C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */,
 				C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */,
+				C2731F4F1AD6A69D00434743 /* NSBundle+RTSMediaPlayer.h */,
+				C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -429,6 +437,7 @@
 				B61E18FC1AA9EEDB00E4FAB9 /* RTSTimeSlider.m in Sources */,
 				B61E18F51AA87D8E00E4FAB9 /* RTSPlayPauseButton.m in Sources */,
 				B61E18C11AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m in Sources */,
+				C2731F511AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m in Sources */,
 				C2DDAB511AD5227B00BA8061 /* RTSInvocationRecorder.m in Sources */,
 				B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */,
 				B61E19081AA9F3B900E4FAB9 /* RTSVolumeView.m in Sources */,
@@ -441,6 +450,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2731F531AD6A80B00434743 /* NSBundle+RTSMediaPlayer.m in Sources */,
 				C2DDAB521AD525A200BA8061 /* RTSInvocationRecorder.m in Sources */,
 				C2150B461AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m in Sources */,
 				C2246E321AC4237A000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
