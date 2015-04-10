@@ -42,6 +42,11 @@
 	[self.mediaPlayerController.player play];
 }
 
+- (IBAction) pause:(id)sender
+{
+	[self.mediaPlayerController.player pause];
+}
+
 - (IBAction) reset:(id)sender
 {
 	[self.mediaPlayerController reset];
