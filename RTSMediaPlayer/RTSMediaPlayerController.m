@@ -144,7 +144,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKEvent *load = [TKEvent eventWithName:@"Load" transitioningFromStates:@[ idle ] toState:preparing];
 	TKEvent *loadSuccess = [TKEvent eventWithName:@"Load Success" transitioningFromStates:@[ preparing ] toState:ready];
 	TKEvent *play = [TKEvent eventWithName:@"Play" transitioningFromStates:@[ ready, paused, stalled, ended ] toState:playing];
-	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ playing ] toState:paused];
+	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ ready, playing ] toState:paused];
 	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:ended];
 	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:stalled];
 	NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
@@ -200,6 +200,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[loadSuccess setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		[self registerPeriodicTimeObserver];
+		if (self.player.rate == 0)
+		{
+			[self fireEvent:self.pauseEvent userInfo:nil];
+		}
 	}];
 	
 	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
