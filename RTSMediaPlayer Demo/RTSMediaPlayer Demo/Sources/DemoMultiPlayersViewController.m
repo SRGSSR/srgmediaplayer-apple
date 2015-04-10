@@ -48,8 +48,6 @@
 {
 	[super viewDidLoad];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:nil];
-	
 	[self setSelectedIndex:0];
 	
 	[self play];
@@ -58,7 +56,7 @@
 - (void) viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-	[self.mediaPlayerControllers makeObjectsPerformSelector:@selector(stop)];
+	[self.mediaPlayerControllers makeObjectsPerformSelector:@selector(reset)];
 }
 
 - (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -77,12 +75,12 @@
 
 - (void) play
 {
-	[self.mediaPlayerControllers makeObjectsPerformSelector:@selector(play)];
+	[[self.mediaPlayerControllers valueForKey:@"player"] makeObjectsPerformSelector:@selector(play)];
 }
 
 - (void) pause
 {
-	[self.mediaPlayerControllers makeObjectsPerformSelector:@selector(pause)];
+	[[self.mediaPlayerControllers valueForKey:@"player"] makeObjectsPerformSelector:@selector(pause)];
 }
 
 - (IBAction) dismiss:(id)sender
@@ -184,18 +182,6 @@
 {
 	RTSMediaPlayerController *mediaPlayerController = [self mediaPlayerControllerForPlayerView:gestureRecognizer.view];
 	self.selectedIndex = [self.mediaPlayerControllers indexOfObject:mediaPlayerController];
-}
-
-#pragma mark - Notifications
-
-- (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
-{
-	RTSMediaPlayerController *mediaPlayerController = notification.object;
-	if (mediaPlayerController.playbackState != RTSMediaPlaybackStateReady)
-		return;
-	
-	RTSMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[self.selectedIndex];
-	mediaPlayerController.player.muted = ![mediaPlayerController.identifier isEqualToString:mainMediaPlayerController.identifier];
 }
 
 @end
