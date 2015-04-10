@@ -106,11 +106,6 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	return self;
 }
 
-- (void) dealloc
-{
-	self.mediaPlayerController = nil;
-}
-
 - (void) setup
 {
 	UIImage *triangle = [self emptyImage];
@@ -121,6 +116,11 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	
 	[self setThumbImage:[self thumbImage] forState:UIControlStateNormal];
 	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
+}
+
+- (void) dealloc
+{
+	self.mediaPlayerController = nil;
 }
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController

@@ -17,19 +17,19 @@
 
 - (void) dealloc
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.mediaPlayerController = nil;
 }
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
-	NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-	
-	[defaultCenter removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
 	
 	_mediaPlayerController = mediaPlayerController;
 	
-	if (mediaPlayerController)
-		[defaultCenter addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
+	if (!mediaPlayerController)
+		return;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
 }
 
 - (void) awakeFromNib
