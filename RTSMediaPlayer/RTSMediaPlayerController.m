@@ -256,7 +256,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void) prepareToPlay
 {
-	[self fireEvent:self.loadEvent userInfo:nil];
+	if ([self.stateMachine.currentState isEqual:self.idleState])
+	{
+		[self fireEvent:self.loadEvent userInfo:nil];
+	}
 }
 
 - (void) playIdentifier:(NSString *)identifier
