@@ -6,12 +6,7 @@
 #import "RTSMediaPlayerPlaybackButton.h"
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 
-@interface RTSMediaPlayerPlaybackButton ()
-
-@property (nonatomic, strong) UIBezierPath *pauseBezierPath;
-@property (nonatomic, strong) UIBezierPath *playBezierPath;
-
-@end
+#import "RTSMediaPlayerIconTemplate.h"
 
 @implementation RTSMediaPlayerPlaybackButton
 
@@ -32,108 +27,56 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
 }
 
-- (void) awakeFromNib
-{
-	[super awakeFromNib];
-	[self updateAction];
-}
-
-- (UIColor *) hightlightColor
-{
-	return _hightlightColor ?: self.drawColor;
-}
-
-- (void) setHighlighted:(BOOL)highlighted
-{
-	[super setHighlighted:highlighted];
-	[self setNeedsDisplay];
-}
-
-
-
-#pragma mark - Actions
-
-- (void) updateAction
-{
-	SEL action = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying ? @selector(pause:) : @selector(play:);
-	
-	[self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
-	[self addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
-}
-
-- (void) play:(id)sender
-{
-	[self.mediaPlayerController.player play];
-}
-
-- (void) pause:(id)sender
-{
-	[self.mediaPlayerController.player pause];
-}
-
-
-
-#pragma mark - Notifications
-
 - (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
-	[self updateAction];
-	[self setNeedsDisplay];
+	[self updateButton];
 }
 
-
-
-#pragma mark - Draw view
-
-- (UIBezierPath *) pauseBezierPath
+- (void) updateButton
 {
-	if (!_pauseBezierPath)
+	BOOL isPlaying = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+	SEL action = isPlaying ? @selector(pause) : @selector(play);
+	AVPlayer *player = self.mediaPlayerController.player;
+	// FIXME: the player being a proxy should be totally transparent from the point of view of API consumer
+	// The proxy implementation must be fixed so that this test is not needed
+	if (![player isProxy])
 	{
-		CGFloat middle = CGRectGetMidX(self.bounds);
-		CGFloat margin = middle * 1/3;
-		CGFloat width = middle - margin;
-		CGFloat height = CGRectGetHeight(self.bounds);
-		
-		_pauseBezierPath = [UIBezierPath bezierPath];
-		[_pauseBezierPath moveToPoint:CGPointMake(margin / 2, 0)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(width, 0)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(width, height)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(margin / 2, height)];
-		[_pauseBezierPath closePath];
-		
-		[_pauseBezierPath moveToPoint:CGPointMake(middle + margin / 2, 0)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(middle + width, 0)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(middle + width, height)];
-		[_pauseBezierPath addLineToPoint:CGPointMake(middle + margin / 2, height)];
-		[_pauseBezierPath closePath];
+		[self removeTarget:player action:NULL forControlEvents:UIControlEventTouchUpInside];
+		[self addTarget:player action:action forControlEvents:UIControlEventTouchUpInside];
 	}
-	return _pauseBezierPath;
-}
-
-- (UIBezierPath *) playBezierPath
-{
-	if (!_playBezierPath)
-	{
-		CGFloat width = CGRectGetWidth(self.bounds);
-		CGFloat height = CGRectGetHeight(self.bounds);
-		
-		_playBezierPath = [UIBezierPath bezierPath];
-		[_playBezierPath moveToPoint:CGPointMake(0, 0)];
-		[_playBezierPath addLineToPoint:CGPointMake(width, height / 2)];
-		[_playBezierPath addLineToPoint:CGPointMake(0, height)];
-		[_playBezierPath closePath];
-	}
-	return _playBezierPath;
-}
-
-- (void) drawRect:(CGRect)rect
-{
-	UIColor *color = self.isHighlighted ? self.hightlightColor : self.drawColor;
-	[color set];
 	
-	UIBezierPath *bezierPath = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying ? self.pauseBezierPath : self.playBezierPath;
-	[bezierPath fill];
-	[bezierPath stroke];
+	UIImage *normalImage;
+	UIImage *highlightedImage;
+	if (isPlaying)
+	{
+		normalImage = [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
+		highlightedImage = [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
+	}
+	else
+	{
+		normalImage = [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.normalColor];
+		highlightedImage = [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.hightlightColor];
+	}
+	[self setImage:normalImage forState:UIControlStateNormal];
+	[self setImage:highlightedImage forState:UIControlStateHighlighted];
+}
+
+- (void) setBounds:(CGRect)bounds
+{
+	[super setBounds:bounds];
+	[self updateButton];
+}
+
+- (void) setNormalColor:(UIColor *)normalColor
+{
+	_normalColor = normalColor;
+	[self updateButton];
+}
+
+- (void) setHightlightColor:(UIColor *)hightlightColor
+{
+	_hightlightColor = hightlightColor;
+	[self updateButton];
 }
 
 @end

@@ -15,7 +15,7 @@ IB_DESIGNABLE
  */
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
-@property (nonatomic) IBInspectable UIColor *drawColor;
+@property (nonatomic) IBInspectable UIColor *normalColor;
 @property (nonatomic) IBInspectable UIColor *hightlightColor;
 
 @end
