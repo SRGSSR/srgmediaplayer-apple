@@ -6,7 +6,7 @@
 #import <UIKit/UIKit.h>
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 
-@class RTSPlayPauseButton, RTSTimeSlider, RTSVolumeView;
+@class RTSMediaPlayerPlaybackButton, RTSTimeSlider, RTSVolumeView;
 
 /**
  *  RTSMediaPlayerViewController is inspired by the MPMoviePlayerViewController class.

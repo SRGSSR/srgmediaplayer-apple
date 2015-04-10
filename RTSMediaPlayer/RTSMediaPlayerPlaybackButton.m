@@ -3,17 +3,17 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import "RTSPlayPauseButton.h"
+#import "RTSMediaPlayerPlaybackButton.h"
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 
-@interface RTSPlayPauseButton ()
+@interface RTSMediaPlayerPlaybackButton ()
 
 @property (nonatomic, strong) UIBezierPath *pauseBezierPath;
 @property (nonatomic, strong) UIBezierPath *playBezierPath;
 
 @end
 
-@implementation RTSPlayPauseButton
+@implementation RTSMediaPlayerPlaybackButton
 
 - (void) dealloc
 {

@@ -8,7 +8,7 @@
 @class RTSMediaPlayerController;
 
 IB_DESIGNABLE
-@interface RTSPlayPauseButton : UIButton
+@interface RTSMediaPlayerPlaybackButton : UIButton
 
 /**
  *  <#Description#>

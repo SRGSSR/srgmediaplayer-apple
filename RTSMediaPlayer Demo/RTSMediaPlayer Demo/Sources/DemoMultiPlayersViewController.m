@@ -4,7 +4,7 @@
 //
 
 #import "DemoMultiPlayersViewController.h"
-#import <RTSMediaPlayer/RTSPlayPauseButton.h>
+#import <RTSMediaPlayer/RTSMediaPlayerPlaybackButton.h>
 
 @interface DemoMultiPlayersViewController ()
 
@@ -16,7 +16,7 @@
 @property (nonatomic, weak) IBOutlet UIView *mainPlayerView;
 @property (nonatomic, weak) IBOutlet UIView *playerViewsContainer;
 
-@property (nonatomic, weak) IBOutlet RTSPlayPauseButton *playPauseButton;
+@property (nonatomic, weak) IBOutlet RTSMediaPlayerPlaybackButton *playPauseButton;
 @property (nonatomic, weak) IBOutlet UISwitch *thumbnailSwitch;
 
 @property (nonatomic, strong) IBOutletCollection(UIView) NSArray *overlayViews;

@@ -19,7 +19,7 @@
 @property (nonatomic, strong) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @property (weak) IBOutlet UIActivityIndicatorView *loadingIndicator;
-@property (weak) IBOutlet RTSPlayPauseButton *playPauseButton;
+@property (weak) IBOutlet RTSMediaPlayerPlaybackButton *playPauseButton;
 @property (weak) IBOutlet RTSTimeSlider *timeSlider;
 @property (weak) IBOutlet RTSVolumeView *volumeView;
 
