@@ -44,12 +44,10 @@
 
 #pragma mark - Lifecycle
 
-- (void) viewDidLoad
+- (void)viewDidLoad
 {
 	[super viewDidLoad];
-	
 	[self setSelectedIndex:0];
-	
 	[self play];
 }
 
@@ -73,14 +71,14 @@
 
 #pragma mark - Action
 
-- (void) play
+- (void)play
 {
-	[[self.mediaPlayerControllers valueForKey:@"player"] makeObjectsPerformSelector:@selector(play)];
+	[self.mediaPlayerControllers makeObjectsPerformSelector:@selector(play)];
 }
 
-- (void) pause
+- (void)pause
 {
-	[[self.mediaPlayerControllers valueForKey:@"player"] makeObjectsPerformSelector:@selector(pause)];
+	[self.mediaPlayerControllers makeObjectsPerformSelector:@selector(pause)];
 }
 
 - (IBAction) dismiss:(id)sender
@@ -140,8 +138,9 @@
 - (void) attachPlayer:(RTSMediaPlayerController *)mediaPlayerController toView:(UIView *)playerView
 {
 	BOOL isMainPlayer = playerView == self.mainPlayerView;
-	if (isMainPlayer)
+	if (isMainPlayer) {
 		[self.playPauseButton setMediaPlayerController:mediaPlayerController];
+	}
 	
 	mediaPlayerController.overlayViews = isMainPlayer ? self.overlayViews : nil;
 	[mediaPlayerController attachPlayerToView:playerView];

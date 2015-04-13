@@ -37,10 +37,8 @@
 	BOOL isPlaying = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	SEL action = isPlaying ? @selector(pause) : @selector(play);
 	AVPlayer *player = self.mediaPlayerController.player;
-	// FIXME: the player being a proxy should be totally transparent from the point of view of API consumer
-	// The proxy implementation must be fixed so that this test is not needed
-	if (![player isProxy])
-	{
+	
+	if (player) {
 		[self removeTarget:player action:NULL forControlEvents:UIControlEventTouchUpInside];
 		[self addTarget:player action:action forControlEvents:UIControlEventTouchUpInside];
 	}

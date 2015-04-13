@@ -176,6 +176,10 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKe
 
 - (void) prepareToPlay;
 
+- (void) play;
+
+- (void) pause;
+
 /**
  *  Start playing media specified with its identifier.
  *

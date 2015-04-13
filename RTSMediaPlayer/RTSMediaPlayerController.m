@@ -7,7 +7,6 @@
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerView.h"
 #import "RTSActivityGestureRecognizer.h"
-#import "RTSInvocationRecorder.h"
 
 #import <objc/runtime.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
@@ -174,7 +173,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[idle setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		self.previousPlaybackTime = kCMTimeInvalid;
-		self.player = (AVPlayer *)[[RTSInvocationRecorder alloc] initWithTargetClass:[AVPlayer class]];
 	}];
 	
 	[load setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
@@ -266,6 +264,19 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
+- (void) play
+{
+	if ([self.stateMachine.currentState isEqual:self.idleState]) {
+		[self prepareToPlay];
+	}
+	[self.player play];
+}
+
+- (void) pause
+{
+	[self.player pause];
+}
+
 - (void) playIdentifier:(NSString *)identifier
 {
 	if (![self.identifier isEqualToString:identifier])
@@ -317,10 +328,6 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 {
 	@synchronized(self)
 	{
-		if ([_player isProxy])
-		{
-			[self performSelector:@selector(prepareToPlay) withObject:nil afterDelay:0];
-		}
 		return _player;
 	}
 }
@@ -330,42 +337,32 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 	@synchronized(self)
 	{
 		NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-		if ([_player isProxy])
-		{
-			for (NSInvocation *invocation in ((RTSInvocationRecorder *)_player).invocations)
-			{
-				[invocation invokeWithTarget:player];
-			}
-		}
-		else
-		{
-			[_player removeObserver:self forKeyPath:@"currentItem.status" context:(void *)AVPlayerItemStatusContext];
-			[defaultCenter removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
-			[defaultCenter removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:_player.currentItem];
-			[defaultCenter removeObserver:self name:AVPlayerItemTimeJumpedNotification object:_player.currentItem];
-			[defaultCenter removeObserver:self name:AVPlayerItemPlaybackStalledNotification object:_player.currentItem];
-			[defaultCenter removeObserver:self name:AVPlayerItemNewAccessLogEntryNotification object:_player.currentItem];
-			[defaultCenter removeObserver:self name:AVPlayerItemNewErrorLogEntryNotification object:_player.currentItem];
-			[_player removeTimeObserver:self.periodicTimeObserver];
-		}
+		
+		[_player removeObserver:self forKeyPath:@"currentItem.status" context:(void *)AVPlayerItemStatusContext];
+		[defaultCenter removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
+		[defaultCenter removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:_player.currentItem];
+		[defaultCenter removeObserver:self name:AVPlayerItemTimeJumpedNotification object:_player.currentItem];
+		[defaultCenter removeObserver:self name:AVPlayerItemPlaybackStalledNotification object:_player.currentItem];
+		[defaultCenter removeObserver:self name:AVPlayerItemNewAccessLogEntryNotification object:_player.currentItem];
+		[defaultCenter removeObserver:self name:AVPlayerItemNewErrorLogEntryNotification object:_player.currentItem];
+		[_player removeTimeObserver:self.periodicTimeObserver];
 		
 		_player = player;
 		
-		AVPlayerItem *playerItem;
-		if ([player isProxy] || !(playerItem = player.currentItem))
-			return;
-		
-		[player addObserver:self forKeyPath:@"currentItem.status" options:0 context:(void *)AVPlayerItemStatusContext];
-		[defaultCenter addObserver:self selector:@selector(playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
-		[defaultCenter addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:playerItem];
-		[defaultCenter addObserver:self selector:@selector(playerItemTimeJumped:) name:AVPlayerItemTimeJumpedNotification object:playerItem];
-		[defaultCenter addObserver:self selector:@selector(playerItemPlaybackStalled:) name:AVPlayerItemPlaybackStalledNotification object:playerItem];
-		[defaultCenter addObserver:self selector:@selector(playerItemNewAccessLogEntry:) name:AVPlayerItemNewAccessLogEntryNotification object:playerItem];
-		[defaultCenter addObserver:self selector:@selector(playerItemNewErrorLogEntry:) name:AVPlayerItemNewErrorLogEntryNotification object:playerItem];
+		AVPlayerItem *playerItem = player.currentItem;
+		if (playerItem) {
+			[player addObserver:self forKeyPath:@"currentItem.status" options:0 context:(void *)AVPlayerItemStatusContext];
+			[defaultCenter addObserver:self selector:@selector(playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:playerItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemTimeJumped:) name:AVPlayerItemTimeJumpedNotification object:playerItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemPlaybackStalled:) name:AVPlayerItemPlaybackStalledNotification object:playerItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemNewAccessLogEntry:) name:AVPlayerItemNewAccessLogEntryNotification object:playerItem];
+			[defaultCenter addObserver:self selector:@selector(playerItemNewErrorLogEntry:) name:AVPlayerItemNewErrorLogEntryNotification object:playerItem];
+		}
 	}
 }
 
-- (void) registerPeriodicTimeObserver
+- (void)registerPeriodicTimeObserver
 {
 	@weakify(self)
 	self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 5) queue:dispatch_get_main_queue() usingBlock:^(CMTime playbackTime) {
