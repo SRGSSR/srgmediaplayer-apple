@@ -28,11 +28,15 @@ NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey = @"Error";
 
 NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlaybackState";
 
+NSString * const RTSMediaPlayerStateMachineContentURLInfoKey = @"ContentURL";
+NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
+
 @interface RTSMediaPlayerController () <RTSMediaPlayerControllerDataSource, UIGestureRecognizerDelegate>
 
 @property (readonly) TKStateMachine *stateMachine;
 @property (readwrite) TKState *idleState;
 @property (readwrite) TKState *readyState;
+@property (readwrite) TKState *pausedState;
 @property (readwrite) TKState *playingState;
 @property (readwrite) TKState *stalledState;
 @property (readwrite) TKEvent *loadEvent;
@@ -177,7 +181,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
         self.player = nil;
 	}];
 	
-	[load setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
+	[preparing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
         if (!self.dataSource) {
 			@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"RTSMediaPlayerController dataSource can not be nil." userInfo:nil];
@@ -186,10 +190,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
 			if (contentURL)
 			{
-				DDLogInfo(@"Player URL: %@", contentURL);
-				self.player = [AVPlayer playerWithURL:contentURL];
-				self.playerView.player = self.player;
-				// The player observes its "currentItem.status" keyPath, see callback in `observeValueForKeyPath:ofObject:change:context:`
+				BOOL autoPlay = [transition.userInfo[RTSMediaPlayerStateMachineAutoPlayInfoKey] boolValue];
+				[self fireEvent:self.loadSuccessEvent userInfo: @{ RTSMediaPlayerStateMachineContentURLInfoKey : contentURL, RTSMediaPlayerStateMachineAutoPlayInfoKey : @(autoPlay)}];
 			}
 			else
 			{
@@ -198,15 +200,39 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		}];
 	}];
 	
-	[loadSuccess setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
+	[ready setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
-		[self registerPeriodicTimeObserver];
-		if (self.player.rate == 0) {
+		
+		NSURL *contentURL = transition.userInfo[RTSMediaPlayerStateMachineContentURLInfoKey];
+		DDLogInfo(@"Player URL: %@", contentURL);
+		
+		// The player observes its "currentItem.status" keyPath, see callback in `observeValueForKeyPath:ofObject:change:context:`
+		self.player = [AVPlayer playerWithURL:contentURL];
+		self.playerView.player = self.player;
+	}];
+	
+	[ready setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
+		
+		BOOL autoPlay = [transition.userInfo[RTSMediaPlayerStateMachineAutoPlayInfoKey] boolValue];
+		if (autoPlay) {
+			[self.player play];
+		}else if (self.player.rate == 0) {
 			[self fireEvent:self.pauseEvent userInfo:nil];
 		}
 	}];
 	
-	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
+	[pause setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
+		@strongify(self)
+		[self.player pause];
+	}];
+	
+	[play setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
+		@strongify(self)
+		[self.player play];
+	}];
+	
+	[reset setWillFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		NSDictionary *errorUserInfo = transition.userInfo;
 		if (errorUserInfo) {
@@ -220,6 +246,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	self.idleState = idle;
 	self.readyState = ready;
+	self.pausedState = paused;
 	self.playingState = playing;
 	self.stalledState = stalled;
 	
@@ -260,25 +287,31 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 #pragma mark - Playback
 
+- (void) loadPlayerShouldPlayImediately:(BOOL)autoPlay
+{
+	if ([self.stateMachine.currentState isEqual:self.idleState])
+	{
+		[self fireEvent:self.loadEvent userInfo: @{ RTSMediaPlayerStateMachineAutoPlayInfoKey : @(autoPlay) }];
+	}
+}
+
 - (void) prepareToPlay
 {
-	if ([self.stateMachine.currentState isEqual:self.idleState]) {
-		[self fireEvent:self.loadEvent userInfo:nil];
-	}
+	[self loadPlayerShouldPlayImediately:NO];
 }
 
 - (void) play
 {
-	if ([self.stateMachine.currentState isEqual:self.readyState]) {
-        [self.player play];
+	if ([self.stateMachine.currentState isEqual:self.idleState]) {
+		[self loadPlayerShouldPlayImediately:YES];
+	}else{
+		[self fireEvent:self.playEvent userInfo:nil];
 	}
 }
 
 - (void) pause
 {
-    if ([self.stateMachine.currentState isEqual:self.playingState]) {
-        [self.player pause];
-    }
+	[self fireEvent:self.pauseEvent userInfo:nil];
 }
 
 - (void) playIdentifier:(NSString *)identifier
@@ -289,7 +322,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		self.identifier = identifier;
 	}
 	
-	[self.player play];
+	[self play];
 }
 
 - (void) reset
@@ -361,6 +394,8 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 			[defaultCenter addObserver:self selector:@selector(playerItemPlaybackStalled:) name:AVPlayerItemPlaybackStalledNotification object:playerItem];
 			[defaultCenter addObserver:self selector:@selector(playerItemNewAccessLogEntry:) name:AVPlayerItemNewAccessLogEntryNotification object:playerItem];
 			[defaultCenter addObserver:self selector:@selector(playerItemNewErrorLogEntry:) name:AVPlayerItemNewErrorLogEntryNotification object:playerItem];
+			
+			[self registerPeriodicTimeObserver];
 		}
 	}
 }
@@ -381,12 +416,8 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 					if (hasPlayed && !isStalled)
 						[self fireEvent:self.stallEvent userInfo:nil];
 				}
-				else
-				{
-					[self fireEvent:self.pauseEvent userInfo:nil];
-				}
 			}
-			else if (![self.stateMachine.currentState isEqual:self.playingState])
+			else if ([self.stateMachine.currentState isEqual:self.readyState])
 			{
 				[self fireEvent:self.playEvent userInfo:nil];
 			}
@@ -404,7 +435,7 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 		switch (playerItem.status)
 		{
 			case AVPlayerItemStatusReadyToPlay:
-				[self fireEvent:self.loadSuccessEvent userInfo:nil];
+				[self fireEvent:self.playEvent userInfo:nil];
 				break;
 			case AVPlayerItemStatusFailed:
 				[self fireEvent:self.resetEvent userInfo:ErrorUserInfo(playerItem.error, @"The AVPlayerItem did report a failed status without an error.")];
