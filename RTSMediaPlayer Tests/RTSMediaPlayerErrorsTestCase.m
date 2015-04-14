@@ -44,7 +44,7 @@
 		XCTAssertEqual(error.code, -1);
 		return YES;
 	}];
-	[mediaPlayerController.player play];
+	[mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
@@ -60,7 +60,7 @@
 		XCTAssertEqualObjects(error.localizedFailureReason, @"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error.");
 		return YES;
 	}];
-	[mediaPlayerController.player play];
+	[mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
@@ -74,7 +74,7 @@
 		XCTAssertEqual(error.code, AVErrorUnknown);
 		return YES;
 	}];
-	[mediaPlayerController.player play];
+	[mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:5 handler:nil];
 }
 

@@ -34,14 +34,14 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self.mediaPlayerController.player play];
+	[self.mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
 	}];
-	[self.mediaPlayerController.player pause];
+	[self.mediaPlayerController pause];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
@@ -54,7 +54,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self.mediaPlayerController.player play];
+	[self.mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 }
 
@@ -67,7 +67,7 @@
 			playbackStateKVOChangeCount++;
 	}];
 	
-	[self.mediaPlayerController.player play];
+	[self.mediaPlayerController play];
 	[self.mediaPlayerController reset];
 	[[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
 	XCTAssertEqual(playbackStateKVOChangeCount, 0);
@@ -85,11 +85,11 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self.mediaPlayerController.player play];
+	[self.mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
-	[self.mediaPlayerController.player play];
-	[self.mediaPlayerController.player play];
+	[self.mediaPlayerController play];
+	[self.mediaPlayerController play];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		XCTAssertEqual(playbackStateKVOChangeCount, 1);

@@ -174,7 +174,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self.mediaPlayerController.player play];
+	[self.mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
@@ -192,7 +192,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self.mediaPlayerController.player play];
+	[self.mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	[self expectationForStateMachineFromState:@"Asset Loaded" toState:@"Idle" completionHandler:^{
@@ -211,7 +211,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self.mediaPlayerController.player play];
+	[self.mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:15 handler:nil];
 	
 	// Play another stream
