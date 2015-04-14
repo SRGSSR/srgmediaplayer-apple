@@ -359,6 +359,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 #pragma mark - AVPlayer
 
 static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
+static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 
 - (AVPlayer *) player
 {
@@ -375,6 +376,8 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 		NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
 		
 		[_player removeObserver:self forKeyPath:@"currentItem.status" context:(void *)AVPlayerItemStatusContext];
+		[_player removeObserver:self forKeyPath:@"rate" context:(void *)AVPlayerRateContext];
+		
 		[defaultCenter removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
 		[defaultCenter removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:_player.currentItem];
 		[defaultCenter removeObserver:self name:AVPlayerItemTimeJumpedNotification object:_player.currentItem];
@@ -388,6 +391,8 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 		AVPlayerItem *playerItem = player.currentItem;
 		if (playerItem) {
 			[player addObserver:self forKeyPath:@"currentItem.status" options:0 context:(void *)AVPlayerItemStatusContext];
+			[player addObserver:self forKeyPath:@"rate" options:0 context:(void *)AVPlayerRateContext];
+			
 			[defaultCenter addObserver:self selector:@selector(playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
 			[defaultCenter addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:playerItem];
 			[defaultCenter addObserver:self selector:@selector(playerItemTimeJumped:) name:AVPlayerItemTimeJumpedNotification object:playerItem];
@@ -442,6 +447,19 @@ static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext
 				break;
 			case AVPlayerItemStatusUnknown:
 				break;
+		}
+	}
+	else if (context == AVPlayerRateContext)
+	{
+		if ([self.stateMachine.currentState isEqual:self.readyState])
+			return;
+		
+		AVPlayer *player = object;
+		if (![self.stateMachine.currentState isEqual:self.pausedState] && player.rate == 0) {
+			[self fireEvent:self.pauseEvent userInfo:nil];
+		}
+		else if (![self.stateMachine.currentState isEqual:self.playingState] && player.rate > 0){
+			[self fireEvent:self.playEvent userInfo:nil];
 		}
 	}
 	else
