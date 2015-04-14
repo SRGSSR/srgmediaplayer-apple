@@ -173,12 +173,15 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[idle setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		self.previousPlaybackTime = kCMTimeInvalid;
+        self.playerView.player = nil;
+        self.player = nil;
 	}];
 	
 	[load setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
-		if (!self.dataSource)
+        if (!self.dataSource) {
 			@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"RTSMediaPlayerController dataSource can not be nil." userInfo:nil];
+        }
 		
 		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
 			if (contentURL)
@@ -198,8 +201,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[loadSuccess setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		[self registerPeriodicTimeObserver];
-		if (self.player.rate == 0)
-		{
+		if (self.player.rate == 0) {
 			[self fireEvent:self.pauseEvent userInfo:nil];
 		}
 	}];
@@ -207,11 +209,12 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		NSDictionary *errorUserInfo = transition.userInfo;
-		if (errorUserInfo)
-		{
+		if (errorUserInfo) {
 			DDLogError(@"Playback did fail: %@", errorUserInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey]);
 			[self postNotificationName:RTSMediaPlayerPlaybackDidFailNotification userInfo:errorUserInfo];
 		}
+        
+        self.player = nil;
 		self.playerView.player = nil;
 	}];
 	
@@ -233,12 +236,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	return _stateMachine;
 }
 
-- (void) fireEvent:(TKEvent *)event userInfo:(NSDictionary *)userInfo
+- (void)fireEvent:(TKEvent *)event userInfo:(NSDictionary *)userInfo
 {
 	NSError *error;
 	BOOL success = [self.stateMachine fireEvent:event userInfo:userInfo error:&error];
-	if (!success)
-	{
+	if (!success) {
 		DDLogWarn(@"Invalid Transition: %@", error.localizedFailureReason);
 	}
 }
@@ -248,33 +250,35 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 - (void) postNotificationName:(NSString *)notificationName userInfo:(NSDictionary *)userInfo
 {
 	NSNotification *notification = [NSNotification notificationWithName:notificationName object:self userInfo:userInfo];
-	if ([NSThread isMainThread])
+    if ([NSThread isMainThread]) {
 		[[NSNotificationCenter defaultCenter] postNotification:notification];
-	else
+    }
+    else {
 		[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
+    }
 }
 
 #pragma mark - Playback
 
 - (void) prepareToPlay
 {
-	if ([self.stateMachine.currentState isEqual:self.idleState])
-	{
+	if ([self.stateMachine.currentState isEqual:self.idleState]) {
 		[self fireEvent:self.loadEvent userInfo:nil];
 	}
 }
 
 - (void) play
 {
-	if ([self.stateMachine.currentState isEqual:self.idleState]) {
-		[self prepareToPlay];
+	if ([self.stateMachine.currentState isEqual:self.readyState]) {
+        [self.player play];
 	}
-	[self.player play];
 }
 
 - (void) pause
 {
-	[self.player pause];
+    if ([self.stateMachine.currentState isEqual:self.playingState]) {
+        [self.player pause];
+    }
 }
 
 - (void) playIdentifier:(NSString *)identifier
@@ -291,8 +295,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 - (void) reset
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(prepareToPlay) object:nil];
-	if (![self.stateMachine.currentState isEqual:self.idleState])
-	{
+	if (![self.stateMachine.currentState isEqual:self.idleState]) {
 		[self fireEvent:self.resetEvent userInfo:nil];
 	}
 }
