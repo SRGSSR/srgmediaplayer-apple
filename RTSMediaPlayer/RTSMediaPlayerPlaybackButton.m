@@ -36,13 +36,10 @@
 {
 	BOOL isPlaying = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	SEL action = isPlaying ? @selector(pause) : @selector(play);
-	AVPlayer *player = self.mediaPlayerController.player;
-	
-	if (player) {
-		[self removeTarget:player action:NULL forControlEvents:UIControlEventTouchUpInside];
-		[self addTarget:player action:action forControlEvents:UIControlEventTouchUpInside];
-	}
-	
+
+	[self removeTarget:self.mediaPlayerController action:NULL forControlEvents:UIControlEventTouchUpInside];
+	[self addTarget:self.mediaPlayerController action:action forControlEvents:UIControlEventTouchUpInside];
+
 	UIImage *normalImage;
 	UIImage *highlightedImage;
 	if (isPlaying)
