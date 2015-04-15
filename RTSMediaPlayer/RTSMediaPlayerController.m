@@ -440,7 +440,9 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 		switch (playerItem.status)
 		{
 			case AVPlayerItemStatusReadyToPlay:
-				[self fireEvent:self.playEvent userInfo:nil];
+				if ([self.stateMachine.currentState isEqual:self.readyState]) {
+					[self fireEvent:self.playEvent userInfo:nil];
+				}
 				break;
 			case AVPlayerItemStatusFailed:
 				[self fireEvent:self.resetEvent userInfo:ErrorUserInfo(playerItem.error, @"The AVPlayerItem did report a failed status without an error.")];
