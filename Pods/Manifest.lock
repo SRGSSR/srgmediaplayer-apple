@@ -35,4 +35,4 @@ SPEC CHECKSUMS:
   MAKVONotificationCenter: eddfb85e77040323ee43a0fddbe616926ec005a8
   TransitionKit: 3a14b6acc7cf2d1dd3e454e24dbad1cfab9a1ef1
 
-COCOAPODS: 0.36.0
+COCOAPODS: 0.36.3
