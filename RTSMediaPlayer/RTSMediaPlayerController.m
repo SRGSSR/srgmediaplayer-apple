@@ -222,6 +222,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		}
 	}];
 	
+	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
+		[self resetIdleTimer];
+	}];
+	
 	[reset setWillFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		NSDictionary *errorUserInfo = transition.userInfo;
@@ -684,7 +689,8 @@ static void LogProperties(id object)
 		@weakify(self)
 		dispatch_source_set_event_handler(_idleTimer, ^{
 			@strongify(self)
-			[self setOverlaysVisible:NO];
+			if ([self.stateMachine.currentState isEqual:self.playingState])
+				[self setOverlaysVisible:NO];
 		});
 		dispatch_resume(_idleTimer);
 	}
