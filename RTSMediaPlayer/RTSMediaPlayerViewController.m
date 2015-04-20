@@ -25,6 +25,12 @@
 
 @implementation RTSMediaPlayerViewController
 
+- (void) dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
+
 - (instancetype) initWithContentURL:(NSURL *)contentURL
 {
 	return [self initWithContentIdentifier:contentURL.absoluteString dataSource:self];
