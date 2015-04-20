@@ -9,8 +9,6 @@
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 
-
-
 @interface RTSMediaPlayerViewController () <RTSMediaPlayerControllerDataSource>
 
 @property (nonatomic, weak) id<RTSMediaPlayerControllerDataSource> dataSource;
@@ -24,8 +22,6 @@
 @property (weak) IBOutlet RTSVolumeView *volumeView;
 
 @end
-
-
 
 @implementation RTSMediaPlayerViewController
 
@@ -101,7 +97,5 @@
 	[self.mediaPlayerController reset];
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
-
-
 
 @end
