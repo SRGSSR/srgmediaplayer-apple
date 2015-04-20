@@ -54,6 +54,7 @@ NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
 @property (readwrite) CMTime previousPlaybackTime;
 
 @property (readonly) RTSMediaPlayerView *playerView;
+@property (readonly) RTSActivityGestureRecognizer *activityGestureRecognizer;
 
 @property (readonly) dispatch_source_t idleTimer;
 
@@ -63,6 +64,7 @@ NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
 
 @synthesize player = _player;
 @synthesize view = _view;
+@synthesize activityGestureRecognizer = _activityGestureRecognizer;
 @synthesize playbackState = _playbackState;
 @synthesize stateMachine = _stateMachine;
 @synthesize idleTimer = _idleTimer;
@@ -98,6 +100,9 @@ NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
 	{
 		DDLogWarn(@"The media player controller reached dealloc while still active. You should call the `reset` method before reaching dealloc.");
 	}
+	
+	[self.activityView removeGestureRecognizer:self.activityGestureRecognizer];
+	
 	self.player = nil;
 }
 
@@ -535,20 +540,29 @@ static void LogProperties(id object)
 		_view = [RTSMediaPlayerView new];
 		_view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		
-		UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
 		UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap)];
 		doubleTapGestureRecognizer.numberOfTapsRequired = 2;
-		[singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
-		
-		UIView *activityView = self.activityView ?: _view;
-		RTSActivityGestureRecognizer *activityGestureRecognizer = [[RTSActivityGestureRecognizer alloc] initWithTarget:self action:@selector(resetIdleTimer)];
-		activityGestureRecognizer.delegate = self;
-		[activityView addGestureRecognizer:activityGestureRecognizer];
-		
-		[_view addGestureRecognizer:singleTapGestureRecognizer];
 		[_view addGestureRecognizer:doubleTapGestureRecognizer];
+		
+		UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
+		[singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
+		[_view addGestureRecognizer:singleTapGestureRecognizer];
+
+		UIView *activityView = self.activityView ?: _view;
+		[activityView addGestureRecognizer:self.activityGestureRecognizer];
+
 	}
 	return _view;
+}
+
+- (RTSActivityGestureRecognizer *) activityGestureRecognizer
+{
+	if (!_activityGestureRecognizer) {
+		_activityGestureRecognizer = [[RTSActivityGestureRecognizer alloc] initWithTarget:self action:@selector(resetIdleTimer)];
+		_activityGestureRecognizer.delegate = self;
+	}
+	
+	return _activityGestureRecognizer;
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer;
