@@ -32,13 +32,25 @@
 	[self updateButton];
 }
 
+- (void)play
+{
+	[self.mediaPlayerController play];
+	[self updateButton];
+}
+
+- (void)pause
+{
+	[self.mediaPlayerController pause];
+	[self updateButton];
+}
+
 - (void) updateButton
 {
-	BOOL isPlaying = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+	BOOL isPlaying = self.mediaPlayerController.player.rate != 0;
 	SEL action = isPlaying ? @selector(pause) : @selector(play);
 
-	[self removeTarget:self.mediaPlayerController action:NULL forControlEvents:UIControlEventTouchUpInside];
-	[self addTarget:self.mediaPlayerController action:action forControlEvents:UIControlEventTouchUpInside];
+	[self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+	[self addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
 
 	UIImage *normalImage;
 	UIImage *highlightedImage;
