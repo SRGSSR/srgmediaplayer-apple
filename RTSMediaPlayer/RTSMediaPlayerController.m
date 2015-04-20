@@ -367,6 +367,9 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 {
 	@synchronized(self)
 	{
+		if ([self.stateMachine.currentState isEqual:self.idleState] && !_player) {
+			DDLogWarn(@"Media player controller is not ready");
+		}
 		return _player;
 	}
 }
