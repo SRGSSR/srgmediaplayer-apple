@@ -46,6 +46,9 @@
 	[super viewDidLoad];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerDidShowControlOverlays:) name:RTSMediaPlayerDidShowControlOverlaysNotification object:self.mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerDidHideControlOverlays:) name:RTSMediaPlayerDidHideControlOverlaysNotification object:self.mediaPlayerController];
+	
 	[self.mediaPlayerController setDataSource:self.dataSource];
 	
 	[self.mediaPlayerController attachPlayerToView:self.view];
@@ -88,6 +91,16 @@
 			[self.loadingIndicator stopAnimating];
 			break;
 	}
+}
+
+- (void) mediaPlayerDidShowControlOverlays:(NSNotification *)notification
+{
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
+
+- (void) mediaPlayerDidHideControlOverlays:(NSNotification *)notificaiton
+{
+	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 
