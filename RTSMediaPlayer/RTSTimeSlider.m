@@ -300,7 +300,10 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
 	if (beginTracking)
-		[self.mediaPlayerController.player pause];
+	{
+		[self.mediaPlayerController pause];
+	}
+	
 	
 	return beginTracking;
 }
@@ -317,7 +320,10 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void) endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	if (self.tracking)
+	{
 		[self.mediaPlayerController.player seekToTime:CMTimeMakeWithSeconds(self.value, 1)];
+		[self.mediaPlayerController play];
+	}
 	
 	[super endTrackingWithTouch:touch withEvent:event];
 }
