@@ -51,6 +51,7 @@ NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
 @property (readwrite) id periodicTimeObserver;
+@property (readwrite) id playbackStartObserver;
 @property (readwrite) CMTime previousPlaybackTime;
 
 @property (readonly) RTSMediaPlayerView *playerView;
@@ -180,13 +181,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		self.playbackState = [states[transition.destinationState.name] integerValue];
 	}];
 	
-	[idle setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		self.previousPlaybackTime = kCMTimeInvalid;
-        self.playerView.player = nil;
-        self.player = nil;
-	}];
-	
 	[preparing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
         if (!self.dataSource) {
@@ -228,16 +222,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		}
 	}];
 	
-	[pause setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
-		@strongify(self)
-		[self.player pause];
-	}];
-	
-	[play setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
-		@strongify(self)
-		[self.player play];
-	}];
-	
 	[reset setWillFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		NSDictionary *errorUserInfo = transition.userInfo;
@@ -245,9 +229,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 			DDLogError(@"Playback did fail: %@", errorUserInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey]);
 			[self postNotificationName:RTSMediaPlayerPlaybackDidFailNotification userInfo:errorUserInfo];
 		}
-        
-        self.player = nil;
+	}];
+	
+	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
+		@strongify(self)
+		self.previousPlaybackTime = kCMTimeInvalid;
 		self.playerView.player = nil;
+		self.player = nil;
 	}];
 	
 	self.idleState = idle;
@@ -311,13 +299,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	if ([self.stateMachine.currentState isEqual:self.idleState]) {
 		[self loadPlayerShouldPlayImediately:YES];
 	}else{
-		[self fireEvent:self.playEvent userInfo:nil];
+		[self.player play];
 	}
 }
 
 - (void) pause
 {
-	[self fireEvent:self.pauseEvent userInfo:nil];
+	[self.player pause];
 }
 
 - (void) playIdentifier:(NSString *)identifier
@@ -367,6 +355,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
 static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 
+static const void * const AVPlayerItemPlaybackLikelyToKeepUpContext = &AVPlayerItemPlaybackLikelyToKeepUpContext;
+static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoadedTimeRangesContext;
+
 - (AVPlayer *) player
 {
 	@synchronized(self)
@@ -383,6 +374,8 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 		
 		[_player removeObserver:self forKeyPath:@"currentItem.status" context:(void *)AVPlayerItemStatusContext];
 		[_player removeObserver:self forKeyPath:@"rate" context:(void *)AVPlayerRateContext];
+		[_player removeObserver:self forKeyPath:@"currentItem.playbackLikelyToKeepUp" context:(void *)AVPlayerItemPlaybackLikelyToKeepUpContext];
+		[_player removeObserver:self forKeyPath:@"currentItem.loadedTimeRanges" context:(void *)AVPlayerItemLoadedTimeRangesContext];
 		
 		[defaultCenter removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
 		[defaultCenter removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:_player.currentItem];
@@ -390,15 +383,28 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 		[defaultCenter removeObserver:self name:AVPlayerItemPlaybackStalledNotification object:_player.currentItem];
 		[defaultCenter removeObserver:self name:AVPlayerItemNewAccessLogEntryNotification object:_player.currentItem];
 		[defaultCenter removeObserver:self name:AVPlayerItemNewErrorLogEntryNotification object:_player.currentItem];
-		[_player removeTimeObserver:self.periodicTimeObserver];
+		
+		if (self.playbackStartObserver)
+		{
+			[_player removeTimeObserver:self.playbackStartObserver];
+			self.playbackStartObserver = nil;
+		}
+		
+		if (self.periodicTimeObserver)
+		{
+			[_player removeTimeObserver:self.periodicTimeObserver];
+			self.periodicTimeObserver = nil;
+		}
 		
 		_player = player;
 		
 		AVPlayerItem *playerItem = player.currentItem;
 		if (playerItem) {
 			[player addObserver:self forKeyPath:@"currentItem.status" options:0 context:(void *)AVPlayerItemStatusContext];
-			[player addObserver:self forKeyPath:@"rate" options:0 context:(void *)AVPlayerRateContext];
-			
+			[player addObserver:self forKeyPath:@"rate" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:(void *)AVPlayerRateContext];
+			[player addObserver:self forKeyPath:@"currentItem.playbackLikelyToKeepUp" options:0 context:(void *)AVPlayerItemPlaybackLikelyToKeepUpContext];
+			[player addObserver:self forKeyPath:@"currentItem.loadedTimeRanges" options:NSKeyValueObservingOptionNew context:(void *)AVPlayerItemLoadedTimeRangesContext];
+
 			[defaultCenter addObserver:self selector:@selector(playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
 			[defaultCenter addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:playerItem];
 			[defaultCenter addObserver:self selector:@selector(playerItemTimeJumped:) name:AVPlayerItemTimeJumpedNotification object:playerItem];
@@ -406,33 +412,61 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 			[defaultCenter addObserver:self selector:@selector(playerItemNewAccessLogEntry:) name:AVPlayerItemNewAccessLogEntryNotification object:playerItem];
 			[defaultCenter addObserver:self selector:@selector(playerItemNewErrorLogEntry:) name:AVPlayerItemNewErrorLogEntryNotification object:playerItem];
 			
+			[self registerPlaybackStartObserver];
 			[self registerPeriodicTimeObserver];
 		}
 	}
 }
 
+- (void)registerPlaybackStartObserver
+{
+	if (self.playbackStartObserver)
+	{
+		[self.player removeTimeObserver:self.playbackStartObserver];
+		self.playbackStartObserver = nil;
+	}
+	
+	CMTime currentTime = self.player.currentItem.currentTime;
+	CMTime timeToAdd   = CMTimeMake(1, 10);
+	CMTime resultTime  = CMTimeAdd(currentTime,timeToAdd);
+
+	@weakify(self)
+	self.playbackStartObserver = [self.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:resultTime]] queue:NULL usingBlock:^{
+		@strongify(self)
+		if (![self.stateMachine.currentState isEqual:self.playingState]) {
+			[self fireEvent:self.playEvent userInfo:nil];
+		}
+		[self.player removeTimeObserver:self.playbackStartObserver];
+		self.playbackStartObserver = nil;
+	}];
+}
+
 - (void)registerPeriodicTimeObserver
 {
+	
+	if (self.periodicTimeObserver)
+	{
+		[self.player removeTimeObserver:self.periodicTimeObserver];
+		self.periodicTimeObserver = nil;
+	}
+	
 	@weakify(self)
-	self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 5) queue:dispatch_get_main_queue() usingBlock:^(CMTime playbackTime) {
+	self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 10) queue:dispatch_get_main_queue() usingBlock:^(CMTime playbackTime) {
 		@strongify(self)
-		if (CMTIME_IS_VALID(self.previousPlaybackTime))
+		
+		if (self.player.rate == 0)
+			return;
+		
+		if (!CMTIME_IS_VALID(self.previousPlaybackTime))
+			return;
+		
+		if(CMTimeGetSeconds(self.previousPlaybackTime) > CMTimeGetSeconds(playbackTime))
 		{
-			if (CMTIME_COMPARE_INLINE(self.previousPlaybackTime, ==, playbackTime))
-			{
-				if (self.player.rate != 0)
-				{
-					BOOL hasPlayed = CMTIME_COMPARE_INLINE(playbackTime, >, kCMTimeZero);
-					BOOL isStalled = [self.stateMachine.currentState isEqual:self.stalledState];
-					if (hasPlayed && !isStalled)
-						[self fireEvent:self.stallEvent userInfo:nil];
-				}
-			}
-			else if ([self.stateMachine.currentState isEqual:self.readyState])
-			{
+			if (![self.stateMachine.currentState isEqual:self.playingState]) {
 				[self fireEvent:self.playEvent userInfo:nil];
 			}
 		}
+
 		self.previousPlaybackTime = playbackTime;
 	}];
 }
@@ -446,8 +480,8 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 		switch (playerItem.status)
 		{
 			case AVPlayerItemStatusReadyToPlay:
-				if ([self.stateMachine.currentState isEqual:self.readyState]) {
-					[self fireEvent:self.playEvent userInfo:nil];
+				if (self.player.rate != 0 && ![self.stateMachine.currentState isEqual:self.readyState]) {
+					[self play];
 				}
 				break;
 			case AVPlayerItemStatusFailed:
@@ -457,17 +491,57 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 				break;
 		}
 	}
+	else if (context == AVPlayerItemLoadedTimeRangesContext){
+	
+		NSArray *timeRanges = (NSArray *)[change objectForKey:NSKeyValueChangeNewKey];
+		if (timeRanges.count == 0)
+			return;
+		
+		Float64 bufferMinDuration = 5.0f;
+		
+		CMTimeRange timerange = [timeRanges[0] CMTimeRangeValue];
+		if(CMTimeGetSeconds(timerange.duration) >= bufferMinDuration && self.player.rate == 0) {
+			[self.player prerollAtRate:0.0 completionHandler:^(BOOL finished) {
+				if (![self.stateMachine.currentState isEqual:self.pausedState]) {
+					[self play];
+				}
+			}];
+		}
+		
+	}
 	else if (context == AVPlayerRateContext)
 	{
-		if ([self.stateMachine.currentState isEqual:self.readyState])
+		float oldRate = [change[NSKeyValueChangeOldKey] floatValue];
+		float newRate = [change[NSKeyValueChangeNewKey] floatValue];
+		
+		if (oldRate == newRate)
 			return;
 		
 		AVPlayer *player = object;
-		if (![self.stateMachine.currentState isEqual:self.pausedState] && player.rate == 0) {
+		AVPlayerItem *playerItem = player.currentItem;
+		
+		if (playerItem.loadedTimeRanges.count == 0)
+			return;
+		
+		CMTimeRange timerange = [playerItem.loadedTimeRanges[0] CMTimeRangeValue];
+		BOOL stoppedManually = CMTimeGetSeconds(timerange.duration) > 0;
+		
+		if (oldRate == 1 && newRate == 0 && stoppedManually) {
 			[self fireEvent:self.pauseEvent userInfo:nil];
 		}
-		else if (![self.stateMachine.currentState isEqual:self.playingState] && player.rate > 0){
-			[self fireEvent:self.playEvent userInfo:nil];
+	}
+	else if (context == AVPlayerItemPlaybackLikelyToKeepUpContext)
+	{
+		AVPlayer *player = object;
+		if (!player.currentItem.playbackLikelyToKeepUp)
+			return;
+		
+		if (![self.stateMachine.currentState isEqual:self.playingState]) {
+			[self registerPlaybackStartObserver];
+		}
+		
+		if ([self.stateMachine.currentState isEqual:self.stalledState]) {
+			[player play];
 		}
 	}
 	else
