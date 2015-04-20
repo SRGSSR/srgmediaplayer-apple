@@ -45,12 +45,11 @@
 {
 	[super viewDidLoad];
 
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
 	[self.mediaPlayerController setDataSource:self.dataSource];
 	
 	[self.mediaPlayerController attachPlayerToView:self.view];
 	[self.mediaPlayerController playIdentifier:self.identifier];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
 }
 
 - (UIStatusBarStyle) preferredStatusBarStyle
@@ -76,12 +75,15 @@
 	RTSMediaPlayerController *mediaPlayerController = notification.object;
 	switch (mediaPlayerController.playbackState)
 	{
-		case RTSMediaPlaybackStateEnded:
-			[self dismiss:nil];
-			break;
 		case RTSMediaPlaybackStatePreparing:
+		case RTSMediaPlaybackStateReady:
 		case RTSMediaPlaybackStateStalled:
 			[self.loadingIndicator startAnimating];
+			break;
+		case RTSMediaPlaybackStateEnded:
+			[self dismiss:nil];
+		case RTSMediaPlaybackStatePaused:
+		case RTSMediaPlaybackStatePlaying:
 		default:
 			[self.loadingIndicator stopAnimating];
 			break;
