@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1066" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
@@ -20,6 +20,9 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="d2t-q1-HOm">
+                    <rect key="frame" x="290" y="290" width="20" height="20"/>
+                </activityIndicatorView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqK-gI-E5v" userLabel="Navigation Bar View">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                     <subviews>
@@ -56,7 +59,7 @@
                                             </connections>
                                         </slider>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzH-xw-G6y">
-                                            <rect key="frame" x="5" y="7" width="35" height="16"/>
+                                            <rect key="frame" x="5" y="7" width="35" height="15.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="LD7-6d-ZRT"/>
                                             </constraints>
@@ -64,7 +67,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdH-jj-nfU">
-                                            <rect key="frame" x="499" y="7" width="35" height="16"/>
+                                            <rect key="frame" x="499" y="7" width="35" height="15.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="G8R-4I-uxy"/>
                                             </constraints>
@@ -151,9 +154,6 @@
                         <constraint firstAttribute="centerX" secondItem="orZ-GR-Obh" secondAttribute="centerX" id="tp9-ea-bQv"/>
                     </constraints>
                 </view>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="d2t-q1-HOm">
-                    <rect key="frame" x="290" y="290" width="20" height="20"/>
-                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -170,7 +170,7 @@
         </view>
         <customObject id="rfJ-1C-Ygo" customClass="RTSMediaPlayerController">
             <connections>
-                <outlet property="activityView" destination="iN0-l3-epB" id="SBs-0U-4c0"/>
+                <outlet property="activityView" destination="iN0-l3-epB" id="8M8-ep-18R"/>
                 <outletCollection property="overlayViews" destination="kqK-gI-E5v" id="loX-MY-6Bg"/>
                 <outletCollection property="overlayViews" destination="m4e-aB-8GY" id="6Yh-NX-pIr"/>
                 <outletCollection property="overlayViews" destination="14B-nw-cM3" id="vtV-N5-t6X"/>
