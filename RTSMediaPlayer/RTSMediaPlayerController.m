@@ -103,6 +103,7 @@ NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
 	
 	[self.activityView removeGestureRecognizer:self.activityGestureRecognizer];
 	
+	self.playerView.player = nil;
 	self.player = nil;
 }
 
