@@ -87,6 +87,7 @@
 		B61E18FB1AA9EEDB00E4FAB9 /* RTSTimeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimeSlider.m; sourceTree = "<group>"; };
 		B61E19061AA9F3B900E4FAB9 /* RTSVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSVolumeView.h; sourceTree = "<group>"; };
 		B61E19071AA9F3B900E4FAB9 /* RTSVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSVolumeView.m; sourceTree = "<group>"; };
+		B64503111ADFA286001021A8 /* RTSMediaPlayer.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = RTSMediaPlayer.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerLoadStateTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaPlayerLoadStateTestCase.m"; sourceTree = SOURCE_ROOT; };
 		C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRTSMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayer.h; sourceTree = "<group>"; };
@@ -189,6 +190,7 @@
 		C201D8EC1A9DC1A40016C629 = {
 			isa = PBXGroup;
 			children = (
+				B64503111ADFA286001021A8 /* RTSMediaPlayer.podspec */,
 				C201D8F71A9DC1A40016C629 /* RTSMediaPlayer */,
 				C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */,
 				C201D8F61A9DC1A40016C629 /* Products */,
