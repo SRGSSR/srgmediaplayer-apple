@@ -179,7 +179,14 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				AVPlayerItem *playerItem = player.currentItem;
 				
 				CMTime endTime = CMTimeConvertScale (playerItem.asset.duration, player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-				if (CMTimeCompare(endTime, kCMTimeZero) != 0)
+				
+				if (CMTIME_IS_INDEFINITE(endTime))
+				{
+					self.value = CMTimeGetSeconds(player.currentTime);
+					self.valueLabel.text = @"--:--";
+					self.timeLeftValueLabel.text = @"Live";
+				}
+				else if (CMTIME_IS_VALID(endTime))
 				{
 					Float64 duration = CMTimeGetSeconds(endTime);
 					self.maximumValue = !isnan(duration) ? duration : 0.0f;
