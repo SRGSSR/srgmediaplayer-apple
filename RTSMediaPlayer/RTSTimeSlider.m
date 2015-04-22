@@ -182,7 +182,12 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				
 				if (CMTIME_IS_INDEFINITE(endTime))
 				{
-					self.value = CMTimeGetSeconds(player.currentTime);
+					Float64 duration = CMTimeGetSeconds(player.currentTime);
+					
+					self.minimumValue = -duration;
+					self.value = 0.;
+					self.maximumValue = 0.;
+					
 					self.valueLabel.text = @"--:--";
 					self.timeLeftValueLabel.text = @"Live";
 				}
@@ -328,7 +333,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	if (self.tracking)
 	{
-		[self.mediaPlayerController.player seekToTime:CMTimeMakeWithSeconds(self.value, 1)];
+		[self.mediaPlayerController.player seekToTime:CMTimeMakeWithSeconds(self.value - self.minimumValue, 1)];
 		[self.mediaPlayerController play];
 	}
 	
