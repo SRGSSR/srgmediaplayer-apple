@@ -52,6 +52,12 @@
 			<key>url</key>
 			<string>http://stream-i.rts.ch/i/bidbi/2007/bidbi_01082007-,450,k.mp4.csmil/master.m3u8</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>Timeshift SRF</string>
+			<key>url</key>
+			<string>https://srgssrrcdvr5ch-lh.akamaihd.net/i/enc5rcdvr_ch@125567/master.m3u8?hdnea=st=1429708046~exp=1429713746~acl=/i/enc5rcdvr_ch@125567/*~hmac=fed0646887132900fa2b0446823fadb3b1df13d8df0fdbcfa62ac1841ad0289a</string>
+		</dict>
 	</array>
 </dict>
 </plist>
