@@ -58,6 +58,12 @@
 			<key>url</key>
 			<string>https://srgssrrcdvr5ch-lh.akamaihd.net/i/enc5rcdvr_ch@125567/master.m3u8?hdnea=st=1429797125~exp=1429802825~acl=/i/enc5rcdvr_ch@125567/*~hmac=435ead9c57f451a98cd1dc4ce1f47e77a503ee5c4ff8cf249dd2fc698193a2a7</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>Webcam RTS mobile (ancien flux Akamai)</string>
+			<key>url</key>
+			<string>http://rtsliveevent1_ww-lh.akamaihd.net/i/event1uni_dvrtest_ww@91227/master.m3u8?__a__=off</string>
+		</dict>
 	</array>
 </dict>
 </plist>
