@@ -189,12 +189,14 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 						self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(seekableTimeRange));
 						self.value = CMTimeGetSeconds(playerItem.currentTime);
 						
-						// Live feeds have no duration
-						if (CMTIMERANGE_IS_EMPTY(seekableTimeRange))
+						// Live and timeshift feeds
+						if (CMTIMERANGE_IS_EMPTY(seekableTimeRange)															// Live feeds have empty range
+								|| (CMTIME_IS_INDEFINITE(playerItem.duration) && self.value == self.maximumValue))			// Timeshift feeds have indefinite duration
 						{
 							self.valueLabel.text = @"--:--";
 							self.timeLeftValueLabel.text = @"Live";
 						}
+						// VOD
 						else
 						{
 							self.valueLabel.text = RTSTimeSliderFormatter(self.value);
