@@ -220,7 +220,8 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 					}
 				}
 				
-				if (!isRangeExplicit) {
+				if (!isRangeExplicit)
+				{
 					self.minimumValue = 0.;
 					self.maximumValue = 0.;
 					self.value = 0.;
