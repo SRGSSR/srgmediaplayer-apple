@@ -178,36 +178,44 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				AVPlayer *player = mediaPlayerController.player;
 				AVPlayerItem *playerItem = player.currentItem;
 				
-				CMTime endTime = CMTimeConvertScale (playerItem.asset.duration, player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-				
-				if (CMTIME_IS_INDEFINITE(endTime))
+				// TODO: Should later add support for discontinuous seekable time ranges here
+				NSValue *seekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
+				if (seekableTimeRangeValue)
 				{
-					Float64 duration = CMTimeGetSeconds(player.currentTime);
-					
-					self.minimumValue = -duration;
-					self.value = 0.;
-					self.maximumValue = 0.;
-					
-					self.valueLabel.text = @"--:--";
-					self.timeLeftValueLabel.text = @"Live";
-				}
-				else if (CMTIME_IS_VALID(endTime))
-				{
-					Float64 duration = CMTimeGetSeconds(endTime);
-					self.maximumValue = !isnan(duration) ? duration : 0.0f;
-					
-					Float64 currentTime = CMTimeGetSeconds(player.currentTime);
-					if (currentTime < 0)
-						return;
-					
-					self.value = currentTime;
-					self.valueLabel.text = RTSTimeSliderFormatter(currentTime);
-					self.timeLeftValueLabel.text = RTSTimeSliderFormatter(currentTime - duration);
+					CMTimeRange seekableTimeRange = [seekableTimeRangeValue CMTimeRangeValue];
+					if (CMTIMERANGE_IS_VALID(seekableTimeRange))
+					{
+						self.minimumValue = CMTimeGetSeconds(seekableTimeRange.start);
+						self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(seekableTimeRange));
+						self.value = CMTimeGetSeconds(playerItem.currentTime);
+						
+						// Live feeds have no duration
+						if (CMTIMERANGE_IS_EMPTY(seekableTimeRange))
+						{
+							self.valueLabel.text = @"--:--";
+							self.timeLeftValueLabel.text = @"Live";
+						}
+						else
+						{
+							self.valueLabel.text = RTSTimeSliderFormatter(self.value);
+							self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
+						}
+					}
+					else
+					{
+						self.minimumValue = 0.;
+						self.maximumValue = 0.;
+						self.value = 0.;
+						
+						self.valueLabel.text = @"--:--";
+						self.timeLeftValueLabel.text = @"--:--";
+					}
 				}
 				else
 				{
-					self.maximumValue = 0;
-					self.value = 0;
+					self.minimumValue = 0.;
+					self.maximumValue = 0.;
+					self.value = 0.;
 					
 					self.valueLabel.text = @"--:--";
 					self.timeLeftValueLabel.text = @"--:--";
