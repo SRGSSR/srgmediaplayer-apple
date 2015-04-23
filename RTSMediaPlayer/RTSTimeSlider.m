@@ -341,7 +341,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	if (self.tracking)
 	{
-		[self.mediaPlayerController.player seekToTime:CMTimeMakeWithSeconds(self.value - self.minimumValue, 1)];
+		[self.mediaPlayerController.player seekToTime:CMTimeMakeWithSeconds(self.value, 1)];
 		[self.mediaPlayerController play];
 	}
 	
