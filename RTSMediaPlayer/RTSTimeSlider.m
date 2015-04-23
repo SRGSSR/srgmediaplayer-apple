@@ -173,10 +173,14 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		@weakify(self)
 		self.periodicTimeObserver = [mediaPlayerController.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 5) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
 			@strongify(self)
+			
 			if (!self.isTracking)
 			{
 				AVPlayer *player = mediaPlayerController.player;
 				AVPlayerItem *playerItem = player.currentItem;
+				
+				// Will be set to YES if the range is well-defined
+				BOOL isRangeExplicit = NO;
 				
 				// TODO: Should later add support for discontinuous seekable time ranges here
 				NSValue *seekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
@@ -211,19 +215,12 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 							self.valueLabel.text = RTSTimeSliderFormatter(self.value);
 							self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
 						}
-					}
-					else
-					{
-						self.minimumValue = 0.;
-						self.maximumValue = 0.;
-						self.value = 0.;
 						
-						self.valueLabel.text = @"--:--";
-						self.timeLeftValueLabel.text = @"--:--";
+						isRangeExplicit = YES;
 					}
 				}
-				else
-				{
+				
+				if (!isRangeExplicit) {
 					self.minimumValue = 0.;
 					self.maximumValue = 0.;
 					self.value = 0.;
@@ -231,6 +228,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 					self.valueLabel.text = @"--:--";
 					self.timeLeftValueLabel.text = @"--:--";
 				}
+				
 			}
 			[self setNeedsDisplay];
 		}];
