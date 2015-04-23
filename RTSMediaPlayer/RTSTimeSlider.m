@@ -195,7 +195,6 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				{
 					Float64 duration = CMTimeGetSeconds(endTime);
 					self.maximumValue = !isnan(duration) ? duration : 0.0f;
-					self.maximumValueLabel.text = RTSTimeSliderFormatter(duration);
 					
 					Float64 currentTime = CMTimeGetSeconds(player.currentTime);
 					if (currentTime < 0)
@@ -210,7 +209,6 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 					self.maximumValue = 0;
 					self.value = 0;
 					
-					self.maximumValueLabel.text = @"--:--";
 					self.valueLabel.text = @"--:--";
 					self.timeLeftValueLabel.text = @"--:--";
 				}

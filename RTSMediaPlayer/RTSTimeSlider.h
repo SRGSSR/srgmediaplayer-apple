@@ -15,7 +15,6 @@
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, weak) IBOutlet UILabel *timeLeftValueLabel;
-@property (nonatomic, weak) IBOutlet UILabel *maximumValueLabel;
 @property (nonatomic, weak) IBOutlet UILabel *valueLabel;
 
 @end
