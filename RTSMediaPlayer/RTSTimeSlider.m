@@ -135,7 +135,11 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
 }
 
-
+- (BOOL)isDraggable
+{
+	// A slider knob can be dragged iff it corresponds to a valid range
+	return self.minimumValue != self.maximumValue;
+}
 
 #pragma mark - Slider Appearance
 
@@ -327,11 +331,10 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
-	if (beginTracking)
+	if (beginTracking && [self isDraggable])
 	{
 		[self.mediaPlayerController pause];
 	}
-	
 	
 	return beginTracking;
 }
@@ -339,7 +342,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (BOOL) continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	BOOL continueTracking = [super continueTrackingWithTouch:touch withEvent:event];
-	if (continueTracking)
+	if (continueTracking && [self isDraggable])
 		[self setNeedsDisplay];
 		
 	return continueTracking;
@@ -347,7 +350,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (void) endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	if (self.tracking)
+	if ([self isDraggable] && self.tracking)
 	{
 		[self.mediaPlayerController.player seekToTime:CMTimeMakeWithSeconds(self.value, 1)];
 		[self.mediaPlayerController play];
