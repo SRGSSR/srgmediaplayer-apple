@@ -180,63 +180,75 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 			
 			if (!self.isTracking)
 			{
-				AVPlayer *player = mediaPlayerController.player;
-				AVPlayerItem *playerItem = player.currentItem;
-				
-				// Will be set to YES if the range is well-defined
-				BOOL isRangeExplicit = NO;
-				
-				// TODO: Should later add support for discontinuous seekable time ranges here
-				NSValue *seekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-				if (seekableTimeRangeValue)
+				CMTimeRange currentTimeRange = [self currentTimeRange];
+				if (!CMTIMERANGE_IS_EMPTY(currentTimeRange))
 				{
-					CMTimeRange seekableTimeRange = [seekableTimeRangeValue CMTimeRangeValue];
-					if (CMTIMERANGE_IS_VALID(seekableTimeRange))
-					{
-						self.minimumValue = CMTimeGetSeconds(seekableTimeRange.start);
-						self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(seekableTimeRange));
-						self.value = CMTimeGetSeconds(playerItem.currentTime);
-						
-						// Live and timeshift feeds in live conditions. This happens when either the following condition
-						// is met:
-						//  - We have a pure live feed, which is characterized by an empty range
-						//  - We have a timeshift feed, which is characterized by an indefinite player item duration, and which is close
-						//    to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance small in
-						//    comparison to the total time range (without this tolerance, after scrubbing back and forth to the live,
-						//    the current slider value might namely be a little bit lagging behind the maximum value). Here we consider
-						//    a tolerance corresponding to 1 minute in 8 hours, with a maximum tolerance of 2 minutes
-						static const float RTSToleranceFactor = 1.f / (8.f * 60.f);
-						static const float RTSMaximumToleranceInSeconds = 2.f * 60.f;
-						if (CMTIMERANGE_IS_EMPTY(seekableTimeRange)
-								|| (CMTIME_IS_INDEFINITE(playerItem.duration) && (self.maximumValue - self.value < fminf(RTSToleranceFactor * CMTimeGetSeconds(seekableTimeRange.duration), RTSMaximumToleranceInSeconds))))
-						{
-							self.valueLabel.text = @"--:--";
-							self.timeLeftValueLabel.text = @"Live";
-						}
-						// Video on demand
-						else
-						{
-							self.valueLabel.text = RTSTimeSliderFormatter(self.value);
-							self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
-						}
-						
-						isRangeExplicit = YES;
-					}
+					self.minimumValue = CMTimeGetSeconds(currentTimeRange.start);
+					self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(currentTimeRange));
+					
+					AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+					self.value = CMTimeGetSeconds(playerItem.currentTime);
 				}
-				
-				if (!isRangeExplicit)
+				else
 				{
 					self.minimumValue = 0.;
 					self.maximumValue = 0.;
 					self.value = 0.;
-					
-					self.valueLabel.text = @"--:--";
-					self.timeLeftValueLabel.text = @"--:--";
 				}
-				
 			}
+			[self updateTimeRangeLabels];
 			[self setNeedsDisplay];
 		}];
+	}
+}
+
+
+
+#pragma mark - Time range retrieval and display
+
+- (CMTimeRange) currentTimeRange
+{
+	// TODO: Should later add support for discontinuous seekable time ranges
+	AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+	NSValue *seekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
+	if (seekableTimeRangeValue)
+	{
+		CMTimeRange seekableTimeRange = [seekableTimeRangeValue CMTimeRangeValue];
+		return CMTIMERANGE_IS_VALID(seekableTimeRange) ? seekableTimeRange : kCMTimeRangeZero;
+	}
+	else
+	{
+		return kCMTimeRangeZero;
+	}
+}
+
+- (void) updateTimeRangeLabels
+{
+	CMTimeRange currentTimeRange = [self currentTimeRange];
+	AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+
+	// Live and timeshift feeds in live conditions. This happens when either the following condition
+	// is met:
+	//  - We have a pure live feed, which is characterized by an empty range
+	//  - We have a timeshift feed, which is characterized by an indefinite player item duration, and which is close
+	//    to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance small in
+	//    comparison to the total time range (without this tolerance, after scrubbing back and forth to the live,
+	//    the current slider value might namely be a little bit lagging behind the maximum value). Here we consider
+	//    a tolerance corresponding to 1 minute in 8 hours, with a maximum tolerance of 2 minutes
+	static const float RTSToleranceFactor = 1.f / (8.f * 60.f);
+	static const float RTSMaximumToleranceInSeconds = 2.f * 60.f;
+	
+	if (CMTIMERANGE_IS_EMPTY(currentTimeRange)
+		|| (CMTIME_IS_INDEFINITE(playerItem.duration) && (self.maximumValue - self.value < fminf(RTSToleranceFactor * CMTimeGetSeconds(currentTimeRange.duration), RTSMaximumToleranceInSeconds))))
+	{
+		self.valueLabel.text = @"--:--";
+		self.timeLeftValueLabel.text = @"Live";
+	}
+	// Video on demand
+	else
+	{
+		self.valueLabel.text = RTSTimeSliderFormatter(self.value);
+		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
 	}
 }
 
