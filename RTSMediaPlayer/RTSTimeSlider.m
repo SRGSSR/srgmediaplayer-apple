@@ -355,8 +355,11 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	BOOL continueTracking = [super continueTrackingWithTouch:touch withEvent:event];
 	if (continueTracking && [self isDraggable])
+	{
+		[self updateTimeRangeLabels];
 		[self setNeedsDisplay];
-		
+	}
+	
 	return continueTracking;
 }
 
