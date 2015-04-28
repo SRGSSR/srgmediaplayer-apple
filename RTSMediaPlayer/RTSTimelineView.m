@@ -7,4 +7,14 @@
 
 @implementation RTSTimelineView
 
+- (void) reloadData
+{
+	NSInteger numberOfEvents = [self.dataSource numberOfEventsInTimelineView:self];
+	for (NSInteger i = 0; i < numberOfEvents; ++i)
+	{
+		// RTSTimelineEvent *event = [self.dataSource timelineView:self eventAtIndex:i];
+		
+	}
+}
+
 @end

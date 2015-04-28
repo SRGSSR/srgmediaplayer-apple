@@ -3,6 +3,8 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
+#import "RTSTimelineEvent.h"
+
 #import <UIKit/UIKit.h>
 
 @class RTSMediaPlayerController;
@@ -10,11 +12,8 @@
 
 @protocol RTSTimelineViewDataSource <NSObject>
 
-- (void) numberOfEventsInTimelineView:(RTSTimelineView *)timelineView;
-
-@optional
-- (NSString *) timelineView:(RTSTimelineView *)timelineView titleForEventAtIndex:(NSUInteger)index;
-- (UIImage *) timelineView:(RTSTimelineView *)timelineView imageForEventAtIndex:(NSUInteger)index;
+- (NSInteger) numberOfEventsInTimelineView:(RTSTimelineView *)timelineView;
+- (RTSTimelineEvent *) timelineView:(RTSTimelineView *)timelineView eventAtIndex:(NSInteger)index;
 
 @end
 
@@ -23,5 +22,7 @@
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, weak) id<RTSTimelineViewDataSource> dataSource;
+
+- (void) reloadData;
 
 @end
