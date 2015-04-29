@@ -363,6 +363,7 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="eMv-Af-zLT" id="cNc-0s-ouR"/>
+                                    <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="OB9-xR-Jf9"/>
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Atp-kj-ZMO" userLabel="Bottom Bar View">
