@@ -55,7 +55,8 @@
 			  @"CellDefaultRTS",
 			  @"CellInline",
 			  @"CellFullscreen",
-			  @"CellMultiPlayers"];
+			  @"CellMultiPlayers",
+			  @"CellTimeline" ];
 }
 
 

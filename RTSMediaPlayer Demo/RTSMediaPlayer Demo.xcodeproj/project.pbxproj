@@ -20,6 +20,7 @@
 		C2AB24EF1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C2AB24EE1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle */; };
 		C2CF7FAD1ABC0F7B0005FE51 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CF7FAC1ABC0F7B0005FE51 /* libRTSMediaPlayer.a */; };
 		C2F54A101A9F713300496C59 /* RTSMediaPlayer_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */; };
+		E60E17181AF0B2F40062E96E /* DemoTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		C2F549F01A9F713300496C59 /* RTSMediaPlayer Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RTSMediaPlayer Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A091A9F713300496C59 /* RTSMediaPlayer DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RTSMediaPlayer DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayer_DemoTests.m; sourceTree = "<group>"; };
+		E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTimelineViewController.h; sourceTree = "<group>"; };
+		E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTimelineViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,14 +83,16 @@
 			children = (
 				B61E18CB1AA8605200E4FAB9 /* AppDelegate.h */,
 				B61E18CC1AA8605200E4FAB9 /* AppDelegate.m */,
-				B61E18E91AA863B700E4FAB9 /* MenuTableViewController.h */,
-				B61E18EA1AA863B700E4FAB9 /* MenuTableViewController.m */,
 				B61E18E51AA863B700E4FAB9 /* DemoFullScreenViewController.h */,
 				B61E18E61AA863B700E4FAB9 /* DemoFullScreenViewController.m */,
 				B61E18E71AA863B700E4FAB9 /* DemoInlineViewController.h */,
 				B61E18E81AA863B700E4FAB9 /* DemoInlineViewController.m */,
 				B68883291AAF72B500B9E34E /* DemoMultiPlayersViewController.h */,
 				B688832A1AAF72B500B9E34E /* DemoMultiPlayersViewController.m */,
+				E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */,
+				E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */,
+				B61E18E91AA863B700E4FAB9 /* MenuTableViewController.h */,
+				B61E18EA1AA863B700E4FAB9 /* MenuTableViewController.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 				B61E18EB1AA863B700E4FAB9 /* DemoFullScreenViewController.m in Sources */,
 				B61E18CF1AA8605200E4FAB9 /* AppDelegate.m in Sources */,
 				B61E18ED1AA863B700E4FAB9 /* MenuTableViewController.m in Sources */,
+				E60E17181AF0B2F40062E96E /* DemoTimelineViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

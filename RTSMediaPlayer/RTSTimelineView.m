@@ -28,7 +28,7 @@ static void commonInit(RTSTimelineView *self)
 
 @implementation RTSTimelineView
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype) initWithFrame:(CGRect)frame
 {
 	if (self = [super initWithFrame:frame])
 	{
@@ -37,7 +37,7 @@ static void commonInit(RTSTimelineView *self)
 	return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
+- (instancetype) initWithCoder:(NSCoder *)aDecoder
 {
 	if (self = [super initWithCoder:aDecoder])
 	{
@@ -46,7 +46,7 @@ static void commonInit(RTSTimelineView *self)
 	return self;
 }
 
-- (void)willMoveToWindow:(UIWindow *)window
+- (void) willMoveToWindow:(UIWindow *)window
 {
 	[super willMoveToWindow:window];
 	

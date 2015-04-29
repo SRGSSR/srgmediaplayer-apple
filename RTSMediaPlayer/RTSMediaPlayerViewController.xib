@@ -108,16 +108,6 @@
                         <constraint firstItem="BEG-pM-Pvu" firstAttribute="leading" secondItem="kqK-gI-E5v" secondAttribute="leading" id="fuo-hn-ij3"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="phg-fy-KBR" userLabel="Timeline View" customClass="RTSTimelineView">
-                    <rect key="frame" x="0.0" y="440" width="600" height="80"/>
-                    <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="80" id="G0N-Ed-B0H"/>
-                    </constraints>
-                    <connections>
-                        <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="Vt4-RC-ZQf"/>
-                    </connections>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m4e-aB-8GY" userLabel="Bottom Bar View">
                     <rect key="frame" x="0.0" y="520" width="600" height="80"/>
                     <subviews>
@@ -170,11 +160,8 @@
                 <constraint firstAttribute="trailing" secondItem="kqK-gI-E5v" secondAttribute="trailing" id="13J-fR-tYI"/>
                 <constraint firstItem="m4e-aB-8GY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EjJ-Y6-i5x"/>
                 <constraint firstAttribute="trailing" secondItem="m4e-aB-8GY" secondAttribute="trailing" id="Ek5-aN-GFQ"/>
-                <constraint firstItem="m4e-aB-8GY" firstAttribute="top" secondItem="phg-fy-KBR" secondAttribute="bottom" id="WJK-Tq-4HE"/>
-                <constraint firstAttribute="trailing" secondItem="phg-fy-KBR" secondAttribute="trailing" id="WsN-cG-mu6"/>
                 <constraint firstItem="kqK-gI-E5v" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="b1o-Vb-QQk"/>
                 <constraint firstAttribute="centerX" secondItem="d2t-q1-HOm" secondAttribute="centerX" id="ghL-wx-Tv8"/>
-                <constraint firstItem="phg-fy-KBR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="i8g-SC-d8V"/>
                 <constraint firstAttribute="bottom" secondItem="m4e-aB-8GY" secondAttribute="bottom" id="mxb-hA-Ktf"/>
                 <constraint firstAttribute="centerY" secondItem="d2t-q1-HOm" secondAttribute="centerY" id="qRh-aH-gf7"/>
                 <constraint firstItem="kqK-gI-E5v" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="t4d-IC-SHd"/>
@@ -187,7 +174,6 @@
                 <outletCollection property="overlayViews" destination="kqK-gI-E5v" id="loX-MY-6Bg"/>
                 <outletCollection property="overlayViews" destination="m4e-aB-8GY" id="6Yh-NX-pIr"/>
                 <outletCollection property="overlayViews" destination="14B-nw-cM3" id="vtV-N5-t6X"/>
-                <outletCollection property="overlayViews" destination="phg-fy-KBR" id="wym-Ju-O7f"/>
             </connections>
         </customObject>
     </objects>
