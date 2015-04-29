@@ -300,6 +300,7 @@
                                                         <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <connections>
+                                                            <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="dCk-7E-N84"/>
                                                             <outlet property="timeLeftValueLabel" destination="dfd-Dg-at9" id="zYr-oy-eLE"/>
                                                             <outlet property="valueLabel" destination="7Sh-fC-GtZ" id="Gkj-5M-0ka"/>
                                                         </connections>
@@ -354,9 +355,6 @@
                                     <constraint firstAttribute="bottom" secondItem="Cgf-dG-XN8" secondAttribute="bottom" id="f2g-ie-izK"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="pVN-TT-CD3">
-                                <rect key="frame" x="290" y="290" width="20" height="20"/>
-                            </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LNH-3e-cnt" userLabel="Timeline View" customClass="RTSTimelineView">
                                 <rect key="frame" x="0.0" y="516" width="600" height="42"/>
                                 <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
@@ -385,6 +383,9 @@
                                                 <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="01E-0I-SR1"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
@@ -401,17 +402,28 @@
                             <constraint firstItem="LNH-3e-cnt" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="Dc1-l5-DtI"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="top" secondItem="LNH-3e-cnt" secondAttribute="bottom" id="LNv-Oj-SFE"/>
                             <constraint firstAttribute="trailing" secondItem="mhH-gw-9eI" secondAttribute="trailing" id="Td4-mg-1Xm"/>
-                            <constraint firstAttribute="centerY" secondItem="pVN-TT-CD3" secondAttribute="centerY" id="Vwq-SL-nvx"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="Yen-y8-iQF"/>
                             <constraint firstItem="mhH-gw-9eI" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="-20" id="q2F-oj-GWi"/>
                             <constraint firstItem="mhH-gw-9eI" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="qzH-4q-OuQ"/>
                             <constraint firstAttribute="trailing" secondItem="LNH-3e-cnt" secondAttribute="trailing" id="sNi-AE-hgD"/>
-                            <constraint firstAttribute="centerX" secondItem="pVN-TT-CD3" secondAttribute="centerX" id="sUW-nG-yFM"/>
                             <constraint firstItem="FIy-lE-a4L" firstAttribute="top" secondItem="Atp-kj-ZMO" secondAttribute="bottom" id="zgy-JH-Op8"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="o1e-La-elO"/>
+                        <outlet property="videoView" destination="t9K-xg-VIe" id="IpW-Yn-5Cd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xu3-gt-Efq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="z6L-aG-cvh" customClass="RTSMediaPlayerController">
+                    <connections>
+                        <outlet property="activityView" destination="t9K-xg-VIe" id="EgN-1d-kBM"/>
+                        <outlet property="dataSource" destination="eMv-Af-zLT" id="QgT-Gh-22L"/>
+                        <outletCollection property="overlayViews" destination="mhH-gw-9eI" id="z9R-3R-xEF"/>
+                        <outletCollection property="overlayViews" destination="LNH-3e-cnt" id="XcU-vU-Bl4"/>
+                        <outletCollection property="overlayViews" destination="Atp-kj-ZMO" id="fZ3-TQ-k6l"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="487" y="998"/>
         </scene>

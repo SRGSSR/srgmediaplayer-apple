@@ -3,8 +3,9 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
+#import <RTSMediaPlayer/RTSMediaPlayer.h>
 #import <UIKit/UIKit.h>
 
-@interface DemoTimelineViewController : UIViewController
+@interface DemoTimelineViewController : UIViewController <RTSMediaPlayerControllerDataSource>
 
 @end
