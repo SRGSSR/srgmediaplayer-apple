@@ -15,11 +15,27 @@
 
 @implementation DemoTimelineViewController
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - View lifecycle
 
 - (void) viewDidLoad
 {
 	[super viewDidLoad];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(mediaPlayerDidShowControlOverlays:)
+												 name:RTSMediaPlayerDidShowControlOverlaysNotification
+											   object:self.mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(mediaPlayerDidHideControlOverlays:)
+												 name:RTSMediaPlayerDidHideControlOverlaysNotification
+											   object:self.mediaPlayerController];
 	
 	[self.mediaPlayerController attachPlayerToView:self.videoView];
 }
@@ -27,12 +43,12 @@
 - (void) viewWillAppear:(BOOL)animated
 {
 	if ([self isMovingToParentViewController] || [self isBeingPresented])
- {
+	{
 		[self.mediaPlayerController play];
 	}
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void) viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
 	
@@ -44,7 +60,7 @@
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
 
-- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
 {
 	NSURL *URL = [NSURL URLWithString:@"http://test.event.api.swisstxt.ch:80/v1/stream/srf/byEventItemIdAndType/265862/hls"];
 	[[[NSURLSession sharedSession] dataTaskWithURL:URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -72,6 +88,18 @@
 - (IBAction) dismiss:(id)sender
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Notifications
+
+- (void) mediaPlayerDidShowControlOverlays:(NSNotification *)notification
+{
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
+
+- (void) mediaPlayerDidHideControlOverlays:(NSNotification *)notificaiton
+{
+	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 @end
