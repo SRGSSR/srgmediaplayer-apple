@@ -21,7 +21,7 @@
 
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
-@property (nonatomic, weak) id<RTSTimelineViewDataSource> dataSource;
+@property (nonatomic, weak) IBOutlet id<RTSTimelineViewDataSource> dataSource;
 
 - (void) reloadData;
 

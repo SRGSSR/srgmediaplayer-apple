@@ -361,6 +361,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="JIi-NK-bSr"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="eMv-Af-zLT" id="cNc-0s-ouR"/>
+                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Atp-kj-ZMO" userLabel="Bottom Bar View">
                                 <rect key="frame" x="0.0" y="558" width="600" height="42"/>

@@ -83,6 +83,18 @@
 	}] resume];
 }
 
+#pragma mark - RTSTimelineViewDataSource protocol
+
+- (NSInteger) numberOfEventsInTimelineView:(RTSTimelineView *)timelineView
+{
+	return 10;
+}
+
+- (RTSTimelineEvent *) timelineView:(RTSTimelineView *)timelineView eventAtIndex:(NSInteger)index
+{
+	return [RTSTimelineEvent timelineEventWithTitle:@"Test"];
+}
+
 #pragma mark - Actions
 
 - (IBAction) dismiss:(id)sender
