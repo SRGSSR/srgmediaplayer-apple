@@ -110,7 +110,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="phg-fy-KBR" userLabel="Timeline View" customClass="RTSTimelineView">
                     <rect key="frame" x="0.0" y="440" width="600" height="80"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="80" id="G0N-Ed-B0H"/>
                     </constraints>
@@ -187,6 +187,7 @@
                 <outletCollection property="overlayViews" destination="kqK-gI-E5v" id="loX-MY-6Bg"/>
                 <outletCollection property="overlayViews" destination="m4e-aB-8GY" id="6Yh-NX-pIr"/>
                 <outletCollection property="overlayViews" destination="14B-nw-cM3" id="vtV-N5-t6X"/>
+                <outletCollection property="overlayViews" destination="phg-fy-KBR" id="wym-Ju-O7f"/>
             </connections>
         </customObject>
     </objects>
