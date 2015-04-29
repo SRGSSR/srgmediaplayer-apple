@@ -414,6 +414,7 @@
                     </view>
                     <connections>
                         <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="o1e-La-elO"/>
+                        <outlet property="timelineView" destination="LNH-3e-cnt" id="Daa-IJ-43k"/>
                         <outlet property="videoView" destination="t9K-xg-VIe" id="IpW-Yn-5Cd"/>
                     </connections>
                 </viewController>

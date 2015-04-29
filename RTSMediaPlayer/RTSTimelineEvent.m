@@ -8,46 +8,33 @@
 @interface RTSTimelineEvent ()
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic) UIImage *iconImage;
+@property (nonatomic) CMTime time;
 
 @end
 
 @implementation RTSTimelineEvent
 
-+ (instancetype) timelineEventWithTitle:(NSString *)title iconImage:(UIImage *)iconImage
+- (instancetype) initWithTitle:(NSString *)title time:(CMTime)time
 {
-	return [[[self class] alloc] initWithTitle:title iconImage:iconImage];
-}
-
-+ (instancetype) timelineEventWithTitle:(NSString *)title
-{
-	return [[[self class] alloc] initWithTitle:title iconImage:nil];
-}
-
-+ (instancetype) timelineEventWithIconImage:(UIImage *)iconImage
-{
-	return [[[self class] alloc] initWithTitle:nil iconImage:iconImage];
-}
-
-- (instancetype) initWithTitle:(NSString *)title iconImage:(UIImage *)iconImage
-{
+	NSParameterAssert(title);
+	
 	if (self = [super init])
 	{
 		self.title = title;
-		self.iconImage = iconImage;
+		self.time = time;
 	}
 	return self;
 }
 
 #pragma mark Description
 
-- (NSString *)description
+- (NSString *) description
 {
-	return [NSString stringWithFormat:@"<%@: %p; title: %@; iconImage: %@>",
+	return [NSString stringWithFormat:@"<%@: %p; title: %@; time: %@>",
 			[self class],
 			self,
 			self.title,
-			self.iconImage];
+			@(CMTimeGetSeconds(self.time))];
 }
 
 @end

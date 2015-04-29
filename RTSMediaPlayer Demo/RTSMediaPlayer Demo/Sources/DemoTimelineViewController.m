@@ -5,11 +5,19 @@
 
 #import "DemoTimelineViewController.h"
 
+static NSString * const DemoTimeLineEventIdentifier = @"265862";
+static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
+
 @interface DemoTimelineViewController ()
 
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
+@property (nonatomic) NSArray *timelineEvents;
+
 @property (nonatomic, weak) IBOutlet UIView *videoView;
+@property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
+
+@property (nonatomic) NSTimer *timelineRefreshTimer;
 
 @end
 
@@ -20,6 +28,18 @@
 - (void) dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Properties
+
+- (void)setTimelineRefreshTimer:(NSTimer *)timelineRefreshTimer
+{
+	if (_timelineRefreshTimer)
+	{
+		[_timelineRefreshTimer invalidate];
+	}
+	
+	_timelineRefreshTimer = timelineRefreshTimer;
 }
 
 #pragma mark - View lifecycle
@@ -46,6 +66,13 @@
 	{
 		[self.mediaPlayerController play];
 	}
+	
+	self.timelineRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:DemoTimeLineRefreshInterval
+																 target:self
+															   selector:@selector(refreshTimeline:)
+															   userInfo:nil
+																repeats:YES];
+	[self.timelineRefreshTimer fire];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -56,30 +83,34 @@
 	{
 		[self.mediaPlayerController reset];
 	}
+	
+	self.timelineRefreshTimer = nil;
 }
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
 
 - (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
 {
-	NSURL *URL = [NSURL URLWithString:@"http://test.event.api.swisstxt.ch:80/v1/stream/srf/byEventItemIdAndType/265862/hls"];
-	[[[NSURLSession sharedSession] dataTaskWithURL:URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-		if (error)
-		{
-			completionHandler(nil, error);
-			return;
-		}
-		
-		NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		if (! responseString)
-		{
-			NSError *responseError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:nil];
-			completionHandler(nil, responseError);
-		}
-		responseString = [responseString stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-		
-		NSURL *URL = [NSURL URLWithString:responseString];
-		completionHandler(URL, nil);
+	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/stream/srf/byEventItemIdAndType/%@/hls", DemoTimeLineEventIdentifier];
+	[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (error)
+			{
+				completionHandler(nil, error);
+				return;
+			}
+			
+			NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+			if (! responseString)
+			{
+				NSError *responseError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:nil];
+				completionHandler(nil, responseError);
+			}
+			responseString = [responseString stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+			
+			NSURL *URL = [NSURL URLWithString:responseString];
+			completionHandler(URL, nil);
+		});
 	}] resume];
 }
 
@@ -87,12 +118,12 @@
 
 - (NSInteger) numberOfEventsInTimelineView:(RTSTimelineView *)timelineView
 {
-	return 10;
+	return self.timelineEvents.count;
 }
 
 - (RTSTimelineEvent *) timelineView:(RTSTimelineView *)timelineView eventAtIndex:(NSInteger)index
 {
-	return [RTSTimelineEvent timelineEventWithTitle:@"Test"];
+	return self.timelineEvents[index];
 }
 
 #pragma mark - Actions
@@ -112,6 +143,41 @@
 - (void) mediaPlayerDidHideControlOverlays:(NSNotification *)notificaiton
 {
 	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+}
+
+#pragma mark - Timers
+
+- (void) refreshTimeline:(NSTimer *)timer
+{
+	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", DemoTimeLineEventIdentifier];
+	[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (error)
+			{
+				return;
+			}
+			
+			id responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+			if (!responseObject || ![responseObject isKindOfClass:[NSArray class]])
+			{
+				return;
+			}
+			
+			NSMutableArray *timelineEvents = [NSMutableArray array];
+			for (NSDictionary *highlight in responseObject)
+			{
+				NSDate *streamStartDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"streamStartTime"] doubleValue]];
+				NSDate *highlightDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"timestamp"] doubleValue]];
+				
+				CMTime time = CMTimeMake([highlightDate timeIntervalSinceDate:streamStartDate], 1.);
+				RTSTimelineEvent *timelineEvent = [[RTSTimelineEvent alloc] initWithTitle:highlight[@"title"] time:time];
+				[timelineEvents addObject:timelineEvent];
+			}
+			self.timelineEvents = [NSArray arrayWithArray:timelineEvents];
+			
+			[self.timelineView reloadData];
+		});
+	}] resume];
 }
 
 @end
