@@ -65,6 +65,7 @@ NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
 
 @synthesize player = _player;
 @synthesize view = _view;
+@synthesize overlayViews = _overlayViews;
 @synthesize activityGestureRecognizer = _activityGestureRecognizer;
 @synthesize playbackState = _playbackState;
 @synthesize stateMachine = _stateMachine;
@@ -660,6 +661,25 @@ static void LogProperties(id object)
 
 #pragma mark - Overlays
 
+- (NSArray *) overlayViews
+{
+	@synchronized(self)
+	{
+		if (!_overlayViews)
+			_overlayViews = @[ [UIView new] ];
+			
+		return _overlayViews;
+	}
+}
+
+- (void) setOverlayViews:(NSArray *)overlayViews
+{
+	@synchronized(self)
+	{
+		_overlayViews = overlayViews;
+	}
+}
+
 - (void) handleSingleTap
 {
 	[self toggleOverlays];
@@ -678,9 +698,6 @@ static void LogProperties(id object)
 - (void) toggleOverlays
 {
 	UIView *firstOverlayView = [self.overlayViews firstObject];
-	if (!firstOverlayView)
-		return;
-	
 	[self setOverlaysVisible:firstOverlayView.hidden];
 }
 
