@@ -9,11 +9,11 @@
 
 @interface RTSTimelineEvent : NSObject
 
-- (instancetype) initWithTitle:(NSString *)title time:(CMTime)time;
+- (instancetype) initWithTime:(CMTime)time;
 
-@property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly) CMTime time;
 
+@property (nonatomic, copy) NSString *title;
 @property (nonatomic) UIImage *iconImage;
 
 @end

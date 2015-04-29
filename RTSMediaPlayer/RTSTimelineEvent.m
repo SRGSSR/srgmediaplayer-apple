@@ -7,20 +7,16 @@
 
 @interface RTSTimelineEvent ()
 
-@property (nonatomic, copy) NSString *title;
 @property (nonatomic) CMTime time;
 
 @end
 
 @implementation RTSTimelineEvent
 
-- (instancetype) initWithTitle:(NSString *)title time:(CMTime)time
+- (instancetype) initWithTime:(CMTime)time
 {
-	NSParameterAssert(title);
-	
 	if (self = [super init])
 	{
-		self.title = title;
 		self.time = time;
 	}
 	return self;

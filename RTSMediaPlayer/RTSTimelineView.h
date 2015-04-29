@@ -3,8 +3,7 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import "RTSTimelineEvent.h"
-
+#import <RTSMediaPlayer/RTSTimelineEvent.h>
 #import <UIKit/UIKit.h>
 
 @class RTSMediaPlayerController;

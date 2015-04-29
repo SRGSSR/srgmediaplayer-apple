@@ -170,7 +170,8 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 				NSDate *highlightDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"timestamp"] doubleValue]];
 				
 				CMTime time = CMTimeMake([highlightDate timeIntervalSinceDate:streamStartDate], 1.);
-				RTSTimelineEvent *timelineEvent = [[RTSTimelineEvent alloc] initWithTitle:highlight[@"title"] time:time];
+				RTSTimelineEvent *timelineEvent = [[RTSTimelineEvent alloc] initWithTime:time];
+				timelineEvent.title = highlight[@"title"];
 				[timelineEvents addObject:timelineEvent];
 			}
 			self.timelineEvents = [NSArray arrayWithArray:timelineEvents];
