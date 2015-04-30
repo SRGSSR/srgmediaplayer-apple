@@ -52,6 +52,24 @@
 			<key>url</key>
 			<string>http://stream-i.rts.ch/i/bidbi/2007/bidbi_01082007-,450,k.mp4.csmil/master.m3u8</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>Timeshift SwissTXT</string>
+			<key>url</key>
+			<string>https://srgssrrcdvr5ch-lh.akamaihd.net/i/enc5rcdvr_ch@125567/master.m3u8?hdnea=st=1430208259~exp=1430213959~acl=/i/enc5rcdvr_ch@125567/*~hmac=d42fe6d543723096c63f3081e231b68b8e954668271ad40fd7c3e462755b3686</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Webcam RTS mobile (avec underscores)</string>
+			<key>url</key>
+			<string>http://rtsliveevent1_ww-lh.akamaihd.net/i/event1uni_dvrtest_ww@91227/master.m3u8?__a__=off</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Webcam RTS mobile (sans underscores)</string>
+			<key>url</key>
+			<string>http://rtsdvr2015-lh.akamaihd.net/i/rtsdvr2015test1_ww@317507/master.m3u8</string>
+		</dict>
 	</array>
 </dict>
 </plist>
