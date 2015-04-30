@@ -8,10 +8,10 @@
 
 @interface RTSPlaybackBlockRegistration : NSObject
 
-- (instancetype)initWithPlaybackBlock:(void (^)(CMTime time))playbackBlock timeInterval:(NSTimeInterval)timeInterval NS_DESIGNATED_INITIALIZER OS_NONNULL_ALL;
+- (instancetype)initWithPlaybackBlock:(void (^)(CMTime time))playbackBlock interval:(CMTime)interval NS_DESIGNATED_INITIALIZER OS_NONNULL_ALL;
 
 @property (nonatomic, readonly, copy) void (^playbackBlock)(CMTime time);
-@property (nonatomic, readonly) NSTimeInterval timeInterval;
+@property (nonatomic, readonly) CMTime interval;
 
 @property (nonatomic, readonly, weak) AVPlayer *player;
 @property (nonatomic, readonly) id periodicTimeObserver;

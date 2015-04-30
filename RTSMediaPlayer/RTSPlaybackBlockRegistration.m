@@ -8,7 +8,7 @@
 @interface RTSPlaybackBlockRegistration ()
 
 @property (nonatomic, copy) void (^playbackBlock)(CMTime time);
-@property (nonatomic) NSTimeInterval timeInterval;
+@property (nonatomic) CMTime interval;
 
 @property (nonatomic, weak) AVPlayer *player;
 @property (nonatomic) id periodicTimeObserver;
@@ -17,12 +17,12 @@
 
 @implementation RTSPlaybackBlockRegistration
 
-- (instancetype) initWithPlaybackBlock:(void (^)(CMTime time))playbackBlock timeInterval:(NSTimeInterval)timeInterval
+- (instancetype) initWithPlaybackBlock:(void (^)(CMTime time))playbackBlock interval:(CMTime)interval
 {
 	if (self = [super init])
 	{
 		self.playbackBlock = playbackBlock;
-		self.timeInterval = timeInterval;
+		self.interval = interval;
 	}
 	return self;
 }
@@ -35,7 +35,7 @@
 	}
 	
 	self.player = player;
-	self.periodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMake(self.timeInterval, 1.) queue:dispatch_get_main_queue() usingBlock:self.playbackBlock];
+	self.periodicTimeObserver = [player addPeriodicTimeObserverForInterval:self.interval queue:dispatch_get_main_queue() usingBlock:self.playbackBlock];
 }
 
 - (void) unregister

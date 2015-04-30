@@ -118,21 +118,39 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
 }
 
-- (void) dealloc
-{
-	self.mediaPlayerController = nil;
-}
 
-- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+
+#pragma mark - Setters and getters
+
+- (void)setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
-	
 	_mediaPlayerController = mediaPlayerController;
 	
-	if (!mediaPlayerController)
-		return;
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
+	@weakify(self)
+	[mediaPlayerController registerPlaybackBlock:^(CMTime time) {
+		@strongify(self)
+		
+		if (!self.isTracking)
+		{
+			CMTimeRange currentTimeRange = [self currentTimeRange];
+			if (!CMTIMERANGE_IS_EMPTY(currentTimeRange))
+			{
+				self.minimumValue = CMTimeGetSeconds(currentTimeRange.start);
+				self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(currentTimeRange));
+				
+				AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+				self.value = CMTimeGetSeconds(playerItem.currentTime);
+			}
+			else
+			{
+				self.minimumValue = 0.;
+				self.maximumValue = 0.;
+				self.value = 0.;
+			}
+		}
+		[self updateTimeRangeLabels];
+		[self setNeedsDisplay];
+	} forInterval:CMTimeMake(1., 5.)];
 }
 
 - (BOOL)isDraggable
@@ -140,6 +158,8 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	// A slider knob can be dragged iff it corresponds to a valid range
 	return self.minimumValue != self.maximumValue;
 }
+
+
 
 #pragma mark - Slider Appearance
 
@@ -159,47 +179,6 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 15, 15)];
 	return [path imageWithColor:[UIColor whiteColor]];
-}
-
-
-
-#pragma mark - Notifications
-
-- (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
-{
-	RTSMediaPlayerController *mediaPlayerController = notification.object;
-	if (mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle)
-	{
-		[mediaPlayerController.player removeTimeObserver:self.periodicTimeObserver];
-	}
-	else if (mediaPlayerController.playbackState == RTSMediaPlaybackStateReady)
-	{
-		@weakify(self)
-		self.periodicTimeObserver = [mediaPlayerController.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 5) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-			@strongify(self)
-			
-			if (!self.isTracking)
-			{
-				CMTimeRange currentTimeRange = [self currentTimeRange];
-				if (!CMTIMERANGE_IS_EMPTY(currentTimeRange))
-				{
-					self.minimumValue = CMTimeGetSeconds(currentTimeRange.start);
-					self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(currentTimeRange));
-					
-					AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-					self.value = CMTimeGetSeconds(playerItem.currentTime);
-				}
-				else
-				{
-					self.minimumValue = 0.;
-					self.maximumValue = 0.;
-					self.value = 0.;
-				}
-			}
-			[self updateTimeRangeLabels];
-			[self setNeedsDisplay];
-		}];
-	}
 }
 
 

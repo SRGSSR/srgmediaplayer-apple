@@ -361,13 +361,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
-- (void) registerPlaybackBlock:(void (^)(CMTime time))playbackBlock withTimeInterval:(NSTimeInterval)timeInterval
+- (void) registerPlaybackBlock:(void (^)(CMTime time))playbackBlock forInterval:(CMTime)interval
 {
 	if (! playbackBlock) {
 		return;
 	}
 	
-	RTSPlaybackBlockRegistration *playbackBlockRegistration = [[RTSPlaybackBlockRegistration alloc] initWithPlaybackBlock:playbackBlock timeInterval:timeInterval];
+	RTSPlaybackBlockRegistration *playbackBlockRegistration = [[RTSPlaybackBlockRegistration alloc] initWithPlaybackBlock:playbackBlock interval:interval];
 	[self.playbackBlockRegistrations addObject:playbackBlockRegistration];
 }
 
