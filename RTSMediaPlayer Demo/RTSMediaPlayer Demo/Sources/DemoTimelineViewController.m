@@ -17,8 +17,6 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 @property (nonatomic, weak) IBOutlet UIView *videoView;
 @property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
 
-@property (nonatomic) NSTimer *timelineRefreshTimer;
-
 @end
 
 @implementation DemoTimelineViewController
@@ -31,16 +29,6 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 }
 
 #pragma mark - Properties
-
-- (void) setTimelineRefreshTimer:(NSTimer *)timelineRefreshTimer
-{
-	if (_timelineRefreshTimer)
-	{
-		[_timelineRefreshTimer invalidate];
-	}
-	
-	_timelineRefreshTimer = timelineRefreshTimer;
-}
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
@@ -76,13 +64,6 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 	{
 		[self.mediaPlayerController play];
 	}
-	
-	self.timelineRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:DemoTimeLineRefreshInterval
-																 target:self
-															   selector:@selector(refreshTimeline:)
-															   userInfo:nil
-																repeats:YES];
-	[self.timelineRefreshTimer fire];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -93,8 +74,6 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 	{
 		[self.mediaPlayerController reset];
 	}
-	
-	self.timelineRefreshTimer = nil;
 }
 
 #pragma mark - Data
