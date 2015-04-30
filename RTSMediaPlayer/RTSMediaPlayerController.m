@@ -230,6 +230,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
+		[self registerPlaybackObservers];
 		[self resetIdleTimer];
 	}];
 	
@@ -440,7 +441,6 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			
 			[self registerPlaybackStartObserver];
 			[self registerPeriodicTimeObserver];
-			[self registerPlaybackObservers];
 		}
 	}
 }
