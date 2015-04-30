@@ -122,7 +122,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark - Setters and getters
 
-- (void)setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
 	_mediaPlayerController = mediaPlayerController;
 	

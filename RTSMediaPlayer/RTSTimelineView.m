@@ -48,6 +48,16 @@ static void commonInit(RTSTimelineView *self)
 	return self;
 }
 
+- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+{
+	_mediaPlayerController = mediaPlayerController;
+	
+	// Ensure the timeline stays up to date as playable time ranges change
+	[mediaPlayerController registerPlaybackBlock:^(CMTime time) {
+		[self reloadData];
+	} forInterval:CMTimeMakeWithSeconds(5., 1.)];
+}
+
 - (void) willMoveToWindow:(UIWindow *)window
 {
 	[super willMoveToWindow:window];

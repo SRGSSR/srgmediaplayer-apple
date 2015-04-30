@@ -32,7 +32,7 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 
 #pragma mark - Properties
 
-- (void)setTimelineRefreshTimer:(NSTimer *)timelineRefreshTimer
+- (void) setTimelineRefreshTimer:(NSTimer *)timelineRefreshTimer
 {
 	if (_timelineRefreshTimer)
 	{
@@ -40,6 +40,16 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 	}
 	
 	_timelineRefreshTimer = timelineRefreshTimer;
+}
+
+- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+{
+	_mediaPlayerController = mediaPlayerController;
+	
+	// Refresh every 30 seconds
+	[mediaPlayerController registerPlaybackBlock:^(CMTime time) {
+		[self refreshTimeline];
+	} forInterval:CMTimeMakeWithSeconds(30., 1.)];
 }
 
 #pragma mark - View lifecycle
@@ -85,6 +95,42 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 	}
 	
 	self.timelineRefreshTimer = nil;
+}
+
+#pragma mark - Data
+
+- (void) refreshTimeline
+{
+	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", DemoTimeLineEventIdentifier];
+	[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (error)
+			{
+				return;
+			}
+			
+			id responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+			if (!responseObject || ![responseObject isKindOfClass:[NSArray class]])
+			{
+				return;
+			}
+			
+			NSMutableArray *timelineEvents = [NSMutableArray array];
+			for (NSDictionary *highlight in responseObject)
+			{
+				NSDate *streamStartDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"streamStartTime"] doubleValue]];
+				NSDate *highlightDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"timestamp"] doubleValue]];
+				
+				CMTime time = CMTimeMake([highlightDate timeIntervalSinceDate:streamStartDate], 1.);
+				RTSTimelineEvent *timelineEvent = [[RTSTimelineEvent alloc] initWithTime:time];
+				timelineEvent.title = highlight[@"title"];
+				[timelineEvents addObject:timelineEvent];
+			}
+			self.timelineEvents = [NSArray arrayWithArray:timelineEvents];
+			
+			[self.timelineView reloadData];
+		});
+	}] resume];
 }
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
@@ -149,36 +195,7 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 
 - (void) refreshTimeline:(NSTimer *)timer
 {
-	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", DemoTimeLineEventIdentifier];
-	[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (error)
-			{
-				return;
-			}
-			
-			id responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-			if (!responseObject || ![responseObject isKindOfClass:[NSArray class]])
-			{
-				return;
-			}
-			
-			NSMutableArray *timelineEvents = [NSMutableArray array];
-			for (NSDictionary *highlight in responseObject)
-			{
-				NSDate *streamStartDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"streamStartTime"] doubleValue]];
-				NSDate *highlightDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"timestamp"] doubleValue]];
-				
-				CMTime time = CMTimeMake([highlightDate timeIntervalSinceDate:streamStartDate], 1.);
-				RTSTimelineEvent *timelineEvent = [[RTSTimelineEvent alloc] initWithTime:time];
-				timelineEvent.title = highlight[@"title"];
-				[timelineEvents addObject:timelineEvent];
-			}
-			self.timelineEvents = [NSArray arrayWithArray:timelineEvents];
-			
-			[self.timelineView reloadData];
-		});
-	}] resume];
+	[self refreshTimeline];
 }
 
 @end
