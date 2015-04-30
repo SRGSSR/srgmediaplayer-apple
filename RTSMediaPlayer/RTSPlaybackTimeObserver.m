@@ -7,6 +7,8 @@
 
 #import <libextobjc/EXTScope.h>
 
+static void *s_kvoContext  = &s_kvoContext;
+
 @interface RTSPlaybackTimeObserver ()
 
 @property (nonatomic) CMTime interval;
@@ -48,6 +50,7 @@
 	}
 	
 	self.player = player;
+	[self.player addObserver:self forKeyPath:@"currentItem.playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:s_kvoContext];
 	
 	[self resetObservers];
 }
@@ -56,6 +59,7 @@
 {
 	[self removeObservers];
 	
+	[self.player removeObserver:self forKeyPath:@"currentItem.playbackLikelyToKeepUp" context:s_kvoContext];
 	self.player = nil;
 }
 
@@ -110,6 +114,19 @@
 	{
 		[self.player removeTimeObserver:self.periodicTimeObserver];
 		self.periodicTimeObserver = nil;
+	}
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	// Called when playback is resumed
+	if (context == s_kvoContext && [keyPath isEqualToString:@"currentItem.playbackLikelyToKeepUp"])
+	{
+		[self resetObservers];
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
 }
 
