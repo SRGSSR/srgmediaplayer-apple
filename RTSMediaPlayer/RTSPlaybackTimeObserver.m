@@ -7,6 +7,8 @@
 
 #import <libextobjc/EXTScope.h>
 
+// FIXME: Too many events received when a livestream switches automatically to live, it seems
+
 static void *s_kvoContext  = &s_kvoContext;
 
 @interface RTSPlaybackTimeObserver ()
@@ -24,6 +26,8 @@ static void *s_kvoContext  = &s_kvoContext;
 
 @implementation RTSPlaybackTimeObserver
 
+#pragma mark - Object lifecycle
+
 - (instancetype) initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue block:(void (^)(CMTime time))block
 {
 	NSParameterAssert(block);
@@ -36,6 +40,8 @@ static void *s_kvoContext  = &s_kvoContext;
 	}
 	return self;
 }
+
+#pragma mark - Associating with a player
 
 - (void) attachToMediaPlayer:(AVPlayer *)player
 {
@@ -62,6 +68,8 @@ static void *s_kvoContext  = &s_kvoContext;
 	[self.player removeObserver:self forKeyPath:@"currentItem.playbackLikelyToKeepUp" context:s_kvoContext];
 	self.player = nil;
 }
+
+#pragma mark - Observers
 
 - (void) resetObservers
 {
@@ -116,6 +124,8 @@ static void *s_kvoContext  = &s_kvoContext;
 		self.periodicTimeObserver = nil;
 	}
 }
+
+#pragma mark - KVO
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
