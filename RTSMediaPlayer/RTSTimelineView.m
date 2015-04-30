@@ -11,6 +11,8 @@ static const CGFloat RTSTimelineBarHeight = 2.f;
 static const CGFloat RTSTimelineEventViewSide = 8.f;
 static const CGFloat RTSTimelineBarMargin = 2.f * RTSTimelineEventViewSide;
 
+#pragma mark - Functions
+
 static void commonInit(RTSTimelineView *self)
 {
 	UIView *barView = [[UIView alloc] initWithFrame:CGRectMake(RTSTimelineBarMargin,
@@ -30,6 +32,8 @@ static void commonInit(RTSTimelineView *self)
 
 @implementation RTSTimelineView
 
+#pragma mark - Object lifecycle
+
 - (instancetype) initWithFrame:(CGRect)frame
 {
 	if (self = [super initWithFrame:frame])
@@ -48,6 +52,8 @@ static void commonInit(RTSTimelineView *self)
 	return self;
 }
 
+#pragma mark - Getters and setters
+
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
 	_mediaPlayerController = mediaPlayerController;
@@ -58,6 +64,8 @@ static void commonInit(RTSTimelineView *self)
 	}];
 }
 
+#pragma mark - Overrides
+
 - (void) willMoveToWindow:(UIWindow *)window
 {
 	[super willMoveToWindow:window];
@@ -67,6 +75,8 @@ static void commonInit(RTSTimelineView *self)
 		[self reloadData];
 	}
 }
+
+#pragma mark - Display
 
 - (void) reloadData
 {
@@ -107,23 +117,31 @@ static void commonInit(RTSTimelineView *self)
 	self.eventViews = [NSArray arrayWithArray:eventViews];
 }
 
-#pragma mark - Time range retrieval and display
-
-// TODO: This code is common with the one of th feature/timeshift branch. Factor it out somewhere
 - (CMTimeRange) currentTimeRange
 {
-	// TODO: Should later add support for discontinuous seekable time ranges
 	AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-	NSValue *seekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-	if (seekableTimeRangeValue)
-	{
-		CMTimeRange seekableTimeRange = [seekableTimeRangeValue CMTimeRangeValue];
-		return CMTIMERANGE_IS_VALID(seekableTimeRange) ? seekableTimeRange : kCMTimeRangeZero;
-	}
-	else
+	
+	NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
+	if (!firstSeekableTimeRangeValue)
 	{
 		return kCMTimeRangeZero;
 	}
+	
+	NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
+	if (!lastSeekableTimeRangeValue)
+	{
+		return kCMTimeRangeZero;
+	}
+	
+	CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
+	CMTimeRange lastSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
+	
+	if (!CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || !CMTIMERANGE_IS_VALID(lastSeekableTimeRange))
+	{
+		return kCMTimeRangeZero;
+	}
+	
+	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
 }
 
 @end

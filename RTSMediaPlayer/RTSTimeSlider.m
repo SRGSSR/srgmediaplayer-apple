@@ -153,7 +153,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}];
 }
 
-- (BOOL)isDraggable
+- (BOOL) isDraggable
 {
 	// A slider knob can be dragged iff it corresponds to a valid range
 	return self.minimumValue != self.maximumValue;
