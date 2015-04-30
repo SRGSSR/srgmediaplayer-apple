@@ -79,8 +79,6 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 
 - (void) refreshTimeline
 {
-	NSLog(@"--> refresh");
-	
 	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", DemoTimeLineEventIdentifier];
 	[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
