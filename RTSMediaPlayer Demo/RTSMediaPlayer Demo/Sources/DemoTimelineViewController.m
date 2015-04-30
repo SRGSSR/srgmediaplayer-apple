@@ -6,7 +6,6 @@
 #import "DemoTimelineViewController.h"
 
 static NSString * const DemoTimeLineEventIdentifier = @"265862";
-static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 
 @interface DemoTimelineViewController ()
 
@@ -35,9 +34,9 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 	_mediaPlayerController = mediaPlayerController;
 	
 	// Refresh every 30 seconds
-	[mediaPlayerController registerPlaybackBlock:^(CMTime time) {
+	[mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(30., 1.) queue:NULL usingBlock:^(CMTime time) {
 		[self refreshTimeline];
-	} forInterval:CMTimeMakeWithSeconds(30., 1.)];
+	}];
 }
 
 #pragma mark - View lifecycle
@@ -80,6 +79,8 @@ static const NSTimeInterval DemoTimeLineRefreshInterval = 30.;
 
 - (void) refreshTimeline
 {
+	NSLog(@"--> refresh");
+	
 	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", DemoTimeLineEventIdentifier];
 	[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{

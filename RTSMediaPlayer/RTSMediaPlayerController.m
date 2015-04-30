@@ -6,7 +6,7 @@
 #import "RTSMediaPlayerError.h"
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerView.h"
-#import "RTSPlaybackBlockRegistration.h"
+#import "RTSPlaybackTimeObserver.h"
 #import "RTSActivityGestureRecognizer.h"
 
 #import <objc/runtime.h>
@@ -362,13 +362,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
-- (void) registerPlaybackBlock:(void (^)(CMTime time))playbackBlock forInterval:(CMTime)interval
+- (void) addPlaybackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
 {
-	if (! playbackBlock) {
+	if (! block) {
 		return;
 	}
 	
-	RTSPlaybackBlockRegistration *playbackBlockRegistration = [[RTSPlaybackBlockRegistration alloc] initWithPlaybackBlock:playbackBlock interval:interval];
+	RTSPlaybackTimeObserver *playbackBlockRegistration = [[RTSPlaybackTimeObserver alloc] initWithInterval:interval queue:queue block:block];
 	[self.playbackBlockRegistrations addObject:playbackBlockRegistration];
 }
 
@@ -501,17 +501,17 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 {
 	[self unregisterPlaybackObservers];
 	
-	for (RTSPlaybackBlockRegistration *playbackBlockRegistration in self.playbackBlockRegistrations)
+	for (RTSPlaybackTimeObserver *playbackBlockRegistration in self.playbackBlockRegistrations)
 	{
-		[playbackBlockRegistration registerWithMediaPlayer:self.player];
+		[playbackBlockRegistration attachToMediaPlayer:self.player];
 	}
 }
 
 - (void) unregisterPlaybackObservers
 {
-	for (RTSPlaybackBlockRegistration *playbackBlockRegistration in self.playbackBlockRegistrations)
+	for (RTSPlaybackTimeObserver *playbackBlockRegistration in self.playbackBlockRegistrations)
 	{
-		[playbackBlockRegistration unregister];
+		[playbackBlockRegistration detach];
 	}
 }
 

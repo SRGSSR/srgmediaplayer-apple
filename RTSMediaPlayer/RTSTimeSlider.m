@@ -127,7 +127,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	_mediaPlayerController = mediaPlayerController;
 	
 	@weakify(self)
-	[mediaPlayerController registerPlaybackBlock:^(CMTime time) {
+	[mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 		@strongify(self)
 		
 		if (!self.isTracking)
@@ -150,7 +150,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		}
 		[self updateTimeRangeLabels];
 		[self setNeedsDisplay];
-	} forInterval:CMTimeMake(1., 5.)];
+	}];
 }
 
 - (BOOL)isDraggable
