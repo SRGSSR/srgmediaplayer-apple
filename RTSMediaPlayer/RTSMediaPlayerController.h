@@ -194,6 +194,8 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKe
  */
 - (void) reset;
 
+- (void) registerPlaybackBlock:(void (^)(CMTime time))playbackBlock withTimeInterval:(NSTimeInterval)timeInterval;
+
 /**
  *  -------------------
  *  @name Overlay Views
