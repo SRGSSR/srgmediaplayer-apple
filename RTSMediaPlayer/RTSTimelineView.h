@@ -16,7 +16,7 @@
 
 @end
 
-@interface RTSTimelineView : UIView
+@interface RTSTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 

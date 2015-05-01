@@ -5,7 +5,9 @@
 
 #import "RTSTimelineView.h"
 
+#import "NSBundle+RTSMediaPlayer.h"
 #import "RTSMediaPlayerController.h"
+#import "RTSTimelineEventCollectionViewCell.h"
 
 // Constants
 static const CGFloat RTSTimelineBarHeight = 2.f;
@@ -71,6 +73,17 @@ static void commonInit(RTSTimelineView *self);
 	}
 }
 
+- (void) layoutSubviews
+{
+	[super layoutSubviews];
+	
+	UICollectionViewFlowLayout *collectionViewLayout = (UICollectionViewFlowLayout *)self.eventCollectionView.collectionViewLayout;
+	
+	CGFloat cellSide = CGRectGetHeight(self.eventCollectionView.frame);
+	collectionViewLayout.itemSize = CGSizeMake(cellSide, cellSide);
+	[collectionViewLayout invalidateLayout];
+}
+
 #pragma mark - Display
 
 - (void) reloadData
@@ -117,6 +130,8 @@ static void commonInit(RTSTimelineView *self);
 		[eventViews addObject:eventView];
 	}
 	self.eventViews = [NSArray arrayWithArray:eventViews];
+	
+	[self.eventCollectionView reloadData];
 }
 
 - (CMTimeRange) currentTimeRange
@@ -146,26 +161,57 @@ static void commonInit(RTSTimelineView *self);
 	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
 }
 
+#pragma mark - UICollectionViewDataSource protocol
+
+- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+	return [self.dataSource numberOfEventsInTimelineView:self];
+}
+
+- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+	return [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([RTSTimelineEventCollectionViewCell class]) forIndexPath:indexPath];
+}
+
+#pragma mark - UICollectionViewDelegate protocol
+
+- (void) collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
+- (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
 @end
 
 #pragma mark - Functions
 
 static void commonInit(RTSTimelineView *self)
 {
-	// Collection view for easy navigation
+	// Collection view layout for easy navigation between events
 	UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
 	collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+	
+	// Collection view
 	UICollectionView *eventCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewLayout];
+	eventCollectionView.alwaysBounceHorizontal = YES;
+	eventCollectionView.dataSource = self;
+	eventCollectionView.delegate = self;
 	[self addSubview:eventCollectionView];
 	self.eventCollectionView = eventCollectionView;
+	
+	// Cells
+	NSString *className = NSStringFromClass([RTSTimelineEventCollectionViewCell class]);
+	UINib *cellNib = [UINib nibWithNibName:className bundle:[NSBundle RTSMediaPlayerBundle]];
+	[eventCollectionView registerNib:cellNib forCellWithReuseIdentifier:className];
 	
 	// Timeline overview
 	UIView *overviewView = [[UIView alloc] initWithFrame:CGRectZero];
 	[self addSubview:overviewView];
 	self.overviewView = overviewView;
-	
-	eventCollectionView.backgroundColor = [UIColor redColor];
-	overviewView.backgroundColor = [UIColor blueColor];
 	
 	// Timeline overview bar (not managed using autolayout)
 	UIView *barView = [[UIView alloc] initWithFrame:CGRectZero];
