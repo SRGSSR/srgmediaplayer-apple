@@ -8,6 +8,7 @@
 
 @class RTSMediaPlayerController;
 @protocol RTSTimelineViewDataSource;
+@protocol RTSTimelineViewDelegate;
 
 @interface RTSTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -21,13 +22,19 @@
 - (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forEvent:(RTSTimelineEvent *)event;
 
 @property (nonatomic, weak) IBOutlet id<RTSTimelineViewDataSource> dataSource;
+@property (nonatomic, weak) IBOutlet id<RTSTimelineViewDelegate> delegate;
 
 @end
 
 @protocol RTSTimelineViewDataSource <NSObject>
 
-// TODO: Add methods for item width and spacing
-
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSTimelineEvent *)event;
+
+@end
+
+@protocol RTSTimelineViewDelegate <NSObject>
+
+- (CGFloat) itemWidthForTimelineView:(RTSTimelineView *)timelineView;
+- (CGFloat) itemSpacingForTimelineView:(RTSTimelineView *)timelineView;
 
 @end

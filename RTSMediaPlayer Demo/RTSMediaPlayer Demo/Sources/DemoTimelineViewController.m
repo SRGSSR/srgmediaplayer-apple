@@ -216,6 +216,18 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 	return eventCell;
 }
 
+#pragma mark - RTSTimelineViewDelegate protocol
+
+- (CGFloat) itemWidthForTimelineView:(RTSTimelineView *)timelineView
+{
+	return 162.f;
+}
+
+- (CGFloat) itemSpacingForTimelineView:(RTSTimelineView *)timelineView
+{
+	return 4.f;
+}
+
 #pragma mark - Actions
 
 - (IBAction) dismiss:(id)sender

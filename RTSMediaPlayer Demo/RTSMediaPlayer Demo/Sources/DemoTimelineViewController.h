@@ -6,6 +6,6 @@
 #import <RTSMediaPlayer/RTSMediaPlayer.h>
 #import <UIKit/UIKit.h>
 
-@interface DemoTimelineViewController : UIViewController <RTSMediaPlayerControllerDataSource, RTSTimelineViewDataSource>
+@interface DemoTimelineViewController : UIViewController <RTSMediaPlayerControllerDataSource, RTSTimelineViewDataSource, RTSTimelineViewDelegate>
 
 @end
