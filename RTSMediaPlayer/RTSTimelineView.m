@@ -250,6 +250,7 @@ static void commonInit(RTSTimelineView *self)
 	// Collection view layout for easy navigation between events
 	UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
 	collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+	collectionViewLayout.minimumLineSpacing = 0.f;
 	
 	// Collection view
 	UICollectionView *eventCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewLayout];
