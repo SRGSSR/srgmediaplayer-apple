@@ -190,6 +190,33 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - Functions
 
+/**
+ * The timeline layout is created entirely in code and looks as follows:
+ *
+ *      ┌──────────────────────────────────────────────────────────────────┐
+ *      ├──────────────────────────────────────────────────────────────────┤   ■
+ *      │┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐ ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐ ┌ ─ ─ ┤   │
+ *      │                                                                  │   │
+ *      ││                           │ │                           │ │     │   │
+ *      │                                                                  │   │
+ *      ││                           │ │                           │ │     │   │
+ *      │                                                                  │   │
+ *      ││      eventCollectionView  │ │                           │ │     │   │   4 times
+ *      │                                                                  │   │ taller than
+ *      ││                           │ │                           │ │     │   │  overview
+ *      │                                                                  │   │
+ *      ││                           │ │                           │ │     │   │
+ *      │                                                                  │   │
+ *      ││                           │ │                           │ │     │   │
+ *      │                                                                  │   │
+ *      ││                           │ │                           │ │     │   │
+ *      │ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   ─ ─ ─│   ■
+ *      ├──────────────────────────────────────────────────────────────────┤
+ *      │  overviewView                                                    │
+ *      │  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━barView━━━━━━━━━━━━━━━━━  │
+ *      │                                                                  │
+ *      └──────────────────────────────────────────────────────────────────┘
+ */
 static void commonInit(RTSTimelineView *self)
 {
 	// Collection view layout for easy navigation between events
