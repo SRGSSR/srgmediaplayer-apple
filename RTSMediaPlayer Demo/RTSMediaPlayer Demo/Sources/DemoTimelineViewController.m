@@ -5,6 +5,8 @@
 
 #import "DemoTimelineViewController.h"
 
+#import "EventCollectionViewCell.h"
+
 static NSString * const DemoTimeLineEventIdentifier = @"265862";
 
 @interface DemoTimelineViewController ()
@@ -44,6 +46,10 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 - (void) viewDidLoad
 {
 	[super viewDidLoad];
+	
+	NSString *className = NSStringFromClass([EventCollectionViewCell class]);
+	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
+	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(mediaPlayerDidShowControlOverlays:)
@@ -199,6 +205,15 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 			completionHandler(URL, nil);
 		});
 	}] resume];
+}
+
+#pragma mark - RTSTimelineViewDataSource protocol
+
+- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSTimelineEvent *)event
+{
+	EventCollectionViewCell *eventCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([EventCollectionViewCell class]) forEvent:event];
+	// TODO: Display information
+	return eventCell;
 }
 
 #pragma mark - Actions

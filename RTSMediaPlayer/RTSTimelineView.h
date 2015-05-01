@@ -7,12 +7,25 @@
 #import <UIKit/UIKit.h>
 
 @class RTSMediaPlayerController;
-@class RTSTimelineView;
+@protocol RTSTimelineViewDataSource;
 
 @interface RTSTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (nonatomic, strong) NSArray *events;
+@property (nonatomic) NSArray *events;
 
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+
+- (void) registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
+- (void) registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
+
+- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forEvent:(RTSTimelineEvent *)event;
+
+@property (nonatomic, weak) IBOutlet id<RTSTimelineViewDataSource> dataSource;
+
+@end
+
+@protocol RTSTimelineViewDataSource <NSObject>
+
+- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSTimelineEvent *)event;
 
 @end

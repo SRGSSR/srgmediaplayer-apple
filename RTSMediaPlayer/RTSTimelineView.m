@@ -5,9 +5,7 @@
 
 #import "RTSTimelineView.h"
 
-#import "NSBundle+RTSMediaPlayer.h"
 #import "RTSMediaPlayerController.h"
-#import "RTSTimelineEventCollectionViewCell.h"
 
 // Constants
 static const CGFloat RTSTimelineBarHeight = 2.f;
@@ -167,6 +165,30 @@ static void commonInit(RTSTimelineView *self);
 	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
 }
 
+#pragma mark - Cell reuse
+
+- (void) registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier
+{
+	[self.eventCollectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
+}
+
+- (void) registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier
+{
+	[self.eventCollectionView registerNib:nib forCellWithReuseIdentifier:identifier];
+}
+
+- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forEvent:(RTSTimelineEvent *)event
+{
+	NSInteger index = [self.events indexOfObject:event];
+	if (index == NSNotFound)
+	{
+		return nil;
+	}
+	
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+	return [self.eventCollectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+}
+
 #pragma mark - UICollectionViewDataSource protocol
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -176,7 +198,8 @@ static void commonInit(RTSTimelineView *self);
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	return [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([RTSTimelineEventCollectionViewCell class]) forIndexPath:indexPath];
+	RTSTimelineEvent *event = self.events[indexPath.row];
+	return [self.dataSource timelineView:self cellForEvent:event];
 }
 
 #pragma mark - UICollectionViewDelegate protocol
@@ -236,12 +259,7 @@ static void commonInit(RTSTimelineView *self)
 	eventCollectionView.delegate = self;
 	[self addSubview:eventCollectionView];
 	self.eventCollectionView = eventCollectionView;
-	
-	// Cells
-	NSString *className = NSStringFromClass([RTSTimelineEventCollectionViewCell class]);
-	UINib *cellNib = [UINib nibWithNibName:className bundle:[NSBundle RTSMediaPlayerBundle]];
-	[eventCollectionView registerNib:cellNib forCellWithReuseIdentifier:className];
-	
+		
 	// Timeline overview
 	UIView *overviewView = [[UIView alloc] initWithFrame:CGRectZero];
 	[self addSubview:overviewView];

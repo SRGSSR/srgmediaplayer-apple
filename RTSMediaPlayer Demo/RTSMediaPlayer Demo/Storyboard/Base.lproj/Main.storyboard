@@ -362,6 +362,7 @@
                                     <constraint firstAttribute="height" constant="150" id="JIi-NK-bSr"/>
                                 </constraints>
                                 <connections>
+                                    <outlet property="dataSource" destination="eMv-Af-zLT" id="ae0-LC-34t"/>
                                     <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="OB9-xR-Jf9"/>
                                 </connections>
                             </view>

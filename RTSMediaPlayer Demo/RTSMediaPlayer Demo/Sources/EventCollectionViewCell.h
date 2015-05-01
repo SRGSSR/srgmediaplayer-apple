@@ -3,8 +3,8 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import "RTSTimelineEventCollectionViewCell.h"
+#import <UIKit/UIKit.h>
 
-@implementation RTSTimelineEventCollectionViewCell
+@interface EventCollectionViewCell : UICollectionViewCell
 
 @end
