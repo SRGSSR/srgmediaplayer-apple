@@ -14,7 +14,9 @@
 
 @implementation Event
 
-- (instancetype)initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier
+#pragma mark - Object lifecycle
+
+- (instancetype) initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier
 {
 	if (self = [super initWithTime:time])
 	{
@@ -24,9 +26,17 @@
 	return self;
 }
 
-#pragma mark Description
+#pragma mark - Getters and setters
 
-- (NSString *)description
+- (NSURL *) imageURL
+{
+	NSString *imageURLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/image/byId/%@", self.identifier];
+	return [NSURL URLWithString:imageURLString];
+}
+
+#pragma mark - Description
+
+- (NSString *) description
 {
 	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; identifier: %@>",
 			[self class],
