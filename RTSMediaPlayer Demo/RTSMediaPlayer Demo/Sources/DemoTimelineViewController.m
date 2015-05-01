@@ -128,7 +128,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 	}] resume];
 }
 
-- (void) retrieveTimelineEventsForStartDate:(NSDate *)startDate withCompletionBlock:(void (^)(NSArray *timelineEvents, NSError *error))completionBlock
+- (void) retrieveEventsForStartDate:(NSDate *)startDate withCompletionBlock:(void (^)(NSArray *events, NSError *error))completionBlock
 {
 	NSAssert(startDate, @"A start date is mandatory");
 	
@@ -149,19 +149,18 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 				return;
 			}
 			
-			NSMutableArray *timelineEvents = [NSMutableArray array];
+			NSMutableArray *events = [NSMutableArray array];
 			for (NSDictionary *highlight in responseObject)
 			{
 				// Note that the start date available from this JSON (streamStartDate) is not reliable and is retrieve using
 				// another request
 				NSDate *date = [NSDate dateWithTimeIntervalSince1970:[highlight[@"timestamp"] doubleValue]];
 				CMTime time = CMTimeMake([date timeIntervalSinceDate:startDate], 1.);
-				RTSTimelineEvent *timelineEvent = [[RTSTimelineEvent alloc] initWithTime:time];
-				timelineEvent.title = highlight[@"title"];
-				[timelineEvents addObject:timelineEvent];
+				Event *event = [[Event alloc] initWithTime:time title:highlight[@"title"] identifier:highlight[@"id"]];
+				[events addObject:event];
 			}
 			
-			completionBlock ? completionBlock([NSArray arrayWithArray:timelineEvents], nil) : nil;
+			completionBlock ? completionBlock([NSArray arrayWithArray:events], nil) : nil;
 		});
 	}] resume];
 }
@@ -169,13 +168,13 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 - (void) refreshTimeline
 {
 	[self retrieveStartDateWithCompletionBlock:^(NSDate *startDate, NSError *error) {
-		[self retrieveTimelineEventsForStartDate:startDate withCompletionBlock:^(NSArray *timelineEvents, NSError *error) {
+		[self retrieveEventsForStartDate:startDate withCompletionBlock:^(NSArray *events, NSError *error) {
 			if (error)
 			{
 				return;
 			}
 			
-			self.timelineView.events = timelineEvents;
+			self.timelineView.events = events;
 		}];
 	}];
 }
@@ -212,7 +211,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSTimelineEvent *)event
 {
 	EventCollectionViewCell *eventCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([EventCollectionViewCell class]) forEvent:event];
-	eventCell.event = event;
+	eventCell.event = (Event *)event;
 	return eventCell;
 }
 

@@ -26,10 +26,9 @@
 
 - (NSString *) description
 {
-	return [NSString stringWithFormat:@"<%@: %p; title: %@; time: %@>",
+	return [NSString stringWithFormat:@"<%@: %p; title: %@>",
 			[self class],
 			self,
-			self.title,
 			@(CMTimeGetSeconds(self.time))];
 }
 

@@ -22,6 +22,7 @@
 		C2F54A101A9F713300496C59 /* RTSMediaPlayer_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */; };
 		E606F8911AF3B044003F0E2A /* EventCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F88F1AF3B044003F0E2A /* EventCollectionViewCell.m */; };
 		E606F8921AF3B044003F0E2A /* EventCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E606F8901AF3B044003F0E2A /* EventCollectionViewCell.xib */; };
+		E606F8951AF3BBB4003F0E2A /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F8941AF3BBB4003F0E2A /* Event.m */; };
 		E60E17181AF0B2F40062E96E /* DemoTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,8 @@
 		E606F88E1AF3B044003F0E2A /* EventCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCollectionViewCell.h; sourceTree = "<group>"; };
 		E606F88F1AF3B044003F0E2A /* EventCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCollectionViewCell.m; sourceTree = "<group>"; };
 		E606F8901AF3B044003F0E2A /* EventCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCollectionViewCell.xib; sourceTree = "<group>"; };
+		E606F8931AF3BBB4003F0E2A /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		E606F8941AF3BBB4003F0E2A /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTimelineViewController.h; sourceTree = "<group>"; };
 		E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTimelineViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,6 +99,8 @@
 				B688832A1AAF72B500B9E34E /* DemoMultiPlayersViewController.m */,
 				E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */,
 				E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */,
+				E606F8931AF3BBB4003F0E2A /* Event.h */,
+				E606F8941AF3BBB4003F0E2A /* Event.m */,
 				E606F88E1AF3B044003F0E2A /* EventCollectionViewCell.h */,
 				E606F88F1AF3B044003F0E2A /* EventCollectionViewCell.m */,
 				E606F8901AF3B044003F0E2A /* EventCollectionViewCell.xib */,
@@ -288,6 +293,7 @@
 				E606F8911AF3B044003F0E2A /* EventCollectionViewCell.m in Sources */,
 				B61E18EC1AA863B700E4FAB9 /* DemoInlineViewController.m in Sources */,
 				B61E18D51AA8607200E4FAB9 /* main.m in Sources */,
+				E606F8951AF3BBB4003F0E2A /* Event.m in Sources */,
 				B688832B1AAF72B500B9E34E /* DemoMultiPlayersViewController.m in Sources */,
 				B61E18EB1AA863B700E4FAB9 /* DemoFullScreenViewController.m in Sources */,
 				B61E18CF1AA8605200E4FAB9 /* AppDelegate.m in Sources */,

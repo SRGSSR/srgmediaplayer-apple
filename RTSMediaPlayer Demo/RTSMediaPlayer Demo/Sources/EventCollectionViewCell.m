@@ -16,7 +16,7 @@
 
 #pragma mark - Setters and getters
 
-- (void) setEvent:(RTSTimelineEvent *)event
+- (void) setEvent:(Event *)event
 {
 	_event = event;
 	

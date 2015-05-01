@@ -13,7 +13,4 @@
 
 @property (nonatomic, readonly) CMTime time;
 
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic) UIImage *iconImage;
-
 @end
