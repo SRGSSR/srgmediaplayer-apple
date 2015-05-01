@@ -98,6 +98,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 				return;
 			}
 			
+			// ISO 8601 date formatting
 			static NSDateFormatter *s_dateFormatter;
 			static dispatch_once_t s_onceToken;
 			dispatch_once(&s_onceToken, ^{
@@ -121,7 +122,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 	}] resume];
 }
 
-- (void) retrieveTimelineEventsForStartDate:(NSDate *)startDate withCompletionBlocl:(void (^)(NSArray *timelineEvents, NSError *error))completionBlock
+- (void) retrieveTimelineEventsForStartDate:(NSDate *)startDate withCompletionBlock:(void (^)(NSArray *timelineEvents, NSError *error))completionBlock
 {
 	NSAssert(startDate, @"A start date is mandatory");
 	
@@ -162,8 +163,9 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 - (void) refreshTimeline
 {
 	[self retrieveStartDateWithCompletionBlock:^(NSDate *startDate, NSError *error) {
-		[self retrieveTimelineEventsForStartDate:startDate withCompletionBlocl:^(NSArray *timelineEvents, NSError *error) {
-			if (error) {
+		[self retrieveTimelineEventsForStartDate:startDate withCompletionBlock:^(NSArray *timelineEvents, NSError *error) {
+			if (error)
+			{
 				return;
 			}
 			

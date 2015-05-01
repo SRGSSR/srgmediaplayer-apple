@@ -103,7 +103,8 @@ static void commonInit(RTSTimelineView *self)
 		RTSTimelineEvent *event = [self.dataSource timelineView:self eventAtIndex:i];
 		
 		// Skip events not in the timeline
-		if (CMTIME_COMPARE_INLINE(event.time, >, CMTimeRangeGetEnd(currentTimeRange))) {
+		if (CMTIME_COMPARE_INLINE(event.time, >, CMTimeRangeGetEnd(currentTimeRange)))
+		{
 			continue;
 		}
 		
