@@ -77,38 +77,99 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 
 #pragma mark - Data
 
-- (void) refreshTimeline
+- (void) retrieveStartDateWithCompletionBlock:(void (^)(NSDate *startDate, NSError *error))completionBlock
 {
-	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", DemoTimeLineEventIdentifier];
+	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch/v1/events/srf/byEventItemId/%@", DemoTimeLineEventIdentifier];
 	[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (error)
 			{
+				completionBlock ? completionBlock(nil, error) : nil;
 				return;
 			}
 			
 			id responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
 			if (!responseObject || ![responseObject isKindOfClass:[NSArray class]])
 			{
+				NSError *parseError = [NSError errorWithDomain:NSURLErrorDomain
+														  code:NSURLErrorCannotParseResponse
+													  userInfo:@{ NSLocalizedDescriptionKey : @"Invalid response format" }];
+				completionBlock ? completionBlock(nil, parseError) : nil;
+				return;
+			}
+			
+			static NSDateFormatter *s_dateFormatter;
+			static dispatch_once_t s_onceToken;
+			dispatch_once(&s_onceToken, ^{
+				s_dateFormatter = [[NSDateFormatter alloc] init];
+				[s_dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+			});
+			
+			NSDictionary *eventDictionary = [responseObject firstObject];
+			NSDate *startDate = [s_dateFormatter dateFromString:eventDictionary[@"startDate"]];
+			if (!startDate)
+			{
+				NSError *dateError = [NSError errorWithDomain:NSURLErrorDomain
+														 code:NSURLErrorCannotParseResponse
+													 userInfo:@{ NSLocalizedDescriptionKey : @"Missing date in response, or bad format" }];
+				completionBlock ? completionBlock(nil, dateError) : nil;
+				return;
+			}
+			
+			completionBlock ? completionBlock(startDate, nil) : nil;
+		});
+	}] resume];
+}
+
+- (void) retrieveTimelineEventsForStartDate:(NSDate *)startDate withCompletionBlocl:(void (^)(NSArray *timelineEvents, NSError *error))completionBlock
+{
+	NSAssert(startDate, @"A start date is mandatory");
+	
+	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", DemoTimeLineEventIdentifier];
+	[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			if (error)
+			{
+				completionBlock ? completionBlock(nil, error) : nil;
+				return;
+			}
+			
+			id responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+			if (!responseObject || ![responseObject isKindOfClass:[NSArray class]])
+			{
+				NSError *parseError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotParseResponse userInfo:nil];
+				completionBlock ? completionBlock(nil, parseError) : nil;
 				return;
 			}
 			
 			NSMutableArray *timelineEvents = [NSMutableArray array];
 			for (NSDictionary *highlight in responseObject)
 			{
-				NSDate *streamStartDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"streamStartTime"] doubleValue]];
-				NSDate *highlightDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"timestamp"] doubleValue]];
-				
-				CMTime time = CMTimeMake([highlightDate timeIntervalSinceDate:streamStartDate], 1.);
+				// Note that the start date available from this JSON (streamStartDate) is not reliable and is retrieve using
+				// another request
+				NSDate *date = [NSDate dateWithTimeIntervalSince1970:[highlight[@"timestamp"] doubleValue]];
+				CMTime time = CMTimeMake([date timeIntervalSinceDate:startDate], 1.);
 				RTSTimelineEvent *timelineEvent = [[RTSTimelineEvent alloc] initWithTime:time];
 				timelineEvent.title = highlight[@"title"];
 				[timelineEvents addObject:timelineEvent];
 			}
-			self.timelineEvents = [NSArray arrayWithArray:timelineEvents];
 			
-			[self.timelineView reloadData];
+			completionBlock ? completionBlock([NSArray arrayWithArray:timelineEvents], nil) : nil;
 		});
 	}] resume];
+}
+
+- (void) refreshTimeline
+{
+	[self retrieveStartDateWithCompletionBlock:^(NSDate *startDate, NSError *error) {
+		[self retrieveTimelineEventsForStartDate:startDate withCompletionBlocl:^(NSArray *timelineEvents, NSError *error) {
+			if (error) {
+				return;
+			}
+			
+			self.timelineEvents = timelineEvents;
+		}];
+	}];
 }
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
