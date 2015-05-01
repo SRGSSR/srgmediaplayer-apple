@@ -11,8 +11,8 @@
 
 // Constants
 static const CGFloat RTSTimelineBarHeight = 2.f;
-static const CGFloat RTSTimelineEventViewSide = 8.f;
-static const CGFloat RTSTimelineBarMargin = 2.f * RTSTimelineEventViewSide;
+static const CGFloat RTSTimelineEventIconSide = 8.f;
+static const CGFloat RTSTimelineBarHorizontalMargin = 2.f * RTSTimelineEventIconSide;
 
 // Function declarations
 static void commonInit(RTSTimelineView *self);
@@ -116,12 +116,12 @@ static void commonInit(RTSTimelineView *self);
 			continue;
 		}
 		
-		UIView *eventView = [[UIView alloc] initWithFrame:CGRectMake(roundf(RTSTimelineBarMargin + CMTimeGetSeconds(event.time) * (CGRectGetWidth(self.overviewView.frame) - 2.f * RTSTimelineBarMargin) / CMTimeGetSeconds(currentTimeRange.duration) - RTSTimelineEventViewSide / 2.f),
-																	 roundf((CGRectGetHeight(self.overviewView.frame) - RTSTimelineEventViewSide) / 2.f),
-																	 RTSTimelineEventViewSide,
-																	 RTSTimelineEventViewSide)];
+		UIView *eventView = [[UIView alloc] initWithFrame:CGRectMake(roundf(RTSTimelineBarHorizontalMargin + CMTimeGetSeconds(event.time) * (CGRectGetWidth(self.overviewView.frame) - 2.f * RTSTimelineBarHorizontalMargin) / CMTimeGetSeconds(currentTimeRange.duration) - RTSTimelineEventIconSide / 2.f),
+																	 roundf((CGRectGetHeight(self.overviewView.frame) - RTSTimelineEventIconSide) / 2.f),
+																	 RTSTimelineEventIconSide,
+																	 RTSTimelineEventIconSide)];
 		eventView.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.6f];
-		eventView.layer.cornerRadius = RTSTimelineEventViewSide / 2.f;
+		eventView.layer.cornerRadius = RTSTimelineEventIconSide / 2.f;
 		eventView.layer.borderColor = [UIColor blackColor].CGColor;
 		eventView.layer.borderWidth = 1.f;
 		eventView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin| UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -295,14 +295,14 @@ static void commonInit(RTSTimelineView *self)
 																toItem:overviewView
 															 attribute:NSLayoutAttributeLeading
 															multiplier:1.f
-															  constant:RTSTimelineBarMargin]];
+															  constant:RTSTimelineBarHorizontalMargin]];
 	[overviewView addConstraint:[NSLayoutConstraint constraintWithItem:barView
 															 attribute:NSLayoutAttributeTrailing
 															 relatedBy:NSLayoutRelationEqual
 																toItem:overviewView
 															 attribute:NSLayoutAttributeTrailing
 															multiplier:1.f
-															  constant:-RTSTimelineBarMargin]];
+															  constant:-RTSTimelineBarHorizontalMargin]];
 	
 	// Vertical constraints in overviewView
 	[overviewView addConstraint:[NSLayoutConstraint constraintWithItem:barView
