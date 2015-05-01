@@ -7,26 +7,21 @@
 
 #import "RTSMediaPlayerController.h"
 
+// Constants
 static const CGFloat RTSTimelineBarHeight = 2.f;
 static const CGFloat RTSTimelineEventViewSide = 8.f;
 static const CGFloat RTSTimelineBarMargin = 2.f * RTSTimelineEventViewSide;
 
-#pragma mark - Functions
-
-static void commonInit(RTSTimelineView *self)
-{
-	UIView *barView = [[UIView alloc] initWithFrame:CGRectMake(RTSTimelineBarMargin,
-															   roundf((CGRectGetHeight(self.frame) - RTSTimelineBarHeight) / 2.f),
-															   CGRectGetWidth(self.frame) - 2.f * RTSTimelineBarMargin,
-															   RTSTimelineBarHeight)];
-	barView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-	barView.backgroundColor = [UIColor whiteColor];
-	[self addSubview:barView];
-}
+// Function declarations
+static void commonInit(RTSTimelineView *self);
 
 @interface RTSTimelineView ()
 
 @property (nonatomic) NSArray *eventViews;
+
+@property (nonatomic, weak) UICollectionView *eventCollectionView;
+@property (nonatomic, weak) UIView *overviewView;
+@property (nonatomic, weak) UIView *barView;
 
 @end
 
@@ -50,6 +45,18 @@ static void commonInit(RTSTimelineView *self)
 		commonInit(self);
 	}
 	return self;
+}
+
+#pragma mark - Layout
+
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+	
+	self.barView.frame = CGRectMake(RTSTimelineBarMargin,
+									roundf((CGRectGetHeight(self.overviewView.frame) - RTSTimelineBarHeight) / 2.f),
+									CGRectGetWidth(self.overviewView.frame) - 2.f * RTSTimelineBarMargin,
+									RTSTimelineBarHeight);
 }
 
 #pragma mark - Getters and setters
@@ -108,8 +115,8 @@ static void commonInit(RTSTimelineView *self)
 			continue;
 		}
 		
-		UIView *eventView = [[UIView alloc] initWithFrame:CGRectMake(roundf(RTSTimelineBarMargin + CMTimeGetSeconds(event.time) * (CGRectGetWidth(self.frame) - 2.f * RTSTimelineBarMargin) / CMTimeGetSeconds(currentTimeRange.duration) - RTSTimelineEventViewSide / 2.f),
-																	 roundf((CGRectGetHeight(self.frame) - RTSTimelineEventViewSide) / 2.f),
+		UIView *eventView = [[UIView alloc] initWithFrame:CGRectMake(roundf(RTSTimelineBarMargin + CMTimeGetSeconds(event.time) * (CGRectGetWidth(self.overviewView.frame) - 2.f * RTSTimelineBarMargin) / CMTimeGetSeconds(currentTimeRange.duration) - RTSTimelineEventViewSide / 2.f),
+																	 roundf((CGRectGetHeight(self.overviewView.frame) - RTSTimelineEventViewSide) / 2.f),
 																	 RTSTimelineEventViewSide,
 																	 RTSTimelineEventViewSide)];
 		eventView.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.6f];
@@ -117,7 +124,7 @@ static void commonInit(RTSTimelineView *self)
 		eventView.layer.borderColor = [UIColor blackColor].CGColor;
 		eventView.layer.borderWidth = 1.f;
 		eventView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin| UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-		[self addSubview:eventView];
+		[self.overviewView addSubview:eventView];
 		
 		[eventViews addObject:eventView];
 	}
@@ -152,3 +159,97 @@ static void commonInit(RTSTimelineView *self)
 }
 
 @end
+
+#pragma mark - Functions
+
+static void commonInit(RTSTimelineView *self)
+{
+	// Collection view for easy navigation
+	UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
+	collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+	UICollectionView *eventCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewLayout];
+	[self addSubview:eventCollectionView];
+	self.eventCollectionView = eventCollectionView;
+	
+	// Timeline overview
+	UIView *overviewView = [[UIView alloc] initWithFrame:CGRectZero];
+	[self addSubview:overviewView];
+	self.overviewView = overviewView;
+	
+	eventCollectionView.backgroundColor = [UIColor redColor];
+	overviewView.backgroundColor = [UIColor blueColor];
+	
+	// Timeline overview bar (not managed using autolayout)
+	UIView *barView = [[UIView alloc] initWithFrame:CGRectZero];
+	barView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+	barView.backgroundColor = [UIColor whiteColor];
+	[overviewView addSubview:barView];
+	self.barView = barView;
+	
+	// Disable implicit constraints for views managed using autolayout
+	eventCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+	overviewView.translatesAutoresizingMaskIntoConstraints = NO;
+	
+	// Horizontal constraints
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
+													 attribute:NSLayoutAttributeLeading
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeLeading
+													multiplier:1.f
+													  constant:0.f]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
+													 attribute:NSLayoutAttributeTrailing
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeTrailing
+													multiplier:1.f
+													  constant:0.f]];
+	
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:overviewView
+													 attribute:NSLayoutAttributeLeading
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeLeading
+													multiplier:1.f
+													  constant:0.f]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:overviewView
+													 attribute:NSLayoutAttributeTrailing
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeTrailing
+													multiplier:1.f
+													  constant:0.f]];
+	
+	// Vertical constraints
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
+													 attribute:NSLayoutAttributeTop
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeTop
+													multiplier:1.f
+													  constant:0.f]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
+													 attribute:NSLayoutAttributeBottom
+													 relatedBy:NSLayoutRelationEqual
+														toItem:overviewView
+													 attribute:NSLayoutAttributeTop
+													multiplier:1.f
+													  constant:0.f]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:overviewView
+													 attribute:NSLayoutAttributeBottom
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeBottom
+													multiplier:1.f
+													  constant:0.f]];
+	
+	// Size constraints
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
+													 attribute:NSLayoutAttributeHeight
+													 relatedBy:NSLayoutRelationEqual
+														toItem:overviewView
+													 attribute:NSLayoutAttributeHeight
+													multiplier:4.f
+													  constant:0.f]];
+}
