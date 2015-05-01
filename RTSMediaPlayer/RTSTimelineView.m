@@ -12,6 +12,7 @@
 // Constants
 static const CGFloat RTSTimelineBarHeight = 2.f;
 static const CGFloat RTSTimelineEventIconSide = 8.f;
+static const CGFloat RTSTimelineCollectionVerticalMargin = 4.f;
 static const CGFloat RTSTimelineBarHorizontalMargin = 2.f * RTSTimelineEventIconSide;
 
 // Function declarations
@@ -197,6 +198,7 @@ static void commonInit(RTSTimelineView *self)
 	
 	// Collection view
 	UICollectionView *eventCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewLayout];
+	eventCollectionView.backgroundColor = [UIColor clearColor];
 	eventCollectionView.alwaysBounceHorizontal = YES;
 	eventCollectionView.dataSource = self;
 	eventCollectionView.delegate = self;
@@ -263,7 +265,7 @@ static void commonInit(RTSTimelineView *self)
 														toItem:self
 													 attribute:NSLayoutAttributeTop
 													multiplier:1.f
-													  constant:0.f]];
+													  constant:RTSTimelineCollectionVerticalMargin]];
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
 													 attribute:NSLayoutAttributeBottom
 													 relatedBy:NSLayoutRelationEqual
