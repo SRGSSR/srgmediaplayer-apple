@@ -5,6 +5,22 @@
 
 #import "EventCollectionViewCell.h"
 
+@interface EventCollectionViewCell ()
+
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *imageView;
+
+@end
+
 @implementation EventCollectionViewCell
+
+#pragma mark - Setters and getters
+
+- (void) setEvent:(RTSTimelineEvent *)event
+{
+	_event = event;
+	
+	self.titleLabel.text = event.title;
+}
 
 @end

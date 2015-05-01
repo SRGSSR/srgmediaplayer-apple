@@ -26,6 +26,8 @@
 
 @protocol RTSTimelineViewDataSource <NSObject>
 
+// TODO: Add methods for item width and spacing
+
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSTimelineEvent *)event;
 
 @end

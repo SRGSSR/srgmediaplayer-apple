@@ -212,7 +212,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSTimelineEvent *)event
 {
 	EventCollectionViewCell *eventCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([EventCollectionViewCell class]) forEvent:event];
-	// TODO: Display information
+	eventCell.event = event;
 	return eventCell;
 }
 

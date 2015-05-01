@@ -3,8 +3,11 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
+#import <RTSMediaPlayer/RTSTimelineEvent.h>
 #import <UIKit/UIKit.h>
 
 @interface EventCollectionViewCell : UICollectionViewCell
+
+@property (nonatomic) RTSTimelineEvent *event;
 
 @end
