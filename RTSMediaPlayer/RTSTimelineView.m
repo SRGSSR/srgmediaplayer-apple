@@ -47,18 +47,6 @@ static void commonInit(RTSTimelineView *self);
 	return self;
 }
 
-#pragma mark - Layout
-
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	
-	self.barView.frame = CGRectMake(RTSTimelineBarMargin,
-									roundf((CGRectGetHeight(self.overviewView.frame) - RTSTimelineBarHeight) / 2.f),
-									CGRectGetWidth(self.overviewView.frame) - 2.f * RTSTimelineBarMargin,
-									RTSTimelineBarHeight);
-}
-
 #pragma mark - Getters and setters
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
@@ -186,11 +174,12 @@ static void commonInit(RTSTimelineView *self)
 	[overviewView addSubview:barView];
 	self.barView = barView;
 	
-	// Disable implicit constraints for views managed using autolayout
+	// Disable implicit constraints for views managed with autolayout
 	eventCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
 	overviewView.translatesAutoresizingMaskIntoConstraints = NO;
+	barView.translatesAutoresizingMaskIntoConstraints = NO;
 	
-	// Horizontal constraints
+	// Horizontal constraints in self
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
 													 attribute:NSLayoutAttributeLeading
 													 relatedBy:NSLayoutRelationEqual
@@ -221,7 +210,7 @@ static void commonInit(RTSTimelineView *self)
 													multiplier:1.f
 													  constant:0.f]];
 	
-	// Vertical constraints
+	// Vertical constraints in self
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
 													 attribute:NSLayoutAttributeTop
 													 relatedBy:NSLayoutRelationEqual
@@ -244,7 +233,7 @@ static void commonInit(RTSTimelineView *self)
 													multiplier:1.f
 													  constant:0.f]];
 	
-	// Size constraints
+	// Size constraints in self
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
 													 attribute:NSLayoutAttributeHeight
 													 relatedBy:NSLayoutRelationEqual
@@ -252,4 +241,38 @@ static void commonInit(RTSTimelineView *self)
 													 attribute:NSLayoutAttributeHeight
 													multiplier:4.f
 													  constant:0.f]];
+	
+	// Horizontal constraints in overviewView
+	[overviewView addConstraint:[NSLayoutConstraint constraintWithItem:barView
+															 attribute:NSLayoutAttributeLeading
+															 relatedBy:NSLayoutRelationEqual
+																toItem:overviewView
+															 attribute:NSLayoutAttributeLeading
+															multiplier:1.f
+															  constant:RTSTimelineBarMargin]];
+	[overviewView addConstraint:[NSLayoutConstraint constraintWithItem:barView
+															 attribute:NSLayoutAttributeTrailing
+															 relatedBy:NSLayoutRelationEqual
+																toItem:overviewView
+															 attribute:NSLayoutAttributeTrailing
+															multiplier:1.f
+															  constant:-RTSTimelineBarMargin]];
+	
+	// Vertical constraints in overviewView
+	[overviewView addConstraint:[NSLayoutConstraint constraintWithItem:barView
+															 attribute:NSLayoutAttributeCenterY
+															 relatedBy:NSLayoutRelationEqual
+																toItem:overviewView
+															 attribute:NSLayoutAttributeCenterY
+															multiplier:1.f
+															  constant:0.f]];
+	
+	// Size constraints in overviewView
+	[overviewView addConstraint:[NSLayoutConstraint constraintWithItem:barView
+															 attribute:NSLayoutAttributeHeight
+															 relatedBy:NSLayoutRelationEqual
+																toItem:nil
+															 attribute:NSLayoutAttributeNotAnAttribute
+															multiplier:1.f
+															  constant:RTSTimelineBarHeight]];
 }
