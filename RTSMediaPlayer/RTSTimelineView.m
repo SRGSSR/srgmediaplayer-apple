@@ -58,8 +58,16 @@ static void commonInit(RTSTimelineView *self);
 	
 	// Ensure the timeline stays up to date as playable time ranges change
 	[mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(5., 1.) queue:NULL usingBlock:^(CMTime time) {
-		[self reloadData];
+		[self reloadTimeline];
 	}];
+}
+
+- (void) setEvents:(NSArray *)events
+{
+	_events = events;
+	
+	[self reloadTimeline];
+	[self.eventCollectionView reloadData];
 }
 
 #pragma mark - Overrides
@@ -70,7 +78,7 @@ static void commonInit(RTSTimelineView *self);
 	
 	if (window)
 	{
-		[self reloadData];
+		[self reloadTimeline];
 	}
 }
 
@@ -87,15 +95,14 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - Display
 
-- (void) reloadData
+- (void) reloadTimeline
 {
 	for (UIView *eventView in self.eventViews)
 	{
 		[eventView removeFromSuperview];
 	}
 	
-	NSInteger numberOfEvents = [self.dataSource numberOfEventsInTimelineView:self];
-	if (numberOfEvents == 0)
+	if (self.events.count == 0)
 	{
 		return;
 	}
@@ -107,9 +114,9 @@ static void commonInit(RTSTimelineView *self);
 	}
 	
 	NSMutableArray *eventViews = [NSMutableArray array];
-	for (NSInteger i = 0; i < numberOfEvents; ++i)
+	for (NSInteger i = 0; i < self.events.count; ++i)
 	{
-		RTSTimelineEvent *event = [self.dataSource timelineView:self eventAtIndex:i];
+		RTSTimelineEvent *event = self.events[i];
 		
 		// Skip events not in the timeline
 		if (CMTIME_COMPARE_INLINE(event.time, >, CMTimeRangeGetEnd(currentTimeRange)))
@@ -131,8 +138,6 @@ static void commonInit(RTSTimelineView *self);
 		[eventViews addObject:eventView];
 	}
 	self.eventViews = [NSArray arrayWithArray:eventViews];
-	
-	[self.eventCollectionView reloadData];
 }
 
 - (CMTimeRange) currentTimeRange
@@ -166,7 +171,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-	return [self.dataSource numberOfEventsInTimelineView:self];
+	return [self.events count];
 }
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

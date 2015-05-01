@@ -9,19 +9,10 @@
 @class RTSMediaPlayerController;
 @class RTSTimelineView;
 
-@protocol RTSTimelineViewDataSource <NSObject>
-
-- (NSInteger) numberOfEventsInTimelineView:(RTSTimelineView *)timelineView;
-- (RTSTimelineEvent *) timelineView:(RTSTimelineView *)timelineView eventAtIndex:(NSInteger)index;
-
-@end
-
 @interface RTSTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
+@property (nonatomic, strong) NSArray *events;
+
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
-
-@property (nonatomic, weak) IBOutlet id<RTSTimelineViewDataSource> dataSource;
-
-- (void) reloadData;
 
 @end

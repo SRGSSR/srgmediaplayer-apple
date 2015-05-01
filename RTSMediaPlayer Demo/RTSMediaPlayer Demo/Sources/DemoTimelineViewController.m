@@ -169,7 +169,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 				return;
 			}
 			
-			self.timelineEvents = timelineEvents;
+			self.timelineView.events = timelineEvents;
 		}];
 	}];
 }
@@ -199,18 +199,6 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 			completionHandler(URL, nil);
 		});
 	}] resume];
-}
-
-#pragma mark - RTSTimelineViewDataSource protocol
-
-- (NSInteger) numberOfEventsInTimelineView:(RTSTimelineView *)timelineView
-{
-	return self.timelineEvents.count;
-}
-
-- (RTSTimelineEvent *) timelineView:(RTSTimelineView *)timelineView eventAtIndex:(NSInteger)index
-{
-	return self.timelineEvents[index];
 }
 
 #pragma mark - Actions
