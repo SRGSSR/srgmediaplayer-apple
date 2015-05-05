@@ -5,6 +5,8 @@
 
 #import "EventCollectionViewCell.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 @interface EventCollectionViewCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
@@ -21,6 +23,8 @@
 	_event = event;
 	
 	self.titleLabel.text = event.title;
+	
+	[self.imageView sd_setImageWithURL:event.imageURL];
 }
 
 @end

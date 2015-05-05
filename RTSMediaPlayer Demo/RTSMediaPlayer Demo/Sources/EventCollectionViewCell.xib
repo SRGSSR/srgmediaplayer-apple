@@ -13,6 +13,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="178" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sE8-ka-CKC" userLabel="Thumbnail Image View">
+                        <rect key="frame" x="0.0" y="0.0" width="178" height="100"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                <integer key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kml-zL-sSx" userLabel="Background View">
                         <rect key="frame" x="0.0" y="65" width="178" height="35"/>
                         <subviews>
@@ -34,9 +42,6 @@
                             <constraint firstAttribute="trailing" secondItem="KjW-6P-kjn" secondAttribute="trailing" constant="8" id="vqv-ag-RDi"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sE8-ka-CKC" userLabel="Thumbnail Image View">
-                        <rect key="frame" x="0.0" y="0.0" width="178" height="100"/>
-                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>

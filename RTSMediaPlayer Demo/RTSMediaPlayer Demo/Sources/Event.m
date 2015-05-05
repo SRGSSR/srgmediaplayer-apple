@@ -38,12 +38,13 @@
 
 - (NSString *) description
 {
-	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; identifier: %@>",
+	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; identifier: %@; imageURL: %@>",
 			[self class],
 			self,
 			@(CMTimeGetSeconds(self.time)),
 			self.title,
-			self.identifier];
+			self.identifier,
+			self.imageURL];
 }
 
 @end
