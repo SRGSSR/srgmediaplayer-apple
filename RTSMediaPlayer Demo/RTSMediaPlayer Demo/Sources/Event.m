@@ -9,6 +9,7 @@
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *identifier;
+@property (nonatomic) NSDate *date;
 
 @end
 
@@ -16,12 +17,18 @@
 
 #pragma mark - Object lifecycle
 
-- (instancetype) initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier
+- (instancetype) initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier date:(NSDate *)date
 {
+	if (!title || !identifier || !date)
+	{
+		return nil;
+	}
+	
 	if (self = [super initWithTime:time])
 	{
 		self.title = title;
 		self.identifier = identifier;
+		self.date = date;
 	}
 	return self;
 }
@@ -38,12 +45,13 @@
 
 - (NSString *) description
 {
-	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; identifier: %@; imageURL: %@>",
+	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; identifier: %@; date: %@; imageURL: %@>",
 			[self class],
 			self,
 			@(CMTimeGetSeconds(self.time)),
 			self.title,
 			self.identifier,
+			self.date,
 			self.imageURL];
 }
 

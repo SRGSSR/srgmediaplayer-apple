@@ -7,8 +7,6 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-NSString *StringFromTime(CMTime time);
-
 @interface EventCollectionViewCell ()
 
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
@@ -26,33 +24,17 @@ NSString *StringFromTime(CMTime time);
 	_event = event;
 	
 	self.titleLabel.text = event.title;
-	self.timestampLabel.text = StringFromTime(event.time);
+	
+	static NSDateFormatter *s_dateFormatter;
+	static dispatch_once_t s_onceToken;
+	dispatch_once(&s_onceToken, ^{
+		s_dateFormatter = [[NSDateFormatter alloc] init];
+		[s_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		[s_dateFormatter setDateStyle:NSDateFormatterNoStyle];
+	});
+	self.timestampLabel.text = [NSString stringWithFormat:@"at %@", [s_dateFormatter stringFromDate:event.date]];
 	
 	[self.imageView sd_setImageWithURL:event.imageURL];
 }
 
 @end
-
-#pragma mark - Functions
-
-NSString *StringFromTime(CMTime time)
-{
-	if (!CMTIME_IS_VALID(time))
-	{
-		return @"--:--";
-	}
-	
-	NSInteger timeInSeconds = CMTimeGetSeconds(time);
-	NSInteger hours = timeInSeconds / (60 * 60);
-	NSInteger minutes = (timeInSeconds - hours * 60 * 60) / 60;
-	NSInteger seconds = timeInSeconds - hours * 60 * 60 - minutes * 60;
-	
-	if (hours > 0)
-	{
-		return [NSString stringWithFormat:@"%02ld:%02ld:%02ld", (long)hours, (long)minutes, (long)seconds];
-	}
-	else
-	{
-		return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
-	}
-}

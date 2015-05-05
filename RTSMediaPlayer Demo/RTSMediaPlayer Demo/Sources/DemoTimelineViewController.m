@@ -163,8 +163,10 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 				// another request
 				NSDate *date = [NSDate dateWithTimeIntervalSince1970:[highlight[@"timestamp"] doubleValue]];
 				CMTime time = CMTimeMake([date timeIntervalSinceDate:startDate], 1.);
-				Event *event = [[Event alloc] initWithTime:time title:highlight[@"title"] identifier:highlight[@"id"]];
-				[events addObject:event];
+				Event *event = [[Event alloc] initWithTime:time title:highlight[@"title"] identifier:highlight[@"id"] date:date];
+				if (event) {
+					[events addObject:event];
+				}
 			}
 			
 			NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"time" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
