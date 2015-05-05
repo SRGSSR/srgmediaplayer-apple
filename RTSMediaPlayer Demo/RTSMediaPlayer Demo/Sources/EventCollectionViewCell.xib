@@ -21,7 +21,7 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kml-zL-sSx" userLabel="Background View">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kml-zL-sSx" userLabel="Title View">
                         <rect key="frame" x="0.0" y="65" width="178" height="35"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KjW-6P-kjn" userLabel="Title Label">
@@ -42,22 +42,65 @@
                             <constraint firstAttribute="trailing" secondItem="KjW-6P-kjn" secondAttribute="trailing" constant="8" id="vqv-ag-RDi"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uwk-g3-yDR" userLabel="Timestamp View">
+                        <rect key="frame" x="114" y="43" width="60" height="20"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;time&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Inu-df-2TP" userLabel="Timestamp Label">
+                                <rect key="frame" x="0.0" y="0.0" width="60" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="VBJ-xC-aLN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="VBJ-xC-aLN"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Inu-df-2TP" secondAttribute="trailing" constant="8" id="3Qp-sy-6sH"/>
+                            <constraint firstAttribute="centerY" secondItem="Inu-df-2TP" secondAttribute="centerY" id="B03-tp-eWR"/>
+                            <constraint firstItem="Inu-df-2TP" firstAttribute="top" secondItem="Uwk-g3-yDR" secondAttribute="top" id="Tqe-Rb-52y"/>
+                            <constraint firstAttribute="height" constant="20" id="W0m-Lc-ass"/>
+                            <constraint firstAttribute="width" constant="60" id="e4f-0d-l05"/>
+                            <constraint firstAttribute="height" constant="35" id="f8C-3L-I3K"/>
+                            <constraint firstItem="Inu-df-2TP" firstAttribute="leading" secondItem="Uwk-g3-yDR" secondAttribute="leading" id="fzd-ga-9Mw"/>
+                            <constraint firstAttribute="bottom" secondItem="Inu-df-2TP" secondAttribute="bottom" id="oVg-1d-MGn"/>
+                            <constraint firstAttribute="trailing" secondItem="Inu-df-2TP" secondAttribute="trailing" id="s1F-M6-BBf"/>
+                            <constraint firstItem="Inu-df-2TP" firstAttribute="leading" secondItem="Uwk-g3-yDR" secondAttribute="leading" constant="8" id="xaI-t4-Hv0"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="f8C-3L-I3K"/>
+                                <exclude reference="3Qp-sy-6sH"/>
+                                <exclude reference="B03-tp-eWR"/>
+                                <exclude reference="xaI-t4-Hv0"/>
+                            </mask>
+                        </variation>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="Uwk-g3-yDR" secondAttribute="trailing" constant="4" id="AGD-uV-Rlw"/>
                 <constraint firstAttribute="trailing" secondItem="Kml-zL-sSx" secondAttribute="trailing" id="EYz-2i-VxD"/>
                 <constraint firstItem="Kml-zL-sSx" firstAttribute="leading" secondItem="doA-FI-M39" secondAttribute="leading" id="H97-9N-93P"/>
                 <constraint firstItem="sE8-ka-CKC" firstAttribute="top" secondItem="doA-FI-M39" secondAttribute="top" id="V2L-4X-HYW"/>
                 <constraint firstAttribute="trailing" secondItem="sE8-ka-CKC" secondAttribute="trailing" id="dSd-kR-B1d"/>
                 <constraint firstAttribute="bottom" secondItem="sE8-ka-CKC" secondAttribute="bottom" id="da1-l9-r1I"/>
                 <constraint firstItem="sE8-ka-CKC" firstAttribute="leading" secondItem="doA-FI-M39" secondAttribute="leading" id="fYY-TW-Upy"/>
+                <constraint firstItem="Kml-zL-sSx" firstAttribute="top" secondItem="Uwk-g3-yDR" secondAttribute="bottom" constant="2" id="rtA-pq-t7w"/>
                 <constraint firstAttribute="bottom" secondItem="Kml-zL-sSx" secondAttribute="bottom" id="w0d-rS-eBL"/>
             </constraints>
             <size key="customSize" width="178" height="100"/>
             <connections>
                 <outlet property="imageView" destination="sE8-ka-CKC" id="D7d-dr-vDc"/>
+                <outlet property="timestampLabel" destination="Inu-df-2TP" id="3YA-8f-8FG"/>
                 <outlet property="titleLabel" destination="KjW-6P-kjn" id="Iaw-TO-P3c"/>
             </connections>
             <point key="canvasLocation" x="725" y="427"/>
