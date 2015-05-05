@@ -125,14 +125,28 @@ static void commonInit(RTSTimelineView *self);
 			continue;
 		}
 		
-		UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(roundf(RTSTimelineBarHorizontalMargin + CMTimeGetSeconds(event.time) * (CGRectGetWidth(self.overviewView.frame) - 2.f * RTSTimelineBarHorizontalMargin) / CMTimeGetSeconds(currentTimeRange.duration) - RTSTimelineEventIconSide / 2.f),
-																	roundf((CGRectGetHeight(self.overviewView.frame) - RTSTimelineEventIconSide) / 2.f),
-																	RTSTimelineEventIconSide,
-																	RTSTimelineEventIconSide)];
-		iconView.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.6f];
-		iconView.layer.cornerRadius = RTSTimelineEventIconSide / 2.f;
-		iconView.layer.borderColor = [UIColor blackColor].CGColor;
-		iconView.layer.borderWidth = 1.f;
+		CGRect iconFrame = CGRectMake(roundf(RTSTimelineBarHorizontalMargin + CMTimeGetSeconds(event.time) * (CGRectGetWidth(self.overviewView.frame) - 2.f * RTSTimelineBarHorizontalMargin) / CMTimeGetSeconds(currentTimeRange.duration) - RTSTimelineEventIconSide / 2.f),
+									  roundf((CGRectGetHeight(self.overviewView.frame) - RTSTimelineEventIconSide) / 2.f),
+									  RTSTimelineEventIconSide,
+									  RTSTimelineEventIconSide);
+		
+		UIView *iconView = nil;
+		if ([self.dataSource respondsToSelector:@selector(timelineView:iconImageForEvent:)])
+		{
+			UIImage *iconImage = [self.dataSource timelineView:self iconImageForEvent:event];
+			iconView = [[UIImageView alloc] initWithImage:iconImage];
+			iconView.contentMode = UIViewContentModeScaleAspectFit;
+			iconView.frame = iconFrame;
+		}
+		else
+		{
+			iconView = [[UIView alloc] initWithFrame:iconFrame];
+			iconView.backgroundColor = [UIColor whiteColor];
+			iconView.layer.cornerRadius = RTSTimelineEventIconSide / 2.f;
+			iconView.layer.borderColor = [UIColor blackColor].CGColor;
+			iconView.layer.borderWidth = 1.f;
+		}
+		
 		iconView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin| UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 		[self.overviewView addSubview:iconView];
 		

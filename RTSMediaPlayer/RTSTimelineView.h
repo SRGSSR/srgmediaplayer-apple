@@ -30,6 +30,10 @@
 
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSTimelineEvent *)event;
 
+@optional
+
+- (UIImage *) timelineView:(RTSTimelineView *)timelineView iconImageForEvent:(RTSTimelineEvent *)event;
+
 @end
 
 @protocol RTSTimelineViewDelegate <NSObject>
