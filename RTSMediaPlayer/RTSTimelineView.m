@@ -118,7 +118,7 @@ static void commonInit(RTSTimelineView *self);
 		RTSTimelineEvent *event = self.events[i];
 		
 		// Skip events not in the timeline
-		if (CMTIME_COMPARE_INLINE(event.time, >, CMTimeRangeGetEnd(currentTimeRange)))
+		if (CMTIME_COMPARE_INLINE(event.time, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(event.time, >, CMTimeRangeGetEnd(currentTimeRange)))
 		{
 			continue;
 		}
@@ -209,10 +209,12 @@ static void commonInit(RTSTimelineView *self);
 {
 	RTSTimelineEvent *event = self.events[indexPath.row];
 	
-	if ([self.delegate respondsToSelector:@selector(timelineView:didSelectEvent:)]) {
+	if ([self.delegate respondsToSelector:@selector(timelineView:didSelectEvent:)])
+	{
 		[self.delegate timelineView:self didSelectEvent:event];
 	}
-	else {
+	else
+	{
 		[self.mediaPlayerController.player seekToTime:event.time];
 	}
 }
