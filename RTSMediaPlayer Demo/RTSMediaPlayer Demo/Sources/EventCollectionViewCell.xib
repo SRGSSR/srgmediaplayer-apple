@@ -22,12 +22,12 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kml-zL-sSx" userLabel="Title View">
-                        <rect key="frame" x="4" y="63" width="170" height="35"/>
+                        <rect key="frame" x="4" y="72" width="170" height="25"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KjW-6P-kjn" userLabel="Title Label">
-                                <rect key="frame" x="8" y="0.0" width="162" height="35"/>
+                                <rect key="frame" x="8" y="0.0" width="162" height="25"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="clG-fI-dk4"/>
+                                    <constraint firstAttribute="height" constant="25" id="clG-fI-dk4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -37,16 +37,16 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="KjW-6P-kjn" secondAttribute="centerY" id="Olt-v2-XWG"/>
-                            <constraint firstAttribute="height" constant="35" id="Z6B-CA-Zm9"/>
+                            <constraint firstAttribute="height" constant="25" id="Z6B-CA-Zm9"/>
                             <constraint firstItem="KjW-6P-kjn" firstAttribute="leading" secondItem="Kml-zL-sSx" secondAttribute="leading" constant="8" id="dcp-Kz-GBX"/>
                             <constraint firstAttribute="trailing" secondItem="KjW-6P-kjn" secondAttribute="trailing" id="vqv-ag-RDi"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uwk-g3-yDR" userLabel="Timestamp View">
-                        <rect key="frame" x="108" y="41" width="60" height="20"/>
+                        <rect key="frame" x="108" y="49" width="60" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;time&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Inu-df-2TP" userLabel="Timestamp Label">
-                                <rect key="frame" x="0.0" y="0.0" width="60" height="20"/>
+                                <rect key="frame" x="0.0" y="1" width="60" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="VBJ-xC-aLN"/>
                                 </constraints>
@@ -64,12 +64,12 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Inu-df-2TP" secondAttribute="trailing" constant="8" id="3Qp-sy-6sH"/>
                             <constraint firstAttribute="centerY" secondItem="Inu-df-2TP" secondAttribute="centerY" id="B03-tp-eWR"/>
-                            <constraint firstItem="Inu-df-2TP" firstAttribute="top" secondItem="Uwk-g3-yDR" secondAttribute="top" id="Tqe-Rb-52y"/>
+                            <constraint firstItem="Inu-df-2TP" firstAttribute="top" secondItem="Uwk-g3-yDR" secondAttribute="top" constant="1" id="Tqe-Rb-52y"/>
                             <constraint firstAttribute="height" constant="20" id="W0m-Lc-ass"/>
                             <constraint firstAttribute="width" constant="60" id="e4f-0d-l05"/>
                             <constraint firstAttribute="height" constant="35" id="f8C-3L-I3K"/>
                             <constraint firstItem="Inu-df-2TP" firstAttribute="leading" secondItem="Uwk-g3-yDR" secondAttribute="leading" id="fzd-ga-9Mw"/>
-                            <constraint firstAttribute="bottom" secondItem="Inu-df-2TP" secondAttribute="bottom" id="oVg-1d-MGn"/>
+                            <constraint firstAttribute="bottom" secondItem="Inu-df-2TP" secondAttribute="bottom" constant="-1" id="oVg-1d-MGn"/>
                             <constraint firstAttribute="trailing" secondItem="Inu-df-2TP" secondAttribute="trailing" id="s1F-M6-BBf"/>
                             <constraint firstItem="Inu-df-2TP" firstAttribute="leading" secondItem="Uwk-g3-yDR" secondAttribute="leading" constant="8" id="xaI-t4-Hv0"/>
                         </constraints>
@@ -94,8 +94,8 @@
                 <constraint firstAttribute="trailing" secondItem="sE8-ka-CKC" secondAttribute="trailing" constant="4" id="dSd-kR-B1d"/>
                 <constraint firstAttribute="bottom" secondItem="sE8-ka-CKC" secondAttribute="bottom" constant="2" id="da1-l9-r1I"/>
                 <constraint firstItem="sE8-ka-CKC" firstAttribute="leading" secondItem="doA-FI-M39" secondAttribute="leading" constant="4" id="fYY-TW-Upy"/>
-                <constraint firstItem="Kml-zL-sSx" firstAttribute="top" secondItem="Uwk-g3-yDR" secondAttribute="bottom" constant="2" id="rtA-pq-t7w"/>
-                <constraint firstAttribute="bottom" secondItem="Kml-zL-sSx" secondAttribute="bottom" constant="2" id="w0d-rS-eBL"/>
+                <constraint firstItem="Kml-zL-sSx" firstAttribute="top" secondItem="Uwk-g3-yDR" secondAttribute="bottom" constant="3" id="rtA-pq-t7w"/>
+                <constraint firstAttribute="bottom" secondItem="Kml-zL-sSx" secondAttribute="bottom" constant="3" id="w0d-rS-eBL"/>
             </constraints>
             <size key="customSize" width="178" height="100"/>
             <connections>
