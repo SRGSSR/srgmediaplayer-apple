@@ -35,10 +35,10 @@
 @protocol RTSTimelineViewDelegate <NSObject>
 
 - (CGFloat) itemWidthForTimelineView:(RTSTimelineView *)timelineView;
-- (CGFloat) itemSpacingForTimelineView:(RTSTimelineView *)timelineView;
 
 @optional
 
+- (CGFloat) itemSpacingForTimelineView:(RTSTimelineView *)timelineView;
 - (void) timelineView:(RTSTimelineView *)timelineView didSelectEvent:(RTSTimelineEvent *)event;
 
 @end

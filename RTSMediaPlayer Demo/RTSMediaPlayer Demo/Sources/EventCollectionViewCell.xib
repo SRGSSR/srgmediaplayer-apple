@@ -13,8 +13,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="178" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sE8-ka-CKC" userLabel="Thumbnail Image View">
-                        <rect key="frame" x="0.0" y="0.0" width="178" height="100"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sE8-ka-CKC" userLabel="Thumbnail Image View">
+                        <rect key="frame" x="4" y="2" width="170" height="96"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                                 <integer key="value" value="1"/>
@@ -22,7 +22,7 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kml-zL-sSx" userLabel="Title View">
-                        <rect key="frame" x="0.0" y="65" width="178" height="35"/>
+                        <rect key="frame" x="4" y="63" width="170" height="35"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KjW-6P-kjn" userLabel="Title Label">
                                 <rect key="frame" x="8" y="0.0" width="162" height="35"/>
@@ -39,11 +39,11 @@
                             <constraint firstAttribute="centerY" secondItem="KjW-6P-kjn" secondAttribute="centerY" id="Olt-v2-XWG"/>
                             <constraint firstAttribute="height" constant="35" id="Z6B-CA-Zm9"/>
                             <constraint firstItem="KjW-6P-kjn" firstAttribute="leading" secondItem="Kml-zL-sSx" secondAttribute="leading" constant="8" id="dcp-Kz-GBX"/>
-                            <constraint firstAttribute="trailing" secondItem="KjW-6P-kjn" secondAttribute="trailing" constant="8" id="vqv-ag-RDi"/>
+                            <constraint firstAttribute="trailing" secondItem="KjW-6P-kjn" secondAttribute="trailing" id="vqv-ag-RDi"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uwk-g3-yDR" userLabel="Timestamp View">
-                        <rect key="frame" x="114" y="43" width="60" height="20"/>
+                        <rect key="frame" x="108" y="41" width="60" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;time&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Inu-df-2TP" userLabel="Timestamp Label">
                                 <rect key="frame" x="0.0" y="0.0" width="60" height="20"/>
@@ -87,15 +87,15 @@
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="Uwk-g3-yDR" secondAttribute="trailing" constant="4" id="AGD-uV-Rlw"/>
-                <constraint firstAttribute="trailing" secondItem="Kml-zL-sSx" secondAttribute="trailing" id="EYz-2i-VxD"/>
-                <constraint firstItem="Kml-zL-sSx" firstAttribute="leading" secondItem="doA-FI-M39" secondAttribute="leading" id="H97-9N-93P"/>
-                <constraint firstItem="sE8-ka-CKC" firstAttribute="top" secondItem="doA-FI-M39" secondAttribute="top" id="V2L-4X-HYW"/>
-                <constraint firstAttribute="trailing" secondItem="sE8-ka-CKC" secondAttribute="trailing" id="dSd-kR-B1d"/>
-                <constraint firstAttribute="bottom" secondItem="sE8-ka-CKC" secondAttribute="bottom" id="da1-l9-r1I"/>
-                <constraint firstItem="sE8-ka-CKC" firstAttribute="leading" secondItem="doA-FI-M39" secondAttribute="leading" id="fYY-TW-Upy"/>
+                <constraint firstAttribute="trailing" secondItem="Uwk-g3-yDR" secondAttribute="trailing" constant="10" id="AGD-uV-Rlw"/>
+                <constraint firstAttribute="trailing" secondItem="Kml-zL-sSx" secondAttribute="trailing" constant="4" id="EYz-2i-VxD"/>
+                <constraint firstItem="Kml-zL-sSx" firstAttribute="leading" secondItem="doA-FI-M39" secondAttribute="leading" constant="4" id="H97-9N-93P"/>
+                <constraint firstItem="sE8-ka-CKC" firstAttribute="top" secondItem="doA-FI-M39" secondAttribute="top" constant="2" id="V2L-4X-HYW"/>
+                <constraint firstAttribute="trailing" secondItem="sE8-ka-CKC" secondAttribute="trailing" constant="4" id="dSd-kR-B1d"/>
+                <constraint firstAttribute="bottom" secondItem="sE8-ka-CKC" secondAttribute="bottom" constant="2" id="da1-l9-r1I"/>
+                <constraint firstItem="sE8-ka-CKC" firstAttribute="leading" secondItem="doA-FI-M39" secondAttribute="leading" constant="4" id="fYY-TW-Upy"/>
                 <constraint firstItem="Kml-zL-sSx" firstAttribute="top" secondItem="Uwk-g3-yDR" secondAttribute="bottom" constant="2" id="rtA-pq-t7w"/>
-                <constraint firstAttribute="bottom" secondItem="Kml-zL-sSx" secondAttribute="bottom" id="w0d-rS-eBL"/>
+                <constraint firstAttribute="bottom" secondItem="Kml-zL-sSx" secondAttribute="bottom" constant="2" id="w0d-rS-eBL"/>
             </constraints>
             <size key="customSize" width="178" height="100"/>
             <connections>

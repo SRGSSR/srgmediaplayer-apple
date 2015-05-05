@@ -85,7 +85,7 @@ static void commonInit(RTSTimelineView *self);
 	[super layoutSubviews];
 	
 	UICollectionViewFlowLayout *collectionViewLayout = (UICollectionViewFlowLayout *)self.eventCollectionView.collectionViewLayout;
-	collectionViewLayout.minimumLineSpacing = [self.delegate itemSpacingForTimelineView:self];
+	collectionViewLayout.minimumLineSpacing = [self.delegate respondsToSelector:@selector(itemSpacingForTimelineView:)] ? [self.delegate itemSpacingForTimelineView:self] : 0.f;
 	
 	CGFloat cellSide = CGRectGetHeight(self.eventCollectionView.frame);
 	collectionViewLayout.itemSize = CGSizeMake([self.delegate itemWidthForTimelineView:self], cellSide);
