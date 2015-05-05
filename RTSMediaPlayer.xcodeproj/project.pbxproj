@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5CB1A10CE53E2A8720302D99 /* libPods-RTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A05D6955446198632FA7E824 /* libPods-RTSMediaPlayer.a */; };
 		B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */; };
 		B60440FC1AA210C900C7DA57 /* RTSMediaPlayerView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */; };
 		B61E18C11AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18BF1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m */; };
@@ -40,6 +41,7 @@
 		E60E17131AEFD1550062E96E /* RTSTimelineEvent.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E60E17101AEFD1370062E96E /* RTSTimelineEvent.h */; };
 		E616272C1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */; };
 		E65786A41AEFAD68007730CE /* RTSTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E65786A31AEFAD68007730CE /* RTSTimelineView.m */; };
+		E66BDC141AF89C0200FF7858 /* RTSPlaybackTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */; };
 		F7DD624B58EB1E3EF79D59F7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE77ECC145A247C85E459918 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -95,7 +97,9 @@
 		B61E19061AA9F3B900E4FAB9 /* RTSVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSVolumeView.h; sourceTree = "<group>"; };
 		B61E19071AA9F3B900E4FAB9 /* RTSVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSVolumeView.m; sourceTree = "<group>"; };
 		B64503111ADFA286001021A8 /* RTSMediaPlayer.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = RTSMediaPlayer.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		B6C00AC65FCA63E9D4B82E1F /* Pods-RTSMediaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayer.release.xcconfig"; path = "Pods/Target Support Files/Pods-RTSMediaPlayer/Pods-RTSMediaPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerLoadStateTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaPlayerLoadStateTestCase.m"; sourceTree = SOURCE_ROOT; };
+		BE8AC0D05396A800E04F3378 /* Pods-RTSMediaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RTSMediaPlayer/Pods-RTSMediaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 		C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRTSMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayer.h; sourceTree = "<group>"; };
 		C201D9001A9DC1A40016C629 /* RTSMediaPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7DD624B58EB1E3EF79D59F7 /* libPods.a in Frameworks */,
+				5CB1A10CE53E2A8720302D99 /* libPods-RTSMediaPlayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +265,8 @@
 				E0A64A82F87DE7222F4220DD /* Pods-RTSMediaPlayerTests.release.xcconfig */,
 				B2E49E1A9B522BC1DFB61954 /* Pods.debug.xcconfig */,
 				E77390DBA03B25138BDBA95F /* Pods.release.xcconfig */,
+				BE8AC0D05396A800E04F3378 /* Pods-RTSMediaPlayer.debug.xcconfig */,
+				B6C00AC65FCA63E9D4B82E1F /* Pods-RTSMediaPlayer.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -392,7 +399,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RTSMediaPlayer/Pods-RTSMediaPlayer-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8B44E97A17F53A472E89F9CB /* Copy Pods Resources */ = {
@@ -485,6 +492,7 @@
 				C2731F531AD6A80B00434743 /* NSBundle+RTSMediaPlayer.m in Sources */,
 				C2DDAB521AD525A200BA8061 /* RTSInvocationRecorder.m in Sources */,
 				C2150B461AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m in Sources */,
+				E66BDC141AF89C0200FF7858 /* RTSPlaybackTimeObserver.m in Sources */,
 				C2246E321AC4237A000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
 				B6EC78091AA5ABEB009AE043 /* RTSMediaPlayerView.m in Sources */,
 				C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */,
@@ -573,7 +581,7 @@
 		};
 		C201D90A1A9DC1A40016C629 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2E49E1A9B522BC1DFB61954 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = BE8AC0D05396A800E04F3378 /* Pods-RTSMediaPlayer.debug.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -582,7 +590,7 @@
 		};
 		C201D90B1A9DC1A40016C629 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E77390DBA03B25138BDBA95F /* Pods.release.xcconfig */;
+			baseConfigurationReference = B6C00AC65FCA63E9D4B82E1F /* Pods-RTSMediaPlayer.release.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
