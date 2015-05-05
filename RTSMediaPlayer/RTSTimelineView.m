@@ -178,7 +178,7 @@ static void commonInit(RTSTimelineView *self);
 		for (UIView *iconView in self.iconViews)
 		{
 			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-			iconView.transform = [visibleIndexPaths containsObject:indexPath] ? CGAffineTransformMakeScale(1.6f, 1.6f) : CGAffineTransformIdentity;
+			iconView.transform = [visibleIndexPaths containsObject:indexPath] ? CGAffineTransformMakeScale(2.f, 2.f) : CGAffineTransformIdentity;
 			++i;
 		}
 	};
