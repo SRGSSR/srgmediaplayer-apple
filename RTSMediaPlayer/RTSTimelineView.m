@@ -6,7 +6,7 @@
 #import "RTSTimelineView.h"
 
 #import "RTSMediaPlayerController.h"
-#import "RTSTimeSlider.h"
+#import "RTSTimelineSlider.h"
 
 // Constants
 //static const CGFloat RTSTimelineEventIconSide = 8.f;
@@ -19,7 +19,7 @@ static void commonInit(RTSTimelineView *self);
 @interface RTSTimelineView ()
 
 @property (nonatomic, weak) UICollectionView *eventCollectionView;
-@property (nonatomic, weak) RTSTimeSlider *timeSlider;
+@property (nonatomic, weak) RTSTimelineSlider *timelineSlider;
 
 @end
 
@@ -51,27 +51,27 @@ static void commonInit(RTSTimelineView *self);
 {
 	_mediaPlayerController = mediaPlayerController;
 	
-	self.timeSlider.mediaPlayerController = mediaPlayerController;
+	self.timelineSlider.mediaPlayerController = mediaPlayerController;
 }
 
 - (void) setTimeLeftValueLabel:(UILabel *)timeLeftValueLabel
 {
-	self.timeSlider.timeLeftValueLabel = timeLeftValueLabel;
+	self.timelineSlider.timeLeftValueLabel = timeLeftValueLabel;
 }
 
 - (UILabel *) timeLeftValueLabel
 {
-	return self.timeSlider.timeLeftValueLabel;
+	return self.timelineSlider.timeLeftValueLabel;
 }
 
 - (void) setValueLabel:(UILabel *)valueLabel
 {
-	self.timeSlider.valueLabel = valueLabel;
+	self.timelineSlider.valueLabel = valueLabel;
 }
 
 - (UILabel *) valueLabel
 {
-	return self.timeSlider.valueLabel;
+	return self.timelineSlider.valueLabel;
 }
 
 - (void) setEvents:(NSArray *)events
@@ -284,13 +284,13 @@ static void commonInit(RTSTimelineView *self)
 	self.eventCollectionView = eventCollectionView;
 		
 	// Slider
-	RTSTimeSlider *timeSlider = [[RTSTimeSlider alloc] initWithFrame:CGRectZero];
-	[self addSubview:timeSlider];
-	self.timeSlider = timeSlider;
+	RTSTimelineSlider *timelineSlider = [[RTSTimelineSlider alloc] initWithFrame:CGRectZero];
+	[self addSubview:timelineSlider];
+	self.timelineSlider = timelineSlider;
 	
 	// Disable implicit constraints for views managed with autolayout
 	eventCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
-	timeSlider.translatesAutoresizingMaskIntoConstraints = NO;
+	timelineSlider.translatesAutoresizingMaskIntoConstraints = NO;
 	
 	// Horizontal constraints in self
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
@@ -308,14 +308,14 @@ static void commonInit(RTSTimelineView *self)
 													multiplier:1.f
 													  constant:0.f]];
 	
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:timeSlider
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:timelineSlider
 													 attribute:NSLayoutAttributeLeading
 													 relatedBy:NSLayoutRelationEqual
 														toItem:self
 													 attribute:NSLayoutAttributeLeading
 													multiplier:1.f
 													  constant:RTSTimelineBarHorizontalMargin]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:timeSlider
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:timelineSlider
 													 attribute:NSLayoutAttributeTrailing
 													 relatedBy:NSLayoutRelationEqual
 														toItem:self
@@ -334,11 +334,11 @@ static void commonInit(RTSTimelineView *self)
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
 													 attribute:NSLayoutAttributeBottom
 													 relatedBy:NSLayoutRelationEqual
-														toItem:timeSlider
+														toItem:timelineSlider
 													 attribute:NSLayoutAttributeTop
 													multiplier:1.f
 													  constant:0.f]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:timeSlider
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:timelineSlider
 													 attribute:NSLayoutAttributeBottom
 													 relatedBy:NSLayoutRelationEqual
 														toItem:self
@@ -350,7 +350,7 @@ static void commonInit(RTSTimelineView *self)
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
 													 attribute:NSLayoutAttributeHeight
 													 relatedBy:NSLayoutRelationEqual
-														toItem:timeSlider
+														toItem:timelineSlider
 													 attribute:NSLayoutAttributeHeight
 													multiplier:4.f
 													  constant:0.f]];
