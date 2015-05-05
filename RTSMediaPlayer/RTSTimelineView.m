@@ -18,7 +18,7 @@ static void commonInit(RTSTimelineView *self);
 
 @interface RTSTimelineView ()
 
-@property (nonatomic) NSArray *eventViews;
+@property (nonatomic) NSArray *iconViews;
 
 @property (nonatomic, weak) UICollectionView *eventCollectionView;
 @property (nonatomic, weak) UIView *overviewView;
@@ -96,9 +96,9 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) reloadTimeline
 {
-	for (UIView *eventView in self.eventViews)
+	for (UIView *iconView in self.iconViews)
 	{
-		[eventView removeFromSuperview];
+		[iconView removeFromSuperview];
 	}
 	
 	if (self.events.count == 0)
@@ -112,7 +112,7 @@ static void commonInit(RTSTimelineView *self);
 		return;
 	}
 	
-	NSMutableArray *eventViews = [NSMutableArray array];
+	NSMutableArray *iconViews = [NSMutableArray array];
 	for (NSInteger i = 0; i < self.events.count; ++i)
 	{
 		RTSTimelineEvent *event = self.events[i];
@@ -123,20 +123,20 @@ static void commonInit(RTSTimelineView *self);
 			continue;
 		}
 		
-		UIView *eventView = [[UIView alloc] initWithFrame:CGRectMake(roundf(RTSTimelineBarHorizontalMargin + CMTimeGetSeconds(event.time) * (CGRectGetWidth(self.overviewView.frame) - 2.f * RTSTimelineBarHorizontalMargin) / CMTimeGetSeconds(currentTimeRange.duration) - RTSTimelineEventIconSide / 2.f),
-																	 roundf((CGRectGetHeight(self.overviewView.frame) - RTSTimelineEventIconSide) / 2.f),
-																	 RTSTimelineEventIconSide,
-																	 RTSTimelineEventIconSide)];
-		eventView.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.6f];
-		eventView.layer.cornerRadius = RTSTimelineEventIconSide / 2.f;
-		eventView.layer.borderColor = [UIColor blackColor].CGColor;
-		eventView.layer.borderWidth = 1.f;
-		eventView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin| UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-		[self.overviewView addSubview:eventView];
+		UIView *iconView = [[UIView alloc] initWithFrame:CGRectMake(roundf(RTSTimelineBarHorizontalMargin + CMTimeGetSeconds(event.time) * (CGRectGetWidth(self.overviewView.frame) - 2.f * RTSTimelineBarHorizontalMargin) / CMTimeGetSeconds(currentTimeRange.duration) - RTSTimelineEventIconSide / 2.f),
+																	roundf((CGRectGetHeight(self.overviewView.frame) - RTSTimelineEventIconSide) / 2.f),
+																	RTSTimelineEventIconSide,
+																	RTSTimelineEventIconSide)];
+		iconView.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.6f];
+		iconView.layer.cornerRadius = RTSTimelineEventIconSide / 2.f;
+		iconView.layer.borderColor = [UIColor blackColor].CGColor;
+		iconView.layer.borderWidth = 1.f;
+		iconView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin| UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+		[self.overviewView addSubview:iconView];
 		
-		[eventViews addObject:eventView];
+		[iconViews addObject:iconView];
 	}
-	self.eventViews = [NSArray arrayWithArray:eventViews];
+	self.iconViews = [NSArray arrayWithArray:iconViews];
 }
 
 - (CMTimeRange) currentTimeRange
