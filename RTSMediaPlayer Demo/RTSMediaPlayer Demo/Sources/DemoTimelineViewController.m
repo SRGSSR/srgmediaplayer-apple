@@ -18,6 +18,8 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 @property (nonatomic, weak) IBOutlet UIView *videoView;
 @property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
 
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *timelineActivityIndicatorView;
+
 @end
 
 @implementation DemoTimelineViewController
@@ -49,6 +51,8 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 	
 	self.timelineView.itemWidth = 162.f;
 	self.timelineView.itemSpacing = 0.f;
+	
+	self.timelineActivityIndicatorView.hidden = YES;
 	
 	NSString *className = NSStringFromClass([EventCollectionViewCell class]);
 	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
@@ -175,8 +179,24 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 
 - (void) refreshTimeline
 {
+	self.timelineActivityIndicatorView.hidden = NO;
+	[self.timelineActivityIndicatorView startAnimating];
+	
+	void (^completionBlock)(void) = ^{
+		self.timelineActivityIndicatorView.hidden = YES;
+		[self.timelineActivityIndicatorView stopAnimating];
+	};
+	
 	[self retrieveStartDateWithCompletionBlock:^(NSDate *startDate, NSError *error) {
+		if (error)
+		{
+			completionBlock();
+			return;
+		}
+		
 		[self retrieveEventsForStartDate:startDate withCompletionBlock:^(NSArray *events, NSError *error) {
+			completionBlock();
+			
 			if (error)
 			{
 				return;
