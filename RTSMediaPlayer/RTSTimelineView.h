@@ -37,4 +37,8 @@
 - (CGFloat) itemWidthForTimelineView:(RTSTimelineView *)timelineView;
 - (CGFloat) itemSpacingForTimelineView:(RTSTimelineView *)timelineView;
 
+@optional
+
+- (void) timelineView:(RTSTimelineView *)timelineView didSelectEvent:(RTSTimelineEvent *)event;
+
 @end

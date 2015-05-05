@@ -205,14 +205,16 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - UICollectionViewDelegate protocol
 
-- (void) collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-
-}
-
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-
+	RTSTimelineEvent *event = self.events[indexPath.row];
+	
+	if ([self.delegate respondsToSelector:@selector(timelineView:didSelectEvent:)]) {
+		[self.delegate timelineView:self didSelectEvent:event];
+	}
+	else {
+		[self.mediaPlayerController.player seekToTime:event.time];
+	}
 }
 
 @end
@@ -239,8 +241,8 @@ static void commonInit(RTSTimelineView *self);
  *      ││                           │ │                           │ │     │   │
  *      │                                                                  │   │
  *      ││                           │ │                           │ │     │   │
- *      │ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   ─ ─ ─│   ■
- *      ├──────────────────────────────────────────────────────────────────┤
+ *      │ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   ─ ─ ─│   │
+ *      ├──────────────────────────────────────────────────────────────────┤   ■
  *      │  overviewView                                                    │
  *      │  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━barView━━━━━━━━━━━━━━━━━  │
  *      │                                                                  │
