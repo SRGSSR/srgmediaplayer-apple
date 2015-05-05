@@ -64,8 +64,8 @@ static void commonInit(RTSTimelineView *self);
 {
 	_events = events;
 	
-	[self reloadTimeline];
 	[self.eventCollectionView reloadData];
+	[self reloadTimeline];
 }
 
 #pragma mark - Overrides
@@ -90,6 +90,8 @@ static void commonInit(RTSTimelineView *self);
 	CGFloat cellSide = CGRectGetHeight(self.eventCollectionView.frame);
 	collectionViewLayout.itemSize = CGSizeMake([self.delegate itemWidthForTimelineView:self], cellSide);
 	[collectionViewLayout invalidateLayout];
+	
+	[self highlightVisibleEventIconsAnimated:NO];
 }
 
 #pragma mark - Display
@@ -137,6 +139,32 @@ static void commonInit(RTSTimelineView *self);
 		[iconViews addObject:iconView];
 	}
 	self.iconViews = [NSArray arrayWithArray:iconViews];
+	
+	[self highlightVisibleEventIconsAnimated:NO];
+}
+
+- (void) highlightVisibleEventIconsAnimated:(BOOL)animated
+{
+	void (^animations)(void) = ^{
+		NSArray *visibleIndexPaths = [self indexPathsForVisibleCells];
+		
+		NSInteger i = 0;
+		for (UIView *iconView in self.iconViews)
+		{
+			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+			iconView.transform = [visibleIndexPaths containsObject:indexPath] ? CGAffineTransformMakeScale(1.6f, 1.6f) : CGAffineTransformIdentity;
+			++i;
+		}
+	};
+	
+	if (animated)
+	{
+		[UIView animateWithDuration:0.2 animations:animations];
+	}
+	else
+	{
+		animations();
+	}
 }
 
 - (CMTimeRange) currentTimeRange
@@ -217,6 +245,31 @@ static void commonInit(RTSTimelineView *self);
 	{
 		[self.mediaPlayerController.player seekToTime:event.time];
 	}
+}
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	[self highlightVisibleEventIconsAnimated:YES];
+}
+
+// The -[UICollectionView indexPathsForVisibleCells] method is not reliable enough. Ask the layout instead
+- (NSArray *)indexPathsForVisibleCells
+{
+	CGRect contentFrame = CGRectMake(self.eventCollectionView.contentOffset.x,
+									 self.eventCollectionView.contentOffset.y,
+									 CGRectGetWidth(self.eventCollectionView.frame),
+									 CGRectGetHeight(self.eventCollectionView.frame));
+	NSArray *layoutAttributesArray = [self.eventCollectionView.collectionViewLayout layoutAttributesForElementsInRect:contentFrame];
+	
+	NSMutableArray *indexPaths = [NSMutableArray array];
+	for (UICollectionViewLayoutAttributes *layoutAttributes in layoutAttributesArray)
+	{
+		[indexPaths addObject:layoutAttributes.indexPath];
+	}
+	
+	return [indexPaths sortedArrayUsingComparator:^NSComparisonResult (NSIndexPath *indexPath1, NSIndexPath *indexPath2) {
+		return [indexPath1 compare:indexPath2];
+	}];
 }
 
 @end
