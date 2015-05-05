@@ -47,6 +47,9 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 {
 	[super viewDidLoad];
 	
+	self.timelineView.itemWidth = 162.f;
+	self.timelineView.itemSpacing = 0.f;
+	
 	NSString *className = NSStringFromClass([EventCollectionViewCell class]);
 	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
 	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
@@ -218,13 +221,6 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 	EventCollectionViewCell *eventCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([EventCollectionViewCell class]) forEvent:event];
 	eventCell.event = (Event *)event;
 	return eventCell;
-}
-
-#pragma mark - RTSTimelineViewDelegate protocol
-
-- (CGFloat) itemWidthForTimelineView:(RTSTimelineView *)timelineView
-{
-	return 162.f;
 }
 
 #pragma mark - Actions

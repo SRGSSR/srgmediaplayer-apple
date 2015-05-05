@@ -68,6 +68,20 @@ static void commonInit(RTSTimelineView *self);
 	[self reloadTimeline];
 }
 
+- (void) setItemWidth:(CGFloat)itemWidth
+{
+	_itemWidth = itemWidth;
+	
+	[self layoutIfNeeded];
+}
+
+- (void) setItemSpacing:(CGFloat)itemSpacing
+{
+	_itemSpacing = itemSpacing;
+	
+	[self layoutIfNeeded];
+}
+
 #pragma mark - Overrides
 
 - (void) willMoveToWindow:(UIWindow *)window
@@ -85,10 +99,8 @@ static void commonInit(RTSTimelineView *self);
 	[super layoutSubviews];
 	
 	UICollectionViewFlowLayout *collectionViewLayout = (UICollectionViewFlowLayout *)self.eventCollectionView.collectionViewLayout;
-	collectionViewLayout.minimumLineSpacing = [self.delegate respondsToSelector:@selector(itemSpacingForTimelineView:)] ? [self.delegate itemSpacingForTimelineView:self] : 0.f;
-	
-	CGFloat cellSide = CGRectGetHeight(self.eventCollectionView.frame);
-	collectionViewLayout.itemSize = CGSizeMake([self.delegate itemWidthForTimelineView:self], cellSide);
+	collectionViewLayout.minimumLineSpacing = self.itemSpacing;
+	collectionViewLayout.itemSize = CGSizeMake(self.itemWidth, CGRectGetHeight(self.eventCollectionView.frame));
 	[collectionViewLayout invalidateLayout];
 	
 	[self highlightVisibleEventIconsAnimated:NO];
@@ -322,7 +334,6 @@ static void commonInit(RTSTimelineView *self)
 	// Collection view layout for easy navigation between events
 	UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
 	collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-	collectionViewLayout.minimumLineSpacing = 0.f;
 	
 	// Collection view
 	UICollectionView *eventCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewLayout];
@@ -446,4 +457,7 @@ static void commonInit(RTSTimelineView *self)
 															 attribute:NSLayoutAttributeNotAnAttribute
 															multiplier:1.f
 															  constant:RTSTimelineBarHeight]];
+	
+	self.itemWidth = 60.f;
+	self.itemSpacing = 4.f;
 }
