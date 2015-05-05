@@ -6,23 +6,20 @@
 #import "RTSTimelineView.h"
 
 #import "RTSMediaPlayerController.h"
+#import "RTSTimeSlider.h"
 
 // Constants
-static const CGFloat RTSTimelineBarHeight = 2.f;
-static const CGFloat RTSTimelineEventIconSide = 8.f;
+//static const CGFloat RTSTimelineEventIconSide = 8.f;
 static const CGFloat RTSTimelineCollectionVerticalMargin = 4.f;
-static const CGFloat RTSTimelineBarHorizontalMargin = 2.f * RTSTimelineEventIconSide;
+static const CGFloat RTSTimelineBarHorizontalMargin = 10.f;
 
 // Function declarations
 static void commonInit(RTSTimelineView *self);
 
 @interface RTSTimelineView ()
 
-@property (nonatomic) NSArray *iconViews;
-
 @property (nonatomic, weak) UICollectionView *eventCollectionView;
-@property (nonatomic, weak) UIView *overviewView;
-@property (nonatomic, weak) UIView *barView;
+@property (nonatomic, weak) RTSTimeSlider *timeSlider;
 
 @end
 
@@ -54,10 +51,27 @@ static void commonInit(RTSTimelineView *self);
 {
 	_mediaPlayerController = mediaPlayerController;
 	
-	// Ensure the timeline stays up to date as playable time ranges change
-	[mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(5., 1.) queue:NULL usingBlock:^(CMTime time) {
-		[self reloadTimeline];
-	}];
+	self.timeSlider.mediaPlayerController = mediaPlayerController;
+}
+
+- (void) setTimeLeftValueLabel:(UILabel *)timeLeftValueLabel
+{
+	self.timeSlider.timeLeftValueLabel = timeLeftValueLabel;
+}
+
+- (UILabel *) timeLeftValueLabel
+{
+	return self.timeSlider.timeLeftValueLabel;
+}
+
+- (void) setValueLabel:(UILabel *)valueLabel
+{
+	self.timeSlider.valueLabel = valueLabel;
+}
+
+- (UILabel *) valueLabel
+{
+	return self.timeSlider.valueLabel;
 }
 
 - (void) setEvents:(NSArray *)events
@@ -110,87 +124,12 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) reloadTimeline
 {
-	for (UIView *iconView in self.iconViews)
-	{
-		[iconView removeFromSuperview];
-	}
-	
-	if (self.events.count == 0)
-	{
-		return;
-	}
-	
-	CMTimeRange currentTimeRange = [self currentTimeRange];
-	if (CMTIMERANGE_IS_EMPTY(currentTimeRange))
-	{
-		return;
-	}
-	
-	NSMutableArray *iconViews = [NSMutableArray array];
-	for (NSInteger i = 0; i < self.events.count; ++i)
-	{
-		RTSTimelineEvent *event = self.events[i];
-		
-		// Skip events not in the timeline
-		if (CMTIME_COMPARE_INLINE(event.time, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(event.time, >, CMTimeRangeGetEnd(currentTimeRange)))
-		{
-			continue;
-		}
-		
-		CGRect iconFrame = CGRectMake(roundf(RTSTimelineBarHorizontalMargin + CMTimeGetSeconds(event.time) * (CGRectGetWidth(self.overviewView.frame) - 2.f * RTSTimelineBarHorizontalMargin) / CMTimeGetSeconds(currentTimeRange.duration) - RTSTimelineEventIconSide / 2.f),
-									  roundf((CGRectGetHeight(self.overviewView.frame) - RTSTimelineEventIconSide) / 2.f),
-									  RTSTimelineEventIconSide,
-									  RTSTimelineEventIconSide);
-		
-		UIView *iconView = nil;
-		if ([self.dataSource respondsToSelector:@selector(timelineView:iconImageForEvent:)])
-		{
-			UIImage *iconImage = [self.dataSource timelineView:self iconImageForEvent:event];
-			iconView = [[UIImageView alloc] initWithImage:iconImage];
-			iconView.contentMode = UIViewContentModeScaleAspectFit;
-			iconView.frame = iconFrame;
-		}
-		else
-		{
-			iconView = [[UIView alloc] initWithFrame:iconFrame];
-			iconView.backgroundColor = [UIColor whiteColor];
-			iconView.layer.cornerRadius = RTSTimelineEventIconSide / 2.f;
-			iconView.layer.borderColor = [UIColor blackColor].CGColor;
-			iconView.layer.borderWidth = 1.f;
-		}
-		
-		iconView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin| UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-		[self.overviewView addSubview:iconView];
-		
-		[iconViews addObject:iconView];
-	}
-	self.iconViews = [NSArray arrayWithArray:iconViews];
-	
-	[self highlightVisibleEventIconsAnimated:NO];
+
 }
 
 - (void) highlightVisibleEventIconsAnimated:(BOOL)animated
 {
-	void (^animations)(void) = ^{
-		NSArray *visibleIndexPaths = [self indexPathsForVisibleCells];
-		
-		NSInteger i = 0;
-		for (UIView *iconView in self.iconViews)
-		{
-			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-			iconView.transform = [visibleIndexPaths containsObject:indexPath] ? CGAffineTransformMakeScale(2.f, 2.f) : CGAffineTransformIdentity;
-			++i;
-		}
-	};
-	
-	if (animated)
-	{
-		[UIView animateWithDuration:0.2 animations:animations];
-	}
-	else
-	{
-		animations();
-	}
+
 }
 
 - (CMTimeRange) currentTimeRange
@@ -344,22 +283,14 @@ static void commonInit(RTSTimelineView *self)
 	[self addSubview:eventCollectionView];
 	self.eventCollectionView = eventCollectionView;
 		
-	// Timeline overview
-	UIView *overviewView = [[UIView alloc] initWithFrame:CGRectZero];
-	[self addSubview:overviewView];
-	self.overviewView = overviewView;
-	
-	// Timeline overview bar (not managed using autolayout)
-	UIView *barView = [[UIView alloc] initWithFrame:CGRectZero];
-	barView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-	barView.backgroundColor = [UIColor whiteColor];
-	[overviewView addSubview:barView];
-	self.barView = barView;
+	// Slider
+	RTSTimeSlider *timeSlider = [[RTSTimeSlider alloc] initWithFrame:CGRectZero];
+	[self addSubview:timeSlider];
+	self.timeSlider = timeSlider;
 	
 	// Disable implicit constraints for views managed with autolayout
 	eventCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
-	overviewView.translatesAutoresizingMaskIntoConstraints = NO;
-	barView.translatesAutoresizingMaskIntoConstraints = NO;
+	timeSlider.translatesAutoresizingMaskIntoConstraints = NO;
 	
 	// Horizontal constraints in self
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
@@ -377,20 +308,20 @@ static void commonInit(RTSTimelineView *self)
 													multiplier:1.f
 													  constant:0.f]];
 	
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:overviewView
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:timeSlider
 													 attribute:NSLayoutAttributeLeading
 													 relatedBy:NSLayoutRelationEqual
 														toItem:self
 													 attribute:NSLayoutAttributeLeading
 													multiplier:1.f
-													  constant:0.f]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:overviewView
+													  constant:RTSTimelineBarHorizontalMargin]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:timeSlider
 													 attribute:NSLayoutAttributeTrailing
 													 relatedBy:NSLayoutRelationEqual
 														toItem:self
 													 attribute:NSLayoutAttributeTrailing
 													multiplier:1.f
-													  constant:0.f]];
+													  constant:-RTSTimelineBarHorizontalMargin]];
 	
 	// Vertical constraints in self
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
@@ -403,11 +334,11 @@ static void commonInit(RTSTimelineView *self)
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
 													 attribute:NSLayoutAttributeBottom
 													 relatedBy:NSLayoutRelationEqual
-														toItem:overviewView
+														toItem:timeSlider
 													 attribute:NSLayoutAttributeTop
 													multiplier:1.f
 													  constant:0.f]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:overviewView
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:timeSlider
 													 attribute:NSLayoutAttributeBottom
 													 relatedBy:NSLayoutRelationEqual
 														toItem:self
@@ -419,44 +350,10 @@ static void commonInit(RTSTimelineView *self)
 	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
 													 attribute:NSLayoutAttributeHeight
 													 relatedBy:NSLayoutRelationEqual
-														toItem:overviewView
+														toItem:timeSlider
 													 attribute:NSLayoutAttributeHeight
 													multiplier:4.f
 													  constant:0.f]];
-	
-	// Horizontal constraints in overviewView
-	[overviewView addConstraint:[NSLayoutConstraint constraintWithItem:barView
-															 attribute:NSLayoutAttributeLeading
-															 relatedBy:NSLayoutRelationEqual
-																toItem:overviewView
-															 attribute:NSLayoutAttributeLeading
-															multiplier:1.f
-															  constant:RTSTimelineBarHorizontalMargin]];
-	[overviewView addConstraint:[NSLayoutConstraint constraintWithItem:barView
-															 attribute:NSLayoutAttributeTrailing
-															 relatedBy:NSLayoutRelationEqual
-																toItem:overviewView
-															 attribute:NSLayoutAttributeTrailing
-															multiplier:1.f
-															  constant:-RTSTimelineBarHorizontalMargin]];
-	
-	// Vertical constraints in overviewView
-	[overviewView addConstraint:[NSLayoutConstraint constraintWithItem:barView
-															 attribute:NSLayoutAttributeCenterY
-															 relatedBy:NSLayoutRelationEqual
-																toItem:overviewView
-															 attribute:NSLayoutAttributeCenterY
-															multiplier:1.f
-															  constant:0.f]];
-	
-	// Size constraints in overviewView
-	[overviewView addConstraint:[NSLayoutConstraint constraintWithItem:barView
-															 attribute:NSLayoutAttributeHeight
-															 relatedBy:NSLayoutRelationEqual
-																toItem:nil
-															 attribute:NSLayoutAttributeNotAnAttribute
-															multiplier:1.f
-															  constant:RTSTimelineBarHeight]];
 	
 	self.itemWidth = 60.f;
 	self.itemSpacing = 4.f;

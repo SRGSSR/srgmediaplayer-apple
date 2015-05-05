@@ -54,6 +54,9 @@
  */
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
+@property (nonatomic, weak) IBOutlet UILabel *timeLeftValueLabel;
+@property (nonatomic, weak) IBOutlet UILabel *valueLabel;
+
 /**
  *  Register cell classes for reuse. Cells must be subclasses of UICollectionViewCell and can be instantiated either
  *  programmatically or using a nib. For more information about cell reuse, refer to UICollectionView documentation
