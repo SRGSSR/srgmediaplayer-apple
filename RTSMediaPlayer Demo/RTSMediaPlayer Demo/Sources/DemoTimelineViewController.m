@@ -17,6 +17,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 
 @property (nonatomic, weak) IBOutlet UIView *videoView;
 @property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
+@property (nonatomic, weak) IBOutlet RTSTimelineOverview *timelineOverview;
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *timelineActivityIndicatorView;
 
@@ -205,6 +206,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 			}
 			
 			self.timelineView.events = events;
+			self.timelineOverview.events = events;
 		}];
 	}];
 }

@@ -42,6 +42,8 @@
 		E616272C1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */; };
 		E65786A41AEFAD68007730CE /* RTSTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E65786A31AEFAD68007730CE /* RTSTimelineView.m */; };
 		E66BDC141AF89C0200FF7858 /* RTSPlaybackTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */; };
+		E6A6D0E11AF9DDE500E15BCF /* RTSTimelineOverview.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A6D0E01AF9DDE500E15BCF /* RTSTimelineOverview.m */; };
+		E6A6D0E21AF9DED100E15BCF /* RTSTimelineOverview.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E6A6D0DF1AF9DDE500E15BCF /* RTSTimelineOverview.h */; };
 		F7DD624B58EB1E3EF79D59F7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE77ECC145A247C85E459918 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +64,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				E6A6D0E21AF9DED100E15BCF /* RTSTimelineOverview.h in CopyFiles */,
 				C2150B481AD400C2004A08CE /* RTSMediaPlayerError.h in CopyFiles */,
 				C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */,
 				C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */,
@@ -126,6 +129,8 @@
 		E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSPlaybackTimeObserver.m; sourceTree = "<group>"; };
 		E65786A21AEFAD68007730CE /* RTSTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSTimelineView.h; sourceTree = "<group>"; };
 		E65786A31AEFAD68007730CE /* RTSTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineView.m; sourceTree = "<group>"; };
+		E6A6D0DF1AF9DDE500E15BCF /* RTSTimelineOverview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSTimelineOverview.h; sourceTree = "<group>"; };
+		E6A6D0E01AF9DDE500E15BCF /* RTSTimelineOverview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineOverview.m; sourceTree = "<group>"; };
 		E77390DBA03B25138BDBA95F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -201,6 +206,8 @@
 				B61E18F41AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.m */,
 				E60E17101AEFD1370062E96E /* RTSTimelineEvent.h */,
 				E60E17111AEFD1370062E96E /* RTSTimelineEvent.m */,
+				E6A6D0DF1AF9DDE500E15BCF /* RTSTimelineOverview.h */,
+				E6A6D0E01AF9DDE500E15BCF /* RTSTimelineOverview.m */,
 				E65786A21AEFAD68007730CE /* RTSTimelineView.h */,
 				E65786A31AEFAD68007730CE /* RTSTimelineView.m */,
 				B61E18FA1AA9EEDB00E4FAB9 /* RTSTimeSlider.h */,
@@ -480,6 +487,7 @@
 				B61E19081AA9F3B900E4FAB9 /* RTSVolumeView.m in Sources */,
 				E616272C1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m in Sources */,
 				C2246DEC1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
+				E6A6D0E11AF9DDE500E15BCF /* RTSTimelineOverview.m in Sources */,
 				C201D9341A9DC9C30016C629 /* RTSMediaPlayerController.m in Sources */,
 				E60E17121AEFD1370062E96E /* RTSTimelineEvent.m in Sources */,
 			);

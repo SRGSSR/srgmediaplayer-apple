@@ -8,4 +8,5 @@
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 #import <RTSMediaPlayer/RTSMediaPlayerViewController.h>
 #import <RTSMediaPlayer/RTSTimelineEvent.h>
+#import <RTSMediaPlayer/RTSTimelineOverview.h>
 #import <RTSMediaPlayer/RTSTimelineView.h>
