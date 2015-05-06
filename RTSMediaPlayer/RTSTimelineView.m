@@ -6,20 +6,13 @@
 #import "RTSTimelineView.h"
 
 #import "RTSMediaPlayerController.h"
-#import "RTSTimelineSlider.h"
-
-// Constants
-//static const CGFloat RTSTimelineEventIconSide = 8.f;
-static const CGFloat RTSTimelineCollectionVerticalMargin = 4.f;
-static const CGFloat RTSTimelineBarHorizontalMargin = 10.f;
 
 // Function declarations
 static void commonInit(RTSTimelineView *self);
 
 @interface RTSTimelineView ()
 
-@property (nonatomic, weak) UICollectionView *eventCollectionView;
-@property (nonatomic, weak) RTSTimelineSlider *timelineSlider;
+@property (nonatomic, weak) UICollectionView *collectionView;
 
 @end
 
@@ -47,39 +40,11 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - Getters and setters
 
-- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-{
-	_mediaPlayerController = mediaPlayerController;
-	
-	self.timelineSlider.mediaPlayerController = mediaPlayerController;
-}
-
-- (void) setTimeLeftValueLabel:(UILabel *)timeLeftValueLabel
-{
-	self.timelineSlider.timeLeftValueLabel = timeLeftValueLabel;
-}
-
-- (UILabel *) timeLeftValueLabel
-{
-	return self.timelineSlider.timeLeftValueLabel;
-}
-
-- (void) setValueLabel:(UILabel *)valueLabel
-{
-	self.timelineSlider.valueLabel = valueLabel;
-}
-
-- (UILabel *) valueLabel
-{
-	return self.timelineSlider.valueLabel;
-}
-
 - (void) setEvents:(NSArray *)events
 {
 	_events = events;
 	
-	[self.eventCollectionView reloadData];
-	[self reloadTimeline];
+	[self.collectionView reloadData];
 }
 
 - (void) setItemWidth:(CGFloat)itemWidth
@@ -96,79 +61,26 @@ static void commonInit(RTSTimelineView *self);
 	[self layoutIfNeeded];
 }
 
-#pragma mark - Overrides
-
-- (void) willMoveToWindow:(UIWindow *)window
-{
-	[super willMoveToWindow:window];
-	
-	if (window)
-	{
-		[self reloadTimeline];
-	}
-}
-
 - (void) layoutSubviews
 {
 	[super layoutSubviews];
 	
-	UICollectionViewFlowLayout *collectionViewLayout = (UICollectionViewFlowLayout *)self.eventCollectionView.collectionViewLayout;
+	UICollectionViewFlowLayout *collectionViewLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
 	collectionViewLayout.minimumLineSpacing = self.itemSpacing;
-	collectionViewLayout.itemSize = CGSizeMake(self.itemWidth, CGRectGetHeight(self.eventCollectionView.frame));
+	collectionViewLayout.itemSize = CGSizeMake(self.itemWidth, CGRectGetHeight(self.collectionView.frame));
 	[collectionViewLayout invalidateLayout];
-	
-	[self highlightVisibleEventIconsAnimated:NO];
-}
-
-#pragma mark - Display
-
-- (void) reloadTimeline
-{
-
-}
-
-- (void) highlightVisibleEventIconsAnimated:(BOOL)animated
-{
-
-}
-
-- (CMTimeRange) currentTimeRange
-{
-	AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-	
-	NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-	if (!firstSeekableTimeRangeValue)
-	{
-		return kCMTimeRangeZero;
-	}
-	
-	NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
-	if (!lastSeekableTimeRangeValue)
-	{
-		return kCMTimeRangeZero;
-	}
-	
-	CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
-	CMTimeRange lastSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
-	
-	if (!CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || !CMTIMERANGE_IS_VALID(lastSeekableTimeRange))
-	{
-		return kCMTimeRangeZero;
-	}
-	
-	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
 }
 
 #pragma mark - Cell reuse
 
 - (void) registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier
 {
-	[self.eventCollectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
+	[self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
 }
 
 - (void) registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier
 {
-	[self.eventCollectionView registerNib:nib forCellWithReuseIdentifier:identifier];
+	[self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 
 - (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forEvent:(RTSTimelineEvent *)event
@@ -180,7 +92,7 @@ static void commonInit(RTSTimelineView *self);
 	}
 	
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-	return [self.eventCollectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+	return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 }
 
 #pragma mark - UICollectionViewDataSource protocol
@@ -214,17 +126,19 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {
-	[self highlightVisibleEventIconsAnimated:YES];
+	if ([self.delegate respondsToSelector:@selector(timelineViewDidScroll:)]) {
+		[self.delegate timelineViewDidScroll:self];
+	}
 }
 
 // The -[UICollectionView indexPathsForVisibleCells] method is not reliable enough. Ask the layout instead
-- (NSArray *)indexPathsForVisibleCells
+- (NSArray *) indexPathsForVisibleCells
 {
-	CGRect contentFrame = CGRectMake(self.eventCollectionView.contentOffset.x,
-									 self.eventCollectionView.contentOffset.y,
-									 CGRectGetWidth(self.eventCollectionView.frame),
-									 CGRectGetHeight(self.eventCollectionView.frame));
-	NSArray *layoutAttributesArray = [self.eventCollectionView.collectionViewLayout layoutAttributesForElementsInRect:contentFrame];
+	CGRect contentFrame = CGRectMake(self.collectionView.contentOffset.x,
+									 self.collectionView.contentOffset.y,
+									 CGRectGetWidth(self.collectionView.frame),
+									 CGRectGetHeight(self.collectionView.frame));
+	NSArray *layoutAttributesArray = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:contentFrame];
 	
 	NSMutableArray *indexPaths = [NSMutableArray array];
 	for (UICollectionViewLayoutAttributes *layoutAttributes in layoutAttributesArray)
@@ -232,7 +146,7 @@ static void commonInit(RTSTimelineView *self);
 		[indexPaths addObject:layoutAttributes.indexPath];
 	}
 	
-	return [indexPaths sortedArrayUsingComparator:^NSComparisonResult (NSIndexPath *indexPath1, NSIndexPath *indexPath2) {
+	return [indexPaths sortedArrayUsingComparator:^(NSIndexPath *indexPath1, NSIndexPath *indexPath2) {
 		return [indexPath1 compare:indexPath2];
 	}];
 }
@@ -241,118 +155,50 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - Functions
 
-/**
- * The timeline layout is created entirely in code and looks as follows:
- *
- *      ┌──────────────────────────────────────────────────────────────────┐
- *      ├──────────────────────────────────────────────────────────────────┤   ■
- *      │┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐ ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐ ┌ ─ ─ ┤   │
- *      │                                                                  │   │
- *      ││                           │ │                           │ │     │   │
- *      │                                                                  │   │
- *      ││                           │ │                           │ │     │   │
- *      │                                                                  │   │
- *      ││      eventCollectionView  │ │                           │ │     │   │   4 times
- *      │                                                                  │   │ taller than
- *      ││                           │ │                           │ │     │   │  overview
- *      │                                                                  │   │
- *      ││                           │ │                           │ │     │   │
- *      │                                                                  │   │
- *      ││                           │ │                           │ │     │   │
- *      │                                                                  │   │
- *      ││                           │ │                           │ │     │   │
- *      │ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   ─ ─ ─│   │
- *      ├──────────────────────────────────────────────────────────────────┤   ■
- *      │  overviewView                                                    │
- *      │  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━barView━━━━━━━━━━━━━━━━━  │
- *      │                                                                  │
- *      └──────────────────────────────────────────────────────────────────┘
- */
 static void commonInit(RTSTimelineView *self)
 {
-	// Collection view layout for easy navigation between events
 	UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
 	collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
 	
-	// Collection view
-	UICollectionView *eventCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewLayout];
-	eventCollectionView.backgroundColor = [UIColor clearColor];
-	eventCollectionView.alwaysBounceHorizontal = YES;
-	eventCollectionView.dataSource = self;
-	eventCollectionView.delegate = self;
-	[self addSubview:eventCollectionView];
-	self.eventCollectionView = eventCollectionView;
-		
-	// Slider
-	RTSTimelineSlider *timelineSlider = [[RTSTimelineSlider alloc] initWithFrame:CGRectZero];
-	[self addSubview:timelineSlider];
-	self.timelineSlider = timelineSlider;
+	UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewLayout];
+	collectionView.backgroundColor = [UIColor clearColor];
+	collectionView.alwaysBounceHorizontal = YES;
+	collectionView.dataSource = self;
+	collectionView.delegate = self;
+	[self addSubview:collectionView];
+	self.collectionView = collectionView;
 	
-	// Disable implicit constraints for views managed with autolayout
-	eventCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
-	timelineSlider.translatesAutoresizingMaskIntoConstraints = NO;
+	// Remove implicit constraints for views managed by autolayout
+	collectionView.translatesAutoresizingMaskIntoConstraints = NO;
 	
-	// Horizontal constraints in self
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
-													 attribute:NSLayoutAttributeLeading
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeLeading
-													multiplier:1.f
-													  constant:0.f]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
-													 attribute:NSLayoutAttributeTrailing
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeTrailing
-													multiplier:1.f
-													  constant:0.f]];
-	
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:timelineSlider
-													 attribute:NSLayoutAttributeLeading
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeLeading
-													multiplier:1.f
-													  constant:RTSTimelineBarHorizontalMargin]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:timelineSlider
-													 attribute:NSLayoutAttributeTrailing
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeTrailing
-													multiplier:1.f
-													  constant:-RTSTimelineBarHorizontalMargin]];
-	
-	// Vertical constraints in self
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
+	// Constraints
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView
 													 attribute:NSLayoutAttributeTop
 													 relatedBy:NSLayoutRelationEqual
 														toItem:self
 													 attribute:NSLayoutAttributeTop
 													multiplier:1.f
-													  constant:RTSTimelineCollectionVerticalMargin]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
-													 attribute:NSLayoutAttributeBottom
-													 relatedBy:NSLayoutRelationEqual
-														toItem:timelineSlider
-													 attribute:NSLayoutAttributeTop
-													multiplier:1.f
 													  constant:0.f]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:timelineSlider
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView
 													 attribute:NSLayoutAttributeBottom
 													 relatedBy:NSLayoutRelationEqual
 														toItem:self
 													 attribute:NSLayoutAttributeBottom
 													multiplier:1.f
 													  constant:0.f]];
-	
-	// Size constraints in self
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:eventCollectionView
-													 attribute:NSLayoutAttributeHeight
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView
+													 attribute:NSLayoutAttributeLeft
 													 relatedBy:NSLayoutRelationEqual
-														toItem:timelineSlider
-													 attribute:NSLayoutAttributeHeight
-													multiplier:4.f
+														toItem:self
+													 attribute:NSLayoutAttributeLeft
+													multiplier:1.f
+													  constant:0.f]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView
+													 attribute:NSLayoutAttributeRight
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeRight
+													multiplier:1.f
 													  constant:0.f]];
 	
 	self.itemWidth = 60.f;
