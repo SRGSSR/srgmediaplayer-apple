@@ -131,6 +131,7 @@
 		E65786A31AEFAD68007730CE /* RTSTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineView.m; sourceTree = "<group>"; };
 		E6A6D0DF1AF9DDE500E15BCF /* RTSTimelineOverview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSTimelineOverview.h; sourceTree = "<group>"; };
 		E6A6D0E01AF9DDE500E15BCF /* RTSTimelineOverview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineOverview.m; sourceTree = "<group>"; };
+		E6A6D0E31AFA017600E15BCF /* RTSTimelineView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RTSTimelineView+Private.h"; sourceTree = "<group>"; };
 		E77390DBA03B25138BDBA95F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -209,6 +210,7 @@
 				E6A6D0DF1AF9DDE500E15BCF /* RTSTimelineOverview.h */,
 				E6A6D0E01AF9DDE500E15BCF /* RTSTimelineOverview.m */,
 				E65786A21AEFAD68007730CE /* RTSTimelineView.h */,
+				E6A6D0E31AFA017600E15BCF /* RTSTimelineView+Private.h */,
 				E65786A31AEFAD68007730CE /* RTSTimelineView.m */,
 				B61E18FA1AA9EEDB00E4FAB9 /* RTSTimeSlider.h */,
 				B61E18FB1AA9EEDB00E4FAB9 /* RTSTimeSlider.m */,
