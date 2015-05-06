@@ -4,17 +4,16 @@
 //
 
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
-#import <RTSMediaPlayer/RTSTimelineEvent.h>
+#import <RTSMediaPlayer/RTSTimelineView.h>
 #import <UIKit/UIKit.h>
 
 @protocol RTSTimelineOverviewDataSource;
 
 @interface RTSTimelineOverview : UIView
 
-@property (nonatomic) NSArray *events;
-
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
+@property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
 @property (nonatomic, weak) IBOutlet id<RTSTimelineOverviewDataSource> dataSource;
 
 @end

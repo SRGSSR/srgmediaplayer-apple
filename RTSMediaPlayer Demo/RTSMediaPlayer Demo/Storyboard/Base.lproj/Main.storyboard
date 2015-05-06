@@ -351,6 +351,7 @@
                                 <connections>
                                     <outlet property="dataSource" destination="eMv-Af-zLT" id="PDc-9o-opm"/>
                                     <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="yhI-Fo-teq"/>
+                                    <outlet property="timelineView" destination="LNH-3e-cnt" id="Q6m-EQ-HuU"/>
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Atp-kj-ZMO" userLabel="Bottom Bar View">
@@ -453,7 +454,6 @@
                     <connections>
                         <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="o1e-La-elO"/>
                         <outlet property="timelineActivityIndicatorView" destination="63N-83-iAB" id="pCX-41-Xrc"/>
-                        <outlet property="timelineOverview" destination="BV6-1E-4Z7" id="r8b-gU-xl3"/>
                         <outlet property="timelineView" destination="LNH-3e-cnt" id="Daa-IJ-43k"/>
                         <outlet property="videoView" destination="t9K-xg-VIe" id="IpW-Yn-5Cd"/>
                     </connections>

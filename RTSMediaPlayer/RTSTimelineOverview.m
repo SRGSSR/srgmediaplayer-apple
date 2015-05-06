@@ -8,6 +8,8 @@
 static const CGFloat RTSTimelineEventIconSide = 8.f;
 static const CGFloat RTSTimelineBarHorizontalMargin = 2.f * RTSTimelineEventIconSide;
 
+static void *s_kvoContext = &s_kvoContext;
+
 @interface RTSTimelineOverview ()
 
 @property (nonatomic) NSArray *eventViews;
@@ -16,11 +18,25 @@ static const CGFloat RTSTimelineBarHorizontalMargin = 2.f * RTSTimelineEventIcon
 
 @implementation RTSTimelineOverview
 
+#pragma mark - Object lifecycle
+
+- (void) dealloc
+{
+	// Unregister KVO
+	self.timelineView = nil;
+}
+
 #pragma mark - Getters and setters
 
-- (void) setEvents:(NSArray *)events
+- (void) setTimelineView:(RTSTimelineView *)timelineView
 {
-	_events = events;
+	if (_timelineView)
+	{
+		[_timelineView removeObserver:self forKeyPath:@"events" context:s_kvoContext];
+	}
+	
+	_timelineView = timelineView;
+	[timelineView addObserver:self forKeyPath:@"events" options:NSKeyValueObservingOptionNew context:s_kvoContext];
 	
 	[self reloadData];
 }
@@ -44,7 +60,8 @@ static const CGFloat RTSTimelineBarHorizontalMargin = 2.f * RTSTimelineEventIcon
 		[eventView removeFromSuperview];
 	}
 	
-	if (self.events.count == 0)
+	NSArray *events = self.timelineView.events;
+	if (events.count == 0)
 	{
 		return;
 	}
@@ -56,9 +73,9 @@ static const CGFloat RTSTimelineBarHorizontalMargin = 2.f * RTSTimelineEventIcon
 	}
 	
 	NSMutableArray *eventViews = [NSMutableArray array];
-	for (NSInteger i = 0; i < self.events.count; ++i)
+	for (NSInteger i = 0; i < events.count; ++i)
 	{
-		RTSTimelineEvent *event = self.events[i];
+		RTSTimelineEvent *event = events[i];
 		
 		// Skip events not in the timeline
 		if (CMTIME_COMPARE_INLINE(event.time, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(event.time, >, CMTimeRangeGetEnd(currentTimeRange)))
@@ -123,6 +140,20 @@ static const CGFloat RTSTimelineBarHorizontalMargin = 2.f * RTSTimelineEventIcon
 	}
 	
 	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
+}
+
+#pragma mark - KVO
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (context == s_kvoContext && [keyPath isEqualToString:@"events"])
+	{
+		[self reloadData];
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
 }
 
 @end

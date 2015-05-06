@@ -127,6 +127,5 @@
  *  @param event        The event which has been selected
  */
 - (void) timelineView:(RTSTimelineView *)timelineView didSelectEvent:(RTSTimelineEvent *)event;
-- (void) timelineViewDidScroll:(RTSTimelineView *)timelineView;
 
 @end
