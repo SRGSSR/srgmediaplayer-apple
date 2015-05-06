@@ -97,19 +97,6 @@
  */
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSTimelineEvent *)event;
 
-@optional
-
-/**
- *  Return the icon to be displayed on the overview. If this method is not implemented, a white dot is displayed by
- *  default. Images should have the recommended size of 8x8 pixels
- *
- *  @param timelineView The timeline
- *  @param event        The event for which the icon must be returned
- *
- *  @return The image to use
- */
-- (UIImage *) timelineView:(RTSTimelineView *)timelineView iconImageForEvent:(RTSTimelineEvent *)event;
-
 @end
 
 /**

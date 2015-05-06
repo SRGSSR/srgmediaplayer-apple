@@ -7,6 +7,7 @@
 
 #import "RTSTimelineView+Private.h"
 
+static const CGFloat RTSTimelineIconSide = 20.f;
 static const CGFloat RTSTimelineSliderTickHeight = 20.f;
 static const CGFloat RTSTimelineSliderTickWidth = 4.f;
 
@@ -55,7 +56,6 @@ static void *s_kvoContext = &s_kvoContext;
 	CGRect trackRect = [self trackRectForBounds:rect];
 	
 	NSArray *events = self.timelineView.events;
-	NSArray *visibleIndexPaths = [self.timelineView indexPathsForVisibleCells];
 	
 	for (NSInteger i = 0; i < events.count; ++i)
 	{
@@ -67,18 +67,32 @@ static void *s_kvoContext = &s_kvoContext;
 			continue;
 		}
 		
-		CGContextSetLineWidth(context, 1.f);
-		CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.f alpha:0.6f].CGColor);
-		CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1.f alpha:0.6f].CGColor);
+		CGPoint tickPosition = CGPointMake(CGRectGetMinX(trackRect) + CMTimeGetSeconds(event.time) * CGRectGetWidth(trackRect) / CMTimeGetSeconds(currentTimeRange.duration),
+										   CGRectGetMidY(trackRect));
 		
-		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-		CGFloat sizeOffset = [visibleIndexPaths containsObject:indexPath] ? 2.f : 0.f;
-		UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(CGRectGetMinX(trackRect) + CMTimeGetSeconds(event.time) * CGRectGetWidth(trackRect) / CMTimeGetSeconds(currentTimeRange.duration) - sizeOffset,
-																		 CGRectGetMidY(trackRect) - RTSTimelineSliderTickHeight / 2.f - sizeOffset,
-																		 RTSTimelineSliderTickWidth + 2.f * sizeOffset,
-																		 RTSTimelineSliderTickHeight + 2.f * sizeOffset)];
-		[path fill];
-		[path stroke];
+		if ([self.dataSource respondsToSelector:@selector(timelineSlider:iconImageForEvent:)])
+		{
+			UIImage *iconImage = [self.dataSource timelineSlider:self iconImageForEvent:event];
+			CGRect tickRect = CGRectMake(tickPosition.x - RTSTimelineIconSide / 2.f,
+										 tickPosition.y - RTSTimelineIconSide / 2.f,
+										 RTSTimelineIconSide,
+										 RTSTimelineIconSide);
+			[iconImage drawInRect:tickRect];
+		}
+		else
+		{
+			CGContextSetLineWidth(context, 1.f);
+			CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.f alpha:0.6f].CGColor);
+			CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1.f alpha:0.6f].CGColor);
+			
+			CGRect tickRect = CGRectMake(tickPosition.x - RTSTimelineSliderTickWidth / 2.f,
+										 tickPosition.y - RTSTimelineSliderTickHeight / 2.f,
+										 RTSTimelineSliderTickWidth,
+										 RTSTimelineSliderTickHeight);
+			UIBezierPath *path = [UIBezierPath bezierPathWithRect:tickRect];
+			[path fill];
+			[path stroke];
+		}
 	}
 }
 
