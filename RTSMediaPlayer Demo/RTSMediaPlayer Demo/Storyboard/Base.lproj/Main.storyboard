@@ -309,32 +309,36 @@
                                     <constraint firstAttribute="bottom" secondItem="Cgf-dG-XN8" secondAttribute="bottom" id="f2g-ie-izK"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="63N-83-iAB">
-                                <rect key="frame" x="290" y="426" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="DG2-x1-P4R"/>
-                                    <constraint firstAttribute="width" constant="20" id="oWn-QV-DTs"/>
-                                </constraints>
-                            </activityIndicatorView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LNH-3e-cnt" userLabel="Timeline View" customClass="RTSTimelineView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x2p-Nx-m7K" userLabel="Timeline Wrapper View">
                                 <rect key="frame" x="0.0" y="376" width="600" height="120"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="63N-83-iAB">
+                                        <rect key="frame" x="290" y="50" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="4hH-ju-XG4"/>
+                                            <constraint firstAttribute="width" constant="20" id="8IC-0Z-vtH"/>
+                                        </constraints>
+                                    </activityIndicatorView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LNH-3e-cnt" userLabel="Timeline View" customClass="RTSTimelineView">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="120"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="eMv-Af-zLT" id="ae0-LC-34t"/>
+                                            <outlet property="delegate" destination="eMv-Af-zLT" id="66n-dT-drx"/>
+                                            <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="OB9-xR-Jf9"/>
+                                        </connections>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="JIi-NK-bSr"/>
-                                    <constraint firstAttribute="height" constant="120" id="e1m-dK-8zG"/>
-                                    <constraint firstAttribute="height" constant="120" id="tpS-Lq-At4"/>
+                                    <constraint firstAttribute="trailing" secondItem="LNH-3e-cnt" secondAttribute="trailing" id="Ft4-ci-7uH"/>
+                                    <constraint firstAttribute="centerY" secondItem="63N-83-iAB" secondAttribute="centerY" id="MSw-tV-ew7"/>
+                                    <constraint firstItem="LNH-3e-cnt" firstAttribute="top" secondItem="x2p-Nx-m7K" secondAttribute="top" id="PCf-0Y-w2M"/>
+                                    <constraint firstAttribute="centerX" secondItem="63N-83-iAB" secondAttribute="centerX" id="bKt-Y0-M7z"/>
+                                    <constraint firstAttribute="bottom" secondItem="LNH-3e-cnt" secondAttribute="bottom" id="lN6-hM-Hez"/>
+                                    <constraint firstAttribute="height" constant="120" id="sGe-BY-UbY"/>
+                                    <constraint firstItem="LNH-3e-cnt" firstAttribute="leading" secondItem="x2p-Nx-m7K" secondAttribute="leading" id="vQF-7Q-me7"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="JIi-NK-bSr"/>
-                                        <exclude reference="tpS-Lq-At4"/>
-                                    </mask>
-                                </variation>
-                                <connections>
-                                    <outlet property="dataSource" destination="eMv-Af-zLT" id="ae0-LC-34t"/>
-                                    <outlet property="delegate" destination="eMv-Af-zLT" id="66n-dT-drx"/>
-                                    <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="OB9-xR-Jf9"/>
-                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BV6-1E-4Z7" customClass="RTSTimelineOverview">
                                 <rect key="frame" x="0.0" y="496" width="600" height="32"/>
@@ -437,15 +441,13 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Atp-kj-ZMO" secondAttribute="trailing" id="04a-8q-590"/>
                             <constraint firstAttribute="trailing" secondItem="BV6-1E-4Z7" secondAttribute="trailing" id="1qJ-eU-UVs"/>
-                            <constraint firstItem="63N-83-iAB" firstAttribute="centerY" secondItem="LNH-3e-cnt" secondAttribute="centerY" id="7DT-Qt-Fqf"/>
-                            <constraint firstItem="63N-83-iAB" firstAttribute="centerX" secondItem="LNH-3e-cnt" secondAttribute="centerX" id="ILc-9q-3qY"/>
-                            <constraint firstItem="BV6-1E-4Z7" firstAttribute="top" secondItem="LNH-3e-cnt" secondAttribute="bottom" id="IVZ-22-Uuc"/>
-                            <constraint firstItem="LNH-3e-cnt" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="ND8-72-Jl0"/>
+                            <constraint firstItem="x2p-Nx-m7K" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="NWE-TH-uE1"/>
                             <constraint firstItem="BV6-1E-4Z7" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="RvT-mF-2p2"/>
+                            <constraint firstItem="BV6-1E-4Z7" firstAttribute="top" secondItem="x2p-Nx-m7K" secondAttribute="bottom" id="S40-B0-g4r"/>
                             <constraint firstAttribute="trailing" secondItem="mhH-gw-9eI" secondAttribute="trailing" id="Td4-mg-1Xm"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="Yen-y8-iQF"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="top" secondItem="BV6-1E-4Z7" secondAttribute="bottom" id="bC8-Z8-B7m"/>
-                            <constraint firstAttribute="trailing" secondItem="LNH-3e-cnt" secondAttribute="trailing" id="j7n-3m-zkJ"/>
+                            <constraint firstAttribute="trailing" secondItem="x2p-Nx-m7K" secondAttribute="trailing" id="cP9-lE-dc6"/>
                             <constraint firstItem="mhH-gw-9eI" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="-20" id="q2F-oj-GWi"/>
                             <constraint firstItem="mhH-gw-9eI" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="qzH-4q-OuQ"/>
                             <constraint firstItem="FIy-lE-a4L" firstAttribute="top" secondItem="Atp-kj-ZMO" secondAttribute="bottom" id="zgy-JH-Op8"/>
@@ -464,10 +466,10 @@
                         <outlet property="activityView" destination="t9K-xg-VIe" id="EgN-1d-kBM"/>
                         <outlet property="dataSource" destination="eMv-Af-zLT" id="QgT-Gh-22L"/>
                         <outletCollection property="overlayViews" destination="mhH-gw-9eI" id="z9R-3R-xEF"/>
-                        <outletCollection property="overlayViews" destination="LNH-3e-cnt" id="XcU-vU-Bl4"/>
                         <outletCollection property="overlayViews" destination="Atp-kj-ZMO" id="fZ3-TQ-k6l"/>
-                        <outletCollection property="overlayViews" destination="63N-83-iAB" id="CLB-VI-hXY"/>
                         <outletCollection property="overlayViews" destination="BV6-1E-4Z7" id="zNK-CH-fU4"/>
+                        <outletCollection property="overlayViews" destination="LNH-3e-cnt" id="XcU-vU-Bl4"/>
+                        <outletCollection property="overlayViews" destination="x2p-Nx-m7K" id="Erd-e9-0iy"/>
                     </connections>
                 </customObject>
             </objects>
