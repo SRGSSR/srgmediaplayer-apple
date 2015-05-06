@@ -343,7 +343,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Atp-kj-ZMO" userLabel="Bottom Bar View">
                                 <rect key="frame" x="0.0" y="528" width="600" height="72"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pkn-xF-SAk" customClass="RTSTimeSlider">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="pkn-xF-SAk" customClass="RTSTimelineSlider">
                                         <rect key="frame" x="6" y="0.0" width="588" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="AHc-mB-gju"/>
