@@ -57,6 +57,13 @@ static void *s_kvoContext = &s_kvoContext;
 	}
 }
 
+- (void) layoutSubviews
+{
+	[super layoutSubviews];
+	
+	[self setNeedsDisplay];
+}
+
 - (void) drawRect:(CGRect)rect
 {
 	[super drawRect:rect];
