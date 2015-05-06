@@ -7,7 +7,7 @@
 
 #import "RTSTimelineView+Private.h"
 
-static const CGFloat RTSTimelineEventIconSide = 8.f;
+static const CGFloat RTSTimelineEventIconSide = 16.f;
 static const CGFloat RTSTimelineBarHorizontalMargin = 2.f * RTSTimelineEventIconSide;
 
 static void *s_kvoContext = &s_kvoContext;
@@ -172,7 +172,7 @@ static void *s_kvoContext = &s_kvoContext;
 		for (UIView *eventView in self.eventViews)
 		{
 			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-			eventView.transform = [visibleIndexPaths containsObject:indexPath] ? CGAffineTransformMakeScale(2.f, 2.f) : CGAffineTransformIdentity;
+			eventView.transform = [visibleIndexPaths containsObject:indexPath] ? CGAffineTransformIdentity : CGAffineTransformMakeScale(0.5f, 0.5f);
 			++i;
 		}
 	};
