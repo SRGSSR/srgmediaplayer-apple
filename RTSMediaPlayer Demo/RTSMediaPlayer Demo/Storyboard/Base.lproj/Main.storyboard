@@ -354,6 +354,7 @@
                                         <connections>
                                             <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="aNs-yt-eVs"/>
                                             <outlet property="timeLeftValueLabel" destination="MgY-Pv-rWN" id="6vf-GK-Exp"/>
+                                            <outlet property="timelineView" destination="LNH-3e-cnt" id="GNV-PQ-A9f"/>
                                             <outlet property="valueLabel" destination="yoy-j6-b9D" id="Xm1-Va-udZ"/>
                                         </connections>
                                     </slider>
