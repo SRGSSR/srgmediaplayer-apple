@@ -5,6 +5,8 @@
 
 #import "RTSTimelineSlider.h"
 
+#import "RTSTimelineView+Private.h"
+
 static const CGFloat RTSTimelineSliderTickHeight = 20.f;
 static const CGFloat RTSTimelineSliderTickWidth = 4.f;
 
@@ -53,6 +55,8 @@ static void *s_kvoContext = &s_kvoContext;
 	CGRect trackRect = [self trackRectForBounds:rect];
 	
 	NSArray *events = self.timelineView.events;
+	NSArray *visibleIndexPaths = [self.timelineView indexPathsForVisibleCells];
+	
 	for (NSInteger i = 0; i < events.count; ++i)
 	{
 		RTSTimelineEvent *event = events[i];
@@ -64,13 +68,15 @@ static void *s_kvoContext = &s_kvoContext;
 		}
 		
 		CGContextSetLineWidth(context, 1.f);
-		CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
-		CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+		CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.f alpha:0.6f].CGColor);
+		CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1.f alpha:0.6f].CGColor);
 		
-		UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(CGRectGetMinX(trackRect) + CMTimeGetSeconds(event.time) * CGRectGetWidth(trackRect) / CMTimeGetSeconds(currentTimeRange.duration),
-																		 CGRectGetMidY(trackRect) - RTSTimelineSliderTickHeight / 2.f,
-																		 RTSTimelineSliderTickWidth,
-																		 RTSTimelineSliderTickHeight)];
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+		CGFloat sizeOffset = [visibleIndexPaths containsObject:indexPath] ? 2.f : 0.f;
+		UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(CGRectGetMinX(trackRect) + CMTimeGetSeconds(event.time) * CGRectGetWidth(trackRect) / CMTimeGetSeconds(currentTimeRange.duration) - sizeOffset,
+																		 CGRectGetMidY(trackRect) - RTSTimelineSliderTickHeight / 2.f - sizeOffset,
+																		 RTSTimelineSliderTickWidth + 2.f * sizeOffset,
+																		 RTSTimelineSliderTickHeight + 2.f * sizeOffset)];
 		[path fill];
 		[path stroke];
 	}
@@ -115,7 +121,7 @@ static void *s_kvoContext = &s_kvoContext;
 	}
 	else if (context == s_kvoContext && [keyPath isEqualToString:@"collectionView.contentOffset"])
 	{
-		NSLog(@"Scrolling. TODO");
+		[self setNeedsDisplay];
 	}
 	else
 	{
