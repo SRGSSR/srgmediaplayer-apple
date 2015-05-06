@@ -53,6 +53,21 @@ static void *s_kvoContext = &s_kvoContext;
 	}
 }
 
+- (void) drawRect:(CGRect)rect
+{
+	[super drawRect:rect];
+	
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextSetLineWidth(context, 1.f);
+	CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
+	
+	CGFloat lengths[] = {2, 3};
+	CGContextSetLineDash(context, 0, lengths, sizeof(lengths) / sizeof(CGFloat));
+	CGContextMoveToPoint(context, RTSTimelineBarHorizontalMargin, CGRectGetMidY(self.bounds));
+	CGContextAddLineToPoint(context, CGRectGetWidth(self.bounds) - RTSTimelineBarHorizontalMargin, CGRectGetMidY(self.bounds));
+	CGContextStrokePath(context);
+}
+
 - (void) reloadData
 {
 	for (UIView *eventView in self.eventViews)
