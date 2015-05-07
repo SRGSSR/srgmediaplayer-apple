@@ -7,10 +7,6 @@
 
 #import "RTSTimelineView+Private.h"
 
-static const CGFloat RTSTimelineIconSide = 15.f;
-static const CGFloat RTSTimelineSliderTickHeight = 20.f;
-static const CGFloat RTSTimelineSliderTickWidth = 3.f;
-
 static void *s_kvoContext = &s_kvoContext;
 
 @implementation RTSTimelineSlider
@@ -72,25 +68,32 @@ static void *s_kvoContext = &s_kvoContext;
 		
 		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(event.time) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
 		
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+		
 		if ([self.dataSource respondsToSelector:@selector(timelineSlider:iconImageForEvent:)])
 		{
+			CGFloat iconSide = [[self.timelineView indexPathsForVisibleCells] containsObject:indexPath] ? 15.f : 9.f;
+			
 			UIImage *iconImage = [self.dataSource timelineSlider:self iconImageForEvent:event];
-			CGRect tickRect = CGRectMake(tickXPos - RTSTimelineIconSide / 2.f,
-										 CGRectGetMidY(trackRect) - RTSTimelineIconSide / 2.f,
-										 RTSTimelineIconSide,
-										 RTSTimelineIconSide);
+			CGRect tickRect = CGRectMake(tickXPos - iconSide / 2.f,
+										 CGRectGetMidY(trackRect) - iconSide / 2.f,
+										 iconSide,
+										 iconSide);
 			[iconImage drawInRect:tickRect];
 		}
 		else
 		{
+			static const CGFloat kTickWidth = 3.f;
+			CGFloat tickHeight = [[self.timelineView indexPathsForVisibleCells] containsObject:indexPath] ? 19.f : 11.f;
+			
 			CGContextSetLineWidth(context, 1.f);
 			CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.f alpha:0.6f].CGColor);
 			CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1.f alpha:0.6f].CGColor);
 			
-			CGRect tickRect = CGRectMake(tickXPos - RTSTimelineSliderTickWidth / 2.f,
-										 CGRectGetMidY(trackRect) - RTSTimelineSliderTickHeight / 2.f,
-										 RTSTimelineSliderTickWidth,
-										 RTSTimelineSliderTickHeight);
+			CGRect tickRect = CGRectMake(tickXPos - kTickWidth / 2.f,
+										 CGRectGetMidY(trackRect) - tickHeight / 2.f,
+										 kTickWidth,
+										 tickHeight);
 			UIBezierPath *path = [UIBezierPath bezierPathWithRect:tickRect];
 			[path fill];
 			[path stroke];
