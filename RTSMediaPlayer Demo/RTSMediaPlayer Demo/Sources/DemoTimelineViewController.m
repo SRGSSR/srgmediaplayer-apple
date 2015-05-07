@@ -86,6 +86,7 @@
 	if ([self isMovingToParentViewController] || [self isBeingPresented])
 	{
 		[self.mediaPlayerController playIdentifier:self.videoIdentifier];
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
 	}
 }
 
@@ -96,6 +97,7 @@
 	if ([self isMovingFromParentViewController] || [self isBeingDismissed])
 	{
 		[self.mediaPlayerController reset];
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
 	}
 }
 
