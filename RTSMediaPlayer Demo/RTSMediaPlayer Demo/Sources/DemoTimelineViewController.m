@@ -115,12 +115,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 				}
 			}
 			
-			NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"time" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
-				CMTime time1 = [timeValue1 CMTimeValue];
-				CMTime time2 = [timeValue2 CMTimeValue];
-				return CMTimeCompare(time1, time2);
-			}];
-			completionBlock ? completionBlock([events sortedArrayUsingDescriptors:@[sortDescriptor]], nil) : nil;
+			completionBlock ? completionBlock([NSArray arrayWithArray:events], nil) : nil;
 		});
 	}] resume];
 }

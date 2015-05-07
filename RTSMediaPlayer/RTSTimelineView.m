@@ -42,7 +42,14 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) setEvents:(NSArray *)events
 {
-	_events = events;
+	// Sort events in ascending order
+	NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"time" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
+		CMTime time1 = [timeValue1 CMTimeValue];
+		CMTime time2 = [timeValue2 CMTimeValue];
+		return CMTimeCompare(time1, time2);
+	}];
+	
+	_events = [events sortedArrayUsingDescriptors:@[sortDescriptor]];
 	
 	[self.collectionView reloadData];
 }
