@@ -7,9 +7,9 @@
 
 #import "RTSTimelineView+Private.h"
 
-static const CGFloat RTSTimelineIconSide = 20.f;
+static const CGFloat RTSTimelineIconSide = 15.f;
 static const CGFloat RTSTimelineSliderTickHeight = 20.f;
-static const CGFloat RTSTimelineSliderTickWidth = 4.f;
+static const CGFloat RTSTimelineSliderTickWidth = 3.f;
 
 static void *s_kvoContext = &s_kvoContext;
 
@@ -53,7 +53,10 @@ static void *s_kvoContext = &s_kvoContext;
 	}
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
+	
 	CGRect trackRect = [self trackRectForBounds:rect];
+	CGFloat thumbStartXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.minimumValue]);
+	CGFloat thumbEndXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.maximumValue]);
 	
 	NSArray *events = self.timelineView.events;
 	
@@ -67,14 +70,13 @@ static void *s_kvoContext = &s_kvoContext;
 			continue;
 		}
 		
-		CGPoint tickPosition = CGPointMake(CGRectGetMinX(trackRect) + CMTimeGetSeconds(event.time) * CGRectGetWidth(trackRect) / CMTimeGetSeconds(currentTimeRange.duration),
-										   CGRectGetMidY(trackRect));
+		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(event.time) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
 		
 		if ([self.dataSource respondsToSelector:@selector(timelineSlider:iconImageForEvent:)])
 		{
 			UIImage *iconImage = [self.dataSource timelineSlider:self iconImageForEvent:event];
-			CGRect tickRect = CGRectMake(tickPosition.x - RTSTimelineIconSide / 2.f,
-										 tickPosition.y - RTSTimelineIconSide / 2.f,
+			CGRect tickRect = CGRectMake(tickXPos - RTSTimelineIconSide / 2.f,
+										 CGRectGetMidY(trackRect) - RTSTimelineIconSide / 2.f,
 										 RTSTimelineIconSide,
 										 RTSTimelineIconSide);
 			[iconImage drawInRect:tickRect];
@@ -85,8 +87,8 @@ static void *s_kvoContext = &s_kvoContext;
 			CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.f alpha:0.6f].CGColor);
 			CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1.f alpha:0.6f].CGColor);
 			
-			CGRect tickRect = CGRectMake(tickPosition.x - RTSTimelineSliderTickWidth / 2.f,
-										 tickPosition.y - RTSTimelineSliderTickHeight / 2.f,
+			CGRect tickRect = CGRectMake(tickXPos - RTSTimelineSliderTickWidth / 2.f,
+										 CGRectGetMidY(trackRect) - RTSTimelineSliderTickHeight / 2.f,
 										 RTSTimelineSliderTickWidth,
 										 RTSTimelineSliderTickHeight);
 			UIBezierPath *path = [UIBezierPath bezierPathWithRect:tickRect];
