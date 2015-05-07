@@ -27,6 +27,12 @@
 		E60E17181AF0B2F40062E96E /* DemoTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */; };
 		E69906191AFB44CC005ED143 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906171AFB44CC005ED143 /* close_button.png */; };
 		E699061A1AFB44CC005ED143 /* close_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906181AFB44CC005ED143 /* close_button@2x.png */; };
+		E699061F1AFB4902005ED143 /* red_card.png in Resources */ = {isa = PBXBuildFile; fileRef = E699061B1AFB4902005ED143 /* red_card.png */; };
+		E69906201AFB4902005ED143 /* red_card@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699061C1AFB4902005ED143 /* red_card@2x.png */; };
+		E69906211AFB4902005ED143 /* yellow_card.png in Resources */ = {isa = PBXBuildFile; fileRef = E699061D1AFB4902005ED143 /* yellow_card.png */; };
+		E69906221AFB4902005ED143 /* yellow_card@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699061E1AFB4902005ED143 /* yellow_card@2x.png */; };
+		E69906251AFB4929005ED143 /* goal.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906231AFB4929005ED143 /* goal.png */; };
+		E69906261AFB4929005ED143 /* goal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906241AFB4929005ED143 /* goal@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +79,12 @@
 		E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTimelineViewController.m; sourceTree = "<group>"; };
 		E69906171AFB44CC005ED143 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
 		E69906181AFB44CC005ED143 /* close_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_button@2x.png"; sourceTree = "<group>"; };
+		E699061B1AFB4902005ED143 /* red_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_card.png; sourceTree = "<group>"; };
+		E699061C1AFB4902005ED143 /* red_card@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red_card@2x.png"; sourceTree = "<group>"; };
+		E699061D1AFB4902005ED143 /* yellow_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow_card.png; sourceTree = "<group>"; };
+		E699061E1AFB4902005ED143 /* yellow_card@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow_card@2x.png"; sourceTree = "<group>"; };
+		E69906231AFB4929005ED143 /* goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goal.png; sourceTree = "<group>"; };
+		E69906241AFB4929005ED143 /* goal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "goal@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,8 +163,14 @@
 			children = (
 				E69906171AFB44CC005ED143 /* close_button.png */,
 				E69906181AFB44CC005ED143 /* close_button@2x.png */,
-				B61E18EE1AA8643500E4FAB9 /* MediaURLs.plist */,
+				E69906231AFB4929005ED143 /* goal.png */,
+				E69906241AFB4929005ED143 /* goal@2x.png */,
 				B61E18DE1AA8609000E4FAB9 /* Images.xcassets */,
+				B61E18EE1AA8643500E4FAB9 /* MediaURLs.plist */,
+				E699061B1AFB4902005ED143 /* red_card.png */,
+				E699061C1AFB4902005ED143 /* red_card@2x.png */,
+				E699061D1AFB4902005ED143 /* yellow_card.png */,
+				E699061E1AFB4902005ED143 /* yellow_card@2x.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -291,14 +309,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E69906201AFB4902005ED143 /* red_card@2x.png in Resources */,
 				E606F8921AF3B044003F0E2A /* EventCollectionViewCell.xib in Resources */,
+				E699061F1AFB4902005ED143 /* red_card.png in Resources */,
 				E699061A1AFB44CC005ED143 /* close_button@2x.png in Resources */,
 				C2AB24EF1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle in Resources */,
+				E69906261AFB4929005ED143 /* goal@2x.png in Resources */,
 				B61E18EF1AA8643500E4FAB9 /* MediaURLs.plist in Resources */,
 				B61E18DF1AA8609000E4FAB9 /* Images.xcassets in Resources */,
 				E69906191AFB44CC005ED143 /* close_button.png in Resources */,
+				E69906221AFB4902005ED143 /* yellow_card@2x.png in Resources */,
+				E69906251AFB4929005ED143 /* goal.png in Resources */,
 				B61E18DB1AA8607800E4FAB9 /* LaunchScreen.xib in Resources */,
 				B61E18DC1AA8607800E4FAB9 /* Main.storyboard in Resources */,
+				E69906211AFB4902005ED143 /* yellow_card.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

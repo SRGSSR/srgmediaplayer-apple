@@ -70,11 +70,16 @@ static void *s_kvoContext = &s_kvoContext;
 		
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
 		
+		UIImage *iconImage = nil;
 		if ([self.dataSource respondsToSelector:@selector(timelineSlider:iconImageForEvent:)])
+		{
+			iconImage = [self.dataSource timelineSlider:self iconImageForEvent:event];
+		}
+		
+		if (iconImage)
 		{
 			CGFloat iconSide = [[self.timelineView indexPathsForVisibleCells] containsObject:indexPath] ? 15.f : 9.f;
 			
-			UIImage *iconImage = [self.dataSource timelineSlider:self iconImageForEvent:event];
 			CGRect tickRect = CGRectMake(tickXPos - iconSide / 2.f,
 										 CGRectGetMidY(trackRect) - iconSide / 2.f,
 										 iconSide,

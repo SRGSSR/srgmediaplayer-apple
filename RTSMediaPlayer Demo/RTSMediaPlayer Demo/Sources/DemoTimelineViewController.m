@@ -108,6 +108,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 				NSDate *date = [NSDate dateWithTimeIntervalSince1970:[highlight[@"timestamp"] doubleValue]];
 				NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"streamStartTime"] doubleValue]];
 				CMTime time = CMTimeMake([date timeIntervalSinceDate:startDate], 1.);
+				
 				Event *event = [[Event alloc] initWithTime:time title:highlight[@"title"] identifier:highlight[@"id"] date:date];
 				if (event) {
 					[events addObject:event];
@@ -167,6 +168,13 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 			completionHandler(URL, nil);
 		});
 	}] resume];
+}
+
+#pragma mark - RTSTimelideSliderDataSource protocol
+
+- (UIImage *) timelineSlider:(RTSTimelineSlider *)slider iconImageForEvent:(RTSTimelineEvent *)event
+{
+	return ((Event *)event).iconImage;
 }
 
 #pragma mark - RTSTimelineViewDataSource protocol

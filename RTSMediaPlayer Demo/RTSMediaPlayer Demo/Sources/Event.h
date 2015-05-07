@@ -4,6 +4,7 @@
 //
 
 #import <RTSMediaPlayer/RTSTimelineEvent.h>
+#import <UIKit/UIKit.h>
 
 @interface Event : RTSTimelineEvent
 
@@ -14,5 +15,6 @@
 @property (nonatomic, readonly) NSDate *date;
 
 @property (nonatomic, readonly) NSURL *imageURL;
+@property (nonatomic, readonly) UIImage *iconImage;
 
 @end
