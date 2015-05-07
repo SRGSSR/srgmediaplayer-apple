@@ -5,13 +5,34 @@
 
 #import "RTSTimelineSlider.h"
 
+#import "NSBundle+RTSMediaPlayer.h"
 #import "RTSTimelineView+Private.h"
 
 static void *s_kvoContext = &s_kvoContext;
 
+static void commonInit(RTSTimeSlider *self);
+
 @implementation RTSTimelineSlider
 
 #pragma mark - Object lifecycle
+
+- (instancetype) initWithFrame:(CGRect)frame
+{
+	if (self = [super initWithFrame:frame])
+	{
+		commonInit(self);
+	}
+	return self;
+}
+
+- (instancetype) initWithCoder:(NSCoder *)aDecoder
+{
+	if (self = [super initWithCoder:aDecoder])
+	{
+		commonInit(self);
+	}
+	return self;
+}
 
 - (void) dealloc
 {
@@ -154,3 +175,13 @@ static void *s_kvoContext = &s_kvoContext;
 }
 
 @end
+
+#pragma mark - Functions
+
+static void commonInit(RTSTimeSlider *self)
+{
+	NSString *thumbImagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"thumb_timeline_slider" ofType:@"png"];
+	UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbImagePath];
+	[self setThumbImage:thumbImage forState:UIControlStateNormal];
+	[self setThumbImage:thumbImage forState:UIControlStateHighlighted];
+}

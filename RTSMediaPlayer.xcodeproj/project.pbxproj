@@ -44,6 +44,8 @@
 		E66BDC141AF89C0200FF7858 /* RTSPlaybackTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */; };
 		E67FDACA1AFA166F0050DCE6 /* RTSTimelineSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */; };
 		E67FDACB1AFA16EC0050DCE6 /* RTSTimelineSlider.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */; };
+		E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */; };
+		E69906301AFB969F005ED143 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */; };
 		F7DD624B58EB1E3EF79D59F7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE77ECC145A247C85E459918 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -131,6 +133,8 @@
 		E65786A31AEFAD68007730CE /* RTSTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineView.m; sourceTree = "<group>"; };
 		E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSTimelineSlider.h; sourceTree = "<group>"; };
 		E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineSlider.m; sourceTree = "<group>"; };
+		E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumb_timeline_slider.png; sourceTree = "<group>"; };
+		E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumb_timeline_slider@2x.png"; sourceTree = "<group>"; };
 		E6A6D0E31AFA017600E15BCF /* RTSTimelineView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RTSTimelineView+Private.h"; sourceTree = "<group>"; };
 		E77390DBA03B25138BDBA95F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -253,6 +257,7 @@
 				B61E18F01AA87D2E00E4FAB9 /* Core */,
 				B61E18F11AA87D4500E4FAB9 /* Movie Player Controller */,
 				B61E18F21AA87D5E00E4FAB9 /* Controls */,
+				E699062C1AFB9684005ED143 /* Resources */,
 			);
 			path = RTSMediaPlayer;
 			sourceTree = "<group>";
@@ -265,6 +270,15 @@
 				C2150B451AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m */,
 			);
 			path = RTSMediaPlayerTests;
+			sourceTree = "<group>";
+		};
+		E699062C1AFB9684005ED143 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */,
+				E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		F6E7F12E1877CFD34FD0CFC5 /* Pods */ = {
@@ -389,6 +403,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */,
+				E69906301AFB969F005ED143 /* thumb_timeline_slider@2x.png in Resources */,
 				C2AB24EB1ABC186100EB51B8 /* RTSMediaPlayerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
