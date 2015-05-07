@@ -433,6 +433,22 @@
                                             <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="01E-0I-SR1"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lsW-nM-EFL">
+                                        <rect key="frame" x="453" y="31" width="81" height="22"/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="81" id="c2z-VP-pl0"/>
+                                            <constraint firstAttribute="height" constant="22" id="mhT-uk-LYT"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                        <state key="normal" title="GO TO LIVE">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="goToLive:" destination="eMv-Af-zLT" eventType="touchUpInside" id="ygO-zC-4ib"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -444,7 +460,9 @@
                                     <constraint firstItem="yoy-j6-b9D" firstAttribute="leading" secondItem="Atp-kj-ZMO" secondAttribute="leading" constant="8" id="YzF-i0-j0U"/>
                                     <constraint firstItem="pkn-xF-SAk" firstAttribute="leading" secondItem="Atp-kj-ZMO" secondAttribute="leading" constant="8" id="ZUY-DN-vtA"/>
                                     <constraint firstAttribute="trailing" secondItem="pkn-xF-SAk" secondAttribute="trailing" constant="8" id="aHa-Op-Xqg"/>
+                                    <constraint firstItem="MgY-Pv-rWN" firstAttribute="leading" secondItem="lsW-nM-EFL" secondAttribute="trailing" constant="23" id="bwn-Pe-8yx"/>
                                     <constraint firstAttribute="centerX" secondItem="Rc9-3V-xn5" secondAttribute="centerX" id="mDO-bj-NMa"/>
+                                    <constraint firstItem="MgY-Pv-rWN" firstAttribute="centerY" secondItem="lsW-nM-EFL" secondAttribute="centerY" id="nfd-WE-ady"/>
                                     <constraint firstAttribute="height" constant="64" id="r6L-gN-JJU"/>
                                 </constraints>
                             </view>

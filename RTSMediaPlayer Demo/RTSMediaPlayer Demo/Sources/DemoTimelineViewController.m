@@ -226,6 +226,11 @@
 	[self.mediaPlayerController.player seekToTime:CMTimeAdd(currentTime, increment)];
 }
 
+- (IBAction) goToLive:(id)sender
+{
+	[self.mediaPlayerController.player seekToTime:self.mediaPlayerController.player.currentItem.duration];
+}
+
 #pragma mark - Notifications
 
 - (void) playbackDidFail:(NSNotification *)notifications
