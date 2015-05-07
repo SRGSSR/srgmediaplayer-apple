@@ -388,7 +388,7 @@
                                         </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yoy-j6-b9D">
-                                        <rect key="frame" x="8" y="41" width="35" height="16"/>
+                                        <rect key="frame" x="8" y="34" width="35" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="Z7f-h4-raM"/>
                                             <constraint firstAttribute="height" constant="16" id="ve8-4l-x7t"/>
@@ -397,7 +397,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MgY-Pv-rWN">
-                                        <rect key="frame" x="557" y="41" width="35" height="16"/>
+                                        <rect key="frame" x="557" y="34" width="35" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="Jhe-bo-jAD"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="S6E-pN-mfQ"/>
@@ -412,7 +412,7 @@
                                         </variation>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rc9-3V-xn5" customClass="RTSMediaPlayerPlaybackButton">
-                                        <rect key="frame" x="289" y="38" width="22" height="22"/>
+                                        <rect key="frame" x="289" y="31" width="22" height="22"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="Bgd-Cw-lzz"/>
@@ -436,11 +436,11 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="yoy-j6-b9D" secondAttribute="bottom" constant="7" id="4pq-Hi-lzN"/>
+                                    <constraint firstAttribute="bottom" secondItem="yoy-j6-b9D" secondAttribute="bottom" constant="14" id="4pq-Hi-lzN"/>
                                     <constraint firstItem="pkn-xF-SAk" firstAttribute="top" secondItem="Atp-kj-ZMO" secondAttribute="top" id="6JX-3w-Jkr"/>
                                     <constraint firstAttribute="trailing" secondItem="MgY-Pv-rWN" secondAttribute="trailing" constant="8" id="DZA-4X-9rM"/>
-                                    <constraint firstAttribute="bottom" secondItem="MgY-Pv-rWN" secondAttribute="bottom" constant="7" id="GFG-yW-fqF"/>
-                                    <constraint firstAttribute="bottom" secondItem="Rc9-3V-xn5" secondAttribute="bottom" constant="4" id="NX0-DK-dhG"/>
+                                    <constraint firstAttribute="bottom" secondItem="MgY-Pv-rWN" secondAttribute="bottom" constant="14" id="GFG-yW-fqF"/>
+                                    <constraint firstAttribute="bottom" secondItem="Rc9-3V-xn5" secondAttribute="bottom" constant="11" id="NX0-DK-dhG"/>
                                     <constraint firstItem="yoy-j6-b9D" firstAttribute="leading" secondItem="Atp-kj-ZMO" secondAttribute="leading" constant="8" id="YzF-i0-j0U"/>
                                     <constraint firstItem="pkn-xF-SAk" firstAttribute="leading" secondItem="Atp-kj-ZMO" secondAttribute="leading" constant="8" id="ZUY-DN-vtA"/>
                                     <constraint firstAttribute="trailing" secondItem="pkn-xF-SAk" secondAttribute="trailing" constant="8" id="aHa-Op-Xqg"/>
