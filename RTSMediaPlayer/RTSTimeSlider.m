@@ -221,13 +221,21 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		|| (CMTIME_IS_INDEFINITE(playerItem.duration) && (self.maximumValue - self.value < fminf(RTSToleranceFactor * CMTimeGetSeconds(currentTimeRange.duration), RTSMaximumToleranceInSeconds))))
 	{
 		self.valueLabel.text = @"--:--";
-		self.timeLeftValueLabel.text = @"Live";
+		self.timeLeftValueLabel.text = @"LIVE";
+		
+		// TODO: Should be configurable. Will conflict with changes made to the labels
+		self.timeLeftValueLabel.textColor = [UIColor whiteColor];
+		self.timeLeftValueLabel.backgroundColor = [UIColor redColor];
 	}
 	// Video on demand
 	else
 	{
 		self.valueLabel.text = RTSTimeSliderFormatter(self.value);
 		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
+		
+		// TODO: Should be configurable. Will conflict with changes made to the labels
+		self.timeLeftValueLabel.textColor = [UIColor blackColor];
+		self.timeLeftValueLabel.backgroundColor = [UIColor clearColor];
 	}
 }
 
