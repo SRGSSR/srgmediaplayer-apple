@@ -174,14 +174,36 @@ static void commonInit(RTSTimeSlider *self);
 	}
 }
 
+#pragma mark - Gestures
+
+- (void) seek:(UIGestureRecognizer *)gestureRecognizer
+{
+	// Cannot tap on the thumb itself
+	if (self.highlighted)
+	{
+		return;
+	}
+	
+	CGFloat xPos = [gestureRecognizer locationInView:self].x;
+	float value = self.minimumValue + (self.maximumValue - self.minimumValue) * xPos / CGRectGetWidth(self.bounds);
+	
+	CMTime time = CMTimeMakeWithSeconds(value, 1.);
+	[self.mediaPlayerController.player seekToTime:time];
+}
+
 @end
 
 #pragma mark - Functions
 
 static void commonInit(RTSTimeSlider *self)
 {
+	// Use hollow thumb by default (makes events behind it visible)
 	NSString *thumbImagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"thumb_timeline_slider" ofType:@"png"];
 	UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbImagePath];
 	[self setThumbImage:thumbImage forState:UIControlStateNormal];
 	[self setThumbImage:thumbImage forState:UIControlStateHighlighted];
+	
+	// Add the ability to tap anywhere to seek at this specific location
+	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seek:)];
+	[self addGestureRecognizer:gestureRecognizer];
 }
