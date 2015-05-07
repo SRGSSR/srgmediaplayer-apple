@@ -33,6 +33,7 @@
 		E69906221AFB4902005ED143 /* yellow_card@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699061E1AFB4902005ED143 /* yellow_card@2x.png */; };
 		E69906251AFB4929005ED143 /* goal.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906231AFB4929005ED143 /* goal.png */; };
 		E69906261AFB4929005ED143 /* goal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906241AFB4929005ED143 /* goal@2x.png */; };
+		E69906291AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,8 @@
 		E699061E1AFB4902005ED143 /* yellow_card@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow_card@2x.png"; sourceTree = "<group>"; };
 		E69906231AFB4929005ED143 /* goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goal.png; sourceTree = "<group>"; };
 		E69906241AFB4929005ED143 /* goal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "goal@2x.png"; sourceTree = "<group>"; };
+		E69906271AFB62D4005ED143 /* DemoTimelineConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTimelineConfigurationViewController.h; sourceTree = "<group>"; };
+		E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTimelineConfigurationViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +130,8 @@
 				B61E18E81AA863B700E4FAB9 /* DemoInlineViewController.m */,
 				B68883291AAF72B500B9E34E /* DemoMultiPlayersViewController.h */,
 				B688832A1AAF72B500B9E34E /* DemoMultiPlayersViewController.m */,
+				E69906271AFB62D4005ED143 /* DemoTimelineConfigurationViewController.h */,
+				E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */,
 				E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */,
 				E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */,
 				E606F8931AF3BBB4003F0E2A /* Event.h */,
@@ -378,6 +383,7 @@
 				B61E18D51AA8607200E4FAB9 /* main.m in Sources */,
 				E606F8951AF3BBB4003F0E2A /* Event.m in Sources */,
 				B688832B1AAF72B500B9E34E /* DemoMultiPlayersViewController.m in Sources */,
+				E69906291AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m in Sources */,
 				B61E18EB1AA863B700E4FAB9 /* DemoFullScreenViewController.m in Sources */,
 				B61E18CF1AA8605200E4FAB9 /* AppDelegate.m in Sources */,
 				B61E18ED1AA863B700E4FAB9 /* MenuTableViewController.m in Sources */,

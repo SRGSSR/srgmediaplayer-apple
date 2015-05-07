@@ -8,4 +8,6 @@
 
 @interface DemoTimelineViewController : UIViewController <RTSMediaPlayerControllerDataSource, RTSTimelineSliderDataSource, RTSTimelineViewDataSource, RTSTimelineViewDelegate>
 
+@property (nonatomic, copy) NSString *videoIdentifier;
+
 @end

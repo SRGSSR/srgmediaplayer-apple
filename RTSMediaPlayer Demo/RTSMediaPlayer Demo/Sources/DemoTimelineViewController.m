@@ -7,8 +7,6 @@
 
 #import "EventCollectionViewCell.h"
 
-static NSString * const DemoTimeLineEventIdentifier = @"265862";
-
 @interface DemoTimelineViewController ()
 
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
@@ -31,16 +29,38 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - Properties
+#pragma mark - Getters and setters
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
+	if (_mediaPlayerController)
+	{
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:RTSMediaPlayerPlaybackDidFailNotification
+													  object:_mediaPlayerController];
+	}
+	
 	_mediaPlayerController = mediaPlayerController;
 	
-	// Refresh every 30 seconds
-	[mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(30., 1.) queue:NULL usingBlock:^(CMTime time) {
-		[self refreshTimeline];
-	}];
+	if (mediaPlayerController)
+	{
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(playbackDidFail:)
+													 name:RTSMediaPlayerPlaybackDidFailNotification
+												   object:mediaPlayerController];
+		
+		// Refresh every 30 seconds
+		[mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(30., 1.) queue:NULL usingBlock:^(CMTime time) {
+			[self refreshTimeline];
+		}];
+	}
+}
+
+- (void) setVideoIdentifier:(NSString *)videoIdentifier
+{
+	_videoIdentifier = videoIdentifier;
+	
+	[self.mediaPlayerController playIdentifier:videoIdentifier];
 }
 
 #pragma mark - View lifecycle
@@ -65,7 +85,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 {
 	if ([self isMovingToParentViewController] || [self isBeingPresented])
 	{
-		[self.mediaPlayerController play];
+		[self.mediaPlayerController playIdentifier:self.videoIdentifier];
 	}
 }
 
@@ -83,7 +103,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 
 - (void) retrieveEventsWithCompletionBlock:(void (^)(NSArray *events, NSError *error))completionBlock
 {
-	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", DemoTimeLineEventIdentifier];
+	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", self.videoIdentifier];
 	[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (error)
@@ -142,7 +162,7 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 
 - (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
 {
-	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/stream/srf/byEventItemIdAndType/%@/hls", DemoTimeLineEventIdentifier];
+	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/stream/srf/byEventItemIdAndType/%@/hls", identifier];
 	[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (error)
@@ -186,6 +206,20 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 - (IBAction) dismiss:(id)sender
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Notifications
+
+- (void) playbackDidFail:(NSNotification *)notifications
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+	
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+														message:@"The video could not be played"
+													   delegate:nil
+											  cancelButtonTitle:@"Dismiss"
+											  otherButtonTitles:nil];
+	[alertView show];
 }
 
 #pragma mark - Timers
