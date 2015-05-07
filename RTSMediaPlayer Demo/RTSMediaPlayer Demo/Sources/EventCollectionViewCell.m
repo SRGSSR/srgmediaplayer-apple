@@ -9,6 +9,7 @@
 
 @interface EventCollectionViewCell ()
 
+@property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *timestampLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
@@ -23,6 +24,7 @@
 {
 	_event = event;
 	
+	self.iconImageView.image = event.iconImage;
 	self.titleLabel.text = event.title;
 	
 	static NSDateFormatter *s_dateFormatter;
