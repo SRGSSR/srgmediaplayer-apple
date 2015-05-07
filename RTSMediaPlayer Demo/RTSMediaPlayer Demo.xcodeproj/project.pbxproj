@@ -25,6 +25,8 @@
 		E606F8921AF3B044003F0E2A /* EventCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E606F8901AF3B044003F0E2A /* EventCollectionViewCell.xib */; };
 		E606F8951AF3BBB4003F0E2A /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F8941AF3BBB4003F0E2A /* Event.m */; };
 		E60E17181AF0B2F40062E96E /* DemoTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */; };
+		E69906191AFB44CC005ED143 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906171AFB44CC005ED143 /* close_button.png */; };
+		E699061A1AFB44CC005ED143 /* close_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906181AFB44CC005ED143 /* close_button@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,8 @@
 		E606F8941AF3BBB4003F0E2A /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTimelineViewController.h; sourceTree = "<group>"; };
 		E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTimelineViewController.m; sourceTree = "<group>"; };
+		E69906171AFB44CC005ED143 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
+		E69906181AFB44CC005ED143 /* close_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_button@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +149,8 @@
 		B61E18DD1AA8609000E4FAB9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E69906171AFB44CC005ED143 /* close_button.png */,
+				E69906181AFB44CC005ED143 /* close_button@2x.png */,
 				B61E18EE1AA8643500E4FAB9 /* MediaURLs.plist */,
 				B61E18DE1AA8609000E4FAB9 /* Images.xcassets */,
 			);
@@ -286,9 +292,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E606F8921AF3B044003F0E2A /* EventCollectionViewCell.xib in Resources */,
+				E699061A1AFB44CC005ED143 /* close_button@2x.png in Resources */,
 				C2AB24EF1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle in Resources */,
 				B61E18EF1AA8643500E4FAB9 /* MediaURLs.plist in Resources */,
 				B61E18DF1AA8609000E4FAB9 /* Images.xcassets in Resources */,
+				E69906191AFB44CC005ED143 /* close_button.png in Resources */,
 				B61E18DB1AA8607800E4FAB9 /* LaunchScreen.xib in Resources */,
 				B61E18DC1AA8607800E4FAB9 /* Main.storyboard in Resources */,
 			);

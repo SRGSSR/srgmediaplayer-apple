@@ -58,15 +58,6 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
 	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(mediaPlayerDidShowControlOverlays:)
-												 name:RTSMediaPlayerDidShowControlOverlaysNotification
-											   object:self.mediaPlayerController];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(mediaPlayerDidHideControlOverlays:)
-												 name:RTSMediaPlayerDidHideControlOverlaysNotification
-											   object:self.mediaPlayerController];
-	
 	[self.mediaPlayerController attachPlayerToView:self.videoView];
 }
 
@@ -192,18 +183,6 @@ static NSString * const DemoTimeLineEventIdentifier = @"265862";
 - (IBAction) dismiss:(id)sender
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - Notifications
-
-- (void) mediaPlayerDidShowControlOverlays:(NSNotification *)notification
-{
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-}
-
-- (void) mediaPlayerDidHideControlOverlays:(NSNotification *)notificaiton
-{
-	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 #pragma mark - Timers

@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -270,45 +271,6 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mhH-gw-9eI" userLabel="Navigation Bar View">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cgf-dG-XN8">
-                                        <rect key="frame" x="0.0" y="20" width="600" height="30"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L30-lN-LjE">
-                                                <rect key="frame" x="8" y="0.0" width="42" height="30"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                <state key="normal" title="Done">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <state key="highlighted">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="dismiss:" destination="eMv-Af-zLT" eventType="touchUpInside" id="XO5-PT-CTy"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="L30-lN-LjE" firstAttribute="top" secondItem="Cgf-dG-XN8" secondAttribute="top" id="AUu-rx-WW9"/>
-                                            <constraint firstItem="L30-lN-LjE" firstAttribute="leading" secondItem="Cgf-dG-XN8" secondAttribute="leading" constant="8" id="J1c-yJ-uH0"/>
-                                            <constraint firstAttribute="bottom" secondItem="L30-lN-LjE" secondAttribute="bottom" id="fIA-HD-w1n"/>
-                                            <constraint firstAttribute="height" constant="30" id="jhj-ef-iAg"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="AuS-UU-AFy"/>
-                                    <constraint firstAttribute="trailing" secondItem="Cgf-dG-XN8" secondAttribute="trailing" id="OaY-w9-z9x"/>
-                                    <constraint firstItem="Cgf-dG-XN8" firstAttribute="leading" secondItem="mhH-gw-9eI" secondAttribute="leading" id="WmC-ax-iie"/>
-                                    <constraint firstAttribute="bottom" secondItem="Cgf-dG-XN8" secondAttribute="bottom" id="f2g-ie-izK"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x2p-Nx-m7K" userLabel="Timeline Wrapper View">
                                 <rect key="frame" x="0.0" y="408" width="600" height="120"/>
                                 <subviews>
@@ -419,19 +381,41 @@
                                     <constraint firstAttribute="height" constant="72" id="r6L-gN-JJU"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PcP-7w-FSg" userLabel="Close Button">
+                                <rect key="frame" x="558" y="10" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="7b6-3j-iPc"/>
+                                    <constraint firstAttribute="width" constant="32" id="AgT-7m-bWc"/>
+                                </constraints>
+                                <state key="normal" image="close_button.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="dismiss:" destination="eMv-Af-zLT" eventType="touchUpInside" id="vLR-d7-RuO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Atp-kj-ZMO" secondAttribute="trailing" id="04a-8q-590"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="PcP-7w-FSg" secondAttribute="trailing" constant="-6" id="L4p-xV-SBf"/>
                             <constraint firstItem="x2p-Nx-m7K" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="NWE-TH-uE1"/>
-                            <constraint firstAttribute="trailing" secondItem="mhH-gw-9eI" secondAttribute="trailing" id="Td4-mg-1Xm"/>
+                            <constraint firstAttribute="trailing" secondItem="PcP-7w-FSg" secondAttribute="trailing" constant="10" id="Wbl-IN-QRe"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="Yen-y8-iQF"/>
                             <constraint firstAttribute="trailing" secondItem="x2p-Nx-m7K" secondAttribute="trailing" id="cP9-lE-dc6"/>
+                            <constraint firstItem="PcP-7w-FSg" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="10" id="mh9-Ki-5Eq"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="top" secondItem="x2p-Nx-m7K" secondAttribute="bottom" id="nQ7-xu-Axe"/>
-                            <constraint firstItem="mhH-gw-9eI" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="-20" id="q2F-oj-GWi"/>
-                            <constraint firstItem="mhH-gw-9eI" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="qzH-4q-OuQ"/>
+                            <constraint firstItem="PcP-7w-FSg" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="10" id="rQ8-Pm-fKe"/>
+                            <constraint firstItem="PcP-7w-FSg" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="-10" id="x82-oy-fPb"/>
                             <constraint firstItem="FIy-lE-a4L" firstAttribute="top" secondItem="Atp-kj-ZMO" secondAttribute="bottom" id="zgy-JH-Op8"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="L4p-xV-SBf"/>
+                                <exclude reference="rQ8-Pm-fKe"/>
+                                <exclude reference="x82-oy-fPb"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="o1e-La-elO"/>
@@ -445,10 +429,10 @@
                     <connections>
                         <outlet property="activityView" destination="t9K-xg-VIe" id="EgN-1d-kBM"/>
                         <outlet property="dataSource" destination="eMv-Af-zLT" id="QgT-Gh-22L"/>
-                        <outletCollection property="overlayViews" destination="mhH-gw-9eI" id="z9R-3R-xEF"/>
                         <outletCollection property="overlayViews" destination="Atp-kj-ZMO" id="fZ3-TQ-k6l"/>
                         <outletCollection property="overlayViews" destination="LNH-3e-cnt" id="XcU-vU-Bl4"/>
                         <outletCollection property="overlayViews" destination="x2p-Nx-m7K" id="Erd-e9-0iy"/>
+                        <outletCollection property="overlayViews" destination="PcP-7w-FSg" id="n5F-lD-rEX"/>
                     </connections>
                 </customObject>
             </objects>
@@ -629,4 +613,7 @@
             <point key="canvasLocation" x="-333" y="2"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="close_button.png" width="32" height="32"/>
+    </resources>
 </document>
