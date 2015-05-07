@@ -304,6 +304,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetLineCap(context,kCGLineCapButt);
 	CGContextMoveToPoint(context, minX, SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context, maxX, SLIDER_VERTICAL_CENTER);
+	// TODO: We should be able to customise this color
 	CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
 	CGContextStrokePath(context);
 }
@@ -319,7 +320,8 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetLineCap(context,kCGLineCapRound);
 	CGContextMoveToPoint(context,CGRectGetMinX(trackFrame), SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context,CGRectGetMidX(thumbRect), SLIDER_VERTICAL_CENTER);
-	CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
+	// TODO: We should be able to customise this color
+	CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
 	CGContextStrokePath(context);
 }
 

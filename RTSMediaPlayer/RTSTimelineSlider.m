@@ -198,6 +198,7 @@ static void commonInit(RTSTimeSlider *self);
 static void commonInit(RTSTimeSlider *self)
 {
 	// Use hollow thumb by default (makes events behind it visible)
+	// TODO: Provide a customisation mechanism. Use a Bezier path to generate the image instead of a png
 	NSString *thumbImagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"thumb_timeline_slider" ofType:@"png"];
 	UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbImagePath];
 	[self setThumbImage:thumbImage forState:UIControlStateNormal];
