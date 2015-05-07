@@ -463,6 +463,7 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Atp-kj-ZMO" secondAttribute="trailing" id="04a-8q-590"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PcP-7w-FSg" secondAttribute="trailing" constant="-6" id="L4p-xV-SBf"/>
@@ -483,6 +484,10 @@
                                 <exclude reference="x82-oy-fPb"/>
                             </mask>
                         </variation>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="ZJb-q3-O5V" appends="YES" id="fuS-dv-6je"/>
+                            <outletCollection property="gestureRecognizers" destination="O5a-UB-gQZ" appends="YES" id="rSk-g2-s9Q"/>
+                        </connections>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
@@ -493,6 +498,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xu3-gt-Efq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="left" id="ZJb-q3-O5V">
+                    <connections>
+                        <action selector="seekForward:" destination="eMv-Af-zLT" id="2Xl-y6-Agr"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="O5a-UB-gQZ">
+                    <connections>
+                        <action selector="seekBackward:" destination="eMv-Af-zLT" id="h69-dr-B55"/>
+                    </connections>
+                </swipeGestureRecognizer>
                 <customObject id="z6L-aG-cvh" customClass="RTSMediaPlayerController">
                     <connections>
                         <outlet property="activityView" destination="t9K-xg-VIe" id="EgN-1d-kBM"/>

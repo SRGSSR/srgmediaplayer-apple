@@ -210,6 +210,22 @@
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction) seekBackward:(id)sender
+{
+	CMTime currentTime = self.mediaPlayerController.player.currentTime;
+	CMTime increment = CMTimeMakeWithSeconds(30., 1.);
+	
+	[self.mediaPlayerController.player seekToTime:CMTimeSubtract(currentTime, increment)];
+}
+
+- (IBAction) seekForward:(id)sender
+{
+	CMTime currentTime = self.mediaPlayerController.player.currentTime;
+	CMTime increment = CMTimeMakeWithSeconds(30., 1.);
+	
+	[self.mediaPlayerController.player seekToTime:CMTimeAdd(currentTime, increment)];
+}
+
 #pragma mark - Notifications
 
 - (void) playbackDidFail:(NSNotification *)notifications
