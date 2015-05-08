@@ -7,7 +7,7 @@
 
 #import <libextobjc/EXTScope.h>
 
-// FIXME: Too many events received when a livestream switches automatically to live, it seems
+// FIXME: The block is executed several times when seeking to another position in the stream. Fix
 
 static void *s_kvoContext  = &s_kvoContext;
 
