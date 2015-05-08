@@ -7,28 +7,13 @@
 #import <RTSMediaPlayer/RTSTimeSlider.h>
 #import <RTSMediaPlayer/RTSTimelineView.h>
 
-@protocol RTSTimelineSliderDataSource;
-
+/**
+ *  A slider displaying events along its track. The slider can be tapped at any point to seek at the corresponding
+ *  location. If the
+ *
+ */
 @interface RTSTimelineSlider : RTSTimeSlider
 
 @property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
-@property (nonatomic, weak) IBOutlet id<RTSTimelineSliderDataSource> dataSource;
-
-@end
-
-@protocol RTSTimelineSliderDataSource <NSObject>
-
-@optional
-
-/**
- *  Return the icon to be displayed on the overview. If this method is not implemented, a white dot is displayed by
- *  default. Images should have the recommended size of 8x8 pixels
- *
- *  @param timelineSlider The slider
- *  @param event          The event for which the icon must be returned
- *
- *  @return The image to use
- */
-- (UIImage *) timelineSlider:(RTSTimelineSlider *)slider iconImageForEvent:(RTSTimelineEvent *)event;
 
 @end

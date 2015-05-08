@@ -15,6 +15,5 @@
 @property (nonatomic, readonly) NSDate *date;
 
 @property (nonatomic, readonly) NSURL *imageURL;
-@property (nonatomic, readonly) UIImage *iconImage;
 
 @end

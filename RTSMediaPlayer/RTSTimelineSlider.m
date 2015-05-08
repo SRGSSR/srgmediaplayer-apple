@@ -91,13 +91,7 @@ static void commonInit(RTSTimeSlider *self);
 		
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
 		
-		UIImage *iconImage = nil;
-		if ([self.dataSource respondsToSelector:@selector(timelineSlider:iconImageForEvent:)])
-		{
-			iconImage = [self.dataSource timelineSlider:self iconImageForEvent:event];
-		}
-		
-		if (iconImage)
+		if (event.iconImage)
 		{
 			CGFloat iconSide = [[self.timelineView indexPathsForVisibleCells] containsObject:indexPath] ? 15.f : 9.f;
 			
@@ -105,7 +99,7 @@ static void commonInit(RTSTimeSlider *self);
 										 CGRectGetMidY(trackRect) - iconSide / 2.f,
 										 iconSide,
 										 iconSide);
-			[iconImage drawInRect:tickRect];
+			[event.iconImage drawInRect:tickRect];
 		}
 		else
 		{

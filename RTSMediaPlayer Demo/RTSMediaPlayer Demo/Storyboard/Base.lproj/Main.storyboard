@@ -380,7 +380,6 @@
                                         <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <outlet property="dataSource" destination="eMv-Af-zLT" id="7NH-Eg-AJl"/>
                                             <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="aNs-yt-eVs"/>
                                             <outlet property="timeLeftValueLabel" destination="MgY-Pv-rWN" id="6vf-GK-Exp"/>
                                             <outlet property="timelineView" destination="LNH-3e-cnt" id="GNV-PQ-A9f"/>

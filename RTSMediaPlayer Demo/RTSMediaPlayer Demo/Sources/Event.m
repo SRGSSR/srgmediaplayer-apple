@@ -10,7 +10,6 @@
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *identifier;
 @property (nonatomic) NSDate *date;
-@property (nonatomic) UIImage *iconImage;
 
 @end
 
@@ -27,17 +26,7 @@
 	
 	if (self = [super initWithTime:time])
 	{
-		NSArray *titleComponents = [title componentsSeparatedByString:@"|"];
-		if ([titleComponents count] > 1)
-		{
-			self.iconImage = [UIImage imageNamed:[titleComponents firstObject]];
-			self.title = [titleComponents objectAtIndex:1];
-		}
-		else
-		{
-			self.title = title;
-		}
-		
+		self.title = title;
 		self.identifier = identifier;
 		self.date = date;
 	}
