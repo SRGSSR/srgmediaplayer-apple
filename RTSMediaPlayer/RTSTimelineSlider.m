@@ -113,8 +113,8 @@ static void commonInit(RTSTimeSlider *self);
 			CGFloat tickHeight = [[self.timelineView indexPathsForVisibleCells] containsObject:indexPath] ? 19.f : 11.f;
 			
 			CGContextSetLineWidth(context, 1.f);
-			CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.f alpha:0.6f].CGColor);
-			CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1.f alpha:0.6f].CGColor);
+			CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
+			CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
 			
 			CGRect tickRect = CGRectMake(tickXPos - kTickWidth / 2.f,
 										 CGRectGetMidY(trackRect) - tickHeight / 2.f,

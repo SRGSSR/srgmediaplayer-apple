@@ -357,7 +357,7 @@
                                         </connections>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.85369551809210531" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="LNH-3e-cnt" secondAttribute="trailing" id="Ft4-ci-7uH"/>
                                     <constraint firstAttribute="centerY" secondItem="63N-83-iAB" secondAttribute="centerY" id="MSw-tV-ew7"/>
@@ -433,7 +433,7 @@
                                             <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="01E-0I-SR1"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lsW-nM-EFL">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lsW-nM-EFL">
                                         <rect key="frame" x="453" y="31" width="81" height="22"/>
                                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -450,7 +450,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.85369551809999999" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="yoy-j6-b9D" secondAttribute="bottom" constant="14" id="4pq-Hi-lzN"/>
                                     <constraint firstItem="pkn-xF-SAk" firstAttribute="top" secondItem="Atp-kj-ZMO" secondAttribute="top" id="6JX-3w-Jkr"/>

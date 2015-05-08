@@ -317,7 +317,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextMoveToPoint(context,CGRectGetMinX(trackFrame), SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context,CGRectGetMidX(thumbRect), SLIDER_VERTICAL_CENTER);
 	// TODO: We should be able to customise this color
-	CGContextSetStrokeColorWithColor(context, [UIColor lightGrayColor].CGColor);
+	CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
 	CGContextStrokePath(context);
 }
 
