@@ -8,8 +8,8 @@
 #import <UIKit/UIKit.h>
 
 /**
- *  Represent an event to be displayed by an RTSTimelineView. Subclass if your events carry more information which
- *  needs to be displayed in the timeline
+ *  Represent an event to be displayed by a timeline. Subclass if your events carry more information which
+ *  needs to be displayed in timeline cells as well
  */
 @interface RTSTimelineEvent : NSObject
 

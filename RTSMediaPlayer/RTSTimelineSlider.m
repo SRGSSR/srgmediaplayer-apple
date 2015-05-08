@@ -8,8 +8,10 @@
 #import "NSBundle+RTSMediaPlayer.h"
 #import "RTSTimelineView+Private.h"
 
+// Globals
 static void *s_kvoContext = &s_kvoContext;
 
+// Function declarations
 static void commonInit(RTSTimeSlider *self);
 
 @implementation RTSTimelineSlider
@@ -51,6 +53,7 @@ static void commonInit(RTSTimeSlider *self);
 	}
 	
 	_timelineView = timelineView;
+	
 	[timelineView addObserver:self forKeyPath:@"events" options:NSKeyValueObservingOptionNew context:s_kvoContext];
 	[timelineView addObserver:self forKeyPath:@"collectionView.contentOffset" options:NSKeyValueObservingOptionNew context:s_kvoContext];
 	
@@ -88,7 +91,6 @@ static void commonInit(RTSTimeSlider *self);
 		}
 		
 		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(event.time) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
-		
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
 		
 		if (event.iconImage)
