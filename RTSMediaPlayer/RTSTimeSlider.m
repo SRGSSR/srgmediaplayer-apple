@@ -210,15 +210,11 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	// is met:
 	//  - We have a pure live feed, which is characterized by an empty range
 	//  - We have a timeshift feed, which is characterized by an indefinite player item duration, and which is close
-	//    to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance small in
-	//    comparison to the total time range (without this tolerance, after scrubbing back and forth to the live,
-	//    the current slider value might namely be a little bit lagging behind the maximum value). Here we consider
-	//    a tolerance corresponding to 1 minute in 8 hours, with a maximum tolerance of 2 minutes
-	static const float RTSToleranceFactor = 1.f / (8.f * 60.f);
-	static const float RTSMaximumToleranceInSeconds = 2.f * 60.f;
+	//    to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance of 15 seconds
+	static const float RTSToleranceInSeconds = 15.f;
 	
 	if (CMTIMERANGE_IS_EMPTY(currentTimeRange)
-		|| (CMTIME_IS_INDEFINITE(playerItem.duration) && (self.maximumValue - self.value < fminf(RTSToleranceFactor * CMTimeGetSeconds(currentTimeRange.duration), RTSMaximumToleranceInSeconds))))
+		|| (CMTIME_IS_INDEFINITE(playerItem.duration) && (self.maximumValue - self.value < RTSToleranceInSeconds)))
 	{
 		self.valueLabel.text = @"--:--";
 		self.timeLeftValueLabel.text = @"LIVE";
