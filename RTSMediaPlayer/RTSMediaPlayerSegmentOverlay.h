@@ -14,6 +14,4 @@
 
 @property (nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentOverlayDataSource> dataSource;
 
-- (void) reloadData;
-
 @end

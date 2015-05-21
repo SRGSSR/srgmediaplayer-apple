@@ -41,11 +41,46 @@ static void commonInit(RTSMediaPlayerSegmentOverlay *self);
 	return self;
 }
 
+- (void)dealloc
+{
+	// Unregister KVO
+	self.mediaPlayerController = nil;
+}
+
+#pragma mark - Getters and setters
+
+- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+{
+	if (_mediaPlayerController)
+	{
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
+	}
+	
+	_mediaPlayerController = mediaPlayerController;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
+}
+
+#pragma mark - Overrides
+
+- (void) willMoveToWindow:(UIWindow *)window
+{
+	[super willMoveToWindow:window];
+	
+	if (window)
+	{
+		[self loadSegments];
+	}
+}
+
 #pragma mark - Data
 
-- (void) reloadData
+- (void) loadSegments
 {
 	[self.dataSource mediaPlayerSegmentOverlay:self segmentsForIdentifier:self.mediaPlayerController.identifier completionHandler:^(NSArray *segments, NSError *error) {
+        // FIXME: Must automatically retry if an error has been encountered
+        
+        self.segments = segments;
 		[self.tableView reloadData];
 	}];
 }
@@ -68,6 +103,19 @@ static void commonInit(RTSMediaPlayerSegmentOverlay *self);
 {
 	RTSMediaPlayerSegment *segment = self.segments[indexPath.row];
 	cell.textLabel.text = segment.title;
+}
+
+#pragma mark - Notifications
+
+- (void) playbackStateDidChange:(NSNotification *)notification
+{
+	NSAssert([notification.object isKindOfClass:[RTSMediaPlayerController class]], @"Expect a media player controller");
+	
+	RTSMediaPlayerController *mediaPlayerController = notification.object;
+	if (mediaPlayerController.playbackState == RTSMediaPlaybackStateReady)
+	{
+		[self loadSegments];
+	}
 }
 
 @end
