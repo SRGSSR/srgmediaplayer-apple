@@ -83,6 +83,8 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
+	[super viewWillAppear:animated];
+	
 	if ([self isMovingToParentViewController] || [self isBeingPresented])
 	{
 		[self.mediaPlayerController playIdentifier:self.videoIdentifier];
