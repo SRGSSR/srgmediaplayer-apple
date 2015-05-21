@@ -28,7 +28,7 @@
 
 #pragma mark - Description
 
-- (NSString *)description
+- (NSString *) description
 {
 	return [NSString stringWithFormat:@"<%@: %p; startTime: %@; endTime: %@; title: %@; imageURL: %@>",
 			[self class],

@@ -3,12 +3,17 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
+#import <RTSMediaPlayer/RTSMediaPlayerController.h>
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentOverlayDataSource.h>
 
 #import <UIKit/UIKit.h>
 
-@interface RTSMediaPlayerSegmentOverlay : UIView
+@interface RTSMediaPlayerSegmentOverlay : UIView <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentOverlayDataSource> dataSource;
+
+- (void) reloadData;
 
 @end
