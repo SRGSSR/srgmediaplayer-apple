@@ -6,6 +6,10 @@
 #import <RTSMediaPlayer/NSBundle+RTSMediaPlayer.h>
 #import <RTSMediaPlayer/RTSMediaPlayerError.h>
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
+#import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegmentOverlay.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegmentOverlayDataSource.h>
 #import <RTSMediaPlayer/RTSMediaPlayerViewController.h>
 #import <RTSMediaPlayer/RTSTimelineEvent.h>
 #import <RTSMediaPlayer/RTSTimelineSlider.h>
