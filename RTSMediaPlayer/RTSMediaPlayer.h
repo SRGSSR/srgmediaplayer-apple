@@ -7,3 +7,6 @@
 #import <RTSMediaPlayer/RTSMediaPlayerError.h>
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 #import <RTSMediaPlayer/RTSMediaPlayerViewController.h>
+#import <RTSMediaPlayer/RTSTimelineEvent.h>
+#import <RTSMediaPlayer/RTSTimelineSlider.h>
+#import <RTSMediaPlayer/RTSTimelineView.h>

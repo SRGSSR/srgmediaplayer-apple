@@ -195,6 +195,17 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKe
 - (void) reset;
 
 /**
+ *  Register a block for periodical execution during playback. Playback observers are more reliable than periodic time 
+ *  observers which trigger block execution also when the player state changes. Such observers are therefore especially 
+ *  useful when some work needs to be done periodically in a reliable way
+ *
+ *  @param interval Time interval between block executions
+ *  @param queue    The serial queue onto which block should be enqueued (main queue if NULL)
+ *  @param block	The block to be executed during playback
+ */
+- (void) addPlaybackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
+
+/**
  *  -------------------
  *  @name Overlay Views
  *  -------------------

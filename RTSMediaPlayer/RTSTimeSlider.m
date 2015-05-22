@@ -118,28 +118,48 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
 }
 
-- (void) dealloc
-{
-	self.mediaPlayerController = nil;
-}
+
+
+#pragma mark - Setters and getters
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
-	
 	_mediaPlayerController = mediaPlayerController;
 	
-	if (!mediaPlayerController)
-		return;
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
+	@weakify(self)
+	[mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+		@strongify(self)
+		
+		if (!self.isTracking)
+		{
+			CMTimeRange currentTimeRange = [self currentTimeRange];
+			if (!CMTIMERANGE_IS_EMPTY(currentTimeRange))
+			{
+				self.minimumValue = CMTimeGetSeconds(currentTimeRange.start);
+				self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(currentTimeRange));
+				
+				AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+				self.value = CMTimeGetSeconds(playerItem.currentTime);
+			}
+			else
+			{
+				self.minimumValue = 0.;
+				self.maximumValue = 0.;
+				self.value = 0.;
+			}
+		}
+		[self updateTimeRangeLabels];
+		[self setNeedsDisplay];
+	}];
 }
 
-- (BOOL)isDraggable
+- (BOOL) isDraggable
 {
 	// A slider knob can be dragged iff it corresponds to a valid range
 	return self.minimumValue != self.maximumValue;
 }
+
+
 
 #pragma mark - Slider Appearance
 
@@ -159,47 +179,6 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 15, 15)];
 	return [path imageWithColor:[UIColor whiteColor]];
-}
-
-
-
-#pragma mark - Notifications
-
-- (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
-{
-	RTSMediaPlayerController *mediaPlayerController = notification.object;
-	if (mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle)
-	{
-		[mediaPlayerController.player removeTimeObserver:self.periodicTimeObserver];
-	}
-	else if (mediaPlayerController.playbackState == RTSMediaPlaybackStateReady)
-	{
-		@weakify(self)
-		self.periodicTimeObserver = [mediaPlayerController.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 5) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-			@strongify(self)
-			
-			if (!self.isTracking)
-			{
-				CMTimeRange currentTimeRange = [self currentTimeRange];
-				if (!CMTIMERANGE_IS_EMPTY(currentTimeRange))
-				{
-					self.minimumValue = CMTimeGetSeconds(currentTimeRange.start);
-					self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(currentTimeRange));
-					
-					AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-					self.value = CMTimeGetSeconds(playerItem.currentTime);
-				}
-				else
-				{
-					self.minimumValue = 0.;
-					self.maximumValue = 0.;
-					self.value = 0.;
-				}
-			}
-			[self updateTimeRangeLabels];
-			[self setNeedsDisplay];
-		}];
-	}
 }
 
 
@@ -231,24 +210,28 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	// is met:
 	//  - We have a pure live feed, which is characterized by an empty range
 	//  - We have a timeshift feed, which is characterized by an indefinite player item duration, and which is close
-	//    to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance small in
-	//    comparison to the total time range (without this tolerance, after scrubbing back and forth to the live,
-	//    the current slider value might namely be a little bit lagging behind the maximum value). Here we consider
-	//    a tolerance corresponding to 1 minute in 8 hours, with a maximum tolerance of 2 minutes
-	static const float RTSToleranceFactor = 1.f / (8.f * 60.f);
-	static const float RTSMaximumToleranceInSeconds = 2.f * 60.f;
+	//    to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance of 15 seconds
+	static const float RTSToleranceInSeconds = 15.f;
 	
 	if (CMTIMERANGE_IS_EMPTY(currentTimeRange)
-		|| (CMTIME_IS_INDEFINITE(playerItem.duration) && (self.maximumValue - self.value < fminf(RTSToleranceFactor * CMTimeGetSeconds(currentTimeRange.duration), RTSMaximumToleranceInSeconds))))
+		|| (CMTIME_IS_INDEFINITE(playerItem.duration) && (self.maximumValue - self.value < RTSToleranceInSeconds)))
 	{
 		self.valueLabel.text = @"--:--";
-		self.timeLeftValueLabel.text = @"Live";
+		self.timeLeftValueLabel.text = @"LIVE";
+		
+		// TODO: Should be configurable. Will conflict with changes made to the labels
+		self.timeLeftValueLabel.textColor = [UIColor whiteColor];
+		self.timeLeftValueLabel.backgroundColor = [UIColor redColor];
 	}
 	// Video on demand
 	else
 	{
 		self.valueLabel.text = RTSTimeSliderFormatter(self.value);
 		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
+		
+		// TODO: Should be configurable. Will conflict with changes made to the labels
+		self.timeLeftValueLabel.textColor = [UIColor blackColor];
+		self.timeLeftValueLabel.backgroundColor = [UIColor clearColor];
 	}
 }
 
@@ -317,6 +300,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetLineCap(context,kCGLineCapButt);
 	CGContextMoveToPoint(context, minX, SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context, maxX, SLIDER_VERTICAL_CENTER);
+	// TODO: We should be able to customise this color
 	CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
 	CGContextStrokePath(context);
 }
@@ -332,6 +316,7 @@ NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetLineCap(context,kCGLineCapRound);
 	CGContextMoveToPoint(context,CGRectGetMinX(trackFrame), SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context,CGRectGetMidX(thumbRect), SLIDER_VERTICAL_CENTER);
+	// TODO: We should be able to customise this color
 	CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
 	CGContextStrokePath(context);
 }

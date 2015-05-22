@@ -6,6 +6,7 @@
 #import "RTSMediaPlayerError.h"
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerView.h"
+#import "RTSPlaybackTimeObserver.h"
 #import "RTSActivityGestureRecognizer.h"
 
 #import <objc/runtime.h>
@@ -54,6 +55,8 @@ NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
 @property (readwrite) id playbackStartObserver;
 @property (readwrite) CMTime previousPlaybackTime;
 
+@property (readwrite) NSMutableArray *playbackBlockRegistrations;
+
 @property (readonly) RTSMediaPlayerView *playerView;
 @property (readonly) RTSActivityGestureRecognizer *activityGestureRecognizer;
 
@@ -90,6 +93,8 @@ NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
 	
 	_identifier = identifier;
 	_dataSource = dataSource;
+	
+	self.playbackBlockRegistrations = [NSMutableArray array];
 	
 	[self.stateMachine activate];
 	
@@ -356,6 +361,17 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
+- (void) addPlaybackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
+{
+	if (!block)
+	{
+		return;
+	}
+	
+	RTSPlaybackTimeObserver *playbackBlockRegistration = [[RTSPlaybackTimeObserver alloc] initWithInterval:interval queue:queue block:block];
+	[self.playbackBlockRegistrations addObject:playbackBlockRegistration];
+}
+
 #pragma mark - AVPlayer
 
 static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
@@ -405,6 +421,8 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			self.periodicTimeObserver = nil;
 		}
 		
+		[self unregisterPlaybackObservers];
+		
 		_player = player;
 		
 		AVPlayerItem *playerItem = player.currentItem;
@@ -423,6 +441,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			
 			[self registerPlaybackStartObserver];
 			[self registerPeriodicTimeObserver];
+			[self registerPlaybackObservers];
 		}
 	}
 }
@@ -452,7 +471,6 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 
 - (void)registerPeriodicTimeObserver
 {
-	
 	if (self.periodicTimeObserver)
 	{
 		[self.player removeTimeObserver:self.periodicTimeObserver];
@@ -478,6 +496,24 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 
 		self.previousPlaybackTime = playbackTime;
 	}];
+}
+
+- (void) registerPlaybackObservers
+{
+	[self unregisterPlaybackObservers];
+	
+	for (RTSPlaybackTimeObserver *playbackBlockRegistration in self.playbackBlockRegistrations)
+	{
+		[playbackBlockRegistration attachToMediaPlayer:self.player];
+	}
+}
+
+- (void) unregisterPlaybackObservers
+{
+	for (RTSPlaybackTimeObserver *playbackBlockRegistration in self.playbackBlockRegistrations)
+	{
+		[playbackBlockRegistration detach];
+	}
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
