@@ -27,12 +27,12 @@
 /**
  *  The width of cells within the timeline. Defaults to 60
  */
-@property (nonatomic) CGFloat itemWidth;
+@property (nonatomic) IBInspectable CGFloat itemWidth;
 
 /**
  * The spacing between cells in the timeline. Defaults to 4
  */
-@property (nonatomic) CGFloat itemSpacing;
+@property (nonatomic) IBInspectable CGFloat itemSpacing;
 
 /**
  *  Register cell classes for reuse. Cells must be subclasses of UICollectionViewCell and can be instantiated either
