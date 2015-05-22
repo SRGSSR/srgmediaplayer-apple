@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RTSMediaPlayerSegmentOverlay : UIView <UITableViewDataSource, UITableViewDelegate>
+@interface RTSMediaPlayerSegmentOverlayView : UIView <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 

@@ -43,7 +43,7 @@ static void commonInit(RTSTimelineView *self);
 - (void) setEvents:(NSArray *)events
 {
 	// Sort events in ascending order
-	NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"time" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
+	NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
 		CMTime time1 = [timeValue1 CMTimeValue];
 		CMTime time2 = [timeValue2 CMTimeValue];
 		return CMTimeCompare(time1, time2);
@@ -90,7 +90,7 @@ static void commonInit(RTSTimelineView *self);
 	[self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 
-- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forEvent:(RTSTimelineEvent *)event
+- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forEvent:(RTSMediaPlayerSegment *)event
 {
 	NSInteger index = [self.events indexOfObject:event];
 	if (index == NSNotFound)
@@ -111,7 +111,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	RTSTimelineEvent *event = self.events[indexPath.row];
+	RTSMediaPlayerSegment *event = self.events[indexPath.row];
 	return [self.dataSource timelineView:self cellForEvent:event];
 }
 
@@ -119,7 +119,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	RTSTimelineEvent *event = self.events[indexPath.row];
+	RTSMediaPlayerSegment *event = self.events[indexPath.row];
 	
 	if ([self.delegate respondsToSelector:@selector(timelineView:didSelectEvent:)])
 	{
@@ -127,7 +127,7 @@ static void commonInit(RTSTimelineView *self);
 	}
 	else
 	{
-		[self.mediaPlayerController.player seekToTime:event.time];
+		[self.mediaPlayerController.player seekToTime:event.startTime];
 	}
 }
 

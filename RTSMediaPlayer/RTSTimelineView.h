@@ -3,7 +3,7 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import <RTSMediaPlayer/RTSTimelineEvent.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
 #import <UIKit/UIKit.h>
 
 @class RTSMediaPlayerController;
@@ -24,9 +24,9 @@
  *  can use. Refer to its documentation for more information.
  *
  *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual 
- *  UICollectionView. Events are represented by the RTSTimelineEvent class, which only carry a few pieces of
+ *  UICollectionView. Events are represented by the RTSMediaPlayerSegment class, which only carry a few pieces of
  *  information. If you need more information to be displayed on a cell (e.g. a title or a thumbnail), subclass 
- *  RTSTimelineEvent to add the data you need, and use this information when returning cells from your data source.
+ *  RTSMediaPlayerSegment to add the data you need, and use this information when returning cells from your data source.
  *
  *  A special kind of slider can be bound to a timeline view, see RTSTimelineSlider for more information
  */
@@ -65,7 +65,7 @@
  *  @param identifier The cell identifier (must be appropriately set for the cell)
  *  @param event      The event for which a cell must be dequeued
  */
-- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forEvent:(RTSTimelineEvent *)event;
+- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forEvent:(RTSMediaPlayerSegment *)event;
 
 /**
  *  The timeline data source
@@ -93,7 +93,7 @@
  *
  *  @return The cell to use
  */
-- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSTimelineEvent *)event;
+- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSMediaPlayerSegment *)event;
 
 @end
 
@@ -111,6 +111,6 @@
  *  @param timelineView The timeline
  *  @param event        The event which has been selected
  */
-- (void) timelineView:(RTSTimelineView *)timelineView didSelectEvent:(RTSTimelineEvent *)event;
+- (void) timelineView:(RTSTimelineView *)timelineView didSelectEvent:(RTSMediaPlayerSegment *)event;
 
 @end

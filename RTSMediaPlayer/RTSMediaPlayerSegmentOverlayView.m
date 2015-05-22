@@ -3,20 +3,20 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import "RTSMediaPlayerSegmentOverlay.h"
+#import "RTSMediaPlayerSegmentOverlayView.h"
 
 static NSString * const RTSMediaPlayerSegmentCellIdentifier = @"RTSMediaPlayerSegmentCellIdentifier";
 
-@interface RTSMediaPlayerSegmentOverlay ()
+@interface RTSMediaPlayerSegmentOverlayView ()
 
 @property (nonatomic) NSArray *segments;
 @property (nonatomic, weak) UITableView *tableView;
 
 @end
 
-static void commonInit(RTSMediaPlayerSegmentOverlay *self);
+static void commonInit(RTSMediaPlayerSegmentOverlayView *self);
 
-@implementation RTSMediaPlayerSegmentOverlay
+@implementation RTSMediaPlayerSegmentOverlayView
 
 // TODO: The table view implementation is temporary. The segment overlay should have a better default interface and
 //       a way to override it
@@ -101,8 +101,7 @@ static void commonInit(RTSMediaPlayerSegmentOverlay *self);
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	RTSMediaPlayerSegment *segment = self.segments[indexPath.row];
-	cell.textLabel.text = segment.title;
+	
 }
 
 #pragma mark - Notifications
@@ -122,7 +121,7 @@ static void commonInit(RTSMediaPlayerSegmentOverlay *self);
 
 #pragma mark - Functions
 
-static void commonInit(RTSMediaPlayerSegmentOverlay *self)
+static void commonInit(RTSMediaPlayerSegmentOverlayView *self)
 {
 	UITableView *tableView = [[UITableView alloc] initWithFrame:self.bounds];
 	tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

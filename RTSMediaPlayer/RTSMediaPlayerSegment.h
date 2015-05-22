@@ -5,9 +5,11 @@
 
 #import <CoreMedia/CoreMedia.h>
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /**
- *  Describe a media segment
+ *  Describe a media segment. Can also represent a point in time when segment start and end times are
+ *  identical
  */
 @interface RTSMediaPlayerSegment : NSObject
 
@@ -16,25 +18,24 @@
  *
  *  @param startTime startTime The segment start time
  *  @param endTime   endTime The segment end time
- *
- *  @return <#return value description#>
  */
-- (instancetype) initWithStartTime:(CMTime)startTime endTime:(CMTime)endTime;
+- (instancetype) initWithStartTime:(CMTime)startTime endTime:(CMTime)endTime NS_DESIGNATED_INITIALIZER;
 
 /**
- *  Segment start and end times
+ *  Segment start and end times (might be identical)
  */
 @property (nonatomic, readonly) CMTime startTime;
 @property (nonatomic, readonly) CMTime endTime;
 
 /**
- *  An optional title
+ *  An optional icon to use in the timeline slider (recommended size is 15 x 15 points)
  */
-@property (nonatomic, copy) NSString *title;
+@property (nonatomic) UIImage *iconImage;
 
-/**
- *  An optional image URL
- */
-@property (nonatomic, copy) NSURL *imageURL;
+@end
+
+@interface RTSMediaPlayerSegment (UnavailableMethods)
+
+- (instancetype) init NS_UNAVAILABLE;
 
 @end

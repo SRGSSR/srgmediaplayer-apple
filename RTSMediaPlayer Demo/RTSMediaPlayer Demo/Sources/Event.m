@@ -24,7 +24,7 @@
 		return nil;
 	}
 	
-	if (self = [super initWithTime:time])
+	if (self = [super initWithStartTime:time endTime:time])
 	{
 		self.title = title;
 		self.identifier = identifier;
@@ -48,7 +48,7 @@
 	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; identifier: %@; date: %@; imageURL: %@>",
 			[self class],
 			self,
-			@(CMTimeGetSeconds(self.time)),
+			@(CMTimeGetSeconds(self.startTime)),
 			self.title,
 			self.identifier,
 			self.date,

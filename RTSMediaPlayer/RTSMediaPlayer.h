@@ -8,9 +8,8 @@
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 #import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
-#import <RTSMediaPlayer/RTSMediaPlayerSegmentOverlay.h>
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentOverlayDataSource.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegmentOverlayView.h>
 #import <RTSMediaPlayer/RTSMediaPlayerViewController.h>
-#import <RTSMediaPlayer/RTSTimelineEvent.h>
 #import <RTSMediaPlayer/RTSTimelineSlider.h>
 #import <RTSMediaPlayer/RTSTimelineView.h>

@@ -6,11 +6,11 @@
 #import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
 #import <Foundation/Foundation.h>
 
-@class RTSMediaPlayerSegmentOverlay;
+@class RTSMediaPlayerSegmentOverlayView;
 
 @protocol RTSMediaPlayerSegmentOverlayDataSource <NSObject>
 
 @required
-- (void) mediaPlayerSegmentOverlay:(RTSMediaPlayerSegmentOverlay *)mediaPlayerSegmentOverlay segmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSArray *segments, NSError *error))completionHandler;
+- (void) mediaPlayerSegmentOverlay:(RTSMediaPlayerSegmentOverlayView *)mediaPlayerSegmentOverlay segmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSArray *segments, NSError *error))completionHandler;
 
 @end

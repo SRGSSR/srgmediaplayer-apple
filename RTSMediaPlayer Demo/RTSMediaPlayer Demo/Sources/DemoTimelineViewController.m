@@ -200,7 +200,7 @@
 
 #pragma mark - RTSTimelineViewDataSource protocol
 
-- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSTimelineEvent *)event
+- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSMediaPlayerSegment *)event
 {
 	EventCollectionViewCell *eventCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([EventCollectionViewCell class]) forEvent:event];
 	eventCell.event = (Event *)event;

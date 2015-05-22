@@ -82,15 +82,15 @@ static void commonInit(RTSTimeSlider *self);
 	
 	for (NSInteger i = 0; i < events.count; ++i)
 	{
-		RTSTimelineEvent *event = events[i];
+		RTSMediaPlayerSegment *event = events[i];
 		
 		// Skip events not in the timeline
-		if (CMTIME_COMPARE_INLINE(event.time, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(event.time, >, CMTimeRangeGetEnd(currentTimeRange)))
+		if (CMTIME_COMPARE_INLINE(event.startTime, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(event.startTime, >, CMTimeRangeGetEnd(currentTimeRange)))
 		{
 			continue;
 		}
 		
-		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(event.time) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
+		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(event.startTime) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
 		
 		if (event.iconImage)

@@ -3,10 +3,10 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import <RTSMediaPlayer/RTSTimelineEvent.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
 #import <UIKit/UIKit.h>
 
-@interface Event : RTSTimelineEvent
+@interface Event : RTSMediaPlayerSegment
 
 - (instancetype) initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier date:(NSDate *)date;
 

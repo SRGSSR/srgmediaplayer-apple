@@ -30,13 +30,11 @@
 
 - (NSString *) description
 {
-	return [NSString stringWithFormat:@"<%@: %p; startTime: %@; endTime: %@; title: %@; imageURL: %@>",
+	return [NSString stringWithFormat:@"<%@: %p; startTime: %@; endTime: %@>",
 			[self class],
 			self,
 			@(CMTimeGetSeconds(self.startTime)),
-			@(CMTimeGetSeconds(self.endTime)),
-			self.title,
-			self.imageURL];
+			@(CMTimeGetSeconds(self.endTime))];
 }
 
 @end

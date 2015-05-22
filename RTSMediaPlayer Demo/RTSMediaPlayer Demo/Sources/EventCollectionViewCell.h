@@ -5,7 +5,7 @@
 
 #import "Event.h"
 
-#import <RTSMediaPlayer/RTSTimelineEvent.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
 #import <UIKit/UIKit.h>
 
 @interface EventCollectionViewCell : UICollectionViewCell
