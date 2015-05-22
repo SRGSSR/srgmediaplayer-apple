@@ -195,21 +195,13 @@
 			children = (
 				C2731F4F1AD6A69D00434743 /* NSBundle+RTSMediaPlayer.h */,
 				C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */,
-				E67D9B0E1B0EFB5200FF2334 /* RTSAirplayOverlayView.h */,
-				E67D9B0F1B0EFB5200FF2334 /* RTSAirplayOverlayView.m */,
+				C2246DEA1AC1C570000E03C7 /* RTSActivityGestureRecognizer.h */,
+				C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */,
 				C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */,
 				C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */,
-				E67D9B101B0EFB5200FF2334 /* RTSMediaFailureOverlayView.h */,
-				E67D9B111B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m */,
-				C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */,
-				C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */,
-				C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */,
 				C2150B471AD4007C004A08CE /* RTSMediaPlayerError.h */,
-				E67D9B161B0EFD1900FF2334 /* RTSMediaPlayerSegment.h */,
-				E67D9B171B0EFD1900FF2334 /* RTSMediaPlayerSegment.m */,
-				E67D9B181B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlay.h */,
-				E67D9B191B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlay.m */,
-				E67D9B1A1B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayDataSource.h */,
+				C288F49D1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.h */,
+				C288F49E1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m */,
 				B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */,
 				B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */,
 				E616272A1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.h */,
@@ -218,38 +210,40 @@
 			name = Core;
 			sourceTree = "<group>";
 		};
-		B61E18F11AA87D4500E4FAB9 /* Movie Player Controller */ = {
+		B61E18F11AA87D4500E4FAB9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */,
+				C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */,
 				B61E18BE1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.h */,
 				B61E18BF1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m */,
 				B61E18C01AA750CC00E4FAB9 /* RTSMediaPlayerViewController.xib */,
 			);
-			name = "Movie Player Controller";
+			name = Controller;
 			sourceTree = "<group>";
 		};
-		B61E18F21AA87D5E00E4FAB9 /* Controls */ = {
+		B61E18F21AA87D5E00E4FAB9 /* Overlays */ = {
 			isa = PBXGroup;
 			children = (
-				C2246DEA1AC1C570000E03C7 /* RTSActivityGestureRecognizer.h */,
-				C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */,
-				C288F49D1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.h */,
-				C288F49E1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m */,
+				E67D9B0E1B0EFB5200FF2334 /* RTSAirplayOverlayView.h */,
+				E67D9B0F1B0EFB5200FF2334 /* RTSAirplayOverlayView.m */,
+				E67D9B101B0EFB5200FF2334 /* RTSMediaFailureOverlayView.h */,
+				E67D9B111B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m */,
 				B61E18F31AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.h */,
 				B61E18F41AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.m */,
-				E60E17101AEFD1370062E96E /* RTSTimelineEvent.h */,
-				E60E17111AEFD1370062E96E /* RTSTimelineEvent.m */,
+				E67D9B181B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlay.h */,
+				E67D9B191B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlay.m */,
 				E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */,
 				E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */,
 				E65786A21AEFAD68007730CE /* RTSTimelineView.h */,
-				E6A6D0E31AFA017600E15BCF /* RTSTimelineView+Private.h */,
 				E65786A31AEFAD68007730CE /* RTSTimelineView.m */,
+				E6A6D0E31AFA017600E15BCF /* RTSTimelineView+Private.h */,
 				B61E18FA1AA9EEDB00E4FAB9 /* RTSTimeSlider.h */,
 				B61E18FB1AA9EEDB00E4FAB9 /* RTSTimeSlider.m */,
 				B61E19061AA9F3B900E4FAB9 /* RTSVolumeView.h */,
 				B61E19071AA9F3B900E4FAB9 /* RTSVolumeView.m */,
 			);
-			name = Controls;
+			name = Overlays;
 			sourceTree = "<group>";
 		};
 		C201D8EC1A9DC1A40016C629 = {
@@ -282,9 +276,11 @@
 			children = (
 				C2731F551AD6A8FF00434743 /* Info.plist */,
 				C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */,
+				B61E18F11AA87D4500E4FAB9 /* Controller */,
 				B61E18F01AA87D2E00E4FAB9 /* Core */,
-				B61E18F11AA87D4500E4FAB9 /* Movie Player Controller */,
-				B61E18F21AA87D5E00E4FAB9 /* Controls */,
+				E67D9B211B0EFDEE00FF2334 /* Data Sources */,
+				E67D9B221B0EFE2900FF2334 /* Models */,
+				B61E18F21AA87D5E00E4FAB9 /* Overlays */,
 				E699062C1AFB9684005ED143 /* Resources */,
 			);
 			path = RTSMediaPlayer;
@@ -298,6 +294,26 @@
 				C2150B451AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m */,
 			);
 			path = RTSMediaPlayerTests;
+			sourceTree = "<group>";
+		};
+		E67D9B211B0EFDEE00FF2334 /* Data Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */,
+				E67D9B1A1B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayDataSource.h */,
+			);
+			name = "Data Sources";
+			sourceTree = "<group>";
+		};
+		E67D9B221B0EFE2900FF2334 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E67D9B161B0EFD1900FF2334 /* RTSMediaPlayerSegment.h */,
+				E67D9B171B0EFD1900FF2334 /* RTSMediaPlayerSegment.m */,
+				E60E17101AEFD1370062E96E /* RTSTimelineEvent.h */,
+				E60E17111AEFD1370062E96E /* RTSTimelineEvent.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		E699062C1AFB9684005ED143 /* Resources */ = {
