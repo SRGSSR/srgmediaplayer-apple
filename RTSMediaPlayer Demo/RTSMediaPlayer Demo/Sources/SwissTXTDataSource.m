@@ -23,7 +23,7 @@
 		}
 		
 		NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		if (! responseString)
+		if (!responseString)
 		{
 			NSError *responseError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:nil];
 			completionHandler(nil, responseError);
