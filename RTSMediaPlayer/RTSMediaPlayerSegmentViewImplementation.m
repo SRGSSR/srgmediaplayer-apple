@@ -12,7 +12,7 @@ static const NSTimeInterval RTSMediaPlayerSegmentDefaultReloadInterval = 30.;
 
 @interface RTSMediaPlayerSegmentViewImplementation ()
 
-@property (nonatomic, weak) id<RTSMediaPlayerSegmentView> view;
+@property (nonatomic, weak) UIView<RTSMediaPlayerSegmentView> *view;
 @property (nonatomic, weak) id playbackTimeObserver;
 
 @end
@@ -21,7 +21,7 @@ static const NSTimeInterval RTSMediaPlayerSegmentDefaultReloadInterval = 30.;
 
 #pragma mark - Object lifecycle
 
-- (instancetype) initWithView:(id<RTSMediaPlayerSegmentView>)view
+- (instancetype) initWithView:(UIView<RTSMediaPlayerSegmentView> *)view
 {
 	NSParameterAssert(view);
 	

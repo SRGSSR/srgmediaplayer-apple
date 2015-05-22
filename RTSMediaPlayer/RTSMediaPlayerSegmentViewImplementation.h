@@ -11,7 +11,7 @@
 
 @interface RTSMediaPlayerSegmentViewImplementation : NSObject
 
-- (instancetype) initWithView:(id<RTSMediaPlayerSegmentView>)view;
+- (instancetype) initWithView:(UIView<RTSMediaPlayerSegmentView> *)view;
 
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 @property (nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentDataSource> dataSource;
