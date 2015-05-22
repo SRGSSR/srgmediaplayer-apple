@@ -7,7 +7,7 @@
 
 #import <libextobjc/EXTScope.h>
 
-// FIXME: The block is executed several times when seeking to another position in the stream. Fix
+// FIXME: A block is executed several times when seeking to another position in the stream. Fix
 
 static void *s_kvoContext  = &s_kvoContext;
 
@@ -15,9 +15,9 @@ static void *s_kvoContext  = &s_kvoContext;
 
 @property (nonatomic) CMTime interval;
 @property (nonatomic) dispatch_queue_t queue;
-@property (nonatomic, copy) void (^block)(CMTime time);
-
 @property (nonatomic, weak) AVPlayer *player;
+
+@property (nonatomic) NSMutableDictionary *blocks;
 
 @property (nonatomic) id playbackStartObserver;
 @property (nonatomic) id periodicTimeObserver;
@@ -28,17 +28,20 @@ static void *s_kvoContext  = &s_kvoContext;
 
 #pragma mark - Object lifecycle
 
-- (instancetype) initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue block:(void (^)(CMTime time))block
+- (instancetype) initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue
 {
-	NSParameterAssert(block);
-	
 	if (self = [super init])
 	{
 		self.interval = interval;
 		self.queue = queue;
-		self.block = block;
+		self.blocks = [NSMutableDictionary dictionary];
 	}
 	return self;
+}
+
+- (void) dealloc
+{
+    [self removeObservers];
 }
 
 #pragma mark - Associating with a player
@@ -67,6 +70,33 @@ static void *s_kvoContext  = &s_kvoContext;
 	
 	[self.player removeObserver:self forKeyPath:@"currentItem.playbackLikelyToKeepUp" context:s_kvoContext];
 	self.player = nil;
+}
+
+#pragma mark - Managing blocks
+
+- (void) setBlock:(void (^)(CMTime time))block forIdentifier:(NSString *)identifier
+{
+    NSParameterAssert(block);
+    NSParameterAssert(identifier);
+    
+    if (self.blocks.count == 0)
+    {
+        [self resetObservers];
+    }
+    
+    [self.blocks setObject:[block copy] forKey:identifier];
+}
+
+- (void) removeBlockWithIdentifier:(id)identifier
+{
+    NSParameterAssert(identifier);
+    
+    [self.blocks removeObjectForKey:identifier];
+    
+    if (self.blocks.count == 0)
+    {
+        [self removeObservers];
+    }
 }
 
 #pragma mark - Observers
@@ -104,8 +134,10 @@ static void *s_kvoContext  = &s_kvoContext;
 				[self resetObservers];
 				return;
 			}
-			
-			self.block(time);
+            
+            for (void (^block)(CMTime) in [self.blocks allValues]) {
+                block(time);
+            }
 		}];
 	}];
 }
@@ -132,6 +164,7 @@ static void *s_kvoContext  = &s_kvoContext;
 	// Called when playback is resumed
 	if (context == s_kvoContext && [keyPath isEqualToString:@"currentItem.playbackLikelyToKeepUp"])
 	{
+        [self removeObservers];
 		[self resetObservers];
 	}
 	else

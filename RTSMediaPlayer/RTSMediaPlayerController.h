@@ -213,7 +213,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKe
  *
  *  @param playbackTimeObserver The playback time observer to remove
  */
-- (void) removePlaybackTimeObserver:(id)playbackTimeObserver;
+- (void) removePlaybackTimeObserver:(id)observer;
 
 /**
  *  -------------------
