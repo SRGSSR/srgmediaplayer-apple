@@ -3,6 +3,8 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
+#import "RTSTimelineView.h"
+
 /**
  *  Private interface for implementation purposes
  */

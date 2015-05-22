@@ -48,11 +48,6 @@
 												 selector:@selector(playbackDidFail:)
 													 name:RTSMediaPlayerPlaybackDidFailNotification
 												   object:mediaPlayerController];
-		
-		// Refresh every 30 seconds
-		[mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(30., 1.) queue:NULL usingBlock:^(CMTime time) {
-			[self refreshTimeline];
-		}];
 	}
 }
 
@@ -154,24 +149,6 @@
 	}];
 }
 
-- (void) refreshTimeline
-{
-	self.timelineActivityIndicatorView.hidden = NO;
-	[self.timelineActivityIndicatorView startAnimating];
-	
-	[self retrieveEventsWithCompletionBlock:^(NSArray *events, NSError *error) {
-		self.timelineActivityIndicatorView.hidden = YES;
-		[self.timelineActivityIndicatorView stopAnimating];
-		
-		if (error)
-		{
-			return;
-		}
-		
-		self.timelineView.events = events;
-	}];
-}
-
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
 
 - (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
@@ -200,11 +177,16 @@
 
 #pragma mark - RTSTimelineViewDataSource protocol
 
-- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSMediaPlayerSegment *)event
+- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(RTSMediaPlayerSegment *)segment
 {
-	EventCollectionViewCell *eventCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([EventCollectionViewCell class]) forEvent:event];
-	eventCell.event = (Event *)event;
+	EventCollectionViewCell *eventCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([EventCollectionViewCell class]) forSegment:segment];
+	eventCell.event = (Event *)segment;
 	return eventCell;
+}
+
+- (void) segmentDisplayer:(id<RTSMediaPlayerSegmentDisplayer>)segmentDisplayer segmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+{
+
 }
 
 #pragma mark - Actions
@@ -247,13 +229,6 @@
 											  cancelButtonTitle:@"Dismiss"
 											  otherButtonTitles:nil];
 	[alertView show];
-}
-
-#pragma mark - Timers
-
-- (void) refreshTimeline:(NSTimer *)timer
-{
-	[self refreshTimeline];
 }
 
 @end

@@ -6,13 +6,16 @@
 #import "RTSTimelineSlider.h"
 
 #import "NSBundle+RTSMediaPlayer.h"
-#import "RTSTimelineView+Private.h"
-
-// Globals
-static void *s_kvoContext = &s_kvoContext;
+#import "RTSMediaPlayerController.h"
 
 // Function declarations
 static void commonInit(RTSTimeSlider *self);
+
+@interface RTSTimelineSlider ()
+
+@property (nonatomic) NSArray *segments;
+
+@end
 
 @implementation RTSTimelineSlider
 
@@ -39,28 +42,36 @@ static void commonInit(RTSTimeSlider *self);
 - (void) dealloc
 {
 	// Unregister KVO
-	self.timelineView = nil;
+	self.mediaPlayerController = nil;
 }
 
 #pragma mark - Getters and setters
 
-- (void) setTimelineView:(RTSTimelineView *)timelineView
+// TODO: Register for periodical segment updates (use RTSPlaybackTimeObserver)
+
+- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
-	if (_timelineView)
+	if (super.mediaPlayerController)
 	{
-		[_timelineView removeObserver:self forKeyPath:@"events" context:s_kvoContext];
-		[_timelineView removeObserver:self forKeyPath:@"collectionView.contentOffset" context:s_kvoContext];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:super.mediaPlayerController];
 	}
 	
-	_timelineView = timelineView;
+	super.mediaPlayerController = mediaPlayerController;
 	
-	[timelineView addObserver:self forKeyPath:@"events" options:NSKeyValueObservingOptionNew context:s_kvoContext];
-	[timelineView addObserver:self forKeyPath:@"collectionView.contentOffset" options:NSKeyValueObservingOptionNew context:s_kvoContext];
-	
-	[self setNeedsDisplay];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
 }
 
 #pragma mark - Overrides
+
+- (void) willMoveToWindow:(UIWindow *)window
+{
+	[super willMoveToWindow:window];
+	
+	if (window)
+	{
+		[self reloadSegments];
+	}
+}
 
 - (void) drawRect:(CGRect)rect
 {
@@ -78,35 +89,30 @@ static void commonInit(RTSTimeSlider *self);
 	CGFloat thumbStartXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.minimumValue]);
 	CGFloat thumbEndXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.maximumValue]);
 	
-	NSArray *events = self.timelineView.events;
-	
-	for (NSInteger i = 0; i < events.count; ++i)
-	{
-		RTSMediaPlayerSegment *event = events[i];
-		
+	for (RTSMediaPlayerSegment *segment in self.segments)
+	{	
 		// Skip events not in the timeline
-		if (CMTIME_COMPARE_INLINE(event.startTime, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(event.startTime, >, CMTimeRangeGetEnd(currentTimeRange)))
+		if (CMTIME_COMPARE_INLINE(segment.startTime, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(segment.startTime, >, CMTimeRangeGetEnd(currentTimeRange)))
 		{
 			continue;
 		}
 		
-		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(event.startTime) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
-		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(segment.startTime) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
 		
-		if (event.iconImage)
+		if (segment.iconImage)
 		{
-			CGFloat iconSide = [[self.timelineView indexPathsForVisibleCells] containsObject:indexPath] ? 15.f : 9.f;
+			CGFloat iconSide = 15.f;
 			
 			CGRect tickRect = CGRectMake(tickXPos - iconSide / 2.f,
 										 CGRectGetMidY(trackRect) - iconSide / 2.f,
 										 iconSide,
 										 iconSide);
-			[event.iconImage drawInRect:tickRect];
+			[segment.iconImage drawInRect:tickRect];
 		}
 		else
 		{
 			static const CGFloat kTickWidth = 3.f;
-			CGFloat tickHeight = [[self.timelineView indexPathsForVisibleCells] containsObject:indexPath] ? 19.f : 11.f;
+			CGFloat tickHeight = 19.f;
 			
 			CGContextSetLineWidth(context, 1.f);
 			CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
@@ -121,6 +127,16 @@ static void commonInit(RTSTimeSlider *self);
 			[path stroke];
 		}
 	}
+}
+
+#pragma mark - Data
+
+- (void) reloadSegments
+{
+	[self.dataSource segmentDisplayer:self segmentsForIdentifier:self.mediaPlayerController.identifier completionHandler:^(NSArray *segments, NSError *error) {
+		// FIXME: A retry mechanism should be implemented in case of failure
+		[self reloadWithSegments:segments];
+	}];
 }
 
 #pragma mark - Display
@@ -152,22 +168,12 @@ static void commonInit(RTSTimeSlider *self);
 	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
 }
 
-#pragma mark - KVO
+#pragma mark - RTSMediaPlayerSegmentDisplayer protocol
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void) reloadWithSegments:(NSArray *)segments
 {
-	if (context == s_kvoContext && [keyPath isEqualToString:@"events"])
-	{
-		[self setNeedsDisplay];
-	}
-	else if (context == s_kvoContext && [keyPath isEqualToString:@"collectionView.contentOffset"])
-	{
-		[self setNeedsDisplay];
-	}
-	else
-	{
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-	}
+	self.segments = segments;
+	[self setNeedsDisplay];
 }
 
 #pragma mark - Gestures
@@ -185,6 +191,19 @@ static void commonInit(RTSTimeSlider *self);
 	
 	CMTime time = CMTimeMakeWithSeconds(value, 1.);
 	[self.mediaPlayerController.player seekToTime:time];
+}
+
+#pragma mark - Notifications
+
+- (void) playbackStateDidChange:(NSNotification *)notification
+{
+	NSAssert([notification.object isKindOfClass:[RTSMediaPlayerController class]], @"Expect a media player controller");
+	
+	RTSMediaPlayerController *mediaPlayerController = notification.object;
+	if (mediaPlayerController.playbackState == RTSMediaPlaybackStateReady)
+	{
+		[self reloadSegments];
+	}
 }
 
 @end

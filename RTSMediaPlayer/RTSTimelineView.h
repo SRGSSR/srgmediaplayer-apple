@@ -3,7 +3,8 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
+
 #import <UIKit/UIKit.h>
 
 @class RTSMediaPlayerController;
@@ -11,31 +12,19 @@
 @protocol RTSTimelineViewDelegate;
 
 /**
- *  A view displaying events associated with a stream as a linear collection of cells
+ *  A view displaying segments associated with a stream as a linear collection of cells
  *
  *  To add a timeline to a custom player layout, simply drag and drop an RTSTimelineView onto the player layout,
  *  and bind its mediaPlayerController, dataSource and delegate outlets. Then implement the RTSTimelineViewDataSource
  *  and RTSTimelineViewDelegate protocols to supply the information required by the timeline. You can of course
- *  also instantiate the view programmatically.
- *
- *  The timeline itself does not implement any event retrieval mechanism. The responsibility of retrieving events
- *  is namely usually the responsibility of a parent view controller. For periodic update of the timeline, the
- *  RTSMediaPlayerController class offers an -addPlaybackTimeObserverForInterval:queue:usingBlock: method you
- *  can use. Refer to its documentation for more information.
+ *  also instantiate and configure the timeline view programmatically.
  *
  *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual 
- *  UICollectionView. Events are represented by the RTSMediaPlayerSegment class, which only carry a few pieces of
+ *  UICollectionView. Segments are represented by the RTSMediaPlayerSegment class, which only carry a few pieces of
  *  information. If you need more information to be displayed on a cell (e.g. a title or a thumbnail), subclass 
  *  RTSMediaPlayerSegment to add the data you need, and use this information when returning cells from your data source.
- *
- *  A special kind of slider can be bound to a timeline view, see RTSTimelineSlider for more information
  */
-@interface RTSTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
-
-/**
- *  The current events displayed by the timeline. Setting this property triggers an update of the timeline
- */
-@property (nonatomic) NSArray *events;
+@interface RTSTimelineView : UIView <RTSMediaPlayerSegmentDisplayer, UICollectionViewDataSource, UICollectionViewDelegate>
 
 /**
  *  The width of cells within the timeline. Defaults to 60
@@ -60,12 +49,12 @@
 - (void) registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
 
 /**
- *  Dequeue a reusable cell for a given event
+ *  Dequeue a reusable cell for a given segment
  *
  *  @param identifier The cell identifier (must be appropriately set for the cell)
- *  @param event      The event for which a cell must be dequeued
+ *  @param segment    The segment for which a cell must be dequeued
  */
-- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forEvent:(RTSMediaPlayerSegment *)event;
+- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(RTSMediaPlayerSegment *)segment;
 
 /**
  *  The timeline data source
@@ -82,18 +71,18 @@
 /**
  *  Timeline data source protocol
  */
-@protocol RTSTimelineViewDataSource <NSObject>
+@protocol RTSTimelineViewDataSource <RTSMediaPlayerSegmentDataSource>
 
 /**
- *  Return the cell to be displayed for an event. You should call -dequeueReusableCellWithReuseIdentifier:forEvent:
+ *  Return the cell to be displayed for a segment. You should call -dequeueReusableCellWithReuseIdentifier:forSegment:
  *  within the implementation of this method to reuse existing cells and improve scrolling smoothness
  *
  *  @param timelineView The timeline
- *  @param event        The event for which the cell must be returned
+ *  @param segment      The segment for which the cell must be returned
  *
  *  @return The cell to use
  */
-- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForEvent:(RTSMediaPlayerSegment *)event;
+- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(RTSMediaPlayerSegment *)segment;
 
 @end
 
@@ -106,11 +95,11 @@
 
 /**
  *  This method is called when the user taps on a cell. If the method is not implemented, the default action is to
- *  play the video from the event location
+ *  play the video starting from the segment start time
  *
  *  @param timelineView The timeline
- *  @param event        The event which has been selected
+ *  @param segment      The segment which has been selected
  */
-- (void) timelineView:(RTSTimelineView *)timelineView didSelectEvent:(RTSMediaPlayerSegment *)event;
+- (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(RTSMediaPlayerSegment *)segment;
 
 @end

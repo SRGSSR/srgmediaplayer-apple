@@ -45,10 +45,8 @@
 		E67D9B141B0EFB6E00FF2334 /* RTSAirplayOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B0E1B0EFB5200FF2334 /* RTSAirplayOverlayView.h */; };
 		E67D9B151B0EFB6E00FF2334 /* RTSMediaFailureOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B101B0EFB5200FF2334 /* RTSMediaFailureOverlayView.h */; };
 		E67D9B1B1B0EFD1900FF2334 /* RTSMediaPlayerSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = E67D9B171B0EFD1900FF2334 /* RTSMediaPlayerSegment.m */; };
-		E67D9B1C1B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67D9B191B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayView.m */; };
 		E67D9B1D1B0EFD2500FF2334 /* RTSMediaPlayerSegment.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B161B0EFD1900FF2334 /* RTSMediaPlayerSegment.h */; };
-		E67D9B1E1B0EFD2500FF2334 /* RTSMediaPlayerSegmentOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B181B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayView.h */; };
-		E67D9B1F1B0EFD2500FF2334 /* RTSMediaPlayerSegmentOverlayDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B1A1B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayDataSource.h */; };
+		E67D9B1F1B0EFD2500FF2334 /* RTSMediaPlayerSegmentDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B1A1B0EFD1900FF2334 /* RTSMediaPlayerSegmentDataSource.h */; };
 		E67FDACA1AFA166F0050DCE6 /* RTSTimelineSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */; };
 		E67FDACB1AFA16EC0050DCE6 /* RTSTimelineSlider.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */; };
 		E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */; };
@@ -73,8 +71,7 @@
 			dstSubfolderSpec = 16;
 			files = (
 				E67D9B1D1B0EFD2500FF2334 /* RTSMediaPlayerSegment.h in CopyFiles */,
-				E67D9B1E1B0EFD2500FF2334 /* RTSMediaPlayerSegmentOverlayView.h in CopyFiles */,
-				E67D9B1F1B0EFD2500FF2334 /* RTSMediaPlayerSegmentOverlayDataSource.h in CopyFiles */,
+				E67D9B1F1B0EFD2500FF2334 /* RTSMediaPlayerSegmentDataSource.h in CopyFiles */,
 				E67D9B141B0EFB6E00FF2334 /* RTSAirplayOverlayView.h in CopyFiles */,
 				E67D9B151B0EFB6E00FF2334 /* RTSMediaFailureOverlayView.h in CopyFiles */,
 				E67FDACB1AFA16EC0050DCE6 /* RTSTimelineSlider.h in CopyFiles */,
@@ -144,9 +141,7 @@
 		E67D9B111B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaFailureOverlayView.m; sourceTree = "<group>"; };
 		E67D9B161B0EFD1900FF2334 /* RTSMediaPlayerSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerSegment.h; sourceTree = "<group>"; };
 		E67D9B171B0EFD1900FF2334 /* RTSMediaPlayerSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerSegment.m; sourceTree = "<group>"; };
-		E67D9B181B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerSegmentOverlayView.h; sourceTree = "<group>"; };
-		E67D9B191B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerSegmentOverlayView.m; sourceTree = "<group>"; };
-		E67D9B1A1B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerSegmentOverlayDataSource.h; sourceTree = "<group>"; };
+		E67D9B1A1B0EFD1900FF2334 /* RTSMediaPlayerSegmentDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerSegmentDataSource.h; sourceTree = "<group>"; };
 		E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSTimelineSlider.h; sourceTree = "<group>"; };
 		E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineSlider.m; sourceTree = "<group>"; };
 		E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumb_timeline_slider.png; sourceTree = "<group>"; };
@@ -226,8 +221,6 @@
 				E67D9B111B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m */,
 				B61E18F31AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.h */,
 				B61E18F41AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.m */,
-				E67D9B181B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayView.h */,
-				E67D9B191B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayView.m */,
 				E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */,
 				E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */,
 				E65786A21AEFAD68007730CE /* RTSTimelineView.h */,
@@ -295,7 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */,
-				E67D9B1A1B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayDataSource.h */,
+				E67D9B1A1B0EFD1900FF2334 /* RTSMediaPlayerSegmentDataSource.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -535,7 +528,6 @@
 				E67D9B121B0EFB5200FF2334 /* RTSAirplayOverlayView.m in Sources */,
 				B61E18F51AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.m in Sources */,
 				E67D9B1B1B0EFD1900FF2334 /* RTSMediaPlayerSegment.m in Sources */,
-				E67D9B1C1B0EFD1900FF2334 /* RTSMediaPlayerSegmentOverlayView.m in Sources */,
 				E67D9B131B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m in Sources */,
 				B61E18C11AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m in Sources */,
 				C2731F511AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m in Sources */,

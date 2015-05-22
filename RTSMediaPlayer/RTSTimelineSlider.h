@@ -3,26 +3,24 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import <RTSMediaPlayer/RTSMediaPlayerController.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
 #import <RTSMediaPlayer/RTSTimeSlider.h>
-#import <RTSMediaPlayer/RTSTimelineView.h>
+
+@class RTSMediaPlayerController;
 
 /**
- *  A slider displaying events along its track as small icons. The slider can be tapped at any point to jump at the 
- *  corresponding location.
- *
- *  The slider is meant to be associated with a timeline, which it displays events from. As the timeline is scrolled,
- *  icons matching visible cells in the timeline are automatically highlighted.
+ *  A slider displaying segment start times along its track as small icons. The slider can be tapped at any point to 
+ *  jump at the corresponding location.
  *
  *  To add a slider to a custom player layout, simply drag and drop an RTSTimelineSlider onto the player layout,
  *  and bind its timelineView outlet to an associated timeline. You can of course also instantiate the view 
  *  programmatically.
  */
-@interface RTSTimelineSlider : RTSTimeSlider
+@interface RTSTimelineSlider : RTSTimeSlider <RTSMediaPlayerSegmentDisplayer>
 
 /**
- *  The associated timeline, from which events are automatically retrieved
+ *  The timeline data source
  */
-@property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
+@property (nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentDataSource> dataSource;
 
 @end
