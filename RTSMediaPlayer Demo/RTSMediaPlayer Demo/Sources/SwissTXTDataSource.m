@@ -37,7 +37,7 @@
 
 #pragma mark - RTSMediaPlayerSegmentDataSource protocol
 
-- (void) segmentDisplayer:(id<RTSMediaPlayerSegmentDisplayer>)segmentDisplayer segmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+- (void) mediaPlayerSegmentView:(id<RTSMediaPlayerSegmentView>)mediaPlayerSegmentView segmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {
 	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", identifier];
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];

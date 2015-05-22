@@ -132,7 +132,7 @@ static void commonInit(RTSTimeSlider *self);
 
 - (void) reloadSegments
 {
-	[self.dataSource segmentDisplayer:self segmentsForIdentifier:self.mediaPlayerController.identifier completionHandler:^(NSArray *segments, NSError *error) {
+	[self.dataSource mediaPlayerSegmentView:self segmentsForIdentifier:self.mediaPlayerController.identifier completionHandler:^(NSArray *segments, NSError *error) {
 		// FIXME: A retry mechanism should be implemented in case of failure
 		[self reloadWithSegments:segments];
 	}];
@@ -167,7 +167,7 @@ static void commonInit(RTSTimeSlider *self);
 	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
 }
 
-#pragma mark - RTSMediaPlayerSegmentDisplayer protocol
+#pragma mark - RTSMediaPlayerSegmentView protocol
 
 - (void) reloadWithSegments:(NSArray *)segments
 {

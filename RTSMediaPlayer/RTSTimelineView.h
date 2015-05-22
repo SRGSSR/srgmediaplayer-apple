@@ -4,6 +4,7 @@
 //
 
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegmentView.h>
 
 #import <UIKit/UIKit.h>
 
@@ -21,7 +22,7 @@
  *  information. If you need more information to be displayed on a cell (e.g. a title or a thumbnail), subclass 
  *  RTSMediaPlayerSegment to add the data you need, and use this information when returning cells from your data source.
  */
-@interface RTSTimelineView : UIView <RTSMediaPlayerSegmentDisplayer, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface RTSTimelineView : RTSMediaPlayerSegmentView <UICollectionViewDataSource, UICollectionViewDelegate>
 
 /**
  *  The width of cells within the timeline. Defaults to 60
@@ -32,11 +33,6 @@
  * The spacing between cells in the timeline. Defaults to 4
  */
 @property (nonatomic) CGFloat itemSpacing;
-
-/**
- *  The media player controller to which the timeline is bound
- */
-@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 /**
  *  Register cell classes for reuse. Cells must be subclasses of UICollectionViewCell and can be instantiated either
@@ -52,11 +48,6 @@
  *  @param segment    The segment for which a cell must be dequeued
  */
 - (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(RTSMediaPlayerSegment *)segment;
-
-/**
- *  The timeline data source
- */
-@property (nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentDataSource> dataSource;
 
 /**
  *  The timeline delegate

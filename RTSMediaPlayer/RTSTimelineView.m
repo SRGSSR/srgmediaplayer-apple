@@ -5,7 +5,8 @@
 
 #import "RTSTimelineView.h"
 
-#import "RTSMediaPlayerController.h"
+#import <RTSMediaPlayer/RTSMediaPlayerController.h>
+#import <AVFoundation/AVFoundation.h>
 
 // Function declarations
 static void commonInit(RTSTimelineView *self);
@@ -39,26 +40,7 @@ static void commonInit(RTSTimelineView *self);
 	return self;
 }
 
-- (void) dealloc
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 #pragma mark - Getters and setters
-
-// TODO: Register for periodical segment updates (use RTSPlaybackTimeObserver)
-
-- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-{
-	if (_mediaPlayerController)
-	{
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
-	}
-	
-	_mediaPlayerController = mediaPlayerController;
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
-}
 
 - (void) setItemWidth:(CGFloat)itemWidth
 {
@@ -76,16 +58,6 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - Overrides
 
-- (void) willMoveToWindow:(UIWindow *)window
-{
-	[super willMoveToWindow:window];
-	
-	if (window)
-	{
-		[self reloadSegments];
-	}
-}
-
 - (void) layoutSubviews
 {
 	[super layoutSubviews];
@@ -94,16 +66,6 @@ static void commonInit(RTSTimelineView *self);
 	collectionViewLayout.minimumLineSpacing = self.itemSpacing;
 	collectionViewLayout.itemSize = CGSizeMake(self.itemWidth, CGRectGetHeight(self.collectionView.frame));
 	[collectionViewLayout invalidateLayout];
-}
-
-#pragma mark - Data
-
-- (void) reloadSegments
-{
-	[self.dataSource segmentDisplayer:self segmentsForIdentifier:self.mediaPlayerController.identifier completionHandler:^(NSArray *segments, NSError *error) {
-		// FIXME: A retry mechanism should be implemented in case of failure
-		[self reloadWithSegments:segments];
-	}];
 }
 
 #pragma mark - Cell reuse
@@ -130,17 +92,11 @@ static void commonInit(RTSTimelineView *self);
 	return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 }
 
-#pragma mark - RTSMediaPlayerSegmentDisplayer protocol
+#pragma mark - RTSMediaPlayerSegmentView protocol
 
 - (void) reloadWithSegments:(NSArray *)segments
 {
-	// Sort segments in ascending order
-	NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
-		CMTime time1 = [timeValue1 CMTimeValue];
-		CMTime time2 = [timeValue2 CMTimeValue];
-		return CMTimeCompare(time1, time2);
-	}];
-	self.segments = [segments sortedArrayUsingDescriptors:@[sortDescriptor]];
+	self.segments = segments;
 	[self.collectionView reloadData];
 }
 
@@ -191,19 +147,6 @@ static void commonInit(RTSTimelineView *self);
 	return [indexPaths sortedArrayUsingComparator:^(NSIndexPath *indexPath1, NSIndexPath *indexPath2) {
 		return [indexPath1 compare:indexPath2];
 	}];
-}
-
-#pragma mark - Notifications
-
-- (void) playbackStateDidChange:(NSNotification *)notification
-{
-	NSAssert([notification.object isKindOfClass:[RTSMediaPlayerController class]], @"Expect a media player controller");
-	
-	RTSMediaPlayerController *mediaPlayerController = notification.object;
-	if (mediaPlayerController.playbackState == RTSMediaPlaybackStateReady)
-	{
-		[self reloadSegments];
-	}
 }
 
 @end

@@ -4,6 +4,7 @@
 //
 
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegmentView.h>
 #import <RTSMediaPlayer/RTSTimeSlider.h>
 
 @class RTSMediaPlayerController;
@@ -15,7 +16,7 @@
  *  To add a slider to a custom player layout, simply drag and drop an RTSTimelineSlider onto the player layout,
  *  and bind its dataSource outlet. You can of course also instantiate and configure the view programmatically.
  */
-@interface RTSTimelineSlider : RTSTimeSlider <RTSMediaPlayerSegmentDisplayer>
+@interface RTSTimelineSlider : RTSTimeSlider <RTSMediaPlayerSegmentView>
 
 /**
  *  The timeline data source
