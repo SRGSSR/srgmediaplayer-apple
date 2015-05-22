@@ -42,6 +42,10 @@
 		E616272C1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */; };
 		E65786A41AEFAD68007730CE /* RTSTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E65786A31AEFAD68007730CE /* RTSTimelineView.m */; };
 		E66BDC141AF89C0200FF7858 /* RTSPlaybackTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */; };
+		E67D9B121B0EFB5200FF2334 /* RTSAirplayOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67D9B0F1B0EFB5200FF2334 /* RTSAirplayOverlayView.m */; };
+		E67D9B131B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67D9B111B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m */; };
+		E67D9B141B0EFB6E00FF2334 /* RTSAirplayOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B0E1B0EFB5200FF2334 /* RTSAirplayOverlayView.h */; };
+		E67D9B151B0EFB6E00FF2334 /* RTSMediaFailureOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B101B0EFB5200FF2334 /* RTSMediaFailureOverlayView.h */; };
 		E67FDACA1AFA166F0050DCE6 /* RTSTimelineSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */; };
 		E67FDACB1AFA16EC0050DCE6 /* RTSTimelineSlider.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */; };
 		E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */; };
@@ -65,6 +69,8 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				E67D9B141B0EFB6E00FF2334 /* RTSAirplayOverlayView.h in CopyFiles */,
+				E67D9B151B0EFB6E00FF2334 /* RTSMediaFailureOverlayView.h in CopyFiles */,
 				E67FDACB1AFA16EC0050DCE6 /* RTSTimelineSlider.h in CopyFiles */,
 				C2150B481AD400C2004A08CE /* RTSMediaPlayerError.h in CopyFiles */,
 				C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */,
@@ -129,6 +135,10 @@
 		E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSPlaybackTimeObserver.m; sourceTree = "<group>"; };
 		E65786A21AEFAD68007730CE /* RTSTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSTimelineView.h; sourceTree = "<group>"; };
 		E65786A31AEFAD68007730CE /* RTSTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineView.m; sourceTree = "<group>"; };
+		E67D9B0E1B0EFB5200FF2334 /* RTSAirplayOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSAirplayOverlayView.h; sourceTree = "<group>"; };
+		E67D9B0F1B0EFB5200FF2334 /* RTSAirplayOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSAirplayOverlayView.m; sourceTree = "<group>"; };
+		E67D9B101B0EFB5200FF2334 /* RTSMediaFailureOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaFailureOverlayView.h; sourceTree = "<group>"; };
+		E67D9B111B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaFailureOverlayView.m; sourceTree = "<group>"; };
 		E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSTimelineSlider.h; sourceTree = "<group>"; };
 		E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineSlider.m; sourceTree = "<group>"; };
 		E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumb_timeline_slider.png; sourceTree = "<group>"; };
@@ -170,18 +180,22 @@
 		B61E18F01AA87D2E00E4FAB9 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				C2150B471AD4007C004A08CE /* RTSMediaPlayerError.h */,
-				C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */,
-				C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */,
-				C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */,
-				B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */,
-				B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */,
-				C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */,
-				C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */,
-				E616272A1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.h */,
-				E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */,
 				C2731F4F1AD6A69D00434743 /* NSBundle+RTSMediaPlayer.h */,
 				C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */,
+				E67D9B0E1B0EFB5200FF2334 /* RTSAirplayOverlayView.h */,
+				E67D9B0F1B0EFB5200FF2334 /* RTSAirplayOverlayView.m */,
+				C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */,
+				C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */,
+				E67D9B101B0EFB5200FF2334 /* RTSMediaFailureOverlayView.h */,
+				E67D9B111B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m */,
+				C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */,
+				C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */,
+				C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */,
+				C2150B471AD4007C004A08CE /* RTSMediaPlayerError.h */,
+				B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */,
+				B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */,
+				E616272A1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.h */,
+				E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -491,7 +505,9 @@
 				C288F49F1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m in Sources */,
 				B61E18FC1AA9EEDB00E4FAB9 /* RTSTimeSlider.m in Sources */,
 				E65786A41AEFAD68007730CE /* RTSTimelineView.m in Sources */,
+				E67D9B121B0EFB5200FF2334 /* RTSAirplayOverlayView.m in Sources */,
 				B61E18F51AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.m in Sources */,
+				E67D9B131B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m in Sources */,
 				B61E18C11AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m in Sources */,
 				C2731F511AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m in Sources */,
 				C2DDAB511AD5227B00BA8061 /* RTSInvocationRecorder.m in Sources */,
