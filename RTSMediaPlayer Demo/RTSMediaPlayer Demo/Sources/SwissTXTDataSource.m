@@ -1,12 +1,11 @@
 //
-//  Copyright (c) RTS. All rights reserved.
-//
-//  Licence information is available from the LICENCE file.
+//  Created by Samuel Défago on 22.05.15.
+//  Copyright (c) 2015 RTS. All rights reserved.
 //
 
 #import "SwissTXTDataSource.h"
 
-#import "Event.h"
+#import "Segment.h"
 
 @implementation SwissTXTDataSource
 
@@ -76,7 +75,7 @@
 				title = [titleComponents objectAtIndex:1];
 			}
 			
-			Event *segment = [[Event alloc] initWithTime:time title:title identifier:highlight[@"id"] date:date];
+			Segment *segment = [[Segment alloc] initWithTime:time title:title identifier:highlight[@"id"] date:date];
 			if (segment) {
 				segment.iconImage = iconImage;
 				[segments addObject:segment];

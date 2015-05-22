@@ -3,9 +3,9 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import "Event.h"
+#import "Segment.h"
 
-@interface Event ()
+@interface Segment ()
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *identifier;
@@ -13,7 +13,7 @@
 
 @end
 
-@implementation Event
+@implementation Segment
 
 #pragma mark - Object lifecycle
 

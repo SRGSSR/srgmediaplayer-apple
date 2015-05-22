@@ -6,7 +6,7 @@
 #import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
 #import <UIKit/UIKit.h>
 
-@interface Event : RTSMediaPlayerSegment
+@interface Segment : RTSMediaPlayerSegment
 
 - (instancetype) initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier date:(NSDate *)date;
 

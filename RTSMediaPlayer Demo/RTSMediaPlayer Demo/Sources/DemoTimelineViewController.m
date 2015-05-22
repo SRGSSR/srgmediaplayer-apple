@@ -5,7 +5,7 @@
 
 #import "DemoTimelineViewController.h"
 
-#import "EventCollectionViewCell.h"
+#import "SegmentCollectionViewCell.h"
 
 @interface DemoTimelineViewController ()
 
@@ -64,7 +64,7 @@
 	self.timelineView.itemWidth = 162.f;
 	self.timelineView.itemSpacing = 0.f;
 	
-	NSString *className = NSStringFromClass([EventCollectionViewCell class]);
+	NSString *className = NSStringFromClass([SegmentCollectionViewCell class]);
 	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
 	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
 	
@@ -97,9 +97,9 @@
 
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(RTSMediaPlayerSegment *)segment
 {
-	EventCollectionViewCell *eventCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([EventCollectionViewCell class]) forSegment:segment];
-	eventCell.event = (Event *)segment;
-	return eventCell;
+	SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SegmentCollectionViewCell class]) forSegment:segment];
+	segmentCell.segment = (Segment *)segment;
+	return segmentCell;
 }
 
 #pragma mark - Actions

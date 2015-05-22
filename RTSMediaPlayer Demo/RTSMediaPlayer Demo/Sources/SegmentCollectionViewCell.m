@@ -3,11 +3,11 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import "EventCollectionViewCell.h"
+#import "SegmentCollectionViewCell.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface EventCollectionViewCell ()
+@interface SegmentCollectionViewCell ()
 
 @property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
@@ -16,16 +16,16 @@
 
 @end
 
-@implementation EventCollectionViewCell
+@implementation SegmentCollectionViewCell
 
 #pragma mark - Setters and getters
 
-- (void) setEvent:(Event *)event
+- (void) setSegment:(Segment *)segment
 {
-	_event = event;
+	_segment = segment;
 	
-	self.iconImageView.image = event.iconImage;
-	self.titleLabel.text = event.title;
+	self.iconImageView.image = segment.iconImage;
+	self.titleLabel.text = segment.title;
 	
 	static NSDateFormatter *s_dateFormatter;
 	static dispatch_once_t s_onceToken;
@@ -34,9 +34,9 @@
 		[s_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		[s_dateFormatter setDateStyle:NSDateFormatterNoStyle];
 	});
-	self.timestampLabel.text = [NSString stringWithFormat:@"at %@", [s_dateFormatter stringFromDate:event.date]];
+	self.timestampLabel.text = [NSString stringWithFormat:@"at %@", [s_dateFormatter stringFromDate:segment.date]];
 	
-	[self.imageView sd_setImageWithURL:event.imageURL];
+	[self.imageView sd_setImageWithURL:segment.imageURL];
 }
 
 @end

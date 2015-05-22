@@ -21,9 +21,9 @@
 		C2AB24EF1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C2AB24EE1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle */; };
 		C2CF7FAD1ABC0F7B0005FE51 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CF7FAC1ABC0F7B0005FE51 /* libRTSMediaPlayer.a */; };
 		C2F54A101A9F713300496C59 /* RTSMediaPlayer_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */; };
-		E606F8911AF3B044003F0E2A /* EventCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F88F1AF3B044003F0E2A /* EventCollectionViewCell.m */; };
-		E606F8921AF3B044003F0E2A /* EventCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E606F8901AF3B044003F0E2A /* EventCollectionViewCell.xib */; };
-		E606F8951AF3BBB4003F0E2A /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F8941AF3BBB4003F0E2A /* Event.m */; };
+		E606F8911AF3B044003F0E2A /* SegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */; };
+		E606F8921AF3B044003F0E2A /* SegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */; };
+		E606F8951AF3BBB4003F0E2A /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F8941AF3BBB4003F0E2A /* Segment.m */; };
 		E60E17181AF0B2F40062E96E /* DemoTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */; };
 		E67D9B251B0F1CC500FF2334 /* SwissTXTDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E67D9B241B0F1CC500FF2334 /* SwissTXTDataSource.m */; };
 		E69906191AFB44CC005ED143 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906171AFB44CC005ED143 /* close_button.png */; };
@@ -72,11 +72,11 @@
 		C2F54A091A9F713300496C59 /* RTSMediaPlayer DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RTSMediaPlayer DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayer_DemoTests.m; sourceTree = "<group>"; };
 		DFE981493A4EB976F44F2E28 /* Pods-RTSMediaPlayer Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayer Demo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-RTSMediaPlayer Demo/Pods-RTSMediaPlayer Demo.release.xcconfig"; sourceTree = "<group>"; };
-		E606F88E1AF3B044003F0E2A /* EventCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCollectionViewCell.h; sourceTree = "<group>"; };
-		E606F88F1AF3B044003F0E2A /* EventCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCollectionViewCell.m; sourceTree = "<group>"; };
-		E606F8901AF3B044003F0E2A /* EventCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCollectionViewCell.xib; sourceTree = "<group>"; };
-		E606F8931AF3BBB4003F0E2A /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
-		E606F8941AF3BBB4003F0E2A /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
+		E606F88E1AF3B044003F0E2A /* SegmentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentCollectionViewCell.h; sourceTree = "<group>"; };
+		E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentCollectionViewCell.m; sourceTree = "<group>"; };
+		E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentCollectionViewCell.xib; sourceTree = "<group>"; };
+		E606F8931AF3BBB4003F0E2A /* Segment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Segment.h; sourceTree = "<group>"; };
+		E606F8941AF3BBB4003F0E2A /* Segment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Segment.m; sourceTree = "<group>"; };
 		E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTimelineViewController.h; sourceTree = "<group>"; };
 		E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTimelineViewController.m; sourceTree = "<group>"; };
 		E67D9B231B0F1CC500FF2334 /* SwissTXTDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwissTXTDataSource.h; sourceTree = "<group>"; };
@@ -137,13 +137,13 @@
 				E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */,
 				E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */,
 				E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */,
-				E606F8931AF3BBB4003F0E2A /* Event.h */,
-				E606F8941AF3BBB4003F0E2A /* Event.m */,
-				E606F88E1AF3B044003F0E2A /* EventCollectionViewCell.h */,
-				E606F88F1AF3B044003F0E2A /* EventCollectionViewCell.m */,
-				E606F8901AF3B044003F0E2A /* EventCollectionViewCell.xib */,
 				B61E18E91AA863B700E4FAB9 /* MenuTableViewController.h */,
 				B61E18EA1AA863B700E4FAB9 /* MenuTableViewController.m */,
+				E606F8931AF3BBB4003F0E2A /* Segment.h */,
+				E606F8941AF3BBB4003F0E2A /* Segment.m */,
+				E606F88E1AF3B044003F0E2A /* SegmentCollectionViewCell.h */,
+				E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */,
+				E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */,
 				E67D9B231B0F1CC500FF2334 /* SwissTXTDataSource.h */,
 				E67D9B241B0F1CC500FF2334 /* SwissTXTDataSource.m */,
 			);
@@ -320,7 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E69906201AFB4902005ED143 /* red_card@2x.png in Resources */,
-				E606F8921AF3B044003F0E2A /* EventCollectionViewCell.xib in Resources */,
+				E606F8921AF3B044003F0E2A /* SegmentCollectionViewCell.xib in Resources */,
 				E699061F1AFB4902005ED143 /* red_card.png in Resources */,
 				E699061A1AFB44CC005ED143 /* close_button@2x.png in Resources */,
 				C2AB24EF1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle in Resources */,
@@ -384,10 +384,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E67D9B251B0F1CC500FF2334 /* SwissTXTDataSource.m in Sources */,
-				E606F8911AF3B044003F0E2A /* EventCollectionViewCell.m in Sources */,
+				E606F8911AF3B044003F0E2A /* SegmentCollectionViewCell.m in Sources */,
 				B61E18EC1AA863B700E4FAB9 /* DemoInlineViewController.m in Sources */,
 				B61E18D51AA8607200E4FAB9 /* main.m in Sources */,
-				E606F8951AF3BBB4003F0E2A /* Event.m in Sources */,
+				E606F8951AF3BBB4003F0E2A /* Segment.m in Sources */,
 				B688832B1AAF72B500B9E34E /* DemoMultiPlayersViewController.m in Sources */,
 				E69906291AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m in Sources */,
 				B61E18EB1AA863B700E4FAB9 /* DemoFullScreenViewController.m in Sources */,
