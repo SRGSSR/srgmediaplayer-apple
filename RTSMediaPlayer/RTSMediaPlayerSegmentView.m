@@ -60,6 +60,16 @@ static void commonInit(RTSMediaPlayerSegmentView *self);
 	self.implementation.dataSource = dataSource;
 }
 
+- (NSTimeInterval) reloadInterval
+{
+	return self.implementation.reloadInterval;
+}
+
+- (void) setReloadInterval:(NSTimeInterval)reloadInterval
+{
+	self.reloadInterval = reloadInterval;
+}
+
 #pragma mark - Data
 
 - (void) reloadSegments

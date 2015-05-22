@@ -60,6 +60,16 @@ static void commonInit(RTSTimelineSlider *self);
 	self.implementation.dataSource = dataSource;
 }
 
+- (NSTimeInterval) reloadInterval
+{
+	return self.implementation.reloadInterval;
+}
+
+- (void) setReloadInterval:(NSTimeInterval)reloadInterval
+{
+	self.implementation.reloadInterval = reloadInterval;
+}
+
 #pragma mark - Overrides
 
 - (void) drawRect:(CGRect)rect

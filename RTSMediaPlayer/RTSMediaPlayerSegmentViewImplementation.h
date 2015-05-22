@@ -18,6 +18,8 @@
 
 - (void) reloadSegments;
 
+@property (nonatomic) NSTimeInterval reloadInterval;
+
 @end
 
 @interface RTSMediaPlayerSegmentViewImplementation (UnavailableMethods)

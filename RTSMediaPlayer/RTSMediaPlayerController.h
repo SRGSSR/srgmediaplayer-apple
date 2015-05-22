@@ -202,8 +202,18 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKe
  *  @param interval Time interval between block executions
  *  @param queue    The serial queue onto which block should be enqueued (main queue if NULL)
  *  @param block	The block to be executed during playback
+ *
+ *  @return The time observer. The observer is retained by the media player controller, you can store a weak reference
+ *          to it to remove it at a later time if needed
  */
-- (void) addPlaybackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
+- (id) addPlaybackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
+
+/**
+ *  Remove a playback time observer (does nothing if the observer is not registered)
+ *
+ *  @param playbackTimeObserver The playback time observer to remove
+ */
+- (void) removePlaybackTimeObserver:(id)playbackTimeObserver;
 
 /**
  *  -------------------

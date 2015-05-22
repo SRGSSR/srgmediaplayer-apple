@@ -14,6 +14,8 @@
 
 - (void) reloadWithSegments:(NSArray *)segments;
 
+@property (nonatomic) NSTimeInterval reloadInterval;
+
 @end
 
 /**

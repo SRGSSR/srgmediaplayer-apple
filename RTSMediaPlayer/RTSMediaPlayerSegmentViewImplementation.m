@@ -8,9 +8,12 @@
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerSegmentView.h"
 
+static const NSTimeInterval RTSMediaPlayerSegmentDefaultReloadInterval = 30.;
+
 @interface RTSMediaPlayerSegmentViewImplementation ()
 
 @property (nonatomic, weak) id<RTSMediaPlayerSegmentView> view;
+@property (nonatomic, weak) id playbackTimeObserver;
 
 @end
 
@@ -25,29 +28,34 @@
 	if (self = [super init])
 	{
 		self.view = view;
+		self.reloadInterval = RTSMediaPlayerSegmentDefaultReloadInterval;
 	}
 	return self;
 }
 
-- (void) dealloc
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 #pragma mark - Getters and setters
-
-// TODO: Register for periodical segment updates (use RTSPlaybackTimeObserver)
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
 	if (_mediaPlayerController)
 	{
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
+		[_mediaPlayerController removePlaybackTimeObserver:self.playbackTimeObserver];
 	}
 	
 	_mediaPlayerController = mediaPlayerController;
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
+	self.playbackTimeObserver = [mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(self.reloadInterval, 1.) queue:NULL usingBlock:^(CMTime time) {
+		[self reloadSegments];
+	}];
+}
+
+- (void) setReloadInterval:(NSTimeInterval)reloadInterval
+{
+	if (reloadInterval <= 0)
+	{
+		reloadInterval = RTSMediaPlayerSegmentDefaultReloadInterval;
+	}
+	_reloadInterval = reloadInterval;
 }
 
 #pragma mark - Data
@@ -65,19 +73,6 @@
         }];
         [self.view reloadWithSegments:[segments sortedArrayUsingDescriptors:@[sortDescriptor]]];
     }];
-}
-
-#pragma mark - Notifications
-
-- (void) playbackStateDidChange:(NSNotification *)notification
-{
-    NSAssert([notification.object isKindOfClass:[RTSMediaPlayerController class]], @"Expect a media player controller");
-    
-    RTSMediaPlayerController *mediaPlayerController = notification.object;
-    if (mediaPlayerController.playbackState == RTSMediaPlaybackStateReady)
-    {
-        [self reloadSegments];
-    }
 }
 
 @end
