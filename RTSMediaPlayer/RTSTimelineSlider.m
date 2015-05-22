@@ -7,13 +7,16 @@
 
 #import "NSBundle+RTSMediaPlayer.h"
 #import "RTSMediaPlayerController.h"
+#import "RTSMediaPlayerSegmentViewImplementation.h"
 
 // Function declarations
-static void commonInit(RTSTimeSlider *self);
+static void commonInit(RTSTimelineSlider *self);
 
 @interface RTSTimelineSlider ()
 
 @property (nonatomic) NSArray *segments;
+
+@property (nonatomic) RTSMediaPlayerSegmentViewImplementation *implementation;
 
 @end
 
@@ -39,38 +42,25 @@ static void commonInit(RTSTimeSlider *self);
 	return self;
 }
 
-- (void) dealloc
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 #pragma mark - Getters and setters
-
-// TODO: Register for periodical segment updates (use RTSPlaybackTimeObserver)
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
-	if (super.mediaPlayerController)
-	{
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:super.mediaPlayerController];
-	}
-	
+	self.implementation.mediaPlayerController = mediaPlayerController;
 	super.mediaPlayerController = mediaPlayerController;
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playbackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
+}
+
+- (id<RTSMediaPlayerSegmentDataSource>) dataSource
+{
+	return self.implementation.dataSource;
+}
+
+- (void) setDataSource:(id<RTSMediaPlayerSegmentDataSource>)dataSource
+{
+	self.implementation.dataSource = dataSource;
 }
 
 #pragma mark - Overrides
-
-- (void) willMoveToWindow:(UIWindow *)window
-{
-	[super willMoveToWindow:window];
-	
-	if (window)
-	{
-		[self reloadSegments];
-	}
-}
 
 - (void) drawRect:(CGRect)rect
 {
@@ -128,16 +118,6 @@ static void commonInit(RTSTimeSlider *self);
 	}
 }
 
-#pragma mark - Data
-
-- (void) reloadSegments
-{
-	[self.dataSource mediaPlayerSegmentView:self segmentsForIdentifier:self.mediaPlayerController.identifier completionHandler:^(NSArray *segments, NSError *error) {
-		// FIXME: A retry mechanism should be implemented in case of failure
-		[self reloadWithSegments:segments];
-	}];
-}
-
 #pragma mark - Display
 
 - (CMTimeRange) currentTimeRange
@@ -192,24 +172,11 @@ static void commonInit(RTSTimeSlider *self);
 	[self.mediaPlayerController.player seekToTime:time];
 }
 
-#pragma mark - Notifications
-
-- (void) playbackStateDidChange:(NSNotification *)notification
-{
-	NSAssert([notification.object isKindOfClass:[RTSMediaPlayerController class]], @"Expect a media player controller");
-	
-	RTSMediaPlayerController *mediaPlayerController = notification.object;
-	if (mediaPlayerController.playbackState == RTSMediaPlaybackStateReady)
-	{
-		[self reloadSegments];
-	}
-}
-
 @end
 
 #pragma mark - Functions
 
-static void commonInit(RTSTimeSlider *self)
+static void commonInit(RTSTimelineSlider *self)
 {
 	// Use hollow thumb by default (makes events behind it visible)
 	// TODO: Provide a customisation mechanism. Use a Bezier path to generate the image instead of a png
@@ -221,4 +188,6 @@ static void commonInit(RTSTimeSlider *self)
 	// Add the ability to tap anywhere to seek at this specific location
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seek:)];
 	[self addGestureRecognizer:gestureRecognizer];
+	
+	self.implementation = [[RTSMediaPlayerSegmentViewImplementation alloc] initWithView:self];
 }
