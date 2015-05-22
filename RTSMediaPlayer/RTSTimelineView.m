@@ -41,8 +41,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) dealloc
 {
-	// Unregister KVO
-	self.mediaPlayerController = nil;
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Getters and setters
@@ -155,7 +154,7 @@ static void commonInit(RTSTimelineView *self);
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	RTSMediaPlayerSegment *segment = self.segments[indexPath.row];
-	return [self.dataSource timelineView:self cellForSegment:segment];
+	return [self.delegate timelineView:self cellForSegment:segment];
 }
 
 #pragma mark - UICollectionViewDelegate protocol

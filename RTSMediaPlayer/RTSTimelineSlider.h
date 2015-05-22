@@ -13,8 +13,7 @@
  *  jump at the corresponding location.
  *
  *  To add a slider to a custom player layout, simply drag and drop an RTSTimelineSlider onto the player layout,
- *  and bind its timelineView outlet to an associated timeline. You can of course also instantiate the view 
- *  programmatically.
+ *  and bind its dataSource outlet. You can of course also instantiate and configure the view programmatically.
  */
 @interface RTSTimelineSlider : RTSTimeSlider <RTSMediaPlayerSegmentDisplayer>
 

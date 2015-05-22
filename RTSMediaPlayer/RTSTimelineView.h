@@ -8,16 +8,13 @@
 #import <UIKit/UIKit.h>
 
 @class RTSMediaPlayerController;
-@protocol RTSTimelineViewDataSource;
 @protocol RTSTimelineViewDelegate;
 
 /**
  *  A view displaying segments associated with a stream as a linear collection of cells
  *
  *  To add a timeline to a custom player layout, simply drag and drop an RTSTimelineView onto the player layout,
- *  and bind its mediaPlayerController, dataSource and delegate outlets. Then implement the RTSTimelineViewDataSource
- *  and RTSTimelineViewDelegate protocols to supply the information required by the timeline. You can of course
- *  also instantiate and configure the timeline view programmatically.
+ *  and bind its mediaPlayerController, dataSource and delegate outlets.
  *
  *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual 
  *  UICollectionView. Segments are represented by the RTSMediaPlayerSegment class, which only carry a few pieces of
@@ -59,7 +56,7 @@
 /**
  *  The timeline data source
  */
-@property (nonatomic, weak) IBOutlet id<RTSTimelineViewDataSource> dataSource;
+@property (nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentDataSource> dataSource;
 
 /**
  *  The timeline delegate
@@ -69,9 +66,9 @@
 @end
 
 /**
- *  Timeline data source protocol
+ *  Timeline delegate protocol
  */
-@protocol RTSTimelineViewDataSource <RTSMediaPlayerSegmentDataSource>
+@protocol RTSTimelineViewDelegate <NSObject>
 
 /**
  *  Return the cell to be displayed for a segment. You should call -dequeueReusableCellWithReuseIdentifier:forSegment:
@@ -83,13 +80,6 @@
  *  @return The cell to use
  */
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(RTSMediaPlayerSegment *)segment;
-
-@end
-
-/**
- *  Timeline delegate protocol
- */
-@protocol RTSTimelineViewDelegate <NSObject>
 
 @optional
 

@@ -11,12 +11,9 @@
 
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
-@property (nonatomic) NSArray *timelineEvents;
-
 @property (nonatomic, weak) IBOutlet UIView *videoView;
 @property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
-
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *timelineActivityIndicatorView;
+@property (nonatomic, weak) IBOutlet RTSTimelineSlider *timelineSlider;
 
 @end
 
@@ -67,8 +64,6 @@
 	self.timelineView.itemWidth = 162.f;
 	self.timelineView.itemSpacing = 0.f;
 	
-	self.timelineActivityIndicatorView.hidden = YES;
-	
 	NSString *className = NSStringFromClass([EventCollectionViewCell class]);
 	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
 	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
@@ -98,95 +93,13 @@
 	}
 }
 
-#pragma mark - Data
-
-- (void) retrieveEventsWithCompletionBlock:(void (^)(NSArray *events, NSError *error))completionBlock
-{
-	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", self.videoIdentifier];
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
-	[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-		if (error)
-		{
-			completionBlock ? completionBlock(nil, error) : nil;
-			return;
-		}
-		
-		id responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-		if (!responseObject || ![responseObject isKindOfClass:[NSArray class]])
-		{
-			NSError *parseError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotParseResponse userInfo:nil];
-			completionBlock ? completionBlock(nil, parseError) : nil;
-			return;
-		}
-		
-		NSMutableArray *events = [NSMutableArray array];
-		for (NSDictionary *highlight in responseObject)
-		{
-			// Note that the start date available from this JSON (streamStartDate) is not reliable and is retrieve using
-			// another request
-			NSDate *date = [NSDate dateWithTimeIntervalSince1970:[highlight[@"timestamp"] doubleValue]];
-			NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"streamStartTime"] doubleValue]];
-			CMTime time = CMTimeMake([date timeIntervalSinceDate:startDate], 1.);
-			
-			NSString *title = highlight[@"title"];
-			UIImage *iconImage = nil;
-			
-			NSArray *titleComponents = [highlight[@"title"] componentsSeparatedByString:@"|"];
-			if ([titleComponents count] > 1)
-			{
-				iconImage = [UIImage imageNamed:[titleComponents firstObject]];
-				title = [titleComponents objectAtIndex:1];
-			}
-			
-			Event *event = [[Event alloc] initWithTime:time title:title identifier:highlight[@"id"] date:date];
-			if (event) {
-				event.iconImage = iconImage;
-				[events addObject:event];
-			}
-		}
-		
-		completionBlock ? completionBlock([NSArray arrayWithArray:events], nil) : nil;
-	}];
-}
-
-#pragma mark - RTSMediaPlayerControllerDataSource protocol
-
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
-{
-	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/stream/srf/byEventItemIdAndType/%@/hls", identifier];
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
-	[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-		if (error)
-		{
-			completionHandler(nil, error);
-			return;
-		}
-		
-		NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		if (! responseString)
-		{
-			NSError *responseError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:nil];
-			completionHandler(nil, responseError);
-		}
-		responseString = [responseString stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-		
-		NSURL *URL = [NSURL URLWithString:responseString];
-		completionHandler(URL, nil);
-	}];
-}
-
-#pragma mark - RTSTimelineViewDataSource protocol
+#pragma mark - RTSTimelineViewDelegate protocol
 
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(RTSMediaPlayerSegment *)segment
 {
 	EventCollectionViewCell *eventCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([EventCollectionViewCell class]) forSegment:segment];
 	eventCell.event = (Event *)segment;
 	return eventCell;
-}
-
-- (void) segmentDisplayer:(id<RTSMediaPlayerSegmentDisplayer>)segmentDisplayer segmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSArray *, NSError *))completionHandler
-{
-
 }
 
 #pragma mark - Actions

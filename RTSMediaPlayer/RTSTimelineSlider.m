@@ -41,8 +41,7 @@ static void commonInit(RTSTimeSlider *self);
 
 - (void) dealloc
 {
-	// Unregister KVO
-	self.mediaPlayerController = nil;
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Getters and setters

@@ -290,7 +290,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Video identifier" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sa9-k5-5w1">
                                         <rect key="frame" x="20" y="24" width="159" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="265862" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VAf-Jy-QUi">
@@ -340,18 +340,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x2p-Nx-m7K" userLabel="Timeline Wrapper View">
                                 <rect key="frame" x="0.0" y="436" width="600" height="100"/>
                                 <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="63N-83-iAB">
-                                        <rect key="frame" x="290" y="40" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="4hH-ju-XG4"/>
-                                            <constraint firstAttribute="width" constant="20" id="8IC-0Z-vtH"/>
-                                        </constraints>
-                                    </activityIndicatorView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LNH-3e-cnt" userLabel="Timeline View" customClass="RTSTimelineView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <outlet property="dataSource" destination="eMv-Af-zLT" id="ae0-LC-34t"/>
+                                            <outlet property="dataSource" destination="okr-ha-qw1" id="1Zz-Ld-FSN"/>
                                             <outlet property="delegate" destination="eMv-Af-zLT" id="66n-dT-drx"/>
                                             <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="OB9-xR-Jf9"/>
                                         </connections>
@@ -360,9 +353,7 @@
                                 <color key="backgroundColor" white="0.85369551809210531" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="LNH-3e-cnt" secondAttribute="trailing" id="Ft4-ci-7uH"/>
-                                    <constraint firstAttribute="centerY" secondItem="63N-83-iAB" secondAttribute="centerY" id="MSw-tV-ew7"/>
                                     <constraint firstItem="LNH-3e-cnt" firstAttribute="top" secondItem="x2p-Nx-m7K" secondAttribute="top" id="PCf-0Y-w2M"/>
-                                    <constraint firstAttribute="centerX" secondItem="63N-83-iAB" secondAttribute="centerX" id="bKt-Y0-M7z"/>
                                     <constraint firstAttribute="bottom" secondItem="LNH-3e-cnt" secondAttribute="bottom" id="lN6-hM-Hez"/>
                                     <constraint firstAttribute="height" constant="100" id="sGe-BY-UbY"/>
                                     <constraint firstItem="LNH-3e-cnt" firstAttribute="leading" secondItem="x2p-Nx-m7K" secondAttribute="leading" id="vQF-7Q-me7"/>
@@ -380,9 +371,9 @@
                                         <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
+                                            <outlet property="dataSource" destination="okr-ha-qw1" id="boM-nq-Pnc"/>
                                             <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="aNs-yt-eVs"/>
                                             <outlet property="timeLeftValueLabel" destination="MgY-Pv-rWN" id="6vf-GK-Exp"/>
-                                            <outlet property="timelineView" destination="LNH-3e-cnt" id="GNV-PQ-A9f"/>
                                             <outlet property="valueLabel" destination="yoy-j6-b9D" id="Xm1-Va-udZ"/>
                                         </connections>
                                     </slider>
@@ -509,7 +500,7 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="o1e-La-elO"/>
-                        <outlet property="timelineActivityIndicatorView" destination="63N-83-iAB" id="pCX-41-Xrc"/>
+                        <outlet property="timelineSlider" destination="pkn-xF-SAk" id="SYg-f5-lOF"/>
                         <outlet property="timelineView" destination="LNH-3e-cnt" id="Daa-IJ-43k"/>
                         <outlet property="videoView" destination="t9K-xg-VIe" id="IpW-Yn-5Cd"/>
                     </connections>
@@ -528,13 +519,14 @@
                 <customObject id="z6L-aG-cvh" customClass="RTSMediaPlayerController">
                     <connections>
                         <outlet property="activityView" destination="t9K-xg-VIe" id="EgN-1d-kBM"/>
-                        <outlet property="dataSource" destination="eMv-Af-zLT" id="QgT-Gh-22L"/>
+                        <outlet property="dataSource" destination="okr-ha-qw1" id="qHS-IB-Kql"/>
                         <outletCollection property="overlayViews" destination="Atp-kj-ZMO" id="fZ3-TQ-k6l"/>
                         <outletCollection property="overlayViews" destination="LNH-3e-cnt" id="XcU-vU-Bl4"/>
                         <outletCollection property="overlayViews" destination="x2p-Nx-m7K" id="Erd-e9-0iy"/>
                         <outletCollection property="overlayViews" destination="PcP-7w-FSg" id="n5F-lD-rEX"/>
                     </connections>
                 </customObject>
+                <customObject id="okr-ha-qw1" customClass="SwissTXTDataSource"/>
             </objects>
             <point key="canvasLocation" x="487" y="1498"/>
         </scene>
