@@ -33,6 +33,12 @@ static const NSTimeInterval RTSMediaPlayerSegmentDefaultReloadInterval = 30.;
 	return self;
 }
 
+- (void) dealloc
+{
+	// Unregister playback observer
+	self.mediaPlayerController = nil;
+}
+
 #pragma mark - Getters and setters
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
