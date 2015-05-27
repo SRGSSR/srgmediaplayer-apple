@@ -64,7 +64,7 @@
 
 @implementation RTSTimeSlider
 
-NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
+static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	if (isnan(seconds))
 		return @"NaN";
