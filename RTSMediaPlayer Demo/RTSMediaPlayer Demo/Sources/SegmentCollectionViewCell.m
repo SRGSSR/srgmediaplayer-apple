@@ -24,7 +24,7 @@
 {
 	_segment = segment;
 	
-	self.iconImageView.image = segment.iconImage;
+	self.iconImageView.image = segment.segmentIconImage;
 	self.titleLabel.text = segment.title;
 	
 	static NSDateFormatter *s_dateFormatter;
@@ -36,7 +36,7 @@
 	});
 	self.timestampLabel.text = [NSString stringWithFormat:@"at %@", [s_dateFormatter stringFromDate:segment.date]];
 	
-	[self.imageView sd_setImageWithURL:segment.imageURL];
+	[self.imageView sd_setImageWithURL:segment.thumbnailURL];
 }
 
 @end

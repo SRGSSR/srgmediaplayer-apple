@@ -80,7 +80,7 @@ static const NSTimeInterval RTSMediaPlayerSegmentDefaultReloadInterval = 30.;
         // FIXME: A retry mechanism should be implemented in case of failure
         
         // Sort segments in ascending order
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"startTime" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"segmentStartTime" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
             CMTime time1 = [timeValue1 CMTimeValue];
             CMTime time2 = [timeValue2 CMTimeValue];
             return CMTimeCompare(time1, time2);

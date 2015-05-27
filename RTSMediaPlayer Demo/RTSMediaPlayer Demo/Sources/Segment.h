@@ -6,14 +6,12 @@
 #import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
 #import <UIKit/UIKit.h>
 
-@interface Segment : RTSMediaPlayerSegment
+@interface Segment : NSObject <RTSMediaPlayerSegment>
 
 - (instancetype) initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier date:(NSDate *)date;
 
 @property (nonatomic, readonly, copy) NSString *title;
-@property (nonatomic, readonly, copy) NSString *identifier;
+@property (nonatomic, readonly) NSURL *thumbnailURL;
 @property (nonatomic, readonly) NSDate *date;
-
-@property (nonatomic, readonly) NSURL *imageURL;
 
 @end

@@ -7,9 +7,15 @@
 
 @interface Segment ()
 
+@property (nonatomic) CMTime segmentStartTime;
+@property (nonatomic) CMTime segmentEndTime;
+@property (nonatomic) UIImage *segmentIconImage;
+
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *identifier;
 @property (nonatomic) NSDate *date;
+
+@property (nonatomic) NSURL *thumbnailURL;
 
 @end
 
@@ -24,9 +30,22 @@
 		return nil;
 	}
 	
-	if (self = [super initWithStartTime:time endTime:time])
+	if (self = [super init])
 	{
-		self.title = title;
+		self.segmentStartTime = time;
+		self.segmentEndTime = time;
+		
+		NSArray *titleComponents = [title componentsSeparatedByString:@"|"];
+		if ([titleComponents count] > 1)
+		{
+			self.segmentIconImage = [UIImage imageNamed:[titleComponents firstObject]];
+			self.title = [titleComponents objectAtIndex:1];
+		}
+		else
+		{
+			self.title = title;
+		}
+		
 		self.identifier = identifier;
 		self.date = date;
 	}
@@ -35,24 +54,24 @@
 
 #pragma mark - Getters and setters
 
-- (NSURL *) imageURL
+- (NSURL *) thumbnailURL
 {
-	NSString *imageURLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/image/byId/%@", self.identifier];
-	return [NSURL URLWithString:imageURLString];
+	NSString *thumbnailURLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/image/byId/%@", self.identifier];
+	return [NSURL URLWithString:thumbnailURLString];
 }
 
 #pragma mark - Description
 
 - (NSString *) description
 {
-	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; identifier: %@; date: %@; imageURL: %@>",
+	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; identifier: %@; date: %@; thumbnailURL: %@>",
 			[self class],
 			self,
-			@(CMTimeGetSeconds(self.startTime)),
+			@(CMTimeGetSeconds(self.segmentStartTime)),
 			self.title,
 			self.identifier,
 			self.date,
-			self.imageURL];
+			self.thumbnailURL];
 }
 
 @end

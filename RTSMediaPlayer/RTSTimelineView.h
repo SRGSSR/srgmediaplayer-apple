@@ -19,9 +19,7 @@
  *  configure the view programatically as well.
  *
  *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual 
- *  UICollectionView. Segments are represented by the RTSMediaPlayerSegment class, which only carry a few pieces of
- *  information. If you need more information to be displayed on a cell (e.g. a title or a thumbnail), subclass 
- *  RTSMediaPlayerSegment to add the data you need, and use this information when returning cells from your data source.
+ *  UICollectionView
  */
 @interface RTSTimelineView : RTSMediaPlayerSegmentView <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -48,7 +46,7 @@
  *  @param identifier The cell identifier (must be appropriately set for the cell)
  *  @param segment    The segment for which a cell must be dequeued
  */
-- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(RTSMediaPlayerSegment *)segment;
+- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaPlayerSegment>)segment;
 
 /**
  *  The timeline delegate
@@ -71,7 +69,7 @@
  *
  *  @return The cell to use
  */
-- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(RTSMediaPlayerSegment *)segment;
+- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment;
 
 @optional
 
@@ -82,6 +80,6 @@
  *  @param timelineView The timeline
  *  @param segment      The segment which has been selected
  */
-- (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(RTSMediaPlayerSegment *)segment;
+- (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment;
 
 @end

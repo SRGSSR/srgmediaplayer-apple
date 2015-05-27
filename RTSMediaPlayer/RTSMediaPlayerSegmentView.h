@@ -21,7 +21,7 @@
  *  This method is called when a view needs to be reloaded with segments. Implement this method accordingly, e.g.
  *  by reloading an associated collection or table view
  *
- *  @param segments The segments to be displayed (as an array of RTSMediaPlayerSegment objects)
+ *  @param segments The segments to be displayed (as an array objects conforming to the RTSMediaPlayerSegment protocol)
  */
 - (void) reloadWithSegments:(NSArray *)segments;
 

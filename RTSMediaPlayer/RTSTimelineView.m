@@ -80,7 +80,7 @@ static void commonInit(RTSTimelineView *self);
 	[self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 
-- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(RTSMediaPlayerSegment *)segment
+- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaPlayerSegment>)segment
 {
 	NSInteger index = [self.segments indexOfObject:segment];
 	if (index == NSNotFound)
@@ -109,7 +109,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	RTSMediaPlayerSegment *segment = self.segments[indexPath.row];
+	id<RTSMediaPlayerSegment> segment = self.segments[indexPath.row];
 	return [self.delegate timelineView:self cellForSegment:segment];
 }
 
@@ -117,7 +117,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	RTSMediaPlayerSegment *segment = self.segments[indexPath.row];
+	id<RTSMediaPlayerSegment> segment = self.segments[indexPath.row];
 	
 	if ([self.delegate respondsToSelector:@selector(timelineView:didSelectSegment:)])
 	{
@@ -125,7 +125,7 @@ static void commonInit(RTSTimelineView *self);
 	}
 	else
 	{
-		[self.mediaPlayerController.player seekToTime:segment.startTime];
+		[self.mediaPlayerController.player seekToTime:segment.segmentStartTime];
 	}
 }
 

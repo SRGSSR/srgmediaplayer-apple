@@ -88,17 +88,17 @@ static void commonInit(RTSTimelineSlider *self);
 	CGFloat thumbStartXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.minimumValue]);
 	CGFloat thumbEndXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.maximumValue]);
 	
-	for (RTSMediaPlayerSegment *segment in self.segments)
+	for (id<RTSMediaPlayerSegment> segment in self.segments)
 	{	
 		// Skip events not in the timeline
-		if (CMTIME_COMPARE_INLINE(segment.startTime, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(segment.startTime, >, CMTimeRangeGetEnd(currentTimeRange)))
+		if (CMTIME_COMPARE_INLINE(segment.segmentStartTime, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(segment.segmentStartTime, >, CMTimeRangeGetEnd(currentTimeRange)))
 		{
 			continue;
 		}
 		
-		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(segment.startTime) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
+		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(segment.segmentStartTime) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
 		
-		if (segment.iconImage)
+		if (segment.segmentIconImage)
 		{
 			CGFloat iconSide = 15.f;
 			
@@ -106,7 +106,7 @@ static void commonInit(RTSTimelineSlider *self);
 										 CGRectGetMidY(trackRect) - iconSide / 2.f,
 										 iconSide,
 										 iconSide);
-			[segment.iconImage drawInRect:tickRect];
+			[segment.segmentIconImage drawInRect:tickRect];
 		}
 		else
 		{

@@ -68,19 +68,8 @@
 			NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"streamStartTime"] doubleValue]];
 			CMTime time = CMTimeMake([date timeIntervalSinceDate:startDate], 1.);
 			
-			NSString *title = highlight[@"title"];
-			UIImage *iconImage = nil;
-			
-			NSArray *titleComponents = [highlight[@"title"] componentsSeparatedByString:@"|"];
-			if ([titleComponents count] > 1)
-			{
-				iconImage = [UIImage imageNamed:[titleComponents firstObject]];
-				title = [titleComponents objectAtIndex:1];
-			}
-			
-			Segment *segment = [[Segment alloc] initWithTime:time title:title identifier:highlight[@"id"] date:date];
+			Segment *segment = [[Segment alloc] initWithTime:time title:highlight[@"title"] identifier:highlight[@"id"] date:date];
 			if (segment) {
-				segment.iconImage = iconImage;
 				[segments addObject:segment];
 			}
 		}
