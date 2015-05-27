@@ -9,15 +9,34 @@
 @class RTSMediaPlayerController;
 @protocol RTSMediaPlayerSegmentView;
 
+/**
+ *  Implementation helper class for views displaying segments but which cannot inherit from RTSMediaPlayerSegmentView
+ *  (see RTSMediaPlayerSegmentView.h for more information)
+ */
 @interface RTSMediaPlayerSegmentViewImplementation : NSObject
 
+/**
+ *  Create the implementation helper associated with the view. Best created in the view initialization method
+ *
+ *  @param view The view to which the implementation is associated
+ */
 - (instancetype) initWithView:(UIView<RTSMediaPlayerSegmentView> *)view;
 
+/**
+ *  The media player controller to which the implementation must be associated. A time observer is automatically
+ *  registered with it, fired at a reload interval controlled by the reloadInterval property, triggering segment
+ *  reload
+ */
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+
+/**
+ *  The data source from which segments are periodically retrieved
+ */
 @property (nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentDataSource> dataSource;
 
-- (void) reloadSegments;
-
+/**
+ *  The interval at which the associated view must be reloaded with segments (default is 30 seconds)
+ */
 @property (nonatomic) NSTimeInterval reloadInterval;
 
 @end

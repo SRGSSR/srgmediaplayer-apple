@@ -51,11 +51,25 @@ static const NSTimeInterval RTSMediaPlayerSegmentDefaultReloadInterval = 30.;
 
 - (void) setReloadInterval:(NSTimeInterval)reloadInterval
 {
+	if (_reloadInterval == reloadInterval)
+	{
+		return;
+	}
+	
 	if (reloadInterval <= 0)
 	{
 		reloadInterval = RTSMediaPlayerSegmentDefaultReloadInterval;
 	}
+	
 	_reloadInterval = reloadInterval;
+	
+	if (self.mediaPlayerController)
+	{
+		[self.mediaPlayerController removePlaybackTimeObserver:self.playbackTimeObserver];
+		self.playbackTimeObserver = [self.mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(reloadInterval, 1.) queue:NULL usingBlock:^(CMTime time) {
+			[self reloadSegments];
+		}];
+	}
 }
 
 #pragma mark - Data

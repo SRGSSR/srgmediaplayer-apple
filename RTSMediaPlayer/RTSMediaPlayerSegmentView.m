@@ -70,13 +70,6 @@ static void commonInit(RTSMediaPlayerSegmentView *self);
 	self.reloadInterval = reloadInterval;
 }
 
-#pragma mark - Data
-
-- (void) reloadSegments
-{
-	[self.implementation reloadSegments];
-}
-
 #pragma mark - RTSMediaPlayerSegmentView protocol
 
 - (void) reloadWithSegments:(NSArray *)segments

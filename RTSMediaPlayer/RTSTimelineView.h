@@ -15,7 +15,8 @@
  *  A view displaying segments associated with a stream as a linear collection of cells
  *
  *  To add a timeline to a custom player layout, simply drag and drop an RTSTimelineView onto the player layout,
- *  and bind its mediaPlayerController, dataSource and delegate outlets.
+ *  and bind its mediaPlayerController, dataSource and delegate outlets. You can of course instantiate and
+ *  configure the view programatically as well.
  *
  *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual 
  *  UICollectionView. Segments are represented by the RTSMediaPlayerSegment class, which only carry a few pieces of
