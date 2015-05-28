@@ -152,6 +152,31 @@ static void commonInit(RTSTimelineView *self);
     return self.collectionView.visibleCells;
 }
 
+- (void) scrollToSegment:(id<RTSMediaPlayerSegment>)segment animated:(BOOL)animated
+{
+	NSInteger segmentIndex = [self.segments indexOfObject:segment];
+	if (segmentIndex == NSNotFound)
+	{
+		return;
+	}
+	
+	[self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:segmentIndex inSection:0]
+								atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+										animated:animated];
+}
+
+- (void) scrollToSegmentAtTime:(CMTime)time animated:(BOOL)animated
+{
+	for (id<RTSMediaPlayerSegment> segment in self.segments)
+	{
+		if (CMTimeRangeContainsTime(segment.segmentTimeRange, time))
+		{
+			[self scrollToSegment:segment animated:animated];
+			return;
+		}
+	}
+}
+
 @end
 
 #pragma mark - Functions
