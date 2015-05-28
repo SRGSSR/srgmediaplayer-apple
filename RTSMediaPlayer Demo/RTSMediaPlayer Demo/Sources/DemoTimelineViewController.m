@@ -6,6 +6,7 @@
 #import "DemoTimelineViewController.h"
 
 #import "SegmentCollectionViewCell.h"
+#import <libextobjc/EXTScope.h>
 
 @interface DemoTimelineViewController ()
 
@@ -69,6 +70,13 @@
 	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
 	
 	[self.mediaPlayerController attachPlayerToView:self.videoView];
+	
+	@weakify(self)
+	[self.mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(30., 1.) queue:NULL usingBlock:^(CMTime time) {
+		@strongify(self)
+		[self.timelineView reloadSegmentsForIdentifier:self.videoIdentifier];
+		[self.timelineSlider reloadSegmentsForIdentifier:self.videoIdentifier];
+	}];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -100,6 +108,11 @@
 	SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SegmentCollectionViewCell class]) forSegment:segment];
 	segmentCell.segment = (Segment *)segment;
 	return segmentCell;
+}
+
+- (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment
+{
+	[self.mediaPlayerController.player seekToTime:segment.segmentStartTime];
 }
 
 #pragma mark - Actions

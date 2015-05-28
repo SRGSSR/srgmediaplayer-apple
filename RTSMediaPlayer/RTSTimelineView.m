@@ -123,10 +123,6 @@ static void commonInit(RTSTimelineView *self);
 	{
 		[self.delegate timelineView:self didSelectSegment:segment];
 	}
-	else
-	{
-		[self.mediaPlayerController.player seekToTime:segment.segmentStartTime];
-	}
 }
 
 #pragma mark - Visible cells

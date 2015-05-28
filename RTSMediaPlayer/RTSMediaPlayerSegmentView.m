@@ -6,78 +6,26 @@
 #import "RTSMediaPlayerSegmentView.h"
 
 #import "RTSMediaPlayerController.h"
-#import "RTSMediaPlayerSegmentViewImplementation.h"
-
-static void commonInit(RTSMediaPlayerSegmentView *self);
-
-@interface RTSMediaPlayerSegmentView ()
-
-@property (nonatomic) RTSMediaPlayerSegmentViewImplementation *implementation;
-
-@end
 
 @implementation RTSMediaPlayerSegmentView
 
-#pragma mark - Object lifecycle
+#pragma mark - Data
 
-- (instancetype) initWithFrame:(CGRect)frame
+- (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {
-	if (self = [super initWithFrame:frame])
-	{
-		commonInit(self);
-	}
-	return self;
+	[self.dataSource view:self segmentsForIdentifier:identifier completionHandler:^(NSArray *segments, NSError *error) {
+		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"segmentStartTime" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
+			CMTime time1 = [timeValue1 CMTimeValue];
+			CMTime time2 = [timeValue2 CMTimeValue];
+			return CMTimeCompare(time1, time2);
+		}];
+		[self reloadWithSegments:[segments sortedArrayUsingDescriptors:@[sortDescriptor]]];
+	}];
 }
 
-- (instancetype) initWithCoder:(NSCoder *)aDecoder
-{
-	if (self = [super initWithCoder:aDecoder])
-	{
-		commonInit(self);
-	}
-	return self;
-}
-
-#pragma mark - Getters and setters
-
-- (RTSMediaPlayerController *) mediaPlayerController
-{
-	return self.implementation.mediaPlayerController;
-}
-
-- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-{
-	self.implementation.mediaPlayerController = mediaPlayerController;
-}
-
-- (id<RTSMediaPlayerSegmentDataSource>) dataSource
-{
-	return self.implementation.dataSource;
-}
-
-- (void) setDataSource:(id<RTSMediaPlayerSegmentDataSource>)dataSource
-{
-	self.implementation.dataSource = dataSource;
-}
-
-- (NSTimeInterval) reloadInterval
-{
-	return self.implementation.reloadInterval;
-}
-
-- (void) setReloadInterval:(NSTimeInterval)reloadInterval
-{
-	self.reloadInterval = reloadInterval;
-}
-
-#pragma mark - RTSMediaPlayerSegmentView protocol
+#pragma mark - Subclassing hooks
 
 - (void) reloadWithSegments:(NSArray *)segments
 {}
 
 @end
-
-static void commonInit(RTSMediaPlayerSegmentView *self)
-{
-	self.implementation = [[RTSMediaPlayerSegmentViewImplementation alloc] initWithView:self];
-}

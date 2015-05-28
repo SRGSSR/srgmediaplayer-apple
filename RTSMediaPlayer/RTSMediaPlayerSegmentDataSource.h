@@ -5,11 +5,9 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol RTSMediaPlayerSegmentView;
-
 @protocol RTSMediaPlayerSegmentDataSource <NSObject>
 
 @required
-- (void) mediaPlayerSegmentView:(id<RTSMediaPlayerSegmentView>)mediaPlayerSegmentView segmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSArray *segments, NSError *error))completionHandler;
+- (void) view:(UIView *)view segmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSArray *segments, NSError *error))completionHandler;
 
 @end

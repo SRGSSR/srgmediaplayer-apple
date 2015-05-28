@@ -346,7 +346,6 @@
                                         <connections>
                                             <outlet property="dataSource" destination="okr-ha-qw1" id="1Zz-Ld-FSN"/>
                                             <outlet property="delegate" destination="eMv-Af-zLT" id="66n-dT-drx"/>
-                                            <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="OB9-xR-Jf9"/>
                                         </connections>
                                     </view>
                                 </subviews>

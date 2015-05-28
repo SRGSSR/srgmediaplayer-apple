@@ -7,7 +7,6 @@
 
 #import "NSBundle+RTSMediaPlayer.h"
 #import "RTSMediaPlayerController.h"
-#import "RTSMediaPlayerSegmentViewImplementation.h"
 
 // Function declarations
 static void commonInit(RTSTimelineSlider *self);
@@ -15,8 +14,6 @@ static void commonInit(RTSTimelineSlider *self);
 @interface RTSTimelineSlider ()
 
 @property (nonatomic) NSArray *segments;
-
-@property (nonatomic) RTSMediaPlayerSegmentViewImplementation *implementation;
 
 @end
 
@@ -40,34 +37,6 @@ static void commonInit(RTSTimelineSlider *self);
 		commonInit(self);
 	}
 	return self;
-}
-
-#pragma mark - Getters and setters
-
-- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-{
-	self.implementation.mediaPlayerController = mediaPlayerController;
-	super.mediaPlayerController = mediaPlayerController;
-}
-
-- (id<RTSMediaPlayerSegmentDataSource>) dataSource
-{
-	return self.implementation.dataSource;
-}
-
-- (void) setDataSource:(id<RTSMediaPlayerSegmentDataSource>)dataSource
-{
-	self.implementation.dataSource = dataSource;
-}
-
-- (NSTimeInterval) reloadInterval
-{
-	return self.implementation.reloadInterval;
-}
-
-- (void) setReloadInterval:(NSTimeInterval)reloadInterval
-{
-	self.implementation.reloadInterval = reloadInterval;
 }
 
 #pragma mark - Overrides
@@ -157,7 +126,19 @@ static void commonInit(RTSTimelineSlider *self);
 	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
 }
 
-#pragma mark - RTSMediaPlayerSegmentView protocol
+#pragma mark - Data
+
+- (void) reloadSegmentsForIdentifier:(NSString *)identifier
+{
+	[self.dataSource view:self segmentsForIdentifier:identifier completionHandler:^(NSArray *segments, NSError *error) {
+		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"segmentStartTime" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
+			CMTime time1 = [timeValue1 CMTimeValue];
+			CMTime time2 = [timeValue2 CMTimeValue];
+			return CMTimeCompare(time1, time2);
+		}];
+		[self reloadWithSegments:[segments sortedArrayUsingDescriptors:@[sortDescriptor]]];
+	}];
+}
 
 - (void) reloadWithSegments:(NSArray *)segments
 {
@@ -198,6 +179,4 @@ static void commonInit(RTSTimelineSlider *self)
 	// Add the ability to tap anywhere to seek at this specific location
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seek:)];
 	[self addGestureRecognizer:gestureRecognizer];
-	
-	self.implementation = [[RTSMediaPlayerSegmentViewImplementation alloc] initWithView:self];
 }
