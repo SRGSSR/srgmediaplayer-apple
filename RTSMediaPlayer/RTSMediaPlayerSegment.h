@@ -23,4 +23,7 @@
  */
 @property (nonatomic, readonly) UIImage *segmentIconImage;
 
+- (BOOL)isBlocked; // For whatever reason...
+- (BOOL)isVisible;
+
 @end
