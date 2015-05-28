@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5CB1A10CE53E2A8720302D99 /* libPods-RTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A05D6955446198632FA7E824 /* libPods-RTSMediaPlayer.a */; };
+		9F43A6E11B1610D0007832B7 /* RTSMediaSegmentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */; };
 		B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */; };
 		B60440FC1AA210C900C7DA57 /* RTSMediaPlayerView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */; };
 		B61E18C11AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18BF1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m */; };
@@ -98,6 +99,8 @@
 		42CBA752E07E72B0CBDF3ADE /* Pods-RTSMediaPlayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RTSMediaPlayerTests/Pods-RTSMediaPlayerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5B4F0FCA4CCEE501CDADCBC7 /* libPods-RTSMediaPlayer-RTSMediaPlayerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RTSMediaPlayer-RTSMediaPlayerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7314D9A587D56BA6E7F89FB2 /* libPods-RTSMediaPlayerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RTSMediaPlayerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F43A6DF1B1610D0007832B7 /* RTSMediaSegmentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegmentsController.h; sourceTree = "<group>"; };
+		9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaSegmentsController.m; sourceTree = "<group>"; };
 		A05D6955446198632FA7E824 /* libPods-RTSMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RTSMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE77ECC145A247C85E459918 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerView.h; sourceTree = "<group>"; };
@@ -183,6 +186,19 @@
 				7314D9A587D56BA6E7F89FB2 /* libPods-RTSMediaPlayerTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9F43A6DE1B16109F007832B7 /* Segments */ = {
+			isa = PBXGroup;
+			children = (
+				9F43A6DF1B1610D0007832B7 /* RTSMediaSegmentsController.h */,
+				9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */,
+				E67D9B291B0F283600FF2334 /* RTSMediaPlayerSegmentView.h */,
+				E67D9B2A1B0F283600FF2334 /* RTSMediaPlayerSegmentView.m */,
+				E67D9B2E1B0F32E500FF2334 /* RTSMediaPlayerSegmentViewImplementation.h */,
+				E67D9B2F1B0F32E500FF2334 /* RTSMediaPlayerSegmentViewImplementation.m */,
+			);
+			name = Segments;
 			sourceTree = "<group>";
 		};
 		B61E18F01AA87D2E00E4FAB9 /* Core */ = {
@@ -275,6 +291,7 @@
 				B61E18F01AA87D2E00E4FAB9 /* Core */,
 				E67D9B211B0EFDEE00FF2334 /* Protocols */,
 				B61E18F21AA87D5E00E4FAB9 /* Overlays */,
+				9F43A6DE1B16109F007832B7 /* Segments */,
 				E699062C1AFB9684005ED143 /* Resources */,
 			);
 			path = RTSMediaPlayer;
@@ -294,8 +311,8 @@
 			isa = PBXGroup;
 			children = (
 				C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */,
-				E67D9B161B0EFD1900FF2334 /* RTSMediaPlayerSegment.h */,
 				E67D9B1A1B0EFD1900FF2334 /* RTSMediaPlayerSegmentDataSource.h */,
+				E67D9B161B0EFD1900FF2334 /* RTSMediaPlayerSegment.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -535,6 +552,7 @@
 				E616272C1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m in Sources */,
 				C2246DEC1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
 				C201D9341A9DC9C30016C629 /* RTSMediaPlayerController.m in Sources */,
+				9F43A6E11B1610D0007832B7 /* RTSMediaSegmentsController.m in Sources */,
 				E67FDACA1AFA166F0050DCE6 /* RTSTimelineSlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
