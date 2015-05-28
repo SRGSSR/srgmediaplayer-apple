@@ -53,6 +53,11 @@
  */
 @property (nonatomic, weak) IBOutlet id<RTSTimelineViewDelegate> delegate;
 
+/**
+ *  The currently visible cells
+ */
+- (NSArray *) visibleCells;
+
 @end
 
 /**

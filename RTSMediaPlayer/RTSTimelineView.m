@@ -129,6 +129,8 @@ static void commonInit(RTSTimelineView *self);
 	}
 }
 
+#pragma mark - Visible cells
+
 // The -[UICollectionView indexPathsForVisibleCells] method is not reliable enough. Ask the layout instead
 - (NSArray *) indexPathsForVisibleCells
 {
@@ -147,6 +149,11 @@ static void commonInit(RTSTimelineView *self);
 	return [indexPaths sortedArrayUsingComparator:^(NSIndexPath *indexPath1, NSIndexPath *indexPath2) {
 		return [indexPath1 compare:indexPath2];
 	}];
+}
+
+- (NSArray *) visibleCells
+{
+    return self.collectionView.visibleCells;
 }
 
 @end
