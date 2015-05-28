@@ -13,7 +13,7 @@
 
 - (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {
-	[self.dataSource view:self segmentsForIdentifier:identifier completionHandler:^(NSArray *segments, NSError *error) {
+	[self.dataSource playerOverlayView:self segmentsForIdentifier:identifier completionHandler:^(NSArray *segments, NSError *error) {
 		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"segmentTimeRange" ascending:YES comparator:^NSComparisonResult(NSValue *timeRangeValue1, NSValue *timeRangeValue2) {
 			CMTimeRange timeRange1 = [timeRangeValue1 CMTimeRangeValue];
 			CMTimeRange timeRange2 = [timeRangeValue2 CMTimeRangeValue];
