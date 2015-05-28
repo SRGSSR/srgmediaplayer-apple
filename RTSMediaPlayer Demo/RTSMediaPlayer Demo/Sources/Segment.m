@@ -7,8 +7,7 @@
 
 @interface Segment ()
 
-@property (nonatomic) CMTime segmentStartTime;
-@property (nonatomic) CMTime segmentEndTime;
+@property (nonatomic) CMTimeRange segmentTimeRange;
 @property (nonatomic) UIImage *segmentIconImage;
 
 @property (nonatomic, copy) NSString *title;
@@ -32,8 +31,7 @@
 	
 	if (self = [super init])
 	{
-		self.segmentStartTime = time;
-		self.segmentEndTime = time;
+		self.segmentTimeRange = CMTimeRangeMake(time, kCMTimeZero);
 		
 		NSArray *titleComponents = [title componentsSeparatedByString:@"|"];
 		if ([titleComponents count] > 1)
@@ -67,7 +65,7 @@
 	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; identifier: %@; date: %@; thumbnailURL: %@>",
 			[self class],
 			self,
-			@(CMTimeGetSeconds(self.segmentStartTime)),
+			@(CMTimeGetSeconds(self.segmentTimeRange.start)),
 			self.title,
 			self.identifier,
 			self.date,

@@ -112,7 +112,7 @@
 
 - (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment
 {
-	[self.mediaPlayerController.player seekToTime:segment.segmentStartTime];
+	[self.mediaPlayerController.player seekToTime:segment.segmentTimeRange.start];
 }
 
 #pragma mark - Actions

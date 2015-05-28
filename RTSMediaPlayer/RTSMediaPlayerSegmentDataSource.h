@@ -4,6 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
 
 @protocol RTSMediaPlayerSegmentDataSource <NSObject>
 

@@ -60,12 +60,12 @@ static void commonInit(RTSTimelineSlider *self);
 	for (id<RTSMediaPlayerSegment> segment in self.segments)
 	{	
 		// Skip events not in the timeline
-		if (CMTIME_COMPARE_INLINE(segment.segmentStartTime, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(segment.segmentStartTime, >, CMTimeRangeGetEnd(currentTimeRange)))
+		if (CMTIME_COMPARE_INLINE(segment.segmentTimeRange.start, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(segment.segmentTimeRange.start, >, CMTimeRangeGetEnd(currentTimeRange)))
 		{
 			continue;
 		}
 		
-		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(segment.segmentStartTime) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
+		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(segment.segmentTimeRange.start) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
 		
 		if (segment.segmentIconImage)
 		{
@@ -131,10 +131,10 @@ static void commonInit(RTSTimelineSlider *self);
 - (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {
 	[self.dataSource view:self segmentsForIdentifier:identifier completionHandler:^(NSArray *segments, NSError *error) {
-		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"segmentStartTime" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
-			CMTime time1 = [timeValue1 CMTimeValue];
-			CMTime time2 = [timeValue2 CMTimeValue];
-			return CMTimeCompare(time1, time2);
+		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"segmentTimeRange" ascending:YES comparator:^NSComparisonResult(NSValue *timeRangeValue1, NSValue *timeRangeValue2) {
+			CMTimeRange timeRange1 = [timeRangeValue1 CMTimeRangeValue];
+			CMTimeRange timeRange2 = [timeRangeValue2 CMTimeRangeValue];
+			return CMTimeCompare(timeRange1.start, timeRange2.start);
 		}];
 		[self reloadWithSegments:[segments sortedArrayUsingDescriptors:@[sortDescriptor]]];
 	}];

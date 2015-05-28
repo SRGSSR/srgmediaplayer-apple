@@ -14,10 +14,10 @@
 - (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {
 	[self.dataSource view:self segmentsForIdentifier:identifier completionHandler:^(NSArray *segments, NSError *error) {
-		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"segmentStartTime" ascending:YES comparator:^NSComparisonResult(NSValue *timeValue1, NSValue *timeValue2) {
-			CMTime time1 = [timeValue1 CMTimeValue];
-			CMTime time2 = [timeValue2 CMTimeValue];
-			return CMTimeCompare(time1, time2);
+		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"segmentTimeRange" ascending:YES comparator:^NSComparisonResult(NSValue *timeRangeValue1, NSValue *timeRangeValue2) {
+			CMTimeRange timeRange1 = [timeRangeValue1 CMTimeRangeValue];
+			CMTimeRange timeRange2 = [timeRangeValue2 CMTimeRangeValue];
+			return CMTimeCompare(timeRange1.start, timeRange2.start);
 		}];
 		[self reloadWithSegments:[segments sortedArrayUsingDescriptors:@[sortDescriptor]]];
 	}];

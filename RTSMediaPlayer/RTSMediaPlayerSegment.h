@@ -16,8 +16,7 @@
 /**
  *  Segment start and end times (might be identical)
  */
-@property (nonatomic, readonly) CMTime segmentStartTime;
-@property (nonatomic, readonly) CMTime segmentEndTime;
+@property (nonatomic, readonly) CMTimeRange segmentTimeRange;
 
 /**
  *  An icon to use in the timeline slider (recommended size is 15 x 15 points)
