@@ -3,19 +3,16 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import "RTSTimelineView.h"
-
-#import <RTSMediaPlayer/RTSMediaPlayerController.h>
 #import <AVFoundation/AVFoundation.h>
+#import <RTSMediaPlayer/RTSMediaPlayerController.h>
+#import <RTSMediaPlayer/RTSMediaSegmentsController.h>
+#import "RTSTimelineView.h"
 
 // Function declarations
 static void commonInit(RTSTimelineView *self);
 
 @interface RTSTimelineView ()
-
-@property (nonatomic) NSArray *segments;
 @property (nonatomic, weak) UICollectionView *collectionView;
-
 @end
 
 @implementation RTSTimelineView
@@ -82,7 +79,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaPlayerSegment>)segment
 {
-	NSInteger index = [self.segments indexOfObject:segment];
+	NSInteger index = [self.segmentsController.visibleSegments indexOfObject:segment];
 	if (index == NSNotFound)
 	{
 		return nil;
@@ -94,22 +91,24 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - RTSMediaPlayerSegmentView protocol
 
-- (void) reloadWithSegments:(NSArray *)segments
+- (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {
-	self.segments = segments;
-	[self.collectionView reloadData];
+	[self.segmentsController reloadDataForIdentifier:identifier
+										onCompletion:^{
+											[self.collectionView reloadData];
+										}];
 }
 
 #pragma mark - UICollectionViewDataSource protocol
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-	return self.segments.count;
+	return self.segmentsController.visibleSegments.count;
 }
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	id<RTSMediaPlayerSegment> segment = self.segments[indexPath.row];
+	id<RTSMediaPlayerSegment> segment = self.segmentsController.visibleSegments[indexPath.row];
 	return [self.delegate timelineView:self cellForSegment:segment];
 }
 
@@ -117,7 +116,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	id<RTSMediaPlayerSegment> segment = self.segments[indexPath.row];
+	id<RTSMediaPlayerSegment> segment = self.segmentsController.visibleSegments[indexPath.row];
 	
 	if ([self.delegate respondsToSelector:@selector(timelineView:didSelectSegment:)])
 	{
@@ -154,7 +153,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) scrollToSegment:(id<RTSMediaPlayerSegment>)segment animated:(BOOL)animated
 {
-	NSInteger segmentIndex = [self.segments indexOfObject:segment];
+	NSInteger segmentIndex = [self.segmentsController.visibleSegments indexOfObject:segment];
 	if (segmentIndex == NSNotFound)
 	{
 		return;
@@ -167,7 +166,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) scrollToSegmentAtTime:(CMTime)time animated:(BOOL)animated
 {
-	for (id<RTSMediaPlayerSegment> segment in self.segments)
+	for (id<RTSMediaPlayerSegment> segment in self.segmentsController.visibleSegments)
 	{
 		if (CMTimeRangeContainsTime(segment.segmentTimeRange, time))
 		{

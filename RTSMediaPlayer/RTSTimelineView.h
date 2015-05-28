@@ -3,12 +3,14 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentView.h>
 
-#import <UIKit/UIKit.h>
-
+@class RTSMediaSegmentsController;
 @class RTSMediaPlayerController;
+
 @protocol RTSTimelineViewDelegate;
 
 /**
@@ -21,7 +23,9 @@
  *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual 
  *  UICollectionView
  */
-@interface RTSTimelineView : RTSMediaPlayerSegmentView <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface RTSTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
+
+@property (nonatomic, weak) IBOutlet RTSMediaSegmentsController *segmentsController;
 
 /**
  *  The width of cells within the timeline. Defaults to 60
@@ -39,6 +43,8 @@
  */
 - (void) registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 - (void) registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
+
+- (void) reloadSegmentsForIdentifier:(NSString *)identifier;
 
 /**
  *  Dequeue a reusable cell for a given segment

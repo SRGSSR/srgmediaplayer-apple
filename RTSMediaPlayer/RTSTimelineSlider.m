@@ -4,18 +4,13 @@
 //
 
 #import "RTSTimelineSlider.h"
-
-#import "NSBundle+RTSMediaPlayer.h"
 #import "RTSMediaPlayerController.h"
+#import "RTSMediaSegmentsController.h"
+#import "NSBundle+RTSMediaPlayer.h"
+
 
 // Function declarations
 static void commonInit(RTSTimelineSlider *self);
-
-@interface RTSTimelineSlider ()
-
-@property (nonatomic) NSArray *segments;
-
-@end
 
 @implementation RTSTimelineSlider
 
@@ -57,7 +52,7 @@ static void commonInit(RTSTimelineSlider *self);
 	CGFloat thumbStartXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.minimumValue]);
 	CGFloat thumbEndXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.maximumValue]);
 	
-	for (id<RTSMediaPlayerSegment> segment in self.segments)
+	for (id<RTSMediaPlayerSegment> segment in self.segmentsController.visibleSegments)
 	{	
 		// Skip events not in the timeline
 		if (CMTIME_COMPARE_INLINE(segment.segmentTimeRange.start, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(segment.segmentTimeRange.start, >, CMTimeRangeGetEnd(currentTimeRange)))
@@ -130,20 +125,9 @@ static void commonInit(RTSTimelineSlider *self);
 
 - (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {
-	[self.dataSource playerOverlayView:self segmentsForIdentifier:identifier completionHandler:^(NSArray *segments, NSError *error) {
-		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"segmentTimeRange" ascending:YES comparator:^NSComparisonResult(NSValue *timeRangeValue1, NSValue *timeRangeValue2) {
-			CMTimeRange timeRange1 = [timeRangeValue1 CMTimeRangeValue];
-			CMTimeRange timeRange2 = [timeRangeValue2 CMTimeRangeValue];
-			return CMTimeCompare(timeRange1.start, timeRange2.start);
-		}];
-		[self reloadWithSegments:[segments sortedArrayUsingDescriptors:@[sortDescriptor]]];
+	[self.segmentsController reloadDataForIdentifier:identifier onCompletion:^{
+		[self setNeedsDisplay];
 	}];
-}
-
-- (void) reloadWithSegments:(NSArray *)segments
-{
-	self.segments = segments;
-	[self setNeedsDisplay];
 }
 
 #pragma mark - Gestures

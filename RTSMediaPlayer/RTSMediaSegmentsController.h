@@ -6,16 +6,18 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "RTSMediaPlayerSegmentDataSource.h"
-#import "RTSMediaPlayerSegment.h"
-#import "RTSMediaPlayerController.h"
+#import <UIKit/UIKit.h>
+
+@class RTSMediaPlayerController;
+@protocol RTSMediaPlayerSegment;
+@protocol RTSMediaPlayerSegmentDataSource;
 
 @interface RTSMediaSegmentsController : NSObject
 
-- (instancetype)initWithPlayerController:(RTSMediaPlayerController *)playerController
-                          fullLenghMedia:(id<RTSMediaPlayerSegment>)media
-                                segments:(NSArray<RTSMediaPlayerSegment> *)segments;
+@property(nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;
+@property(nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentDataSource> dataSource;
+
+- (void)reloadDataForIdentifier:(NSString *)identifier onCompletion:(void (^)(void))completionBlock;
 
 /**
  *  The count of segments.

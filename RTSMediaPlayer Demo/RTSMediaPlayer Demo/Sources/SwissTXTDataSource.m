@@ -40,14 +40,14 @@
 
 #pragma mark - RTSMediaPlayerSegmentDataSource protocol
 
-- (void) view:(UIView *)view segmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+- (void)segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier onCompletion:(RTSMediaPlayerSegmentCompletionBlock)completionBlock
 {
 	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", identifier];
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
 	[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
 		if (error)
 		{
-			completionHandler ? completionHandler(nil, error) : nil;
+			completionBlock ? completionBlock(nil, nil, error) : nil;
 			return;
 		}
 		
@@ -55,7 +55,7 @@
 		if (!responseObject || ![responseObject isKindOfClass:[NSArray class]])
 		{
 			NSError *parseError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotParseResponse userInfo:nil];
-			completionHandler ? completionHandler(nil, parseError) : nil;
+			completionBlock ? completionBlock(nil, nil, parseError) : nil;
 			return;
 		}
 		
@@ -74,7 +74,7 @@
 			}
 		}
 		
-		completionHandler ? completionHandler([NSArray arrayWithArray:segments], nil) : nil;
+		completionBlock ? completionBlock(nil, [NSArray arrayWithArray:segments], nil) : nil;
 	}];
 }
 

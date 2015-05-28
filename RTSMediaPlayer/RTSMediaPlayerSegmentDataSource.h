@@ -4,16 +4,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
-#import <RTSMediaPlayer/RTSMediaSegmentsController.h>
+
+@class RTSMediaSegmentsController;
+@protocol RTSMediaPlayerSegment;
+
+typedef void (^RTSMediaPlayerSegmentCompletionBlock)(id<RTSMediaPlayerSegment>fullLength, NSArray *segments, NSError *error);
 
 @protocol RTSMediaPlayerSegmentDataSource <NSObject>
 
-@required
-- (void)playerOverlayView:(UIView *)view
-    segmentsForIdentifier:(NSString *)identifier
-        completionHandler:(void (^)(NSArray *segments, NSError *error))completionHandler;
-
-- (RTSMediaSegmentsController *)playerOverlayView:(UIView *)view segmentControllerForIdentifier:(NSString *)identifier;
+- (void)segmentsController:(RTSMediaSegmentsController *)controller
+	 segmentsForIdentifier:(NSString *)identifier
+			  onCompletion:(RTSMediaPlayerSegmentCompletionBlock)completionBlock;
 
 @end

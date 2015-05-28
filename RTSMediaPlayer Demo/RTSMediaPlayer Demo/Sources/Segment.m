@@ -50,6 +50,16 @@
 	return self;
 }
 
+- (BOOL)isBlocked
+{
+	return NO;
+}
+
+- (BOOL)isVisible
+{
+	return YES;
+}
+
 #pragma mark - Getters and setters
 
 - (NSURL *) thumbnailURL

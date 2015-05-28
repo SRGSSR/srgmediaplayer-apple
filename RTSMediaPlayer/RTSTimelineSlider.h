@@ -22,7 +22,7 @@
 /**
  *  The timeline data source
  */
-@property (nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentDataSource> dataSource;
+@property (nonatomic, weak) IBOutlet RTSMediaSegmentsController *segmentsController;
 
 /**
  *  Call this method to trigger a reload of the segments from the data source
