@@ -5,7 +5,7 @@
 
 #import <Foundation/Foundation.h>
 #import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
-#import <RTSMediaPlayer/RTSMediaPlayerSegmentController.h>
+#import <RTSMediaPlayer/RTSMediaSegmentsController.h>
 
 @protocol RTSMediaPlayerSegmentDataSource <NSObject>
 
@@ -14,6 +14,6 @@
     segmentsForIdentifier:(NSString *)identifier
         completionHandler:(void (^)(NSArray *segments, NSError *error))completionHandler;
 
-- (
+- (RTSMediaSegmentsController *)playerOverlayView:(UIView *)view segmentControllerForIdentifier:(NSString *)identifier;
 
 @end
