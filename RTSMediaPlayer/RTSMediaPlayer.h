@@ -14,6 +14,7 @@
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentView.h>
 #import <RTSMediaPlayer/RTSMediaPlayerViewController.h>
+#import <RTSMediaPlayer/RTSMediaSegmentsController.h>
 #import <RTSMediaPlayer/RTSTimeSlider.h>
 #import <RTSMediaPlayer/RTSTimelineSlider.h>
 #import <RTSMediaPlayer/RTSTimelineView.h>
