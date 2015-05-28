@@ -3,6 +3,7 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
+#import <CoreMedia/CoreMedia.h>
 #import <UIKit/UIKit.h>
 
 @class RTSMediaPlayerController;
@@ -16,5 +17,10 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *timeLeftValueLabel;
 @property (nonatomic, weak) IBOutlet UILabel *valueLabel;
+
+/**
+ *  Return the time currently displayed by the slider
+ */
+@property (nonatomic, readonly) CMTime time;
 
 @end

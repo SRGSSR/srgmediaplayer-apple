@@ -201,6 +201,13 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}
 }
 
+- (CMTime) time
+{
+    CMTimeRange currentTimeRange = [self currentTimeRange];
+    Float64 timeInSeconds = CMTimeGetSeconds(currentTimeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(currentTimeRange.duration) / (self.maximumValue - self.minimumValue);
+    return CMTimeMakeWithSeconds(timeInSeconds, 1.);
+}
+
 - (void) updateTimeRangeLabels
 {
 	CMTimeRange currentTimeRange = [self currentTimeRange];
