@@ -4,7 +4,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RTSMediaPlayerController.h"
+#import <RTSMediaPlayer/RTSMediaPlayerController.h>
 
 @interface RTSMediaFailureOverlayView : UIView
 

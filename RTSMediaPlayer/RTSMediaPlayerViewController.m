@@ -5,9 +5,11 @@
 
 #import "RTSMediaPlayerViewController.h"
 
-#import <RTSMediaPlayer/NSBundle+RTSMediaPlayer.h>
-#import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
-#import <RTSMediaPlayer/RTSMediaPlayerController.h>
+#import "NSBundle+RTSMediaPlayer.h"
+#import "RTSMediaPlayerController.h"
+#import "RTSMediaPlayerPlaybackButton.h"
+#import "RTSTimeSlider.h"
+#import "RTSVolumeView.h"
 
 @interface RTSMediaPlayerViewController () <RTSMediaPlayerControllerDataSource>
 

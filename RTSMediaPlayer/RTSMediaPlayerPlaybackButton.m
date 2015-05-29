@@ -4,8 +4,8 @@
 //
 
 #import "RTSMediaPlayerPlaybackButton.h"
-#import <RTSMediaPlayer/RTSMediaPlayerController.h>
 
+#import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerIconTemplate.h"
 
 @implementation RTSMediaPlayerPlaybackButton

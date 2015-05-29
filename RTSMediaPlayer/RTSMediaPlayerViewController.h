@@ -6,8 +6,6 @@
 #import <UIKit/UIKit.h>
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 
-@class RTSMediaPlayerPlaybackButton, RTSTimeSlider, RTSVolumeView;
-
 /**
  *  RTSMediaPlayerViewController is inspired by the MPMoviePlayerViewController class.
  *  The RTSMediaPlayerViewController class implements a simple view controller for displaying full-screen movies. It mimics the default iOS Movie player based on MPMoviePlayerViewController.
