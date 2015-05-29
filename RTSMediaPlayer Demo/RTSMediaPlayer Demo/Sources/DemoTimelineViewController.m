@@ -29,26 +29,6 @@
 
 #pragma mark - Getters and setters
 
-- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-{
-	if (_mediaPlayerController)
-	{
-		[[NSNotificationCenter defaultCenter] removeObserver:self
-														name:RTSMediaPlayerPlaybackDidFailNotification
-													  object:_mediaPlayerController];
-	}
-	
-	_mediaPlayerController = mediaPlayerController;
-	
-	if (mediaPlayerController)
-	{
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(playbackDidFail:)
-													 name:RTSMediaPlayerPlaybackDidFailNotification
-												   object:mediaPlayerController];
-	}
-}
-
 - (void) setVideoIdentifier:(NSString *)videoIdentifier
 {
 	_videoIdentifier = videoIdentifier;
@@ -148,20 +128,6 @@
 - (IBAction) goToLive:(id)sender
 {
 	[self.mediaPlayerController.player seekToTime:self.mediaPlayerController.player.currentItem.duration];
-}
-
-#pragma mark - Notifications
-
-- (void) playbackDidFail:(NSNotification *)notifications
-{
-	[self dismissViewControllerAnimated:YES completion:nil];
-	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-														message:@"The video could not be played"
-													   delegate:nil
-											  cancelButtonTitle:@"Dismiss"
-											  otherButtonTitles:nil];
-	[alertView show];
 }
 
 @end

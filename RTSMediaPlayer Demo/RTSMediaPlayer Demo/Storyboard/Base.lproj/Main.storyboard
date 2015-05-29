@@ -3,7 +3,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -469,29 +468,44 @@
                                     <action selector="dismiss:" destination="eMv-Af-zLT" eventType="touchUpInside" id="vLR-d7-RuO"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u8j-dZ-bA3" customClass="RTSMediaFailureOverlayView">
+                                <rect key="frame" x="30" y="214" width="540" height="171"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mpV-BM-AVp" userLabel="Text Label">
+                                        <rect key="frame" x="8" y="8" width="524" height="155"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="mpV-BM-AVp" firstAttribute="leading" secondItem="u8j-dZ-bA3" secondAttribute="leading" constant="8" id="9xY-TE-bah"/>
+                                    <constraint firstItem="mpV-BM-AVp" firstAttribute="top" secondItem="u8j-dZ-bA3" secondAttribute="top" constant="8" id="E0E-ey-DO1"/>
+                                    <constraint firstAttribute="bottom" secondItem="mpV-BM-AVp" secondAttribute="bottom" constant="8" id="Eev-I7-fzp"/>
+                                    <constraint firstAttribute="height" constant="171" id="UtM-Uh-978"/>
+                                    <constraint firstAttribute="trailing" secondItem="mpV-BM-AVp" secondAttribute="trailing" constant="8" id="l2r-qs-s7C"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="fql-Q4-141"/>
+                                    <outlet property="textLabel" destination="mpV-BM-AVp" id="erX-am-Kfy"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Atp-kj-ZMO" secondAttribute="trailing" id="04a-8q-590"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="PcP-7w-FSg" secondAttribute="trailing" constant="-6" id="L4p-xV-SBf"/>
+                            <constraint firstAttribute="centerY" secondItem="u8j-dZ-bA3" secondAttribute="centerY" constant="0.5" id="0dX-JK-ZJm"/>
                             <constraint firstItem="x2p-Nx-m7K" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="NWE-TH-uE1"/>
                             <constraint firstAttribute="trailing" secondItem="PcP-7w-FSg" secondAttribute="trailing" constant="10" id="Wbl-IN-QRe"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="Yen-y8-iQF"/>
                             <constraint firstAttribute="trailing" secondItem="x2p-Nx-m7K" secondAttribute="trailing" id="cP9-lE-dc6"/>
                             <constraint firstItem="PcP-7w-FSg" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="10" id="mh9-Ki-5Eq"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="top" secondItem="x2p-Nx-m7K" secondAttribute="bottom" id="nQ7-xu-Axe"/>
-                            <constraint firstItem="PcP-7w-FSg" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="10" id="rQ8-Pm-fKe"/>
-                            <constraint firstItem="PcP-7w-FSg" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="-10" id="x82-oy-fPb"/>
+                            <constraint firstItem="u8j-dZ-bA3" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" constant="30" id="vsS-SQ-H6M"/>
+                            <constraint firstAttribute="trailing" secondItem="u8j-dZ-bA3" secondAttribute="trailing" constant="30" id="yfD-4J-qqb"/>
                             <constraint firstItem="FIy-lE-a4L" firstAttribute="top" secondItem="Atp-kj-ZMO" secondAttribute="bottom" id="zgy-JH-Op8"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="L4p-xV-SBf"/>
-                                <exclude reference="rQ8-Pm-fKe"/>
-                                <exclude reference="x82-oy-fPb"/>
-                            </mask>
-                        </variation>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="ZJb-q3-O5V" appends="YES" id="fuS-dv-6je"/>
                             <outletCollection property="gestureRecognizers" destination="O5a-UB-gQZ" appends="YES" id="rSk-g2-s9Q"/>

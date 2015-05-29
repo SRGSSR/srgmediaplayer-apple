@@ -8,6 +8,8 @@
 
 @interface RTSMediaFailureOverlayView : UIView
 
-@property (nonatomic, weak) RTSMediaPlayerController *mediaPlayerController;
+@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+
+@property (nonatomic, weak) IBOutlet UILabel *textLabel;
 
 @end

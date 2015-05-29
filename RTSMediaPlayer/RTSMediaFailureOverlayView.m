@@ -34,11 +34,14 @@
 - (void) mediaPlayerPlaybackDidFailNotification:(NSNotification *)notification
 {
 	self.hidden = NO;
+	
+	NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
+	self.textLabel.text = [error localizedDescription];
 }
 
 - (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
-	if(self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePreparing)
+	if(self.mediaPlayerController.playbackState == RTSMediaPlaybackStateReady)
 	{
 		self.hidden = YES;
 	}
