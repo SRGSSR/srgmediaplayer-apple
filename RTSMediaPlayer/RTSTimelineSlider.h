@@ -4,7 +4,6 @@
 //
 
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
-#import <RTSMediaPlayer/RTSMediaPlayerSegmentView.h>
 #import <RTSMediaPlayer/RTSTimeSlider.h>
 
 @class RTSMediaPlayerController;

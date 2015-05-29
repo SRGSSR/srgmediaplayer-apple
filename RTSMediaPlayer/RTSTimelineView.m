@@ -3,10 +3,12 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import <AVFoundation/AVFoundation.h>
-#import <RTSMediaPlayer/RTSMediaPlayerController.h>
-#import <RTSMediaPlayer/RTSMediaSegmentsController.h>
 #import "RTSTimelineView.h"
+
+#import <AVFoundation/AVFoundation.h>
+#import "RTSMediaPlayerController.h"
+#import "RTSMediaPlayerSegment.h"
+#import "RTSMediaSegmentsController.h"
 
 // Function declarations
 static void commonInit(RTSTimelineView *self);
@@ -91,7 +93,7 @@ static void commonInit(RTSTimelineView *self);
 	return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 }
 
-#pragma mark - RTSMediaPlayerSegmentView protocol
+#pragma mark - Data
 
 - (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {

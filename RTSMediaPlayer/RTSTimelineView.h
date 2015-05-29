@@ -3,10 +3,9 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
+#import <CoreMedia/CoreMedia.h>
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
-#import <RTSMediaPlayer/RTSMediaPlayerSegmentView.h>
+#import <UIKit/UIKit.h>
 
 @class RTSMediaSegmentsController;
 @class RTSMediaPlayerController;
