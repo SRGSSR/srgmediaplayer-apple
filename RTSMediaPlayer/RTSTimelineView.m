@@ -98,6 +98,7 @@ static void commonInit(RTSTimelineView *self);
 - (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {
 	[self.segmentsController reloadDataForIdentifier:identifier withCompletionHandler:^{
+        self.hidden = (self.segmentsController.visibleSegments.count == 0);        
 		[self.collectionView reloadData];
 	}];
 }
@@ -231,4 +232,6 @@ static void commonInit(RTSTimelineView *self)
 	
 	self.itemWidth = 60.f;
 	self.itemSpacing = 4.f;
+    
+    self.hidden = YES;
 }
