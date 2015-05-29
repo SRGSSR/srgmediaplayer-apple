@@ -7,6 +7,6 @@
 #import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
 #import <Foundation/Foundation.h>
 
-@interface SwissTXTDataSource : NSObject <RTSMediaPlayerControllerDataSource, RTSMediaPlayerSegmentDataSource>
+@interface SwissTXTDataSource : NSObject <RTSMediaPlayerControllerDataSource, RTSMediaSegmentsDataSource>
 
 @end

@@ -10,12 +10,12 @@
 
 @class RTSMediaPlayerController;
 @protocol RTSMediaPlayerSegment;
-@protocol RTSMediaPlayerSegmentDataSource;
+@protocol RTSMediaSegmentsDataSource;
 
 @interface RTSMediaSegmentsController : NSObject
 
 @property(nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;
-@property(nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentDataSource> dataSource;
+@property(nonatomic, weak) IBOutlet id<RTSMediaSegmentsDataSource> dataSource;
 
 - (void)reloadDataForIdentifier:(NSString *)identifier withCompletionHandler:(void (^)(void))completionHandler;
 

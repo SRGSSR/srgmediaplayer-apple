@@ -8,12 +8,12 @@
 @class RTSMediaSegmentsController;
 @protocol RTSMediaPlayerSegment;
 
-typedef void (^RTSMediaPlayerSegmentCompletionHandler)(id<RTSMediaPlayerSegment> fullLength, NSArray *segments, NSError *error);
+typedef void (^RTSMediaSegmentsCompletionHandler)(id<RTSMediaPlayerSegment> fullLength, NSArray *segments, NSError *error);
 
-@protocol RTSMediaPlayerSegmentDataSource <NSObject>
+@protocol RTSMediaSegmentsDataSource <NSObject>
 
 - (void)segmentsController:(RTSMediaSegmentsController *)controller
 	 segmentsForIdentifier:(NSString *)identifier
-	 withCompletionHandler:(RTSMediaPlayerSegmentCompletionHandler)completionHandler;
+	 withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler;
 
 @end
