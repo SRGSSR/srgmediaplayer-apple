@@ -117,10 +117,15 @@ NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
 #pragma mark - RTSMediaPlayerControllerDataSource 
 
 // Used when initialized with `initWithContentURL:`
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
+- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+	  contentURLForIdentifier:(NSString *)identifier
+			completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
 {
-	if (!identifier)
-		@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Trying to play a media with a nil identifier." userInfo:nil];
+	if (!identifier) {
+		@throw [NSException exceptionWithName:NSInternalInconsistencyException
+									   reason:@"Trying to play a media with a nil identifier."
+									 userInfo:nil];
+	}
 	
 	completionHandler([NSURL URLWithString:identifier], nil);
 }
@@ -190,7 +195,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[preparing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
         if (!self.dataSource) {
-			@throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"RTSMediaPlayerController dataSource can not be nil." userInfo:nil];
+			@throw [NSException exceptionWithName:NSInternalInconsistencyException
+										   reason:@"RTSMediaPlayerController dataSource can not be nil."
+										 userInfo:nil];
         }
 		
 		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
