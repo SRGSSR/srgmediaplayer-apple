@@ -8,9 +8,9 @@
 @interface Segment ()
 
 @property (nonatomic) CMTimeRange segmentTimeRange;
-@property (nonatomic) UIImage *segmentIconImage;
 
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic) UIImage *iconImage;
 @property (nonatomic, copy) NSString *identifier;
 @property (nonatomic) NSDate *date;
 
@@ -36,7 +36,7 @@
 		NSArray *titleComponents = [title componentsSeparatedByString:@"|"];
 		if ([titleComponents count] > 1)
 		{
-			self.segmentIconImage = [UIImage imageNamed:[titleComponents firstObject]];
+			self.iconImage = [UIImage imageNamed:[titleComponents firstObject]];
 			self.title = [titleComponents objectAtIndex:1];
 		}
 		else

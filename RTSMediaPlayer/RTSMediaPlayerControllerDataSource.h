@@ -9,7 +9,6 @@
 
 @protocol RTSMediaPlayerControllerDataSource <NSObject>
 
-@required
 - (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler;
 
 @end

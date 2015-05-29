@@ -24,7 +24,7 @@
 {
 	_segment = segment;
 	
-	self.iconImageView.image = segment.segmentIconImage;
+	self.iconImageView.image = segment.iconImage;
 	self.titleLabel.text = segment.title;
 	
 	static NSDateFormatter *s_dateFormatter;

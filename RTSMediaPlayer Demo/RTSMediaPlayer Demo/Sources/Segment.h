@@ -11,6 +11,7 @@
 - (instancetype) initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier date:(NSDate *)date;
 
 @property (nonatomic, readonly, copy) NSString *title;
+@property (nonatomic, readonly) UIImage *iconImage;
 @property (nonatomic, readonly) NSURL *thumbnailURL;
 @property (nonatomic, readonly) NSDate *date;
 

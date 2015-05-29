@@ -70,7 +70,12 @@ static void commonInit(RTSTimelineSlider *self);
 		
 		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(segment.segmentTimeRange.start) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
 		
-		if (segment.segmentIconImage)
+		UIImage *iconImage = nil;
+		if ([self.delegate respondsToSelector:@selector(timelineSlider:iconImageForSegment:)]) {
+			iconImage = [self.delegate timelineSlider:self iconImageForSegment:segment];
+		}
+		
+		if (iconImage)
 		{
 			CGFloat iconSide = 15.f;
 			
@@ -78,7 +83,7 @@ static void commonInit(RTSTimelineSlider *self);
 										 CGRectGetMidY(trackRect) - iconSide / 2.f,
 										 iconSide,
 										 iconSide);
-			[segment.segmentIconImage drawInRect:tickRect];
+			[iconImage drawInRect:tickRect];
 		}
 		else
 		{

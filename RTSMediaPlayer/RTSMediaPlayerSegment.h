@@ -5,11 +5,9 @@
 
 #import <CoreMedia/CoreMedia.h>
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 /**
- *  Describe a media segment. Can also represent a point in time when segment start and end times are
- *  identical
+ *  Describe a media segment
  */
 @protocol RTSMediaPlayerSegment <NSObject>
 
@@ -18,12 +16,7 @@
  */
 @property (nonatomic, readonly) CMTimeRange segmentTimeRange;
 
-/**
- *  An icon to use in the timeline slider (recommended size is 15 x 15 points)
- */
-@property (nonatomic, readonly) UIImage *segmentIconImage;
-
-- (BOOL)isBlocked; // For whatever reason...
-- (BOOL)isVisible;
+@property (nonatomic, readonly, getter=isBlocked) BOOL blocked;
+@property (nonatomic, readonly, getter=isVisible) BOOL visible;
 
 @end

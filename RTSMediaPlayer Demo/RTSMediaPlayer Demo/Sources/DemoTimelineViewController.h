@@ -6,7 +6,7 @@
 #import <RTSMediaPlayer/RTSMediaPlayer.h>
 #import <UIKit/UIKit.h>
 
-@interface DemoTimelineViewController : UIViewController <RTSTimelineViewDelegate>
+@interface DemoTimelineViewController : UIViewController <RTSTimelineSliderDelegate, RTSTimelineViewDelegate>
 
 @property (nonatomic, copy) NSString *videoIdentifier;
 
