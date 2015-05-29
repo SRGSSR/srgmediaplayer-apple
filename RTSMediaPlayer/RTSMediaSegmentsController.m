@@ -20,7 +20,7 @@
 
 @implementation RTSMediaSegmentsController
 
-- (void)reloadDataForIdentifier:(NSString *)identifier onCompletion:(void (^)(void))completionBlock
+- (void)reloadDataForIdentifier:(NSString *)identifier withCompletionHandler:(void (^)(void))completionHandler
 {
 	NSParameterAssert(identifier);
 	
@@ -30,7 +30,7 @@
 
 	[self.dataSource segmentsController:self
 				  segmentsForIdentifier:identifier
-						   onCompletion:^(id<RTSMediaPlayerSegment> fullLength, NSArray *segments, NSError *error) {
+				  withCompletionHandler:^(id<RTSMediaPlayerSegment> fullLength, NSArray *segments, NSError *error) {
 							  if (error) {
 								  // Handle error.
 								  return;
@@ -70,8 +70,8 @@
 							  NSAssert(self.indexMapping.count == self.segments.count,
 									   @"One must have the same number of index for mapping as we have segments.");
 							  
-							  if (completionBlock) {
-								  completionBlock();
+							  if (completionHandler) {
+								  completionHandler();
 							  }
 						  }];
 }

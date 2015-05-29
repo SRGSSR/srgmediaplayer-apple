@@ -139,7 +139,7 @@ static void commonInit(RTSTimelineSlider *self);
 
 - (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {
-	[self.segmentsController reloadDataForIdentifier:identifier onCompletion:^{
+	[self.segmentsController reloadDataForIdentifier:identifier withCompletionHandler:^{
 		[self setNeedsDisplay];
 	}];
 }

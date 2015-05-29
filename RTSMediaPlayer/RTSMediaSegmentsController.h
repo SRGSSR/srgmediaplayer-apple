@@ -17,7 +17,7 @@
 @property(nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;
 @property(nonatomic, weak) IBOutlet id<RTSMediaPlayerSegmentDataSource> dataSource;
 
-- (void)reloadDataForIdentifier:(NSString *)identifier onCompletion:(void (^)(void))completionBlock;
+- (void)reloadDataForIdentifier:(NSString *)identifier withCompletionHandler:(void (^)(void))completionHandler;
 
 /**
  *  The count of segments.
