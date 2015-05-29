@@ -190,6 +190,9 @@
 			children = (
 				9F43A6DF1B1610D0007832B7 /* RTSMediaSegmentsController.h */,
 				9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */,
+				E65786A21AEFAD68007730CE /* RTSTimelineView.h */,
+				E6A6D0E31AFA017600E15BCF /* RTSTimelineView+Private.h */,
+				E65786A31AEFAD68007730CE /* RTSTimelineView.m */,
 			);
 			name = Segments;
 			sourceTree = "<group>";
@@ -237,9 +240,6 @@
 				B61E18F41AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.m */,
 				E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */,
 				E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */,
-				E65786A21AEFAD68007730CE /* RTSTimelineView.h */,
-				E65786A31AEFAD68007730CE /* RTSTimelineView.m */,
-				E6A6D0E31AFA017600E15BCF /* RTSTimelineView+Private.h */,
 				B61E18FA1AA9EEDB00E4FAB9 /* RTSTimeSlider.h */,
 				B61E18FB1AA9EEDB00E4FAB9 /* RTSTimeSlider.m */,
 				B61E19061AA9F3B900E4FAB9 /* RTSVolumeView.h */,
