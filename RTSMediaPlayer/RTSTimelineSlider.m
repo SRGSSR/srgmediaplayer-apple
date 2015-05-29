@@ -4,10 +4,10 @@
 //
 
 #import "RTSTimelineSlider.h"
+
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaSegmentsController.h"
 #import "NSBundle+RTSMediaPlayer.h"
-
 
 // Function declarations
 static void commonInit(RTSTimelineSlider *self);
@@ -62,7 +62,8 @@ static void commonInit(RTSTimelineSlider *self);
 	for (id<RTSMediaPlayerSegment> segment in self.segmentsController.visibleSegments)
 	{	
 		// Skip events not in the timeline
-		if (CMTIME_COMPARE_INLINE(segment.segmentTimeRange.start, < , currentTimeRange.start) || CMTIME_COMPARE_INLINE(segment.segmentTimeRange.start, >, CMTimeRangeGetEnd(currentTimeRange)))
+		if (CMTIME_COMPARE_INLINE(segment.segmentTimeRange.start, < , currentTimeRange.start)
+			|| CMTIME_COMPARE_INLINE(segment.segmentTimeRange.start, >, CMTimeRangeGetEnd(currentTimeRange)))
 		{
 			continue;
 		}

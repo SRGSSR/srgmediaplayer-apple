@@ -12,7 +12,9 @@
 static void commonInit(RTSTimelineView *self);
 
 @interface RTSTimelineView ()
+
 @property (nonatomic, weak) UICollectionView *collectionView;
+
 @end
 
 @implementation RTSTimelineView
@@ -93,10 +95,9 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {
-	[self.segmentsController reloadDataForIdentifier:identifier
-										onCompletion:^{
-											[self.collectionView reloadData];
-										}];
+	[self.segmentsController reloadDataForIdentifier:identifier onCompletion:^{
+		[self.collectionView reloadData];
+	}];
 }
 
 #pragma mark - UICollectionViewDataSource protocol

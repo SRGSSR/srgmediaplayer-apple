@@ -17,14 +17,18 @@
  *  A view displaying segments associated with a stream as a linear collection of cells
  *
  *  To add a timeline to a custom player layout, simply drag and drop an RTSTimelineView onto the player layout,
- *  and bind its dataSource and delegate outlets. You can of course instantiate and configure the view programatically 
- *  as well. Then call -reloadSegmentsWithIdentifier: when you need to retrieve segments from the data source
+ *  and bind its segment controller and delegate outlets. You can of course instantiate and configure the view 
+ *  programatically as well. Then call -reloadSegmentsWithIdentifier: when you need to retrieve segments from the 
+ *  controller
  *
  *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual 
  *  UICollectionView
  */
 @interface RTSTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
+/**
+ *  The controller which provides segments to the timeline
+ */
 @property (nonatomic, weak) IBOutlet RTSMediaSegmentsController *segmentsController;
 
 /**
@@ -44,6 +48,9 @@
 - (void) registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 - (void) registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
 
+/**
+ *  Call this method to trigger a reload of the segments from the data source
+ */
 - (void) reloadSegmentsForIdentifier:(NSString *)identifier;
 
 /**

@@ -14,13 +14,13 @@
  *  jump at the corresponding location.
  *
  *  To add a slider to a custom player layout, simply drag and drop an RTSTimelineSlider onto the player layout,
- *  and bind its dataSource outlet. You can of course also instantiate and configure the view programmatically.
- *  Then call -reloadSegmentsWithIdentifier: when you need to retrieve segments from the data source
+ *  and bind its segment controller outlet. You can of course also instantiate and configure the view programmatically.
+ *  Then call -reloadSegmentsWithIdentifier: when you need to retrieve segments from the controller
  */
 @interface RTSTimelineSlider : RTSTimeSlider
 
 /**
- *  The timeline data source
+ *  The controller which provides segments to the timeline
  */
 @property (nonatomic, weak) IBOutlet RTSMediaSegmentsController *segmentsController;
 
