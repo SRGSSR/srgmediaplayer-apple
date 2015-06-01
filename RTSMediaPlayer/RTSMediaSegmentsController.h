@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in seconds.
+
 @class RTSMediaPlayerController;
 @protocol RTSMediaPlayerSegment;
 @protocol RTSMediaSegmentsDataSource;

@@ -3,19 +3,22 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import "RTSMediaPlayerError.h"
-#import "RTSMediaPlayerController.h"
-#import "RTSMediaPlayerView.h"
-#import "RTSPlaybackTimeObserver.h"
-#import "RTSActivityGestureRecognizer.h"
-
 #import <objc/runtime.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import <TransitionKit/TransitionKit.h>
 #import <libextobjc/EXTScope.h>
 
+#import "RTSMediaPlayerController.h"
+#import "RTSMediaPlayerController+Private.h"
+
+#import "RTSMediaPlayerError.h"
+#import "RTSMediaPlayerView.h"
+#import "RTSPlaybackTimeObserver.h"
+#import "RTSActivityGestureRecognizer.h"
+
 NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
 
+NSString * const RTSMediaPlayerPlaybackDidPauseUponBlockingNotification = @"RTSMediaPlayerPlaybackDidPauseUponBlocking";
 NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFail";
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
 
@@ -31,23 +34,11 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlay
 
 NSString * const RTSMediaPlayerStateMachineContentURLInfoKey = @"ContentURL";
 NSString * const RTSMediaPlayerStateMachineAutoPlayInfoKey = @"AutoPlay";
+NSString * const RTSMediaPlayerPlaybackDidPauseUponBlockingReasonInfoKey = @"BlockingReason";
 
 @interface RTSMediaPlayerController () <RTSMediaPlayerControllerDataSource, UIGestureRecognizerDelegate>
 
 @property (readonly) TKStateMachine *stateMachine;
-@property (readwrite) TKState *idleState;
-@property (readwrite) TKState *readyState;
-@property (readwrite) TKState *pausedState;
-@property (readwrite) TKState *playingState;
-@property (readwrite) TKState *stalledState;
-@property (readwrite) TKEvent *loadEvent;
-@property (readwrite) TKEvent *loadSuccessEvent;
-@property (readwrite) TKEvent *playEvent;
-@property (readwrite) TKEvent *pauseEvent;
-@property (readwrite) TKEvent *endEvent;
-@property (readwrite) TKEvent *stopEvent;
-@property (readwrite) TKEvent *stallEvent;
-@property (readwrite) TKEvent *resetEvent;
 
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
@@ -238,6 +229,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		[self resetIdleTimer];
+	}];
+	
+	[paused setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		NSDictionary *errorUserInfo = transition.userInfo[RTSMediaPlayerPlaybackDidPauseUponBlockingReasonInfoKey];
+		if (errorUserInfo) {
+			[self postNotificationName:RTSMediaPlayerPlaybackDidPauseUponBlockingNotification userInfo:errorUserInfo];
+		}
 	}];
 	
 	[reset setWillFireEventBlock:^(TKEvent *event, TKTransition *transition) {

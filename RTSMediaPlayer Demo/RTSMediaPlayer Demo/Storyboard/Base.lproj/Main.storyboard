@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Phg-Uc-v1H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Phg-Uc-v1H">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -490,15 +490,40 @@
                                     <outlet property="textLabel" destination="mpV-BM-AVp" id="erX-am-Kfy"/>
                                 </connections>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dos-uE-naI" customClass="RTSMediaBlockingOverlayView">
+                                <rect key="frame" x="30" y="215" width="540" height="171"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z7f-w3-XoY" userLabel="Text Label">
+                                        <rect key="frame" x="8" y="8" width="524" height="155"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Z7f-w3-XoY" secondAttribute="bottom" constant="8" id="7Zw-d8-hrT"/>
+                                    <constraint firstItem="Z7f-w3-XoY" firstAttribute="leading" secondItem="dos-uE-naI" secondAttribute="leading" constant="8" id="DLK-ad-hWV"/>
+                                    <constraint firstItem="Z7f-w3-XoY" firstAttribute="top" secondItem="dos-uE-naI" secondAttribute="top" constant="8" id="LZs-m0-tUs"/>
+                                    <constraint firstAttribute="trailing" secondItem="Z7f-w3-XoY" secondAttribute="trailing" constant="8" id="QQy-To-Z32"/>
+                                    <constraint firstAttribute="height" constant="171" id="xlh-gJ-H5S"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="7AK-0z-Cos"/>
+                                    <outlet property="textLabel" destination="Z7f-w3-XoY" id="tGe-I8-WLj"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Atp-kj-ZMO" secondAttribute="trailing" id="04a-8q-590"/>
                             <constraint firstAttribute="centerY" secondItem="u8j-dZ-bA3" secondAttribute="centerY" constant="0.5" id="0dX-JK-ZJm"/>
+                            <constraint firstItem="dos-uE-naI" firstAttribute="trailing" secondItem="u8j-dZ-bA3" secondAttribute="trailing" id="8CJ-uY-qy3"/>
+                            <constraint firstItem="dos-uE-naI" firstAttribute="centerY" secondItem="t9K-xg-VIe" secondAttribute="centerY" id="NUJ-JQ-qiu"/>
                             <constraint firstItem="x2p-Nx-m7K" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="NWE-TH-uE1"/>
                             <constraint firstAttribute="trailing" secondItem="PcP-7w-FSg" secondAttribute="trailing" constant="10" id="Wbl-IN-QRe"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="Yen-y8-iQF"/>
+                            <constraint firstItem="dos-uE-naI" firstAttribute="leading" secondItem="u8j-dZ-bA3" secondAttribute="leading" id="aoc-sX-JzG"/>
                             <constraint firstAttribute="trailing" secondItem="x2p-Nx-m7K" secondAttribute="trailing" id="cP9-lE-dc6"/>
                             <constraint firstItem="PcP-7w-FSg" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="10" id="mh9-Ki-5Eq"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="top" secondItem="x2p-Nx-m7K" secondAttribute="bottom" id="nQ7-xu-Axe"/>

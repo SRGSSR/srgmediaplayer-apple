@@ -62,6 +62,9 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
  *  -------------------
  */
 
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidPauseUponBlockingNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidPauseUponBlockingReasonInfoKey;
+
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailNotification;
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey; // NSError
 

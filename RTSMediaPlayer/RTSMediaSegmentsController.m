@@ -7,15 +7,23 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
+#import <libextobjc/EXTScope.h>
+
+#import "RTSMediaPlayerController.h"
+#import "RTSMediaPlayerController+Private.h"
+
 #import "RTSMediaSegmentsController.h"
 #import "RTSMediaPlayerSegmentDataSource.h"
 #import "RTSMediaPlayerSegment.h"
+
+NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 
 @interface RTSMediaSegmentsController ()
 @property(nonatomic, strong) id<RTSMediaPlayerSegment> fullLengthSegment;
 @property(nonatomic, strong) NSArray *segments;
 @property(nonatomic, strong) NSArray *episodes;
 @property(nonatomic, strong) NSDictionary *indexMapping;
+@property(nonatomic, strong) id playerTimeObserver;
 @end
 
 @implementation RTSMediaSegmentsController
@@ -24,56 +32,118 @@
 {
 	NSParameterAssert(identifier);
 	
+	if (!self.playerController) {
+		@throw [NSException exceptionWithName:NSInternalInconsistencyException
+									   reason:@"Trying to reload data requires to have a player controller."
+									 userInfo:nil];
+	}
+	
 	if (!self.dataSource) {
 		self.segments = [NSArray new];
 	}
+	
+	if (self.playerController && self.playerTimeObserver) {
+		[self.playerController removePlaybackTimeObserver:self.playerTimeObserver];
+		self.playerTimeObserver = nil;
+	}
 
-	[self.dataSource segmentsController:self
-				  segmentsForIdentifier:identifier
-				  withCompletionHandler:^(id<RTSMediaPlayerSegment> fullLength, NSArray *segments, NSError *error) {
-							  if (error) {
-								  // Handle error.
-								  return;
-							  }
-							  
-							  NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"segmentTimeRange" ascending:YES comparator:^NSComparisonResult(NSValue *timeRangeValue1, NSValue *timeRangeValue2) {
-								  CMTimeRange timeRange1 = [timeRangeValue1 CMTimeRangeValue];
-								  CMTimeRange timeRange2 = [timeRangeValue2 CMTimeRangeValue];
-								  return CMTimeCompare(timeRange1.start, timeRange2.start);
-							  }];
+	RTSMediaSegmentsCompletionHandler block = ^(id<RTSMediaPlayerSegment> fullLength, NSArray *segments, NSError *error) {
+		if (error) {
+			// Handle error.
+			return;
+		}
+		
+		NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"segmentTimeRange"
+															 ascending:YES
+															comparator:^NSComparisonResult(NSValue *timeRangeValue1, NSValue *timeRangeValue2) {
+																CMTimeRange timeRange1 = [timeRangeValue1 CMTimeRangeValue];
+																CMTimeRange timeRange2 = [timeRangeValue2 CMTimeRangeValue];
+																return CMTimeCompare(timeRange1.start, timeRange2.start);
+															}];
 
-							  self.fullLengthSegment = fullLength;
-							  self.segments = [segments sortedArrayUsingDescriptors:@[sortDescriptor]];
-							  
-							  NSMutableArray *episodes = [NSMutableArray array];
-							  NSMutableIndexSet *blockedIndices = [NSMutableIndexSet indexSet];
-							  NSMutableDictionary *indexMapping = [NSMutableDictionary dictionary];
-							  
-							  __block NSInteger episodeIndex = -1;
-							  [self.segments enumerateObjectsUsingBlock:^(id<RTSMediaPlayerSegment>segment, NSUInteger idx, BOOL *stop) {
-								  if ([segment isBlocked] == NO) {
-									  [blockedIndices addIndex:idx];
-								  }
-								  if ([segment isVisible]) {
-									  episodeIndex ++;
-									  [indexMapping setObject:@(episodeIndex) forKey:@(idx)];
-									  [episodes addObject:segment];
-								  }
-								  else {
-									  [indexMapping setObject:@(NSNotFound) forKey:@(idx)];
-								  }
-							  }];
-							  
-							  self.episodes = [NSArray arrayWithArray:episodes]; // Ensure there is always an array, even if it is empty.
-							  self.indexMapping = [indexMapping copy];
-							  
-							  NSAssert(self.indexMapping.count == self.segments.count,
-									   @"One must have the same number of index for mapping as we have segments.");
-							  
-							  if (completionHandler) {
-								  completionHandler();
-							  }
-						  }];
+		self.fullLengthSegment = fullLength;
+		self.segments = [segments sortedArrayUsingDescriptors:@[sd]];
+		
+		NSMutableArray *episodes = [NSMutableArray array];
+		NSMutableIndexSet *blockedIndices = [NSMutableIndexSet indexSet];
+		NSMutableDictionary *indexMapping = [NSMutableDictionary dictionary];
+		
+		__block NSInteger episodeIndex = -1;
+		[self.segments enumerateObjectsUsingBlock:^(id<RTSMediaPlayerSegment>segment, NSUInteger idx, BOOL *stop) {
+			if ([segment isBlocked] == NO) {
+				[blockedIndices addIndex:idx];
+			}
+			if ([segment isVisible]) {
+				episodeIndex ++;
+				[indexMapping setObject:@(episodeIndex) forKey:@(idx)];
+				[episodes addObject:segment];
+			}
+			else {
+				[indexMapping setObject:@(NSNotFound) forKey:@(idx)];
+			}
+		}];
+		
+		self.episodes = [NSArray arrayWithArray:episodes]; // Ensure there is always an array, even if it is empty.
+		self.indexMapping = [indexMapping copy];
+		
+		NSAssert(self.indexMapping.count == self.segments.count,
+				 @"One must have the same number of index for mapping as we have segments.");
+		
+		@weakify(self);
+		void (^checkBlock)(CMTime) = ^(CMTime time) {
+			@strongify(self);
+			if (self.playerController.playbackState == RTSMediaPlaybackStatePlaying && [self isTimeBlocked:time]) {
+				[self.playerController pause];
+				[self.playerController fireEvent:self.playerController.pauseEvent
+										userInfo:@{RTSMediaPlayerPlaybackDidPauseUponBlockingReasonInfoKey: @"blocked"}];
+			}
+		};
+		
+		CMTime interval = CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC);
+		self.playerTimeObserver = [self.playerController addPlaybackTimeObserverForInterval:interval queue:nil usingBlock:checkBlock];
+		
+		if (completionHandler) {
+			completionHandler();
+		}
+	};
+	
+	[self.dataSource segmentsController:self segmentsForIdentifier:identifier withCompletionHandler:block];
+}
+
+- (BOOL)isTimeBlocked:(CMTime)time
+{
+	NSUInteger secondaryIndex;
+	NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:&secondaryIndex];
+	return [self isSegmentBlockedAtIndex:index] && [self isSegmentBlockedAtIndex:secondaryIndex];
+}
+
+- (NSUInteger)indexOfSegmentForTime:(CMTime)time secondaryIndex:(NSUInteger *)secondaryIndex
+{
+	CMTime auxTime = CMTimeAdd(time, CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC));
+	
+	// For small number of segments (say, < 64), a range tree algorithm wouldn't be more efficient.
+	// See for instance https://github.com/heardrwt/RHIntervalTree
+	
+	__block NSUInteger result = NSNotFound;
+	__block NSUInteger secondaryResult = NSNotFound;
+	
+	[self.segments enumerateObjectsUsingBlock:^(id<RTSMediaPlayerSegment> segment, NSUInteger idx, BOOL *stop) {
+		if (CMTimeRangeContainsTime(segment.segmentTimeRange, time)) {
+			result = idx;
+		}
+		if (CMTimeRangeContainsTime(segment.segmentTimeRange, auxTime)) {
+			secondaryResult = idx;
+		}
+		if (result != NSNotFound && secondaryResult != NSNotFound) {
+			*stop = YES;
+		}
+	}];
+	
+	if (secondaryIndex != NULL) {
+		*secondaryIndex = secondaryResult;
+	}
+	
+	return result;
 }
 
 - (NSUInteger)countOfSegments
@@ -114,12 +184,15 @@
     }
     
     id<RTSMediaPlayerSegment> inputSegment = self.segments[index];
-    NSTimeInterval inputSegmentEndTime = (NSTimeInterval) CMTimeGetSeconds(inputSegment.segmentTimeRange.start)+CMTimeGetSeconds(inputSegment.segmentTimeRange.duration);
+    NSTimeInterval inputSegmentEndTime = (NSTimeInterval) CMTimeGetSeconds(inputSegment.segmentTimeRange.start) +
+											CMTimeGetSeconds(inputSegment.segmentTimeRange.duration);
 
     if (index+1 >= self.segments.count) {
         // Ok, we have no additional segments  See if there is some time left at end of full length media.
         
-        NSTimeInterval fullLengthEndTime = (NSTimeInterval) CMTimeGetSeconds(self.fullLengthSegment.segmentTimeRange.start)+CMTimeGetSeconds(self.fullLengthSegment.segmentTimeRange.duration);
+        NSTimeInterval fullLengthEndTime = (NSTimeInterval) CMTimeGetSeconds(self.fullLengthSegment.segmentTimeRange.start) +
+											CMTimeGetSeconds(self.fullLengthSegment.segmentTimeRange.duration);
+		
         NSTimeInterval mediaLastSeconds = fullLengthEndTime - inputSegmentEndTime;
         
         if (mediaLastSeconds < 2*flexibilityGap) {

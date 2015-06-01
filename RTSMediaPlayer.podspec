@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
 
   s.source_files          = "RTSMediaPlayer"
   s.public_header_files   = "RTSMediaPlayer/*.h"
+  s.private_header_files  = "RTSMediaPlayer/*+Private.h"
   
   s.resource_bundle       = { "RTSMediaPlayer" => [ "RTSMediaPlayer/Info.plist", "RTSMediaPlayer/*.xib" ] }
 
