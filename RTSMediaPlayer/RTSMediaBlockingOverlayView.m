@@ -19,7 +19,7 @@
 {
 	if (self.mediaPlayerController) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self
-														name:RTSMediaPlayerPlaybackDidPauseUponBlockingNotification
+														name:RTSMediaPlayerPlaybackSeekingUponBlockingNotification
 													  object:self.mediaPlayerController];
 		
 		[[NSNotificationCenter defaultCenter] removeObserver:self
@@ -33,8 +33,8 @@
 	
 	if (mediaPlayerController) {
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(mediaPlayerPlaybackDidPauseUponBlockingNotification:)
-													 name:RTSMediaPlayerPlaybackDidPauseUponBlockingNotification
+												 selector:@selector(mediaPlayerPlaybackSeekingUponBlockingNotification:)
+													 name:RTSMediaPlayerPlaybackSeekingUponBlockingNotification
 												   object:mediaPlayerController];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -48,11 +48,11 @@
 
 #pragma mark - Notifications
 
-- (void)mediaPlayerPlaybackDidPauseUponBlockingNotification:(NSNotification *)notification
+- (void)mediaPlayerPlaybackSeekingUponBlockingNotification:(NSNotification *)notification
 {
 	self.hidden = NO;
 	
-	NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidPauseUponBlockingReasonInfoKey];
+	NSError *error = notification.userInfo[RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey];
 	self.textLabel.text = [error localizedDescription];
 }
 

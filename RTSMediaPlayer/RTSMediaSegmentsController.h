@@ -65,7 +65,7 @@ FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in secon
  *
  *  @return YES if the segment is blocked.
  */
-- (BOOL)isSegmentBlockedAtIndex:(NSInteger)index;
+- (BOOL)isSegmentBlockedAtIndex:(NSUInteger)index;
 
 /**
  *  When hitting a blocked segment, one must find when exactly restarting the video, if possible. Hence,
@@ -79,6 +79,6 @@ FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in secon
  *  @return
  *  If there is no more segments and no more playable content, returns NSNotFound;
  */
-- (NSInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSInteger)index withFlexibilityGap:(CGFloat)flexibilityGap;
+- (NSUInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(CGFloat)flexibilityGap;
 
 @end

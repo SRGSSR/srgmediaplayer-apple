@@ -15,12 +15,14 @@
 @property (readwrite) TKState *readyState;
 @property (readwrite) TKState *pausedState;
 @property (readwrite) TKState *playingState;
+@property (readwrite) TKState *seekingState;
 @property (readwrite) TKState *stalledState;
 
 @property (readwrite) TKEvent *loadEvent;
 @property (readwrite) TKEvent *loadSuccessEvent;
 @property (readwrite) TKEvent *playEvent;
 @property (readwrite) TKEvent *pauseEvent;
+@property (readwrite) TKEvent *seekEvent;
 @property (readwrite) TKEvent *endEvent;
 @property (readwrite) TKEvent *stopEvent;
 @property (readwrite) TKEvent *stallEvent;

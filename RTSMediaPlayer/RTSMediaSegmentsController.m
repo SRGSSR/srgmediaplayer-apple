@@ -92,10 +92,37 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 		@weakify(self);
 		void (^checkBlock)(CMTime) = ^(CMTime time) {
 			@strongify(self);
-			if (self.playerController.playbackState == RTSMediaPlaybackStatePlaying && [self isTimeBlocked:time]) {
-				[self.playerController pause];
-				[self.playerController fireEvent:self.playerController.pauseEvent
-										userInfo:@{RTSMediaPlayerPlaybackDidPauseUponBlockingReasonInfoKey: @"blocked"}];
+			NSUInteger secondaryIndex;
+			NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:&secondaryIndex];
+
+			if (self.playerController.playbackState == RTSMediaPlaybackStatePlaying &&
+				[self isSegmentBlockedAtIndex:index] &&
+				[self isSegmentBlockedAtIndex:secondaryIndex])
+			{
+				[self.playerController fireEvent:self.playerController.seekEvent
+										userInfo:@{RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey: @"blocked"}];
+				
+				NSUInteger nextIndex = [self indexOfLastContiguousBlockedSegmentAfterIndex:index
+																		withFlexibilityGap:RTSMediaPlaybackTickInterval];
+				
+				if (nextIndex == NSUIntegerMax) {
+					CMTime seekCMTime = CMTimeAdd(self.fullLengthSegment.segmentTimeRange.start, self.fullLengthSegment.segmentTimeRange.duration);
+					[self.playerController.player seekToTime:seekCMTime];
+				}
+				else {
+					id<RTSMediaPlayerSegment> segment = self.segments[nextIndex];
+					CMTime oneInterval = CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC);
+					CMTime seekCMTime = CMTimeAdd(segment.segmentTimeRange.start, CMTimeAdd(segment.segmentTimeRange.duration, oneInterval));
+					
+					[self.playerController.player seekToTime:seekCMTime
+											 toleranceBefore:kCMTimeZero
+											  toleranceAfter:kCMTimeZero
+										   completionHandler:^(BOOL finished) {
+											   if (finished) {
+												   [self.playerController play];
+											   }
+										   }];
+				}
 			}
 		};
 		
@@ -169,15 +196,15 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
     return [[self.indexMapping objectForKey:@(segmentIndex)] unsignedIntegerValue];
 }
 
-- (BOOL)isSegmentBlockedAtIndex:(NSInteger)index
+- (BOOL)isSegmentBlockedAtIndex:(NSUInteger)index
 {
-    if (index >= 0 && index < self.segments.count) {
+    if (index < self.segments.count) {
         return [self.segments[index] isBlocked];
     }
     return NO;
 }
 
-- (NSInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSInteger)index withFlexibilityGap:(CGFloat)flexibilityGap
+- (NSUInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(NSTimeInterval)flexibilityGap
 {
     if (self.segments.count == 0 || index == NSNotFound || index >= self.segments.count) {
         return NSNotFound;
@@ -197,7 +224,7 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
         
         if (mediaLastSeconds < 2*flexibilityGap) {
             // There is no meaningful playable content after the end of the current segment.
-            return NSNotFound;
+            return NSUIntegerMax;
         }
         else {
             // There is some meaningful playable content after the end of the current segment. But no more segment afterwards.
@@ -206,8 +233,8 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
         }
     }
     
-    NSInteger result = index;
-    for (NSInteger i = index+1; i < self.segments.count; i++) {
+    NSUInteger result = index;
+    for (NSUInteger i = index+1; i < self.segments.count; i++) {
         id<RTSMediaPlayerSegment> segment = self.segments[i];
         if (![segment isBlocked]) {
             // Next segment is not blocked. Hence the end of the current one is the last we are look for.
