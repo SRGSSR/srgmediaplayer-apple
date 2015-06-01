@@ -40,6 +40,23 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @property (readonly) TKStateMachine *stateMachine;
 
+@property (readwrite) TKState *idleState;
+@property (readwrite) TKState *readyState;
+@property (readwrite) TKState *pausedState;
+@property (readwrite) TKState *playingState;
+@property (readwrite) TKState *seekingState;
+@property (readwrite) TKState *stalledState;
+
+@property (readwrite) TKEvent *loadEvent;
+@property (readwrite) TKEvent *loadSuccessEvent;
+@property (readwrite) TKEvent *playEvent;
+@property (readwrite) TKEvent *pauseEvent;
+@property (readwrite) TKEvent *seekEvent;
+@property (readwrite) TKEvent *endEvent;
+@property (readwrite) TKEvent *stopEvent;
+@property (readwrite) TKEvent *stallEvent;
+@property (readwrite) TKEvent *resetEvent;
+
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
 @property (readwrite) id periodicTimeObserver;
@@ -157,7 +174,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKState *paused = [TKState stateWithName:@"Paused"];
 	TKState *stalled = [TKState stateWithName:@"Stalled"];
 	TKState *ended = [TKState stateWithName:@"Ended"];
-	[stateMachine addStates:@[ idle, preparing, ready, playing, paused, stalled, ended ]];
+	[stateMachine addStates:@[ idle, preparing, ready, playing, seeking, paused, stalled, ended ]];
 	stateMachine.initialState = idle;
 	
 	TKEvent *load = [TKEvent eventWithName:@"Load" transitioningFromStates:@[ idle ] toState:preparing];
@@ -295,6 +312,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	if (!success) {
 		DDLogWarn(@"Invalid Transition: %@", error.localizedFailureReason);
 	}
+}
+
+- (void)fireSeekEventWithUserInfo:(NSDictionary *)userInfo
+{
+	[self fireEvent:self.seekEvent userInfo:userInfo];
 }
 
 #pragma mark - Notifications

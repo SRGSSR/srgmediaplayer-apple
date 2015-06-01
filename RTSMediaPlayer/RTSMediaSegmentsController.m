@@ -116,8 +116,7 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 			[self isSegmentBlockedAtIndex:index] &&
 			[self isSegmentBlockedAtIndex:secondaryIndex])
 		{
-			[self.playerController fireEvent:self.playerController.seekEvent
-									userInfo:@{RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey: @"blocked"}];
+			[self.playerController fireSeekEventWithUserInfo:@{RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey: @"blocked"}];
 			
 			NSUInteger nextIndex = [self indexOfLastContiguousBlockedSegmentAfterIndex:index
 																	withFlexibilityGap:RTSMediaPlaybackTickInterval];
