@@ -9,7 +9,7 @@
 #import "RTSMediaPlayerController.h"
 #import <TransitionKit/TransitionKit.h>
 
-@interface RTSMediaPlayerController ()
+@interface RTSMediaPlayerController (Private)
 
 - (void)fireSeekEventWithUserInfo:(NSDictionary *)userInfo;
 
