@@ -14,16 +14,30 @@
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	if (self.mediaPlayerController) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:RTSMediaPlayerPlaybackDidFailNotification
+													  object:self.mediaPlayerController];
+
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:RTSMediaPlayerPlaybackStateDidChangeNotification
+													  object:self.mediaPlayerController];
+	}
 	
 	self.hidden = YES;
 	
 	_mediaPlayerController = mediaPlayerController;
 	
-	if (mediaPlayerController)
-	{
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackDidFailNotification:) name:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
+	if (mediaPlayerController) {
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(mediaPlayerPlaybackDidFailNotification:)
+													 name:RTSMediaPlayerPlaybackDidFailNotification
+												   object:mediaPlayerController];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(mediaPlayerPlaybackStateDidChange:)
+													 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+												   object:mediaPlayerController];
 	}
 }
 
@@ -41,8 +55,7 @@
 
 - (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
-	if(self.mediaPlayerController.playbackState == RTSMediaPlaybackStateReady)
-	{
+	if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateReady) {
 		self.hidden = YES;
 	}
 }
