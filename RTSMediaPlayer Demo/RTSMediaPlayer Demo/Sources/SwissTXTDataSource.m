@@ -4,7 +4,6 @@
 //
 
 #import "SwissTXTDataSource.h"
-
 #import "Segment.h"
 
 // TODO: A data source should share connections (if the same request is already running, add the block to a list, and call all
@@ -14,7 +13,9 @@
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
 
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+	   contentURLForIdentifier:(NSString *)identifier
+			 completionHandler:(void (^)(NSURL *, NSError *))completionHandler
 {
 	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/stream/srf/byEventItemIdAndType/%@/hls", identifier];
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
@@ -40,7 +41,9 @@
 
 #pragma mark - RTSMediaPlayerSegmentDataSource protocol
 
-- (void) segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
+- (void) segmentsController:(RTSMediaSegmentsController *)controller
+	  segmentsForIdentifier:(NSString *)identifier
+	  withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
 	NSString *URLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/highlights/srf/byEventItemId/%@", identifier];
 	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];

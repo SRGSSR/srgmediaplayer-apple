@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1E233A5D57D3FE5E297756AE /* libPods-RTSMediaPlayer Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1822D47330A920F02889458B /* libPods-RTSMediaPlayer Demo.a */; };
+		9F4B1D2D1B1C990700BB0FB3 /* DemoSegmentsBlockingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F4B1D2C1B1C990700BB0FB3 /* DemoSegmentsBlockingViewController.m */; };
+		9FDF081F1B1C92C2005BA322 /* DemoSegmentsBlockingSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDF081E1B1C92C2005BA322 /* DemoSegmentsBlockingSelectionViewController.m */; };
+		9FDF08221B1C95DD005BA322 /* PseudoILDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDF08211B1C95DD005BA322 /* PseudoILDataProvider.m */; };
 		B61E18CF1AA8605200E4FAB9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18CC1AA8605200E4FAB9 /* AppDelegate.m */; };
 		B61E18D51AA8607200E4FAB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18D31AA8607200E4FAB9 /* main.m */; };
 		B61E18DB1AA8607800E4FAB9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B61E18D71AA8607800E4FAB9 /* LaunchScreen.xib */; };
@@ -49,6 +52,12 @@
 
 /* Begin PBXFileReference section */
 		1822D47330A920F02889458B /* libPods-RTSMediaPlayer Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RTSMediaPlayer Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F4B1D2B1B1C990700BB0FB3 /* DemoSegmentsBlockingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoSegmentsBlockingViewController.h; sourceTree = "<group>"; };
+		9F4B1D2C1B1C990700BB0FB3 /* DemoSegmentsBlockingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoSegmentsBlockingViewController.m; sourceTree = "<group>"; };
+		9FDF081D1B1C92C2005BA322 /* DemoSegmentsBlockingSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoSegmentsBlockingSelectionViewController.h; sourceTree = "<group>"; };
+		9FDF081E1B1C92C2005BA322 /* DemoSegmentsBlockingSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoSegmentsBlockingSelectionViewController.m; sourceTree = "<group>"; };
+		9FDF08201B1C95DD005BA322 /* PseudoILDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PseudoILDataProvider.h; sourceTree = "<group>"; };
+		9FDF08211B1C95DD005BA322 /* PseudoILDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PseudoILDataProvider.m; sourceTree = "<group>"; };
 		B61E18CB1AA8605200E4FAB9 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B61E18CC1AA8605200E4FAB9 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		B61E18D21AA8607200E4FAB9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -122,30 +131,68 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9FDF08231B1C97EC005BA322 /* Segments */ = {
+			isa = PBXGroup;
+			children = (
+				9FDF08261B1C9812005BA322 /* Shared */,
+				9FDF08241B1C97F7005BA322 /* Timeshift */,
+				9FDF08251B1C9801005BA322 /* Blocked Segments */,
+			);
+			name = Segments;
+			sourceTree = "<group>";
+		};
+		9FDF08241B1C97F7005BA322 /* Timeshift */ = {
+			isa = PBXGroup;
+			children = (
+				E69906271AFB62D4005ED143 /* DemoTimelineConfigurationViewController.h */,
+				E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */,
+				E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */,
+				E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */,
+				E67D9B231B0F1CC500FF2334 /* SwissTXTDataSource.h */,
+				E67D9B241B0F1CC500FF2334 /* SwissTXTDataSource.m */,
+			);
+			name = Timeshift;
+			sourceTree = "<group>";
+		};
+		9FDF08251B1C9801005BA322 /* Blocked Segments */ = {
+			isa = PBXGroup;
+			children = (
+				9FDF081D1B1C92C2005BA322 /* DemoSegmentsBlockingSelectionViewController.h */,
+				9FDF081E1B1C92C2005BA322 /* DemoSegmentsBlockingSelectionViewController.m */,
+				9F4B1D2B1B1C990700BB0FB3 /* DemoSegmentsBlockingViewController.h */,
+				9F4B1D2C1B1C990700BB0FB3 /* DemoSegmentsBlockingViewController.m */,
+				9FDF08201B1C95DD005BA322 /* PseudoILDataProvider.h */,
+				9FDF08211B1C95DD005BA322 /* PseudoILDataProvider.m */,
+			);
+			name = "Blocked Segments";
+			sourceTree = "<group>";
+		};
+		9FDF08261B1C9812005BA322 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				E606F8931AF3BBB4003F0E2A /* Segment.h */,
+				E606F8941AF3BBB4003F0E2A /* Segment.m */,
+				E606F88E1AF3B044003F0E2A /* SegmentCollectionViewCell.h */,
+				E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */,
+				E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
 		B61E18CA1AA8605200E4FAB9 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				B61E18CB1AA8605200E4FAB9 /* AppDelegate.h */,
 				B61E18CC1AA8605200E4FAB9 /* AppDelegate.m */,
+				B61E18E91AA863B700E4FAB9 /* MenuTableViewController.h */,
+				B61E18EA1AA863B700E4FAB9 /* MenuTableViewController.m */,
 				B61E18E51AA863B700E4FAB9 /* DemoFullScreenViewController.h */,
 				B61E18E61AA863B700E4FAB9 /* DemoFullScreenViewController.m */,
 				B61E18E71AA863B700E4FAB9 /* DemoInlineViewController.h */,
 				B61E18E81AA863B700E4FAB9 /* DemoInlineViewController.m */,
 				B68883291AAF72B500B9E34E /* DemoMultiPlayersViewController.h */,
 				B688832A1AAF72B500B9E34E /* DemoMultiPlayersViewController.m */,
-				E69906271AFB62D4005ED143 /* DemoTimelineConfigurationViewController.h */,
-				E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */,
-				E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */,
-				E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */,
-				B61E18E91AA863B700E4FAB9 /* MenuTableViewController.h */,
-				B61E18EA1AA863B700E4FAB9 /* MenuTableViewController.m */,
-				E606F8931AF3BBB4003F0E2A /* Segment.h */,
-				E606F8941AF3BBB4003F0E2A /* Segment.m */,
-				E606F88E1AF3B044003F0E2A /* SegmentCollectionViewCell.h */,
-				E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */,
-				E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */,
-				E67D9B231B0F1CC500FF2334 /* SwissTXTDataSource.h */,
-				E67D9B241B0F1CC500FF2334 /* SwissTXTDataSource.m */,
+				9FDF08231B1C97EC005BA322 /* Segments */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -385,12 +432,15 @@
 			files = (
 				E67D9B251B0F1CC500FF2334 /* SwissTXTDataSource.m in Sources */,
 				E606F8911AF3B044003F0E2A /* SegmentCollectionViewCell.m in Sources */,
+				9FDF081F1B1C92C2005BA322 /* DemoSegmentsBlockingSelectionViewController.m in Sources */,
+				9FDF08221B1C95DD005BA322 /* PseudoILDataProvider.m in Sources */,
 				B61E18EC1AA863B700E4FAB9 /* DemoInlineViewController.m in Sources */,
 				B61E18D51AA8607200E4FAB9 /* main.m in Sources */,
 				E606F8951AF3BBB4003F0E2A /* Segment.m in Sources */,
 				B688832B1AAF72B500B9E34E /* DemoMultiPlayersViewController.m in Sources */,
 				E69906291AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m in Sources */,
 				B61E18EB1AA863B700E4FAB9 /* DemoFullScreenViewController.m in Sources */,
+				9F4B1D2D1B1C990700BB0FB3 /* DemoSegmentsBlockingViewController.m in Sources */,
 				B61E18CF1AA8605200E4FAB9 /* AppDelegate.m in Sources */,
 				B61E18ED1AA863B700E4FAB9 /* MenuTableViewController.m in Sources */,
 				E60E17181AF0B2F40062E96E /* DemoTimelineViewController.m in Sources */,

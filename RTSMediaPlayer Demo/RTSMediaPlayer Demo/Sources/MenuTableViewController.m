@@ -56,7 +56,8 @@
 			  @"CellInline",
 			  @"CellFullscreen",
 			  @"CellMultiPlayers",
-			  @"CellTimeline" ];
+			  @"CellTimeline",
+			  @"CellSegments" ];
 }
 
 

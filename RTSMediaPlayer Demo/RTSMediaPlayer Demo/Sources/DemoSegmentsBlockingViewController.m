@@ -1,13 +1,17 @@
 //
-//  Created by Samuel Défago on 29.04.15.
+//  DemoSegmentsBlockingViewController.m
+//  RTSMediaPlayer Demo
+//
+//  Created by Cédric Foellmi on 01/06/15.
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
 #import <libextobjc/EXTScope.h>
-#import "DemoTimelineViewController.h"
+#import "DemoSegmentsBlockingViewController.h"
+#import "PseudoILDataProvider.h"
 #import "SegmentCollectionViewCell.h"
 
-@interface DemoTimelineViewController ()
+@interface DemoSegmentsBlockingViewController ()
 
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
@@ -17,7 +21,7 @@
 
 @end
 
-@implementation DemoTimelineViewController
+@implementation DemoSegmentsBlockingViewController
 
 #pragma mark - Object lifecycle
 
@@ -31,7 +35,6 @@
 - (void) setVideoIdentifier:(NSString *)videoIdentifier
 {
 	_videoIdentifier = videoIdentifier;
-	
 	[self.mediaPlayerController playIdentifier:videoIdentifier];
 }
 
@@ -128,5 +131,6 @@
 {
 	[self.mediaPlayerController.player seekToTime:self.mediaPlayerController.player.currentItem.duration];
 }
+
 
 @end
