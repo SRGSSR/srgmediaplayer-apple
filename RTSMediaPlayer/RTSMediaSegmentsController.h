@@ -79,6 +79,6 @@ FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in secon
  *  @return
  *  If there is no more segments and no more playable content, returns NSNotFound;
  */
-- (NSUInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(CGFloat)flexibilityGap;
+- (NSUInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(NSTimeInterval)flexibilityGap;
 
 @end
