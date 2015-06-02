@@ -9,6 +9,8 @@
 #import "PseudoILDataProvider.h"
 #import "Segment.h"
 
+#define foo4random() (arc4random() % ((unsigned)RAND_MAX + 1))
+
 static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/token/akahd.json.xml?stream=/";
 
 @implementation PseudoILDataProvider
@@ -56,10 +58,75 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 		Segment *fullLength = [[Segment alloc] initWithStartTime:0 duration:duration title:@"fullLength" blocked:NO visible:YES];
 		
 		NSMutableArray *segments = [NSMutableArray array];
-		for (NSUInteger i = 0; i < 3; i++) {
-			Segment *segment = [[Segment alloc] initWithStartTime:5*(i*5+1) duration:10 title:[NSString stringWithFormat:@"Segment #%ld", i] blocked:NO visible:YES];
-			[segments addObject:segment];
+		NSInteger row = [identifier integerValue];
+		
+		if (row == 0) {
+			// 3 visible segments
+			for (NSUInteger i = 0; i < 3; i++) {
+				Segment *segment = [[Segment alloc] initWithStartTime:5*(i*5+1)
+															 duration:10
+																title:[NSString stringWithFormat:@"Segment #%ld", i]
+															  blocked:NO
+															  visible:YES];
+				[segments addObject:segment];
+			}
 		}
+		else if (row == 1) {
+			// 5 segments, 2 visible
+			for (NSUInteger i = 0; i < 5; i++) {
+				Segment *segment = [[Segment alloc] initWithStartTime:5*(i*5+1)
+															 duration:10
+																title:[NSString stringWithFormat:@"Segment #%ld", i]
+															  blocked:NO
+															  visible:(i%2 != 0)];
+				[segments addObject:segment];
+			}
+		}
+		else if (row == 2) {
+			// 3 segments, 2 blocked
+			for (NSUInteger i = 0; i < 3; i++) {
+				BOOL blocked = (i%2 != 0);
+				NSString *title = [NSString stringWithFormat:@"%@Segment #%ld", (blocked) ? @"Blocked ": @"", i];
+				Segment *segment = [[Segment alloc] initWithStartTime:5*(i*5+1)
+															 duration:10
+																title:title
+															  blocked:blocked
+															  visible:YES];
+				[segments addObject:segment];
+			}
+		}
+		else if (row == 3) {
+			// Blocked segment at start
+			for (NSUInteger i = 0; i < 3; i++) {
+				BOOL blocked = (i == 0);
+				NSString *title = [NSString stringWithFormat:@"%@Segment #%ld", (blocked) ? @"Blocked ": @"", i];
+				Segment *segment = [[Segment alloc] initWithStartTime:25*i
+															 duration:10
+																title:title
+															  blocked:blocked
+															  visible:YES];
+				[segments addObject:segment];
+			}
+		}
+		else if (row == 4) {
+			// 10 segments, 8 visible, 5 blocked;
+			for (NSUInteger i = 0; i < 10; i++) {
+				BOOL blocked = (i%2 == 0);
+				BOOL visible = (foo4random() <= 0.5);
+				NSString *title = [NSString stringWithFormat:@"%@Segment #%ld", (blocked) ? @"Blocked ": @"", i];
+				Segment *segment = [[Segment alloc] initWithStartTime:5*(i*5+1)
+															 duration:10
+																title:title
+															  blocked:blocked
+															  visible:visible];
+				[segments addObject:segment];
+			}
+		}
+		else if (row == 5) {
+			// Error
+			
+		}
+	
 		
 		completionHandler(fullLength, segments, nil);
 	}
