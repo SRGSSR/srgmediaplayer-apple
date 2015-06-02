@@ -13,7 +13,6 @@
 #import "RTSMediaPlayerController+Private.h"
 #import "RTSMediaPlayerSegment.h"
 #import "RTSMediaSegmentsController.h"
-#import "RTSMediaSegmentsDataSource.h"
 
 NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 
@@ -222,8 +221,8 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
     }
     
     id<RTSMediaPlayerSegment> inputSegment = self.segments[index];
-    NSTimeInterval inputSegmentEndTime = (NSTimeInterval) CMTimeGetSeconds(inputSegment.segmentTimeRange.start) +
-											CMTimeGetSeconds(inputSegment.segmentTimeRange.duration);
+	CMTimeRange r = inputSegment.segmentTimeRange;
+    NSTimeInterval inputSegmentEndTime = (NSTimeInterval) CMTimeGetSeconds(r.start) + CMTimeGetSeconds(r.duration);
 
     if (index+1 >= self.segments.count) {
         // Ok, we have no additional segments  See if there is some time left at end of full length media.
@@ -262,6 +261,38 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
     }
     
     return result;
+}
+
+#pragma mark - RTSMediaPlayback
+
+- (void)prepareToPlay
+{
+	[self.playerController prepareToPlay];
+}
+
+- (void)play
+{
+	[self.playerController pause];
+}
+
+- (void)pause
+{
+	[self.playerController pause];
+}
+
+- (void)reset
+{
+	[self.playerController reset];
+}
+
+- (void)seekToTime:(NSTimeInterval)seconds completionHandler:(void (^)(BOOL))completionHandler
+{
+	if ([self isTimeBlocked:CMTimeMakeWithSeconds(seconds, NSEC_PER_SEC)]) {
+		
+	}
+	else {
+		[self.playerController seekToTime:seconds completionHandler:completionHandler];
+	}
 }
 
 @end

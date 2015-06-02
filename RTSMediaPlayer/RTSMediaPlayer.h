@@ -7,6 +7,8 @@
 #import <RTSMediaPlayer/RTSAirplayOverlayView.h>
 #import <RTSMediaPlayer/RTSMediaFailureOverlayView.h>
 #import <RTSMediaPlayer/RTSMediaPlayerError.h>
+#import <RTSMediaPlayer/RTSMediaPlayerConstants.h>
+#import <RTSMediaPlayer/RTSMediaPlayback.h>
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 #import <RTSMediaPlayer/RTSMediaPlayerPlaybackButton.h>

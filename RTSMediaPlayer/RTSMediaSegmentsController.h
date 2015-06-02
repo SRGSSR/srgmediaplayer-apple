@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in seconds.
+#import <RTSMediaPlayer/RTSMediaPlayback.h>
+#import <RTSMediaPlayer/RTSMediaPlayerConstants.h>
+#import <RTSMediaPlayer/RTSMediaSegmentsDataSource.h>
+
 
 @class RTSMediaPlayerController;
 @protocol RTSMediaPlayerSegment;
-@protocol RTSMediaSegmentsDataSource;
 
-@interface RTSMediaSegmentsController : NSObject
+@interface RTSMediaSegmentsController : NSObject <RTSMediaPlayback>
 
 @property(nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;
 @property(nonatomic, weak) IBOutlet id<RTSMediaSegmentsDataSource> dataSource;

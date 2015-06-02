@@ -336,8 +336,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void) loadPlayerShouldPlayImediately:(BOOL)autoPlay
 {
-	if ([self.stateMachine.currentState isEqual:self.idleState])
-	{
+	if ([self.stateMachine.currentState isEqual:self.idleState]) {
 		[self fireEvent:self.loadEvent userInfo: @{ RTSMediaPlayerStateMachineAutoPlayInfoKey : @(autoPlay) }];
 	}
 }
@@ -351,7 +350,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 {
 	if ([self.stateMachine.currentState isEqual:self.idleState]) {
 		[self loadPlayerShouldPlayImediately:YES];
-	}else{
+	}
+	else {
 		[self.player play];
 	}
 }
@@ -363,8 +363,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void) playIdentifier:(NSString *)identifier
 {
-	if (![self.identifier isEqualToString:identifier])
-	{
+	if (![self.identifier isEqualToString:identifier]) {
 		[self reset];
 		self.identifier = identifier;
 	}
@@ -378,6 +377,14 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	if (![self.stateMachine.currentState isEqual:self.idleState]) {
 		[self fireEvent:self.resetEvent userInfo:nil];
 	}
+}
+
+- (void)seekToTime:(NSTimeInterval)seconds completionHandler:(void (^)(BOOL finished))completionHandler
+{
+	[self.player seekToTime:CMTimeMakeWithSeconds(seconds, NSEC_PER_SEC)
+			toleranceBefore:kCMTimeZero
+			 toleranceAfter:kCMTimeZero
+		  completionHandler:completionHandler];
 }
 
 - (RTSMediaPlaybackState) playbackState

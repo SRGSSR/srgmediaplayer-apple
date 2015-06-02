@@ -15,6 +15,6 @@
  *
  *  @return the index paths as an array of NSIndexPath objects
  */
-- (NSArray *) indexPathsForVisibleCells;
+- (NSArray *)indexPathsForVisibleCells;
 
 @end
