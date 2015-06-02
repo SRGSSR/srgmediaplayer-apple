@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = "RTSMediaPlayer"
-  s.version               = "0.0.3"
+  s.version               = "0.1.0"
   s.summary               = "Shared media player for RTS mobile apps."
   s.homepage              = "ssh://git@bitbucket.org/rtsmb/rtsmediaplayer-ios.git"
   s.authors               = { "Frédéric Humbert-Droz" => "fred.hd@me.com", "Cédric Luthi" => "cedric.luthi@rts.ch" }
