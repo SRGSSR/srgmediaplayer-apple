@@ -44,8 +44,10 @@
 {
 	[super viewDidLoad];
 	
-	self.timelineView.itemWidth = 162.f;
-	self.timelineView.itemSpacing = 0.f;
+	self.timelineView.itemWidth = 178.f;
+	self.timelineView.itemSpacing = 4.f;
+	
+	self.mediaPlayerController.overlayViewsHidingDelay = 1000;
 	
 	NSString *className = NSStringFromClass([SegmentCollectionViewCell class]);
 	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
