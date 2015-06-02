@@ -39,7 +39,7 @@
 	}];
 }
 
-#pragma mark - RTSMediaPlayerSegmentDataSource protocol
+#pragma mark - RTSMediaSegmentsDataSource protocol
 
 - (void) segmentsController:(RTSMediaSegmentsController *)controller
 	  segmentsForIdentifier:(NSString *)identifier

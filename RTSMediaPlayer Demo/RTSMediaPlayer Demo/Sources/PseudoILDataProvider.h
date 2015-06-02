@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
-#import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
+#import <RTSMediaPlayer/RTSMediaSegmentsDataSource.h>
 
 @interface PseudoILDataProvider : NSObject <RTSMediaPlayerControllerDataSource, RTSMediaSegmentsDataSource>
 

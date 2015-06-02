@@ -11,10 +11,9 @@
 
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerController+Private.h"
-
-#import "RTSMediaSegmentsController.h"
-#import "RTSMediaPlayerSegmentDataSource.h"
 #import "RTSMediaPlayerSegment.h"
+#import "RTSMediaSegmentsController.h"
+#import "RTSMediaSegmentsDataSource.h"
 
 NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 

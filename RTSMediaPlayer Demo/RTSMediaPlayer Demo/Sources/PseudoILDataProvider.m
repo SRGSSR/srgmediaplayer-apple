@@ -97,7 +97,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 	return [NSURL URLWithString:[SRGILTokenHandlerBaseURLString stringByAppendingString:[urlPaths componentsJoinedByString:@"/"]]];
 }
 
-#pragma mark - RTSMediaPlayerSegmentDataSource protocol
+#pragma mark - RTSMediaSegmentsDataSource protocol
 
 - (void) segmentsController:(RTSMediaSegmentsController *)controller
 	  segmentsForIdentifier:(NSString *)identifier

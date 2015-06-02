@@ -3,7 +3,7 @@
 //  Copyright (c) 2015 RTS. All rights reserved.
 //
 
-#import <RTSMediaPlayer/RTSMediaPlayerSegmentDataSource.h>
+#import <RTSMediaPlayer/RTSMediaSegmentsDataSource.h>
 #import <RTSMediaPlayer/RTSTimeSlider.h>
 
 @class RTSMediaPlayerController;
