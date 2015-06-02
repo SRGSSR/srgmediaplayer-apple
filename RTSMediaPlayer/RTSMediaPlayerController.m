@@ -16,6 +16,8 @@
 #import "RTSPlaybackTimeObserver.h"
 #import "RTSActivityGestureRecognizer.h"
 
+NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
+
 NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
 
 NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingNotification = @"RTSMediaPlayerPlaybackDidPauseUponBlocking";
@@ -102,6 +104,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	_identifier = identifier;
 	_dataSource = dataSource;
 	
+	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	self.playbackTimeObservers = [NSMutableDictionary dictionary];
 	
 	[self.stateMachine activate];
@@ -806,8 +809,7 @@ static void LogProperties(id object)
 - (void) setOverlaysVisible:(BOOL)visible
 {
 	[self postNotificationName:visible ? RTSMediaPlayerWillShowControlOverlaysNotification : RTSMediaPlayerWillHideControlOverlaysNotification userInfo:nil];
-	for (UIView *overlayView in self.overlayViews)
-	{
+	for (UIView *overlayView in self.overlayViews) {
 		overlayView.hidden = !visible;
 	}
 	[self postNotificationName:visible ? RTSMediaPlayerDidShowControlOverlaysNotification : RTSMediaPlayerDidHideControlOverlaysNotification userInfo:nil];
@@ -819,10 +821,9 @@ static void LogProperties(id object)
 	[self setOverlaysVisible:firstOverlayView.hidden];
 }
 
-- (dispatch_source_t) idleTimer
+- (dispatch_source_t)idleTimer
 {
-	if (!_idleTimer)
-	{
+	if (!_idleTimer) {
 		_idleTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
 		@weakify(self)
 		dispatch_source_set_event_handler(_idleTimer, ^{
@@ -837,28 +838,31 @@ static void LogProperties(id object)
 
 - (void) resetIdleTimer
 {
-	int64_t delayInNanoseconds = 5 * NSEC_PER_SEC;
+	int64_t delayInNanoseconds = ((self.overlayViewsHidingDelay > 0.0) ? self.overlayViewsHidingDelay : RTSMediaPlayerOverlayHidingDelay) * NSEC_PER_SEC;
 	int64_t toleranceInNanoseconds = 0.1 * NSEC_PER_SEC;
 	dispatch_source_set_timer(self.idleTimer, dispatch_time(DISPATCH_TIME_NOW, delayInNanoseconds), DISPATCH_TIME_FOREVER, toleranceInNanoseconds);
 }
 
 #pragma mark - Resize Aspect
 
-- (void) handleDoubleTap
+- (void)handleDoubleTap
 {
-	if (!self.playerView.playerLayer.isReadyForDisplay)
+	if (!self.playerView.playerLayer.isReadyForDisplay) {
 		return;
+	}
 	
 	[self toggleAspect];
 }
 
-- (void) toggleAspect
+- (void)toggleAspect
 {
 	AVPlayerLayer *playerLayer = self.playerView.playerLayer;
-	if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect])
+	if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
 		playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-	else
+	}
+	else {
 		playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+	}
 }
 
 @end
