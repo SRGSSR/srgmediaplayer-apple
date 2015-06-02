@@ -52,6 +52,19 @@
 - (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource NS_DESIGNATED_INITIALIZER OS_NONNULL_ALL;
 
 /**
+ *  -------------------
+ *  @name Player Object
+ *  -------------------
+ */
+/**
+ *  The player that provides the media content.
+ *
+ *  @discussion This can be used for exemple to listen to `addPeriodicTimeObserverForInterval:queue:usingBlock:` or to
+ *  implement advanced behaviors
+ */
+@property(readonly) AVPlayer *player;
+
+/**
  *  ------------------------
  *  @name Accessing the View
  *  ------------------------
