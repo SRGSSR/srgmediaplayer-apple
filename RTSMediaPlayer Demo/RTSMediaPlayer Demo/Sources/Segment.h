@@ -8,7 +8,8 @@
 
 @interface Segment : NSObject <RTSMediaPlayerSegment>
 
-- (instancetype) initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier date:(NSDate *)date;
+- (instancetype)initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier date:(NSDate *)date;
+- (instancetype)initWithStartTime:(NSTimeInterval)start duration:(NSTimeInterval)duration title:(NSString *)title blocked:(BOOL)blocked visible:(BOOL)visible;
 
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly) UIImage *iconImage;

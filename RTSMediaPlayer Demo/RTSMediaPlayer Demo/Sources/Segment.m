@@ -13,7 +13,8 @@
 @property (nonatomic) UIImage *iconImage;
 @property (nonatomic, copy) NSString *identifier;
 @property (nonatomic) NSDate *date;
-
+@property (nonatomic, assign) BOOL blockedSegment;
+@property (nonatomic, assign) BOOL visibleSegment;
 @property (nonatomic) NSURL *thumbnailURL;
 
 @end
@@ -24,23 +25,20 @@
 
 - (instancetype) initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier date:(NSDate *)date
 {
-	if (!title || !identifier || !date)
-	{
+	if (!title || !identifier || !date) {
 		return nil;
 	}
 	
-	if (self = [super init])
-	{
+	self = [super init];
+	if (self) {
 		self.segmentTimeRange = CMTimeRangeMake(time, kCMTimeZero);
 		
 		NSArray *titleComponents = [title componentsSeparatedByString:@"|"];
-		if ([titleComponents count] > 1)
-		{
+		if ([titleComponents count] > 1) {
 			self.iconImage = [UIImage imageNamed:[titleComponents firstObject]];
 			self.title = [titleComponents objectAtIndex:1];
 		}
-		else
-		{
+		else {
 			self.title = title;
 		}
 		
@@ -50,14 +48,26 @@
 	return self;
 }
 
+- (instancetype)initWithStartTime:(NSTimeInterval)start duration:(NSTimeInterval)duration title:(NSString *)title blocked:(BOOL)blocked visible:(BOOL)visible
+{
+	self = [super init];
+	if (self) {
+		self.segmentTimeRange = CMTimeRangeMake(CMTimeMakeWithSeconds(start, NSEC_PER_SEC), CMTimeMakeWithSeconds(duration, NSEC_PER_SEC));
+		self.title = title;
+		self.blockedSegment = blocked;
+		self.visibleSegment = visible;
+	}
+	return self;
+}
+
 - (BOOL)isBlocked
 {
-	return NO;
+	return self.blockedSegment;
 }
 
 - (BOOL)isVisible
 {
-	return YES;
+	return self.visibleSegment;
 }
 
 #pragma mark - Getters and setters

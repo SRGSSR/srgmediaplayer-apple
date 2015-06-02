@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -611,8 +612,8 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <outlet property="delegate" destination="2iI-c6-veX" id="TkZ-V0-nev"/>
-                                            <outlet property="segmentsController" destination="maE-8W-Ll7" id="cfC-Sa-wFP"/>
+                                            <outlet property="delegate" destination="2iI-c6-veX" id="qbo-8K-AGw"/>
+                                            <outlet property="segmentsController" destination="ZI3-uY-emW" id="7sO-Dy-Wel"/>
                                         </connections>
                                     </view>
                                 </subviews>
@@ -628,22 +629,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bOM-dV-sbr" userLabel="Bottom Bar View">
                                 <rect key="frame" x="0.0" y="536" width="600" height="64"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Qju-s5-kdB" customClass="RTSTimelineSlider">
-                                        <rect key="frame" x="6" y="0.0" width="588" height="31"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="IN1-wR-XZA"/>
-                                        </constraints>
-                                        <color key="minimumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="2iI-c6-veX" id="LPv-uz-UIs"/>
-                                            <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="85p-Hv-OR2"/>
-                                            <outlet property="segmentsController" destination="maE-8W-Ll7" id="JB8-I1-M9K"/>
-                                            <outlet property="timeLeftValueLabel" destination="aEX-o9-gL3" id="Rm1-be-sMJ"/>
-                                            <outlet property="valueLabel" destination="h0O-aS-7v7" id="14c-7b-K0k"/>
-                                        </connections>
-                                    </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0O-aS-7v7">
                                         <rect key="frame" x="8" y="34" width="35" height="16"/>
                                         <constraints>
@@ -687,7 +672,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="FPU-Wx-sqD"/>
+                                            <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="a4j-ne-N8G"/>
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VjK-8m-VID">
@@ -706,16 +691,16 @@
                                             <action selector="goToLive:" destination="2iI-c6-veX" eventType="touchUpInside" id="8L6-fe-Use"/>
                                         </connections>
                                     </button>
+                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ITP-ar-aOh">
+                                        <rect key="frame" x="6" y="0.0" width="588" height="31"/>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" white="0.85369551809999999" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="vO1-Gg-OEX" secondAttribute="centerX" id="0Ol-Ax-bol"/>
                                     <constraint firstItem="h0O-aS-7v7" firstAttribute="leading" secondItem="bOM-dV-sbr" secondAttribute="leading" constant="8" id="23j-7D-l5G"/>
-                                    <constraint firstItem="Qju-s5-kdB" firstAttribute="leading" secondItem="bOM-dV-sbr" secondAttribute="leading" constant="8" id="IJz-TQ-yTg"/>
                                     <constraint firstAttribute="bottom" secondItem="h0O-aS-7v7" secondAttribute="bottom" constant="14" id="K8G-xv-24h"/>
                                     <constraint firstAttribute="height" constant="64" id="Qqj-FK-jRm"/>
-                                    <constraint firstAttribute="trailing" secondItem="Qju-s5-kdB" secondAttribute="trailing" constant="8" id="WaR-1q-m4c"/>
-                                    <constraint firstItem="Qju-s5-kdB" firstAttribute="top" secondItem="bOM-dV-sbr" secondAttribute="top" id="hZI-pN-eaP"/>
                                     <constraint firstItem="aEX-o9-gL3" firstAttribute="leading" secondItem="VjK-8m-VID" secondAttribute="trailing" constant="23" id="lC6-Mi-9KR"/>
                                     <constraint firstAttribute="bottom" secondItem="aEX-o9-gL3" secondAttribute="bottom" constant="14" id="plf-1G-4aI"/>
                                     <constraint firstItem="aEX-o9-gL3" firstAttribute="centerY" secondItem="VjK-8m-VID" secondAttribute="centerY" id="pvi-gX-mwg"/>
@@ -736,32 +721,10 @@
                                     <action selector="dismiss:" destination="2iI-c6-veX" eventType="touchUpInside" id="ocA-Kq-jyX"/>
                                 </connections>
                             </button>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mNc-xV-GeE" customClass="RTSMediaFailureOverlayView">
-                                <rect key="frame" x="30" y="214" width="540" height="171"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="75M-oP-GCI" userLabel="Text Label">
-                                        <rect key="frame" x="8" y="8" width="524" height="155"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="75M-oP-GCI" firstAttribute="top" secondItem="mNc-xV-GeE" secondAttribute="top" constant="8" id="Fjh-rO-88D"/>
-                                    <constraint firstAttribute="height" constant="171" id="ICj-o2-g1t"/>
-                                    <constraint firstItem="75M-oP-GCI" firstAttribute="leading" secondItem="mNc-xV-GeE" secondAttribute="leading" constant="8" id="THV-ZI-LB1"/>
-                                    <constraint firstAttribute="trailing" secondItem="75M-oP-GCI" secondAttribute="trailing" constant="8" id="bvz-Fl-A2s"/>
-                                    <constraint firstAttribute="bottom" secondItem="75M-oP-GCI" secondAttribute="bottom" constant="8" id="tNB-lA-e2u"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="Mnk-Ih-ILM"/>
-                                    <outlet property="textLabel" destination="75M-oP-GCI" id="bD0-2L-JOe"/>
-                                </connections>
-                            </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vik-Ny-kTx" customClass="RTSMediaBlockingOverlayView">
                                 <rect key="frame" x="30" y="215" width="540" height="171"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mx1-lW-r4j" userLabel="Text Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="blocking overlay" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mx1-lW-r4j" userLabel="Text Label">
                                         <rect key="frame" x="8" y="8" width="524" height="155"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
@@ -769,9 +732,13 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="mx1-lW-r4j" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Vik-Ny-kTx" secondAttribute="leading" constant="8" id="3Rj-cs-ets"/>
                                     <constraint firstAttribute="height" constant="171" id="8GS-DK-Red"/>
                                     <constraint firstItem="mx1-lW-r4j" firstAttribute="leading" secondItem="Vik-Ny-kTx" secondAttribute="leading" constant="8" id="9nt-3J-A6r"/>
                                     <constraint firstAttribute="trailing" secondItem="mx1-lW-r4j" secondAttribute="trailing" constant="8" id="BZZ-Pq-qtE"/>
+                                    <constraint firstAttribute="centerX" secondItem="mx1-lW-r4j" secondAttribute="centerX" id="KHV-mH-hQQ"/>
+                                    <constraint firstAttribute="centerY" secondItem="mx1-lW-r4j" secondAttribute="centerY" id="bcH-4D-zzp"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="mx1-lW-r4j" secondAttribute="trailing" constant="8" id="f6S-7n-5hF"/>
                                     <constraint firstAttribute="bottom" secondItem="mx1-lW-r4j" secondAttribute="bottom" constant="8" id="lMU-u7-PMQ"/>
                                     <constraint firstItem="mx1-lW-r4j" firstAttribute="top" secondItem="Vik-Ny-kTx" secondAttribute="top" constant="8" id="vRm-IO-1bY"/>
                                 </constraints>
@@ -786,18 +753,15 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="bOM-dV-sbr" secondAttribute="trailing" id="3So-qh-Yvm"/>
                             <constraint firstItem="bOM-dV-sbr" firstAttribute="top" secondItem="464-IG-aFV" secondAttribute="bottom" id="6j1-rL-XWs"/>
-                            <constraint firstItem="mNc-xV-GeE" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" constant="30" id="Flf-jL-W0y"/>
-                            <constraint firstAttribute="centerY" secondItem="mNc-xV-GeE" secondAttribute="centerY" constant="0.5" id="HJr-ES-Df8"/>
-                            <constraint firstAttribute="trailing" secondItem="mNc-xV-GeE" secondAttribute="trailing" constant="30" id="J55-OI-ZdL"/>
                             <constraint firstItem="bOM-dV-sbr" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" id="Nyk-JR-JZa"/>
                             <constraint firstItem="464-IG-aFV" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" id="ZzC-Jg-94y"/>
                             <constraint firstAttribute="trailing" secondItem="tT7-MB-6RF" secondAttribute="trailing" constant="10" id="bFQ-Be-VEv"/>
                             <constraint firstItem="Bbx-gB-q2Y" firstAttribute="top" secondItem="bOM-dV-sbr" secondAttribute="bottom" id="fWB-HT-CuP"/>
-                            <constraint firstItem="Vik-Ny-kTx" firstAttribute="leading" secondItem="mNc-xV-GeE" secondAttribute="leading" id="iQu-Od-64k"/>
+                            <constraint firstItem="Vik-Ny-kTx" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leadingMargin" constant="14" id="lzZ-qu-k7Q"/>
                             <constraint firstItem="tT7-MB-6RF" firstAttribute="top" secondItem="SIh-DF-LVa" secondAttribute="bottom" constant="10" id="mFO-rT-IDB"/>
                             <constraint firstAttribute="trailing" secondItem="464-IG-aFV" secondAttribute="trailing" id="nTC-1e-bv9"/>
                             <constraint firstItem="Vik-Ny-kTx" firstAttribute="centerY" secondItem="KYY-9n-s9D" secondAttribute="centerY" id="oF8-rL-5Pd"/>
-                            <constraint firstItem="Vik-Ny-kTx" firstAttribute="trailing" secondItem="mNc-xV-GeE" secondAttribute="trailing" id="tsv-OU-310"/>
+                            <constraint firstItem="Vik-Ny-kTx" firstAttribute="centerX" secondItem="464-IG-aFV" secondAttribute="centerX" id="oIt-8p-jxE"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="ufE-ec-NOl" appends="YES" id="uQU-nF-OJM"/>
@@ -807,7 +771,6 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="hmT-aF-S9N"/>
-                        <outlet property="timelineSlider" destination="Qju-s5-kdB" id="GAx-qN-v5p"/>
                         <outlet property="timelineView" destination="VIz-eg-pbD" id="f42-dZ-goV"/>
                         <outlet property="videoView" destination="KYY-9n-s9D" id="2pE-2x-GzK"/>
                     </connections>
@@ -831,8 +794,6 @@
                         <outletCollection property="overlayViews" destination="VIz-eg-pbD" id="21N-XF-O7Z"/>
                         <outletCollection property="overlayViews" destination="464-IG-aFV" id="jhh-jQ-J00"/>
                         <outletCollection property="overlayViews" destination="tT7-MB-6RF" id="GsQ-Sd-MxU"/>
-                        <outletCollection property="overlayViews" destination="Vik-Ny-kTx" id="y2a-L4-tPD"/>
-                        <outletCollection property="overlayViews" destination="mNc-xV-GeE" id="SUZ-V3-sLs"/>
                     </connections>
                 </customObject>
                 <customObject id="ZI3-uY-emW" customClass="RTSMediaSegmentsController">
@@ -1035,7 +996,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OfR-bX-PAC" id="VEb-Ur-DA1">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="IntegrationLayer - SRF video" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ijc-p5-s4k">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="19:30 RTS segments" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ijc-p5-s4k">
                                                     <rect key="frame" x="25" y="1" width="550" height="44"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

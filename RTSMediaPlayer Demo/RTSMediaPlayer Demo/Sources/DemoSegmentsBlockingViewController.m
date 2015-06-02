@@ -52,23 +52,17 @@
 	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
 	
 	[self.mediaPlayerController attachPlayerToView:self.videoView];
-	
-	@weakify(self)
-	[self.mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(30., 1.) queue:NULL usingBlock:^(CMTime time) {
-		@strongify(self)
-		[self.timelineView reloadSegmentsForIdentifier:self.videoIdentifier];
-		[self.timelineSlider reloadSegmentsForIdentifier:self.videoIdentifier];
-	}];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
 	
-	if ([self isMovingToParentViewController] || [self isBeingPresented])
-	{
+	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self.mediaPlayerController playIdentifier:self.videoIdentifier];
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
+		[self.timelineView reloadSegmentsForIdentifier:self.videoIdentifier];
+		[self.timelineSlider reloadSegmentsForIdentifier:self.videoIdentifier];
 	}
 }
 
@@ -76,8 +70,7 @@
 {
 	[super viewWillDisappear:animated];
 	
-	if ([self isMovingFromParentViewController] || [self isBeingDismissed])
-	{
+	if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
 		[self.mediaPlayerController reset];
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
 	}

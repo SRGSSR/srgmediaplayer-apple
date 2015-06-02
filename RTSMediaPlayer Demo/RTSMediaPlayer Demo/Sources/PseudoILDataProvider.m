@@ -48,11 +48,21 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 	  segmentsForIdentifier:(NSString *)identifier
 	  withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
-	if ([identifier isEqualToString:@"srf-0"]) {
-		completionHandler(nil, nil, nil);
+	if ([identifier isEqualToString:@"error"]) {
+		completionHandler(nil, nil, [NSError errorWithDomain:@"Demo" code:123456 userInfo:@{NSLocalizedDescriptionKey: @"error"}]);
 	}
-	
-//		completionHandler ? completionHandler(nil, [NSArray arrayWithArray:segments], nil) : nil;
+	else {
+		double duration = 31.0*60.0 + 57.0;
+		Segment *fullLength = [[Segment alloc] initWithStartTime:0 duration:duration title:@"fullLength" blocked:NO visible:YES];
+		
+		NSMutableArray *segments = [NSMutableArray array];
+		for (NSUInteger i = 0; i < 3; i++) {
+			Segment *segment = [[Segment alloc] initWithStartTime:5*(i+1) duration:3 title:[NSString stringWithFormat:@"Segment #%ld", i] blocked:NO visible:YES];
+			[segments addObject:segment];
+		}
+		
+		completionHandler(fullLength, segments, nil);
+	}
 }
 
 @end
