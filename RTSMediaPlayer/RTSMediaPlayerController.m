@@ -356,12 +356,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
-- (void) pause
-{
-	[self.player pause];
-}
-
-- (void) playIdentifier:(NSString *)identifier
+- (void)playIdentifier:(NSString *)identifier
 {
 	if (![self.identifier isEqualToString:identifier]) {
 		[self reset];
@@ -369,6 +364,16 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 	
 	[self play];
+}
+
+- (void) pause
+{
+	[self.player pause];
+}
+
+- (void)mute:(BOOL)flag
+{
+	self.player.muted = flag;
 }
 
 - (void) reset
@@ -379,12 +384,17 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
-- (void)seekToTime:(NSTimeInterval)seconds completionHandler:(void (^)(BOOL finished))completionHandler
+- (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler
 {
-	[self.player seekToTime:CMTimeMakeWithSeconds(seconds, NSEC_PER_SEC)
+	[self.player seekToTime:time
 			toleranceBefore:kCMTimeZero
 			 toleranceAfter:kCMTimeZero
 		  completionHandler:completionHandler];
+}
+
+- (AVPlayerItem *)playerItem
+{
+	return self.player.currentItem;
 }
 
 - (RTSMediaPlaybackState) playbackState

@@ -388,7 +388,7 @@
                                         <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="delegate" destination="eMv-Af-zLT" id="bCX-bT-X5c"/>
-                                            <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="aNs-yt-eVs"/>
+                                            <outlet property="playbackController" destination="maE-8W-Ll7" id="oBV-Sg-qIc"/>
                                             <outlet property="segmentsController" destination="maE-8W-Ll7" id="zGf-Eq-sHf"/>
                                             <outlet property="timeLeftValueLabel" destination="MgY-Pv-rWN" id="6vf-GK-Exp"/>
                                             <outlet property="valueLabel" destination="yoy-j6-b9D" id="Xm1-Va-udZ"/>
@@ -638,7 +638,7 @@
                                         <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="ETt-wJ-zBE"/>
+                                            <outlet property="playbackController" destination="ZI3-uY-emW" id="ThG-lM-kET"/>
                                             <outlet property="timeLeftValueLabel" destination="aEX-o9-gL3" id="MP7-1M-fDm"/>
                                             <outlet property="valueLabel" destination="h0O-aS-7v7" id="Bqx-Pa-Whc"/>
                                         </connections>

@@ -44,9 +44,9 @@
 	[self updateButton];
 }
 
-- (void) updateButton
+- (void)updateButton
 {
-	BOOL isPlaying = self.mediaPlayerController.player.rate != 0;
+	BOOL isPlaying = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	SEL action = isPlaying ? @selector(pause) : @selector(play);
 
 	[self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];

@@ -275,6 +275,11 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 	[self.playerController pause];
 }
 
+- (void)playIdentifier:(NSString *)identifier
+{
+	[self.playerController playIdentifier:identifier];
+}
+
 - (void)pause
 {
 	[self.playerController pause];
@@ -285,14 +290,24 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 	[self.playerController reset];
 }
 
-- (void)seekToTime:(NSTimeInterval)seconds completionHandler:(void (^)(BOOL))completionHandler
+- (void)mute:(BOOL)flag
 {
-	if ([self isTimeBlocked:CMTimeMakeWithSeconds(seconds, NSEC_PER_SEC)]) {
+	[self.playerController mute:flag];
+}
+
+- (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL))completionHandler
+{
+	if ([self isTimeBlocked:time]) {
 		
 	}
 	else {
-		[self.playerController seekToTime:seconds completionHandler:completionHandler];
+		[self.playerController seekToTime:time completionHandler:completionHandler];
 	}
+}
+
+- (AVPlayerItem *)playerItem
+{
+	return [self.playerController playerItem];
 }
 
 @end

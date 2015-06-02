@@ -10,6 +10,27 @@
 
 #define SLIDER_VERTICAL_CENTER self.frame.size.height/2
 
+static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
+{
+	if (isnan(seconds))
+		return @"NaN";
+	else if (isinf(seconds))
+		return seconds > 0 ? @"∞" : @"-∞";
+	
+	div_t qr = div((int)round(ABS(seconds)), 60);
+	int second = qr.rem;
+	qr = div(qr.quot, 60);
+	int minute = qr.rem;
+	int hour = qr.quot;
+	
+	BOOL negative = seconds < 0;
+	if (hour > 0)
+		return [NSString stringWithFormat:@"%@%02d:%02d:%02d", negative ? @"-" : @"", hour, minute, second];
+	else
+		return [NSString stringWithFormat:@"%@%02d:%02d", negative ? @"-" : @"", minute, second];
+}
+
+
 @interface UIBezierPath (Image)
 /** Returns an image of the path drawn using a stroke */
 -(UIImage*) imageWithColor:(UIColor*)color;
@@ -17,7 +38,8 @@
 
 @implementation UIBezierPath (Image)
 
--(UIImage*) imageWithColor:(UIColor*)color {
+- (UIImage *)imageWithColor:(UIColor *)color
+{
 	// adjust bounds to account for extra space needed for lineWidth
 	CGFloat width = self.bounds.size.width + self.lineWidth * 2;
 	CGFloat height = self.bounds.size.height + self.lineWidth * 2;
@@ -57,34 +79,11 @@
 @end
 
 @interface RTSTimeSlider ()
-
 @property (weak) id periodicTimeObserver;
-
+@property (weak) NSTimer *periodicTimer;
 @end
 
 @implementation RTSTimeSlider
-
-static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
-{
-	if (isnan(seconds))
-		return @"NaN";
-	else if (isinf(seconds))
-		return seconds > 0 ? @"∞" : @"-∞";
-	
-	div_t qr = div((int)round(ABS(seconds)), 60);
-	int second = qr.rem;
-	qr = div(qr.quot, 60);
-	int minute = qr.rem;
-	int hour = qr.quot;
-	
-	BOOL negative = seconds < 0;
-	if (hour > 0)
-		return [NSString stringWithFormat:@"%@%02d:%02d:%02d", negative ? @"-" : @"", hour, minute, second];
-	else
-		return [NSString stringWithFormat:@"%@%02d:%02d", negative ? @"-" : @"", minute, second];
-}
-
-
 
 #pragma mark - initialization
 
@@ -118,39 +117,43 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
 }
 
-
-
 #pragma mark - Setters and getters
 
-- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+- (void)setPlaybackController:(id<RTSMediaPlayback>)playbackController
 {
-	_mediaPlayerController = mediaPlayerController;
+	[self.periodicTimer invalidate];
 	
-	@weakify(self)
-	[mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
-		@strongify(self)
-		
-		if (!self.isTracking)
+	_playbackController = playbackController;
+	
+	self.periodicTimer = [NSTimer scheduledTimerWithTimeInterval:1./5.
+														  target:self
+														selector:@selector(timerTick:)
+														userInfo:nil
+														 repeats:YES];
+}
+
+- (void)timerTick:(NSTimer *)timer
+{
+	if (!self.isTracking)
+	{
+		CMTimeRange currentTimeRange = [self currentTimeRange];
+		if (!CMTIMERANGE_IS_EMPTY(currentTimeRange))
 		{
-			CMTimeRange currentTimeRange = [self currentTimeRange];
-			if (!CMTIMERANGE_IS_EMPTY(currentTimeRange))
-			{
-				self.minimumValue = CMTimeGetSeconds(currentTimeRange.start);
-				self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(currentTimeRange));
-				
-				AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-				self.value = CMTimeGetSeconds(playerItem.currentTime);
-			}
-			else
-			{
-				self.minimumValue = 0.;
-				self.maximumValue = 0.;
-				self.value = 0.;
-			}
+			self.minimumValue = CMTimeGetSeconds(currentTimeRange.start);
+			self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(currentTimeRange));
+			
+			AVPlayerItem *playerItem = self.playbackController.playerItem;
+			self.value = CMTimeGetSeconds(playerItem.currentTime);
 		}
-		[self updateTimeRangeLabels];
-		[self setNeedsDisplay];
-	}];
+		else
+		{
+			self.minimumValue = 0.;
+			self.maximumValue = 0.;
+			self.value = 0.;
+		}
+	}
+	[self updateTimeRangeLabels];
+	[self setNeedsDisplay];
 }
 
 - (BOOL) isDraggable
@@ -188,15 +191,13 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (CMTimeRange) currentTimeRange
 {
 	// TODO: Should later add support for discontinuous seekable time ranges
-	AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+	AVPlayerItem *playerItem = self.playbackController.playerItem;
 	NSValue *seekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-	if (seekableTimeRangeValue)
-	{
+	if (seekableTimeRangeValue) {
 		CMTimeRange seekableTimeRange = [seekableTimeRangeValue CMTimeRangeValue];
 		return CMTIMERANGE_IS_VALID(seekableTimeRange) ? seekableTimeRange : kCMTimeRangeZero;
 	}
-	else
-	{
+	else {
 		return kCMTimeRangeZero;
 	}
 }
@@ -211,7 +212,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void) updateTimeRangeLabels
 {
 	CMTimeRange currentTimeRange = [self currentTimeRange];
-	AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+	AVPlayerItem *playerItem = self.playbackController.playerItem;
 
 	// Live and timeshift feeds in live conditions. This happens when either the following condition
 	// is met:
@@ -283,8 +284,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetStrokeColorWithColor(context, [UIColor darkGrayColor].CGColor);
 	CGContextStrokePath(context);
 	
-	for (NSValue *value in self.mediaPlayerController.player.currentItem.loadedTimeRanges)
-	{
+	for (NSValue *value in self.playbackController.playerItem.loadedTimeRanges) {
 		CMTimeRange timeRange = [value CMTimeRangeValue];
 		[self drawTimeRangeProgress:timeRange context:context];
 	}
@@ -294,7 +294,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	CGFloat lineWidth = 1.0f;
 	
-	CGFloat duration = CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.duration);
+	CGFloat duration = CMTimeGetSeconds(self.playbackController.playerItem.duration);
 	if (isnan(duration))
 		return;
 	
@@ -332,22 +332,20 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark Touch tracking
 
-- (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
-	if (beginTracking && [self isDraggable])
-	{
-		[self.mediaPlayerController pause];
+	if (beginTracking && [self isDraggable]) {
+		[self.playbackController pause];
 	}
 	
 	return beginTracking;
 }
 
-- (BOOL) continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	BOOL continueTracking = [super continueTrackingWithTouch:touch withEvent:event];
-	if (continueTracking && [self isDraggable])
-	{
+	if (continueTracking && [self isDraggable]) {
 		[self updateTimeRangeLabels];
 		[self setNeedsDisplay];
 	}
@@ -355,15 +353,15 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	return continueTracking;
 }
 
-- (void) endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	if ([self isDraggable] && self.tracking)
-	{
-		[self.mediaPlayerController.player seekToTime:CMTimeMakeWithSeconds(self.value, 1) completionHandler:^(BOOL finished) {
-			if (finished) {
-				[self.mediaPlayerController play];
-			}
-		}];
+	if ([self isDraggable] && self.tracking) {
+		[self.playbackController seekToTime:CMTimeMakeWithSeconds(self.value, 1)
+						  completionHandler:^(BOOL finished) {
+							  if (finished) {
+								  [self.playbackController play];
+							  }
+						  }];
 	}
 	
 	[super endTrackingWithTouch:touch withEvent:event];

@@ -144,7 +144,7 @@
 	
 	mediaPlayerController.overlayViews = isMainPlayer ? self.overlayViews : nil;
 	[mediaPlayerController attachPlayerToView:playerView];
-	mediaPlayerController.player.muted = !isMainPlayer;
+	[mediaPlayerController mute:!isMainPlayer];
 	
 	UITapGestureRecognizer *defaultTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.firstObject;
 	UITapGestureRecognizer *switchTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.lastObject;

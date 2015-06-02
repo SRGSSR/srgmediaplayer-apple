@@ -5,15 +5,13 @@
 
 #import <CoreMedia/CoreMedia.h>
 #import <UIKit/UIKit.h>
+#import <RTSMediaPlayer/RTSMediaPlayback.h>
 
 @class RTSMediaPlayerController;
 
 @interface RTSTimeSlider : UISlider
 
-/**
- *  <#Description#>
- */
-@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+@property (nonatomic, weak) IBOutlet id<RTSMediaPlayback> playbackController;
 
 @property (nonatomic, weak) IBOutlet UILabel *timeLeftValueLabel;
 @property (nonatomic, weak) IBOutlet UILabel *valueLabel;

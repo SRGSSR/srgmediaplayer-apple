@@ -44,6 +44,9 @@
 		
 		self.identifier = identifier;
 		self.date = date;
+		
+		self.blockedSegment = NO;
+		self.visibleSegment = YES;
 	}
 	return self;
 }

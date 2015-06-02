@@ -98,35 +98,33 @@
 
 - (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment
 {
-	[self.mediaPlayerController.player seekToTime:segment.segmentTimeRange.start];
+	[self.mediaPlayerController seekToTime:segment.segmentTimeRange.start completionHandler:nil];
 }
 
 #pragma mark - Actions
 
-- (IBAction) dismiss:(id)sender
+- (IBAction)dismiss:(id)sender
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction) seekBackward:(id)sender
+- (IBAction)seekBackward:(id)sender
 {
-	CMTime currentTime = self.mediaPlayerController.player.currentTime;
+	CMTime currentTime = self.mediaPlayerController.playerItem.currentTime;
 	CMTime increment = CMTimeMakeWithSeconds(30., 1.);
-	
-	[self.mediaPlayerController.player seekToTime:CMTimeSubtract(currentTime, increment)];
+	[self.mediaPlayerController seekToTime:CMTimeSubtract(currentTime, increment) completionHandler:nil];
 }
 
-- (IBAction) seekForward:(id)sender
+- (IBAction)seekForward:(id)sender
 {
-	CMTime currentTime = self.mediaPlayerController.player.currentTime;
+	CMTime currentTime = self.mediaPlayerController.playerItem.currentTime;
 	CMTime increment = CMTimeMakeWithSeconds(30., 1.);
-	
-	[self.mediaPlayerController.player seekToTime:CMTimeAdd(currentTime, increment)];
+	[self.mediaPlayerController seekToTime:CMTimeAdd(currentTime, increment) completionHandler:nil];
 }
 
-- (IBAction) goToLive:(id)sender
+- (IBAction)goToLive:(id)sender
 {
-	[self.mediaPlayerController.player seekToTime:self.mediaPlayerController.player.currentItem.duration];
+	[self.mediaPlayerController seekToTime:self.mediaPlayerController.playerItem.duration completionHandler:nil];
 }
 
 @end

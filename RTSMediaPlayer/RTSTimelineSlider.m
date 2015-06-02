@@ -110,25 +110,22 @@ static void commonInit(RTSTimelineSlider *self);
 
 - (CMTimeRange) currentTimeRange
 {
-	AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+	AVPlayerItem *playerItem = self.playbackController.playerItem;
 	
 	NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-	if (!firstSeekableTimeRangeValue)
-	{
+	if (!firstSeekableTimeRangeValue) {
 		return kCMTimeRangeZero;
 	}
 	
 	NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
-	if (!lastSeekableTimeRangeValue)
-	{
+	if (!lastSeekableTimeRangeValue) {
 		return kCMTimeRangeZero;
 	}
 	
 	CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
 	CMTimeRange lastSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
 	
-	if (!CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || !CMTIMERANGE_IS_VALID(lastSeekableTimeRange))
-	{
+	if (!CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || !CMTIMERANGE_IS_VALID(lastSeekableTimeRange)) {
 		return kCMTimeRangeZero;
 	}
 	
@@ -146,11 +143,10 @@ static void commonInit(RTSTimelineSlider *self);
 
 #pragma mark - Gestures
 
-- (void) seek:(UIGestureRecognizer *)gestureRecognizer
+- (void)seek:(UIGestureRecognizer *)gestureRecognizer
 {
 	// Cannot tap on the thumb itself
-	if (self.highlighted)
-	{
+	if (self.highlighted) {
 		return;
 	}
 	
@@ -158,7 +154,7 @@ static void commonInit(RTSTimelineSlider *self);
 	float value = self.minimumValue + (self.maximumValue - self.minimumValue) * xPos / CGRectGetWidth(self.bounds);
 	
 	CMTime time = CMTimeMakeWithSeconds(value, 1.);
-	[self.mediaPlayerController.player seekToTime:time];
+	[self.playbackController seekToTime:time completionHandler:nil];
 }
 
 @end
