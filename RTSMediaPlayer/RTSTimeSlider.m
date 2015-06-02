@@ -246,7 +246,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark - Draw Methods
 
--(void) drawRect:(CGRect)rect
+- (void)drawRect:(CGRect)rect
 {
 	[super drawRect:rect];
 	
@@ -256,7 +256,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self drawMinimumValueBar:context];
 }
 
--(void) drawBar:(CGContextRef)context
+- (void)drawBar:(CGContextRef)context
 {
 	CGRect trackFrame = [self trackRectForBounds:self.bounds];
 	
@@ -270,7 +270,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextStrokePath(context);
 }
 
--(void) drawDownloadProgressValueBar:(CGContextRef)context
+- (void)drawDownloadProgressValueBar:(CGContextRef)context
 {
 	CGRect trackFrame = [self trackRectForBounds:self.bounds];
 
@@ -290,7 +290,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}
 }
 
-- (void) drawTimeRangeProgress:(CMTimeRange)timeRange context:(CGContextRef)context
+- (void)drawTimeRangeProgress:(CMTimeRange)timeRange context:(CGContextRef)context
 {
 	CGFloat lineWidth = 1.0f;
 	
@@ -312,7 +312,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextStrokePath(context);
 }
 
--(void) drawMinimumValueBar:(CGContextRef)context
+- (void)drawMinimumValueBar:(CGContextRef)context
 {
 	CGRect trackFrame = [self trackRectForBounds:self.bounds];
 	CGRect thumbRect = [self thumbRectForBounds:self.bounds trackRect:trackFrame value:self.value];
@@ -359,8 +359,11 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	if ([self isDraggable] && self.tracking)
 	{
-		[self.mediaPlayerController.player seekToTime:CMTimeMakeWithSeconds(self.value, 1)];
-		[self.mediaPlayerController play];
+		[self.mediaPlayerController.player seekToTime:CMTimeMakeWithSeconds(self.value, 1) completionHandler:^(BOOL finished) {
+			if (finished) {
+				[self.mediaPlayerController play];
+			}
+		}];
 	}
 	
 	[super endTrackingWithTouch:touch withEvent:event];

@@ -14,28 +14,24 @@
 static void commonInit(RTSTimelineView *self);
 
 @interface RTSTimelineView ()
-
 @property (nonatomic, weak) UICollectionView *collectionView;
-
 @end
 
 @implementation RTSTimelineView
 
 #pragma mark - Object lifecycle
 
-- (instancetype) initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
-	if (self = [super initWithFrame:frame])
-	{
+	if (self = [super initWithFrame:frame]) {
 		commonInit(self);
 	}
 	return self;
 }
 
-- (instancetype) initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-	if (self = [super initWithCoder:aDecoder])
-	{
+	if (self = [super initWithCoder:aDecoder]) {
 		commonInit(self);
 	}
 	return self;
@@ -43,23 +39,21 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - Getters and setters
 
-- (void) setItemWidth:(CGFloat)itemWidth
+- (void)setItemWidth:(CGFloat)itemWidth
 {
 	_itemWidth = itemWidth;
-	
 	[self layoutIfNeeded];
 }
 
-- (void) setItemSpacing:(CGFloat)itemSpacing
+- (void)setItemSpacing:(CGFloat)itemSpacing
 {
 	_itemSpacing = itemSpacing;
-	
 	[self layoutIfNeeded];
 }
 
 #pragma mark - Overrides
 
-- (void) layoutSubviews
+- (void)layoutSubviews
 {
 	[super layoutSubviews];
 	
@@ -71,21 +65,20 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - Cell reuse
 
-- (void) registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier
+- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier
 {
 	[self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
 }
 
-- (void) registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier
+- (void)registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier
 {
 	[self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 
-- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaPlayerSegment>)segment
+- (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaPlayerSegment>)segment
 {
 	NSInteger index = [self.segmentsController.visibleSegments indexOfObject:segment];
-	if (index == NSNotFound)
-	{
+	if (index == NSNotFound) {
 		return nil;
 	}
 	
@@ -105,7 +98,7 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - UICollectionViewDataSource protocol
 
-- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
 	return self.segmentsController.visibleSegments.count;
 }

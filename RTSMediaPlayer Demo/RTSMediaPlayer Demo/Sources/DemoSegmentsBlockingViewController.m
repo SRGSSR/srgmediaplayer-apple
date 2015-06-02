@@ -17,7 +17,7 @@
 
 @property (nonatomic, weak) IBOutlet UIView *videoView;
 @property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
-@property (nonatomic, weak) IBOutlet RTSTimelineSlider *timelineSlider;
+@property (nonatomic, weak) IBOutlet RTSTimeSlider *timelineSlider;
 
 @end
 
@@ -62,7 +62,6 @@
 		[self.mediaPlayerController playIdentifier:self.videoIdentifier];
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
 		[self.timelineView reloadSegmentsForIdentifier:self.videoIdentifier];
-		[self.timelineSlider reloadSegmentsForIdentifier:self.videoIdentifier];
 	}
 }
 

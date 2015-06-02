@@ -31,6 +31,11 @@
 @property (nonatomic, weak) IBOutlet RTSMediaSegmentsController *segmentsController;
 
 /**
+ *  The timeline delegate
+ */
+@property (nonatomic, weak) IBOutlet id<RTSTimelineViewDelegate> delegate;
+
+/**
  *  The width of cells within the timeline. Defaults to 60
  */
 @property (nonatomic) IBInspectable CGFloat itemWidth;
@@ -44,13 +49,13 @@
  *  Register cell classes for reuse. Cells must be subclasses of UICollectionViewCell and can be instantiated either
  *  programmatically or using a nib. For more information about cell reuse, refer to UICollectionView documentation
  */
-- (void) registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
-- (void) registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
+- (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
+- (void)registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
 
 /**
  *  Call this method to trigger a reload of the segments from the data source
  */
-- (void) reloadSegmentsForIdentifier:(NSString *)identifier;
+- (void)reloadSegmentsForIdentifier:(NSString *)identifier;
 
 /**
  *  Dequeue a reusable cell for a given segment
@@ -58,28 +63,18 @@
  *  @param identifier The cell identifier (must be appropriately set for the cell)
  *  @param segment    The segment for which a cell must be dequeued
  */
-- (id) dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaPlayerSegment>)segment;
-
-/**
- *  The timeline delegate
- */
-@property (nonatomic, weak) IBOutlet id<RTSTimelineViewDelegate> delegate;
-
-/**
- *  The currently visible cells
- */
-- (NSArray *) visibleCells;
+- (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaPlayerSegment>)segment;
 
 /**
  *  Scroll to make the specified segment visible (does nothing if the segment does not belong to the displayed segments)
  */
-- (void) scrollToSegment:(id<RTSMediaPlayerSegment>)segment animated:(BOOL)animated;
+- (void)scrollToSegment:(id<RTSMediaPlayerSegment>)segment animated:(BOOL)animated;
 
 /**
  *  Scroll to make the segment to which the specified time belongs visible (does nothing if the time does not match
  *  any segment)
  */
-- (void) scrollToSegmentAtTime:(CMTime)time animated:(BOOL)animated;
+- (void)scrollToSegmentAtTime:(CMTime)time animated:(BOOL)animated;
 
 @end
 
@@ -97,7 +92,7 @@
  *
  *  @return The cell to use
  */
-- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment;
+- (UICollectionViewCell *)timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment;
 
 @optional
 
@@ -107,6 +102,6 @@
  *  @param timelineView The timeline
  *  @param segment      The segment which has been selected
  */
-- (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment;
+- (void)timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment;
 
 @end

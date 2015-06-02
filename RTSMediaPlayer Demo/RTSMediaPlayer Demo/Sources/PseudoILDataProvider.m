@@ -57,7 +57,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 		
 		NSMutableArray *segments = [NSMutableArray array];
 		for (NSUInteger i = 0; i < 3; i++) {
-			Segment *segment = [[Segment alloc] initWithStartTime:5*(i+1) duration:3 title:[NSString stringWithFormat:@"Segment #%ld", i] blocked:NO visible:YES];
+			Segment *segment = [[Segment alloc] initWithStartTime:5*(i*5+1) duration:10 title:[NSString stringWithFormat:@"Segment #%ld", i] blocked:NO visible:YES];
 			[segments addObject:segment];
 		}
 		

@@ -131,7 +131,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gKW-lx-ybK" id="3JL-Wj-dPj">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Segments with blocking flags" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UAp-tj-H0F">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Segments" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UAp-tj-H0F">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -154,7 +154,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eAi-Nf-6JW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="487" y="2"/>
+            <point key="canvasLocation" x="461" y="-88"/>
         </scene>
         <!--Demo Inline View Controller-->
         <scene sceneID="alA-mL-MQl">
@@ -629,6 +629,20 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bOM-dV-sbr" userLabel="Bottom Bar View">
                                 <rect key="frame" x="0.0" y="536" width="600" height="64"/>
                                 <subviews>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Qju-s5-kdB" customClass="RTSTimeSlider">
+                                        <rect key="frame" x="6" y="0.0" width="588" height="31"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="IN1-wR-XZA"/>
+                                        </constraints>
+                                        <color key="minimumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="ETt-wJ-zBE"/>
+                                            <outlet property="timeLeftValueLabel" destination="aEX-o9-gL3" id="MP7-1M-fDm"/>
+                                            <outlet property="valueLabel" destination="h0O-aS-7v7" id="Bqx-Pa-Whc"/>
+                                        </connections>
+                                    </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0O-aS-7v7">
                                         <rect key="frame" x="8" y="34" width="35" height="16"/>
                                         <constraints>
@@ -675,35 +689,17 @@
                                             <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="a4j-ne-N8G"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VjK-8m-VID">
-                                        <rect key="frame" x="453" y="31" width="81" height="22"/>
-                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="22" id="0zy-Cz-QhN"/>
-                                            <constraint firstAttribute="width" constant="81" id="VbU-Ay-JpD"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                        <state key="normal" title="GO TO LIVE">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="goToLive:" destination="2iI-c6-veX" eventType="touchUpInside" id="8L6-fe-Use"/>
-                                        </connections>
-                                    </button>
-                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ITP-ar-aOh">
-                                        <rect key="frame" x="6" y="0.0" width="588" height="31"/>
-                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" white="0.85369551809999999" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="vO1-Gg-OEX" secondAttribute="centerX" id="0Ol-Ax-bol"/>
                                     <constraint firstItem="h0O-aS-7v7" firstAttribute="leading" secondItem="bOM-dV-sbr" secondAttribute="leading" constant="8" id="23j-7D-l5G"/>
+                                    <constraint firstItem="Qju-s5-kdB" firstAttribute="leading" secondItem="bOM-dV-sbr" secondAttribute="leading" constant="8" id="IJz-TQ-yTg"/>
                                     <constraint firstAttribute="bottom" secondItem="h0O-aS-7v7" secondAttribute="bottom" constant="14" id="K8G-xv-24h"/>
                                     <constraint firstAttribute="height" constant="64" id="Qqj-FK-jRm"/>
-                                    <constraint firstItem="aEX-o9-gL3" firstAttribute="leading" secondItem="VjK-8m-VID" secondAttribute="trailing" constant="23" id="lC6-Mi-9KR"/>
+                                    <constraint firstAttribute="trailing" secondItem="Qju-s5-kdB" secondAttribute="trailing" constant="8" id="WaR-1q-m4c"/>
+                                    <constraint firstItem="Qju-s5-kdB" firstAttribute="top" secondItem="bOM-dV-sbr" secondAttribute="top" id="hZI-pN-eaP"/>
                                     <constraint firstAttribute="bottom" secondItem="aEX-o9-gL3" secondAttribute="bottom" constant="14" id="plf-1G-4aI"/>
-                                    <constraint firstItem="aEX-o9-gL3" firstAttribute="centerY" secondItem="VjK-8m-VID" secondAttribute="centerY" id="pvi-gX-mwg"/>
                                     <constraint firstAttribute="trailing" secondItem="aEX-o9-gL3" secondAttribute="trailing" constant="8" id="vIJ-9Y-BTB"/>
                                     <constraint firstAttribute="bottom" secondItem="vO1-Gg-OEX" secondAttribute="bottom" constant="11" id="xYV-8E-9QI"/>
                                 </constraints>
@@ -771,6 +767,7 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="hmT-aF-S9N"/>
+                        <outlet property="timelineSlider" destination="Qju-s5-kdB" id="GAx-qN-v5p"/>
                         <outlet property="timelineView" destination="VIz-eg-pbD" id="f42-dZ-goV"/>
                         <outlet property="videoView" destination="KYY-9n-s9D" id="2pE-2x-GzK"/>
                     </connections>
