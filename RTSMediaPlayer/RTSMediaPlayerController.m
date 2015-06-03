@@ -266,6 +266,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}];
 	
 	[seeking setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
 		NSDictionary *errorUserInfo = transition.userInfo[RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey];
 		if (errorUserInfo) {
 			[self postNotificationName:RTSMediaPlayerPlaybackSeekingUponBlockingNotification userInfo:errorUserInfo];
