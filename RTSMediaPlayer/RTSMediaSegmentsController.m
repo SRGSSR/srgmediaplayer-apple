@@ -117,10 +117,12 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 		DDLogDebug(@"Playing time %.2fs at index %ld", CMTimeGetSeconds(time), index);
 		
 		if (self.playerController.playbackState == RTSMediaPlaybackStatePlaying && [self isTimeBlocked:time]) {
-			NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlocking)};
-			[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
-																object:self
-															  userInfo:userInfo];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlocking)};
+				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+																	object:self
+																  userInfo:userInfo];
+			});
 
 			// The reason for blocking must be specified, and should actually be accessile from the segment object, IMHO.
 			[self.playerController fireSeekEventWithUserInfo:@{RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey: @"blocked"}];
@@ -141,9 +143,11 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 								 RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey: self.segments[index]};
 				}
 				
-				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
-																	object:self
-																  userInfo:userInfo];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+																		object:self
+																	  userInfo:userInfo];
+				});
 			}
 			
 			self.lastPlaybackPositionSegmentIndex = index;
@@ -163,7 +167,7 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 	
 	// nextIndex can be equal to index (it happens when after segment@index, there is playback outside any segment.
 	// Hence, if we get a nextIndex, one must seek to the end of it + a small bit.
-	
+		
 	if (nextIndex == NSUIntegerMax) {
 		CMTimeRange r = self.fullLengthSegment.segmentTimeRange;
 		[self.playerController.player seekToTime:CMTimeAdd(r.start, r.duration)];
@@ -179,7 +183,7 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 								  toleranceAfter:kCMTimeZero
 							   completionHandler:^(BOOL finished) {
 								   if (finished) {
-//									   [self.playerController play];
+									   [self.playerController pause];
 								   }
 							   }];
 	}

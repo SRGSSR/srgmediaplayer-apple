@@ -185,7 +185,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKEvent *loadSuccess = [TKEvent eventWithName:@"Load Success" transitioningFromStates:@[ preparing ] toState:ready];
 	TKEvent *play = [TKEvent eventWithName:@"Play" transitioningFromStates:@[ ready, paused, stalled, ended, seeking ] toState:playing];
 	TKEvent *seek = [TKEvent eventWithName:@"Seek" transitioningFromStates:@[ ready, paused, stalled, ended, playing ] toState:seeking]; // Including 'Stalled"?
-	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ ready, playing ] toState:paused];
+	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ ready, playing, seeking ] toState:paused];
 	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:ended];
 	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:stalled];
 	NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
@@ -616,7 +616,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		switch (playerItem.status)
 		{
 			case AVPlayerItemStatusReadyToPlay:
-				if (self.player.rate != 0 && ![self.stateMachine.currentState isEqual:self.readyState]) {
+				if (self.player.rate != 0 && ![self.stateMachine.currentState isEqual:self.readyState] && ![self.stateMachine.currentState isEqual:self.seekingState]) {
 					[self play];
 				}
 				break;
