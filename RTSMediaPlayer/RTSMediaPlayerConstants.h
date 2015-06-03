@@ -57,6 +57,30 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 };
 
 
+/**
+ *  @enum RTSMediaPlaybackSegmentsChange
+ *
+ *  Enumeration of the possible changes occuring during playback related to segments.
+ */
+typedef NS_ENUM(NSInteger, RTSMediaPlaybackSegmentChange) {
+	/**
+	 *  An identified segment (visible or not) is being ended, without another one to start.
+	 */
+	RTSMediaPlaybackSegmentEnd,
+	/**
+	 *  An identified segment (visible or not) is being started, while not being inside a segment before.
+	 */
+	RTSMediaPlaybackSegmentStart,
+	/**
+	 *  An identified segment (visible or not) is being started, while being inside another segment before.
+	 */
+	RTSMediaPlaybackSegmentSwitch,
+	/**
+	 *  The playback is being seek to a later value, because it reached a blocked segment.
+	 */
+	RTSMediaPlaybackSegmentSeekUponBlocking,
+};
+
 FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in seconds.
 
 /**
@@ -64,6 +88,10 @@ FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in secon
  *  @name Notifications
  *  -------------------
  */
+
+FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentDidChangeNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey;
+FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey;
 
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingNotification;
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey;

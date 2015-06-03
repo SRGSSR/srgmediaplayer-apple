@@ -56,7 +56,7 @@
  *
  *  @return The index of the episodes corresponding to the provided segment index.
  */
-- (NSUInteger)visibleSegmentIndexForSegmentIndex:(NSUInteger)segmentIndex;
+- (NSUInteger)indexOfVisibleSegmentForSegmentIndex:(NSUInteger)segmentIndex;
 
 /**
  *  Check whether the segment at the given index is blocked.
@@ -66,6 +66,7 @@
  *  @return YES if the segment is blocked.
  */
 - (BOOL)isSegmentBlockedAtIndex:(NSUInteger)index;
+- (BOOL)isVisibleSegmentBlockedAtIndex:(NSUInteger)index;
 
 /**
  *  When hitting a blocked segment, one must find when exactly restarting the video, if possible. Hence,
@@ -80,5 +81,19 @@
  *  If there is no more segments and no more playable content, returns NSNotFound;
  */
 - (NSUInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(NSTimeInterval)flexibilityGap;
+
+/**
+ *  The index of the current visible segment in which the playback head is located.
+ *
+ *  @return The index of the visible segment. Returns -1 if the position corresponds to no segments.
+ */
+- (NSInteger)currentVisibleSegmentIndex;
+
+/**
+ *  The index of the current segment in which the playback head is located.
+ *
+ *  @return The index of the segment. Returns -1 if the position corresponds to no segments.
+ */
+- (NSInteger)currentSegmentIndex;
 
 @end

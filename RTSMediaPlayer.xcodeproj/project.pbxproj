@@ -10,7 +10,7 @@
 		5CB1A10CE53E2A8720302D99 /* libPods-RTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A05D6955446198632FA7E824 /* libPods-RTSMediaPlayer.a */; };
 		9F064C521B175C0F0044E2C7 /* RTSMediaSegmentsController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9F43A6DF1B1610D0007832B7 /* RTSMediaSegmentsController.h */; };
 		9F43A6E11B1610D0007832B7 /* RTSMediaSegmentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */; };
-		9FAD24AE1B1DD34400B6D3E9 /* RTSMediaPlayerConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */; };
+		9F74920E1B1F3A4F00894F91 /* RTSMediaPlayerConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */; };
 		9FAD24AF1B1DD34400B6D3E9 /* RTSMediaBlockingOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FDF081A1B1C594D005BA322 /* RTSMediaBlockingOverlayView.h */; };
 		9FAD24B11B1DD4EA00B6D3E9 /* RTSMediaPlayback.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24B01B1DD41900B6D3E9 /* RTSMediaPlayback.h */; };
 		9FDF081C1B1C594D005BA322 /* RTSMediaBlockingOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDF081B1B1C594D005BA322 /* RTSMediaBlockingOverlayView.m */; };
@@ -76,8 +76,8 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				9F74920E1B1F3A4F00894F91 /* RTSMediaPlayerConstants.h in CopyFiles */,
 				9FAD24B11B1DD4EA00B6D3E9 /* RTSMediaPlayback.h in CopyFiles */,
-				9FAD24AE1B1DD34400B6D3E9 /* RTSMediaPlayerConstants.h in CopyFiles */,
 				9FAD24AF1B1DD34400B6D3E9 /* RTSMediaBlockingOverlayView.h in CopyFiles */,
 				9F064C521B175C0F0044E2C7 /* RTSMediaSegmentsController.h in CopyFiles */,
 				E67D9B2D1B0F2D1E00FF2334 /* RTSVolumeView.h in CopyFiles */,

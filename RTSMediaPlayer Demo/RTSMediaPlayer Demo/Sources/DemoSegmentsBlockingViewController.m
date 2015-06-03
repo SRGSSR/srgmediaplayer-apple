@@ -16,6 +16,9 @@
 @property (nonatomic, weak) IBOutlet UIView *videoView;
 @property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
 @property (nonatomic, weak) IBOutlet RTSTimeSlider *timelineSlider;
+@property (nonatomic, weak) IBOutlet UIView *blockingOverlayView;
+@property (nonatomic, weak) IBOutlet UILabel *blockingOverlayViewLabel;
+@property (nonatomic, weak) NSTimer *blockingOverlayTimer;
 
 @end
 
@@ -38,7 +41,7 @@
 
 #pragma mark - View lifecycle
 
-- (void) viewDidLoad
+- (void)viewDidLoad
 {
 	[super viewDidLoad];
 	
@@ -49,9 +52,14 @@
 	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
 	
 	[self.mediaPlayerController attachPlayerToView:self.videoView];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(displayBlockingMessage:)
+												 name:RTSMediaPlaybackSegmentDidChangeNotification
+											   object:nil];
 }
 
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
 	
@@ -62,7 +70,7 @@
 	}
 }
 
-- (void) viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
 	
@@ -72,9 +80,53 @@
 	}
 }
 
+- (void)displayBlockingMessage:(NSNotification *)notification
+{
+	RTSMediaSegmentsController *sender = (RTSMediaSegmentsController *)notification.object;
+	if (sender.playerController != self.mediaPlayerController) {
+		return;
+	}
+	
+	NSNumber *value = notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey];
+	if (value && [value integerValue] == RTSMediaPlaybackSegmentSeekUponBlocking) {
+		self.blockingOverlayViewLabel.text = @"Blocked Segment. Seeking to next authorized one... \nMessage shown during 5 seconds (customizable).";
+		[self.blockingOverlayView setHidden:NO];
+		
+		self.blockingOverlayTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+																	 target:self
+																   selector:@selector(considerHidingTheBlockingMessage:)
+																   userInfo:nil
+																	repeats:NO];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(considerHidingTheBlockingMessage:)
+													 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+												   object:self.mediaPlayerController];
+	}
+}
+
+- (void)considerHidingTheBlockingMessage:(id)sender
+{
+	if (self.blockingOverlayView.isHidden) {
+		// The overlay view is already hidden.
+		return;
+	}
+	
+	if ([sender isKindOfClass:[NSNotification class]] && self.blockingOverlayTimer) {
+		// Okay, wait for the timer to trigger the hide.
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:RTSMediaPlayerPlaybackStateDidChangeNotification
+													  object:self.mediaPlayerController];
+		
+		return;
+	}
+	
+	[self.blockingOverlayView setHidden:YES];
+}
+
 #pragma ark - RTSTimelineSliderDelegate protocol
 
-- (UIImage *) timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaPlayerSegment>)segment
+- (UIImage *)timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaPlayerSegment>)segment
 {
 	return ((Segment *)segment).iconImage;
 }
@@ -88,7 +140,7 @@
 	return segmentCell;
 }
 
-- (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment
+- (void)timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment
 {
 	[self.mediaPlayerController seekToTime:segment.segmentTimeRange.start completionHandler:nil];
 }

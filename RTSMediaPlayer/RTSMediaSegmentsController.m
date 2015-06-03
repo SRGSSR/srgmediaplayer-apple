@@ -6,6 +6,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <libextobjc/EXTScope.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerController+Private.h"
@@ -13,6 +14,9 @@
 #import "RTSMediaSegmentsController.h"
 
 NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
+NSString * const RTSMediaPlaybackSegmentDidChangeNotification = @"RTSMediaPlaybackSegmentDidChangeNotification";
+NSString * const RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey = @"RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey";
+NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackSegmentChangeValueInfoKey";
 
 @interface RTSMediaSegmentsController ()
 @property(nonatomic, strong) id<RTSMediaPlayerSegment> fullLengthSegment;
@@ -20,6 +24,7 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 @property(nonatomic, strong) NSArray *episodes;
 @property(nonatomic, strong) NSDictionary *indexMapping;
 @property(nonatomic, strong) id playerTimeObserver;
+@property(nonatomic, assign) NSInteger lastPlaybackPositionSegmentIndex;
 @end
 
 @implementation RTSMediaSegmentsController
@@ -39,6 +44,7 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 	}
 
 	[self removeBlockingTimeObserver];
+	self.lastPlaybackPositionSegmentIndex = -1;
 
 	RTSMediaSegmentsCompletionHandler reloadCompletionBlock = ^(id<RTSMediaPlayerSegment> fullLength, NSArray *segments, NSError *error) {
 		if (error) {
@@ -108,34 +114,39 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 		NSUInteger secondaryIndex;
 		NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:&secondaryIndex];
 		
-		if (self.playerController.playbackState == RTSMediaPlaybackStatePlaying &&
-			[self isSegmentBlockedAtIndex:index] &&
-			[self isSegmentBlockedAtIndex:secondaryIndex])
-		{
+		DDLogDebug(@"Playing time %.2fs at index %ld", CMTimeGetSeconds(time), index);
+		
+		if (self.playerController.playbackState == RTSMediaPlaybackStatePlaying && [self isTimeBlocked:time]) {
+			NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlocking)};
+			[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+																object:self
+															  userInfo:userInfo];
+
+			// The reason for blocking must be specified, and should actually be accessile from the segment object, IMHO.
 			[self.playerController fireSeekEventWithUserInfo:@{RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey: @"blocked"}];
-			
-			NSUInteger nextIndex = [self indexOfLastContiguousBlockedSegmentAfterIndex:index
-																	withFlexibilityGap:RTSMediaPlaybackTickInterval];
-			
-			if (nextIndex == NSUIntegerMax) {
-				CMTimeRange r = self.fullLengthSegment.segmentTimeRange;
-				[self.playerController.player seekToTime:CMTimeAdd(r.start, r.duration)];
-			}
-			else {
-				id<RTSMediaPlayerSegment> segment = self.segments[nextIndex];
-				CMTime oneInterval = CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC);
-				CMTimeRange r = segment.segmentTimeRange;
-				CMTime seekCMTime = CMTimeAdd(r.start, CMTimeAdd(r.duration, oneInterval));
+			[self seekToNextAvailableSegmentAfterIndex:index];
+		}
+		else {
+			if (self.lastPlaybackPositionSegmentIndex != index) {
+				NSDictionary *userInfo = nil;
+				if (index == NSNotFound) {
+					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentEnd)};
+				}
+				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
+					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentEnd),
+								 RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey: self.segments[index]};
+				}
+				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
+					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
+								 RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey: self.segments[index]};
+				}
 				
-				[self.playerController.player seekToTime:seekCMTime
-										 toleranceBefore:kCMTimeZero
-										  toleranceAfter:kCMTimeZero
-									   completionHandler:^(BOOL finished) {
-										   if (finished) {
-											   [self.playerController play];
-										   }
-									   }];
+				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+																	object:self
+																  userInfo:userInfo];
 			}
+			
+			self.lastPlaybackPositionSegmentIndex = index;
 		}
 	};
 	
@@ -143,6 +154,35 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 	self.playerTimeObserver = [self.playerController addPlaybackTimeObserverForInterval:interval
 																				  queue:nil
 																			 usingBlock:checkBlock];
+}
+
+- (void)seekToNextAvailableSegmentAfterIndex:(NSInteger)index
+{
+	NSUInteger nextIndex = [self indexOfLastContiguousBlockedSegmentAfterIndex:index
+															withFlexibilityGap:RTSMediaPlaybackTickInterval];
+	
+	// nextIndex can be equal to index (it happens when after segment@index, there is playback outside any segment.
+	// Hence, if we get a nextIndex, one must seek to the end of it + a small bit.
+	
+	if (nextIndex == NSUIntegerMax) {
+		CMTimeRange r = self.fullLengthSegment.segmentTimeRange;
+		[self.playerController.player seekToTime:CMTimeAdd(r.start, r.duration)];
+	}
+	else {
+		id<RTSMediaPlayerSegment> segment = self.segments[nextIndex];
+		CMTime oneInterval = CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC);
+		CMTimeRange r = segment.segmentTimeRange;
+		CMTime seekCMTime = CMTimeAdd(r.start, CMTimeAdd(r.duration, oneInterval));
+		
+		[self.playerController.player seekToTime:seekCMTime
+								 toleranceBefore:kCMTimeZero
+								  toleranceAfter:kCMTimeZero
+							   completionHandler:^(BOOL finished) {
+								   if (finished) {
+//									   [self.playerController play];
+								   }
+							   }];
+	}
 }
 
 - (BOOL)isTimeBlocked:(CMTime)time
@@ -196,7 +236,7 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
     return [NSArray arrayWithArray:self.episodes];
 }
 
-- (NSUInteger)visibleSegmentIndexForSegmentIndex:(NSUInteger)segmentIndex
+- (NSUInteger)indexOfVisibleSegmentForSegmentIndex:(NSUInteger)segmentIndex
 {
     if (segmentIndex == NSNotFound || self.segments.count == 0) {
         return NSNotFound;
@@ -211,6 +251,15 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
     }
     return NO;
 }
+
+- (BOOL)isVisibleSegmentBlockedAtIndex:(NSUInteger)index
+{
+	if (index < self.visibleSegments.count) {
+		return [self.visibleSegments[index] isBlocked];
+	}
+	return NO;
+}
+
 
 - (NSUInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(NSTimeInterval)flexibilityGap
 {
@@ -261,6 +310,28 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
     return result;
 }
 
+- (NSInteger)currentVisibleSegmentIndex
+{
+	NSUInteger currentSegment = [self indexOfSegmentForTime:self.playerController.player.currentTime secondaryIndex:NULL];
+	if (currentSegment == NSNotFound) {
+		return -1;
+	}
+	NSUInteger currentVisibleSegment = [self indexOfVisibleSegmentForSegmentIndex:currentSegment];
+	if (currentVisibleSegment == NSNotFound) {
+		return -1;
+	}
+	return (NSInteger)currentVisibleSegment;
+}
+
+- (NSInteger)currentSegmentIndex
+{
+	NSUInteger currentSegment = [self indexOfSegmentForTime:self.playerController.player.currentTime secondaryIndex:NULL];
+	if (currentSegment == NSNotFound) {
+		return -1;
+	}
+	return (NSInteger)currentSegment;
+}
+
 #pragma mark - RTSMediaPlayback
 
 - (void)prepareToPlay
@@ -295,10 +366,7 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL))completionHandler
 {
-	if ([self isTimeBlocked:time]) {
-		
-	}
-	else {
+	if (![self isTimeBlocked:time]) {
 		[self.playerController seekToTime:time completionHandler:completionHandler];
 	}
 }
@@ -307,5 +375,6 @@ NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 {
 	return [self.playerController playerItem];
 }
+
 
 @end

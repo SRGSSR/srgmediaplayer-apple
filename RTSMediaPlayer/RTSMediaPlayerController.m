@@ -183,8 +183,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	TKEvent *load = [TKEvent eventWithName:@"Load" transitioningFromStates:@[ idle ] toState:preparing];
 	TKEvent *loadSuccess = [TKEvent eventWithName:@"Load Success" transitioningFromStates:@[ preparing ] toState:ready];
-	TKEvent *play = [TKEvent eventWithName:@"Play" transitioningFromStates:@[ ready, paused, stalled, ended ] toState:playing];
-	TKEvent *seek = [TKEvent eventWithName:@"Seek" transitioningFromStates:@[ ready, paused, stalled, ended ] toState:seeking]; // Including 'Stalled"?
+	TKEvent *play = [TKEvent eventWithName:@"Play" transitioningFromStates:@[ ready, paused, stalled, ended, seeking ] toState:playing];
+	TKEvent *seek = [TKEvent eventWithName:@"Seek" transitioningFromStates:@[ ready, paused, stalled, ended, playing ] toState:seeking]; // Including 'Stalled"?
 	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ ready, playing ] toState:paused];
 	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:ended];
 	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:stalled];
@@ -434,6 +434,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	NSString *identifier = [[NSUUID UUID] UUIDString];
 	RTSPlaybackTimeObserver *playbackTimeObserver = [self playbackTimeObserverForInterval:interval queue:queue];
 	[playbackTimeObserver setBlock:block forIdentifier:identifier];
+	
+	if (self.player) {
+		[playbackTimeObserver attachToMediaPlayer:self.player];
+	}
 	
 	// Return the opaque identifier
 	return identifier;
