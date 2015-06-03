@@ -354,6 +354,10 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6B9-hB-Taq" customClass="RTSAirplayOverlayView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x2p-Nx-m7K" userLabel="Timeline Wrapper View">
                                 <rect key="frame" x="0.0" y="436" width="600" height="100"/>
                                 <subviews>
@@ -544,13 +548,17 @@
                             <constraint firstItem="dos-uE-naI" firstAttribute="trailing" secondItem="u8j-dZ-bA3" secondAttribute="trailing" id="8CJ-uY-qy3"/>
                             <constraint firstItem="dos-uE-naI" firstAttribute="centerY" secondItem="t9K-xg-VIe" secondAttribute="centerY" id="NUJ-JQ-qiu"/>
                             <constraint firstItem="x2p-Nx-m7K" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="NWE-TH-uE1"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6B9-hB-Taq" secondAttribute="trailing" constant="-16" id="Qmw-iN-7nM"/>
                             <constraint firstAttribute="trailing" secondItem="PcP-7w-FSg" secondAttribute="trailing" constant="10" id="Wbl-IN-QRe"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="Yen-y8-iQF"/>
                             <constraint firstItem="dos-uE-naI" firstAttribute="leading" secondItem="u8j-dZ-bA3" secondAttribute="leading" id="aoc-sX-JzG"/>
                             <constraint firstAttribute="trailing" secondItem="x2p-Nx-m7K" secondAttribute="trailing" id="cP9-lE-dc6"/>
+                            <constraint firstItem="6B9-hB-Taq" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" id="f6Q-XN-4tF"/>
                             <constraint firstItem="PcP-7w-FSg" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" constant="10" id="mh9-Ki-5Eq"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="top" secondItem="x2p-Nx-m7K" secondAttribute="bottom" id="nQ7-xu-Axe"/>
+                            <constraint firstItem="6B9-hB-Taq" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leadingMargin" constant="-16" id="rbE-I1-m19"/>
                             <constraint firstItem="u8j-dZ-bA3" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" constant="30" id="vsS-SQ-H6M"/>
+                            <constraint firstItem="FIy-lE-a4L" firstAttribute="top" secondItem="6B9-hB-Taq" secondAttribute="bottom" id="x7c-8R-lhS"/>
                             <constraint firstAttribute="trailing" secondItem="u8j-dZ-bA3" secondAttribute="trailing" constant="30" id="yfD-4J-qqb"/>
                             <constraint firstItem="FIy-lE-a4L" firstAttribute="top" secondItem="Atp-kj-ZMO" secondAttribute="bottom" id="zgy-JH-Op8"/>
                         </constraints>
