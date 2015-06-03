@@ -1,9 +1,7 @@
 //
-//  SegmentCollectionViewCell.h
-//  SRGIntegrationLayerDataProvider Demo
+//  Copyright (c) RTS. All rights reserved.
 //
-//  Created by Samuel Defago on 21.05.15.
-//  Copyright (c) 2015 SRG. All rights reserved.
+//  Licence information is available from the LICENCE file.
 //
 
 #import <CoreMedia/CoreMedia.h>

@@ -1,6 +1,7 @@
 //
-//  Created by Cédric Luthi on 08.04.15.
-//  Copyright (c) 2015 RTS. All rights reserved.
+//  Copyright (c) RTS. All rights reserved.
+//
+//  Licence information is available from the LICENCE file.
 //
 
 #import "RTSInvocationRecorder.h"

@@ -1,9 +1,7 @@
 //
-//  DemoSegmentsBlockingSelectionViewController.m
-//  RTSMediaPlayer Demo
+//  Copyright (c) RTS. All rights reserved.
 //
-//  Created by Cédric Foellmi on 01/06/15.
-//  Copyright (c) 2015 RTS. All rights reserved.
+//  Licence information is available from the LICENCE file.
 //
 
 #import "DemoSegmentsBlockingSelectionViewController.h"

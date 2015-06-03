@@ -1,9 +1,7 @@
 //
-//  RTSMediaSegmentsController.h
-//  RTSMediaPlayer
+//  Copyright (c) RTS. All rights reserved.
 //
-//  Created by Cédric Foellmi on 27/05/15.
-//  Copyright (c) 2015 RTS. All rights reserved.
+//  Licence information is available from the LICENCE file.
 //
 
 #import <UIKit/UIKit.h>

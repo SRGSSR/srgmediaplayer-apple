@@ -1,6 +1,7 @@
 //
-//  Created by Frédéric Humbert-Droz on 28/02/15.
-//  Copyright (c) 2015 RTS. All rights reserved.
+//  Copyright (c) RTS. All rights reserved.
+//
+//  Licence information is available from the LICENCE file.
 //
 
 #import "RTSMediaPlayerView.h"
