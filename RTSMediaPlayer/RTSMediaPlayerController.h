@@ -18,7 +18,7 @@
  *  You can incorporate a media player’s view into a view hierarchy owned by your app, or use a RTSMediaPlayerViewController
  *  object to manage the presentation for you.
  *
- *  The media player controller posts several notifications, see the notifications section.
+ *  The media player controller posts several notifications, see for RTSMediaPlayerConstants.h
  *
  *  Errors are handled through the `RTSMediaPlayerPlaybackDidFinishNotification` notification. There are two possible 
  *  source of errors: either the error comes from the dataSource (see `RTSMediaPlayerControllerDataSource`) or from 
