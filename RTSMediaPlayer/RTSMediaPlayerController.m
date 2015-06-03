@@ -265,6 +265,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		[self resetIdleTimer];
 	}];
 	
+	[playing setWillExitStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
+		[self registerPlaybackStartObserver];
+	}];
+	
 	[seeking setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		NSDictionary *errorUserInfo = transition.userInfo[RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey];
