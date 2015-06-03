@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Phg-Uc-v1H">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Phg-Uc-v1H">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -276,10 +276,10 @@
             </objects>
             <point key="canvasLocation" x="1341" y="-316"/>
         </scene>
-        <!--Timeshift demo-->
+        <!--Demo Timeline Configuration View Controller-->
         <scene sceneID="CAQ-yg-fp9">
             <objects>
-                <viewController title="Timeshift demo" id="1fa-6n-Xub" customClass="DemoTimelineConfigurationViewController" sceneMemberID="viewController">
+                <viewController title="Timeshift demo" id="1fa-6n-Xub" userLabel="Demo Timeline Configuration View Controller" customClass="DemoTimelineConfigurationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wdj-zp-axQ"/>
                         <viewControllerLayoutGuide type="bottom" id="vR6-oB-dqw"/>
@@ -360,6 +360,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LNH-3e-cnt" userLabel="Timeline View" customClass="RTSTimelineView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="itemWidth">
+                                                <real key="value" value="178"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="delegate" destination="eMv-Af-zLT" id="66n-dT-drx"/>
                                             <outlet property="segmentsController" destination="maE-8W-Ll7" id="IkH-03-zYb"/>
@@ -611,6 +616,14 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VIz-eg-pbD" userLabel="Timeline View" customClass="RTSTimelineView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="120"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="itemWidth">
+                                                <real key="value" value="178"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="itemSpacing">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="delegate" destination="2iI-c6-veX" id="qbo-8K-AGw"/>
                                             <outlet property="segmentsController" destination="ZI3-uY-emW" id="7sO-Dy-Wel"/>

@@ -44,9 +44,6 @@
 {
 	[super viewDidLoad];
 	
-	self.timelineView.itemWidth = 178.f;
-	self.timelineView.itemSpacing = 4.f;
-	
 	self.mediaPlayerController.overlayViewsHidingDelay = 1000;
 	
 	NSString *className = NSStringFromClass([SegmentCollectionViewCell class]);

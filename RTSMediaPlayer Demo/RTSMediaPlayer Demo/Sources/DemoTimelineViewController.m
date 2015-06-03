@@ -41,9 +41,6 @@
 {
 	[super viewDidLoad];
 	
-	self.timelineView.itemWidth = 162.f;
-	self.timelineView.itemSpacing = 0.f;
-	
 	NSString *className = NSStringFromClass([SegmentCollectionViewCell class]);
 	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
 	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
