@@ -114,12 +114,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	id<RTSMediaPlayerSegment> segment = self.segmentsController.visibleSegments[indexPath.row];
-	
-	if ([self.delegate respondsToSelector:@selector(timelineView:didSelectSegment:)])
-	{
-		[self.delegate timelineView:self didSelectSegment:segment];
-	}
+	[self.segmentsController seekToVisibleSegmentAtIndex:indexPath.row];	
 }
 
 #pragma mark - Visible cells

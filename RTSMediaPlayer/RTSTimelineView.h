@@ -97,14 +97,5 @@
  */
 - (UICollectionViewCell *)timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment;
 
-@optional
-
-/**
- *  This method is called when the user taps on a cell
- *
- *  @param timelineView The timeline
- *  @param segment      The segment which has been selected
- */
-- (void)timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment;
 
 @end

@@ -21,9 +21,8 @@ NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
 
 NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
 
-NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingNotification = @"RTSMediaPlayerPlaybackDidPauseUponBlocking";
-NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFail";
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
+NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFail";
 
 NSString * const RTSMediaPlayerWillShowControlOverlaysNotification = @"RTSMediaPlayerWillShowControlOverlays";
 NSString * const RTSMediaPlayerDidShowControlOverlaysNotification = @"RTSMediaPlayerDidShowControlOverlays";
@@ -269,15 +268,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		@strongify(self)
 		[self registerPlaybackStartObserver];
 	}];
-	
-	[seeking setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		NSDictionary *errorUserInfo = transition.userInfo[RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey];
-		if (errorUserInfo) {
-			[self postNotificationName:RTSMediaPlayerPlaybackSeekingUponBlockingNotification userInfo:errorUserInfo];
-		}
-	}];
-	
+		
 	[reset setWillFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		NSDictionary *errorUserInfo = transition.userInfo;

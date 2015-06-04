@@ -64,13 +64,13 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
  */
 typedef NS_ENUM(NSInteger, RTSMediaPlaybackSegmentChange) {
 	/**
-	 *  An identified segment (visible or not) is being ended, without another one to start.
-	 */
-	RTSMediaPlaybackSegmentEnd,
-	/**
 	 *  An identified segment (visible or not) is being started, while not being inside a segment before.
 	 */
 	RTSMediaPlaybackSegmentStart,
+	/**
+	 *  An identified segment (visible or not) is being ended, without another one to start.
+	 */
+	RTSMediaPlaybackSegmentEnd,
 	/**
 	 *  An identified segment (visible or not) is being started, while being inside another segment before.
 	 */
@@ -78,10 +78,19 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackSegmentChange) {
 	/**
 	 *  The playback is being seek to a later value, because it reached a blocked segment.
 	 */
-	RTSMediaPlaybackSegmentSeekUponBlocking,
+	RTSMediaPlaybackSegmentSeekUponBlockingStart,
+	/**
+	 *  The seek has finished.
+	 */
+	RTSMediaPlaybackSegmentSeekUponBlockingEnd,
 };
 
 FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in seconds.
+
+typedef NS_ENUM(NSInteger, RTSMediaPlaybackSeekingReason) {
+	RTSMediaPlaybackSeekingReasonSegmentBlocked,
+	RTSMediaPlaybackSeekingReasonSegmentSelected
+}
 
 /**
  *  -------------------
@@ -104,8 +113,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeNewSegmentObject
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey;
 
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingNotification;
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey;
 
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailNotification;
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey; // NSError

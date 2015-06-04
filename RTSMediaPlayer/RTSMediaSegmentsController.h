@@ -105,4 +105,6 @@
  */
 - (NSInteger)currentSegmentIndex;
 
+- (void)seekToVisibleSegmentAtIndex:(NSUInteger)index;
+
 @end

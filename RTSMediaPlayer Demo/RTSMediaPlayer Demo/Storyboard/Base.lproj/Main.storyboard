@@ -742,7 +742,7 @@
                                     <action selector="dismiss:" destination="2iI-c6-veX" eventType="touchUpInside" id="ocA-Kq-jyX"/>
                                 </connections>
                             </button>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vik-Ny-kTx" customClass="RTSMediaBlockingOverlayView">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vik-Ny-kTx">
                                 <rect key="frame" x="30" y="215" width="540" height="171"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="blocking overlay" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mx1-lW-r4j" userLabel="Text Label">
