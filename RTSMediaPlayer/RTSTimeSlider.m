@@ -4,10 +4,10 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import "RTSTimeSlider.h"
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
-
 #import <libextobjc/EXTScope.h>
+#import "RTSTimeSlider.h"
+#import "UIBezierPath+RTSMediaPlayerUtils.h"
 
 #define SLIDER_VERTICAL_CENTER self.frame.size.height/2
 
@@ -31,54 +31,6 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		return [NSString stringWithFormat:@"%@%02d:%02d", negative ? @"-" : @"", minute, second];
 }
 
-
-@interface UIBezierPath (Image)
-/** Returns an image of the path drawn using a stroke */
--(UIImage*) imageWithColor:(UIColor*)color;
-@end
-
-@implementation UIBezierPath (Image)
-
-- (UIImage *)imageWithColor:(UIColor *)color
-{
-	// adjust bounds to account for extra space needed for lineWidth
-	CGFloat width = self.bounds.size.width + self.lineWidth * 2;
-	CGFloat height = self.bounds.size.height + self.lineWidth * 2;
-	CGRect bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, width, height);
-	
-	// create a view to draw the path in
-	UIView *view = [[UIView alloc] initWithFrame:bounds];
-	
-	// begin graphics context for drawing
-	UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, [[UIScreen mainScreen] scale]);
-	
-	// configure the view to render in the graphics context
-	[view.layer renderInContext:UIGraphicsGetCurrentContext()];
-	
-	// get reference to the graphics context
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	
-	// translate matrix so that path will be centered in bounds
-	CGContextTranslateCTM(context, -(bounds.origin.x - self.lineWidth), -(bounds.origin.y - self.lineWidth));
-	
-	// set color
-	[color set];
-	
-	// draw the stroke
-	[self stroke];
-	[self fill];
-	
-	// get an image of the graphics context
-	UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-	
-	// end the context
-	UIGraphicsEndImageContext();
-	
-	return viewImage;
-}
-
-@end
-
 @interface RTSTimeSlider ()
 
 @property (weak) id playbackTimeObserver;
@@ -98,7 +50,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	return self;
 }
 
-- (id) initWithCoder:(NSCoder *)coder
+- (id)initWithCoder:(NSCoder *)coder
 {
 	self = [super initWithCoder:coder];
 	if (self) {
@@ -107,7 +59,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	return self;
 }
 
-- (void) setup
+- (void)setup
 {
 	UIImage *triangle = [self emptyImage];
 	UIImage *image = [triangle resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
@@ -117,6 +69,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	
 	[self setThumbImage:[self thumbImage] forState:UIControlStateNormal];
 	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
+	
+	[self addTarget:self action:@selector(informDelegate:) forControlEvents:UIControlEventValueChanged];
 }
 
 #pragma mark - Setters and getters
@@ -157,39 +111,16 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}];
 }
 
-- (BOOL) isDraggable
+- (BOOL)isDraggable
 {
 	// A slider knob can be dragged iff it corresponds to a valid range
 	return self.minimumValue != self.maximumValue;
 }
 
 
-
-#pragma mark - Slider Appearance
-
-- (UIImage*) emptyImage
-{
-	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 2, 2)];
-	UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, 0);
-	[view.layer renderInContext:UIGraphicsGetCurrentContext()];
-	[[UIColor clearColor] set];
-	UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
-	return viewImage;
-}
-
-- (UIImage*) thumbImage
-{
-	UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 15, 15)];
-	return [path imageWithColor:[UIColor whiteColor]];
-}
-
-
-
 #pragma mark - Time range retrieval and display
 
-- (CMTimeRange) currentTimeRange
+- (CMTimeRange)currentTimeRange
 {
 	// TODO: Should later add support for discontinuous seekable time ranges
 	AVPlayerItem *playerItem = self.playbackController.playerItem;
@@ -203,14 +134,24 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}
 }
 
-- (CMTime) time
+
+// Useful for live streams. How does it work for VOD?
+- (CMTime)time
 {
     CMTimeRange currentTimeRange = [self currentTimeRange];
     Float64 timeInSeconds = CMTimeGetSeconds(currentTimeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(currentTimeRange.duration) / (self.maximumValue - self.minimumValue);
     return CMTimeMakeWithSeconds(timeInSeconds, 1.);
 }
 
-- (void) updateTimeRangeLabels
+- (CMTime)convertedValueCMTime
+{
+	CGFloat fraction = (self.value - self.minimumValue) / (self.maximumValue - self.minimumValue);
+	CGFloat duration = CMTimeGetSeconds(self.playbackController.playerItem.duration);
+	// Assuming start == 0.
+	return CMTimeMakeWithSeconds(fraction*duration, NSEC_PER_SEC);
+}
+
+- (void)updateTimeRangeLabels
 {
 	CMTimeRange currentTimeRange = [self currentTimeRange];
 	AVPlayerItem *playerItem = self.playbackController.playerItem;
@@ -233,8 +174,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		self.timeLeftValueLabel.backgroundColor = [UIColor redColor];
 	}
 	// Video on demand
-	else
-	{
+	else {
 		self.valueLabel.text = RTSTimeSliderFormatter(self.value);
 		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
 		
@@ -242,6 +182,69 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		self.timeLeftValueLabel.textColor = [UIColor blackColor];
 		self.timeLeftValueLabel.backgroundColor = [UIColor clearColor];
 	}
+}
+
+
+#pragma mark Touch tracking
+
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+	BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
+	if (beginTracking && [self isDraggable]) {
+		[self.playbackController pause];
+	}
+	
+	return beginTracking;
+}
+
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+	BOOL continueTracking = [super continueTrackingWithTouch:touch withEvent:event];
+	if (continueTracking && [self isDraggable]) {
+		[self updateTimeRangeLabels];
+		[self setNeedsDisplay];
+	}
+	
+	return continueTracking;
+}
+
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+	if ([self isDraggable] && self.tracking) {
+		// No completion handler, to not guess what's suppose to happen next once seeking is over.
+		[self.playbackController seekToTime:CMTimeMakeWithSeconds(self.value, 1) completionHandler:nil];
+	}
+	
+	[super endTrackingWithTouch:touch withEvent:event];
+}
+
+- (void)informDelegate:(id)sender
+{
+	if (self.seekingDelegate) {
+		[self.seekingDelegate timeSlider:self
+						 isSeekingAtTime:[self convertedValueCMTime]
+							   withValue:self.value];
+	}
+}
+
+#pragma mark - Slider Appearance
+
+- (UIImage *)emptyImage
+{
+	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 2, 2)];
+	UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, 0);
+	[view.layer renderInContext:UIGraphicsGetCurrentContext()];
+	[[UIColor clearColor] set];
+	UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	return viewImage;
+}
+
+- (UIImage *)thumbImage
+{
+	UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 15, 15)];
+	return [path imageWithColor:[UIColor whiteColor]];
 }
 
 
@@ -330,42 +333,5 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 }
 
 
-
-#pragma mark Touch tracking
-
-- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-	BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
-	if (beginTracking && [self isDraggable]) {
-		[self.playbackController pause];
-	}
-	
-	return beginTracking;
-}
-
-- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-	BOOL continueTracking = [super continueTrackingWithTouch:touch withEvent:event];
-	if (continueTracking && [self isDraggable]) {
-		[self updateTimeRangeLabels];
-		[self setNeedsDisplay];
-	}
-	
-	return continueTracking;
-}
-
-- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-	if ([self isDraggable] && self.tracking) {
-		[self.playbackController seekToTime:CMTimeMakeWithSeconds(self.value, 1)
-						  completionHandler:^(BOOL finished) {
-							  if (finished) {
-								  [self.playbackController play];
-							  }
-						  }];
-	}
-	
-	[super endTrackingWithTouch:touch withEvent:event];
-}
 
 @end

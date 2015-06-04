@@ -9,17 +9,20 @@
 #import <RTSMediaPlayer/RTSMediaPlayback.h>
 
 @class RTSMediaPlayerController;
+@protocol RTSTimeSliderSeekingDelegate;
 
 @interface RTSTimeSlider : UISlider
 
 @property (nonatomic, weak) IBOutlet id<RTSMediaPlayback> playbackController;
+@property (nonatomic, weak) IBOutlet id<RTSTimeSliderSeekingDelegate> seekingDelegate;
 
 @property (nonatomic, weak) IBOutlet UILabel *timeLeftValueLabel;
 @property (nonatomic, weak) IBOutlet UILabel *valueLabel;
 
-/**
- *  Return the time currently displayed by the slider
- */
-@property (nonatomic, readonly) CMTime time;
+@end
+
+@protocol RTSTimeSliderSeekingDelegate <NSObject>
+
+- (void)timeSlider:(RTSTimeSlider *)slider isSeekingAtTime:(CMTime)time withValue:(CGFloat)value;
 
 @end
