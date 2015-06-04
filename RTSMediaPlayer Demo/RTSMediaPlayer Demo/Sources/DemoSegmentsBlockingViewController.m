@@ -5,11 +5,14 @@
 //
 
 #import <libextobjc/EXTScope.h>
+#import <RTSMediaPlayer/RTSTimelineView.h>
+#import <RTSMediaPlayer/RTSTimeSlider.h>
+
 #import "DemoSegmentsBlockingViewController.h"
 #import "PseudoILDataProvider.h"
 #import "SegmentCollectionViewCell.h"
 
-@interface DemoSegmentsBlockingViewController ()
+@interface DemoSegmentsBlockingViewController () <RTSTimeSliderSeekingDelegate>
 
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
@@ -19,6 +22,7 @@
 @property (nonatomic, weak) IBOutlet UIView *blockingOverlayView;
 @property (nonatomic, weak) IBOutlet UILabel *blockingOverlayViewLabel;
 @property (nonatomic, weak) NSTimer *blockingOverlayTimer;
+@property (nonatomic, weak) id playbackTimeObserver;
 
 @end
 
@@ -26,14 +30,14 @@
 
 #pragma mark - Object lifecycle
 
-- (void) dealloc
+- (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Getters and setters
 
-- (void) setVideoIdentifier:(NSString *)videoIdentifier
+- (void)setVideoIdentifier:(NSString *)videoIdentifier
 {
 	_videoIdentifier = videoIdentifier;
 	[self.mediaPlayerController playIdentifier:videoIdentifier];
@@ -45,6 +49,7 @@
 {
 	[super viewDidLoad];
 	
+	self.timelineSlider.seekingDelegate = self;
 	self.mediaPlayerController.overlayViewsHidingDelay = 1000;
 	
 	NSString *className = NSStringFromClass([SegmentCollectionViewCell class]);
@@ -57,6 +62,19 @@
 											 selector:@selector(displayBlockingMessage:)
 												 name:RTSMediaPlaybackSegmentDidChangeNotification
 											   object:nil];
+	
+	@weakify(self);
+	self.playbackTimeObserver = [self.mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+		@strongify(self);
+		[self updateAppearanceWithTime:time];
+	}];
+}
+
+- (void)updateAppearanceWithTime:(CMTime)time
+{
+	for (SegmentCollectionViewCell *segmentCell in [self.timelineView visibleCells]) {
+		[segmentCell updateAppearanceWithTime:time];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -122,6 +140,20 @@
 	}
 	
 	[self.blockingOverlayView setHidden:YES];
+}
+
+#pragma ark - RTSTimeSliderSeekingDelegate protocol
+
+- (void)timeSlider:(RTSTimeSlider *)slider isSeekingAtTime:(CMTime)time withValue:(CGFloat)value
+{
+	[self updateAppearanceWithTime:time];
+}
+
+#pragma ark - RTSTimelineSliderDelegate protocol
+
+- (UIImage *)timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaPlayerSegment>)segment
+{
+	return ((Segment *)segment).iconImage;
 }
 
 #pragma mark - RTSTimelineViewDelegate protocol
