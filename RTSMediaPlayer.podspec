@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name                  = "RTSMediaPlayer"
   s.version               = "0.1.0"
-  s.summary               = "Shared media player for RTS mobile apps."
+  s.summary               = "Shared media player for SRG mobile apps."
   s.homepage              = "ssh://git@bitbucket.org/rtsmb/rtsmediaplayer-ios.git"
-  s.authors               = { "Frédéric Humbert-Droz" => "fred.hd@me.com", "Cédric Luthi" => "cedric.luthi@rts.ch" }
+  s.authors               = { "Frédéric Humbert-Droz" => "fred.hd@me.com", "Cédric Luthi" => "cedric.luthi@rts.ch", "Cédric Foellmi" => "cedric@onekilopars.ec", "Samuel Défago" => "defagos@gmail.com" }
 
-  s.source                = { :git => "ssh://git@bitbucket.org/rtsmb/rtsmediaplayer-ios.git", :branch => "master", :tag => "#{s.version}" }
+  s.source                = { :git => "ssh://git@bitbucket.org/rtsmb/srgmediaplayer-ios.git", :branch => "master", :tag => "#{s.version}" }
 
   s.ios.deployment_target = "7.0"
   s.requires_arc          = true
