@@ -167,25 +167,29 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 	
 	// nextIndex can be equal to index (it happens when after segment@index, there is playback outside any segment.
 	// Hence, if we get a nextIndex, one must seek to the end of it + a small bit.
-		
+	
+	void (^completionBlock)(BOOL) = ^(BOOL finished) {
+		if (finished) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self.playerController pause]; // Will put the player into the pause state.
+				NSDictionary *userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingEnd)};
+				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+																	object:self
+																  userInfo:userInfo];
+			});
+		}
+	};
+	
 	if (nextIndex == NSUIntegerMax) {
 		CMTimeRange r = self.fullLengthSegment.timeRange;
-		[self.playerController.player seekToTime:CMTimeAdd(r.start, r.duration)];
+		[self.playerController seekToTime:CMTimeAdd(r.start, r.duration) completionHandler:completionBlock];
 	}
 	else {
 		id<RTSMediaPlayerSegment> segment = self.segments[nextIndex];
 		CMTime oneInterval = CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC);
 		CMTimeRange r = segment.timeRange;
 		CMTime seekCMTime = CMTimeAdd(r.start, CMTimeAdd(r.duration, oneInterval));
-		
-		[self.playerController.player seekToTime:seekCMTime
-								 toleranceBefore:kCMTimeZero
-								  toleranceAfter:kCMTimeZero
-							   completionHandler:^(BOOL finished) {
-								   if (finished) {
-									   [self.playerController pause];
-								   }
-							   }];
+		[self.playerController seekToTime:seekCMTime completionHandler:completionBlock];
 	}
 }
 
