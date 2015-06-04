@@ -100,7 +100,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 				NSString *title = [NSString stringWithFormat:@"%@Segment #%ld", (blocked) ? @"Blocked ": @"", i];
 				Segment *segment = [[Segment alloc] initWithStart:5*(i*5+1) duration:10 title:title];
 				segment.blocked = blocked;
-				segment.visible = (foo4random() <= 0.5);
+				segment.visible = (i > 1);
 				[segments addObject:segment];
 			}
 		}
