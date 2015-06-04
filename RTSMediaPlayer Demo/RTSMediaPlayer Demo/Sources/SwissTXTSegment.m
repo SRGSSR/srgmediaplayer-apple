@@ -35,6 +35,7 @@
 	{
 		self.identifier = identifier;
 		self.date = date;
+		
 		if (imageName)
 		{
 			self.iconImage = [UIImage imageNamed:imageName];
@@ -58,6 +59,18 @@
 - (NSURL *) thumbnailURL
 {
 	return [SwissTXTDataSource thumbnailURLForIdentifier:self.identifier];
+}
+
+- (NSString *) timestampString
+{
+	static NSDateFormatter *s_dateFormatter;
+	static dispatch_once_t s_onceToken;
+	dispatch_once(&s_onceToken, ^{
+		s_dateFormatter = [[NSDateFormatter alloc] init];
+		[s_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		[s_dateFormatter setDateStyle:NSDateFormatterNoStyle];
+	});
+	return [NSString stringWithFormat:@"at %@", [s_dateFormatter stringFromDate:self.date]];
 }
 
 @end

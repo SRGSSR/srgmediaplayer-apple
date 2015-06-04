@@ -6,10 +6,22 @@
 
 #import "Segment.h"
 
+#pragma mark - Functions
+
+static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
+{
+	NSInteger hours = duration / 3600;
+	NSInteger minutes = (duration % 3600) / 60;
+	NSInteger seconds = (duration % 3600) % 60;
+	
+	NSString *minutesAndSeconds = [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+	
+	return (hours > 0) ? [[NSString stringWithFormat:@"%01ld:", (long)hours] stringByAppendingString:minutesAndSeconds] : minutesAndSeconds;
+}
+
 @interface Segment ()
 
 @property (nonatomic) CMTimeRange timeRange;
-
 @property (nonatomic, copy) NSString *title;
 
 @end
@@ -47,6 +59,17 @@
 {
 	// TODO: Should return a placeholder
 	return nil;
+}
+
+- (NSString *) durationString
+{
+	return sexagesimalDurationStringFromValue(CMTimeGetSeconds(self.timeRange.duration));
+}
+
+- (NSString *) timestampString
+{
+	NSString *startString = sexagesimalDurationStringFromValue(CMTimeGetSeconds(self.timeRange.start));
+	return [NSString stringWithFormat:@"%@ (%.0fs)", startString, CMTimeGetSeconds(self.timeRange.duration)];
 }
 
 #pragma mark - Description

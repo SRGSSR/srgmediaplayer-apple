@@ -12,4 +12,6 @@
 
 @interface SwissTXTSegmentCollectionViewCell : SegmentCollectionViewCell
 
+@property (nonatomic) SwissTXTSegment *segment;
+
 @end

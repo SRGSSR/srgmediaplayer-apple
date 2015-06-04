@@ -15,13 +15,15 @@
 - (instancetype) initWithStart:(NSTimeInterval)start duration:(NSTimeInterval)duration title:(NSString *)title;
 
 @property (nonatomic, readonly, copy) NSString *title;
+@property (nonatomic, readonly) NSURL *thumbnailURL;
+
+@property (nonatomic, readonly, copy) NSString *durationString;
+@property (nonatomic, readonly, copy) NSString *timestampString;
 
 // Default is NO
 @property (nonatomic, getter=isBlocked) BOOL blocked;
 
 // Default is YES
 @property (nonatomic, getter=isVisible) BOOL visible;
-
-@property (nonatomic, readonly) NSURL *thumbnailURL;
 
 @end

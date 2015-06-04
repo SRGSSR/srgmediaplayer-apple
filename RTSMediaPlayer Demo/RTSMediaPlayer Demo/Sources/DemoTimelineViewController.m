@@ -90,7 +90,7 @@
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment
 {
 	SwissTXTSegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SwissTXTSegmentCollectionViewCell class]) forSegment:segment];
-	segmentCell.segment = (Segment *)segment;
+	segmentCell.segment = (SwissTXTSegment *)segment;
 	return segmentCell;
 }
 

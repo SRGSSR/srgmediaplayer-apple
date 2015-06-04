@@ -51,6 +51,14 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" white="0.19831071820000001" alpha="1" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="durationLabel" destination="30h-F0-8e5" id="ntQ-4F-D3c"/>
+                <outlet property="iconImageView" destination="klc-pq-lH7" id="TJc-gZ-SKJ"/>
+                <outlet property="imageView" destination="PeF-az-yhK" id="SXJ-oX-u90"/>
+                <outlet property="progressView" destination="uZ1-IA-bsM" id="9Y9-43-v5T"/>
+                <outlet property="timestampLabel" destination="ho8-5w-QM9" id="iU1-6W-DXW"/>
+                <outlet property="titleLabel" destination="VE2-nD-Jqe" id="Dxg-ji-LWn"/>
+            </connections>
             <point key="canvasLocation" x="186" y="429"/>
         </collectionViewCell>
     </objects>

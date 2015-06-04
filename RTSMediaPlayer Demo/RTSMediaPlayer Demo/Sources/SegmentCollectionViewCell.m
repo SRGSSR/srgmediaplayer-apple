@@ -9,19 +9,6 @@
 #import "SwissTXTDataSource.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-#pragma mark - Functions
-
-static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
-{
-	NSInteger hours = duration / 3600;
-	NSInteger minutes = (duration % 3600) / 60;
-	NSInteger seconds = (duration % 3600) % 60;
-	
-	NSString *minutesAndSeconds = [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
-	
-	return (hours > 0) ? [[NSString stringWithFormat:@"%01ld:", (long)hours] stringByAppendingString:minutesAndSeconds] : minutesAndSeconds;
-}
-
 @interface SegmentCollectionViewCell ()
 
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
@@ -41,10 +28,18 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 	_segment = segment;
 	
 	self.titleLabel.text = segment.title;
-	self.durationLabel.text = sexagesimalDurationStringFromValue(CMTimeGetSeconds(segment.timeRange.duration));
 	
-	NSString *startString = sexagesimalDurationStringFromValue(CMTimeGetSeconds(segment.timeRange.start));
-	self.timestampLabel.text = [NSString stringWithFormat:@"%@ (%.0fs)", startString, CMTimeGetSeconds(segment.timeRange.duration)];
+	if (!CMTIMERANGE_IS_EMPTY(segment.timeRange))
+	{
+		self.durationLabel.hidden = NO;
+		self.durationLabel.text = segment.durationString;
+	}
+	else
+	{
+		self.durationLabel.hidden = YES;
+	}
+	
+	self.timestampLabel.text = segment.timestampString;
 	
 	[self.imageView sd_setImageWithURL:segment.thumbnailURL];
 }
