@@ -11,6 +11,7 @@
 		9F064C521B175C0F0044E2C7 /* RTSMediaSegmentsController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9F43A6DF1B1610D0007832B7 /* RTSMediaSegmentsController.h */; };
 		9F43A6E11B1610D0007832B7 /* RTSMediaSegmentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */; };
 		9F74920E1B1F3A4F00894F91 /* RTSMediaPlayerConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */; };
+		9F8A80081B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F8A80071B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m */; };
 		9FAD24AF1B1DD34400B6D3E9 /* RTSMediaBlockingOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FDF081A1B1C594D005BA322 /* RTSMediaBlockingOverlayView.h */; };
 		9FAD24B11B1DD4EA00B6D3E9 /* RTSMediaPlayback.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24B01B1DD41900B6D3E9 /* RTSMediaPlayback.h */; };
 		9FDF081C1B1C594D005BA322 /* RTSMediaBlockingOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDF081B1B1C594D005BA322 /* RTSMediaBlockingOverlayView.m */; };
@@ -107,6 +108,8 @@
 		7314D9A587D56BA6E7F89FB2 /* libPods-RTSMediaPlayerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RTSMediaPlayerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F43A6DF1B1610D0007832B7 /* RTSMediaSegmentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegmentsController.h; sourceTree = "<group>"; };
 		9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaSegmentsController.m; sourceTree = "<group>"; };
+		9F8A80061B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+RTSMediaPlayerUtils.h"; sourceTree = "<group>"; };
+		9F8A80071B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+RTSMediaPlayerUtils.m"; sourceTree = "<group>"; };
 		9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerConstants.h; sourceTree = "<group>"; };
 		9FAD24B01B1DD41900B6D3E9 /* RTSMediaPlayback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayback.h; sourceTree = "<group>"; };
 		9FDF08191B1C5509005BA322 /* RTSMediaPlayerController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RTSMediaPlayerController+Private.h"; sourceTree = "<group>"; };
@@ -260,6 +263,8 @@
 				B61E18FB1AA9EEDB00E4FAB9 /* RTSTimeSlider.m */,
 				B61E19061AA9F3B900E4FAB9 /* RTSVolumeView.h */,
 				B61E19071AA9F3B900E4FAB9 /* RTSVolumeView.m */,
+				9F8A80061B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.h */,
+				9F8A80071B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m */,
 			);
 			name = Overlays;
 			sourceTree = "<group>";
@@ -556,6 +561,7 @@
 				C2731F511AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m in Sources */,
 				C2DDAB511AD5227B00BA8061 /* RTSInvocationRecorder.m in Sources */,
 				B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */,
+				9F8A80081B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */,
 				B61E19081AA9F3B900E4FAB9 /* RTSVolumeView.m in Sources */,
 				E616272C1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m in Sources */,
 				C2246DEC1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
