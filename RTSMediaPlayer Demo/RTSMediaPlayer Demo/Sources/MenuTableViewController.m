@@ -116,7 +116,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	return section == 0 ? nil : @"Actions";
+	return section == 0 ? @"Choose Video:" : @"Choose Player:";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
