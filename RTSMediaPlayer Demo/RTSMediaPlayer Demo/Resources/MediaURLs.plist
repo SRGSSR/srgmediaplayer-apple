@@ -64,12 +64,6 @@
 			<key>url</key>
 			<string>http://rtsdvr2015-lh.akamaihd.net/i/rtsdvr2015test1_ww@317507/master.m3u8</string>
 		</dict>
-		<dict>
-			<key>name</key>
-			<string>AOD</string>
-			<key>url</key>
-			<string>http://aod.rts.ch/espace-2/programmes/jazzz/2015/jazzz_20150528_full_jazzz_191a5f6d-d9e9-4481-a239-b8bcb41c10be-128k.mp3</string>
-		</dict>
 	</array>
 </dict>
 </plist>

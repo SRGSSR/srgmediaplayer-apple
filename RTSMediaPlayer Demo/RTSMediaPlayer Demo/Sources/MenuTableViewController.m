@@ -3,6 +3,7 @@
 //
 //  Licence information is available from the LICENCE file.
 //
+
 #import "MenuTableViewController.h"
 
 #import <MediaPlayer/MediaPlayer.h>
@@ -13,7 +14,7 @@
 
 @interface MenuTableViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) NSArray *movies;
+@property (nonatomic, strong) NSArray *media;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 @end
@@ -30,14 +31,29 @@
 
 #pragma mark - Data
 
-- (NSArray *) movies
+- (NSString *) mediaURLPath
 {
-	if (!_movies){
-		NSDictionary *mediaURLs = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle bundleForClass:self.class] pathForResource:@"MediaURLs" ofType:@"plist"]];
-		_movies = mediaURLs[@"Movies"];
+	return nil;
+}
+
+- (NSString *) mediaURLKey
+{
+	return nil;
+}
+
+- (NSArray *) actionCellIdentifiers
+{
+	return nil;
+}
+
+- (NSArray *) media
+{
+	if (!_media){
+		NSDictionary *mediaURLs = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle bundleForClass:self.class] pathForResource:[self mediaURLPath] ofType:@"plist"]];
+		_media = mediaURLs[[self mediaURLKey]];
 	}
 	
-	return _movies;
+	return _media;
 }
 
 - (NSURL *) URLForSelectedMedia
@@ -45,19 +61,25 @@
 	if (!self.selectedIndexPath)
 		return nil;
 		
-	NSDictionary *media = [self.movies objectAtIndex:self.selectedIndexPath.row];
+	NSDictionary *media = [self.media objectAtIndex:self.selectedIndexPath.row];
 	return [NSURL URLWithString:media[@"url"]];
 }
 
-- (NSArray *) actionCellIdentifiers
+- (NSArray *) URLsForSelectedMedia
 {
-	return @[ @"CellDefaultIOS",
-			  @"CellDefaultRTS",
-			  @"CellInline",
-			  @"CellFullscreen",
-			  @"CellMultiPlayers",
-			  @"CellTimeline",
-			  @"CellSegments" ];
+	if (!self.selectedIndexPath)
+		return nil;
+	
+	NSMutableArray *urls = [NSMutableArray new];
+	NSDictionary *media = [self.media objectAtIndex:self.selectedIndexPath.row];
+	for (NSString *urlString in media[@"urls"]) {
+		NSURL *url = [NSURL URLWithString:urlString];
+		if (url) {
+			[urls addObject:url];
+		}
+	}
+	
+	return [urls copy];
 }
 
 
@@ -71,21 +93,15 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-	NSURL *mediaURL= [self URLForSelectedMedia];
 	if ([segue.identifier isEqualToString:@"DemoInline"])
 	{
 		DemoInlineViewController *demoInlineViewController = segue.destinationViewController;
-		demoInlineViewController.mediaURL = mediaURL;
+		demoInlineViewController.mediaURL = [self URLForSelectedMedia];
 	}
 	else if ([segue.identifier isEqualToString:@"DemoMultiPlayers"])
 	{
 		DemoMultiPlayersViewController *demoMultiPlayerViewController = segue.destinationViewController;
-		demoMultiPlayerViewController.mediaURLs = @[
-                                                     [NSURL URLWithString:@"https://srgssruni9ch-lh.akamaihd.net/i/enc9uni_ch@191320/master.m3u8"], //RTS 1
-                                                     [NSURL URLWithString:@"https://srgssruni10ch-lh.akamaihd.net/i/enc10uni_ch@191367/master.m3u8"], // RTS 2
-                                                     [NSURL URLWithString:@"https://srgssruni7ch-lh.akamaihd.net/i/enc7uni_ch@191283/master.m3u8"], // WEB STREAM
-                                                     [NSURL URLWithString:@"https://srgssruni11ch-lh.akamaihd.net/i/enc11uni_ch@191455/master.m3u8"], // RTS en continu
-												  ];
+		demoMultiPlayerViewController.mediaURLs = [self URLsForSelectedMedia];
 	}
 }
 
@@ -100,12 +116,12 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	return section == 0 ? @"Media" : @"Actions";
+	return section == 0 ? nil : @"Actions";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return section == 0 ? self.movies.count : self.actionCellIdentifiers.count;
+	return section == 0 ? self.media.count : self.actionCellIdentifiers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -122,7 +138,7 @@
 {
 	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 	
-	NSDictionary *media = [self.movies objectAtIndex:indexPath.row];
+	NSDictionary *media = [self.media objectAtIndex:indexPath.row];
 	cell.textLabel.text = media[@"name"];
 	cell.accessoryType = [indexPath isEqual:self.selectedIndexPath] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 	
