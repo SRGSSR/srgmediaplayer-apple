@@ -10,4 +10,6 @@
 
 @interface UIBezierPath (RTSMediaPlayerUtils)
 
+-(UIImage *)imageWithColor:(UIColor*)color;
+
 @end
