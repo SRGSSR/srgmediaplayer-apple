@@ -196,6 +196,12 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 	return [self isSegmentBlockedAtIndex:index] && [self isSegmentBlockedAtIndex:secondaryIndex];
 }
 
+- (NSUInteger)indexOfVisibleSegmentForTime:(CMTime)time
+{
+	NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:NULL];
+	return [self indexOfVisibleSegmentForSegmentIndex:index];
+}
+
 - (NSUInteger)indexOfSegmentForTime:(CMTime)time secondaryIndex:(NSUInteger *)secondaryIndex
 {
 	CMTime auxTime = CMTimeAdd(time, CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC));

@@ -59,6 +59,15 @@
 - (NSUInteger)indexOfVisibleSegmentForSegmentIndex:(NSUInteger)segmentIndex;
 
 /**
+ *  Return the index of the visible segment for a given time. Returns NSNotFound if time corresponds to no visible segment.
+ *
+ *  @param time The time to consider
+ *
+ *  @return The index of the visible segment for the given time, if any.
+ */
+- (NSUInteger)indexOfVisibleSegmentForTime:(CMTime)time;
+
+/**
  *  Check whether the segment at the given index is blocked.
  *
  *  @param index The index of the segment to be checked.
