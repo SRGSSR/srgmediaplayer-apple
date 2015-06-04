@@ -5,12 +5,20 @@
 //
 
 #import "SwissTXTDataSource.h"
-#import "Segment.h"
+#import "SwissTXTSegment.h"
 
 // TODO: A data source should share connections (if the same request is already running, add the block to a list, and call all
 //       completion blocks at the end. Such a mechanism could (and should) be made available as a class, IMHO
 
 @implementation SwissTXTDataSource
+
+#pragma mark - Class methods
+
++ (NSURL *) thumbnailURLForIdentifier:(NSString *)identifier
+{
+	NSString *thumbnailURLString = [NSString stringWithFormat:@"http://test.event.api.swisstxt.ch:80/v1/image/byId/%@", identifier];
+	return [NSURL URLWithString:thumbnailURLString];
+}
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
 
@@ -72,7 +80,7 @@
 			NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:[highlight[@"streamStartTime"] doubleValue]];
 			CMTime time = CMTimeMake([date timeIntervalSinceDate:startDate], 1.);
 			
-			Segment *segment = [[Segment alloc] initWithTime:time title:highlight[@"title"] identifier:highlight[@"id"] date:date];
+			SwissTXTSegment *segment = [[SwissTXTSegment alloc] initWithTime:time title:highlight[@"title"] identifier:highlight[@"id"] date:date];
 			if (segment) {
 				[segments addObject:segment];
 			}

@@ -124,13 +124,6 @@
 	[self.blockingOverlayView setHidden:YES];
 }
 
-#pragma ark - RTSTimelineSliderDelegate protocol
-
-- (UIImage *)timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaPlayerSegment>)segment
-{
-	return ((Segment *)segment).iconImage;
-}
-
 #pragma mark - RTSTimelineViewDelegate protocol
 
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment
@@ -142,7 +135,7 @@
 
 - (void)timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment
 {
-	[self.mediaPlayerController seekToTime:segment.segmentTimeRange.start completionHandler:nil];
+	[self.mediaPlayerController seekToTime:segment.timeRange.start completionHandler:nil];
 }
 
 #pragma mark - Actions

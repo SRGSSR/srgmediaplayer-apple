@@ -9,12 +9,19 @@
 
 @interface Segment : NSObject <RTSMediaPlayerSegment>
 
-- (instancetype)initWithTime:(CMTime)time title:(NSString *)title identifier:(NSString *)identifier date:(NSDate *)date;
-- (instancetype)initWithStartTime:(NSTimeInterval)start duration:(NSTimeInterval)duration title:(NSString *)title blocked:(BOOL)blocked visible:(BOOL)visible;
+- (instancetype) initWithTimeRange:(CMTimeRange)timeRange title:(NSString *)title NS_DESIGNATED_INITIALIZER;
+
+- (instancetype) initWithTime:(CMTime)time title:(NSString *)title;
+- (instancetype) initWithStart:(NSTimeInterval)start duration:(NSTimeInterval)duration title:(NSString *)title;
 
 @property (nonatomic, readonly, copy) NSString *title;
-@property (nonatomic, readonly) UIImage *iconImage;
+
+// Default is NO
+@property (nonatomic, getter=isBlocked) BOOL blocked;
+
+// Default is YES
+@property (nonatomic, getter=isVisible) BOOL visible;
+
 @property (nonatomic, readonly) NSURL *thumbnailURL;
-@property (nonatomic, readonly) NSDate *date;
 
 @end

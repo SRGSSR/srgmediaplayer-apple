@@ -166,7 +166,7 @@ static void commonInit(RTSTimelineView *self);
 {
 	for (id<RTSMediaPlayerSegment> segment in self.segmentsController.visibleSegments)
 	{
-		if (CMTimeRangeContainsTime(segment.segmentTimeRange, time))
+		if (CMTimeRangeContainsTime(segment.timeRange, time))
 		{
 			[self scrollToSegment:segment animated:animated];
 			return;

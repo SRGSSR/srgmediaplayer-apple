@@ -53,7 +53,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 	}
 	else {
 		double duration = 31.0*60.0 + 57.0;
-		Segment *fullLength = [[Segment alloc] initWithStartTime:0 duration:duration title:@"fullLength" blocked:NO visible:YES];
+		Segment *fullLength = [[Segment alloc] initWithStart:0 duration:duration title:@"fullLength"];
 		
 		NSMutableArray *segments = [NSMutableArray array];
 		NSInteger row = [identifier integerValue];
@@ -61,22 +61,15 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 		if (row == 0) {
 			// 3 visible segments
 			for (NSUInteger i = 0; i < 3; i++) {
-				Segment *segment = [[Segment alloc] initWithStartTime:5*(i*5+1)
-															 duration:10
-																title:[NSString stringWithFormat:@"Segment #%ld", i]
-															  blocked:NO
-															  visible:YES];
+				Segment *segment = [[Segment alloc] initWithStart:5*(i*5+1) duration:10 title:[NSString stringWithFormat:@"Segment #%ld", i]];
 				[segments addObject:segment];
 			}
 		}
 		else if (row == 1) {
 			// 5 segments, 2 visible
 			for (NSUInteger i = 0; i < 5; i++) {
-				Segment *segment = [[Segment alloc] initWithStartTime:5*(i*5+1)
-															 duration:10
-																title:[NSString stringWithFormat:@"Segment #%ld", i]
-															  blocked:NO
-															  visible:(i%2 != 0)];
+				Segment *segment = [[Segment alloc] initWithStart:5*(i*5+1) duration:10 title:[NSString stringWithFormat:@"Segment #%ld", i]];
+				segment.visible = (i%2 != 0);
 				[segments addObject:segment];
 			}
 		}
@@ -85,11 +78,8 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 			for (NSUInteger i = 0; i < 3; i++) {
 				BOOL blocked = (i%2 != 0);
 				NSString *title = [NSString stringWithFormat:@"%@Segment #%ld", (blocked) ? @"Blocked ": @"", i];
-				Segment *segment = [[Segment alloc] initWithStartTime:5*(i*5+1)
-															 duration:10
-																title:title
-															  blocked:blocked
-															  visible:YES];
+				Segment *segment = [[Segment alloc] initWithStart:5*(i*5+1) duration:10 title:title];
+				segment.blocked = blocked;
 				[segments addObject:segment];
 			}
 		}
@@ -98,11 +88,8 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 			for (NSUInteger i = 0; i < 3; i++) {
 				BOOL blocked = (i == 0);
 				NSString *title = [NSString stringWithFormat:@"%@Segment #%ld", (blocked) ? @"Blocked ": @"", i];
-				Segment *segment = [[Segment alloc] initWithStartTime:25*i
-															 duration:10
-																title:title
-															  blocked:blocked
-															  visible:YES];
+				Segment *segment = [[Segment alloc] initWithStart:25*i duration:10 title:title];
+				segment.blocked = blocked;
 				[segments addObject:segment];
 			}
 		}
@@ -110,13 +97,10 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 			// 10 segments, 8 visible, 5 blocked;
 			for (NSUInteger i = 0; i < 10; i++) {
 				BOOL blocked = (i%2 == 0);
-				BOOL visible = (foo4random() <= 0.5);
 				NSString *title = [NSString stringWithFormat:@"%@Segment #%ld", (blocked) ? @"Blocked ": @"", i];
-				Segment *segment = [[Segment alloc] initWithStartTime:5*(i*5+1)
-															 duration:10
-																title:title
-															  blocked:blocked
-															  visible:visible];
+				Segment *segment = [[Segment alloc] initWithStart:5*(i*5+1) duration:10 title:title];
+				segment.blocked = blocked;
+				segment.visible = (foo4random() <= 0.5);
 				[segments addObject:segment];
 			}
 		}
@@ -124,7 +108,6 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 			// Error
 			
 		}
-	
 		
 		completionHandler(fullLength, segments, nil);
 	}

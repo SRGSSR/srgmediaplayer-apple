@@ -15,7 +15,7 @@
 /**
  *  Segment start and end times (might be identical)
  */
-@property (nonatomic, readonly) CMTimeRange segmentTimeRange;
+@property (nonatomic, readonly) CMTimeRange timeRange;
 
 @property (nonatomic, readonly, getter=isBlocked) BOOL blocked;
 @property (nonatomic, readonly, getter=isVisible) BOOL visible;

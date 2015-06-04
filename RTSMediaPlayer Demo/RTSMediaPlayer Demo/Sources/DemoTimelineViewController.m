@@ -6,7 +6,7 @@
 
 #import <libextobjc/EXTScope.h>
 #import "DemoTimelineViewController.h"
-#import "SegmentCollectionViewCell.h"
+#import "SwissTXTSegmentCollectionViewCell.h"
 
 @interface DemoTimelineViewController ()
 
@@ -42,7 +42,7 @@
 {
 	[super viewDidLoad];
 	
-	NSString *className = NSStringFromClass([SegmentCollectionViewCell class]);
+	NSString *className = NSStringFromClass([SwissTXTSegmentCollectionViewCell class]);
 	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
 	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
 	
@@ -82,21 +82,21 @@
 
 - (UIImage *) timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaPlayerSegment>)segment
 {
-	return ((Segment *)segment).iconImage;
+	return ((SwissTXTSegment *)segment).iconImage;
 }
 
 #pragma mark - RTSTimelineViewDelegate protocol
 
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment
 {
-	SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SegmentCollectionViewCell class]) forSegment:segment];
+	SwissTXTSegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SwissTXTSegmentCollectionViewCell class]) forSegment:segment];
 	segmentCell.segment = (Segment *)segment;
 	return segmentCell;
 }
 
 - (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment
 {
-	[self.mediaPlayerController seekToTime:segment.segmentTimeRange.start completionHandler:nil];
+	[self.mediaPlayerController seekToTime:segment.timeRange.start completionHandler:nil];
 }
 
 #pragma mark - Actions

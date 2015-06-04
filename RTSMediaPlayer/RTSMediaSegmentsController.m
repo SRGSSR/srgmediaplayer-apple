@@ -52,7 +52,7 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 			return;
 		}
 		
-		NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"segmentTimeRange"
+		NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"timeRange"
 															 ascending:YES
 															comparator:^NSComparisonResult(NSValue *timeRangeValue1, NSValue *timeRangeValue2) {
 																CMTimeRange timeRange1 = [timeRangeValue1 CMTimeRangeValue];
@@ -169,13 +169,13 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 	// Hence, if we get a nextIndex, one must seek to the end of it + a small bit.
 		
 	if (nextIndex == NSUIntegerMax) {
-		CMTimeRange r = self.fullLengthSegment.segmentTimeRange;
+		CMTimeRange r = self.fullLengthSegment.timeRange;
 		[self.playerController.player seekToTime:CMTimeAdd(r.start, r.duration)];
 	}
 	else {
 		id<RTSMediaPlayerSegment> segment = self.segments[nextIndex];
 		CMTime oneInterval = CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC);
-		CMTimeRange r = segment.segmentTimeRange;
+		CMTimeRange r = segment.timeRange;
 		CMTime seekCMTime = CMTimeAdd(r.start, CMTimeAdd(r.duration, oneInterval));
 		
 		[self.playerController.player seekToTime:seekCMTime
@@ -207,10 +207,10 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 	__block NSUInteger secondaryResult = NSNotFound;
 	
 	[self.segments enumerateObjectsUsingBlock:^(id<RTSMediaPlayerSegment> segment, NSUInteger idx, BOOL *stop) {
-		if (CMTimeRangeContainsTime(segment.segmentTimeRange, time)) {
+		if (CMTimeRangeContainsTime(segment.timeRange, time)) {
 			result = idx;
 		}
-		if (CMTimeRangeContainsTime(segment.segmentTimeRange, auxTime)) {
+		if (CMTimeRangeContainsTime(segment.timeRange, auxTime)) {
 			secondaryResult = idx;
 		}
 		if (result != NSNotFound && secondaryResult != NSNotFound) {
@@ -272,13 +272,13 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
     }
     
     id<RTSMediaPlayerSegment> inputSegment = self.segments[index];
-	CMTimeRange r = inputSegment.segmentTimeRange;
+	CMTimeRange r = inputSegment.timeRange;
     NSTimeInterval inputSegmentEndTime = (NSTimeInterval) CMTimeGetSeconds(r.start) + CMTimeGetSeconds(r.duration);
 
     if (index+1 >= self.segments.count) {
         // Ok, we have no additional segments  See if there is some time left at end of full length media.
 		
-		CMTimeRange r = self.fullLengthSegment.segmentTimeRange;
+		CMTimeRange r = self.fullLengthSegment.timeRange;
         NSTimeInterval fullLengthEndTime = (NSTimeInterval) CMTimeGetSeconds(r.start) + CMTimeGetSeconds(r.duration);
         NSTimeInterval mediaLastSeconds = fullLengthEndTime - inputSegmentEndTime;
         
@@ -301,7 +301,7 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
             break;
         }
         
-        NSTimeInterval gap = (NSTimeInterval) CMTimeGetSeconds(segment.segmentTimeRange.start) - inputSegmentEndTime;
+        NSTimeInterval gap = (NSTimeInterval) CMTimeGetSeconds(segment.timeRange.start) - inputSegmentEndTime;
         if (gap > 2*flexibilityGap) {
             // Gap is larger than threshold, hence valid, hence playable.
             break;

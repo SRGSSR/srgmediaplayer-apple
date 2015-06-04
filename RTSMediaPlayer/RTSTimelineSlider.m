@@ -64,13 +64,13 @@ static void commonInit(RTSTimelineSlider *self);
 	for (id<RTSMediaPlayerSegment> segment in self.segmentsController.visibleSegments)
 	{	
 		// Skip events not in the timeline
-		if (CMTIME_COMPARE_INLINE(segment.segmentTimeRange.start, < , currentTimeRange.start)
-			|| CMTIME_COMPARE_INLINE(segment.segmentTimeRange.start, >, CMTimeRangeGetEnd(currentTimeRange)))
+		if (CMTIME_COMPARE_INLINE(segment.timeRange.start, < , currentTimeRange.start)
+			|| CMTIME_COMPARE_INLINE(segment.timeRange.start, >, CMTimeRangeGetEnd(currentTimeRange)))
 		{
 			continue;
 		}
 		
-		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(segment.segmentTimeRange.start) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
+		CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(segment.timeRange.start) / CMTimeGetSeconds(currentTimeRange.duration)) * (thumbEndXPos - thumbStartXPos);
 		
 		UIImage *iconImage = nil;
 		if ([self.delegate respondsToSelector:@selector(timelineSlider:iconImageForSegment:)]) {

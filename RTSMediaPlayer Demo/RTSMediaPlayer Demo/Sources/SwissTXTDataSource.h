@@ -10,4 +10,6 @@
 
 @interface SwissTXTDataSource : NSObject <RTSMediaPlayerControllerDataSource, RTSMediaSegmentsDataSource>
 
++ (NSURL *) thumbnailURLForIdentifier:(NSString *)identifier;
+
 @end
