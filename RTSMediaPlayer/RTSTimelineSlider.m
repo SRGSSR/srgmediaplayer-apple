@@ -19,7 +19,7 @@
 {
 	self = [super initWithFrame:frame];
 	if (self) {
-		[self setup];
+		[self setup_RTSTimelineSlider];
 	}
 	return self;
 }
@@ -28,12 +28,12 @@
 {
 	self = [super initWithCoder:aDecoder];
 	if (self) {
-		[self setup];
+		[self setup_RTSTimelineSlider];
 	}
 	return self;
 }
 
-- (void)setup
+- (void)setup_RTSTimelineSlider
 {
 	NSString *thumbImagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"thumb_timeline_slider" ofType:@"png"];
 	UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbImagePath];

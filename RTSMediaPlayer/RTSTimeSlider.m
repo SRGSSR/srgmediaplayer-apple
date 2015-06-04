@@ -45,7 +45,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	self = [super initWithFrame:frame];
 	if (self) {
-		[self setup];
+		[self setup_RTSTimeSlider];
 	}
 	return self;
 }
@@ -54,12 +54,12 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	self = [super initWithCoder:coder];
 	if (self) {
-		[self setup];
+		[self setup_RTSTimeSlider];
 	}
 	return self;
 }
 
-- (void)setup
+- (void)setup_RTSTimeSlider
 {
 	UIImage *triangle = [self emptyImage];
 	UIImage *image = [triangle resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
