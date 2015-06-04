@@ -6,6 +6,8 @@
 
 #import "SegmentCollectionViewCell.h"
 
+#import <SDWebImage/UIImageView+WebCache.h>
+
 #pragma mark - Functions
 
 static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
@@ -40,6 +42,7 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 	
 	self.iconImageView.image = segment.iconImage;
 	self.titleLabel.text = segment.title;
+	self.durationLabel.text = sexagesimalDurationStringFromValue(CMTimeGetSeconds(segment.segmentTimeRange.duration));
 	
 	if (segment.date) {
 		static NSDateFormatter *s_dateFormatter;
@@ -56,21 +59,7 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 		self.timestampLabel.text = [NSString stringWithFormat:@"%@ (%.0fs)", startString, CMTimeGetSeconds(segment.segmentTimeRange.duration)];
 	}
 	
-	if (segment.thumbnailURL) {
-		dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^(void) {
-			NSData *data = [[NSData alloc] initWithContentsOfURL:segment.thumbnailURL];
-			UIImage *image = [[UIImage alloc] initWithData:data];
-			
-			if (image) {
-				dispatch_async( dispatch_get_main_queue(), ^(void){
-					self.imageView.image = image;
-				});
-			}
-		});
-	}
-	
-    self.titleLabel.text = segment.title;
-    self.durationLabel.text = sexagesimalDurationStringFromValue(CMTimeGetSeconds(segment.segmentTimeRange.duration));
+	[self.imageView sd_setImageWithURL:segment.thumbnailURL];
 }
 
 #pragma mark - Overrides

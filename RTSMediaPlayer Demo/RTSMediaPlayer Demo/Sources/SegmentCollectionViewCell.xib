@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,7 +13,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="178" height="120"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PeF-az-yhK">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PeF-az-yhK">
                         <rect key="frame" x="0.0" y="0.0" width="178" height="79"/>
                         <color key="backgroundColor" white="0.27554744530000003" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
@@ -54,6 +54,7 @@
             <connections>
                 <outlet property="durationLabel" destination="30h-F0-8e5" id="eE3-1s-7g3"/>
                 <outlet property="iconImageView" destination="klc-pq-lH7" id="Jbs-2h-qbZ"/>
+                <outlet property="imageView" destination="PeF-az-yhK" id="YHI-6b-9CX"/>
                 <outlet property="progressView" destination="uZ1-IA-bsM" id="lj5-Rn-Sx8"/>
                 <outlet property="timestampLabel" destination="ho8-5w-QM9" id="ujf-kX-gEn"/>
                 <outlet property="titleLabel" destination="VE2-nD-Jqe" id="C4k-an-Yia"/>
