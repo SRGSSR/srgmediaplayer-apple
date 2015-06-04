@@ -11,41 +11,49 @@
 #import "RTSMediaSegmentsController.h"
 #import "NSBundle+RTSMediaPlayer.h"
 
-// Function declarations
-static void commonInit(RTSTimelineSlider *self);
-
 @implementation RTSTimelineSlider
 
 #pragma mark - Object lifecycle
 
 - (instancetype) initWithFrame:(CGRect)frame
 {
-	if (self = [super initWithFrame:frame])
-	{
-		commonInit(self);
+	self = [super initWithFrame:frame];
+	if (self) {
+		[self setup];
 	}
 	return self;
 }
 
 - (instancetype) initWithCoder:(NSCoder *)aDecoder
 {
-	if (self = [super initWithCoder:aDecoder])
-	{
-		commonInit(self);
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		[self setup];
 	}
 	return self;
 }
 
+- (void)setup
+{
+	NSString *thumbImagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"thumb_timeline_slider" ofType:@"png"];
+	UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbImagePath];
+	[self setThumbImage:thumbImage forState:UIControlStateNormal];
+	[self setThumbImage:thumbImage forState:UIControlStateHighlighted];
+	
+	// Add the ability to tap anywhere to seek at this specific location
+	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seekOnTap:)];
+	[self addGestureRecognizer:gestureRecognizer];
+}
+
 #pragma mark - Overrides
 
-- (void) layoutSubviews
+- (void)layoutSubviews
 {
 	[super layoutSubviews];
-	
 	[self setNeedsDisplay];
 }
 
-- (void) drawRect:(CGRect)rect
+- (void)drawRect:(CGRect)rect
 {
 	[super drawRect:rect];
 	
@@ -144,7 +152,7 @@ static void commonInit(RTSTimelineSlider *self);
 
 #pragma mark - Gestures
 
-- (void)seek:(UIGestureRecognizer *)gestureRecognizer
+- (void)seekOnTap:(UIGestureRecognizer *)gestureRecognizer
 {
 	// Cannot tap on the thumb itself
 	if (self.highlighted) {
@@ -160,18 +168,3 @@ static void commonInit(RTSTimelineSlider *self);
 
 @end
 
-#pragma mark - Functions
-
-static void commonInit(RTSTimelineSlider *self)
-{
-	// Use hollow thumb by default (makes events behind it visible)
-	// TODO: Provide a customisation mechanism. Use a Bezier path to generate the image instead of a png
-	NSString *thumbImagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"thumb_timeline_slider" ofType:@"png"];
-	UIImage *thumbImage = [UIImage imageWithContentsOfFile:thumbImagePath];
-	[self setThumbImage:thumbImage forState:UIControlStateNormal];
-	[self setThumbImage:thumbImage forState:UIControlStateHighlighted];
-	
-	// Add the ability to tap anywhere to seek at this specific location
-	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seek:)];
-	[self addGestureRecognizer:gestureRecognizer];
-}
