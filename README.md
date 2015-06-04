@@ -1,4 +1,4 @@
-<p align="center"><img src="https://bitbucket.org/rtsmb/rtsmediaplayer-ios/raw/develop/README-images/logo.png"/></p>
+![SRG Media Player logo](https://bitbucket.org/rtsmb/rtsmediaplayer-ios/raw/develop/README-images/logo.png)
 
 ## About
 
