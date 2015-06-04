@@ -89,8 +89,19 @@ FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in secon
  *  -------------------
  */
 
+/**
+ *  Posted when a segment event occurs.
+ */
 FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentDidChangeNotification;
+
+/**
+ *  The key to access the new segment instance, when entering a new segment (start, and switch events).
+ */
 FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey;
+
+/**
+ *  The key to access the segment change value.
+ */
 FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey;
 
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingNotification;
