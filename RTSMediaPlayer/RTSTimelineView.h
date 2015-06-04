@@ -66,6 +66,8 @@
  */
 - (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaPlayerSegment>)segment;
 
+- (NSArray *)visibleCells;
+
 /**
  *  Scroll to make the specified segment visible (does nothing if the segment does not belong to the displayed segments)
  */
