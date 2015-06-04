@@ -380,5 +380,14 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 	return [self.playerController playerItem];
 }
 
+- (id)addPlaybackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime))block
+{
+	return [self.playerController addPlaybackTimeObserverForInterval:interval queue:queue usingBlock:block];
+}
+
+- (void)removePlaybackTimeObserver:(id)observer
+{
+	return [self.playerController removePlaybackTimeObserver:observer];
+}
 
 @end

@@ -80,8 +80,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 @end
 
 @interface RTSTimeSlider ()
-@property (weak) id periodicTimeObserver;
-@property (weak) NSTimer *periodicTimer;
+
+@property (weak) id playbackTimeObserver;
+
 @end
 
 @implementation RTSTimeSlider
@@ -120,41 +121,40 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark - Setters and getters
 
-- (void)setPlaybackController:(id<RTSMediaPlayback>)playbackController
+- (void) setPlaybackController:(id<RTSMediaPlayback>)playbackController
 {
-	[self.periodicTimer invalidate];
+	if (_playbackController)
+	{
+		[_playbackController removePlaybackTimeObserver:self.playbackTimeObserver];
+	}
 	
 	_playbackController = playbackController;
 	
-	self.periodicTimer = [NSTimer scheduledTimerWithTimeInterval:1./5.
-														  target:self
-														selector:@selector(timerTick:)
-														userInfo:nil
-														 repeats:YES];
-}
-
-- (void)timerTick:(NSTimer *)timer
-{
-	if (!self.isTracking)
-	{
-		CMTimeRange currentTimeRange = [self currentTimeRange];
-		if (!CMTIMERANGE_IS_EMPTY(currentTimeRange))
+	@weakify(self)
+	self.playbackTimeObserver = [playbackController addPlaybackTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+		@strongify(self)
+		
+		if (!self.isTracking)
 		{
-			self.minimumValue = CMTimeGetSeconds(currentTimeRange.start);
-			self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(currentTimeRange));
-			
-			AVPlayerItem *playerItem = self.playbackController.playerItem;
-			self.value = CMTimeGetSeconds(playerItem.currentTime);
+			CMTimeRange currentTimeRange = [self currentTimeRange];
+			if (!CMTIMERANGE_IS_EMPTY(currentTimeRange))
+			{
+				self.minimumValue = CMTimeGetSeconds(currentTimeRange.start);
+				self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(currentTimeRange));
+				
+				AVPlayerItem *playerItem = self.playbackController.playerItem;
+				self.value = CMTimeGetSeconds(playerItem.currentTime);
+			}
+			else
+			{
+				self.minimumValue = 0.;
+				self.maximumValue = 0.;
+				self.value = 0.;
+			}
 		}
-		else
-		{
-			self.minimumValue = 0.;
-			self.maximumValue = 0.;
-			self.value = 0.;
-		}
-	}
-	[self updateTimeRangeLabels];
-	[self setNeedsDisplay];
+		[self updateTimeRangeLabels];
+		[self setNeedsDisplay];
+	}];
 }
 
 - (BOOL) isDraggable
