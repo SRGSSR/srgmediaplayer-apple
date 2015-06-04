@@ -149,13 +149,6 @@
 	[self updateAppearanceWithTime:time];
 }
 
-#pragma ark - RTSTimelineSliderDelegate protocol
-
-- (UIImage *)timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaPlayerSegment>)segment
-{
-	return ((Segment *)segment).iconImage;
-}
-
 #pragma mark - RTSTimelineViewDelegate protocol
 
 - (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment
