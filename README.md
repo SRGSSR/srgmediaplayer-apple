@@ -1,3 +1,5 @@
+<p align="center"><img src="https://bitbucket.org/rtsmb/rtsmediaplayer-ios/raw/develop/README-images/logo.png"/></p>
+
 ## About
 
 ## Compatibility
