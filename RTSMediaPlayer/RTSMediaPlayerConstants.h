@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 
 
 /**
- *  @enum RTSMediaPlaybackSegmentsChange
+ *  @enum RTSMediaPlaybackSegmentChange
  *
  *  Enumeration of the possible changes occuring during playback related to segments.
  */
