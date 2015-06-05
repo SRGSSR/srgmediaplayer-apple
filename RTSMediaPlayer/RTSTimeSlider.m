@@ -4,10 +4,13 @@
 //  Licence information is available from the LICENCE file.
 //
 
+#import "RTSTimeSlider.h"
+
+#import "NSBundle+RTSMediaPlayer.h"
+#import "UIBezierPath+RTSMediaPlayerUtils.h"
+
 #import <RTSMediaPlayer/RTSMediaPlayerController.h>
 #import <libextobjc/EXTScope.h>
-#import "RTSTimeSlider.h"
-#import "UIBezierPath+RTSMediaPlayerUtils.h"
 
 #define SLIDER_VERTICAL_CENTER self.frame.size.height/2
 
@@ -167,7 +170,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		|| (CMTIME_IS_INDEFINITE(playerItem.duration) && (self.maximumValue - self.value < RTSToleranceInSeconds)))
 	{
 		self.valueLabel.text = @"--:--";
-		self.timeLeftValueLabel.text = @"LIVE";
+		self.timeLeftValueLabel.text = RTSMediaPlayerLocalizedString(@"Live", nil);
 	}
 	// Video on demand
 	else {

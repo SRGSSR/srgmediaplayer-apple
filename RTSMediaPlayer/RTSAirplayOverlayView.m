@@ -6,6 +6,8 @@
 
 #import "RTSAirplayOverlayView.h"
 
+#import "NSBundle+RTSMediaPlayer.h"
+
 @interface RTSAirplayOverlayView () <RTSAirplayOverlayViewDataSource>
 
 @property (nonatomic, strong) MPVolumeView *volumeView;
@@ -165,7 +167,7 @@
 
 - (NSString *) airplayOverlayView:(RTSAirplayOverlayView *)airplayOverlayView subtitleForAirplayRouteName:(NSString *)routeName
 {
-	return [NSString stringWithFormat:@"Cette vidéo est en lecture sur «%@»", routeName];
+	return [NSString stringWithFormat:RTSMediaPlayerLocalizedString(@"This video is playing on «%@»", nil), routeName];
 }
 
 - (NSDictionary *) airplayOverlayViewSubitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView

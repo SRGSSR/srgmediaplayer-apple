@@ -56,6 +56,7 @@
 		E67FDACB1AFA16EC0050DCE6 /* RTSTimelineSlider.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */; };
 		E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */; };
 		E69906301AFB969F005ED143 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */; };
+		E6D220161B21C9A00009BB17 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E60F1C0B1B21C96F00F3272F /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +148,7 @@
 		C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSInvocationRecorder.m; sourceTree = "<group>"; };
 		C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerPlaybackTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaPlayerPlaybackTestCase.m"; sourceTree = SOURCE_ROOT; };
 		E0A64A82F87DE7222F4220DD /* Pods-RTSMediaPlayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RTSMediaPlayerTests/Pods-RTSMediaPlayerTests.release.xcconfig"; sourceTree = "<group>"; };
+		E60F1C0C1B21C96F00F3272F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E616272A1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPlaybackTimeObserver.h; sourceTree = "<group>"; };
 		E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSPlaybackTimeObserver.m; sourceTree = "<group>"; };
 		E65786A21AEFAD68007730CE /* RTSTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSTimelineView.h; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 		E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumb_timeline_slider.png; sourceTree = "<group>"; };
 		E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumb_timeline_slider@2x.png"; sourceTree = "<group>"; };
 		E6A6D0E31AFA017600E15BCF /* RTSTimelineView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RTSTimelineView+Private.h"; sourceTree = "<group>"; };
+		E6D220171B21C9A70009BB17 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,6 +331,7 @@
 			children = (
 				E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */,
 				E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */,
+				E60F1C0B1B21C96F00F3272F /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -427,6 +431,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				fr,
 			);
 			mainGroup = C201D8EC1A9DC1A40016C629;
 			productRefGroup = C201D8F61A9DC1A40016C629 /* Products */;
@@ -453,6 +458,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */,
+				E6D220161B21C9A00009BB17 /* Localizable.strings in Resources */,
 				E69906301AFB969F005ED143 /* thumb_timeline_slider@2x.png in Resources */,
 				C2AB24EB1ABC186100EB51B8 /* RTSMediaPlayerViewController.xib in Resources */,
 			);
@@ -587,6 +593,18 @@
 			targetProxy = C2AB24EC1ABC191400EB51B8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E60F1C0B1B21C96F00F3272F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E60F1C0C1B21C96F00F3272F /* en */,
+				E6D220171B21C9A70009BB17 /* fr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		C201D9071A9DC1A40016C629 /* Debug */ = {

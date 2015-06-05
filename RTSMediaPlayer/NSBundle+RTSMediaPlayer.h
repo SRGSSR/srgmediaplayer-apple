@@ -6,6 +6,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define RTSMediaPlayerLocalizedString(key, comment) [[NSBundle RTSMediaPlayerBundle] localizedStringForKey:(key) value:@"" table:nil]
+
 @interface NSBundle (RTSMediaPlayer)
 
 + (instancetype) RTSMediaPlayerBundle;
