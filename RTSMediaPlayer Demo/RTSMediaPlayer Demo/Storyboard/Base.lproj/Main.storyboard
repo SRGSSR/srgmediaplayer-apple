@@ -1123,7 +1123,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="2iI-c6-veX" kind="presentation" identifier="play" modalPresentationStyle="currentContext" modalTransitionStyle="coverVertical" id="O09-1w-7j6"/>
+                                            <segue destination="2iI-c6-veX" kind="presentation" identifier="" id="O09-1w-7j6"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SRFBlockedSegments" id="Pz5-eP-r5a">
