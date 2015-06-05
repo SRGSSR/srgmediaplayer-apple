@@ -42,6 +42,8 @@
 {
 	[super viewDidLoad];
 	
+	self.mediaPlayerController.overlayViewsHidingDelay = 1000;
+	
 	NSString *className = NSStringFromClass([SwissTXTSegmentCollectionViewCell class]);
 	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
 	[self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
