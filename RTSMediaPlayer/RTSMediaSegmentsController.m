@@ -117,7 +117,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 		NSUInteger secondaryIndex;
 		NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:&secondaryIndex];
 		
-		DDLogDebug(@"Playing time %.2fs at index %ld", CMTimeGetSeconds(time), index);
+		DDLogDebug(@"Playing time %.2fs at index %@", CMTimeGetSeconds(time), @(index));
 		
 		if (self.playerController.playbackState == RTSMediaPlaybackStatePlaying && [self isTimeBlocked:time]) {
 			dispatch_async(dispatch_get_main_queue(), ^{
