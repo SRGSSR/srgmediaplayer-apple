@@ -168,19 +168,11 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	{
 		self.valueLabel.text = @"--:--";
 		self.timeLeftValueLabel.text = @"LIVE";
-		
-		// TODO: Should be configurable. Will conflict with changes made to the labels
-		self.timeLeftValueLabel.textColor = [UIColor whiteColor];
-		self.timeLeftValueLabel.backgroundColor = [UIColor redColor];
 	}
 	// Video on demand
 	else {
 		self.valueLabel.text = RTSTimeSliderFormatter(self.value);
-		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
-		
-		// TODO: Should be configurable. Will conflict with changes made to the labels
-		self.timeLeftValueLabel.textColor = [UIColor blackColor];
-		self.timeLeftValueLabel.backgroundColor = [UIColor clearColor];
+		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);		
 	}
 }
 
