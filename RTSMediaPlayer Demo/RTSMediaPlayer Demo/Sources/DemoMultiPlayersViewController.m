@@ -92,7 +92,7 @@
 	self.playerViewsContainer.hidden = !sender.isOn;
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		SEL action = sender.isOn ? @selector(play) : @selector(stop);
+		SEL action = sender.isOn ? @selector(play) : @selector(pause);
 		[self.thumbnailPlayerControllers makeObjectsPerformSelector:action];
 	});	
 }

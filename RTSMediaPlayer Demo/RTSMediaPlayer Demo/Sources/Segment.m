@@ -57,8 +57,8 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 
 - (NSURL *) thumbnailURL
 {
-	// TODO: Should return a placeholder
-	return nil;
+	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"thumbnail-placeholder" ofType:@"png"];
+	return [NSURL fileURLWithPath:imageFilePath];
 }
 
 - (NSString *) durationString

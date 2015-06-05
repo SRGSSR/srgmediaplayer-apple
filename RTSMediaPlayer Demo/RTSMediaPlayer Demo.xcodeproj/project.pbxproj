@@ -43,6 +43,8 @@
 		E69906251AFB4929005ED143 /* goal.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906231AFB4929005ED143 /* goal.png */; };
 		E69906261AFB4929005ED143 /* goal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906241AFB4929005ED143 /* goal@2x.png */; };
 		E69906291AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */; };
+		E6A984B21B21764D004D701F /* thumbnail-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = E6A984B01B21764D004D701F /* thumbnail-placeholder.png */; };
+		E6A984B31B21764D004D701F /* thumbnail-placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6A984B11B21764D004D701F /* thumbnail-placeholder@2x.png */; };
 		E6D63EDC1B20303B007E7A7F /* SwissTXTSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D63EDB1B20303B007E7A7F /* SwissTXTSegment.m */; };
 		E6D63EE01B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D63EDE1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.m */; };
 		E6D63EE11B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D63EDF1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.xib */; };
@@ -116,6 +118,8 @@
 		E69906241AFB4929005ED143 /* goal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "goal@2x.png"; sourceTree = "<group>"; };
 		E69906271AFB62D4005ED143 /* DemoTimelineConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTimelineConfigurationViewController.h; sourceTree = "<group>"; };
 		E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTimelineConfigurationViewController.m; sourceTree = "<group>"; };
+		E6A984B01B21764D004D701F /* thumbnail-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder.png"; sourceTree = "<group>"; };
+		E6A984B11B21764D004D701F /* thumbnail-placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder@2x.png"; sourceTree = "<group>"; };
 		E6D63EDA1B20303B007E7A7F /* SwissTXTSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwissTXTSegment.h; sourceTree = "<group>"; };
 		E6D63EDB1B20303B007E7A7F /* SwissTXTSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwissTXTSegment.m; sourceTree = "<group>"; };
 		E6D63EDD1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwissTXTSegmentCollectionViewCell.h; sourceTree = "<group>"; };
@@ -245,18 +249,20 @@
 		B61E18DD1AA8609000E4FAB9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B6C460DB1B20558800A76705 /* AudioURLs.plist */,
 				E69906171AFB44CC005ED143 /* close_button.png */,
 				E69906181AFB44CC005ED143 /* close_button@2x.png */,
+				E6A984B01B21764D004D701F /* thumbnail-placeholder.png */,
+				E6A984B11B21764D004D701F /* thumbnail-placeholder@2x.png */,
 				E69906231AFB4929005ED143 /* goal.png */,
 				E69906241AFB4929005ED143 /* goal@2x.png */,
 				B61E18DE1AA8609000E4FAB9 /* Images.xcassets */,
 				B61E18EE1AA8643500E4FAB9 /* MediaURLs.plist */,
+				B6C460E61B205AC200A76705 /* MultiplayerURLs.plist */,
 				E699061B1AFB4902005ED143 /* red_card.png */,
 				E699061C1AFB4902005ED143 /* red_card@2x.png */,
 				E699061D1AFB4902005ED143 /* yellow_card.png */,
 				E699061E1AFB4902005ED143 /* yellow_card@2x.png */,
-				B6C460DB1B20558800A76705 /* AudioURLs.plist */,
-				B6C460E61B205AC200A76705 /* MultiplayerURLs.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -414,6 +420,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E69906201AFB4902005ED143 /* red_card@2x.png in Resources */,
+				E6A984B31B21764D004D701F /* thumbnail-placeholder@2x.png in Resources */,
 				B6C460DC1B20558800A76705 /* AudioURLs.plist in Resources */,
 				E606F8921AF3B044003F0E2A /* SegmentCollectionViewCell.xib in Resources */,
 				B6C460E71B205AC200A76705 /* MultiplayerURLs.plist in Resources */,
@@ -429,6 +436,7 @@
 				E69906251AFB4929005ED143 /* goal.png in Resources */,
 				B61E18DB1AA8607800E4FAB9 /* LaunchScreen.xib in Resources */,
 				B61E18DC1AA8607800E4FAB9 /* Main.storyboard in Resources */,
+				E6A984B21B21764D004D701F /* thumbnail-placeholder.png in Resources */,
 				E69906211AFB4902005ED143 /* yellow_card.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
