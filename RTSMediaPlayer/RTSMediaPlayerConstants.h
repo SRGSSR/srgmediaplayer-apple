@@ -90,7 +90,7 @@ FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in secon
 typedef NS_ENUM(NSInteger, RTSMediaPlaybackSeekingReason) {
 	RTSMediaPlaybackSeekingReasonSegmentBlocked,
 	RTSMediaPlaybackSeekingReasonSegmentSelected
-}
+};
 
 /**
  *  -------------------
