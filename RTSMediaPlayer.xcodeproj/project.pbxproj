@@ -8,32 +8,40 @@
 
 /* Begin PBXBuildFile section */
 		5CB1A10CE53E2A8720302D99 /* libPods-RTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A05D6955446198632FA7E824 /* libPods-RTSMediaPlayer.a */; };
-		9F064C521B175C0F0044E2C7 /* RTSMediaSegmentsController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9F43A6DF1B1610D0007832B7 /* RTSMediaSegmentsController.h */; };
 		9F43A6E11B1610D0007832B7 /* RTSMediaSegmentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */; };
 		9F8A80081B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F8A80071B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m */; };
-		9F8A80091B208E4900EF2E86 /* RTSMediaPlayerConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */; };
-		9FAD24B11B1DD4EA00B6D3E9 /* RTSMediaPlayback.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24B01B1DD41900B6D3E9 /* RTSMediaPlayback.h */; };
+		9FFFA9E01B25C5A0000E8501 /* RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */; };
+		9FFFA9E11B25C5A0000E8501 /* RTSMediaPlayerConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */; };
+		9FFFA9E21B25C5A0000E8501 /* RTSMediaPlayback.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24B01B1DD41900B6D3E9 /* RTSMediaPlayback.h */; };
+		9FFFA9E31B25C5A0000E8501 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */; };
+		9FFFA9E41B25C5A0000E8501 /* RTSMediaSegment.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B161B0EFD1900FF2334 /* RTSMediaSegment.h */; };
+		9FFFA9E51B25C5A0000E8501 /* RTSMediaSegmentsDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B1A1B0EFD1900FF2334 /* RTSMediaSegmentsDataSource.h */; };
+		9FFFA9E61B25C5A0000E8501 /* RTSMediaPlayerController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */; };
+		9FFFA9E71B25C5A0000E8501 /* RTSMediaPlayerViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B61E18BE1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.h */; };
+		9FFFA9E81B25C5A0000E8501 /* RTSMediaPlayerError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2150B471AD4007C004A08CE /* RTSMediaPlayerError.h */; };
+		9FFFA9E91B25C5A0000E8501 /* RTSMediaPlayerView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */; };
+		9FFFA9EA1B25C5A0000E8501 /* RTSAirplayOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B0E1B0EFB5200FF2334 /* RTSAirplayOverlayView.h */; };
+		9FFFA9EB1B25C5A0000E8501 /* RTSMediaFailureOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B101B0EFB5200FF2334 /* RTSMediaFailureOverlayView.h */; };
+		9FFFA9EC1B25C5A0000E8501 /* RTSMediaPlayerPlaybackButton.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B61E18F31AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.h */; };
+		9FFFA9ED1B25C5A0000E8501 /* RTSTimeSlider.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B61E18FA1AA9EEDB00E4FAB9 /* RTSTimeSlider.h */; };
+		9FFFA9EE1B25C5A0000E8501 /* RTSVolumeView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B61E19061AA9F3B900E4FAB9 /* RTSVolumeView.h */; };
+		9FFFA9EF1B25C5A0000E8501 /* RTSMediaSegmentsController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9F43A6DF1B1610D0007832B7 /* RTSMediaSegmentsController.h */; };
+		9FFFA9F01B25C5A0000E8501 /* RTSSegmentedTimelineView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E65786A21AEFAD68007730CE /* RTSSegmentedTimelineView.h */; };
+		9FFFA9F11B25C5A0000E8501 /* RTSTimelineSlider.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */; };
+		9FFFA9F21B25C5A0000E8501 /* NSBundle+RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2731F4F1AD6A69D00434743 /* NSBundle+RTSMediaPlayer.h */; };
+		9FFFA9F31B25C5A0000E8501 /* UIBezierPath+RTSMediaPlayerUtils.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9F8A80061B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.h */; };
 		B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */; };
-		B60440FC1AA210C900C7DA57 /* RTSMediaPlayerView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */; };
 		B61E18C11AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18BF1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m */; };
-		B61E18C21AA750F900E4FAB9 /* RTSMediaPlayerViewController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B61E18BE1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.h */; };
 		B61E18F51AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18F41AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.m */; };
 		B61E18FC1AA9EEDB00E4FAB9 /* RTSTimeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18FB1AA9EEDB00E4FAB9 /* RTSTimeSlider.m */; };
-		B61E19021AA9F2D500E4FAB9 /* RTSMediaPlayerPlaybackButton.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B61E18F31AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.h */; };
-		B61E19031AA9F2D800E4FAB9 /* RTSTimeSlider.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B61E18FA1AA9EEDB00E4FAB9 /* RTSTimeSlider.h */; };
 		B61E19081AA9F3B900E4FAB9 /* RTSVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E19071AA9F3B900E4FAB9 /* RTSVolumeView.m */; };
 		B6EC78081AA5ABE7009AE043 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */; };
 		B6EC78091AA5ABEB009AE043 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B60440FA1AA20E8D00C7DA57 /* RTSMediaPlayerView.m */; };
-		C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */; };
 		C201D9341A9DC9C30016C629 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */; };
-		C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */; };
-		C201D9371A9DDF260016C629 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */; };
 		C2150B461AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C2150B451AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m */; };
-		C2150B481AD400C2004A08CE /* RTSMediaPlayerError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2150B471AD4007C004A08CE /* RTSMediaPlayerError.h */; };
 		C2246DEC1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */; };
 		C2246E321AC4237A000E03C7 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */; };
 		C2731F511AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */; };
-		C2731F521AD6A73900434743 /* NSBundle+RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2731F4F1AD6A69D00434743 /* NSBundle+RTSMediaPlayer.h */; };
 		C2731F531AD6A80B00434743 /* NSBundle+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */; };
 		C288F49F1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = C288F49E1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m */; };
 		C2AB24EB1ABC186100EB51B8 /* RTSMediaPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B61E18C01AA750CC00E4FAB9 /* RTSMediaPlayerViewController.xib */; };
@@ -41,19 +49,12 @@
 		C2DDAB521AD525A200BA8061 /* RTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */; };
 		C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */; };
 		D3B5AC69ED94D4C40D93B0F7 /* libPods-RTSMediaPlayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7314D9A587D56BA6E7F89FB2 /* libPods-RTSMediaPlayerTests.a */; };
-		E60E170F1AEFCDFC0062E96E /* RTSSegmentedTimelineView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E65786A21AEFAD68007730CE /* RTSSegmentedTimelineView.h */; };
 		E616272C1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */; };
 		E65786A41AEFAD68007730CE /* RTSSegmentedTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E65786A31AEFAD68007730CE /* RTSSegmentedTimelineView.m */; };
 		E66BDC141AF89C0200FF7858 /* RTSPlaybackTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPlaybackTimeObserver.m */; };
 		E67D9B121B0EFB5200FF2334 /* RTSAirplayOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67D9B0F1B0EFB5200FF2334 /* RTSAirplayOverlayView.m */; };
 		E67D9B131B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67D9B111B0EFB5200FF2334 /* RTSMediaFailureOverlayView.m */; };
-		E67D9B141B0EFB6E00FF2334 /* RTSAirplayOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B0E1B0EFB5200FF2334 /* RTSAirplayOverlayView.h */; };
-		E67D9B151B0EFB6E00FF2334 /* RTSMediaFailureOverlayView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B101B0EFB5200FF2334 /* RTSMediaFailureOverlayView.h */; };
-		E67D9B1D1B0EFD2500FF2334 /* RTSMediaSegment.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B161B0EFD1900FF2334 /* RTSMediaSegment.h */; };
-		E67D9B1F1B0EFD2500FF2334 /* RTSMediaSegmentsDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67D9B1A1B0EFD1900FF2334 /* RTSMediaSegmentsDataSource.h */; };
-		E67D9B2D1B0F2D1E00FF2334 /* RTSVolumeView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B61E19061AA9F3B900E4FAB9 /* RTSVolumeView.h */; };
 		E67FDACA1AFA166F0050DCE6 /* RTSTimelineSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */; };
-		E67FDACB1AFA16EC0050DCE6 /* RTSTimelineSlider.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */; };
 		E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */; };
 		E69906301AFB969F005ED143 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */; };
 		E6D220161B21C9A00009BB17 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E60F1C0B1B21C96F00F3272F /* Localizable.strings */; };
@@ -76,25 +77,26 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				9F8A80091B208E4900EF2E86 /* RTSMediaPlayerConstants.h in CopyFiles */,
-				9FAD24B11B1DD4EA00B6D3E9 /* RTSMediaPlayback.h in CopyFiles */,
-				9F064C521B175C0F0044E2C7 /* RTSMediaSegmentsController.h in CopyFiles */,
-				E67D9B2D1B0F2D1E00FF2334 /* RTSVolumeView.h in CopyFiles */,
-				E67D9B1D1B0EFD2500FF2334 /* RTSMediaSegment.h in CopyFiles */,
-				E67D9B1F1B0EFD2500FF2334 /* RTSMediaSegmentsDataSource.h in CopyFiles */,
-				E67D9B141B0EFB6E00FF2334 /* RTSAirplayOverlayView.h in CopyFiles */,
-				E67D9B151B0EFB6E00FF2334 /* RTSMediaFailureOverlayView.h in CopyFiles */,
-				E67FDACB1AFA16EC0050DCE6 /* RTSTimelineSlider.h in CopyFiles */,
-				C2150B481AD400C2004A08CE /* RTSMediaPlayerError.h in CopyFiles */,
-				C201D8F91A9DC1A40016C629 /* RTSMediaPlayer.h in CopyFiles */,
-				C201D9351A9DC9FF0016C629 /* RTSMediaPlayerController.h in CopyFiles */,
-				C201D9371A9DDF260016C629 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */,
-				B60440FC1AA210C900C7DA57 /* RTSMediaPlayerView.h in CopyFiles */,
-				B61E18C21AA750F900E4FAB9 /* RTSMediaPlayerViewController.h in CopyFiles */,
-				B61E19021AA9F2D500E4FAB9 /* RTSMediaPlayerPlaybackButton.h in CopyFiles */,
-				E60E170F1AEFCDFC0062E96E /* RTSSegmentedTimelineView.h in CopyFiles */,
-				B61E19031AA9F2D800E4FAB9 /* RTSTimeSlider.h in CopyFiles */,
-				C2731F521AD6A73900434743 /* NSBundle+RTSMediaPlayer.h in CopyFiles */,
+				9FFFA9E01B25C5A0000E8501 /* RTSMediaPlayer.h in CopyFiles */,
+				9FFFA9E11B25C5A0000E8501 /* RTSMediaPlayerConstants.h in CopyFiles */,
+				9FFFA9E21B25C5A0000E8501 /* RTSMediaPlayback.h in CopyFiles */,
+				9FFFA9E31B25C5A0000E8501 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */,
+				9FFFA9E41B25C5A0000E8501 /* RTSMediaSegment.h in CopyFiles */,
+				9FFFA9E51B25C5A0000E8501 /* RTSMediaSegmentsDataSource.h in CopyFiles */,
+				9FFFA9E61B25C5A0000E8501 /* RTSMediaPlayerController.h in CopyFiles */,
+				9FFFA9E71B25C5A0000E8501 /* RTSMediaPlayerViewController.h in CopyFiles */,
+				9FFFA9E81B25C5A0000E8501 /* RTSMediaPlayerError.h in CopyFiles */,
+				9FFFA9E91B25C5A0000E8501 /* RTSMediaPlayerView.h in CopyFiles */,
+				9FFFA9EA1B25C5A0000E8501 /* RTSAirplayOverlayView.h in CopyFiles */,
+				9FFFA9EB1B25C5A0000E8501 /* RTSMediaFailureOverlayView.h in CopyFiles */,
+				9FFFA9EC1B25C5A0000E8501 /* RTSMediaPlayerPlaybackButton.h in CopyFiles */,
+				9FFFA9ED1B25C5A0000E8501 /* RTSTimeSlider.h in CopyFiles */,
+				9FFFA9EE1B25C5A0000E8501 /* RTSVolumeView.h in CopyFiles */,
+				9FFFA9EF1B25C5A0000E8501 /* RTSMediaSegmentsController.h in CopyFiles */,
+				9FFFA9F01B25C5A0000E8501 /* RTSSegmentedTimelineView.h in CopyFiles */,
+				9FFFA9F11B25C5A0000E8501 /* RTSTimelineSlider.h in CopyFiles */,
+				9FFFA9F21B25C5A0000E8501 /* NSBundle+RTSMediaPlayer.h in CopyFiles */,
+				9FFFA9F31B25C5A0000E8501 /* UIBezierPath+RTSMediaPlayerUtils.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,7 +113,7 @@
 		9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerConstants.h; sourceTree = "<group>"; };
 		9FAD24B01B1DD41900B6D3E9 /* RTSMediaPlayback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayback.h; sourceTree = "<group>"; };
 		9FDF08191B1C5509005BA322 /* RTSMediaPlayerController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RTSMediaPlayerController+Private.h"; sourceTree = "<group>"; };
-		9FFFA9DE1B25BEC2000E8501 /* SRGMediaPlayer.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SRGMediaPlayer.podspec; sourceTree = "<group>"; };
+		9FFFA9DE1B25BEC2000E8501 /* RTSMediaPlayer.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RTSMediaPlayer.podspec; sourceTree = "<group>"; };
 		A05D6955446198632FA7E824 /* libPods-RTSMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RTSMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE77ECC145A247C85E459918 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B60440F91AA20E8D00C7DA57 /* RTSMediaPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerView.h; sourceTree = "<group>"; };
@@ -274,7 +276,7 @@
 		C201D8EC1A9DC1A40016C629 = {
 			isa = PBXGroup;
 			children = (
-				9FFFA9DE1B25BEC2000E8501 /* SRGMediaPlayer.podspec */,
+				9FFFA9DE1B25BEC2000E8501 /* RTSMediaPlayer.podspec */,
 				C201D8F71A9DC1A40016C629 /* RTSMediaPlayer */,
 				C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */,
 				C201D8F61A9DC1A40016C629 /* Products */,
