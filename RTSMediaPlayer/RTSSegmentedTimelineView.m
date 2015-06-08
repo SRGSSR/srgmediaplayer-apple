@@ -126,11 +126,11 @@ static void commonInit(RTSSegmentedTimelineView *self);
 									 self.collectionView.contentOffset.y,
 									 CGRectGetWidth(self.collectionView.frame),
 									 CGRectGetHeight(self.collectionView.frame));
+	
 	NSArray *layoutAttributesArray = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:contentFrame];
 	
 	NSMutableArray *indexPaths = [NSMutableArray array];
-	for (UICollectionViewLayoutAttributes *layoutAttributes in layoutAttributesArray)
-	{
+	for (UICollectionViewLayoutAttributes *layoutAttributes in layoutAttributesArray) {
 		[indexPaths addObject:layoutAttributes.indexPath];
 	}
 	
@@ -147,8 +147,7 @@ static void commonInit(RTSSegmentedTimelineView *self);
 - (void) scrollToSegment:(id<RTSMediaSegment>)segment animated:(BOOL)animated
 {
 	NSInteger segmentIndex = [self.segmentsController.visibleSegments indexOfObject:segment];
-	if (segmentIndex == NSNotFound)
-	{
+	if (segmentIndex == NSNotFound) {
 		return;
 	}
 	
@@ -159,10 +158,8 @@ static void commonInit(RTSSegmentedTimelineView *self);
 
 - (void) scrollToSegmentAtTime:(CMTime)time animated:(BOOL)animated
 {
-	for (id<RTSMediaSegment> segment in self.segmentsController.visibleSegments)
-	{
-		if (CMTimeRangeContainsTime(segment.timeRange, time))
-		{
+	for (id<RTSMediaSegment> segment in self.segmentsController.visibleSegments) {
+		if (CMTimeRangeContainsTime(segment.timeRange, time)) {
 			[self scrollToSegment:segment animated:animated];
 			return;
 		}

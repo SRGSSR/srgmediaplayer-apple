@@ -201,6 +201,13 @@
 		9F43A6DE1B16109F007832B7 /* Segments */ = {
 			isa = PBXGroup;
 			children = (
+				9F43A6DF1B1610D0007832B7 /* RTSMediaSegmentsController.h */,
+				9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */,
+				E65786A21AEFAD68007730CE /* RTSSegmentedTimelineView.h */,
+				E6A6D0E31AFA017600E15BCF /* RTSSegmentedTimelineView+Private.h */,
+				E65786A31AEFAD68007730CE /* RTSSegmentedTimelineView.m */,
+				E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */,
+				E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */,
 			);
 			name = Segments;
 			sourceTree = "<group>";
@@ -244,8 +251,6 @@
 				B61E18BE1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.h */,
 				B61E18BF1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m */,
 				B61E18C01AA750CC00E4FAB9 /* RTSMediaPlayerViewController.xib */,
-				9F43A6DF1B1610D0007832B7 /* RTSMediaSegmentsController.h */,
-				9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -263,11 +268,6 @@
 				B61E18FB1AA9EEDB00E4FAB9 /* RTSTimeSlider.m */,
 				B61E19061AA9F3B900E4FAB9 /* RTSVolumeView.h */,
 				B61E19071AA9F3B900E4FAB9 /* RTSVolumeView.m */,
-				E65786A21AEFAD68007730CE /* RTSSegmentedTimelineView.h */,
-				E6A6D0E31AFA017600E15BCF /* RTSSegmentedTimelineView+Private.h */,
-				E65786A31AEFAD68007730CE /* RTSSegmentedTimelineView.m */,
-				E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */,
-				E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */,
 			);
 			name = Overlays;
 			sourceTree = "<group>";
@@ -306,8 +306,8 @@
 				E67D9B211B0EFDEE00FF2334 /* Protocols */,
 				B61E18F11AA87D4500E4FAB9 /* Controller */,
 				B61E18F01AA87D2E00E4FAB9 /* Core */,
-				9F43A6DE1B16109F007832B7 /* Segments */,
 				B61E18F21AA87D5E00E4FAB9 /* Overlays */,
+				9F43A6DE1B16109F007832B7 /* Segments */,
 				9FF53DE91B258E0D00A8162D /* Utils */,
 				E699062C1AFB9684005ED143 /* Resources */,
 			);

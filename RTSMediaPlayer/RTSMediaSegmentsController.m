@@ -361,7 +361,9 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 	if (index < self.visibleSegments.count) {
 		id<RTSMediaSegment> segment = self.visibleSegments[index];
 		if (!segment.isBlocked) {
-			[self.playerController fireSeekEventWithUserInfo:@{RTSMediaPlayerPlaybackSeekingReasonInfoKey: @(RTSMediaPlaybackSeekingReasonSegmentSelected)}];
+			NSDictionary *userInfo = @{RTSMediaPlayerPlaybackSeekingReasonInfoKey: @(RTSMediaPlaybackSeekingReasonSegmentSelected)};
+			[self.playerController fireSeekEventWithUserInfo:userInfo];
+			
 			[self seekToTime:segment.timeRange.start completionHandler:^(BOOL finished) {
 				if (finished) {
 					self.wasSegmentSelected = YES; // Will be propagated into the notification
