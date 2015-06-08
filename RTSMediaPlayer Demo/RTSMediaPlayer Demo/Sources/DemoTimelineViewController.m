@@ -13,7 +13,7 @@
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, weak) IBOutlet UIView *videoView;
-@property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
+@property (nonatomic, weak) IBOutlet RTSSegmentedTimelineView *timelineView;
 @property (nonatomic, weak) IBOutlet RTSTimelineSlider *timelineSlider;
 
 @end
@@ -87,16 +87,16 @@
 	return ((SwissTXTSegment *)segment).iconImage;
 }
 
-#pragma mark - RTSTimelineViewDelegate protocol
+#pragma mark - RTSSegmentedTimelineViewDelegate protocol
 
-- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment
+- (UICollectionViewCell *) timelineView:(RTSSegmentedTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment
 {
 	SwissTXTSegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SwissTXTSegmentCollectionViewCell class]) forSegment:segment];
 	segmentCell.segment = (SwissTXTSegment *)segment;
 	return segmentCell;
 }
 
-- (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaSegment>)segment
+- (void) timelineView:(RTSSegmentedTimelineView *)timelineView didSelectSegment:(id<RTSMediaSegment>)segment
 {
 	[self.mediaPlayerController seekToTime:segment.timeRange.start completionHandler:nil];
 }

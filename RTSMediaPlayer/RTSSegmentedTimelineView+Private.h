@@ -4,12 +4,12 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import "RTSTimelineView.h"
+#import "RTSSegmentedTimelineView.h"
 
 /**
  *  Private interface for implementation purposes
  */
-@interface RTSTimelineView (Private)
+@interface RTSSegmentedTimelineView (Private)
 
 /**
  *  Return the index paths of all cells currently within the area of the view

@@ -11,7 +11,7 @@
 @class RTSMediaSegmentsController;
 @class RTSMediaPlayerController;
 
-@protocol RTSTimelineViewDelegate;
+@protocol RTSSegmentedTimelineViewDelegate;
 
 /**
  *  A view displaying segments associated with a stream as a linear collection of cells
@@ -24,7 +24,7 @@
  *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual 
  *  UICollectionView
  */
-@interface RTSTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface RTSSegmentedTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
 /**
  *  The controller which provides segments to the timeline
@@ -34,7 +34,7 @@
 /**
  *  The timeline delegate
  */
-@property (nonatomic, weak) IBOutlet id<RTSTimelineViewDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<RTSSegmentedTimelineViewDelegate> delegate;
 
 /**
  *  The width of cells within the timeline. Defaults to 60
@@ -84,7 +84,7 @@
 /**
  *  Timeline delegate protocol
  */
-@protocol RTSTimelineViewDelegate <NSObject>
+@protocol RTSSegmentedTimelineViewDelegate <NSObject>
 
 /**
  *  Return the cell to be displayed for a segment. You should call -dequeueReusableCellWithReuseIdentifier:forSegment:
@@ -95,7 +95,7 @@
  *
  *  @return The cell to use
  */
-- (UICollectionViewCell *)timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment;
+- (UICollectionViewCell *)timelineView:(RTSSegmentedTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment;
 
 
 @end

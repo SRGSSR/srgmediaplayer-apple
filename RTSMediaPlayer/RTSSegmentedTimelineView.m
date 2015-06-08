@@ -4,7 +4,7 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import "RTSTimelineView.h"
+#import "RTSSegmentedTimelineView.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import "RTSMediaPlayerController.h"
@@ -12,13 +12,13 @@
 #import "RTSMediaSegmentsController.h"
 
 // Function declarations
-static void commonInit(RTSTimelineView *self);
+static void commonInit(RTSSegmentedTimelineView *self);
 
-@interface RTSTimelineView ()
+@interface RTSSegmentedTimelineView ()
 @property (nonatomic, weak) UICollectionView *collectionView;
 @end
 
-@implementation RTSTimelineView
+@implementation RTSSegmentedTimelineView
 
 #pragma mark - Object lifecycle
 
@@ -173,7 +173,7 @@ static void commonInit(RTSTimelineView *self);
 
 #pragma mark - Functions
 
-static void commonInit(RTSTimelineView *self)
+static void commonInit(RTSSegmentedTimelineView *self)
 {
 	UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
 	collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;

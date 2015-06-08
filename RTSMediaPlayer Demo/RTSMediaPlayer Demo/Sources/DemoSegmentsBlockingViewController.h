@@ -7,7 +7,7 @@
 #import <RTSMediaPlayer/RTSMediaPlayer.h>
 #import <UIKit/UIKit.h>
 
-@interface DemoSegmentsBlockingViewController : UIViewController <RTSTimelineSliderDelegate, RTSTimelineViewDelegate>
+@interface DemoSegmentsBlockingViewController : UIViewController <RTSTimelineSliderDelegate, RTSSegmentedTimelineViewDelegate>
 
 @property (nonatomic, copy) NSString *videoIdentifier;
 

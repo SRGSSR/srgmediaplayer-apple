@@ -5,7 +5,7 @@
 //
 
 #import <libextobjc/EXTScope.h>
-#import <RTSMediaPlayer/RTSTimelineView.h>
+#import <RTSMediaPlayer/RTSSegmentedTimelineView.h>
 #import <RTSMediaPlayer/RTSTimeSlider.h>
 
 #import "DemoSegmentsBlockingViewController.h"
@@ -17,7 +17,7 @@
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, weak) IBOutlet UIView *videoView;
-@property (nonatomic, weak) IBOutlet RTSTimelineView *timelineView;
+@property (nonatomic, weak) IBOutlet RTSSegmentedTimelineView *timelineView;
 @property (nonatomic, weak) IBOutlet RTSTimeSlider *timelineSlider;
 @property (nonatomic, weak) IBOutlet UIView *blockingOverlayView;
 @property (nonatomic, weak) IBOutlet UILabel *blockingOverlayViewLabel;
@@ -150,16 +150,16 @@
 	}
 }
 
-#pragma mark - RTSTimelineViewDelegate protocol
+#pragma mark - RTSSegmentedTimelineViewDelegate protocol
 
-- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment
+- (UICollectionViewCell *) timelineView:(RTSSegmentedTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment
 {
 	SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SegmentCollectionViewCell class]) forSegment:segment];
 	segmentCell.segment = (Segment *)segment;
 	return segmentCell;
 }
 
-- (void)timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaSegment>)segment
+- (void)timelineView:(RTSSegmentedTimelineView *)timelineView didSelectSegment:(id<RTSMediaSegment>)segment
 {
 	[self.mediaPlayerController seekToTime:segment.timeRange.start completionHandler:nil];
 }
