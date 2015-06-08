@@ -411,6 +411,11 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 	[self.playerController mute:flag];
 }
 
+- (BOOL)isMuted
+{
+	return [self.playerController isMuted];
+}
+
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL))completionHandler
 {
 	if (![self isTimeBlocked:time]) {

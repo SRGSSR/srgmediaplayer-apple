@@ -18,7 +18,6 @@
  *  @name Controling Playback
  *  -------------------------
  */
-/**
 
 /**
  *  Prepare to play
@@ -55,6 +54,13 @@
  *  @param flag A boolean value
  */
 - (void)mute:(BOOL)flag;
+
+/**
+ *  Indicates whether the playback is muted or not.
+ *
+ *  @return Returns YES if the playback is muted.
+ */
+- (BOOL)isMuted;
 
 /**
  *  Seek to specific time of the playback.

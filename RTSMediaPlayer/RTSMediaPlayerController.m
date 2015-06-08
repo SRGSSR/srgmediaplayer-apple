@@ -377,6 +377,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	self.player.muted = flag;
 }
 
+- (BOOL)isMuted
+{
+	return self.player.muted;
+}
+
 - (void) reset
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(prepareToPlay) object:nil];
