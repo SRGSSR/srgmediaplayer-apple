@@ -8,6 +8,38 @@
 
 #import <CocoaLumberjack/CocoaLumberjack.h>
 
+@interface UIImage (Tinting)
+- (UIImage *)tintedImageWithColor:(UIColor *)color;
+@end
+
+@implementation UIImage (Tinting)
+
+- (UIImage *)tintedImageWithColor:(UIColor *)color
+{
+	if (!color) {
+		return self;
+	}
+	
+	CGRect rect = CGRectMake(0.f, 0.f, self.size.width, self.size.height);
+	UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.f);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	
+	CGContextTranslateCTM(context, 0.f, self.size.height);
+	CGContextScaleCTM(context, 1.0f, -1.0f);
+	
+	CGContextDrawImage(context, rect, self.CGImage);
+	CGContextSetBlendMode(context, kCGBlendModeSourceIn);
+	CGContextSetFillColorWithColor(context, color.CGColor);
+	CGContextFillRect(context, rect);
+	
+	UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	return tintedImage;
+}
+
+@end
+
 
 @interface LogFormatter : NSObject <DDLogFormatter>
 @end
@@ -52,6 +84,7 @@
 	[tabBarController.tabBar.items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		UITabBarItem *item = (UITabBarItem *)obj;
 		item.image = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+		item.selectedImage = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 	}];
 
 	

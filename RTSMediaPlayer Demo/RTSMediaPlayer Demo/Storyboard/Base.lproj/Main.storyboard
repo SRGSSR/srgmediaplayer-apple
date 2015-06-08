@@ -28,7 +28,7 @@
             </objects>
             <point key="canvasLocation" x="-1599" y="1210"/>
         </scene>
-        <!--RTSMediaPlayer Demo-->
+        <!--SRG MediaPlayer Demo-->
         <scene sceneID="Dcz-cH-IAN">
             <objects>
                 <tableViewController id="YAv-RZ-eCI" customClass="MoviesTableViewController" sceneMemberID="viewController">
@@ -70,7 +70,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RhO-Y4-gSt" id="gSE-zL-5fe">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="SRG Player" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6JR-SJ-vxF">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="SRG MediaPlayer" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6JR-SJ-vxF">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -84,7 +84,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="T8i-4h-PVD" id="v8q-31-AVc">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="SRG Player Inline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="USj-Gd-agl">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="SRG MediaPlayer Inline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="USj-Gd-agl">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -96,29 +96,12 @@
                                     <segue destination="u4g-ie-3Oi" kind="show" identifier="DemoInline" id="dzb-4t-e6m"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CellFullscreen" textLabel="ARB-RA-nMv" style="IBUITableViewCellStyleDefault" id="4XY-ZL-AdJ">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4XY-ZL-AdJ" id="cPG-hr-MpZ">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="SRG Player Fullscreen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ARB-RA-nMv">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="vZa-cs-A01" kind="presentation" identifier="DemoFullscreen" id="Qus-Be-0Ol"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CellTimeline" textLabel="asj-BZ-k6f" style="IBUITableViewCellStyleDefault" id="wra-I6-fFa" userLabel="CellTimeline">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wra-I6-fFa" id="YDn-XR-7W5">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="SRG Player with Timeshift" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="asj-BZ-k6f">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="SRG MediaPlayer with Timeshift" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="asj-BZ-k6f">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -137,7 +120,7 @@
                             <outlet property="delegate" destination="YAv-RZ-eCI" id="T28-Sk-8uC"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="RTSMediaPlayer Demo" id="lEg-4B-POp"/>
+                    <navigationItem key="navigationItem" title="SRG MediaPlayer Demo" id="lEg-4B-POp"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eAi-Nf-6JW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -470,10 +453,10 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PcP-7w-FSg" userLabel="Close Button">
-                                <rect key="frame" x="558" y="10" width="32" height="32"/>
+                                <rect key="frame" x="556" y="10" width="44" height="44"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="7b6-3j-iPc"/>
-                                    <constraint firstAttribute="width" constant="32" id="AgT-7m-bWc"/>
+                                    <constraint firstAttribute="height" constant="44" id="7b6-3j-iPc"/>
+                                    <constraint firstAttribute="width" constant="44" id="AgT-7m-bWc"/>
                                 </constraints>
                                 <state key="normal" image="close_button.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -512,7 +495,7 @@
                             <constraint firstAttribute="centerY" secondItem="u8j-dZ-bA3" secondAttribute="centerY" constant="0.5" id="0dX-JK-ZJm"/>
                             <constraint firstItem="x2p-Nx-m7K" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="NWE-TH-uE1"/>
                             <constraint firstAttribute="trailingMargin" secondItem="6B9-hB-Taq" secondAttribute="trailing" constant="-16" id="Qmw-iN-7nM"/>
-                            <constraint firstAttribute="trailing" secondItem="PcP-7w-FSg" secondAttribute="trailing" constant="10" id="Wbl-IN-QRe"/>
+                            <constraint firstAttribute="trailing" secondItem="PcP-7w-FSg" secondAttribute="trailing" id="Wbl-IN-QRe"/>
                             <constraint firstItem="Atp-kj-ZMO" firstAttribute="leading" secondItem="t9K-xg-VIe" secondAttribute="leading" id="Yen-y8-iQF"/>
                             <constraint firstAttribute="trailing" secondItem="x2p-Nx-m7K" secondAttribute="trailing" id="cP9-lE-dc6"/>
                             <constraint firstItem="6B9-hB-Taq" firstAttribute="top" secondItem="Nnt-GR-OvG" secondAttribute="bottom" id="f6Q-XN-4tF"/>
@@ -705,10 +688,10 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tT7-MB-6RF" userLabel="Close Button">
-                                <rect key="frame" x="558" y="10" width="32" height="32"/>
+                                <rect key="frame" x="556" y="10" width="44" height="44"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="32" id="TjZ-7s-ojN"/>
-                                    <constraint firstAttribute="height" constant="32" id="cEr-mS-Vrw"/>
+                                    <constraint firstAttribute="width" constant="44" id="TjZ-7s-ojN"/>
+                                    <constraint firstAttribute="height" constant="44" id="cEr-mS-Vrw"/>
                                 </constraints>
                                 <state key="normal" image="close_button.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -725,7 +708,7 @@
                             <constraint firstItem="bOM-dV-sbr" firstAttribute="top" secondItem="464-IG-aFV" secondAttribute="bottom" id="6j1-rL-XWs"/>
                             <constraint firstItem="bOM-dV-sbr" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" id="Nyk-JR-JZa"/>
                             <constraint firstItem="464-IG-aFV" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" id="ZzC-Jg-94y"/>
-                            <constraint firstAttribute="trailing" secondItem="tT7-MB-6RF" secondAttribute="trailing" constant="10" id="bFQ-Be-VEv"/>
+                            <constraint firstAttribute="trailing" secondItem="tT7-MB-6RF" secondAttribute="trailing" id="bFQ-Be-VEv"/>
                             <constraint firstItem="Bbx-gB-q2Y" firstAttribute="top" secondItem="bOM-dV-sbr" secondAttribute="bottom" id="fWB-HT-CuP"/>
                             <constraint firstItem="tT7-MB-6RF" firstAttribute="top" secondItem="SIh-DF-LVa" secondAttribute="bottom" constant="10" id="mFO-rT-IDB"/>
                             <constraint firstAttribute="trailing" secondItem="464-IG-aFV" secondAttribute="trailing" id="nTC-1e-bv9"/>
@@ -774,7 +757,7 @@
             </objects>
             <point key="canvasLocation" x="1281" y="1282"/>
         </scene>
-        <!--RTSMediaPlayer Demo-->
+        <!--SRG MediaPlayer Demo-->
         <scene sceneID="cHv-Po-KKw">
             <objects>
                 <tableViewController id="f4b-gK-FEM" customClass="MultiplayerViewController" sceneMemberID="viewController">
@@ -820,7 +803,7 @@
                             <outlet property="delegate" destination="f4b-gK-FEM" id="Yas-DQ-Llr"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="RTSMediaPlayer Demo" id="cIF-XD-wRd"/>
+                    <navigationItem key="navigationItem" title="SRG MediaPlayer Demo" id="cIF-XD-wRd"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UTw-MO-wb8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -843,7 +826,7 @@
             </objects>
             <point key="canvasLocation" x="-251" y="1950"/>
         </scene>
-        <!--RTSMediaPlayer Demo-->
+        <!--SRG MediaPlayer Demo-->
         <scene sceneID="3AW-Gg-PX4">
             <objects>
                 <tableViewController id="gSF-2R-Wcc" customClass="AudiosTableViewController" sceneMemberID="viewController">
@@ -885,7 +868,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pd4-E7-NS7" id="eTK-qr-K30">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Default RTS Player" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="z0X-Qz-Ubw">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="SRG MediaPlayer" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="z0X-Qz-Ubw">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -900,7 +883,7 @@
                             <outlet property="delegate" destination="gSF-2R-Wcc" id="Vng-Ie-TZf"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="RTSMediaPlayer Demo" id="h3s-jI-W6E"/>
+                    <navigationItem key="navigationItem" title="SRG MediaPlayer Demo" id="h3s-jI-W6E"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rxp-X3-NjV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1220,7 +1203,7 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Segments" image="segments" id="lWM-l9-nYP"/>
-                    <navigationItem key="navigationItem" title="RTSMediaPlayer Demo" id="gwj-zb-hQU"/>
+                    <navigationItem key="navigationItem" title="SRG MediaPlayer Demo" id="gwj-zb-hQU"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Dr-OG-C3t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

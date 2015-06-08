@@ -23,7 +23,6 @@
 	return @[ @"CellDefaultIOS",
 			  @"CellDefaultRTS",
 			  @"CellInline",
-			  @"CellFullscreen",
 			  @"CellTimeline" ];
 }
 

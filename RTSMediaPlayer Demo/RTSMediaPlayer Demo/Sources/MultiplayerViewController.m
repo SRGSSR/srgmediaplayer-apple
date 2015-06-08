@@ -8,17 +8,17 @@
 
 @implementation MultiplayerViewController
 
-- (NSString *) mediaURLPath
+- (NSString *)mediaURLPath
 {
 	return @"MultiplayerURLs";
 }
 
-- (NSString *) mediaURLKey
+- (NSString *)mediaURLKey
 {
 	return @"Movies";
 }
 
-- (NSArray *) actionCellIdentifiers
+- (NSArray *)actionCellIdentifiers
 {
 	return @[ @"CellMultiPlayers" ];
 }

@@ -116,7 +116,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	return section == 0 ? @"Choose Video:" : @"Choose Player:";
+	return section == 0 ? @"Choose Media:" : @"Choose Player:";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -126,15 +126,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (indexPath.section == 0)
+	if (indexPath.section == 0) {
 		return [self configureMediaCellAtIndexPath:indexPath];
-	else
+	}
+	else {
 		return [self configureActionCellAtIndexPath:indexPath];
+	}
 }
 
 #pragma mark Cells
 
-- (UITableViewCell *) configureMediaCellAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)configureMediaCellAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 	
@@ -145,9 +147,15 @@
 	return cell;
 }
 
-- (UITableViewCell *) configureActionCellAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)configureActionCellAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:self.actionCellIdentifiers[indexPath.row] forIndexPath:indexPath];
+	if (indexPath.row < 3) {
+		cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:0.5 blue:0.0 alpha:1.0];
+	}
+	else {
+		cell.textLabel.textColor = [UIColor colorWithRed:0.700 green:0.408 blue:0.015 alpha:1.000];
+	}
 	return cell;
 }
 
