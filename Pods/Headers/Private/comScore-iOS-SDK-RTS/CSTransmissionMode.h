@@ -1,0 +1,1 @@
+../../../comScore-iOS-SDK-RTS/comScore/headers/CSTransmissionMode.h

@@ -1,3 +1,6 @@
+source 'ssh://git@bitbucket.org/rtsmb/srgpodspecs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
 platform :ios, '7.0'
 
 inhibit_all_warnings!
@@ -20,4 +23,5 @@ end
 target 'RTSMediaPlayer Demo' do
   xcodeproj 'RTSMediaPlayer Demo/RTSMediaPlayer Demo.xcodeproj'
   pod 'SDWebImage', '3.7.0'
+  pod 'SRGAnalytics'
 end

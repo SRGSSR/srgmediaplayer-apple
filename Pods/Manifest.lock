@@ -7,6 +7,7 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.0.0):
     - CocoaLumberjack/Default
+  - comScore-iOS-SDK-RTS (3.1502.26)
   - libextobjc/EXTScope (0.4.1):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4.1)
@@ -14,6 +15,11 @@ PODS:
   - SDWebImage (3.7.0):
     - SDWebImage/Core (= 3.7.0)
   - SDWebImage/Core (3.7.0)
+  - SRGAnalytics (0.2.2):
+    - SRGAnalytics/Core (= 0.2.2)
+  - SRGAnalytics/Core (0.2.2):
+    - CocoaLumberjack (~> 2.0.0)
+    - comScore-iOS-SDK-RTS (= 3.1502.26)
   - TransitionKit (2.2.0)
 
 DEPENDENCIES:
@@ -21,13 +27,16 @@ DEPENDENCIES:
   - libextobjc/EXTScope (= 0.4.1)
   - MAKVONotificationCenter (= 0.0.2)
   - SDWebImage (= 3.7.0)
+  - SRGAnalytics
   - TransitionKit (= 2.2.0)
 
 SPEC CHECKSUMS:
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
+  comScore-iOS-SDK-RTS: ebab82ac061523f057f7e2c4cb3ecc4b0af10ecf
   libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
   MAKVONotificationCenter: eddfb85e77040323ee43a0fddbe616926ec005a8
   SDWebImage: b42db92951f9d565c55f1d7f1d5efe47e33a7515
+  SRGAnalytics: 3838e1db89343262c69845029d6aa7ce920e1b1c
   TransitionKit: 5c9001a77acc409d71f26a4eba0159cf8619c418
 
-COCOAPODS: 0.37.1
+COCOAPODS: 0.37.2
