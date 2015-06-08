@@ -7,6 +7,10 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
+/**
+ *  The RTSMediaPlayback is a protocol shared between the media player controller, and the segments controller.
+ *  When medias have segment, the segments controller must be used to control the playback.
+ */
 @protocol RTSMediaPlayback <NSObject>
 
 // *** Controling Playback ***
