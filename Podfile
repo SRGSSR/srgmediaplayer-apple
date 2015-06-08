@@ -6,6 +6,7 @@ platform :ios, '7.0'
 inhibit_all_warnings!
 
 workspace 'RTSMediaPlayer'
+link_with 'RTSMediaPlayerTests', 'RTSMediaPlayer Demo'
 
 target 'RTSMediaPlayer' do
   pod 'CocoaLumberjack',     '2.0.0'
