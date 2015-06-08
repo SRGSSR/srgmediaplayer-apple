@@ -23,5 +23,4 @@ end
 target 'RTSMediaPlayer Demo' do
   xcodeproj 'RTSMediaPlayer Demo/RTSMediaPlayer Demo.xcodeproj'
   pod 'SDWebImage', '3.7.0'
-  pod 'SRGAnalytics'
 end
