@@ -38,6 +38,23 @@
 	ttyLogger.colorsEnabled = YES;
 	ttyLogger.logFormatter = [LogFormatter new];
 	[DDLog addLogger:ttyLogger withLevel:DDLogLevelInfo];
+	
+	
+	UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+	
+	UIImage *moviesIcon = [UIImage imageNamed:@"videos"];
+	UIImage *segmentsIcon = [UIImage imageNamed:@"segments"];
+	UIImage *multiplayerIcon = [UIImage imageNamed:@"screen"];
+	UIImage *audiosIcon = [UIImage imageNamed:@"audios"];
+	
+	NSArray *images = @[moviesIcon, segmentsIcon, multiplayerIcon, audiosIcon];
+	
+	[tabBarController.tabBar.items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		UITabBarItem *item = (UITabBarItem *)obj;
+		item.image = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+	}];
+
+	
 	return YES;
 }
 

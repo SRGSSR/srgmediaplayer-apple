@@ -572,7 +572,7 @@
         <scene sceneID="i2A-95-Y3q">
             <objects>
                 <navigationController id="qEN-A3-XvO" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Segments" id="yO1-CV-VDK"/>
+                    <tabBarItem key="tabBarItem" title="Segments" selectedImage="segments.png" id="yO1-CV-VDK"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="aiM-Rx-Vqr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -830,7 +830,7 @@
         <scene sceneID="sHd-0w-xyZ">
             <objects>
                 <navigationController id="zUG-Wo-T05" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="MultiPlayer" id="Zpq-p2-le3"/>
+                    <tabBarItem key="tabBarItem" title="MultiPlayer" selectedImage="screen.png" id="Zpq-p2-le3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="4xr-kd-kZN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -910,7 +910,7 @@
         <scene sceneID="ciH-d6-tNN">
             <objects>
                 <navigationController id="2hi-mw-pbg" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Audios" id="tSv-et-tdu"/>
+                    <tabBarItem key="tabBarItem" title="Audios" selectedImage="audios.png" id="tSv-et-tdu"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="EXK-VV-hNW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1219,7 +1219,7 @@
                             <outlet property="delegate" destination="GEM-Di-2Bq" id="Wkp-eu-k9H"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Item" id="lWM-l9-nYP"/>
+                    <tabBarItem key="tabBarItem" title="Segments" image="segments" id="lWM-l9-nYP"/>
                     <navigationItem key="navigationItem" title="RTSMediaPlayer Demo" id="gwj-zb-hQU"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Dr-OG-C3t" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1228,7 +1228,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="audios.png" width="22" height="22"/>
         <image name="close_button.png" width="32" height="32"/>
+        <image name="screen.png" width="22" height="22"/>
+        <image name="segments" width="32" height="32"/>
+        <image name="segments.png" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="O09-1w-7j6"/>
