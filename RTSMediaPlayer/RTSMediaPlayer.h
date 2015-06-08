@@ -24,7 +24,7 @@
 
 // Overlay Views for Segments
 #import <RTSMediaPlayer/RTSTimelineSlider.h>
-#import <RTSMediaPlayer/RTSTimelineView.h>
+#import <RTSMediaPlayer/RTSSegmentedTimelineView.h>
 
 // Utils
 #import <RTSMediaPlayer/NSBundle+RTSMediaPlayer.h>
