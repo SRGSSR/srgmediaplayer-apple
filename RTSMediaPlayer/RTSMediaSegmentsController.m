@@ -356,22 +356,26 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 	return (NSInteger)currentSegment;
 }
 
-- (void)seekToVisibleSegmentAtIndex:(NSUInteger)index
+- (void)playVisibleSegmentAtIndex:(NSUInteger)index
 {
-	if (index < self.visibleSegments.count) {
-		id<RTSMediaSegment> segment = self.visibleSegments[index];
-		if (!segment.isBlocked) {
-			NSDictionary *userInfo = @{RTSMediaPlayerPlaybackSeekingReasonInfoKey: @(RTSMediaPlaybackSeekingReasonSegmentSelected)};
-			[self.playerController fireSeekEventWithUserInfo:userInfo];
-			
-			[self seekToTime:segment.timeRange.start completionHandler:^(BOOL finished) {
-				if (finished) {
-					self.wasSegmentSelected = YES; // Will be propagated into the notification
-					[self.playerController play]; // Will put the player into the pause state.
-				}
-			}];
-		}
+	if (index >= self.visibleSegments.count) {
+		return;
 	}
+	
+	id<RTSMediaSegment> segment = self.visibleSegments[index];
+	if (segment.isBlocked) {
+		return;
+	}
+	
+	NSDictionary *userInfo = @{RTSMediaPlayerPlaybackSeekingReasonInfoKey: @(RTSMediaPlaybackSeekingReasonSegmentSelected)};
+	[self.playerController fireSeekEventWithUserInfo:userInfo];
+	
+	[self.playerController seekToTime:segment.timeRange.start completionHandler:^(BOOL finished) {
+		if (finished) {
+			self.wasSegmentSelected = YES; // Will be propagated into the notification
+			[self.playerController play];
+		}
+	}];
 }
 
 

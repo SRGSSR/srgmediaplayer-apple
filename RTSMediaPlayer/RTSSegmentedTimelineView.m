@@ -114,7 +114,7 @@ static void commonInit(RTSSegmentedTimelineView *self);
 
 - (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	[self.segmentsController seekToVisibleSegmentAtIndex:indexPath.row];	
+	[self.segmentsController playVisibleSegmentAtIndex:indexPath.row];	
 }
 
 #pragma mark - Visible cells

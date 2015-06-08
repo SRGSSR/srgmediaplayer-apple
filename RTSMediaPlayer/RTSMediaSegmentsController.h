@@ -124,6 +124,6 @@
  *
  *  @param index The index of the visible segment to seek to.
  */
-- (void)seekToVisibleSegmentAtIndex:(NSUInteger)index;
+- (void)playVisibleSegmentAtIndex:(NSUInteger)index;
 
 @end
