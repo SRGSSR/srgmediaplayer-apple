@@ -12,14 +12,27 @@
 
 
 @class RTSMediaPlayerController;
-@protocol RTSMediaPlayerSegment;
+@protocol RTSMediaSegment;
 
 @interface RTSMediaSegmentsController : NSObject <RTSMediaPlayback>
 
+/**
+ *  The player controller associated with the segments controller.
+ */
 @property(nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;
+
+/**
+ *  The data source of the segments controller.
+ */
 @property(nonatomic, weak) IBOutlet id<RTSMediaSegmentsDataSource> dataSource;
 
-- (void)reloadDataForIdentifier:(NSString *)identifier withCompletionHandler:(void (^)(void))completionHandler;
+/**
+ *  Reload segments data for given media identifier.
+ *
+ *  @param identifier        The media identifier
+ *  @param completionHandler The completion handler.
+ */
+- (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler;
 
 /**
  *  The count of segments.
@@ -105,6 +118,12 @@
  */
 - (NSInteger)currentSegmentIndex;
 
+/**
+ *  Asks the segments controller to seek to the visible segment at the given index. Does nothing if the segment
+ *  is blocked.
+ *
+ *  @param index The index of the visible segment to seek to.
+ */
 - (void)seekToVisibleSegmentAtIndex:(NSUInteger)index;
 
 @end

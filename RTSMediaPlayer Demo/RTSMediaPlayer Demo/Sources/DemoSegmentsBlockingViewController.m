@@ -145,21 +145,21 @@
 	
 	NSUInteger visibleSegmentIndex = [self.timelineView.segmentsController indexOfVisibleSegmentForTime:time];
 	if (visibleSegmentIndex != NSNotFound) {
-		id<RTSMediaPlayerSegment> segment = [[self.timelineView.segmentsController visibleSegments] objectAtIndex:visibleSegmentIndex];
+		id<RTSMediaSegment> segment = [[self.timelineView.segmentsController visibleSegments] objectAtIndex:visibleSegmentIndex];
 		[self.timelineView scrollToSegment:segment animated:YES];
 	}
 }
 
 #pragma mark - RTSTimelineViewDelegate protocol
 
-- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment
+- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment
 {
 	SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SegmentCollectionViewCell class]) forSegment:segment];
 	segmentCell.segment = (Segment *)segment;
 	return segmentCell;
 }
 
-- (void)timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment
+- (void)timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaSegment>)segment
 {
 	[self.mediaPlayerController seekToTime:segment.timeRange.start completionHandler:nil];
 }

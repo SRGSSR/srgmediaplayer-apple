@@ -10,7 +10,7 @@
 /**
  *  Describe a media segment
  */
-@protocol RTSMediaPlayerSegment <NSObject>
+@protocol RTSMediaSegment <NSObject>
 
 /**
  *  Segment start and end times (might be identical)

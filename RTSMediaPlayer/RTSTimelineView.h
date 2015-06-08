@@ -64,14 +64,14 @@
  *  @param identifier The cell identifier (must be appropriately set for the cell)
  *  @param segment    The segment for which a cell must be dequeued
  */
-- (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaPlayerSegment>)segment;
+- (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaSegment>)segment;
 
 - (NSArray *)visibleCells;
 
 /**
  *  Scroll to make the specified segment visible (does nothing if the segment does not belong to the displayed segments)
  */
-- (void)scrollToSegment:(id<RTSMediaPlayerSegment>)segment animated:(BOOL)animated;
+- (void)scrollToSegment:(id<RTSMediaSegment>)segment animated:(BOOL)animated;
 
 /**
  *  Scroll to make the segment to which the specified time belongs visible (does nothing if the time does not match
@@ -95,7 +95,7 @@
  *
  *  @return The cell to use
  */
-- (UICollectionViewCell *)timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment;
+- (UICollectionViewCell *)timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment;
 
 
 @end

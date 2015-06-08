@@ -45,6 +45,6 @@
  *  Return the icon to display in the timeline for a segment. If no icon is provided, a tick is displayed instead. The
  *  recommended size for the image is 15x15 points
  */
-- (UIImage *) timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaPlayerSegment>)segment;
+- (UIImage *) timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaSegment>)segment;
 
 @end

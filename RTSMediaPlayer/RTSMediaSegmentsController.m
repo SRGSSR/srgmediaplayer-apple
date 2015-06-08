@@ -10,7 +10,7 @@
 
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerController+Private.h"
-#import "RTSMediaPlayerSegment.h"
+#import "RTSMediaSegment.h"
 #import "RTSMediaSegmentsController.h"
 
 NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
@@ -21,7 +21,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPlaybackSeekingReasonInfoKey";
 
 @interface RTSMediaSegmentsController ()
-@property(nonatomic, strong) id<RTSMediaPlayerSegment> fullLengthSegment;
+@property(nonatomic, strong) id<RTSMediaSegment> fullLengthSegment;
 @property(nonatomic, strong) NSArray *segments;
 @property(nonatomic, strong) NSArray *episodes;
 @property(nonatomic, strong) NSDictionary *indexMapping;
@@ -32,7 +32,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 
 @implementation RTSMediaSegmentsController
 
-- (void)reloadDataForIdentifier:(NSString *)identifier withCompletionHandler:(void (^)(void))completionHandler
+- (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler
 {
 	NSParameterAssert(identifier);
 	
@@ -49,9 +49,11 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 	[self removeBlockingTimeObserver];
 	self.lastPlaybackPositionSegmentIndex = -1;
 
-	RTSMediaSegmentsCompletionHandler reloadCompletionBlock = ^(id<RTSMediaPlayerSegment> fullLength, NSArray *segments, NSError *error) {
+	RTSMediaSegmentsCompletionHandler reloadCompletionBlock = ^(id<RTSMediaSegment> fullLength, NSArray *segments, NSError *error) {
 		if (error) {
-			// Handle error.
+			if (completionHandler) {
+				completionHandler(error);
+			}
 			return;
 		}
 		
@@ -71,7 +73,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 		NSMutableDictionary *indexMapping = [NSMutableDictionary dictionary];
 		
 		__block NSInteger episodeIndex = -1;
-		[self.segments enumerateObjectsUsingBlock:^(id<RTSMediaPlayerSegment>segment, NSUInteger idx, BOOL *stop) {
+		[self.segments enumerateObjectsUsingBlock:^(id<RTSMediaSegment>segment, NSUInteger idx, BOOL *stop) {
 			if ([segment isBlocked] == NO) {
 				[blockedIndices addIndex:idx];
 			}
@@ -94,7 +96,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 		[self addBlockingTimeObserver];
 		
 		if (completionHandler) {
-			completionHandler();
+			completionHandler(nil);
 		}
 	};
 	
@@ -193,7 +195,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 		[self.playerController seekToTime:CMTimeAdd(r.start, r.duration) completionHandler:completionBlock];
 	}
 	else {
-		id<RTSMediaPlayerSegment> segment = self.segments[nextIndex];
+		id<RTSMediaSegment> segment = self.segments[nextIndex];
 		CMTime oneInterval = CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC);
 		CMTimeRange r = segment.timeRange;
 		CMTime seekCMTime = CMTimeAdd(r.start, CMTimeAdd(r.duration, oneInterval));
@@ -224,7 +226,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 	__block NSUInteger result = NSNotFound;
 	__block NSUInteger secondaryResult = NSNotFound;
 	
-	[self.segments enumerateObjectsUsingBlock:^(id<RTSMediaPlayerSegment> segment, NSUInteger idx, BOOL *stop) {
+	[self.segments enumerateObjectsUsingBlock:^(id<RTSMediaSegment> segment, NSUInteger idx, BOOL *stop) {
 		if (CMTimeRangeContainsTime(segment.timeRange, time)) {
 			result = idx;
 		}
@@ -289,7 +291,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
         return NSNotFound;
     }
     
-    id<RTSMediaPlayerSegment> inputSegment = self.segments[index];
+    id<RTSMediaSegment> inputSegment = self.segments[index];
 	CMTimeRange r = inputSegment.timeRange;
     NSTimeInterval inputSegmentEndTime = (NSTimeInterval) CMTimeGetSeconds(r.start) + CMTimeGetSeconds(r.duration);
 
@@ -313,7 +315,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
     
     NSUInteger result = index;
     for (NSUInteger i = index+1; i < self.segments.count; i++) {
-        id<RTSMediaPlayerSegment> segment = self.segments[i];
+        id<RTSMediaSegment> segment = self.segments[i];
         if (![segment isBlocked]) {
             // Next segment is not blocked. Hence the end of the current one is the last we are look for.
             break;
@@ -357,7 +359,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 - (void)seekToVisibleSegmentAtIndex:(NSUInteger)index
 {
 	if (index < self.visibleSegments.count) {
-		id<RTSMediaPlayerSegment> segment = self.visibleSegments[index];
+		id<RTSMediaSegment> segment = self.visibleSegments[index];
 		if (!segment.isBlocked) {
 			[self.playerController fireSeekEventWithUserInfo:@{RTSMediaPlayerPlaybackSeekingReasonInfoKey: @(RTSMediaPlaybackSeekingReasonSegmentSelected)}];
 			[self seekToTime:segment.timeRange.start completionHandler:^(BOOL finished) {

@@ -7,9 +7,9 @@
 #import <Foundation/Foundation.h>
 
 @class RTSMediaSegmentsController;
-@protocol RTSMediaPlayerSegment;
+@protocol RTSMediaSegment;
 
-typedef void (^RTSMediaSegmentsCompletionHandler)(id<RTSMediaPlayerSegment> fullLength, NSArray *segments, NSError *error);
+typedef void (^RTSMediaSegmentsCompletionHandler)(id<RTSMediaSegment> fullLength, NSArray *segments, NSError *error);
 
 @protocol RTSMediaSegmentsDataSource <NSObject>
 

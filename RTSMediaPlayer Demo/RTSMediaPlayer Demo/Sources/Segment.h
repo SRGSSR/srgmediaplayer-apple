@@ -4,10 +4,10 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import <RTSMediaPlayer/RTSMediaPlayerSegment.h>
+#import <RTSMediaPlayer/RTSMediaSegment.h>
 #import <UIKit/UIKit.h>
 
-@interface Segment : NSObject <RTSMediaPlayerSegment>
+@interface Segment : NSObject <RTSMediaSegment>
 
 - (instancetype) initWithTimeRange:(CMTimeRange)timeRange title:(NSString *)title NS_DESIGNATED_INITIALIZER;
 

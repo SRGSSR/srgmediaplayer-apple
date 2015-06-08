@@ -8,7 +8,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import "RTSMediaPlayerController.h"
-#import "RTSMediaPlayerSegment.h"
+#import "RTSMediaSegment.h"
 #import "RTSMediaSegmentsController.h"
 
 // Function declarations
@@ -76,7 +76,7 @@ static void commonInit(RTSTimelineView *self);
 	[self.collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 
-- (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaPlayerSegment>)segment
+- (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaSegment>)segment
 {
 	NSInteger index = [self.segmentsController.visibleSegments indexOfObject:segment];
 	if (index == NSNotFound) {
@@ -91,8 +91,8 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) reloadSegmentsForIdentifier:(NSString *)identifier
 {
-	[self.segmentsController reloadDataForIdentifier:identifier withCompletionHandler:^{
-        self.hidden = (self.segmentsController.visibleSegments.count == 0);        
+	[self.segmentsController reloadSegmentsForIdentifier:identifier completionHandler:^(NSError *error){
+        self.hidden = (self.segmentsController.visibleSegments.count == 0);
 		[self.collectionView reloadData];
 	}];
 }
@@ -106,7 +106,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	id<RTSMediaPlayerSegment> segment = self.segmentsController.visibleSegments[indexPath.row];
+	id<RTSMediaSegment> segment = self.segmentsController.visibleSegments[indexPath.row];
 	return [self.delegate timelineView:self cellForSegment:segment];
 }
 
@@ -144,7 +144,7 @@ static void commonInit(RTSTimelineView *self);
     return self.collectionView.visibleCells;
 }
 
-- (void) scrollToSegment:(id<RTSMediaPlayerSegment>)segment animated:(BOOL)animated
+- (void) scrollToSegment:(id<RTSMediaSegment>)segment animated:(BOOL)animated
 {
 	NSInteger segmentIndex = [self.segmentsController.visibleSegments indexOfObject:segment];
 	if (segmentIndex == NSNotFound)
@@ -159,7 +159,7 @@ static void commonInit(RTSTimelineView *self);
 
 - (void) scrollToSegmentAtTime:(CMTime)time animated:(BOOL)animated
 {
-	for (id<RTSMediaPlayerSegment> segment in self.segmentsController.visibleSegments)
+	for (id<RTSMediaSegment> segment in self.segmentsController.visibleSegments)
 	{
 		if (CMTimeRangeContainsTime(segment.timeRange, time))
 		{

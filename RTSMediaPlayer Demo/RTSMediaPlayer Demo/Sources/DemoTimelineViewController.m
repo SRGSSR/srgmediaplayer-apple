@@ -82,21 +82,21 @@
 
 #pragma ark - RTSTimelineSliderDelegate protocol
 
-- (UIImage *) timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaPlayerSegment>)segment
+- (UIImage *) timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaSegment>)segment
 {
 	return ((SwissTXTSegment *)segment).iconImage;
 }
 
 #pragma mark - RTSTimelineViewDelegate protocol
 
-- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaPlayerSegment>)segment
+- (UICollectionViewCell *) timelineView:(RTSTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment
 {
 	SwissTXTSegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SwissTXTSegmentCollectionViewCell class]) forSegment:segment];
 	segmentCell.segment = (SwissTXTSegment *)segment;
 	return segmentCell;
 }
 
-- (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaPlayerSegment>)segment
+- (void) timelineView:(RTSTimelineView *)timelineView didSelectSegment:(id<RTSMediaSegment>)segment
 {
 	[self.mediaPlayerController seekToTime:segment.timeRange.start completionHandler:nil];
 }
