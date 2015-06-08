@@ -4,10 +4,8 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import "SegmentCollectionViewCell.h"
-
-#import "SwissTXTDataSource.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "SegmentCollectionViewCell.h"
 
 @interface SegmentCollectionViewCell ()
 
@@ -29,19 +27,18 @@
 	
 	self.titleLabel.text = segment.title;
 	
-	if (!CMTIMERANGE_IS_EMPTY(segment.timeRange))
-	{
+	if (!CMTIMERANGE_IS_EMPTY(segment.timeRange)) {
 		self.durationLabel.hidden = NO;
 		self.durationLabel.text = segment.durationString;
 	}
-	else
-	{
+	else {
 		self.durationLabel.hidden = YES;
 	}
 	
 	self.timestampLabel.text = segment.timestampString;
-	
 	[self.imageView sd_setImageWithURL:segment.thumbnailURL];
+	
+	self.alpha = (segment.isBlocked) ? 0.5 : 1.0;
 }
 
 #pragma mark - Overrides

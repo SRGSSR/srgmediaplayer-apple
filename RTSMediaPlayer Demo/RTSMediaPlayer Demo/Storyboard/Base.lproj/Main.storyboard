@@ -585,10 +585,10 @@
             </objects>
             <point key="canvasLocation" x="-251" y="1282"/>
         </scene>
-        <!--Demo Segments Blocking View Controller-->
+        <!--Demo Segments View Controller-->
         <scene sceneID="0F4-pU-L9t">
             <objects>
-                <viewController id="2iI-c6-veX" customClass="DemoSegmentsBlockingViewController" sceneMemberID="viewController">
+                <viewController id="2iI-c6-veX" customClass="DemoSegmentsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SIh-DF-LVa"/>
                         <viewControllerLayoutGuide type="bottom" id="Bbx-gB-q2Y"/>
@@ -781,7 +781,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="w7p-MC-hPq">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="Cell" textLabel="3bd-eb-ABM" style="IBUITableViewCellStyleDefault" id="vlh-yS-W8C">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -850,7 +850,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="tzL-gl-zF7">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="Cell" textLabel="I90-82-gSs" style="IBUITableViewCellStyleDefault" id="PWg-0m-iys">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -1098,14 +1098,14 @@
             </objects>
             <point key="canvasLocation" x="-251" y="-88"/>
         </scene>
-        <!--RTSMediaPlayer Demo-->
+        <!--Segments Selection-->
         <scene sceneID="V6Y-0c-Qwo">
             <objects>
-                <tableViewController id="GEM-Di-2Bq" customClass="DemoSegmentsBlockingSelectionViewController" sceneMemberID="viewController">
+                <tableViewController id="GEM-Di-2Bq" userLabel="Segments Selection" customClass="DemoSegmentsSelectionViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="qu4-Fc-Kay">
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection id="Ei9-KD-bOY">
                                 <cells>

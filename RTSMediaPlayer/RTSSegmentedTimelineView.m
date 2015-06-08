@@ -104,7 +104,7 @@ static void commonInit(RTSSegmentedTimelineView *self);
 	return self.segmentsController.visibleSegments.count;
 }
 
-- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	id<RTSMediaSegment> segment = self.segmentsController.visibleSegments[indexPath.row];
 	return [self.delegate timelineView:self cellForSegment:segment];
@@ -112,8 +112,10 @@ static void commonInit(RTSSegmentedTimelineView *self);
 
 #pragma mark - UICollectionViewDelegate protocol
 
-- (void) collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+	id<RTSMediaSegment> segment = self.segmentsController.visibleSegments[indexPath.row];
+	[self scrollToSegmentAtTime:segment.timeRange.start animated:YES];
 	[self.segmentsController playVisibleSegmentAtIndex:indexPath.row];	
 }
 
