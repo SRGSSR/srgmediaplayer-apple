@@ -135,29 +135,29 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 		}
 		else {
 			if (self.lastPlaybackPositionSegmentIndex != index) {
-				NSDictionary *userInfo = nil;
-				if (index == NSNotFound) {
-					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentEnd)};
-				}
-				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
-					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
-								 RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index],
-								 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(self.wasSegmentSelected)};
-				}
-				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
-					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
-								 RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index],
-								 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(self.wasSegmentSelected)};
-				}
-				
-				// Immediatly reseting the property after it has been used.
-				self.wasSegmentSelected = NO;
-				
 				dispatch_async(dispatch_get_main_queue(), ^{
+					NSDictionary *userInfo = nil;
+					if (index == NSNotFound) {
+						userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentEnd)};
+					}
+					else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
+						userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
+									 RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index],
+									 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(self.wasSegmentSelected)};
+					}
+					else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
+						userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
+									 RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index],
+									 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(self.wasSegmentSelected)};
+					}
+					
 					[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
 																		object:self
 																	  userInfo:userInfo];
 				});
+				
+				// Immediatly reseting the property after it has been used.
+				self.wasSegmentSelected = NO;
 			}
 			
 			self.lastPlaybackPositionSegmentIndex = index;
