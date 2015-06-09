@@ -137,7 +137,9 @@ static void *s_kvoContext  = &s_kvoContext;
 			}
             
             for (void (^block)(CMTime) in [self.blocks allValues]) {
-                block(time);
+				dispatch_async(dispatch_get_main_queue(), ^{
+					block(time);					
+				});
             }
 		}];
 	}];
