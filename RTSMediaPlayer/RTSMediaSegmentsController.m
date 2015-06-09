@@ -14,10 +14,9 @@
 
 NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 NSString * const RTSMediaPlaybackSegmentDidChangeNotification = @"RTSMediaPlaybackSegmentDidChangeNotification";
-NSString * const RTSMediaPlaybackSegmentChangeSegmentInfoKey = @"RTSMediaPlaybackSegmentChangeSegmentInfoKey";
+NSString * const RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey = @"RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey";
 NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackSegmentChangeValueInfoKey";
 NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlaybackSegmentChangeUserSelectInfoKey";
-NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPlaybackSeekingReasonInfoKey";
 
 @interface RTSMediaSegmentsController ()
 @property(nonatomic, strong) id<RTSMediaSegment> fullLengthSegment;
@@ -125,7 +124,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 			
 			dispatch_async(dispatch_get_main_queue(), ^{
 				NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
-													  RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index]};
+													  RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index]};
 
 				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
 																	object:self
@@ -142,12 +141,12 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 				}
 				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
 					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
-								 RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index],
+								 RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index],
 								 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(self.wasSegmentSelected)};
 				}
 				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
 					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
-								 RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index],
+								 RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index],
 								 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(self.wasSegmentSelected)};
 				}
 				

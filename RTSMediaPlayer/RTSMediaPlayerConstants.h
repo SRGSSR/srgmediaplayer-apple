@@ -87,11 +87,6 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackSegmentChange) {
 
 FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in seconds.
 
-typedef NS_ENUM(NSInteger, RTSMediaPlaybackSeekingReason) {
-	RTSMediaPlaybackSeekingReasonSegmentBlocked,
-	RTSMediaPlaybackSeekingReasonSegmentSelected
-};
-
 /**
  *  -------------------
  *  @name Notifications
@@ -106,14 +101,18 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentDidChangeNotification;
 /**
  *  The key to access the new segment instance, when entering a new segment (start, and switch events).
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeSegmentInfoKey;
+FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey;
 
 /**
  *  The key to access the segment change value.
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey;
 
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey;
+/**
+ *  The key to access the boolean indicating whether the change is requested by the user or not.
+ */
+FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey;
+
 
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailNotification;
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey; // NSError
