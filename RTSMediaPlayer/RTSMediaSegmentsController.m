@@ -145,7 +145,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 									 RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index],
 									 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(self.wasSegmentSelected)};
 					}
-					else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
+					else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex != NSNotFound) {
 						userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
 									 RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index],
 									 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(self.wasSegmentSelected)};
