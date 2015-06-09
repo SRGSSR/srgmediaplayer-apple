@@ -9,13 +9,12 @@
 #import <CocoaLumberjack/CocoaLumberjack.h>
 
 #import "RTSMediaPlayerController.h"
-#import "RTSMediaPlayerController+Private.h"
 #import "RTSMediaSegment.h"
 #import "RTSMediaSegmentsController.h"
 
 NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 NSString * const RTSMediaPlaybackSegmentDidChangeNotification = @"RTSMediaPlaybackSegmentDidChangeNotification";
-NSString * const RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey = @"RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey";
+NSString * const RTSMediaPlaybackSegmentChangeSegmentInfoKey = @"RTSMediaPlaybackSegmentChangeSegmentInfoKey";
 NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackSegmentChangeValueInfoKey";
 NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlaybackSegmentChangeUserSelectInfoKey";
 NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPlaybackSeekingReasonInfoKey";
@@ -122,15 +121,17 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 		DDLogDebug(@"Playing time %.2fs at index %@", CMTimeGetSeconds(time), @(index));
 		
 		if (self.playerController.playbackState == RTSMediaPlaybackStatePlaying && [self isTimeBlocked:time]) {
+			// The reason for blocking must be specified, and should actually be accessile from the segment object, IMHO.
+			
 			dispatch_async(dispatch_get_main_queue(), ^{
-				NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart)};
+				NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
+													  RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index]};
+
 				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
 																	object:self
 																  userInfo:userInfo];
 			});
-
-			// The reason for blocking must be specified, and should actually be accessile from the segment object, IMHO.
-			[self.playerController fireSeekEventWithUserInfo:@{RTSMediaPlayerPlaybackSeekingReasonInfoKey: @(RTSMediaPlaybackSeekingReasonSegmentBlocked)}];
+			
 			[self seekToNextAvailableSegmentAfterIndex:index];
 		}
 		else {
@@ -141,12 +142,12 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 				}
 				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
 					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
-								 RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey: self.segments[index],
+								 RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index],
 								 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(self.wasSegmentSelected)};
 				}
 				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
 					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
-								 RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey: self.segments[index],
+								 RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index],
 								 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(self.wasSegmentSelected)};
 				}
 				
@@ -366,9 +367,6 @@ NSString * const RTSMediaPlayerPlaybackSeekingReasonInfoKey = @"RTSMediaPlayerPl
 	if (segment.isBlocked) {
 		return;
 	}
-	
-	NSDictionary *userInfo = @{RTSMediaPlayerPlaybackSeekingReasonInfoKey: @(RTSMediaPlaybackSeekingReasonSegmentSelected)};
-	[self.playerController fireSeekEventWithUserInfo:userInfo];
 	
 	[self.playerController seekToTime:segment.timeRange.start completionHandler:^(BOOL finished) {
 		if (finished) {

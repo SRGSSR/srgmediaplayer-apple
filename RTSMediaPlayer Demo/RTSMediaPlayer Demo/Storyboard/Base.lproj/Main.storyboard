@@ -700,18 +700,39 @@
                                     <action selector="dismiss:" destination="2iI-c6-veX" eventType="touchUpInside" id="ocA-Kq-jyX"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KjM-3y-v4n">
+                                <rect key="frame" x="30" y="215" width="540" height="171"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ENe-sf-4Wx" userLabel="Text Label">
+                                        <rect key="frame" x="8" y="8" width="524" height="155"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="ENe-sf-4Wx" secondAttribute="bottom" constant="8" id="3UA-EN-b5h"/>
+                                    <constraint firstItem="ENe-sf-4Wx" firstAttribute="leading" secondItem="KjM-3y-v4n" secondAttribute="leading" constant="8" id="AtC-vf-g42"/>
+                                    <constraint firstItem="ENe-sf-4Wx" firstAttribute="top" secondItem="KjM-3y-v4n" secondAttribute="top" constant="8" id="FvG-9B-rHc"/>
+                                    <constraint firstAttribute="height" constant="171" id="XX5-xO-FCN"/>
+                                    <constraint firstAttribute="trailing" secondItem="ENe-sf-4Wx" secondAttribute="trailing" constant="8" id="kzL-Ep-0bE"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="bOM-dV-sbr" secondAttribute="trailing" id="3So-qh-Yvm"/>
                             <constraint firstItem="bOM-dV-sbr" firstAttribute="top" secondItem="464-IG-aFV" secondAttribute="bottom" id="6j1-rL-XWs"/>
+                            <constraint firstItem="KjM-3y-v4n" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leadingMargin" constant="14" id="F9a-4C-CdZ"/>
                             <constraint firstItem="bOM-dV-sbr" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" id="Nyk-JR-JZa"/>
                             <constraint firstItem="464-IG-aFV" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" id="ZzC-Jg-94y"/>
                             <constraint firstAttribute="trailing" secondItem="tT7-MB-6RF" secondAttribute="trailing" id="bFQ-Be-VEv"/>
                             <constraint firstItem="Bbx-gB-q2Y" firstAttribute="top" secondItem="bOM-dV-sbr" secondAttribute="bottom" id="fWB-HT-CuP"/>
                             <constraint firstItem="tT7-MB-6RF" firstAttribute="top" secondItem="SIh-DF-LVa" secondAttribute="bottom" constant="10" id="mFO-rT-IDB"/>
                             <constraint firstAttribute="trailing" secondItem="464-IG-aFV" secondAttribute="trailing" id="nTC-1e-bv9"/>
+                            <constraint firstItem="KjM-3y-v4n" firstAttribute="centerY" secondItem="KYY-9n-s9D" secondAttribute="centerY" id="tLJ-id-gdA"/>
+                            <constraint firstItem="KjM-3y-v4n" firstAttribute="centerX" secondItem="464-IG-aFV" secondAttribute="centerX" id="ush-7E-5z0"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="ufE-ec-NOl" appends="YES" id="uQU-nF-OJM"/>
@@ -720,6 +741,8 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="blockingOverlayView" destination="KjM-3y-v4n" id="qy2-s1-AYn"/>
+                        <outlet property="blockingOverlayViewLabel" destination="ENe-sf-4Wx" id="2pa-MT-Ujr"/>
                         <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="hmT-aF-S9N"/>
                         <outlet property="timelineSlider" destination="Qju-s5-kdB" id="GAx-qN-v5p"/>
                         <outlet property="timelineView" destination="VIz-eg-pbD" id="f42-dZ-goV"/>

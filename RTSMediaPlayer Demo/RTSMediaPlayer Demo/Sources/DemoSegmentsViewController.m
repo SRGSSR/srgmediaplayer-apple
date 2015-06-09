@@ -19,8 +19,10 @@
 @property (nonatomic, weak) IBOutlet UIView *videoView;
 @property (nonatomic, weak) IBOutlet RTSSegmentedTimelineView *timelineView;
 @property (nonatomic, weak) IBOutlet RTSTimeSlider *timelineSlider;
+
 @property (nonatomic, weak) IBOutlet UIView *blockingOverlayView;
 @property (nonatomic, weak) IBOutlet UILabel *blockingOverlayViewLabel;
+
 @property (nonatomic, weak) NSTimer *blockingOverlayTimer;
 @property (nonatomic, weak) id playbackTimeObserver;
 
@@ -51,6 +53,7 @@
 	
 	self.timelineSlider.seekingDelegate = self;
 	self.mediaPlayerController.overlayViewsHidingDelay = 1000;
+	self.blockingOverlayView.hidden = YES;
 	
 	NSString *className = NSStringFromClass([SegmentCollectionViewCell class]);
 	UINib *cellNib = [UINib nibWithNibName:className bundle:nil];

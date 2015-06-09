@@ -10,7 +10,6 @@
 #import <libextobjc/EXTScope.h>
 
 #import "RTSMediaPlayerController.h"
-#import "RTSMediaPlayerController+Private.h"
 
 #import "RTSMediaPlayerError.h"
 #import "RTSMediaPlayerView.h"
@@ -315,11 +314,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
-- (void)fireSeekEventWithUserInfo:(NSDictionary *)userInfo
-{
-	[self fireEvent:self.seekEvent userInfo:userInfo];
-}
-
 #pragma mark - Notifications
 
 - (void) postNotificationName:(NSString *)notificationName userInfo:(NSDictionary *)userInfo
@@ -392,6 +386,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler
 {
+	[self fireEvent:self.seekEvent userInfo:nil];
 	[self.player seekToTime:time
 			toleranceBefore:kCMTimeZero
 			 toleranceAfter:kCMTimeZero

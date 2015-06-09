@@ -106,7 +106,7 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentDidChangeNotification;
 /**
  *  The key to access the new segment instance, when entering a new segment (start, and switch events).
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeNewSegmentObjectInfoKey;
+FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeSegmentInfoKey;
 
 /**
  *  The key to access the segment change value.
