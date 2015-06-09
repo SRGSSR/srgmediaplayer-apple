@@ -94,6 +94,19 @@ static void commonInit(RTSSegmentedTimelineView *self);
 	[self.segmentsController reloadSegmentsForIdentifier:identifier completionHandler:^(NSError *error){
         self.hidden = (self.segmentsController.visibleSegments.count == 0);
 		[self.collectionView reloadData];
+		
+		if (error) {
+			NSString *msg = [NSString stringWithFormat:@"#Segments: %@ | %@",
+							 @(self.segmentsController.visibleSegments.count),
+							 error.localizedDescription];
+			
+			UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error"
+														 message:msg
+														delegate:nil
+											   cancelButtonTitle:@"OK"
+											   otherButtonTitles:nil];
+			[av show];
+		}
 	}];
 }
 

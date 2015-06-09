@@ -57,6 +57,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 		
 		NSMutableArray *segments = [NSMutableArray array];
 		NSInteger row = [identifier integerValue];
+		NSError *error = nil;
 		
 		if (row == 0) {
 			// 3 visible segments
@@ -106,10 +107,10 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 		}
 		else if (row == 5) {
 			// Error
-			
+			error = [NSError errorWithDomain:@"Demo" code:999 userInfo:@{NSLocalizedDescriptionKey:@"Segments Demo Error"}];
 		}
 		
-		completionHandler(fullLength, segments, nil);
+		completionHandler(fullLength, segments, error);
 	}
 }
 
