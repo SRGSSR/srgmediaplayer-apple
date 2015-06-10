@@ -18,5 +18,4 @@ Pod::Spec.new do |s|
 
   s.dependency "libextobjc/EXTScope", "~> 0.4.1"
   s.dependency "TransitionKit",       "~> 2.2.0"
-  s.dependency "CocoaLumberjack",     "~> 2.0.0"
 end
