@@ -207,8 +207,6 @@
 				E65786A21AEFAD68007730CE /* RTSSegmentedTimelineView.h */,
 				E6A6D0E31AFA017600E15BCF /* RTSSegmentedTimelineView+Private.h */,
 				E65786A31AEFAD68007730CE /* RTSSegmentedTimelineView.m */,
-				E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */,
-				E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */,
 			);
 			name = Segments;
 			sourceTree = "<group>";
@@ -265,6 +263,8 @@
 				B61E18F41AA87D8E00E4FAB9 /* RTSMediaPlayerPlaybackButton.m */,
 				B61E18FA1AA9EEDB00E4FAB9 /* RTSTimeSlider.h */,
 				B61E18FB1AA9EEDB00E4FAB9 /* RTSTimeSlider.m */,
+				E67FDAC81AFA166F0050DCE6 /* RTSTimelineSlider.h */,
+				E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */,
 				B61E19061AA9F3B900E4FAB9 /* RTSVolumeView.h */,
 				B61E19071AA9F3B900E4FAB9 /* RTSVolumeView.m */,
 			);
