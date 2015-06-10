@@ -118,7 +118,7 @@
 	}
 	
 	if ([value integerValue] == RTSMediaPlaybackSegmentSeekUponBlockingStart) {
-		NSTimeInterval blockingMessageDuration = 5.0;
+		NSTimeInterval blockingMessageDuration = 10.0;
 
 		self.blockingOverlayViewLabel.text = [NSString stringWithFormat:
 											  @"Blocked Segment. Seeking to next authorized one... \nMessage shown during %.0f seconds (customizable).",
