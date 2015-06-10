@@ -161,9 +161,10 @@
 	
 	CGFloat xPos = [gestureRecognizer locationInView:self].x;
 	float value = self.minimumValue + (self.maximumValue - self.minimumValue) * xPos / CGRectGetWidth(self.bounds);
-	
 	CMTime time = CMTimeMakeWithSeconds(value, 1.);
-	[self.playbackController seekToTime:time completionHandler:nil];
+	
+	// One must go through the segments controller.
+	[self.segmentsController seekToTime:time completionHandler:nil];
 }
 
 @end
