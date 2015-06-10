@@ -9,13 +9,11 @@ workspace 'RTSMediaPlayer'
 link_with 'RTSMediaPlayerTests', 'RTSMediaPlayer Demo'
 
 target 'RTSMediaPlayer' do
-  pod 'CocoaLumberjack',     '2.0.0'
   pod 'libextobjc/EXTScope', '0.4.1'
   pod 'TransitionKit',       '2.2.0'
 end
 
 target 'RTSMediaPlayerTests' do
-  pod 'CocoaLumberjack',     '2.0.0'
   pod 'libextobjc/EXTScope', '0.4.1'
   pod 'TransitionKit',       '2.2.0'
   pod 'MAKVONotificationCenter', '0.0.2'
@@ -23,5 +21,6 @@ end
 
 target 'RTSMediaPlayer Demo' do
   xcodeproj 'RTSMediaPlayer Demo/RTSMediaPlayer Demo.xcodeproj'
+  pod 'CocoaLumberjack', '2.0.0'
   pod 'SDWebImage', '3.7.0'
 end
