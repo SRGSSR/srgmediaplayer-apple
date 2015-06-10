@@ -6,11 +6,11 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <libextobjc/EXTScope.h>
-#import <CocoaLumberjack/CocoaLumberjack.h>
 
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaSegment.h"
 #import "RTSMediaSegmentsController.h"
+#import "RTSMediaPlayerLogger.h"
 
 NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 NSString * const RTSMediaPlaybackSegmentDidChangeNotification = @"RTSMediaPlaybackSegmentDidChangeNotification";
@@ -119,7 +119,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 		NSUInteger secondaryIndex;
 		NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:&secondaryIndex];
 		
-		DDLogDebug(@"Playing time %.2fs at index %@", CMTimeGetSeconds(time), @(index));
+		RTSMediaPlayerLogDebug(@"Playing time %.2fs at index %@", CMTimeGetSeconds(time), @(index));
 		
 		if (self.playerController.playbackState == RTSMediaPlaybackStatePlaying && [self isTimeBlocked:time]) {
 			// The reason for blocking must be specified, and should actually be accessile from the segment object, IMHO.
