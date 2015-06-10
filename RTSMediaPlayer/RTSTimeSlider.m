@@ -206,8 +206,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self.playbackController seekToTime:time completionHandler:nil];
 
 	// Next, inform that we are sliding to other views.
-	if (self.seekingDelegate) {
-		[self.seekingDelegate timeSlider:self
+	if (self.slidingDelegate) {
+		[self.slidingDelegate timeSlider:self
 				 isSlidingAtPlaybackTime:time
 							   withValue:self.value];
 	}
@@ -217,9 +217,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	if ([self isDraggable] && self.tracking) {
-		// No completion handler, to not guess what's suppose to happen next once seeking is over.
-		[self.playbackController play];
+	if ([self isDraggable]) {
+		// Current time may not be the same as the current value time, if seek is not ended, or is blocked.
+		[self.playbackController playAtTime:[self convertedValueCMTime]];
 	}
 	
 	[super endTrackingWithTouch:touch withEvent:event];

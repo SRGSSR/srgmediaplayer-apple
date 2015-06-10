@@ -12,7 +12,7 @@
 #import "PseudoILDataProvider.h"
 #import "SegmentCollectionViewCell.h"
 
-@interface DemoSegmentsViewController () <RTSTimeSliderSeekingDelegate>
+@interface DemoSegmentsViewController () <RTSTimeSliderDelegate>
 
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
@@ -51,7 +51,7 @@
 {
 	[super viewDidLoad];
 	
-	self.timelineSlider.seekingDelegate = self;
+	self.timelineSlider.slidingDelegate = self;
 	self.mediaPlayerController.overlayViewsHidingDelay = 1000;
 	self.blockingOverlayView.hidden = YES;
 	
@@ -140,7 +140,7 @@
 	}
 }
 
-#pragma ark - RTSTimeSliderSeekingDelegate protocol
+#pragma ark - RTSTimeSliderDelegate protocol
 
 - (void)timeSlider:(RTSTimeSlider *)slider isSlidingAtPlaybackTime:(CMTime)time withValue:(CGFloat)value
 {
