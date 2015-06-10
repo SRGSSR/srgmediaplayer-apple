@@ -70,6 +70,12 @@
  */
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
 
+/**
+ *  Play at the specific time. When there is no blocked segment, is equivalent to seekToTime: with a play on completion.
+ *
+ *  @param time time
+ */
+- (void)playAtTime:(CMTime)time;
 
 // *** Accessing Playback Information ***
 
