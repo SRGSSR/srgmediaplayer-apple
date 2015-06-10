@@ -420,23 +420,20 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 - (void)playAtTime:(CMTime)time
 {
-	if (self.playerController.playbackState == RTSMediaPlaybackStateSeeking) {
-		CMTime currentTime = self.playerController.player.currentTime;
+	if (self.playerController.playbackState == RTSMediaPlaybackStateSeeking || [self isTimeBlocked:time]) {
 		
-		if ([self isTimeBlocked:currentTime]) {
-			NSInteger index = [self indexOfSegmentForTime:currentTime secondaryIndex:NULL];
-			
-			NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
-												  RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index]};
-			
-			[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
-																object:self
-															  userInfo:userInfo];
-			
-			[self seekToNextAvailableSegmentAfterIndex:index];
-			
-			return;
-		}
+		NSInteger index = [self indexOfSegmentForTime:time secondaryIndex:NULL];
+		
+		NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
+											  RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index]};
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+															object:self
+														  userInfo:userInfo];
+		
+		[self seekToNextAvailableSegmentAfterIndex:index];
+		
+		return;
 	}
 
 	[self.playerController playAtTime:time];

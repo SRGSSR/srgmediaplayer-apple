@@ -363,6 +363,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void) pause
 {
+	[self fireEvent:self.pauseEvent userInfo:nil];
 	[self.player pause];
 }
 
