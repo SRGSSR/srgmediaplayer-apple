@@ -718,6 +718,10 @@
                                     <constraint firstAttribute="trailing" secondItem="ENe-sf-4Wx" secondAttribute="trailing" constant="8" id="kzL-Ep-0bE"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ksY-8n-34g" customClass="RTSPlaybackActivityIndicatorView">
+                                <rect key="frame" x="282" y="281" width="37" height="37"/>
+                                <color key="color" red="0.032045689229461938" green="0.64991066383653529" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -725,12 +729,14 @@
                             <constraint firstAttribute="trailing" secondItem="bOM-dV-sbr" secondAttribute="trailing" id="3So-qh-Yvm"/>
                             <constraint firstItem="bOM-dV-sbr" firstAttribute="top" secondItem="464-IG-aFV" secondAttribute="bottom" id="6j1-rL-XWs"/>
                             <constraint firstItem="KjM-3y-v4n" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leadingMargin" constant="14" id="F9a-4C-CdZ"/>
+                            <constraint firstAttribute="centerY" secondItem="ksY-8n-34g" secondAttribute="centerY" id="Mrf-pV-Ep7"/>
                             <constraint firstItem="bOM-dV-sbr" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" id="Nyk-JR-JZa"/>
                             <constraint firstItem="464-IG-aFV" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" id="ZzC-Jg-94y"/>
                             <constraint firstAttribute="trailing" secondItem="tT7-MB-6RF" secondAttribute="trailing" id="bFQ-Be-VEv"/>
                             <constraint firstItem="Bbx-gB-q2Y" firstAttribute="top" secondItem="bOM-dV-sbr" secondAttribute="bottom" id="fWB-HT-CuP"/>
                             <constraint firstItem="tT7-MB-6RF" firstAttribute="top" secondItem="SIh-DF-LVa" secondAttribute="bottom" constant="10" id="mFO-rT-IDB"/>
                             <constraint firstAttribute="trailing" secondItem="464-IG-aFV" secondAttribute="trailing" id="nTC-1e-bv9"/>
+                            <constraint firstAttribute="centerX" secondItem="ksY-8n-34g" secondAttribute="centerX" id="pqB-ed-e5P"/>
                             <constraint firstItem="KjM-3y-v4n" firstAttribute="centerY" secondItem="KYY-9n-s9D" secondAttribute="centerY" id="tLJ-id-gdA"/>
                             <constraint firstItem="KjM-3y-v4n" firstAttribute="centerX" secondItem="464-IG-aFV" secondAttribute="centerX" id="ush-7E-5z0"/>
                         </constraints>

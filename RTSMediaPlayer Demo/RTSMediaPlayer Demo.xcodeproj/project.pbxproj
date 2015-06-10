@@ -14,6 +14,7 @@
 		9F40156E1B25A2E00068196C /* videos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F40156A1B25A2E00068196C /* videos@2x.png */; };
 		9F4015711B25A5680068196C /* LaunchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F4015701B25A5680068196C /* LaunchImage.png */; };
 		9F4B1D2D1B1C990700BB0FB3 /* DemoSegmentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F4B1D2C1B1C990700BB0FB3 /* DemoSegmentsViewController.m */; };
+		9F83C0AB1B28295100D26B67 /* RTSPlaybackActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F83C0AA1B28295100D26B67 /* RTSPlaybackActivityIndicatorView.m */; };
 		9FDF081F1B1C92C2005BA322 /* DemoSegmentsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDF081E1B1C92C2005BA322 /* DemoSegmentsSelectionViewController.m */; };
 		9FDF08221B1C95DD005BA322 /* PseudoILDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDF08211B1C95DD005BA322 /* PseudoILDataProvider.m */; };
 		B61E18CF1AA8605200E4FAB9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18CC1AA8605200E4FAB9 /* AppDelegate.m */; };
@@ -74,6 +75,8 @@
 		9F4015701B25A5680068196C /* LaunchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImage.png; sourceTree = "<group>"; };
 		9F4B1D2B1B1C990700BB0FB3 /* DemoSegmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoSegmentsViewController.h; sourceTree = "<group>"; };
 		9F4B1D2C1B1C990700BB0FB3 /* DemoSegmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoSegmentsViewController.m; sourceTree = "<group>"; };
+		9F83C0A91B28295100D26B67 /* RTSPlaybackActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPlaybackActivityIndicatorView.h; sourceTree = "<group>"; };
+		9F83C0AA1B28295100D26B67 /* RTSPlaybackActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSPlaybackActivityIndicatorView.m; sourceTree = "<group>"; };
 		9FDF081D1B1C92C2005BA322 /* DemoSegmentsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoSegmentsSelectionViewController.h; sourceTree = "<group>"; };
 		9FDF081E1B1C92C2005BA322 /* DemoSegmentsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoSegmentsSelectionViewController.m; sourceTree = "<group>"; };
 		9FDF08201B1C95DD005BA322 /* PseudoILDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PseudoILDataProvider.h; sourceTree = "<group>"; };
@@ -198,6 +201,8 @@
 				E606F88E1AF3B044003F0E2A /* SegmentCollectionViewCell.h */,
 				E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */,
 				E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */,
+				9F83C0A91B28295100D26B67 /* RTSPlaybackActivityIndicatorView.h */,
+				9F83C0AA1B28295100D26B67 /* RTSPlaybackActivityIndicatorView.m */,
 			);
 			name = Segments;
 			sourceTree = "<group>";
@@ -494,6 +499,7 @@
 			files = (
 				E67D9B251B0F1CC500FF2334 /* SwissTXTDataSource.m in Sources */,
 				E606F8911AF3B044003F0E2A /* SegmentCollectionViewCell.m in Sources */,
+				9F83C0AB1B28295100D26B67 /* RTSPlaybackActivityIndicatorView.m in Sources */,
 				E6D63EDC1B20303B007E7A7F /* SwissTXTSegment.m in Sources */,
 				9FDF081F1B1C92C2005BA322 /* DemoSegmentsSelectionViewController.m in Sources */,
 				B6C460EA1B205AE400A76705 /* MultiplayerViewController.m in Sources */,
