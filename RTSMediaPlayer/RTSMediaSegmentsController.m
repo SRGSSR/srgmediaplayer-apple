@@ -383,7 +383,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 - (void)play
 {
-	[self.playerController pause];
+	[self.playerController play];
 }
 
 - (void)playIdentifier:(NSString *)identifier
@@ -416,6 +416,30 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 	if (![self isTimeBlocked:time]) {
 		[self.playerController seekToTime:time completionHandler:completionHandler];
 	}
+}
+
+- (void)playAtTime:(CMTime)time
+{
+	if (self.playerController.playbackState == RTSMediaPlaybackStateSeeking) {
+		CMTime currentTime = self.playerController.player.currentTime;
+		
+		if ([self isTimeBlocked:currentTime]) {
+			NSInteger index = [self indexOfSegmentForTime:currentTime secondaryIndex:NULL];
+			
+			NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
+												  RTSMediaPlaybackSegmentChangeSegmentObjectInfoKey: self.segments[index]};
+			
+			[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+																object:self
+															  userInfo:userInfo];
+			
+			[self seekToNextAvailableSegmentAfterIndex:index];
+			
+			return;
+		}
+	}
+
+	[self.playerController playAtTime:time];
 }
 
 - (AVPlayerItem *)playerItem

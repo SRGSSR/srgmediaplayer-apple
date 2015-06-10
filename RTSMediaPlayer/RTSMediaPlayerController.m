@@ -376,7 +376,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	return self.player.muted;
 }
 
-- (void) reset
+- (void)reset
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(prepareToPlay) object:nil];
 	if (![self.stateMachine.currentState isEqual:self.idleState]) {
@@ -386,11 +386,25 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler
 {
-	[self fireEvent:self.seekEvent userInfo:nil];
+	if (self.stateMachine.currentState != self.seekingState) {
+		[self fireEvent:self.seekEvent userInfo:nil];
+	}
+	
+	DDLogInfo(@"Seeking to %@ sec.", @(CMTimeGetSeconds(time)));
+	
 	[self.player seekToTime:time
 			toleranceBefore:kCMTimeZero
 			 toleranceAfter:kCMTimeZero
 		  completionHandler:completionHandler];
+}
+
+- (void)playAtTime:(CMTime)time
+{
+	[self seekToTime:time completionHandler:^(BOOL finished) {
+		if (finished) {
+			[self play];
+		}
+   }];
 }
 
 - (AVPlayerItem *)playerItem
@@ -400,18 +414,17 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (RTSMediaPlaybackState) playbackState
 {
-	@synchronized(self)
-	{
+	@synchronized(self) {
 		return _playbackState;
 	}
 }
 
 - (void) setPlaybackState:(RTSMediaPlaybackState)playbackState
 {
-	@synchronized(self)
-	{
-		if (_playbackState == playbackState)
+	@synchronized(self) {
+		if (_playbackState == playbackState) {
 			return;
+		}
 		
 		NSDictionary *userInfo = @{ RTSMediaPlayerPreviousPlaybackStateUserInfoKey: @(_playbackState) };
 		
@@ -634,7 +647,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		CMTimeRange timerange = [timeRanges[0] CMTimeRangeValue];
 		if(CMTimeGetSeconds(timerange.duration) >= bufferMinDuration && self.player.rate == 0) {
 			[self.player prerollAtRate:0.0 completionHandler:^(BOOL finished) {
-				if (![self.stateMachine.currentState isEqual:self.pausedState]) {
+				if (![self.stateMachine.currentState isEqual:self.pausedState] && ![self.stateMachine.currentState isEqual:self.seekingState]) {
 					[self play];
 				}
 			}];
