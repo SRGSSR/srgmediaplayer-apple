@@ -420,7 +420,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 - (void)playAtTime:(CMTime)time
 {
-	if (self.playerController.playbackState == RTSMediaPlaybackStateSeeking || [self isTimeBlocked:time]) {
+	if (self.playerController.playbackState == RTSMediaPlaybackStateSeeking && [self isTimeBlocked:time]) {
 		
 		NSInteger index = [self indexOfSegmentForTime:time secondaryIndex:NULL];
 		
