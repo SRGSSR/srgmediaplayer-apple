@@ -700,6 +700,10 @@
                                     <action selector="dismiss:" destination="2iI-c6-veX" eventType="touchUpInside" id="ocA-Kq-jyX"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ksY-8n-34g" customClass="RTSPlaybackActivityIndicatorView">
+                                <rect key="frame" x="282" y="281" width="37" height="37"/>
+                                <color key="color" red="0.032045689229461938" green="0.64991066383653529" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KjM-3y-v4n">
                                 <rect key="frame" x="30" y="215" width="540" height="171"/>
                                 <subviews>
@@ -718,10 +722,6 @@
                                     <constraint firstAttribute="trailing" secondItem="ENe-sf-4Wx" secondAttribute="trailing" constant="8" id="kzL-Ep-0bE"/>
                                 </constraints>
                             </view>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ksY-8n-34g" customClass="RTSPlaybackActivityIndicatorView">
-                                <rect key="frame" x="282" y="281" width="37" height="37"/>
-                                <color key="color" red="0.032045689229461938" green="0.64991066383653529" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
