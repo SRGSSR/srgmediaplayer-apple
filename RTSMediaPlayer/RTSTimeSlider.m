@@ -71,9 +71,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self setMaximumTrackImage:image forState:UIControlStateNormal];
 	
 	[self setThumbImage:[self thumbImage] forState:UIControlStateNormal];
-	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
-	
-	[self addTarget:self action:@selector(informDelegate:) forControlEvents:UIControlEventValueChanged];
+	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];	
 }
 
 #pragma mark - Setters and getters
@@ -185,6 +183,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
+	
 	if (beginTracking && [self isDraggable]) {
 		[self.playbackController pause];
 	}
@@ -195,11 +194,24 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	BOOL continueTracking = [super continueTrackingWithTouch:touch withEvent:event];
+	
 	if (continueTracking && [self isDraggable]) {
 		[self updateTimeRangeLabels];
 		[self setNeedsDisplay];
 	}
 	
+	CMTime time = [self convertedValueCMTime];
+	
+	// First seek to the playback controller.
+	[self.playbackController seekToTime:time completionHandler:nil];
+
+	// Next, inform that we are sliding to other views.
+	if (self.seekingDelegate) {
+		[self.seekingDelegate timeSlider:self
+				 isSlidingAtPlaybackTime:time
+							   withValue:self.value];
+	}
+
 	return continueTracking;
 }
 
@@ -207,19 +219,10 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	if ([self isDraggable] && self.tracking) {
 		// No completion handler, to not guess what's suppose to happen next once seeking is over.
-		[self.playbackController seekToTime:CMTimeMakeWithSeconds(self.value, 1) completionHandler:nil];
+		[self.playbackController play];
 	}
 	
 	[super endTrackingWithTouch:touch withEvent:event];
-}
-
-- (void)informDelegate:(id)sender
-{
-	if (self.seekingDelegate) {
-		[self.seekingDelegate timeSlider:self
-						 isSeekingAtTime:[self convertedValueCMTime]
-							   withValue:self.value];
-	}
 }
 
 #pragma mark - Slider Appearance
