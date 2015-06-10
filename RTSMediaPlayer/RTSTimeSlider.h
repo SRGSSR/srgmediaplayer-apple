@@ -23,6 +23,6 @@
 
 @protocol RTSTimeSliderSeekingDelegate <NSObject>
 
-- (void)timeSlider:(RTSTimeSlider *)slider isSeekingAtTime:(CMTime)time withValue:(CGFloat)value;
+- (void)timeSlider:(RTSTimeSlider *)slider isSlidingAtPlaybackTime:(CMTime)time withValue:(CGFloat)value;
 
 @end
