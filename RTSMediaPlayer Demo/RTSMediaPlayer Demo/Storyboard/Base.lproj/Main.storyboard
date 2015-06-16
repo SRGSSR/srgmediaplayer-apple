@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Irc-Aq-OD6">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -729,16 +730,16 @@
                             <constraint firstAttribute="trailing" secondItem="bOM-dV-sbr" secondAttribute="trailing" id="3So-qh-Yvm"/>
                             <constraint firstItem="bOM-dV-sbr" firstAttribute="top" secondItem="464-IG-aFV" secondAttribute="bottom" id="6j1-rL-XWs"/>
                             <constraint firstItem="KjM-3y-v4n" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leadingMargin" constant="14" id="F9a-4C-CdZ"/>
+                            <constraint firstItem="Bbx-gB-q2Y" firstAttribute="top" secondItem="bOM-dV-sbr" secondAttribute="bottom" id="FvI-Tj-Wsi"/>
                             <constraint firstAttribute="centerY" secondItem="ksY-8n-34g" secondAttribute="centerY" id="Mrf-pV-Ep7"/>
                             <constraint firstItem="bOM-dV-sbr" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" id="Nyk-JR-JZa"/>
                             <constraint firstItem="464-IG-aFV" firstAttribute="leading" secondItem="KYY-9n-s9D" secondAttribute="leading" id="ZzC-Jg-94y"/>
                             <constraint firstAttribute="trailing" secondItem="tT7-MB-6RF" secondAttribute="trailing" id="bFQ-Be-VEv"/>
-                            <constraint firstItem="Bbx-gB-q2Y" firstAttribute="top" secondItem="bOM-dV-sbr" secondAttribute="bottom" id="fWB-HT-CuP"/>
-                            <constraint firstItem="tT7-MB-6RF" firstAttribute="top" secondItem="SIh-DF-LVa" secondAttribute="bottom" constant="10" id="mFO-rT-IDB"/>
                             <constraint firstAttribute="trailing" secondItem="464-IG-aFV" secondAttribute="trailing" id="nTC-1e-bv9"/>
                             <constraint firstAttribute="centerX" secondItem="ksY-8n-34g" secondAttribute="centerX" id="pqB-ed-e5P"/>
                             <constraint firstItem="KjM-3y-v4n" firstAttribute="centerY" secondItem="KYY-9n-s9D" secondAttribute="centerY" id="tLJ-id-gdA"/>
                             <constraint firstItem="KjM-3y-v4n" firstAttribute="centerX" secondItem="464-IG-aFV" secondAttribute="centerX" id="ush-7E-5z0"/>
+                            <constraint firstItem="tT7-MB-6RF" firstAttribute="top" secondItem="SIh-DF-LVa" secondAttribute="bottom" constant="10" id="z1U-rK-uT4"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="ufE-ec-NOl" appends="YES" id="uQU-nF-OJM"/>
@@ -1020,7 +1021,7 @@
                             <constraint firstItem="ycn-Ia-KpP" firstAttribute="top" secondItem="P0T-1s-FKj" secondAttribute="bottom" id="65H-O7-QnM"/>
                             <constraint firstAttribute="trailing" secondItem="lmu-uz-pTf" secondAttribute="trailing" id="8tD-vZ-xJI"/>
                             <constraint firstItem="lmu-uz-pTf" firstAttribute="leading" secondItem="XYW-qe-VWI" secondAttribute="leading" id="CRr-hJ-j8u"/>
-                            <constraint firstItem="A2m-Yg-tCN" firstAttribute="top" secondItem="LM9-hO-deN" secondAttribute="bottom" id="F22-qV-B1b"/>
+                            <constraint firstItem="A2m-Yg-tCN" firstAttribute="top" secondItem="LM9-hO-deN" secondAttribute="bottom" id="HS2-Tb-LY1"/>
                             <constraint firstItem="P0T-1s-FKj" firstAttribute="leading" secondItem="XYW-qe-VWI" secondAttribute="leading" id="QXe-4h-VwR"/>
                             <constraint firstAttribute="trailing" secondItem="LM9-hO-deN" secondAttribute="trailing" id="b7Z-xv-Ivl"/>
                             <constraint firstItem="LM9-hO-deN" firstAttribute="top" secondItem="lmu-uz-pTf" secondAttribute="bottom" id="fVE-XM-7Xf"/>

@@ -21,6 +21,7 @@
 #import <RTSMediaPlayer/RTSMediaFailureOverlayView.h>
 #import <RTSMediaPlayer/RTSTimeSlider.h>
 #import <RTSMediaPlayer/RTSVolumeView.h>
+#import <RTSMediaPlayer/RTSPlaybackActivityIndicatorView.h>
 
 // Overlay Views for Segments
 #import <RTSMediaPlayer/RTSTimelineSlider.h>

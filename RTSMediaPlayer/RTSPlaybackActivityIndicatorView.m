@@ -7,7 +7,7 @@
 //
 
 #import "RTSPlaybackActivityIndicatorView.h"
-#import <RTSMediaPlayer/RTSMediaPlayer.h>
+#import "RTSMediaPlayerController.h"
 
 @implementation RTSPlaybackActivityIndicatorView
 
