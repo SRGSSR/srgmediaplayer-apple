@@ -242,7 +242,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (UIImage *)thumbImage
 {
 	UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 15, 15)];
-	return [path imageWithColor:[UIColor whiteColor]];
+    return [path imageWithColor:self.thumbTintColor];
 }
 
 
@@ -269,7 +269,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetLineCap(context,kCGLineCapRound);
 	CGContextMoveToPoint(context,CGRectGetMinX(trackFrame), SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context,CGRectGetWidth(trackFrame), SLIDER_VERTICAL_CENTER);
-	CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
+    UIColor *color = self.borderStrokeColor ?: [UIColor blackColor];
+	CGContextSetStrokeColorWithColor(context,  color.CGColor);
 	CGContextStrokePath(context);
 }
 
@@ -325,8 +326,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetLineCap(context,kCGLineCapRound);
 	CGContextMoveToPoint(context,CGRectGetMinX(trackFrame), SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context,CGRectGetMidX(thumbRect), SLIDER_VERTICAL_CENTER);
-	// TODO: We should be able to customise this color
-	CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
+	CGContextSetStrokeColorWithColor(context, self.minimumTrackTintColor.CGColor);
 	CGContextStrokePath(context);
 }
 
