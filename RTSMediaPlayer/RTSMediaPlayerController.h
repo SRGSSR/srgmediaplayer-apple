@@ -50,7 +50,7 @@
  *
  *  @return A media player controller
  */
-- (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource NS_DESIGNATED_INITIALIZER OS_NONNULL_ALL;
+- (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource NS_DESIGNATED_INITIALIZER OS_NONNULL2;
 
 /**
  *  -------------------
@@ -108,7 +108,7 @@
  *
  *  @see initWithContentIdentifier:dataSource:
  */
-@property (copy) NSString *identifier;
+@property (readonly, copy) NSString *identifier;
 
 /**
  *  Returns the current playback state of the media player.

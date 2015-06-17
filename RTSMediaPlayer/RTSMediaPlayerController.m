@@ -39,6 +39,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @interface RTSMediaPlayerController () <RTSMediaPlayerControllerDataSource, UIGestureRecognizerDelegate>
 
+@property (readwrite, copy) NSString *identifier;
+
 @property (readonly) TKStateMachine *stateMachine;
 
 @property (readwrite) TKState *idleState;
@@ -82,6 +84,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @synthesize playbackState = _playbackState;
 @synthesize stateMachine = _stateMachine;
 @synthesize idleTimer = _idleTimer;
+@synthesize identifier = _identifier;
 
 #pragma mark - Initialization
 
