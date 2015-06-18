@@ -61,6 +61,8 @@
 		E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */; };
 		E69906301AFB969F005ED143 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */; };
 		E6D220161B21C9A00009BB17 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E60F1C0B1B21C96F00F3272F /* Localizable.strings */; };
+		E6F0237F1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F0237E1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m */; };
+		E6F023811B3299F6001B6F0B /* RTSMediaPlayerLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = C2332DA61B287BDA00AA21BB /* RTSMediaPlayerLogger.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +176,7 @@
 		E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumb_timeline_slider@2x.png"; sourceTree = "<group>"; };
 		E6A6D0E31AFA017600E15BCF /* RTSSegmentedTimelineView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RTSSegmentedTimelineView+Private.h"; sourceTree = "<group>"; };
 		E6D220171B21C9A70009BB17 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E6F0237E1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaSegmentsTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaSegmentsTestCase.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +334,7 @@
 				C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */,
 				B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */,
 				C2150B451AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m */,
+				E6F0237E1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m */,
 			);
 			path = RTSMediaPlayerTests;
 			sourceTree = "<group>";
@@ -595,8 +599,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6F0237F1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m in Sources */,
 				C2731F531AD6A80B00434743 /* NSBundle+RTSMediaPlayer.m in Sources */,
 				C2DDAB521AD525A200BA8061 /* RTSInvocationRecorder.m in Sources */,
+				E6F023811B3299F6001B6F0B /* RTSMediaPlayerLogger.m in Sources */,
 				C2150B461AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m in Sources */,
 				E66BDC141AF89C0200FF7858 /* RTSPlaybackTimeObserver.m in Sources */,
 				C2246E321AC4237A000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
