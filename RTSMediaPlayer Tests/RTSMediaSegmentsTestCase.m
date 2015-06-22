@@ -49,14 +49,12 @@
 
 
 
-// TODO: Test
-// 1) Segment start / end / switch / seek for:
-//      - visible segments
-//      - blocked segments
-//      - hidden segments
-//      - blocked segment at start
-// 2) Segment errors
-// 3) Closing the player while a segment is being played
+// TODO: Test:
+//  - normal playback (transition into / from segment, between segments)
+//  - play at index
+//  - segment change by calling play at index again
+//  - seek
+//  - closing the player while a segment is being played
 
 @end
 
@@ -104,7 +102,7 @@
 	else if ([identifier isEqualToString:@"hidden_segment_at_start"])
 	{
 		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
-		segment.blocked = YES;
+		segment.visible = NO;
 		completionHandler(fullLength, @[segment], nil);
 	}
 	else if ([identifier isEqualToString:@"hidden_blocked_segment_at_start"])
@@ -127,14 +125,28 @@
 		segment2.blocked = YES;
 		completionHandler(fullLength, @[segment1, segment2], nil);
 	}
-	else if ([identifier isEqualToString:@"segment_transition_from_blocked_segment"])
+	else if ([identifier isEqualToString:@"segment_transition_into_hidden_segment"])
 	{
 		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
-		segment1.blocked = YES;
+		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
+		segment2.visible = NO;
+		completionHandler(fullLength, @[segment1, segment2], nil);
+	}
+	else if ([identifier isEqualToString:@"segment_transition_from_hidden_segment"])
+	{
+		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		segment1.visible = NO;
 		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		completionHandler(fullLength, @[segment1, segment2], nil);
 	}
-	// TODO: Test setups for Seek + Play segment + play at time (into segment, blocked, etc)
+	else if ([identifier isEqualToString:@"segment_transition_into_hidden_blocked_segment"])
+	{
+		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
+		segment2.blocked = YES;
+		segment2.visible = NO;
+		completionHandler(fullLength, @[segment1, segment2], nil);
+	}
 	else
 	{
 		NSError *error = [NSError errorWithDomain:@"ch.rts.RTSMediaPlayer-tests" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"No segment are available" }];
