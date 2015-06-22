@@ -56,7 +56,7 @@
 /**
  *  Call this method to trigger a reload of the segments from the data source
  */
-- (void)reloadSegmentsForIdentifier:(NSString *)identifier;
+- (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler;
 
 /**
  *  Dequeue a reusable cell for a given segment
