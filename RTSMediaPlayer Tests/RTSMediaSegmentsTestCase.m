@@ -45,6 +45,14 @@
 	self.dataSource = nil;
 }
 
+#pragma mark - Helpers
+
+- (void) playIdentifier:(NSString *)identifier
+{
+	[self.mediaPlayerController playIdentifier:identifier];
+	[self.mediaSegmentsController reloadSegmentsForIdentifier:identifier completionHandler:nil];
+}
+
 #pragma mark - Tests
 
 - (void) testSegmentPlaythrough
@@ -52,11 +60,18 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self.mediaPlayerController playIdentifier:@"segment"];
+	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
+		return [notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] == RTSMediaPlaybackSegmentStart;
+	}];
+	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
+		return [notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] == RTSMediaPlaybackSegmentEnd;
+	}];
+	[self playIdentifier:@"segment"];
 	[self waitForExpectationsWithTimeout:15. handler:nil];
 }
 
 // TODO: Test:
+//  - segment load
 //  - normal playback (transition into / from segment, between segments)
 //  - play at index
 //  - segment change by calling play at index again
