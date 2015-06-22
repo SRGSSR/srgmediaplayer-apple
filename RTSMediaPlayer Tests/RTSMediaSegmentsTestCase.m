@@ -9,7 +9,7 @@
 
 #import "Segment.h"
 
-@interface SegmentsDataSource : NSObject <RTSMediaSegmentsDataSource>
+@interface SegmentsTestDataSource : NSObject <RTSMediaPlayerControllerDataSource, RTSMediaSegmentsDataSource>
 
 @end
 
@@ -17,7 +17,7 @@
 
 @property (nonatomic) RTSMediaPlayerController *mediaPlayerController;
 
-@property (nonatomic) SegmentsDataSource *segmentsDataSource;
+@property (nonatomic) SegmentsTestDataSource *dataSource;
 @property (nonatomic) RTSMediaSegmentsController *mediaSegmentsController;
 
 @end
@@ -28,13 +28,13 @@
 
 - (void) setUp
 {
-	NSURL *url = [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
-	self.mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:url];
+	self.dataSource = [[SegmentsTestDataSource alloc] init];
 	
-	self.segmentsDataSource = [[SegmentsDataSource alloc] init];
+	self.mediaPlayerController = [[RTSMediaPlayerController alloc] init];
+	self.mediaPlayerController.dataSource = self.dataSource;
 	
 	self.mediaSegmentsController = [[RTSMediaSegmentsController alloc] init];
-	self.mediaSegmentsController.dataSource = self.segmentsDataSource;
+	self.mediaSegmentsController.dataSource = self.dataSource;
 	self.mediaSegmentsController.playerController = self.mediaPlayerController;
 }
 
@@ -42,12 +42,19 @@
 {
 	self.mediaPlayerController = nil;
 	self.mediaSegmentsController = nil;
-	self.segmentsDataSource = nil;
+	self.dataSource = nil;
 }
 
 #pragma mark - Tests
 
-
+- (void) testSegmentPlaythrough
+{
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+	}];
+	[self.mediaPlayerController playIdentifier:@"segment"];
+	[self waitForExpectationsWithTimeout:15. handler:nil];
+}
 
 // TODO: Test:
 //  - normal playback (transition into / from segment, between segments)
@@ -58,7 +65,17 @@
 
 @end
 
-@implementation SegmentsDataSource
+@implementation SegmentsTestDataSource
+
+#pragma mark - RTSMediaPlayerControllerDataSource protocol
+
+- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+{
+	NSURL *url = [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
+	completionHandler(url, nil);
+}
+
+#pragma mark - RTSMediaSegmentsDataSource protocol
 
 - (void) segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
