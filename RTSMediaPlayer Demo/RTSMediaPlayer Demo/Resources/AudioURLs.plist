@@ -34,6 +34,12 @@
 			<key>url</key>
 			<string>http://aod.rts.ch/espace-2/programmes/jazzz/2015/jazzz_20150528_full_jazzz_191a5f6d-d9e9-4481-a239-b8bcb41c10be-128k.mp3</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>DRS 2 Livestream mp3</string>
+			<key>url</key>
+			<string>http://streaming.swisstxt.ch/m/drs2/mp3_128</string>
+		</dict>
 	</array>
 </dict>
 </plist>
