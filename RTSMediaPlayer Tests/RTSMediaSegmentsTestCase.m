@@ -317,6 +317,22 @@
 		segment.visible = NO;
 		completionHandler(fullLength, @[segment], nil);
 	}
+	else if ([identifier isEqualToString:@"consecutive_blocked_segments"])
+	{
+		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		segment1.blocked = YES;
+		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
+		segment2.blocked = YES;
+		completionHandler(fullLength, @[segment1, segment2], nil);
+	}
+	else if ([identifier isEqualToString:@"consecutive_blocked_segments_at_start"])
+	{
+		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		segment1.blocked = YES;
+		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(3., 1.), CMTimeMakeWithSeconds(4., 1.))];
+		segment2.blocked = YES;
+		completionHandler(fullLength, @[segment1, segment2], nil);
+	}
 	else if ([identifier isEqualToString:@"segment_transition"])
 	{
 		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
