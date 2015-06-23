@@ -88,7 +88,7 @@
 		return YES;
 	}];
 	[self playIdentifier:@"segment"];
-	[self waitForExpectationsWithTimeout:15. handler:nil];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 // Expect seek notifications skipping the segment, as well as the usual start / end notifications
@@ -146,7 +146,7 @@
 		return YES;
 	}];
 	[self playIdentifier:@"blocked_segment"];
-	[self waitForExpectationsWithTimeout:15. handler:nil];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 // Expect segment start / end notifications, as for a visible segment
@@ -182,7 +182,7 @@
 		return YES;
 	}];
 	[self playIdentifier:@"hidden_segment"];
-	[self waitForExpectationsWithTimeout:15. handler:nil];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 // Expect seek notifications skipping the segment, as well as the usual start / end notifications
@@ -240,7 +240,7 @@
 		return YES;
 	}];
 	[self playIdentifier:@"hidden_blocked_segment"];
-	[self waitForExpectationsWithTimeout:15. handler:nil];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 // Expect segment start / end notifications
@@ -276,7 +276,7 @@
 		return YES;
 	}];
 	[self playIdentifier:@"segment_at_start"];
-	[self waitForExpectationsWithTimeout:15. handler:nil];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 // Expect seek notifications skipping the segment, as well as the usual start / end notifications
@@ -334,7 +334,7 @@
 		return YES;
 	}];
 	[self playIdentifier:@"blocked_segment_at_start"];
-	[self waitForExpectationsWithTimeout:15. handler:nil];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 // Expect segment start / end notifications, as for a visible segment
@@ -370,7 +370,7 @@
 		return YES;
 	}];
 	[self playIdentifier:@"hidden_segment_at_start"];
-	[self waitForExpectationsWithTimeout:15. handler:nil];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 // Expect seek notifications skipping the segment, as well as the usual start / end notifications
@@ -428,7 +428,7 @@
 		return YES;
 	}];
 	[self playIdentifier:@"hidden_blocked_segment_at_start"];
-	[self waitForExpectationsWithTimeout:15. handler:nil];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 
