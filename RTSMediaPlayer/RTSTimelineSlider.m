@@ -143,10 +143,13 @@
 
 #pragma mark - Data
 
-- (void) reloadSegmentsForIdentifier:(NSString *)identifier
+- (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler
 {
 	[self.segmentsController reloadSegmentsForIdentifier:identifier completionHandler:^(NSError *error){
 		[self setNeedsDisplay];
+		if (completionHandler) {
+			completionHandler(error);
+		}
 	}];
 }
 

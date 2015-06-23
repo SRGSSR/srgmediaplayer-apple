@@ -87,7 +87,7 @@
 	if ([self isMovingToParentViewController] || [self isBeingPresented]) {
 		[self.mediaPlayerController playIdentifier:self.videoIdentifier];
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
-		[self.timelineView reloadSegmentsForIdentifier:self.videoIdentifier];
+		[self.timelineView reloadSegmentsForIdentifier:self.videoIdentifier completionHandler:nil];
 	}
 }
 
