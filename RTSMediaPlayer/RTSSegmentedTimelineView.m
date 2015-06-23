@@ -222,6 +222,4 @@ static void commonInit(RTSSegmentedTimelineView *self)
 	
 	self.itemWidth = 60.f;
 	self.itemSpacing = 4.f;
-    
-    self.hidden = YES;
 }
