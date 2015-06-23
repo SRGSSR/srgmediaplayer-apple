@@ -12,7 +12,7 @@
 		9F598B391B305FC400201366 /* RTSPlaybackActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F598B381B305FC400201366 /* RTSPlaybackActivityIndicatorView.m */; };
 		9F598B3A1B305FD000201366 /* RTSPlaybackActivityIndicatorView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9F598B371B305FC400201366 /* RTSPlaybackActivityIndicatorView.h */; };
 		9F8A80081B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F8A80071B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m */; };
-		9FFFA9E01B25C5A0000E8501 /* RTSMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */; };
+		9FFFA9E01B25C5A0000E8501 /* SRGMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D8F81A9DC1A40016C629 /* SRGMediaPlayer.h */; };
 		9FFFA9E11B25C5A0000E8501 /* RTSMediaPlayerConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */; };
 		9FFFA9E21B25C5A0000E8501 /* RTSMediaPlayback.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24B01B1DD41900B6D3E9 /* RTSMediaPlayback.h */; };
 		9FFFA9E31B25C5A0000E8501 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */; };
@@ -85,7 +85,7 @@
 			dstSubfolderSpec = 16;
 			files = (
 				9F598B3A1B305FD000201366 /* RTSPlaybackActivityIndicatorView.h in CopyFiles */,
-				9FFFA9E01B25C5A0000E8501 /* RTSMediaPlayer.h in CopyFiles */,
+				9FFFA9E01B25C5A0000E8501 /* SRGMediaPlayer.h in CopyFiles */,
 				9FFFA9E11B25C5A0000E8501 /* RTSMediaPlayerConstants.h in CopyFiles */,
 				9FFFA9E21B25C5A0000E8501 /* RTSMediaPlayback.h in CopyFiles */,
 				9FFFA9E31B25C5A0000E8501 /* RTSMediaPlayerControllerDataSource.h in CopyFiles */,
@@ -138,9 +138,9 @@
 		B61E19071AA9F3B900E4FAB9 /* RTSVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSVolumeView.m; sourceTree = "<group>"; };
 		B6C00AC65FCA63E9D4B82E1F /* Pods-RTSMediaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayer.release.xcconfig"; path = "Pods/Target Support Files/Pods-RTSMediaPlayer/Pods-RTSMediaPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		BE8AC0D05396A800E04F3378 /* Pods-RTSMediaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RTSMediaPlayer/Pods-RTSMediaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
-		C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRTSMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayer.h; sourceTree = "<group>"; };
-		C201D9001A9DC1A40016C629 /* RTSMediaPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C201D8F51A9DC1A40016C629 /* libSRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSRGMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C201D8F81A9DC1A40016C629 /* SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SRGMediaPlayer.h; path = RTSMediaPlayer/SRGMediaPlayer.h; sourceTree = "<group>"; };
+		C201D9001A9DC1A40016C629 /* SRGMediaPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerController.h; sourceTree = "<group>"; };
 		C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerController.m; sourceTree = "<group>"; };
 		C201D9361A9DDEBF0016C629 /* RTSMediaPlayerControllerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerControllerDataSource.h; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 		C2731F551AD6A8FF00434743 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C288F49D1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerIconTemplate.h; sourceTree = "<group>"; };
 		C288F49E1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerIconTemplate.m; sourceTree = "<group>"; };
-		C2AB24E41ABC184A00EB51B8 /* RTSMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RTSMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2AB24E41ABC184A00EB51B8 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSInvocationRecorder.h; sourceTree = "<group>"; };
 		C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSInvocationRecorder.m; sourceTree = "<group>"; };
 		C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerPlaybackTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaPlayerPlaybackTestCase.m"; sourceTree = SOURCE_ROOT; };
@@ -293,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				9FFFA9DE1B25BEC2000E8501 /* SRGMediaPlayer.podspec */,
+				C201D8F81A9DC1A40016C629 /* SRGMediaPlayer.h */,
 				C201D8F71A9DC1A40016C629 /* RTSMediaPlayer */,
 				C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */,
 				C201D8F61A9DC1A40016C629 /* Products */,
@@ -307,9 +308,9 @@
 		C201D8F61A9DC1A40016C629 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */,
-				C201D9001A9DC1A40016C629 /* RTSMediaPlayerTests.xctest */,
-				C2AB24E41ABC184A00EB51B8 /* RTSMediaPlayer.bundle */,
+				C201D8F51A9DC1A40016C629 /* libSRGMediaPlayer.a */,
+				C201D9001A9DC1A40016C629 /* SRGMediaPlayerTests.xctest */,
+				C2AB24E41ABC184A00EB51B8 /* SRGMediaPlayer.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -318,7 +319,6 @@
 			isa = PBXGroup;
 			children = (
 				C2731F551AD6A8FF00434743 /* Info.plist */,
-				C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */,
 				9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */,
 				E67D9B211B0EFDEE00FF2334 /* Protocols */,
 				B61E18F11AA87D4500E4FAB9 /* Controller */,
@@ -378,9 +378,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C201D8F41A9DC1A40016C629 /* RTSMediaPlayer */ = {
+		C201D8F41A9DC1A40016C629 /* SRGMediaPlayer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C201D9091A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "RTSMediaPlayer" */;
+			buildConfigurationList = C201D9091A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer" */;
 			buildPhases = (
 				A7A9626A6A9FDECFF0E0CFB9 /* Check Pods Manifest.lock */,
 				C201D8F31A9DC1A40016C629 /* CopyFiles */,
@@ -394,14 +394,14 @@
 			dependencies = (
 				C2AB24ED1ABC191400EB51B8 /* PBXTargetDependency */,
 			);
-			name = RTSMediaPlayer;
+			name = SRGMediaPlayer;
 			productName = RTSMediaPlayer;
-			productReference = C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */;
+			productReference = C201D8F51A9DC1A40016C629 /* libSRGMediaPlayer.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		C201D8FF1A9DC1A40016C629 /* RTSMediaPlayerTests */ = {
+		C201D8FF1A9DC1A40016C629 /* SRGMediaPlayerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C201D90C1A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "RTSMediaPlayerTests" */;
+			buildConfigurationList = C201D90C1A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "SRGMediaPlayerTests" */;
 			buildPhases = (
 				B82AD06E9AFAA7F593ED65D5 /* Check Pods Manifest.lock */,
 				C201D8FC1A9DC1A40016C629 /* Sources */,
@@ -413,14 +413,14 @@
 			);
 			dependencies = (
 			);
-			name = RTSMediaPlayerTests;
+			name = SRGMediaPlayerTests;
 			productName = RTSMediaPlayerTests;
-			productReference = C201D9001A9DC1A40016C629 /* RTSMediaPlayerTests.xctest */;
+			productReference = C201D9001A9DC1A40016C629 /* SRGMediaPlayerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		C2AB24E31ABC184A00EB51B8 /* RTSMediaPlayer Resources */ = {
+		C2AB24E31ABC184A00EB51B8 /* SRGMediaPlayer Resources */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C2AB24EA1ABC184A00EB51B8 /* Build configuration list for PBXNativeTarget "RTSMediaPlayer Resources" */;
+			buildConfigurationList = C2AB24EA1ABC184A00EB51B8 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer Resources" */;
 			buildPhases = (
 				C2AB24E21ABC184A00EB51B8 /* Resources */,
 			);
@@ -428,9 +428,9 @@
 			);
 			dependencies = (
 			);
-			name = "RTSMediaPlayer Resources";
+			name = "SRGMediaPlayer Resources";
 			productName = "RTSMediaPlayer Resources";
-			productReference = C2AB24E41ABC184A00EB51B8 /* RTSMediaPlayer.bundle */;
+			productReference = C2AB24E41ABC184A00EB51B8 /* SRGMediaPlayer.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -453,7 +453,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C201D8F01A9DC1A40016C629 /* Build configuration list for PBXProject "RTSMediaPlayer" */;
+			buildConfigurationList = C201D8F01A9DC1A40016C629 /* Build configuration list for PBXProject "SRGMediaPlayer" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -466,9 +466,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C201D8F41A9DC1A40016C629 /* RTSMediaPlayer */,
-				C2AB24E31ABC184A00EB51B8 /* RTSMediaPlayer Resources */,
-				C201D8FF1A9DC1A40016C629 /* RTSMediaPlayerTests */,
+				C201D8F41A9DC1A40016C629 /* SRGMediaPlayer */,
+				C2AB24E31ABC184A00EB51B8 /* SRGMediaPlayer Resources */,
+				C201D8FF1A9DC1A40016C629 /* SRGMediaPlayerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -623,7 +623,7 @@
 /* Begin PBXTargetDependency section */
 		C2AB24ED1ABC191400EB51B8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C2AB24E31ABC184A00EB51B8 /* RTSMediaPlayer Resources */;
+			target = C2AB24E31ABC184A00EB51B8 /* SRGMediaPlayer Resources */;
 			targetProxy = C2AB24EC1ABC191400EB51B8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -713,7 +713,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BE8AC0D05396A800E04F3378 /* Pods-RTSMediaPlayer.debug.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -722,7 +722,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6C00AC65FCA63E9D4B82E1F /* Pods-RTSMediaPlayer.release.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -736,7 +736,7 @@
 					"$(inherited)",
 				);
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayerTests;
 			};
 			name = Debug;
 		};
@@ -745,7 +745,7 @@
 			baseConfigurationReference = E0A64A82F87DE7222F4220DD /* Pods-RTSMediaPlayerTests.release.xcconfig */;
 			buildSettings = {
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayerTests;
 			};
 			name = Release;
 		};
@@ -753,7 +753,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = RTSMediaPlayer/Info.plist;
-				PRODUCT_NAME = RTSMediaPlayer;
+				PRODUCT_NAME = SRGMediaPlayer;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -762,7 +762,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = RTSMediaPlayer/Info.plist;
-				PRODUCT_NAME = RTSMediaPlayer;
+				PRODUCT_NAME = SRGMediaPlayer;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -770,7 +770,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C201D8F01A9DC1A40016C629 /* Build configuration list for PBXProject "RTSMediaPlayer" */ = {
+		C201D8F01A9DC1A40016C629 /* Build configuration list for PBXProject "SRGMediaPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C201D9071A9DC1A40016C629 /* Debug */,
@@ -779,7 +779,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C201D9091A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "RTSMediaPlayer" */ = {
+		C201D9091A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C201D90A1A9DC1A40016C629 /* Debug */,
@@ -788,7 +788,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C201D90C1A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "RTSMediaPlayerTests" */ = {
+		C201D90C1A9DC1A40016C629 /* Build configuration list for PBXNativeTarget "SRGMediaPlayerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C201D90D1A9DC1A40016C629 /* Debug */,
@@ -797,7 +797,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C2AB24EA1ABC184A00EB51B8 /* Build configuration list for PBXNativeTarget "RTSMediaPlayer Resources" */ = {
+		C2AB24EA1ABC184A00EB51B8 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer Resources" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2AB24E81ABC184A00EB51B8 /* Debug */,

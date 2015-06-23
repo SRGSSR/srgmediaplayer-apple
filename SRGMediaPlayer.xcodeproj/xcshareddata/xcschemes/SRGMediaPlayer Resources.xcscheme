@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C201D8F41A9DC1A40016C629"
-               BuildableName = "libRTSMediaPlayer.a"
-               BlueprintName = "RTSMediaPlayer"
-               ReferencedContainer = "container:RTSMediaPlayer.xcodeproj">
+               BlueprintIdentifier = "C2AB24E31ABC184A00EB51B8"
+               BuildableName = "RTSMediaPlayer.bundle"
+               BlueprintName = "SRGMediaPlayer Resources"
+               ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,26 +28,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C201D8FF1A9DC1A40016C629"
-               BuildableName = "RTSMediaPlayerTests.xctest"
-               BlueprintName = "RTSMediaPlayerTests"
-               ReferencedContainer = "container:RTSMediaPlayer.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C201D8F41A9DC1A40016C629"
-            BuildableName = "libRTSMediaPlayer.a"
-            BlueprintName = "RTSMediaPlayer"
-            ReferencedContainer = "container:RTSMediaPlayer.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -61,10 +42,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C201D8F41A9DC1A40016C629"
-            BuildableName = "libRTSMediaPlayer.a"
-            BlueprintName = "RTSMediaPlayer"
-            ReferencedContainer = "container:RTSMediaPlayer.xcodeproj">
+            BlueprintIdentifier = "C2AB24E31ABC184A00EB51B8"
+            BuildableName = "RTSMediaPlayer.bundle"
+            BlueprintName = "SRGMediaPlayer Resources"
+            ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -79,10 +60,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C201D8F41A9DC1A40016C629"
-            BuildableName = "libRTSMediaPlayer.a"
-            BlueprintName = "RTSMediaPlayer"
-            ReferencedContainer = "container:RTSMediaPlayer.xcodeproj">
+            BlueprintIdentifier = "C2AB24E31ABC184A00EB51B8"
+            BuildableName = "RTSMediaPlayer.bundle"
+            BlueprintName = "SRGMediaPlayer Resources"
+            ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

@@ -5,22 +5,22 @@ platform :ios, '7.0'
 
 inhibit_all_warnings!
 
-workspace 'RTSMediaPlayer'
-link_with 'RTSMediaPlayerTests', 'RTSMediaPlayer Demo'
+workspace 'SRGMediaPlayer'
+link_with 'SRGMediaPlayerTests', 'SRGMediaPlayer Demo'
 
-target 'RTSMediaPlayer' do
+target 'SRGMediaPlayer' do
   pod 'libextobjc/EXTScope', '0.4.1'
   pod 'TransitionKit',       '2.2.0'
 end
 
-target 'RTSMediaPlayerTests' do
+target 'SRGMediaPlayerTests' do
   pod 'libextobjc/EXTScope', '0.4.1'
   pod 'TransitionKit',       '2.2.0'
   pod 'MAKVONotificationCenter', '0.0.2'
 end
 
-target 'RTSMediaPlayer Demo' do
-  xcodeproj 'RTSMediaPlayer Demo/RTSMediaPlayer Demo.xcodeproj'
+target 'SRGMediaPlayer Demo' do
+  xcodeproj 'SRGMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj'
   pod 'CocoaLumberjack', '2.0.0'
   pod 'SDWebImage', '3.7.0'
 end

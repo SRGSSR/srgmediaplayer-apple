@@ -5,12 +5,12 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleIdentifier</key>
-	<string>ch.rts.RTSMediaPlayer</string>
+	<string>ch.srgssr.SRGMediaPlayer-Resources</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>RTSMediaPlayer</string>
+	<string>SRGMediaPlayer</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.0.2</string>
+	<string>0.5.0</string>
 </dict>
 </plist>

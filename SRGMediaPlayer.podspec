@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.public_header_files   = "RTSMediaPlayer/*.h"
   s.private_header_files  = "RTSMediaPlayer/*+Private.h"
 
-  s.resource_bundle       = { "RTSMediaPlayer" => [ "RTSMediaPlayer/Info.plist", "RTSMediaPlayer/*.xib", "RTSMediaPlayer/*.png" ] }
+  s.resource_bundle       = { "SRGMediaPlayer" => [ "RTSMediaPlayer/Info.plist", "RTSMediaPlayer/*.xib", "RTSMediaPlayer/*.png" ] }
 
   s.dependency "libextobjc/EXTScope", "~> 0.4.1"
   s.dependency "TransitionKit",       "~> 2.2.0"

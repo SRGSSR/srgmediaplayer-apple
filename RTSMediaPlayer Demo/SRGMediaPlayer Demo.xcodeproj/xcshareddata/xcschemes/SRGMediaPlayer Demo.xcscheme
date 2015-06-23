@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C2F549EF1A9F713300496C59"
-               BuildableName = "RTSMediaPlayer Demo.app"
-               BlueprintName = "RTSMediaPlayer Demo"
-               ReferencedContainer = "container:RTSMediaPlayer Demo.xcodeproj">
+               BuildableName = "SRGMediaPlayer Demo.app"
+               BlueprintName = "SRGMediaPlayer Demo"
+               ReferencedContainer = "container:SRGMediaPlayer Demo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C2F54A081A9F713300496C59"
-               BuildableName = "RTSMediaPlayer DemoTests.xctest"
-               BlueprintName = "RTSMediaPlayer DemoTests"
-               ReferencedContainer = "container:RTSMediaPlayer Demo.xcodeproj">
+               BuildableName = "SRGMediaPlayer DemoTests.xctest"
+               BlueprintName = "SRGMediaPlayer DemoTests"
+               ReferencedContainer = "container:SRGMediaPlayer Demo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C2F54A081A9F713300496C59"
-               BuildableName = "RTSMediaPlayer DemoTests.xctest"
-               BlueprintName = "RTSMediaPlayer DemoTests"
-               ReferencedContainer = "container:RTSMediaPlayer Demo.xcodeproj">
+               BuildableName = "SRGMediaPlayer DemoTests.xctest"
+               BlueprintName = "SRGMediaPlayer DemoTests"
+               ReferencedContainer = "container:SRGMediaPlayer Demo.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -57,9 +57,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C201D8FF1A9DC1A40016C629"
-               BuildableName = "RTSMediaPlayerTests.xctest"
-               BlueprintName = "RTSMediaPlayerTests"
-               ReferencedContainer = "container:../RTSMediaPlayer.xcodeproj">
+               BuildableName = "SRGMediaPlayerTests.xctest"
+               BlueprintName = "SRGMediaPlayerTests"
+               ReferencedContainer = "container:../SRGMediaPlayer.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -67,9 +67,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C2F549EF1A9F713300496C59"
-            BuildableName = "RTSMediaPlayer Demo.app"
-            BlueprintName = "RTSMediaPlayer Demo"
-            ReferencedContainer = "container:RTSMediaPlayer Demo.xcodeproj">
+            BuildableName = "SRGMediaPlayer Demo.app"
+            BlueprintName = "SRGMediaPlayer Demo"
+            ReferencedContainer = "container:SRGMediaPlayer Demo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -87,9 +87,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C2F549EF1A9F713300496C59"
-            BuildableName = "RTSMediaPlayer Demo.app"
-            BlueprintName = "RTSMediaPlayer Demo"
-            ReferencedContainer = "container:RTSMediaPlayer Demo.xcodeproj">
+            BuildableName = "SRGMediaPlayer Demo.app"
+            BlueprintName = "SRGMediaPlayer Demo"
+            ReferencedContainer = "container:SRGMediaPlayer Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -106,9 +106,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C2F549EF1A9F713300496C59"
-            BuildableName = "RTSMediaPlayer Demo.app"
-            BlueprintName = "RTSMediaPlayer Demo"
-            ReferencedContainer = "container:RTSMediaPlayer Demo.xcodeproj">
+            BuildableName = "SRGMediaPlayer Demo.app"
+            BlueprintName = "SRGMediaPlayer Demo"
+            ReferencedContainer = "container:SRGMediaPlayer Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
