@@ -6,7 +6,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import <SRGMediaPlayer/RTSMediaPlayer.h>
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface DemoInlineViewController : UIViewController <RTSMediaPlayerControllerDataSource>
 

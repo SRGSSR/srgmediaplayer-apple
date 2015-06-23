@@ -5,7 +5,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SRGMediaPlayer/RTSMediaPlayer.h>
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface Segment : NSObject <RTSMediaSegment>
 

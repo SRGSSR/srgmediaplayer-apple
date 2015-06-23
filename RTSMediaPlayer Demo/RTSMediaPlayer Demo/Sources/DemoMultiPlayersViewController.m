@@ -5,7 +5,7 @@
 //
 
 #import "DemoMultiPlayersViewController.h"
-#import <SRGMediaPlayer/RTSMediaPlayerPlaybackButton.h>
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface DemoMultiPlayersViewController ()
 

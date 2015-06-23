@@ -20,7 +20,7 @@ target 'SRGMediaPlayerTests' do
 end
 
 target 'SRGMediaPlayer Demo' do
-  xcodeproj 'SRGMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj'
+  xcodeproj 'RTSMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj'
   pod 'CocoaLumberjack', '2.0.0'
   pod 'SDWebImage', '3.7.0'
 end

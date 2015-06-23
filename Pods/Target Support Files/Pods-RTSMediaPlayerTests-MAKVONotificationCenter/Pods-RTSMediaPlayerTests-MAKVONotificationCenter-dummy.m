@@ -1,5 +1,0 @@
-#import <Foundation/Foundation.h>
-@interface PodsDummy_Pods_RTSMediaPlayerTests_MAKVONotificationCenter : NSObject
-@end
-@implementation PodsDummy_Pods_RTSMediaPlayerTests_MAKVONotificationCenter
-@end

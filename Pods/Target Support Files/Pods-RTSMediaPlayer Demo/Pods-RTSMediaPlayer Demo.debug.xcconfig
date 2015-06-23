@@ -1,6 +1,0 @@
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CocoaLumberjack" "${PODS_ROOT}/Headers/Public/MAKVONotificationCenter" "${PODS_ROOT}/Headers/Public/MAKVONotificationCenter/MAKVONotificationCenter" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/TransitionKit" "${PODS_ROOT}/Headers/Public/libextobjc"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/CocoaLumberjack" -isystem "${PODS_ROOT}/Headers/Public/MAKVONotificationCenter" -isystem "${PODS_ROOT}/Headers/Public/MAKVONotificationCenter/MAKVONotificationCenter" -isystem "${PODS_ROOT}/Headers/Public/SDWebImage" -isystem "${PODS_ROOT}/Headers/Public/TransitionKit" -isystem "${PODS_ROOT}/Headers/Public/libextobjc"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"Pods-RTSMediaPlayer Demo-CocoaLumberjack" -l"Pods-RTSMediaPlayer Demo-SDWebImage" -framework "ImageIO"
-OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
-PODS_ROOT = ${SRCROOT}/../Pods

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C2AB24E31ABC184A00EB51B8"
-               BuildableName = "RTSMediaPlayer.bundle"
+               BuildableName = "SRGMediaPlayer.bundle"
                BlueprintName = "SRGMediaPlayer Resources"
                ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C2AB24E31ABC184A00EB51B8"
-            BuildableName = "RTSMediaPlayer.bundle"
+            BuildableName = "SRGMediaPlayer.bundle"
             BlueprintName = "SRGMediaPlayer Resources"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C2AB24E31ABC184A00EB51B8"
-            BuildableName = "RTSMediaPlayer.bundle"
+            BuildableName = "SRGMediaPlayer.bundle"
             BlueprintName = "SRGMediaPlayer Resources"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>

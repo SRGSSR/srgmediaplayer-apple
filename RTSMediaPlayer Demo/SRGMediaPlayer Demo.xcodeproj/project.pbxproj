@@ -7,12 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1E233A5D57D3FE5E297756AE /* libPods-RTSMediaPlayer Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1822D47330A920F02889458B /* libPods-RTSMediaPlayer Demo.a */; };
 		9F40156B1B25A2E00068196C /* audios@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F4015671B25A2E00068196C /* audios@2x.png */; };
 		9F40156C1B25A2E00068196C /* screen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F4015681B25A2E00068196C /* screen@2x.png */; };
 		9F40156D1B25A2E00068196C /* segments@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F4015691B25A2E00068196C /* segments@2x.png */; };
 		9F40156E1B25A2E00068196C /* videos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F40156A1B25A2E00068196C /* videos@2x.png */; };
 		9F4015711B25A5680068196C /* LaunchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F4015701B25A5680068196C /* LaunchImage.png */; };
+		9F48459D1B39BC7900C48345 /* libSRGMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F48459C1B39BC7900C48345 /* libSRGMediaPlayer.a */; };
+		9F48459F1B39BD3400C48345 /* SRGMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9F48459E1B39BD3400C48345 /* SRGMediaPlayer.bundle */; };
 		9F4B1D2D1B1C990700BB0FB3 /* DemoSegmentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F4B1D2C1B1C990700BB0FB3 /* DemoSegmentsViewController.m */; };
 		9FDF081F1B1C92C2005BA322 /* DemoSegmentsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDF081E1B1C92C2005BA322 /* DemoSegmentsSelectionViewController.m */; };
 		9FDF08221B1C95DD005BA322 /* PseudoILDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDF08211B1C95DD005BA322 /* PseudoILDataProvider.m */; };
@@ -31,9 +32,8 @@
 		B6C460E51B2058D000A76705 /* AudiosTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C460E41B2058D000A76705 /* AudiosTableViewController.m */; };
 		B6C460E71B205AC200A76705 /* MultiplayerURLs.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6C460E61B205AC200A76705 /* MultiplayerURLs.plist */; };
 		B6C460EA1B205AE400A76705 /* MultiplayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C460E91B205AE400A76705 /* MultiplayerViewController.m */; };
-		C2AB24EF1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C2AB24EE1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle */; };
-		C2CF7FAD1ABC0F7B0005FE51 /* libRTSMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2CF7FAC1ABC0F7B0005FE51 /* libRTSMediaPlayer.a */; };
 		C2F54A101A9F713300496C59 /* RTSMediaPlayer_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */; };
+		D3DB92EE703C18EF8A5C6B6B /* libPods-SRGMediaPlayer Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE10DF27C1E51A2963DA91A /* libPods-SRGMediaPlayer Demo.a */; };
 		E606F8911AF3B044003F0E2A /* SegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */; };
 		E606F8921AF3B044003F0E2A /* SegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */; };
 		E606F8951AF3BBB4003F0E2A /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F8941AF3BBB4003F0E2A /* Segment.m */; };
@@ -66,14 +66,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0AE10DF27C1E51A2963DA91A /* libPods-SRGMediaPlayer Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		100779AD208991A55C4E92F5 /* Pods-SRGMediaPlayer Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer Demo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-SRGMediaPlayer Demo/Pods-SRGMediaPlayer Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		1822D47330A920F02889458B /* libPods-RTSMediaPlayer Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RTSMediaPlayer Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E09A7BE7B656051B76E8285 /* Pods-SRGMediaPlayer Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer Demo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SRGMediaPlayer Demo/Pods-SRGMediaPlayer Demo.release.xcconfig"; sourceTree = "<group>"; };
 		9F4015671B25A2E00068196C /* audios@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audios@2x.png"; sourceTree = "<group>"; };
 		9F4015681B25A2E00068196C /* screen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "screen@2x.png"; sourceTree = "<group>"; };
 		9F4015691B25A2E00068196C /* segments@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segments@2x.png"; sourceTree = "<group>"; };
 		9F40156A1B25A2E00068196C /* videos@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "videos@2x.png"; sourceTree = "<group>"; };
 		9F4015701B25A5680068196C /* LaunchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImage.png; sourceTree = "<group>"; };
+		9F48459C1B39BC7900C48345 /* libSRGMediaPlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSRGMediaPlayer.a; path = "../build/Debug-iphoneos/libSRGMediaPlayer.a"; sourceTree = "<group>"; };
+		9F48459E1B39BD3400C48345 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = SRGMediaPlayer.bundle; path = "SRGMediaPlayer.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F4B1D2B1B1C990700BB0FB3 /* DemoSegmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoSegmentsViewController.h; sourceTree = "<group>"; };
 		9F4B1D2C1B1C990700BB0FB3 /* DemoSegmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoSegmentsViewController.m; sourceTree = "<group>"; };
+		9FBDE0C01B39B794008D6030 /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SRGMediaPlayer.a"; path = "/Users/onekiloparsec/RTS/srgmediaplayer-ios/Pods/../build/Debug-iphoneos/libPods-SRGMediaPlayer.a"; sourceTree = "<absolute>"; };
 		9FDF081D1B1C92C2005BA322 /* DemoSegmentsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoSegmentsSelectionViewController.h; sourceTree = "<group>"; };
 		9FDF081E1B1C92C2005BA322 /* DemoSegmentsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoSegmentsSelectionViewController.m; sourceTree = "<group>"; };
 		9FDF08201B1C95DD005BA322 /* PseudoILDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PseudoILDataProvider.h; sourceTree = "<group>"; };
@@ -102,13 +108,10 @@
 		B6C460E61B205AC200A76705 /* MultiplayerURLs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MultiplayerURLs.plist; sourceTree = "<group>"; };
 		B6C460E81B205AE400A76705 /* MultiplayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiplayerViewController.h; sourceTree = "<group>"; };
 		B6C460E91B205AE400A76705 /* MultiplayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplayerViewController.m; sourceTree = "<group>"; };
-		BF8D6C8357CDC94BEF46183A /* Pods-RTSMediaPlayer Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayer Demo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-RTSMediaPlayer Demo/Pods-RTSMediaPlayer Demo.debug.xcconfig"; sourceTree = "<group>"; };
-		C2AB24EE1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RTSMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2CF7FAC1ABC0F7B0005FE51 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRTSMediaPlayer.a; path = "../build/Debug-iphoneos/libRTSMediaPlayer.a"; sourceTree = "<group>"; };
 		C2F549F01A9F713300496C59 /* SRGMediaPlayer Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGMediaPlayer Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A091A9F713300496C59 /* SRGMediaPlayer DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGMediaPlayer DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayer_DemoTests.m; sourceTree = "<group>"; };
-		DFE981493A4EB976F44F2E28 /* Pods-RTSMediaPlayer Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayer Demo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-RTSMediaPlayer Demo/Pods-RTSMediaPlayer Demo.release.xcconfig"; sourceTree = "<group>"; };
 		E606F88E1AF3B044003F0E2A /* SegmentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentCollectionViewCell.h; sourceTree = "<group>"; };
 		E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentCollectionViewCell.m; sourceTree = "<group>"; };
 		E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -142,8 +145,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2CF7FAD1ABC0F7B0005FE51 /* libRTSMediaPlayer.a in Frameworks */,
-				1E233A5D57D3FE5E297756AE /* libPods-RTSMediaPlayer Demo.a in Frameworks */,
+				9F48459D1B39BC7900C48345 /* libSRGMediaPlayer.a in Frameworks */,
+				D3DB92EE703C18EF8A5C6B6B /* libPods-SRGMediaPlayer Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,8 +163,8 @@
 		425474CBBFBB4C600FDBBB1B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				BF8D6C8357CDC94BEF46183A /* Pods-RTSMediaPlayer Demo.debug.xcconfig */,
-				DFE981493A4EB976F44F2E28 /* Pods-RTSMediaPlayer Demo.release.xcconfig */,
+				100779AD208991A55C4E92F5 /* Pods-SRGMediaPlayer Demo.debug.xcconfig */,
+				6E09A7BE7B656051B76E8285 /* Pods-SRGMediaPlayer Demo.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -324,9 +327,12 @@
 		C2F54A1B1A9F730300496C59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9F48459C1B39BC7900C48345 /* libSRGMediaPlayer.a */,
+				9FBDE0C01B39B794008D6030 /* libPods-SRGMediaPlayer.a */,
 				C2CF7FAC1ABC0F7B0005FE51 /* libRTSMediaPlayer.a */,
-				C2AB24EE1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle */,
+				9F48459E1B39BD3400C48345 /* SRGMediaPlayer.bundle */,
 				1822D47330A920F02889458B /* libPods-RTSMediaPlayer Demo.a */,
+				0AE10DF27C1E51A2963DA91A /* libPods-SRGMediaPlayer Demo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -390,7 +396,6 @@
 					};
 					C2F54A081A9F713300496C59 = {
 						CreatedOnToolsVersion = 6.1.1;
-						TestTargetID = C2F549EF1A9F713300496C59;
 					};
 				};
 			};
@@ -425,10 +430,10 @@
 				B6C460E71B205AC200A76705 /* MultiplayerURLs.plist in Resources */,
 				E699061F1AFB4902005ED143 /* red_card.png in Resources */,
 				E699061A1AFB44CC005ED143 /* close_button@2x.png in Resources */,
-				C2AB24EF1ABC1C9B00EB51B8 /* RTSMediaPlayer.bundle in Resources */,
 				9F4015711B25A5680068196C /* LaunchImage.png in Resources */,
 				E69906261AFB4929005ED143 /* goal@2x.png in Resources */,
 				B61E18EF1AA8643500E4FAB9 /* MediaURLs.plist in Resources */,
+				9F48459F1B39BD3400C48345 /* SRGMediaPlayer.bundle in Resources */,
 				B61E18DF1AA8609000E4FAB9 /* Images.xcassets in Resources */,
 				9F40156C1B25A2E00068196C /* screen@2x.png in Resources */,
 				E69906191AFB44CC005ED143 /* close_button.png in Resources */,
@@ -482,7 +487,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-RTSMediaPlayer Demo/Pods-RTSMediaPlayer Demo-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-SRGMediaPlayer Demo/Pods-SRGMediaPlayer Demo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -632,7 +637,7 @@
 		};
 		C2F54A141A9F713300496C59 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF8D6C8357CDC94BEF46183A /* Pods-RTSMediaPlayer Demo.debug.xcconfig */;
+			baseConfigurationReference = 100779AD208991A55C4E92F5 /* Pods-SRGMediaPlayer Demo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				HEADER_SEARCH_PATHS = (
@@ -640,15 +645,19 @@
 					"\"$(PODS_ROOT)/Headers/Public\"",
 				);
 				INFOPLIST_FILE = "RTSMediaPlayer Demo/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/onekiloparsec/RTS/srgmediaplayer-ios/build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "SRGMediaPlayer Demo";
 			};
 			name = Debug;
 		};
 		C2F54A151A9F713300496C59 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DFE981493A4EB976F44F2E28 /* Pods-RTSMediaPlayer Demo.release.xcconfig */;
+			baseConfigurationReference = 6E09A7BE7B656051B76E8285 /* Pods-SRGMediaPlayer Demo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				HEADER_SEARCH_PATHS = (
@@ -656,8 +665,12 @@
 					"\"$(PODS_ROOT)/Headers/Public\"",
 				);
 				INFOPLIST_FILE = "RTSMediaPlayer Demo/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/onekiloparsec/RTS/srgmediaplayer-ios/build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "SRGMediaPlayer Demo";
 			};
 			name = Release;
@@ -665,7 +678,6 @@
 		C2F54A171A9F713300496C59 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -676,21 +688,18 @@
 				);
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "SRGMediaPlayer DemoTests";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RTSMediaPlayer Demo.app/RTSMediaPlayer Demo";
 			};
 			name = Debug;
 		};
 		C2F54A181A9F713300496C59 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "SRGMediaPlayer DemoTests";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RTSMediaPlayer Demo.app/RTSMediaPlayer Demo";
 			};
 			name = Release;
 		};
