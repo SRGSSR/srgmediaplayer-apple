@@ -61,6 +61,10 @@
 		E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */; };
 		E69906301AFB969F005ED143 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */; };
 		E6D220161B21C9A00009BB17 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E60F1C0B1B21C96F00F3272F /* Localizable.strings */; };
+		E6F0237F1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F0237E1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m */; };
+		E6F023811B3299F6001B6F0B /* RTSMediaPlayerLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = C2332DA61B287BDA00AA21BB /* RTSMediaPlayerLogger.m */; };
+		E6F023831B329EBA001B6F0B /* RTSMediaSegmentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */; };
+		E6F023861B329FD0001B6F0B /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F023851B329FD0001B6F0B /* Segment.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,7 +137,6 @@
 		B61E19061AA9F3B900E4FAB9 /* RTSVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSVolumeView.h; sourceTree = "<group>"; };
 		B61E19071AA9F3B900E4FAB9 /* RTSVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSVolumeView.m; sourceTree = "<group>"; };
 		B6C00AC65FCA63E9D4B82E1F /* Pods-RTSMediaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayer.release.xcconfig"; path = "Pods/Target Support Files/Pods-RTSMediaPlayer/Pods-RTSMediaPlayer.release.xcconfig"; sourceTree = "<group>"; };
-		B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerLoadStateTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaPlayerLoadStateTestCase.m"; sourceTree = SOURCE_ROOT; };
 		BE8AC0D05396A800E04F3378 /* Pods-RTSMediaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTSMediaPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RTSMediaPlayer/Pods-RTSMediaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 		C201D8F51A9DC1A40016C629 /* libRTSMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRTSMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C201D8F81A9DC1A40016C629 /* RTSMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayer.h; sourceTree = "<group>"; };
@@ -174,6 +177,9 @@
 		E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumb_timeline_slider@2x.png"; sourceTree = "<group>"; };
 		E6A6D0E31AFA017600E15BCF /* RTSSegmentedTimelineView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RTSSegmentedTimelineView+Private.h"; sourceTree = "<group>"; };
 		E6D220171B21C9A70009BB17 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E6F0237E1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaSegmentsTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaSegmentsTestCase.m"; sourceTree = SOURCE_ROOT; };
+		E6F023841B329FD0001B6F0B /* Segment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Segment.h; path = "RTSMediaPlayer Tests/Segment.h"; sourceTree = SOURCE_ROOT; };
+		E6F023851B329FD0001B6F0B /* Segment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Segment.m; path = "RTSMediaPlayer Tests/Segment.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,9 +334,11 @@
 		C201D9041A9DC1A40016C629 /* RTSMediaPlayerTests */ = {
 			isa = PBXGroup;
 			children = (
-				C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */,
-				B6EC78001AA4B4DB009AE043 /* RTSMediaPlayerLoadStateTestCase.m */,
 				C2150B451AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m */,
+				C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */,
+				E6F0237E1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m */,
+				E6F023841B329FD0001B6F0B /* Segment.h */,
+				E6F023851B329FD0001B6F0B /* Segment.m */,
 			);
 			path = RTSMediaPlayerTests;
 			sourceTree = "<group>";
@@ -595,14 +603,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6F0237F1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m in Sources */,
 				C2731F531AD6A80B00434743 /* NSBundle+RTSMediaPlayer.m in Sources */,
 				C2DDAB521AD525A200BA8061 /* RTSInvocationRecorder.m in Sources */,
+				E6F023811B3299F6001B6F0B /* RTSMediaPlayerLogger.m in Sources */,
 				C2150B461AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m in Sources */,
 				E66BDC141AF89C0200FF7858 /* RTSPlaybackTimeObserver.m in Sources */,
 				C2246E321AC4237A000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
 				B6EC78091AA5ABEB009AE043 /* RTSMediaPlayerView.m in Sources */,
 				C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */,
 				B6EC78081AA5ABE7009AE043 /* RTSMediaPlayerController.m in Sources */,
+				E6F023831B329EBA001B6F0B /* RTSMediaSegmentsController.m in Sources */,
+				E6F023861B329FD0001B6F0B /* Segment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

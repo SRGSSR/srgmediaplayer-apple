@@ -42,21 +42,21 @@
 - (NSUInteger)countOfSegments;
 
 /**
- *  The data sources of each segments.
+ *  The segments
  *
- *  @return A an array containing the data sources of each segment.
+ *  @return A an array containing the segments.
  */
 - (NSArray *)segments;
 
 /**
  *  The count of visible segments
  *
- *  @return An unsigned integer indicating the count of episodes.
+ *  @return An unsigned integer indicating the count of visible segments.
  */
 - (NSUInteger)countOfVisibleSegments;
 
 /**
- *  The data sources of each episodes.
+ *  The visible segments
  *
  *  @return A an array containing the data sources of each episodes.
  */

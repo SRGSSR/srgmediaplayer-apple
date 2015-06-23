@@ -191,7 +191,8 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 		if (finished) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[self.playerController pause]; // Will put the player into the pause state.
-				NSDictionary *userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingEnd)};
+				NSDictionary *userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingEnd),
+										   RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.segments[index] };
 				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
 																	object:self
 																  userInfo:userInfo];
