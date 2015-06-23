@@ -5,7 +5,7 @@
 //
 
 #import "DemoFullScreenViewController.h"
-#import <RTSMediaPlayer/RTSMediaPlayer.h>
+#import <SRGMediaPlayer/RTSMediaPlayer.h>
 
 @interface DemoFullScreenViewController ()
 

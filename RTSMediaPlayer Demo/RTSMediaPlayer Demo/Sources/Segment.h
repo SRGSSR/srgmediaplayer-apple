@@ -4,7 +4,7 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import <RTSMediaPlayer/RTSMediaSegment.h>
+#import <SRGMediaPlayer/RTSMediaSegment.h>
 #import <UIKit/UIKit.h>
 
 @interface Segment : NSObject <RTSMediaSegment>

@@ -6,9 +6,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import <RTSMediaPlayer/RTSMediaPlayback.h>
-#import <RTSMediaPlayer/RTSMediaPlayerConstants.h>
-#import <RTSMediaPlayer/RTSMediaSegmentsDataSource.h>
+#import <SRGMediaPlayer/RTSMediaPlayback.h>
+#import <SRGMediaPlayer/RTSMediaPlayerConstants.h>
+#import <SRGMediaPlayer/RTSMediaSegmentsDataSource.h>
 
 
 @class RTSMediaPlayerController;

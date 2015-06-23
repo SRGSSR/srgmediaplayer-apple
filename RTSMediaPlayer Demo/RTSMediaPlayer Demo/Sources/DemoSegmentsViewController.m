@@ -5,8 +5,8 @@
 //
 
 #import <libextobjc/EXTScope.h>
-#import <RTSMediaPlayer/RTSSegmentedTimelineView.h>
-#import <RTSMediaPlayer/RTSTimeSlider.h>
+#import <SRGMediaPlayer/RTSSegmentedTimelineView.h>
+#import <SRGMediaPlayer/RTSTimeSlider.h>
 
 #import "DemoSegmentsViewController.h"
 #import "PseudoILDataProvider.h"

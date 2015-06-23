@@ -5,7 +5,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <RTSMediaPlayer/RTSMediaPlayer.h>
+#import <SRGMediaPlayer/RTSMediaPlayer.h>
 
 @interface DemoMultiPlayersViewController : UIViewController
 

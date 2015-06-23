@@ -4,8 +4,8 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import <RTSMediaPlayer/RTSMediaPlayerControllerDataSource.h>
-#import <RTSMediaPlayer/RTSMediaSegmentsDataSource.h>
+#import <SRGMediaPlayer/RTSMediaPlayerControllerDataSource.h>
+#import <SRGMediaPlayer/RTSMediaSegmentsDataSource.h>
 #import <Foundation/Foundation.h>
 
 @interface SwissTXTDataSource : NSObject <RTSMediaPlayerControllerDataSource, RTSMediaSegmentsDataSource>

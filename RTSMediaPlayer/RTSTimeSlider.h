@@ -6,7 +6,7 @@
 
 #import <CoreMedia/CoreMedia.h>
 #import <UIKit/UIKit.h>
-#import <RTSMediaPlayer/RTSMediaPlayback.h>
+#import <SRGMediaPlayer/RTSMediaPlayback.h>
 
 @class RTSMediaPlayerController;
 @protocol RTSTimeSliderDelegate;

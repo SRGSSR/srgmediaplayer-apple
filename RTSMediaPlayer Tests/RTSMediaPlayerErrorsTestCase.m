@@ -7,7 +7,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import <RTSMediaPlayer/RTSMediaPlayer.h>
+#import <SRGMediaPlayer/RTSMediaPlayer.h>
 
 
 @interface DataSourceReturningError : NSObject <RTSMediaPlayerControllerDataSource> @end

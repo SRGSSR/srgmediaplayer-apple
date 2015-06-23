@@ -5,7 +5,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import <RTSMediaPlayer/RTSMediaPlayer.h>
+#import <SRGMediaPlayer/RTSMediaPlayer.h>
 
 #import "Segment.h"
 

@@ -5,7 +5,7 @@
 //
 
 #import <CoreMedia/CoreMedia.h>
-#import <RTSMediaPlayer/RTSMediaSegmentsDataSource.h>
+#import <SRGMediaPlayer/RTSMediaSegmentsDataSource.h>
 #import <UIKit/UIKit.h>
 
 @class RTSMediaSegmentsController;

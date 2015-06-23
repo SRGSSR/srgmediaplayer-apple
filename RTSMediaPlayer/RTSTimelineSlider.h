@@ -4,8 +4,8 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import <RTSMediaPlayer/RTSMediaSegmentsDataSource.h>
-#import <RTSMediaPlayer/RTSTimeSlider.h>
+#import <SRGMediaPlayer/RTSMediaSegmentsDataSource.h>
+#import <SRGMediaPlayer/RTSTimeSlider.h>
 
 @class RTSMediaPlayerController;
 @protocol RTSTimelineSliderDelegate;

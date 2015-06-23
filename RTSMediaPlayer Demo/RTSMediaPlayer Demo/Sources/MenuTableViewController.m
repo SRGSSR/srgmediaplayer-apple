@@ -7,7 +7,7 @@
 #import "MenuTableViewController.h"
 
 #import <MediaPlayer/MediaPlayer.h>
-#import <RTSMediaPlayer/RTSMediaPlayer.h>
+#import <SRGMediaPlayer/RTSMediaPlayer.h>
 
 #import "DemoInlineViewController.h"
 #import "DemoMultiPlayersViewController.h"

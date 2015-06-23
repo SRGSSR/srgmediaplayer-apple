@@ -4,7 +4,7 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import <RTSMediaPlayer/RTSMediaPlayer.h>
+#import <SRGMediaPlayer/RTSMediaPlayer.h>
 #import <UIKit/UIKit.h>
 
 @interface DemoSegmentsViewController : UIViewController <RTSTimelineSliderDelegate, RTSSegmentedTimelineViewDelegate>
