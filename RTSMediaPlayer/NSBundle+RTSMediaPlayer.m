@@ -13,8 +13,8 @@
 	static NSBundle *mediaPlayerBundle;
 	static dispatch_once_t once;
 	dispatch_once(&once, ^{
-		NSURL *mediaPlayerBundleURL = [[NSBundle mainBundle] URLForResource:@"RTSMediaPlayer" withExtension:@"bundle"];
-		NSAssert(mediaPlayerBundleURL != nil, @"RTSMediaPlayer.bundle not found in the main bundle's resources");
+		NSURL *mediaPlayerBundleURL = [[NSBundle mainBundle] URLForResource:@"SRGMediaPlayer" withExtension:@"bundle"];
+		NSAssert(mediaPlayerBundleURL != nil, @"SRGMediaPlayer.bundle not found in the main bundle's resources");
 		mediaPlayerBundle = [NSBundle bundleWithURL:mediaPlayerBundleURL];
 	});
 	return mediaPlayerBundle;
