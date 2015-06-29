@@ -30,3 +30,4 @@
 
 // Utils
 #import <SRGMediaPlayer/NSBundle+RTSMediaPlayer.h>
+#import <SRGMediaPlayer/RTSActivityGestureRecognizer.h>
