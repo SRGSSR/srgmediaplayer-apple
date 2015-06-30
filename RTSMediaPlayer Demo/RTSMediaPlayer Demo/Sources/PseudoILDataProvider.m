@@ -106,6 +106,24 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 			}
 		}
 		else if (row == 5) {
+			// Two consecutive segments
+			Segment *segment1 = [[Segment alloc] initWithStart:2. duration:3. title:@"Segment #0"];
+			[segments addObject:segment1];
+			
+			Segment *segment2 = [[Segment alloc] initWithStart:5. duration:4. title:@"Segment #1"];
+			[segments addObject:segment2];
+		}
+		else if (row == 6) {
+			// Two consecutive blocked segments
+			Segment *segment1 = [[Segment alloc] initWithStart:2. duration:3. title:@"Segment #0"];
+			segment1.blocked = YES;
+			[segments addObject:segment1];
+			
+			Segment *segment2 = [[Segment alloc] initWithStart:5. duration:4. title:@"Segment #1"];
+			segment2.blocked = YES;
+			[segments addObject:segment2];
+		}
+		else {
 			// Error
 			error = [NSError errorWithDomain:@"Demo" code:999 userInfo:@{NSLocalizedDescriptionKey:@"Segments Demo Error"}];
 		}

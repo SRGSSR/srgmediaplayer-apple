@@ -11,6 +11,37 @@
 #import "PseudoILDataProvider.h"
 #import "SegmentCollectionViewCell.h"
 
+static NSString *StringForSegmentChange(RTSMediaPlaybackSegmentChange segmentChange)
+{
+	static dispatch_once_t s_onceToken;
+	static NSDictionary *s_names;
+	dispatch_once(&s_onceToken, ^{
+		s_names = @{ @(RTSMediaPlaybackSegmentStart) : @"START",
+					 @(RTSMediaPlaybackSegmentEnd) : @"END",
+					 @(RTSMediaPlaybackSegmentSwitch) : @"SWITCH",
+					 @(RTSMediaPlaybackSegmentSeekUponBlockingStart) : @"SEEK START",
+					 @(RTSMediaPlaybackSegmentSeekUponBlockingEnd) : @"SEEK END" };
+	});
+	return s_names[@(segmentChange)] ?: @"UNKNOWN";
+}
+
+static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
+{
+	static dispatch_once_t s_onceToken;
+	static NSDictionary *s_names;
+	dispatch_once(&s_onceToken, ^{
+		s_names = @{ @(RTSMediaPlaybackStateIdle) : @"IDLE",
+					 @(RTSMediaPlaybackStatePreparing) : @"PREPARING",
+					 @(RTSMediaPlaybackStateReady) : @"READY",
+					 @(RTSMediaPlaybackStatePlaying) : @"PLAYING",
+					 @(RTSMediaPlaybackStateSeeking) : @"SEEKING",
+					 @(RTSMediaPlaybackStatePaused) : @"PAUSED",
+					 @(RTSMediaPlaybackStateStalled) : @"STALLED",
+					 @(RTSMediaPlaybackStateEnded) : @"ENDED",};
+	});
+	return s_names[@(playbackState)] ?: @"UNKNOWN";
+}
+
 @interface DemoSegmentsViewController () <RTSTimeSliderDelegate>
 
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
@@ -64,6 +95,14 @@
 											 selector:@selector(considerDisplayBlockingMessage:)
 												 name:RTSMediaPlaybackSegmentDidChangeNotification
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(segmentDidChange:)
+												 name:RTSMediaPlaybackSegmentDidChangeNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(playbackStateDidChange:)
+												 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+											   object:nil];
 	
 	@weakify(self);
 	self.playbackTimeObserver = [self.mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
@@ -99,6 +138,8 @@
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
 	}
 }
+
+#pragma mark - Notifications
 
 /**
  *  Example of handling a kind of race condition where we want the playback to restart as soon as it is ready,
@@ -137,6 +178,21 @@
 			[self.mediaPlayerController play];
 		}
 	}
+}
+
+- (void)segmentDidChange:(NSNotification *)notification
+{
+	RTSMediaPlaybackSegmentChange segmentChange = [notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue];
+	Segment *previousSegment = notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey];
+	Segment *segment = notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey];
+	BOOL wasSelected = [notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue];
+	
+	NSLog(@"Segment [%@]: previous = %@, current = %@, user selected: %@", StringForSegmentChange(segmentChange), previousSegment.title, segment.title, wasSelected ? @"YES" : @"NO");
+}
+
+- (void)playbackStateDidChange:(NSNotification *)notification
+{
+	NSLog(@"Playback state [%@]", StringForPlaybackState(self.mediaPlayerController.playbackState));
 }
 
 #pragma ark - RTSTimeSliderDelegate protocol
@@ -186,6 +242,5 @@
 {
 	[self.mediaPlayerController seekToTime:self.mediaPlayerController.playerItem.duration completionHandler:nil];
 }
-
 
 @end
