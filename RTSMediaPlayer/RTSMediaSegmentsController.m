@@ -153,6 +153,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
 								 RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index],
 								 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(wasSegmentSelected)};
+					self.lastPlaybackPositionSegmentIndex = index;
 				}
 				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex != NSNotFound) {
 					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
@@ -168,8 +169,6 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 																	object:self
 																  userInfo:userInfo];
 			}
-			
-			self.lastPlaybackPositionSegmentIndex = index;
 		}
 	};
 	
