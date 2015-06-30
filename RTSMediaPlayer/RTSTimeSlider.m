@@ -37,6 +37,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 @interface RTSTimeSlider ()
 
 @property (weak) id playbackTimeObserver;
+@property (nonatomic, strong) UIColor *overriddenThumbTintColor;
+@property (nonatomic, strong) UIColor *overriddenMaximumTrackTintColor;
+@property (nonatomic, strong) UIColor *overriddenMinimumTrackTintColor;
 
 @end
 
@@ -44,7 +47,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark - initialization
 
-- (id) initWithFrame:(CGRect)frame
+- (instancetype) initWithFrame:(CGRect)frame
 {
 	self = [super initWithFrame:frame];
 	if (self) {
@@ -53,7 +56,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	return self;
 }
 
-- (id)initWithCoder:(NSCoder *)coder
+- (instancetype) initWithCoder:(NSCoder *)coder
 {
 	self = [super initWithCoder:coder];
 	if (self) {
@@ -62,8 +65,15 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	return self;
 }
 
-- (void)setup_RTSTimeSlider
+- (void) setup_RTSTimeSlider
 {
+	self.borderColor = [UIColor blackColor];
+	
+	self.minimumTrackTintColor = [UIColor whiteColor];
+	self.maximumTrackTintColor = [UIColor blackColor];
+	
+	self.thumbTintColor = [UIColor whiteColor];
+	
 	UIImage *triangle = [self emptyImage];
 	UIImage *image = [triangle resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
 	
@@ -71,7 +81,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self setMaximumTrackImage:image forState:UIControlStateNormal];
 	
 	[self setThumbImage:[self thumbImage] forState:UIControlStateNormal];
-	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];	
+	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
 }
 
 #pragma mark - Setters and getters
@@ -112,10 +122,43 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}];
 }
 
-- (BOOL)isDraggable
+- (BOOL) isDraggable
 {
 	// A slider knob can be dragged iff it corresponds to a valid range
 	return self.minimumValue != self.maximumValue;
+}
+
+// Override color properties since the default superclass behavior is to remove corresponding images, which we here
+// already set in -setup_RTSTimeSlider and want to preserve
+
+- (UIColor *) thumbTintColor
+{
+	return self.overriddenThumbTintColor;
+}
+
+- (void) setThumbTintColor:(UIColor *)thumbTintColor
+{
+	self.overriddenThumbTintColor = thumbTintColor;
+}
+
+- (UIColor *) minimumTrackTintColor
+{
+	return self.overriddenMinimumTrackTintColor;
+}
+
+- (void) setMinimumTrackTintColor:(UIColor *)minimumTrackTintColor
+{
+	self.overriddenMinimumTrackTintColor = minimumTrackTintColor;
+}
+
+- (UIColor *) maximumTrackTintColor
+{
+	return self.overriddenMaximumTrackTintColor;
+}
+
+- (void) setMaximumTrackTintColor:(UIColor *)maximumTrackTintColor
+{
+	self.overriddenMaximumTrackTintColor = maximumTrackTintColor;
 }
 
 
@@ -137,14 +180,14 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 
 // Useful for live streams. How does it work for VOD?
-- (CMTime)time
+- (CMTime) time
 {
     CMTimeRange currentTimeRange = [self currentTimeRange];
     Float64 timeInSeconds = CMTimeGetSeconds(currentTimeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(currentTimeRange.duration) / (self.maximumValue - self.minimumValue);
     return CMTimeMakeWithSeconds(timeInSeconds, 1.);
 }
 
-- (CMTime)convertedValueCMTime
+- (CMTime) convertedValueCMTime
 {
 	CGFloat fraction = (self.value - self.minimumValue) / (self.maximumValue - self.minimumValue);
 	CGFloat duration = CMTimeGetSeconds(self.playbackController.playerItem.duration);
@@ -152,7 +195,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	return CMTimeMakeWithSeconds(fraction*duration, NSEC_PER_SEC);
 }
 
-- (void)updateTimeRangeLabels
+- (void) updateTimeRangeLabels
 {
 	CMTimeRange currentTimeRange = [self currentTimeRange];
 	AVPlayerItem *playerItem = self.playbackController.playerItem;
@@ -180,7 +223,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark Touch tracking
 
-- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
 	
@@ -191,7 +234,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	return beginTracking;
 }
 
-- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+- (BOOL) continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	BOOL continueTracking = [super continueTrackingWithTouch:touch withEvent:event];
 	
@@ -249,7 +292,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark - Draw Methods
 
-- (void)drawRect:(CGRect)rect
+- (void) drawRect:(CGRect)rect
 {
 	[super drawRect:rect];
 	
@@ -259,31 +302,30 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self drawMinimumValueBar:context];
 }
 
-- (void)drawBar:(CGContextRef)context
+- (void) drawBar:(CGContextRef)context
 {
 	CGRect trackFrame = [self trackRectForBounds:self.bounds];
 	
 	CGFloat lineWidth = 3.0f;
 
 	CGContextSetLineWidth(context, lineWidth);
-	CGContextSetLineCap(context,kCGLineCapRound);
-	CGContextMoveToPoint(context,CGRectGetMinX(trackFrame), SLIDER_VERTICAL_CENTER);
-	CGContextAddLineToPoint(context,CGRectGetWidth(trackFrame), SLIDER_VERTICAL_CENTER);
-    UIColor *color = self.borderStrokeColor ?: [UIColor blackColor];
-	CGContextSetStrokeColorWithColor(context,  color.CGColor);
+	CGContextSetLineCap(context, kCGLineCapRound);
+	CGContextMoveToPoint(context, CGRectGetMinX(trackFrame), SLIDER_VERTICAL_CENTER);
+	CGContextAddLineToPoint(context, CGRectGetWidth(trackFrame), SLIDER_VERTICAL_CENTER);
+	CGContextSetStrokeColorWithColor(context, self.borderColor.CGColor);
 	CGContextStrokePath(context);
 }
 
-- (void)drawDownloadProgressValueBar:(CGContextRef)context
+- (void) drawDownloadProgressValueBar:(CGContextRef)context
 {
 	CGRect trackFrame = [self trackRectForBounds:self.bounds];
 
 	CGFloat lineWidth = 1.0f;
 	
 	CGContextSetLineWidth(context, lineWidth);
-	CGContextSetLineCap(context,kCGLineCapButt);
-	CGContextMoveToPoint(context,CGRectGetMinX(trackFrame)+2, SLIDER_VERTICAL_CENTER);
-	CGContextAddLineToPoint(context,CGRectGetMaxX(trackFrame)-2, SLIDER_VERTICAL_CENTER);
+	CGContextSetLineCap(context, kCGLineCapButt);
+	CGContextMoveToPoint(context, CGRectGetMinX(trackFrame)+2, SLIDER_VERTICAL_CENTER);
+	CGContextAddLineToPoint(context, CGRectGetMaxX(trackFrame)-2, SLIDER_VERTICAL_CENTER);
 	CGContextSetStrokeColorWithColor(context, [UIColor darkGrayColor].CGColor);
 	CGContextStrokePath(context);
 	
@@ -293,7 +335,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}
 }
 
-- (void)drawTimeRangeProgress:(CMTimeRange)timeRange context:(CGContextRef)context
+- (void) drawTimeRangeProgress:(CMTimeRange)timeRange context:(CGContextRef)context
 {
 	CGFloat lineWidth = 1.0f;
 	
@@ -310,26 +352,46 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetLineCap(context,kCGLineCapButt);
 	CGContextMoveToPoint(context, minX, SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context, maxX, SLIDER_VERTICAL_CENTER);
-	// TODO: We should be able to customise this color
-	CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
+	CGContextSetStrokeColorWithColor(context, self.maximumTrackTintColor.CGColor);
 	CGContextStrokePath(context);
 }
 
-- (void)drawMinimumValueBar:(CGContextRef)context
+- (void) drawMinimumValueBar:(CGContextRef)context
 {
-	CGRect trackFrame = [self trackRectForBounds:self.bounds];
-	CGRect thumbRect = [self thumbRectForBounds:self.bounds trackRect:trackFrame value:self.value];
+	CGRect barFrame = [self minimumValueImageRectForBounds:self.bounds];
 	
 	CGFloat lineWidth = 3.0f;
-	
+
 	CGContextSetLineWidth(context, lineWidth);
 	CGContextSetLineCap(context,kCGLineCapRound);
-	CGContextMoveToPoint(context,CGRectGetMinX(trackFrame), SLIDER_VERTICAL_CENTER);
-	CGContextAddLineToPoint(context,CGRectGetMidX(thumbRect), SLIDER_VERTICAL_CENTER);
+	CGContextMoveToPoint(context,CGRectGetMinX(barFrame), SLIDER_VERTICAL_CENTER);
+	CGContextAddLineToPoint(context, CGRectGetWidth(barFrame), SLIDER_VERTICAL_CENTER);
 	CGContextSetStrokeColorWithColor(context, self.minimumTrackTintColor.CGColor);
 	CGContextStrokePath(context);
 }
 
+#pragma mark - Overrides
 
+// Take into account the non-standard smaller knob we installed in -setup_RTSTimeSlider
+
+- (CGRect) minimumValueImageRectForBounds:(CGRect)bounds
+{
+	CGRect trackFrame = [super trackRectForBounds:self.bounds];
+	CGRect thumbRect = [super thumbRectForBounds:self.bounds trackRect:trackFrame value:self.value];
+	return CGRectMake(CGRectGetMinX(trackFrame),
+					  CGRectGetMinY(trackFrame),
+					  CGRectGetMidX(thumbRect) - CGRectGetMinX(trackFrame),
+					  CGRectGetHeight(trackFrame));
+}
+
+- (CGRect) maximumValueImageRectForBounds:(CGRect)bounds
+{
+	CGRect trackFrame = [super trackRectForBounds:self.bounds];
+	CGRect thumbRect = [super thumbRectForBounds:self.bounds trackRect:trackFrame value:self.value];
+	return CGRectMake(CGRectGetMidX(thumbRect),
+					  CGRectGetMinY(trackFrame),
+					  CGRectGetMaxX(trackFrame) - CGRectGetMidX(thumbRect),
+					  CGRectGetHeight(trackFrame));
+}
 
 @end
