@@ -226,11 +226,10 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (BOOL) beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	BOOL beginTracking = [super beginTrackingWithTouch:touch withEvent:event];
-	
-	if (beginTracking && [self isDraggable]) {
-		[self.playbackController pause];
+	if (! beginTracking || ! [self isDraggable]) {
+		return NO;
 	}
-	
+		
 	return beginTracking;
 }
 
