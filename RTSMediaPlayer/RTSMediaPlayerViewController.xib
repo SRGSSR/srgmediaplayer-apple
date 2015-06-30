@@ -49,9 +49,6 @@
                                     <subviews>
                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dbP-gV-yjr" customClass="RTSTimeSlider">
                                             <rect key="frame" x="46" y="0.0" width="447" height="31"/>
-                                            <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <color key="thumbTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <connections>
                                                 <outlet property="playbackController" destination="rfJ-1C-Ygo" id="0Z5-H7-CBT"/>
                                                 <outlet property="timeLeftValueLabel" destination="OdH-jj-nfU" id="zcx-hm-PNg"/>
