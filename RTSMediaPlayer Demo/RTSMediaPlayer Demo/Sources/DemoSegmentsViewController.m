@@ -25,6 +25,23 @@ static NSString *StringForSegmentChange(RTSMediaPlaybackSegmentChange segmentCha
 	return s_names[@(segmentChange)] ?: @"UNKNOWN";
 }
 
+static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
+{
+	static dispatch_once_t s_onceToken;
+	static NSDictionary *s_names;
+	dispatch_once(&s_onceToken, ^{
+		s_names = @{ @(RTSMediaPlaybackStateIdle) : @"IDLE",
+					 @(RTSMediaPlaybackStatePreparing) : @"PREPARING",
+					 @(RTSMediaPlaybackStateReady) : @"READY",
+					 @(RTSMediaPlaybackStatePlaying) : @"PLAYING",
+					 @(RTSMediaPlaybackStateSeeking) : @"SEEKING",
+					 @(RTSMediaPlaybackStatePaused) : @"PAUSED",
+					 @(RTSMediaPlaybackStateStalled) : @"STALLED",
+					 @(RTSMediaPlaybackStateEnded) : @"ENDED",};
+	});
+	return s_names[@(playbackState)] ?: @"UNKNOWN";
+}
+
 @interface DemoSegmentsViewController () <RTSTimeSliderDelegate>
 
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
@@ -81,6 +98,10 @@ static NSString *StringForSegmentChange(RTSMediaPlaybackSegmentChange segmentCha
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(segmentDidChange:)
 												 name:RTSMediaPlaybackSegmentDidChangeNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(playbackStateDidChange:)
+												 name:RTSMediaPlayerPlaybackStateDidChangeNotification
 											   object:nil];
 	
 	@weakify(self);
@@ -167,6 +188,11 @@ static NSString *StringForSegmentChange(RTSMediaPlaybackSegmentChange segmentCha
 	BOOL wasSelected = [notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue];
 	
 	NSLog(@"Segment [%@]: previous = %@, current = %@, user selected: %@", StringForSegmentChange(segmentChange), previousSegment.title, segment.title, wasSelected ? @"YES" : @"NO");
+}
+
+- (void)playbackStateDidChange:(NSNotification *)notification
+{
+	NSLog(@"Playback state [%@]", StringForPlaybackState(self.mediaPlayerController.playbackState));
 }
 
 #pragma ark - RTSTimeSliderDelegate protocol
