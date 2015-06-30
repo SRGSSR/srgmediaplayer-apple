@@ -691,17 +691,132 @@
 	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+// Expect a start event for the given segment, with YES for the user-driven information flag
 - (void) testPlaySegmentAtIndex
-{}
+{
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+	}];
+	[self playIdentifier:@"segment"];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
+	
+	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
+		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
+		{
+			return NO;
+		}
+		
+		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
+		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
+		XCTAssertTrue([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
+		
+		return YES;
+	}];
+	
+	[self.mediaSegmentsController playVisibleSegmentAtIndex:0];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
+}
 
+// Expect a start event for the given segment, with NO for the user-driven information flag (set only when calling -playVisibleSegmentAtIndex:)
 - (void) testSeekIntoSegment
-{}
+{
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+	}];
+	[self playIdentifier:@"segment"];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
+	
+	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
+		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
+		{
+			return NO;
+		}
+		
+		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
+		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
+		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
+		
+		return YES;
+	}];
+	
+	[self.mediaSegmentsController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
+}
 
+// Expect a seek
 - (void) testPlayBlockedSegmentAtIndex
-{}
+{
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+	}];
+	[self playIdentifier:@"blocked_segment"];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
+	
+	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
+		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart)
+		{
+			return NO;
+		}
+		
+		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
+		
+		return YES;
+	}];
+	
+	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
+		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd)
+		{
+			return NO;
+		}
+		
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
+		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
+		
+		return YES;
+	}];
+	
+	[self.mediaSegmentsController playVisibleSegmentAtIndex:0];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
+}
 
 - (void) testSeekIntoBlockedSegment
-{}
+{
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+	}];
+	[self playIdentifier:@"blocked_segment"];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
+	
+	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
+		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart)
+		{
+			return NO;
+		}
+		
+		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
+		
+		return YES;
+	}];
+	
+	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
+		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd)
+		{
+			return NO;
+		}
+		
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
+		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
+		
+		return YES;
+	}];
+	
+	[self.mediaSegmentsController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
+}
 
 @end
 
