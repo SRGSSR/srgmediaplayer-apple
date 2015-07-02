@@ -267,7 +267,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
-		BOOL isVideoAsset = [(AVAssetTrack *)self.player.currentItem.tracks.firstObject mediaType] == AVMediaTypeVideo;
+		BOOL isVideoAsset = [[(AVPlayerItemTrack *)self.player.currentItem.tracks.firstObject assetTrack] mediaType] == AVMediaTypeVideo;
 		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 		[[AVAudioSession sharedInstance] setMode:(isVideoAsset) ? AVAudioSessionModeMoviePlayback : AVAudioSessionModeDefault error:nil];
 		[self resetIdleTimer];
