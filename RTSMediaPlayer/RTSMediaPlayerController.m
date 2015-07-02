@@ -116,8 +116,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 - (void) dealloc
 {
-	if (![self.stateMachine.currentState isEqual:self.idleState])
-	{
+	if (![self.stateMachine.currentState isEqual:self.idleState]) {
 		RTSMediaPlayerLogWarning(@"The media player controller reached dealloc while still active. You should call the `reset` method before reaching dealloc.");
 	}
 	
@@ -344,7 +343,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[self loadPlayerShouldPlayImediately:NO];
 }
 
-- (void) play
+- (void)play
 {
 	if ([self.stateMachine.currentState isEqual:self.idleState]) {
 		[self loadPlayerShouldPlayImediately:YES];
@@ -364,7 +363,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[self play];
 }
 
-- (void) pause
+- (void)pause
 {
 	[self fireEvent:self.pauseEvent userInfo:nil];
 	[self.player pause];
@@ -440,8 +439,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (id) addPlaybackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
 {
-	if (!block)
-	{
+	if (!block) {
 		return nil;
 	}
 	
@@ -606,24 +604,21 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 {
 	[self unregisterPlaybackObservers];
 	
-	for (RTSPlaybackTimeObserver *playbackBlockRegistration in [self.playbackTimeObservers allValues])
-	{
+	for (RTSPlaybackTimeObserver *playbackBlockRegistration in [self.playbackTimeObservers allValues]) {
 		[playbackBlockRegistration attachToMediaPlayer:self.player];
 	}
 }
 
 - (void) unregisterPlaybackObservers
 {
-	for (RTSPlaybackTimeObserver *playbackBlockRegistration in [self.playbackTimeObservers allValues])
-	{
+	for (RTSPlaybackTimeObserver *playbackBlockRegistration in [self.playbackTimeObservers allValues]) {
 		[playbackBlockRegistration detach];
 	}
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (context == AVPlayerItemStatusContext)
-	{
+	if (context == AVPlayerItemStatusContext) {
 		AVPlayer *player = object;
 		AVPlayerItem *playerItem = player.currentItem;
 		switch (playerItem.status)
@@ -640,50 +635,53 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 				break;
 		}
 	}
-	else if (context == AVPlayerItemLoadedTimeRangesContext){
-	
+	else if (context == AVPlayerItemLoadedTimeRangesContext) {
 		NSArray *timeRanges = (NSArray *)[change objectForKey:NSKeyValueChangeNewKey];
-		if (timeRanges.count == 0)
+		if (timeRanges.count == 0) {
 			return;
+		}
 		
 		Float64 bufferMinDuration = 5.0f;
 		
-		CMTimeRange timerange = [timeRanges[0] CMTimeRangeValue];
-		if(CMTimeGetSeconds(timerange.duration) >= bufferMinDuration && self.player.rate == 0) {
+		CMTimeRange timerange = [timeRanges.firstObject CMTimeRangeValue]; // Yes, subscripting with [0] may lead to a crash??
+		if (CMTimeGetSeconds(timerange.duration) >= bufferMinDuration && self.player.rate == 0) {
 			[self.player prerollAtRate:0.0 completionHandler:^(BOOL finished) {
-				if (![self.stateMachine.currentState isEqual:self.pausedState] && ![self.stateMachine.currentState isEqual:self.seekingState]) {
+				if (![self.stateMachine.currentState isEqual:self.pausedState] &&
+					![self.stateMachine.currentState isEqual:self.seekingState])
+				{
 					[self play];
 				}
 			}];
 		}
 		
 	}
-	else if (context == AVPlayerRateContext)
-	{
+	else if (context == AVPlayerRateContext) {
 		float oldRate = [change[NSKeyValueChangeOldKey] floatValue];
 		float newRate = [change[NSKeyValueChangeNewKey] floatValue];
 		
-		if (oldRate == newRate)
+		if (oldRate == newRate) {
 			return;
+		}
 		
 		AVPlayer *player = object;
 		AVPlayerItem *playerItem = player.currentItem;
 		
-		if (playerItem.loadedTimeRanges.count == 0)
+		if (playerItem.loadedTimeRanges.count == 0) {
 			return;
+		}
 		
-		CMTimeRange timerange = [playerItem.loadedTimeRanges[0] CMTimeRangeValue];
+		CMTimeRange timerange = [playerItem.loadedTimeRanges.firstObject CMTimeRangeValue]; // Yes, subscripting with [0] may lead to a crash??
 		BOOL stoppedManually = CMTimeGetSeconds(timerange.duration) > 0;
 		
 		if (oldRate == 1 && newRate == 0 && stoppedManually) {
 			[self fireEvent:self.pauseEvent userInfo:nil];
 		}
 	}
-	else if (context == AVPlayerItemPlaybackLikelyToKeepUpContext)
-	{
+	else if (context == AVPlayerItemPlaybackLikelyToKeepUpContext) {
 		AVPlayer *player = object;
-		if (!player.currentItem.playbackLikelyToKeepUp)
+		if (!player.currentItem.playbackLikelyToKeepUp) {
 			return;
+		}
 		
 		if (![self.stateMachine.currentState isEqual:self.playingState]) {
 			[self registerPlaybackStartObserver];
@@ -693,8 +691,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			[player play];
 		}
 	}
-	else
-	{
+	else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
 }
