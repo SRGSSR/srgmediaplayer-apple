@@ -107,7 +107,7 @@
  *  @return The index of the last contiguous segment. Can be equal to index. Playback should restart at end of the visible 
  *  segment at that index. If there is no more segments and no more playable content, returns NSNotFound;
  */
-- (NSUInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(NSTimeInterval)flexibilityGap;
+- (NSInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(NSTimeInterval)flexibilityGap;
 
 /**
  *  The index of the current visible segment in which the playback head is located.

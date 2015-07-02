@@ -180,8 +180,8 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 - (void)seekToNextAvailableSegmentAfterIndex:(NSInteger)index
 {
-	NSUInteger nextIndex = [self indexOfLastContiguousBlockedSegmentAfterIndex:index
-															withFlexibilityGap:RTSMediaPlaybackTickInterval];
+	NSInteger nextIndex = [self indexOfLastContiguousBlockedSegmentAfterIndex:index
+														   withFlexibilityGap:RTSMediaPlaybackTickInterval];
 	
 	// nextIndex can be equal to index (it happens when after segment@index, there is playback outside any segment.
 	// Hence, if we get a nextIndex, one must seek to the end of it + a small bit.
@@ -199,14 +199,16 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 		}
 	};
 	
-	if (nextIndex == NSUIntegerMax) {
+	if (nextIndex == -1) {
 		CMTimeRange r = self.fullLengthSegment.timeRange;
 		[self.playerController seekToTime:CMTimeAdd(r.start, r.duration) completionHandler:completionBlock];
 	}
-	else {
+	else if (nextIndex >= 0) {
+		NSAssert(nextIndex < self.segments.count, @"Wrong index.");
 		id<RTSMediaSegment> segment = self.segments[nextIndex];
 		CMTime oneInterval = CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC);
 		CMTimeRange r = segment.timeRange;
+		
 		CMTime seekCMTime = CMTimeAdd(r.start, CMTimeAdd(r.duration, oneInterval));
 		[self.playerController seekToTime:seekCMTime completionHandler:completionBlock];
 	}
@@ -294,7 +296,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 }
 
 
-- (NSUInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(NSTimeInterval)flexibilityGap
+- (NSInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(NSTimeInterval)flexibilityGap
 {
     if (self.segments.count == 0 || index == NSNotFound || index >= self.segments.count) {
         return NSNotFound;
@@ -313,7 +315,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         
         if (mediaLastSeconds < 2*flexibilityGap) {
             // There is no meaningful playable content after the end of the current segment.
-            return NSUIntegerMax;
+            return -1;
         }
         else {
             // There is some meaningful playable content after the end of the current segment. But no more segment afterwards.
@@ -322,8 +324,8 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         }
     }
     
-    NSUInteger result = index;
-    for (NSUInteger i = index+1; i < self.segments.count; i++) {
+    NSInteger result = index;
+    for (NSInteger i = index+1; i < self.segments.count; i++) {
         id<RTSMediaSegment> segment = self.segments[i];
         if (![segment isBlocked]) {
             // Next segment is not blocked. Hence the end of the current one is the last we are look for.
