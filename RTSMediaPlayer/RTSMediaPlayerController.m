@@ -245,6 +245,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		
 		// The player observes its "currentItem.status" keyPath, see callback in `observeValueForKeyPath:ofObject:change:context:`
 		self.player = [AVPlayer playerWithURL:contentURL];
+		
+		self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+		self.player.allowsExternalPlayback = YES;
+		self.player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
+		
 		self.playerView.player = self.player;
 	}];
 	
@@ -262,6 +267,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
+		BOOL isVideoAsset = [(AVAssetTrack *)self.player.currentItem.tracks.firstObject mediaType] == AVMediaTypeVideo;
+		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+		[[AVAudioSession sharedInstance] setMode:(isVideoAsset) ? AVAudioSessionModeMoviePlayback : AVAudioSessionModeDefault error:nil];
 		[self resetIdleTimer];
 	}];
 	
@@ -281,6 +289,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
+		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
 		self.previousPlaybackTime = kCMTimeInvalid;
 		self.playerView.player = nil;
 		self.player = nil;
