@@ -122,14 +122,62 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 	
 	// This block will necessarily run on the main thread. See addPlaybackTimeObserverForInterval:... method.
 	void (^checkBlock)(CMTime) = ^(CMTime time) {
+		if (self.playerController.playbackState != RTSMediaPlaybackStatePlaying) {
+			return;
+		}
+		
 		@strongify(self);
 		NSUInteger secondaryIndex;
 		NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:&secondaryIndex];
+		BOOL isTimeBlocked = [self isTimeBlocked:time];
 		
-		RTSMediaPlayerLogDebug(@"Playing time %.2fs at index %@", CMTimeGetSeconds(time), @(index));
+		RTSMediaPlayerLogDebug(@"Playing %@ time %.2fs at index %@ (secondary: %@, last: %@) | %@", (isTimeBlocked)? @"blocked" : @"",
+			  CMTimeGetSeconds(time), @(index), @(secondaryIndex), @(self.lastPlaybackPositionSegmentIndex), @(self.selectionType));
 		
-		if (self.playerController.playbackState == RTSMediaPlaybackStatePlaying && [self isTimeBlocked:time]) {
+		if (self.lastPlaybackPositionSegmentIndex != index || self.selectionType == RTSSegmentSelectionTypeSameSegment) {
+
+			BOOL wasSegmentSelected = (self.selectionType == RTSSegmentSelectionTypeOtherSegment || self.selectionType == RTSSegmentSelectionTypeSameSegment);
+			NSDictionary *userInfo = nil;
+			
+			if (index == NSNotFound || (self.lastPlaybackPositionSegmentIndex != NSNotFound && isTimeBlocked)) {
+				RTSMediaPlayerLogDebug(@"Sending Segment End notification. Time Blocked: %@. Previous segment index: %@ (was selected: %@)",
+									   @(isTimeBlocked), @(self.lastPlaybackPositionSegmentIndex), @(wasSegmentSelected));
+				
+				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentEnd),
+							 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.segments[self.lastPlaybackPositionSegmentIndex],
+							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(wasSegmentSelected)};
+			}
+			else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound && !isTimeBlocked) {
+				RTSMediaPlayerLogDebug(@"Sending Segment Start notification. Segment index: %@ (was selected: %@)",
+									   @(index), @(wasSegmentSelected));
+				
+				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
+							 RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index],
+							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(wasSegmentSelected)};
+			}
+			else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex != NSNotFound) {
+				RTSMediaPlayerLogDebug(@"Sending Segment Switch notification. Segment index: %@ (was selected: %@), previous: %@",
+									   @(index), @(wasSegmentSelected), @(self.lastPlaybackPositionSegmentIndex));
+				
+				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
+							 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.segments[self.lastPlaybackPositionSegmentIndex],
+							 RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index],
+							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(wasSegmentSelected)};
+			}
+			
+			// Immediatly reseting the property after it has been used.
+			self.selectionType = RTSSegmentSelectionTypeNone;
+			self.lastPlaybackPositionSegmentIndex = index;
+			
+			[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+																object:self
+															  userInfo:userInfo];
+		}
+		
+		if (isTimeBlocked) {
 			// The reason for blocking must be specified, and should actually be accessible from the segment object, IMHO.
+			
+			RTSMediaPlayerLogDebug(@"Sending SeekUponBlocking Start notification. Segment index: %@", @(index));
 			
 			NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
 												  RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index]};
@@ -139,36 +187,6 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 															  userInfo:userInfo];
 		
 			[self seekToNextAvailableSegmentAfterIndex:index];
-		}
-		else {
-			if (self.lastPlaybackPositionSegmentIndex != index || self.selectionType == RTSSegmentSelectionTypeSameSegment) {
-                BOOL wasSegmentSelected = (self.selectionType == RTSSegmentSelectionTypeOtherSegment || self.selectionType == RTSSegmentSelectionTypeSameSegment);
-				NSDictionary *userInfo = nil;
-				if (index == NSNotFound) {
-					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentEnd),
-                                 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.segments[self.lastPlaybackPositionSegmentIndex],
-                                 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(wasSegmentSelected)};
-				}
-				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex == NSNotFound) {
-					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
-								 RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index],
-								 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(wasSegmentSelected)};
-					self.lastPlaybackPositionSegmentIndex = index;
-				}
-				else if (index != NSNotFound && self.lastPlaybackPositionSegmentIndex != NSNotFound) {
-					userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
-                                 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.segments[self.lastPlaybackPositionSegmentIndex],
-								 RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index],
-								 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(wasSegmentSelected)};
-				}
-                
-                // Immediatly reseting the property after it has been used.
-                self.selectionType = RTSSegmentSelectionTypeNone;
-				
-				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
-																	object:self
-																  userInfo:userInfo];
-			}
 		}
 	};
 	
