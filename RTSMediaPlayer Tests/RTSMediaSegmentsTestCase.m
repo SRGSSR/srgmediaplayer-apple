@@ -66,7 +66,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"segment"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
@@ -94,7 +94,7 @@
 		
 		return YES;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect seek notifications skipping the segment
@@ -104,7 +104,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"blocked_segment"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart)
@@ -131,7 +131,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect segment start / end notifications, as for a visible segment
@@ -141,7 +141,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"hidden_segment"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
@@ -169,7 +169,7 @@
 		
 		return YES;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect seek notifications skipping the segment
@@ -179,7 +179,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"hidden_blocked_segment"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart)
@@ -206,7 +206,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 
 }
 
@@ -217,7 +217,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"segment_at_start"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
@@ -245,7 +245,7 @@
 		
 		return YES;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect seek notifications skipping the segment
@@ -255,7 +255,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"blocked_segment_at_start"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart)
@@ -282,7 +282,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect segment start / end notifications, as for a visible segment
@@ -292,7 +292,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"hidden_segment_at_start"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
@@ -320,7 +320,7 @@
 		
 		return YES;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect seek notifications skipping the segment
@@ -330,7 +330,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"hidden_blocked_segment_at_start"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart)
@@ -354,7 +354,7 @@
 		
 		return YES;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect segment switch
@@ -364,7 +364,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"consecutive_segments"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
@@ -392,7 +392,7 @@
 		
 		return YES;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect single seek for the first segment. Playback resumes where no blocking takes place, but no events for the second
@@ -403,7 +403,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"consecutive_blocked_segments"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart)
@@ -430,7 +430,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect single seek for the first segment. Playback resumes where no blocking takes place, but no events for the second
@@ -441,7 +441,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"consecutive_blocked_segments_at_start"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart)
@@ -468,7 +468,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect single seek for the first segment. Playback resumes where no blocking takes place, but no events for the second
@@ -479,7 +479,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"segment_transition_into_blocked_segment"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
@@ -532,7 +532,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
 	}];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect a start event for the given segment, with YES for the user-driven information flag
@@ -542,7 +542,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"segment"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
@@ -559,7 +559,7 @@
 	}];
 	
 	[self.mediaSegmentsController playVisibleSegmentAtIndex:0];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect a start event for the given segment, with NO for the user-driven information flag (set only when calling -playVisibleSegmentAtIndex:)
@@ -569,7 +569,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"segment"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
@@ -586,7 +586,7 @@
 	}];
 	
 	[self.mediaSegmentsController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect a seek
@@ -596,7 +596,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"blocked_segment"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart)
@@ -623,7 +623,7 @@
 	}];
 	
 	[self.mediaSegmentsController playVisibleSegmentAtIndex:0];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 - (void) testSeekIntoBlockedSegment
@@ -632,7 +632,7 @@
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
 	[self playIdentifier:@"blocked_segment"];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
 		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart)
@@ -659,7 +659,7 @@
 	}];
 	
 	[self.mediaSegmentsController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
-	[self waitForExpectationsWithTimeout:30. handler:nil];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 @end
