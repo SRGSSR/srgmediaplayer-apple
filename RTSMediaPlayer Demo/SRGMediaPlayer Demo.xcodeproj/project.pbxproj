@@ -76,7 +76,7 @@
 		9F40156A1B25A2E00068196C /* videos@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "videos@2x.png"; sourceTree = "<group>"; };
 		9F4015701B25A5680068196C /* LaunchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImage.png; sourceTree = "<group>"; };
 		9F48459C1B39BC7900C48345 /* libSRGMediaPlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSRGMediaPlayer.a; path = "../build/Debug-iphoneos/libSRGMediaPlayer.a"; sourceTree = "<group>"; };
-		9F48459E1B39BD3400C48345 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; name = SRGMediaPlayer.bundle; path = "SRGMediaPlayer.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F48459E1B39BD3400C48345 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F4B1D2B1B1C990700BB0FB3 /* DemoSegmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoSegmentsViewController.h; sourceTree = "<group>"; };
 		9F4B1D2C1B1C990700BB0FB3 /* DemoSegmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoSegmentsViewController.m; sourceTree = "<group>"; };
 		9FBDE0C01B39B794008D6030 /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SRGMediaPlayer.a"; path = "/Users/onekiloparsec/RTS/srgmediaplayer-ios/Pods/../build/Debug-iphoneos/libPods-SRGMediaPlayer.a"; sourceTree = "<absolute>"; };
@@ -647,10 +647,6 @@
 				INFOPLIST_FILE = "RTSMediaPlayer Demo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Users/onekiloparsec/RTS/srgmediaplayer-ios/build/Debug-iphoneos",
-				);
 				PRODUCT_NAME = "SRGMediaPlayer Demo";
 			};
 			name = Debug;
@@ -667,10 +663,6 @@
 				INFOPLIST_FILE = "RTSMediaPlayer Demo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Users/onekiloparsec/RTS/srgmediaplayer-ios/build/Debug-iphoneos",
-				);
 				PRODUCT_NAME = "SRGMediaPlayer Demo";
 			};
 			name = Release;
