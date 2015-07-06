@@ -685,6 +685,9 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		if (oldRate == 1 && newRate == 0 && stoppedManually) {
 			[self fireEvent:self.pauseEvent userInfo:nil];
 		}
+		else if (newRate == 1 && oldRate == 0 && self.stateMachine.currentState != self.playingState) {
+			[self fireEvent:self.playEvent userInfo:nil];
+		}		
 	}
 	else if (context == AVPlayerItemPlaybackLikelyToKeepUpContext) {
 		AVPlayer *player = object;
