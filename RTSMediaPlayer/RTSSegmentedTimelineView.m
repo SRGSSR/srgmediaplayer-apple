@@ -121,6 +121,15 @@ static void commonInit(RTSSegmentedTimelineView *self);
 	[self.segmentsController playVisibleSegmentAtIndex:indexPath.row];	
 }
 
+#pragma mark - UIScrollViewDelegate protocol
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	if ([self.delegate respondsToSelector:@selector(timelineViewDidScroll:)]) {
+		[self.delegate timelineViewDidScroll:self];
+	}
+}
+
 #pragma mark - Visible cells
 
 // The -[UICollectionView indexPathsForVisibleCells] method is not reliable enough. Ask the layout instead

@@ -66,6 +66,9 @@
  */
 - (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaSegment>)segment;
 
+/**
+ * Return the list of currently visible cells
+ */
 - (NSArray *)visibleCells;
 
 /**
@@ -97,5 +100,11 @@
  */
 - (UICollectionViewCell *)timelineView:(RTSSegmentedTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment;
 
+@optional
+
+/**
+ * Called when the timeline has been scrolled interactively
+ */
+- (void)timelineViewDidScroll:(RTSSegmentedTimelineView *)timelineView;
 
 @end
