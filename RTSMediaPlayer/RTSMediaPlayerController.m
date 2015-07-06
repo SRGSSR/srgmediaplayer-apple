@@ -374,9 +374,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)pause
 {
-	if (![self.stateMachine.currentState isEqual:self.pauseEvent]) {
-		[self fireEvent:self.pauseEvent userInfo:nil];
-	}
+	// The state machine state is updated to 'Paused' in the KVO implementation method
 	[self.player pause];
 }
 
@@ -684,7 +682,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		CMTimeRange timerange = [playerItem.loadedTimeRanges.firstObject CMTimeRangeValue]; // Yes, subscripting with [0] may lead to a crash??
 		BOOL stoppedManually = CMTimeGetSeconds(timerange.duration) > 0;
 		
-		if (oldRate == 1 && newRate == 0 && stoppedManually && ![self.stateMachine.currentState isEqual:self.pausedState]) {
+		if (oldRate == 1 && newRate == 0 && stoppedManually) {
 			[self fireEvent:self.pauseEvent userInfo:nil];
 		}
 	}
