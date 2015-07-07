@@ -9,16 +9,8 @@
 
 /**
  *  Call one or several blocks during playback of an associated player. A playback time observer is similar to a 
- *  periodic time observer, but its periodic execution is reliable. 
- *
- *  A periodic time observer namely executes the associated block (only a single one) not only during playback at
- *  regular time intervals, but also when the player status changes. This leads to more calls than expected when 
- *  a task must be performed in a reliable regular fashion.
- *
- *  Since a playback time observer calls the associated blocks only when the associated player is actually playing,
- *  stream information (e.g. duration, current time) is available and reliable within a block implementation. A
- *  playback time observer can therefore also be used to update information only available during playback
- *  (e.g. stream position, remaining time).
+ *  periodic time observer, but can be registered with an RTSMediaPlayerController without having to bother
+ *  about when the player is actually ready.
  */
 @interface RTSPlaybackTimeObserver : NSObject
 

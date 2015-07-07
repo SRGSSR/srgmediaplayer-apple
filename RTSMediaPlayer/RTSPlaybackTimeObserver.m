@@ -8,8 +8,6 @@
 
 #import <libextobjc/EXTScope.h>
 
-// FIXME: A block is executed several times when seeking to another position in the stream. Fix
-
 static void *s_kvoContext  = &s_kvoContext;
 
 @interface RTSPlaybackTimeObserver ()
@@ -20,7 +18,6 @@ static void *s_kvoContext  = &s_kvoContext;
 
 @property (nonatomic) NSMutableDictionary *blocks;
 
-@property (nonatomic) id playbackStartObserver;
 @property (nonatomic) id periodicTimeObserver;
 
 @end
@@ -42,7 +39,7 @@ static void *s_kvoContext  = &s_kvoContext;
 
 - (void) dealloc
 {
-    [self removeObservers];
+    [self removeObserver];
 }
 
 #pragma mark - Associating with a player
@@ -60,16 +57,14 @@ static void *s_kvoContext  = &s_kvoContext;
 	}
 	
 	self.player = player;
-	[self.player addObserver:self forKeyPath:@"currentItem.playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:s_kvoContext];
 	
-	[self resetObservers];
+	[self resestObserver];
 }
 
 - (void) detach
 {
-	[self removeObservers];
+	[self removeObserver];
 	
-	[self.player removeObserver:self forKeyPath:@"currentItem.playbackLikelyToKeepUp" context:s_kvoContext];
 	self.player = nil;
 }
 
@@ -82,7 +77,7 @@ static void *s_kvoContext  = &s_kvoContext;
     
     if (self.blocks.count == 0)
     {
-        [self resetObservers];
+        [self resestObserver];
     }
     
     [self.blocks setObject:[block copy] forKey:identifier];
@@ -96,83 +91,39 @@ static void *s_kvoContext  = &s_kvoContext;
     
     if (self.blocks.count == 0)
     {
-        [self removeObservers];
+        [self removeObserver];
     }
 }
 
 #pragma mark - Observers
 
-- (void) resetObservers
+- (void) resestObserver
 {
-	[self removeObservers];
+	[self removeObserver];
 	
 	if (! self.player)
 	{
 		return;
 	}
 	
-	CMTime startTime = CMTimeAdd(self.player.currentItem.currentTime, CMTimeMake(1., 10.));
-	
-	// Use a boundary time observer to detect when playback begins. Using a periodic time observer only would namely lead to many block
-	// executions when the player starts. Using a boundary time observer makes it possible to filter out these irrelevant events
 	@weakify(self)
-	self.playbackStartObserver = [self.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:startTime]] queue:self.queue usingBlock:^{
+	self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:self.interval queue:self.queue usingBlock:^(CMTime time) {
 		@strongify(self)
 		
-		// Once playback begin has been detected, the observer can be discarded
-		[self.player removeTimeObserver:self.playbackStartObserver];
-		self.playbackStartObserver = nil;
-		
-		// Use a periodic time observer for periodic block execution
-		@weakify(self)
-		self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:self.interval queue:self.queue usingBlock:^(CMTime time) {
-			@strongify(self)
-			
-			// A periodic time observer also triggers block execution when the player playback status changes. If the player is paused,
-			// reset all observers so that the process starts again when playback resumes
-			if (self.player.rate == 0.)
-			{
-				[self resetObservers];
-				return;
-			}
-            
-            for (void (^block)(CMTime) in [self.blocks allValues]) {
-				dispatch_async(dispatch_get_main_queue(), ^{
-					block(time);					
-				});
-            }
-		}];
+		for (void (^block)(CMTime) in [self.blocks allValues]) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				block(time);
+			});
+		}
 	}];
 }
 
-- (void) removeObservers
+- (void) removeObserver
 {
-	if (self.playbackStartObserver)
-	{
-		[self.player removeTimeObserver:self.playbackStartObserver];
-		self.playbackStartObserver = nil;
-	}
-	
 	if (self.periodicTimeObserver)
 	{
 		[self.player removeTimeObserver:self.periodicTimeObserver];
 		self.periodicTimeObserver = nil;
-	}
-}
-
-#pragma mark - KVO
-
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	// Called when playback is resumed
-	if (context == s_kvoContext && [keyPath isEqualToString:@"currentItem.playbackLikelyToKeepUp"])
-	{
-        [self removeObservers];
-		[self resetObservers];
-	}
-	else
-	{
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
 }
 

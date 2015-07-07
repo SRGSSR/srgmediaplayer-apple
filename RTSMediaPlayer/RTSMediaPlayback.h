@@ -87,9 +87,7 @@
  *  --------------------
  */
 /**
- *  Register a block for periodical execution during playback. Playback observers are more reliable than periodic time
- *  observers which trigger block execution also when the player state changes. Such observers are therefore especially
- *  useful when some work needs to be done periodically in a reliable way
+ *  Register a block for periodical execution during playback
  *
  *  @param interval Time interval between block executions
  *  @param queue    The serial queue onto which block should be enqueued (main queue if NULL)
