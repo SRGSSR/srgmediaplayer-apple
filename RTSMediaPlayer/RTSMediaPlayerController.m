@@ -256,6 +256,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[ready setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		
+		BOOL isVideoAsset = [[[self.player.currentItem.tracks.firstObject assetTrack] mediaType] isEqualToString:AVMediaTypeVideo];
+		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+		[[AVAudioSession sharedInstance] setMode:(isVideoAsset) ? AVAudioSessionModeDefault : AVAudioSessionModeDefault error:nil];
+		[[AVAudioSession sharedInstance] setActive:YES error:nil];
+
 		BOOL autoPlay = [transition.userInfo[RTSMediaPlayerStateMachineAutoPlayInfoKey] boolValue];
 		if (autoPlay) {
 			[self.player play];
@@ -267,9 +272,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
-		BOOL isVideoAsset = [[[self.player.currentItem.tracks.firstObject assetTrack] mediaType] isEqualToString:AVMediaTypeVideo];
-		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-		[[AVAudioSession sharedInstance] setMode:(isVideoAsset) ? AVAudioSessionModeMoviePlayback : AVAudioSessionModeDefault error:nil];
 		[self resetIdleTimer];
 	}];
 	
