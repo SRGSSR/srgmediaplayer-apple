@@ -8,14 +8,12 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  Call one or several blocks during playback of an associated player. A playback time observer is similar to a 
- *  periodic time observer, but can be registered with an RTSMediaPlayerController without having to bother
- *  about when the player is actually ready.
+ *  Call one or several blocks during playback of an associated player
  */
-@interface RTSPlaybackTimeObserver : NSObject
+@interface RTSPeriodicTimeObserver : NSObject
 
 /**
- *  Create a playback time observer. Does nothing until attached to a player (see -attachToMediaPlayer:)
+ *  Create a periodic time observer. Does nothing until attached to a player (see -attachToMediaPlayer:)
  *
  *  @param interval    The interval at which the block must be executed
  *  @param queue	   The serial queue onto which block should be enqueued (main queue if NULL)

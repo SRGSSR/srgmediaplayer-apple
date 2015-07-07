@@ -54,7 +54,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 @property (nonatomic, weak) IBOutlet UILabel *blockingOverlayViewLabel;
 
 @property (nonatomic, weak) NSTimer *blockingOverlayTimer;
-@property (nonatomic, weak) id playbackTimeObserver;
+@property (nonatomic, weak) id periodicTimeObserver;
 
 @end
 
@@ -105,7 +105,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 											   object:nil];
 	
 	@weakify(self);
-	self.playbackTimeObserver = [self.mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+	self.periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 		@strongify(self);
 		[self updateAppearanceWithTime:time];
 	}];

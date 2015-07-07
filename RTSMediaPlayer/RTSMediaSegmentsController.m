@@ -111,7 +111,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 - (void)removeBlockingTimeObserver
 {
 	if (self.playerController && self.playerTimeObserver) {
-		[self.playerController removePlaybackTimeObserver:self.playerTimeObserver];
+		[self.playerController removePeriodicTimeObserver:self.playerTimeObserver];
 		self.playerTimeObserver = nil;
 	}
 }
@@ -120,7 +120,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 {
 	@weakify(self);
 	
-	// This block will necessarily run on the main thread. See addPlaybackTimeObserverForInterval:... method.
+	// This block will necessarily run on the main thread. See addPeriodicTimeObserverForInterval:... method.
 	void (^checkBlock)(CMTime) = ^(CMTime time) {
 		if (self.playerController.playbackState != RTSMediaPlaybackStatePlaying) {
 			return;
@@ -191,7 +191,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 	};
 	
 	CMTime interval = CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC);
-	self.playerTimeObserver = [self.playerController addPlaybackTimeObserverForInterval:interval
+	self.playerTimeObserver = [self.playerController addPeriodicTimeObserverForInterval:interval
 																				  queue:nil
 																			 usingBlock:checkBlock];
 }
@@ -477,14 +477,14 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 	return [self.playerController playerItem];
 }
 
-- (id)addPlaybackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime))block
+- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime))block
 {
-	return [self.playerController addPlaybackTimeObserverForInterval:interval queue:queue usingBlock:block];
+	return [self.playerController addPeriodicTimeObserverForInterval:interval queue:queue usingBlock:block];
 }
 
-- (void)removePlaybackTimeObserver:(id)observer
+- (void)removePeriodicTimeObserver:(id)observer
 {
-	return [self.playerController removePlaybackTimeObserver:observer];
+	return [self.playerController removePeriodicTimeObserver:observer];
 }
 
 @end

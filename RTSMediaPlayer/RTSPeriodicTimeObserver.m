@@ -4,13 +4,13 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import "RTSPlaybackTimeObserver.h"
+#import "RTSPeriodicTimeObserver.h"
 
 #import <libextobjc/EXTScope.h>
 
 static void *s_kvoContext  = &s_kvoContext;
 
-@interface RTSPlaybackTimeObserver ()
+@interface RTSPeriodicTimeObserver ()
 
 @property (nonatomic) CMTime interval;
 @property (nonatomic) dispatch_queue_t queue;
@@ -22,7 +22,7 @@ static void *s_kvoContext  = &s_kvoContext;
 
 @end
 
-@implementation RTSPlaybackTimeObserver
+@implementation RTSPeriodicTimeObserver
 
 #pragma mark - Object lifecycle
 
