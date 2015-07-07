@@ -87,9 +87,7 @@
  *  --------------------
  */
 /**
- *  Register a block for periodical execution during playback. Playback observers are more reliable than periodic time
- *  observers which trigger block execution also when the player state changes. Such observers are therefore especially
- *  useful when some work needs to be done periodically in a reliable way
+ *  Register a block for periodical execution during playback
  *
  *  @param interval Time interval between block executions
  *  @param queue    The serial queue onto which block should be enqueued (main queue if NULL)
@@ -98,13 +96,13 @@
  *  @return The time observer. The observer is retained by the media player controller, you can store a weak reference
  *          to it to remove it at a later time if needed
  */
-- (id)addPlaybackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
+- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
 
 /**
- *  Remove a playback time observer (does nothing if the observer is not registered)
+ *  Remove a time observer (does nothing if the observer is not registered)
  *
- *  @param playbackTimeObserver The playback time observer to remove
+ *  @param observer The time observer to remove
  */
-- (void)removePlaybackTimeObserver:(id)observer;
+- (void)removePeriodicTimeObserver:(id)observer;
 
 @end

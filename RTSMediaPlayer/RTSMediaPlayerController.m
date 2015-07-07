@@ -12,7 +12,7 @@
 
 #import "RTSMediaPlayerError.h"
 #import "RTSMediaPlayerView.h"
-#import "RTSPlaybackTimeObserver.h"
+#import "RTSPeriodicTimeObserver.h"
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSMediaPlayerLogger.h"
 
@@ -66,7 +66,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @property (readwrite) id playbackStartObserver;
 @property (readwrite) CMTime previousPlaybackTime;
 
-@property (readwrite) NSMutableDictionary *playbackTimeObservers;
+@property (readwrite) NSMutableDictionary *periodicTimeObservers;
 
 @property (readonly) RTSMediaPlayerView *playerView;
 @property (readonly) RTSActivityGestureRecognizer *activityGestureRecognizer;
@@ -107,7 +107,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	_dataSource = dataSource;
 	
 	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
-	self.playbackTimeObservers = [NSMutableDictionary dictionary];
+	self.periodicTimeObservers = [NSMutableDictionary dictionary];
 	
 	[self.stateMachine activate];
 	
@@ -446,41 +446,41 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
-- (id) addPlaybackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
+- (id) addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
 {
 	if (!block) {
 		return nil;
 	}
 	
 	NSString *identifier = [[NSUUID UUID] UUIDString];
-	RTSPlaybackTimeObserver *playbackTimeObserver = [self playbackTimeObserverForInterval:interval queue:queue];
-	[playbackTimeObserver setBlock:block forIdentifier:identifier];
+	RTSPeriodicTimeObserver *periodicTimeObserver = [self periodicTimeObserverForInterval:interval queue:queue];
+	[periodicTimeObserver setBlock:block forIdentifier:identifier];
 	
 	if (self.player) {
-		[playbackTimeObserver attachToMediaPlayer:self.player];
+		[periodicTimeObserver attachToMediaPlayer:self.player];
 	}
 	
 	// Return the opaque identifier
 	return identifier;
 }
 
-- (void) removePlaybackTimeObserver:(id)observer
+- (void) removePeriodicTimeObserver:(id)observer
 {
-	for (RTSPlaybackTimeObserver *playbackTimeObserver in [self.playbackTimeObservers allValues]) {
-		[playbackTimeObserver removeBlockWithIdentifier:observer];
+	for (RTSPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
+		[periodicTimeObserver removeBlockWithIdentifier:observer];
 	}
 }
 
-- (RTSPlaybackTimeObserver *) playbackTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue
+- (RTSPeriodicTimeObserver *) periodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue
 {
 	NSString *key = [NSString stringWithFormat:@"%@-%@-%@-%@-%p", @(interval.value), @(interval.timescale), @(interval.flags), @(interval.epoch), queue];
-	RTSPlaybackTimeObserver *playbackTimeObserver = self.playbackTimeObservers[key];
-	if (!playbackTimeObserver)
+	RTSPeriodicTimeObserver *periodicTimeObserver = self.periodicTimeObservers[key];
+	if (!periodicTimeObserver)
 	{
-		playbackTimeObserver = [[RTSPlaybackTimeObserver alloc] initWithInterval:interval queue:queue];
-		self.playbackTimeObservers[key] = playbackTimeObserver;
+		periodicTimeObserver = [[RTSPeriodicTimeObserver alloc] initWithInterval:interval queue:queue];
+		self.periodicTimeObservers[key] = periodicTimeObserver;
 	}
-	return playbackTimeObserver;
+	return periodicTimeObserver;
 }
 
 #pragma mark - AVPlayer
@@ -532,7 +532,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			self.periodicTimeObserver = nil;
 		}
 		
-		[self unregisterPlaybackObservers];
+		[self unregisterPeriodicTimeObservers];
 		
 		_player = player;
 		
@@ -552,7 +552,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			
 			[self registerPlaybackStartObserver];
 			[self registerPeriodicTimeObserver];
-			[self registerPlaybackObservers];
+			[self registerPeriodicTimeObservers];
 		}
 	}
 }
@@ -609,18 +609,18 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 	}];
 }
 
-- (void) registerPlaybackObservers
+- (void) registerPeriodicTimeObservers
 {
-	[self unregisterPlaybackObservers];
+	[self unregisterPeriodicTimeObservers];
 	
-	for (RTSPlaybackTimeObserver *playbackBlockRegistration in [self.playbackTimeObservers allValues]) {
+	for (RTSPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
 		[playbackBlockRegistration attachToMediaPlayer:self.player];
 	}
 }
 
-- (void) unregisterPlaybackObservers
+- (void) unregisterPeriodicTimeObservers
 {
-	for (RTSPlaybackTimeObserver *playbackBlockRegistration in [self.playbackTimeObservers allValues]) {
+	for (RTSPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
 		[playbackBlockRegistration detach];
 	}
 }

@@ -51,7 +51,7 @@
 	[self.mediaPlayerController attachPlayerToView:self.videoView];
 	
 	@weakify(self)
-	[self.mediaPlayerController addPlaybackTimeObserverForInterval:CMTimeMakeWithSeconds(30., 1.) queue:NULL usingBlock:^(CMTime time) {
+	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(30., 1.) queue:NULL usingBlock:^(CMTime time) {
 		@strongify(self)
 		[self.timelineView reloadSegmentsForIdentifier:self.videoIdentifier completionHandler:nil];
 		[self.timelineSlider reloadSegmentsForIdentifier:self.videoIdentifier completionHandler:nil];

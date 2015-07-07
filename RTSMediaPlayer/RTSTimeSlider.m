@@ -36,7 +36,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 @interface RTSTimeSlider ()
 
-@property (weak) id playbackTimeObserver;
+@property (weak) id periodicTimeObserver;
 @property (nonatomic, strong) UIColor *overriddenThumbTintColor;
 @property (nonatomic, strong) UIColor *overriddenMaximumTrackTintColor;
 @property (nonatomic, strong) UIColor *overriddenMinimumTrackTintColor;
@@ -90,13 +90,13 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	if (_playbackController)
 	{
-		[_playbackController removePlaybackTimeObserver:self.playbackTimeObserver];
+		[_playbackController removePeriodicTimeObserver:self.periodicTimeObserver];
 	}
 	
 	_playbackController = playbackController;
 	
 	@weakify(self)
-	self.playbackTimeObserver = [playbackController addPlaybackTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+	self.periodicTimeObserver = [playbackController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 		@strongify(self)
 		
 		if (!self.isTracking)
