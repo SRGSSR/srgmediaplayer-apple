@@ -199,7 +199,12 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	CMTimeRange currentTimeRange = [self currentTimeRange];
 	AVPlayerItem *playerItem = self.playbackController.playerItem;
-
+	if (! playerItem || playerItem.status != AVPlayerItemStatusReadyToPlay) {
+		self.valueLabel.text = @"--:--";
+		self.timeLeftValueLabel.text = @"--:--";
+		return;
+	}
+	
 	// Live and timeshift feeds in live conditions. This happens when either the following condition
 	// is met:
 	//  - We have a pure live feed, which is characterized by an empty range
