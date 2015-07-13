@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -10,7 +10,9 @@
                 <outlet property="loadingIndicator" destination="d2t-q1-HOm" id="hhI-u7-Sja"/>
                 <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="1fS-p7-nwe"/>
                 <outlet property="playPauseButton" destination="orZ-GR-Obh" id="has-wO-PCl"/>
+                <outlet property="timeLeftValueLabelWidthConstraint" destination="G8R-4I-uxy" id="wwA-Fb-CRF"/>
                 <outlet property="timeSlider" destination="dbP-gV-yjr" id="ICa-MM-Kcj"/>
+                <outlet property="valueLabelWidthConstraint" destination="LD7-6d-ZRT" id="ItF-8i-kPA"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ERh-xZ-n9v"/>
                 <outlet property="volumeView" destination="14B-nw-cM3" id="a1D-qx-5ke"/>
             </connections>
@@ -48,25 +50,25 @@
                                     <rect key="frame" x="58" y="0.0" width="542" height="30"/>
                                     <subviews>
                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dbP-gV-yjr" customClass="RTSTimeSlider">
-                                            <rect key="frame" x="46" y="0.0" width="447" height="31"/>
+                                            <rect key="frame" x="56" y="0.0" width="427" height="31"/>
                                             <connections>
                                                 <outlet property="playbackController" destination="rfJ-1C-Ygo" id="0Z5-H7-CBT"/>
                                                 <outlet property="timeLeftValueLabel" destination="OdH-jj-nfU" id="zcx-hm-PNg"/>
                                                 <outlet property="valueLabel" destination="kzH-xw-G6y" id="cEN-dj-owx"/>
                                             </connections>
                                         </slider>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzH-xw-G6y">
-                                            <rect key="frame" x="5" y="7" width="35" height="16"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdH-jj-nfU">
+                                            <rect key="frame" x="489" y="7" width="45" height="15.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="LD7-6d-ZRT"/>
+                                                <constraint firstAttribute="width" constant="45" id="G8R-4I-uxy"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdH-jj-nfU">
-                                            <rect key="frame" x="499" y="7" width="35" height="16"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzH-xw-G6y">
+                                            <rect key="frame" x="5" y="8" width="45" height="15.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="G8R-4I-uxy"/>
+                                                <constraint firstAttribute="width" constant="45" id="LD7-6d-ZRT"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
                                             <nil key="highlightedColor"/>

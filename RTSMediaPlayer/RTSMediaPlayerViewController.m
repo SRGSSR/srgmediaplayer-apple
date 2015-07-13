@@ -12,6 +12,8 @@
 #import "RTSTimeSlider.h"
 #import "RTSVolumeView.h"
 
+#import <libextobjc/EXTScope.h>
+
 @interface RTSMediaPlayerViewController () <RTSMediaPlayerControllerDataSource>
 
 @property (nonatomic, weak) id<RTSMediaPlayerControllerDataSource> dataSource;
@@ -23,6 +25,9 @@
 @property (weak) IBOutlet RTSMediaPlayerPlaybackButton *playPauseButton;
 @property (weak) IBOutlet RTSTimeSlider *timeSlider;
 @property (weak) IBOutlet RTSVolumeView *volumeView;
+
+@property (weak) IBOutlet NSLayoutConstraint *valueLabelWidthConstraint;
+@property (weak) IBOutlet NSLayoutConstraint *timeLeftValueLabelWidthConstraint;
 
 @end
 
@@ -62,6 +67,15 @@
 	
 	[self.mediaPlayerController attachPlayerToView:self.view];
 	[self.mediaPlayerController playIdentifier:self.identifier];
+	
+	@weakify(self)
+	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+		@strongify(self)
+		
+		CGFloat labelWidth = (CMTimeGetSeconds(self.timeSlider.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
+		self.valueLabelWidthConstraint.constant = labelWidth;
+		self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
+	}];
 }
 
 - (UIStatusBarStyle) preferredStatusBarStyle
