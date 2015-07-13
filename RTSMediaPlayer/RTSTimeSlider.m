@@ -178,21 +178,11 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}
 }
 
-
-// Useful for live streams. How does it work for VOD?
 - (CMTime) time
 {
     CMTimeRange currentTimeRange = [self currentTimeRange];
     Float64 timeInSeconds = CMTimeGetSeconds(currentTimeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(currentTimeRange.duration) / (self.maximumValue - self.minimumValue);
     return CMTimeMakeWithSeconds(timeInSeconds, 1.);
-}
-
-- (CMTime) convertedValueCMTime
-{
-	CGFloat fraction = (self.value - self.minimumValue) / (self.maximumValue - self.minimumValue);
-	CGFloat duration = CMTimeGetSeconds(self.playbackController.playerItem.duration);
-	// Assuming start == 0.
-	return CMTimeMakeWithSeconds(fraction*duration, NSEC_PER_SEC);
 }
 
 - (void) updateTimeRangeLabels
@@ -247,7 +237,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		[self setNeedsDisplay];
 	}
 	
-	CMTime time = [self convertedValueCMTime];
+	CMTime time = [self time];
 	
 	// First seek to the playback controller.
 	[self.playbackController seekToTime:time completionHandler:nil];
@@ -265,8 +255,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	if ([self isDraggable]) {
-		// Current time may not be the same as the current value time, if seek is not ended, or is blocked.
-		[self.playbackController playAtTime:[self convertedValueCMTime]];
+		[self.playbackController playAtTime:[self time]];
 	}
 	
 	[super endTrackingWithTouch:touch withEvent:event];
