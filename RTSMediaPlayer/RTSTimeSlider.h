@@ -20,14 +20,40 @@
  */
 @interface RTSTimeSlider : UISlider
 
+/**
+ *  The playback controller attached to the slider
+ */
 @property (nonatomic, weak) IBOutlet id<RTSMediaPlayback> playbackController;
+
+/**
+ *  The delegate receiving slider events
+ */
 @property (nonatomic, weak) IBOutlet id<RTSTimeSliderDelegate> slidingDelegate;
 
+/**
+ *  Must be bound to the label displaying the remaining time
+ */
 @property (nonatomic, weak) IBOutlet UILabel *timeLeftValueLabel;
+
+/**
+ *  Must be bound to the label displaying the current time
+ */
 @property (nonatomic, weak) IBOutlet UILabel *valueLabel;
 
-// Defaults to black
+/**
+ *  Bar border color (defaults to black)
+ */
 @property (nonatomic, strong) IBInspectable UIColor *borderColor;
+
+/**
+ *  The displayed time range
+ */
+@property (nonatomic, readonly) CMTimeRange timeRange;
+
+/**
+ *  The current time
+ */
+@property (nonatomic, readonly) CMTime time;
 
 @end
 

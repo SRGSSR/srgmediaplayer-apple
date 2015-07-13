@@ -101,11 +101,11 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		
 		if (!self.isTracking)
 		{
-			CMTimeRange currentTimeRange = [self currentTimeRange];
-			if (!CMTIMERANGE_IS_EMPTY(currentTimeRange))
+			CMTimeRange timeRange = [self timeRange];
+			if (!CMTIMERANGE_IS_EMPTY(timeRange))
 			{
-				self.minimumValue = CMTimeGetSeconds(currentTimeRange.start);
-				self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(currentTimeRange));
+				self.minimumValue = CMTimeGetSeconds(timeRange.start);
+				self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange));
 				
 				AVPlayerItem *playerItem = self.playbackController.playerItem;
 				self.value = CMTimeGetSeconds(playerItem.currentTime);
@@ -164,30 +164,40 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark - Time range retrieval and display
 
-- (CMTimeRange)currentTimeRange
+- (CMTimeRange) timeRange
 {
-	// TODO: Should later add support for discontinuous seekable time ranges
 	AVPlayerItem *playerItem = self.playbackController.playerItem;
-	NSValue *seekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-	if (seekableTimeRangeValue) {
-		CMTimeRange seekableTimeRange = [seekableTimeRangeValue CMTimeRangeValue];
-		return CMTIMERANGE_IS_VALID(seekableTimeRange) ? seekableTimeRange : kCMTimeRangeZero;
-	}
-	else {
+	
+	NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
+	if (!firstSeekableTimeRangeValue) {
 		return kCMTimeRangeZero;
 	}
+	
+	NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
+	if (!lastSeekableTimeRangeValue) {
+		return kCMTimeRangeZero;
+	}
+	
+	CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
+	CMTimeRange lastSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
+	
+	if (!CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || !CMTIMERANGE_IS_VALID(lastSeekableTimeRange)) {
+		return kCMTimeRangeZero;
+	}
+	
+	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
 }
 
 - (CMTime) time
 {
-    CMTimeRange currentTimeRange = [self currentTimeRange];
-    Float64 timeInSeconds = CMTimeGetSeconds(currentTimeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(currentTimeRange.duration) / (self.maximumValue - self.minimumValue);
+    CMTimeRange timeRange = [self timeRange];
+    Float64 timeInSeconds = CMTimeGetSeconds(timeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(timeRange.duration) / (self.maximumValue - self.minimumValue);
     return CMTimeMakeWithSeconds(timeInSeconds, 1.);
 }
 
 - (void) updateTimeRangeLabels
 {
-	CMTimeRange currentTimeRange = [self currentTimeRange];
+	CMTimeRange timeRange = [self timeRange];
 	AVPlayerItem *playerItem = self.playbackController.playerItem;
 	if (! playerItem || playerItem.status != AVPlayerItemStatusReadyToPlay) {
 		self.valueLabel.text = @"--:--";
@@ -202,7 +212,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	//    to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance of 15 seconds
 	static const float RTSToleranceInSeconds = 15.f;
 	
-	if (CMTIMERANGE_IS_EMPTY(currentTimeRange)
+	if (CMTIMERANGE_IS_EMPTY(timeRange)
 		|| (CMTIME_IS_INDEFINITE(playerItem.duration) && (self.maximumValue - self.value < RTSToleranceInSeconds)))
 	{
 		self.valueLabel.text = @"--:--";
