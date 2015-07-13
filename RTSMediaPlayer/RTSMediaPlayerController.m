@@ -16,6 +16,12 @@
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSMediaPlayerLogger.h"
 
+typedef NS_ENUM(NSInteger, RTSMediaType) {
+	RTSMediaTypeUnknown,
+	RTSMediaTypeVideo,
+	RTSMediaTypeAudio
+};
+
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
 
 NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
@@ -109,6 +115,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	self.periodicTimeObservers = [NSMutableDictionary dictionary];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+	
 	[self.stateMachine activate];
 	
 	return self;
@@ -119,6 +127,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	if (![self.stateMachine.currentState isEqual:self.idleState]) {
 		RTSMediaPlayerLogWarning(@"The media player controller reached dealloc while still active. You should call the `reset` method before reaching dealloc.");
 	}
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[self.activityView removeGestureRecognizer:self.activityGestureRecognizer];
 	
@@ -256,17 +266,31 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[ready setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		
-		BOOL isVideoAsset = [[[self.player.currentItem.tracks.firstObject assetTrack] mediaType] isEqualToString:AVMediaTypeVideo];
-		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-		[[AVAudioSession sharedInstance] setMode:(isVideoAsset) ? AVAudioSessionModeDefault : AVAudioSessionModeDefault error:nil];
-		[[AVAudioSession sharedInstance] setActive:YES error:nil];
-
 		BOOL autoPlay = [transition.userInfo[RTSMediaPlayerStateMachineAutoPlayInfoKey] boolValue];
 		if (autoPlay) {
 			[self.player play];
 		}
 		else if (self.player.rate == 0) {
 			[self fireEvent:self.pauseEvent userInfo:nil];
+		}
+	}];
+	
+	[playing setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
+		@strongify(self)
+
+		// See https://developer.apple.com/library/ios/qa/qa1668/_index.html
+		RTSMediaType mediaType = [self mediaType];
+		if (mediaType == RTSMediaTypeVideo) {
+			[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
+			[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeMoviePlayback error:nil];
+		}
+		else if (mediaType == RTSMediaTypeAudio) {
+			[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+			[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeDefault error:nil];
+		}
+		else {
+			[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
+			[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeDefault error:nil];
 		}
 	}];
 	
@@ -292,6 +316,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
 		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
+		[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeDefault error:nil];
 		self.previousPlaybackTime = kCMTimeInvalid;
 		self.playerView.player = nil;
 		self.player = nil;
@@ -557,6 +582,21 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			[self registerPeriodicTimeObservers];
 		}
 	}
+}
+
+- (RTSMediaType)mediaType
+{
+	if (! self.player) {
+		return RTSMediaTypeUnknown;
+	}
+	
+	NSArray *tracks = self.player.currentItem.tracks;
+	if (tracks.count == 0) {
+		return RTSMediaTypeUnknown;
+	}
+	
+	NSString *mediaType = [[tracks.firstObject assetTrack] mediaType];
+	return [mediaType isEqualToString:AVMediaTypeVideo] ? RTSMediaTypeVideo : RTSMediaTypeAudio;
 }
 
 - (void)registerPlaybackStartObserver
@@ -892,6 +932,16 @@ static void LogProperties(id object)
 	}
 	else {
 		playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+	}
+}
+
+#pragma mark - Notifications
+
+- (void)applicationWillResignActive:(NSNotification *)notification
+{
+	if ([self mediaType] == RTSMediaTypeVideo) {
+		[self.player pause];
+		[self fireEvent:self.pauseEvent userInfo:nil];
 	}
 }
 
