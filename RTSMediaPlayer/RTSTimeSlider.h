@@ -46,11 +46,6 @@
 @property (nonatomic, strong) IBInspectable UIColor *borderColor;
 
 /**
- *  The displayed time range
- */
-@property (nonatomic, readonly) CMTimeRange timeRange;
-
-/**
  *  The current time
  */
 @property (nonatomic, readonly) CMTime time;

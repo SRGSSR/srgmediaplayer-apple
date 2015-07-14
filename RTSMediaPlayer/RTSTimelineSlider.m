@@ -57,7 +57,7 @@
 {
 	[super drawRect:rect];
 	
-	CMTimeRange timeRange = [self timeRange];
+	CMTimeRange timeRange = [self.playbackController timeRange];
 	if (CMTIMERANGE_IS_EMPTY(timeRange))
 	{
 		return;

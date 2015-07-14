@@ -473,6 +473,30 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
+- (CMTimeRange) timeRange
+{
+	AVPlayerItem *playerItem = self.playerItem;
+	
+	NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
+	if (!firstSeekableTimeRangeValue) {
+		return kCMTimeRangeZero;
+	}
+	
+	NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
+	if (!lastSeekableTimeRangeValue) {
+		return kCMTimeRangeZero;
+	}
+	
+	CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
+	CMTimeRange lastSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
+	
+	if (!CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || !CMTIMERANGE_IS_VALID(lastSeekableTimeRange)) {
+		return kCMTimeRangeZero;
+	}
+	
+	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
+}
+
 - (id) addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
 {
 	if (!block) {

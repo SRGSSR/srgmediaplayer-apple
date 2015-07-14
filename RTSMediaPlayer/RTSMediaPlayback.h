@@ -82,6 +82,11 @@
 - (AVPlayerItem *)playerItem;
 
 /**
+ *  The current media time range (might be empty or indefinite)
+ */
+@property (nonatomic, readonly) CMTimeRange timeRange;
+
+/**
  *  --------------------
  *  @name Time Observers
  *  --------------------

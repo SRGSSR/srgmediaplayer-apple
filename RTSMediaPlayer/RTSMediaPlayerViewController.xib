@@ -153,13 +153,24 @@
                         <constraint firstAttribute="centerX" secondItem="orZ-GR-Obh" secondAttribute="centerX" id="tp9-ea-bQv"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2J-Sq-TNH">
+                    <rect key="frame" x="519" y="58" width="30" height="30"/>
+                    <state key="normal" title="Live">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="goToLive:" destination="-1" eventType="touchUpInside" id="850-9S-0FL"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="kqK-gI-E5v" secondAttribute="trailing" id="13J-fR-tYI"/>
+                <constraint firstAttribute="trailing" secondItem="f2J-Sq-TNH" secondAttribute="trailing" constant="51" id="5l4-9y-EDf"/>
                 <constraint firstItem="m4e-aB-8GY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EjJ-Y6-i5x"/>
                 <constraint firstAttribute="trailing" secondItem="m4e-aB-8GY" secondAttribute="trailing" id="Ek5-aN-GFQ"/>
                 <constraint firstItem="kqK-gI-E5v" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="b1o-Vb-QQk"/>
+                <constraint firstItem="f2J-Sq-TNH" firstAttribute="top" secondItem="kqK-gI-E5v" secondAttribute="bottom" constant="8" id="d7a-A9-gqQ"/>
                 <constraint firstAttribute="centerX" secondItem="d2t-q1-HOm" secondAttribute="centerX" id="ghL-wx-Tv8"/>
                 <constraint firstAttribute="bottom" secondItem="m4e-aB-8GY" secondAttribute="bottom" id="mxb-hA-Ktf"/>
                 <constraint firstAttribute="centerY" secondItem="d2t-q1-HOm" secondAttribute="centerY" id="qRh-aH-gf7"/>

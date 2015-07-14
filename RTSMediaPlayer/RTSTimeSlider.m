@@ -101,7 +101,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		
 		if (!self.isTracking)
 		{
-			CMTimeRange timeRange = [self timeRange];
+			CMTimeRange timeRange = [self.playbackController timeRange];
 			if (!CMTIMERANGE_IS_EMPTY(timeRange))
 			{
 				self.minimumValue = CMTimeGetSeconds(timeRange.start);
@@ -162,42 +162,18 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 }
 
 
-#pragma mark - Time range retrieval and display
-
-- (CMTimeRange) timeRange
-{
-	AVPlayerItem *playerItem = self.playbackController.playerItem;
-	
-	NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-	if (!firstSeekableTimeRangeValue) {
-		return kCMTimeRangeZero;
-	}
-	
-	NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
-	if (!lastSeekableTimeRangeValue) {
-		return kCMTimeRangeZero;
-	}
-	
-	CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
-	CMTimeRange lastSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
-	
-	if (!CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || !CMTIMERANGE_IS_VALID(lastSeekableTimeRange)) {
-		return kCMTimeRangeZero;
-	}
-	
-	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
-}
+#pragma mark - Time display
 
 - (CMTime) time
 {
-    CMTimeRange timeRange = [self timeRange];
+    CMTimeRange timeRange = self.playbackController.timeRange;
     Float64 timeInSeconds = CMTimeGetSeconds(timeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(timeRange.duration) / (self.maximumValue - self.minimumValue);
     return CMTimeMakeWithSeconds(timeInSeconds, 1.);
 }
 
 - (void) updateTimeRangeLabels
 {
-	CMTimeRange timeRange = [self timeRange];
+	CMTimeRange timeRange = self.playbackController.timeRange;
 	AVPlayerItem *playerItem = self.playbackController.playerItem;
 	if (! playerItem || playerItem.status != AVPlayerItemStatusReadyToPlay) {
 		self.valueLabel.text = @"--:--";

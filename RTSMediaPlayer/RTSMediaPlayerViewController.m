@@ -72,7 +72,7 @@
 	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 		@strongify(self)
 		
-		CGFloat labelWidth = (CMTimeGetSeconds(self.timeSlider.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
+		CGFloat labelWidth = (CMTimeGetSeconds(self.mediaPlayerController.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
 		self.valueLabelWidthConstraint.constant = labelWidth;
 		self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
 	}];
@@ -134,6 +134,16 @@
 {
 	[self.mediaPlayerController reset];
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction) goToLive:(id)sender
+{
+	CMTimeRange timeRange = self.mediaPlayerController.timeRange;
+	if (CMTIMERANGE_IS_INDEFINITE(timeRange) || CMTIMERANGE_IS_EMPTY(timeRange)) {
+		return;
+	}
+	
+	[self.mediaPlayerController playAtTime:CMTimeRangeGetEnd(timeRange)];
 }
 
 @end
