@@ -93,12 +93,6 @@
 	[self updateButton];
 }
 
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	[self updateButton];
-}
-
 - (void)awakeFromNib
 {
 	[super awakeFromNib];
