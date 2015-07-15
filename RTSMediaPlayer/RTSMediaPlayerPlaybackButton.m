@@ -18,17 +18,25 @@
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackStateDidChangeNotification object:_mediaPlayerController];
+	if (_mediaPlayerController) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:RTSMediaPlayerPlaybackStateDidChangeNotification
+													  object:_mediaPlayerController];
+	}
 	
 	_mediaPlayerController = mediaPlayerController;
 	
-	if (!mediaPlayerController)
+	if (!mediaPlayerController) {
 		return;
+	}
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(mediaPlayerPlaybackStateDidChange:)
+												 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+											   object:mediaPlayerController];
 }
 
-- (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
+- (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
 	[self updateButton];
 }
@@ -53,15 +61,13 @@
 	[self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
 	[self addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
 
-	UIImage *normalImage;
-	UIImage *highlightedImage;
-	if (isPlaying)
-	{
+	UIImage *normalImage = nil;
+	UIImage *highlightedImage = nil;
+	if (isPlaying) {
 		normalImage = [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
 		highlightedImage = [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
 	}
-	else
-	{
+	else {
 		normalImage = [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.normalColor];
 		highlightedImage = [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.hightlightColor];
 	}
@@ -69,21 +75,33 @@
 	[self setImage:highlightedImage forState:UIControlStateHighlighted];
 }
 
-- (void) setBounds:(CGRect)bounds
+- (void)setBounds:(CGRect)bounds
 {
 	[super setBounds:bounds];
 	[self updateButton];
 }
 
-- (void) setNormalColor:(UIColor *)normalColor
+- (void)setNormalColor:(UIColor *)normalColor
 {
 	_normalColor = normalColor;
 	[self updateButton];
 }
 
-- (void) setHightlightColor:(UIColor *)hightlightColor
+- (void)setHightlightColor:(UIColor *)hightlightColor
 {
 	_hightlightColor = hightlightColor;
+	[self updateButton];
+}
+
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+	[self updateButton];
+}
+
+- (void)awakeFromNib
+{
+	[super awakeFromNib];
 	[self updateButton];
 }
 

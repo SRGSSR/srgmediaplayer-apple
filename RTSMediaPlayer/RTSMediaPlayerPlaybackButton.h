@@ -11,7 +11,7 @@ IB_DESIGNABLE
 @interface RTSMediaPlayerPlaybackButton : UIButton
 
 /**
- *  <#Description#>
+ *  The media player to which the playback button must be associated with.
  */
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
