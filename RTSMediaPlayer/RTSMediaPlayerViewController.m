@@ -71,7 +71,7 @@
 	[self.mediaPlayerController attachPlayerToView:self.view];
 	[self.mediaPlayerController playIdentifier:self.identifier];
 	
-	self.liveButton.hidden = YES;
+	self.liveButton.alpha = 0.f;
 	
 	@weakify(self)
 	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
@@ -95,10 +95,12 @@
 - (void)updateLiveButton
 {
 	if (self.mediaPlayerController.streamType == RTSMediaStreamTypeDVR) {
-		self.liveButton.hidden = self.timeSlider.live;
+		[UIView animateWithDuration:0.2 animations:^{
+			self.liveButton.alpha = self.timeSlider.live ? 0.f : 1.f;
+		}];
 	}
 	else {
-		self.liveButton.hidden = YES;
+		self.liveButton.alpha = 0.f;
 	}
 }
 
@@ -155,6 +157,10 @@
 
 - (IBAction) goToLive:(id)sender
 {
+	[UIView animateWithDuration:0.2 animations:^{
+		self.liveButton.alpha = 0.f;
+	}];
+	
 	CMTimeRange timeRange = self.mediaPlayerController.timeRange;
 	if (CMTIMERANGE_IS_INDEFINITE(timeRange) || CMTIMERANGE_IS_EMPTY(timeRange)) {
 		return;
