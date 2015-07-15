@@ -74,6 +74,9 @@
 	[self.liveButton setTitle:RTSMediaPlayerLocalizedString(@"Back to live", nil) forState:UIControlStateNormal];
 	self.liveButton.alpha = 0.f;
 	
+	self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
+	self.liveButton.layer.borderWidth = 1.f;
+	
 	@weakify(self)
 	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 		@strongify(self)
