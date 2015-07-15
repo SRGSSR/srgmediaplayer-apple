@@ -124,6 +124,7 @@
 		case RTSMediaPlaybackStatePreparing:
 		case RTSMediaPlaybackStateReady:
 		case RTSMediaPlaybackStateStalled:
+		case RTSMediaPlaybackStateSeeking:
 			[self.loadingIndicator startAnimating];
 			break;
 		case RTSMediaPlaybackStateEnded:
