@@ -25,6 +25,7 @@
 @property (weak) IBOutlet RTSMediaPlayerPlaybackButton *playPauseButton;
 @property (weak) IBOutlet RTSTimeSlider *timeSlider;
 @property (weak) IBOutlet RTSVolumeView *volumeView;
+@property (weak) IBOutlet UIButton *liveButton;
 
 @property (weak) IBOutlet NSLayoutConstraint *valueLabelWidthConstraint;
 @property (weak) IBOutlet NSLayoutConstraint *timeLeftValueLabelWidthConstraint;
@@ -55,6 +56,8 @@
 	return self;
 }
 
+#pragma mark - View lifecycle
+
 - (void) viewDidLoad
 {
 	[super viewDidLoad];
@@ -68,6 +71,8 @@
 	[self.mediaPlayerController attachPlayerToView:self.view];
 	[self.mediaPlayerController playIdentifier:self.identifier];
 	
+	self.liveButton.hidden = YES;
+	
 	@weakify(self)
 	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 		@strongify(self)
@@ -75,6 +80,8 @@
 		CGFloat labelWidth = (CMTimeGetSeconds(self.mediaPlayerController.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
 		self.valueLabelWidthConstraint.constant = labelWidth;
 		self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
+		
+		[self updateLiveButton];
 	}];
 }
 
@@ -83,7 +90,17 @@
 	return UIStatusBarStyleDefault;
 }
 
+#pragma mark - UI
 
+- (void)updateLiveButton
+{
+	if (self.mediaPlayerController.streamType == RTSMediaStreamTypeDVR) {
+		self.liveButton.hidden = self.timeSlider.live;
+	}
+	else {
+		self.liveButton.hidden = YES;
+	}
+}
 
 #pragma mark - RTSMediaPlayerControllerDataSource
 
@@ -144,6 +161,11 @@
 	}
 	
 	[self.mediaPlayerController playAtTime:CMTimeRangeGetEnd(timeRange)];
+}
+
+- (IBAction) seek:(id)sender
+{
+	[self updateLiveButton];
 }
 
 @end

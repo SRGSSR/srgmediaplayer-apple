@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTSMediaPlayerViewController">
             <connections>
+                <outlet property="liveButton" destination="f2J-Sq-TNH" id="ufj-9B-9fS"/>
                 <outlet property="loadingIndicator" destination="d2t-q1-HOm" id="hhI-u7-Sja"/>
                 <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="1fS-p7-nwe"/>
                 <outlet property="playPauseButton" destination="orZ-GR-Obh" id="has-wO-PCl"/>
@@ -52,6 +53,7 @@
                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dbP-gV-yjr" customClass="RTSTimeSlider">
                                             <rect key="frame" x="56" y="0.0" width="427" height="31"/>
                                             <connections>
+                                                <action selector="seek:" destination="-1" eventType="valueChanged" id="Kez-Th-9XW"/>
                                                 <outlet property="playbackController" destination="rfJ-1C-Ygo" id="0Z5-H7-CBT"/>
                                                 <outlet property="timeLeftValueLabel" destination="OdH-jj-nfU" id="zcx-hm-PNg"/>
                                                 <outlet property="valueLabel" destination="kzH-xw-G6y" id="cEN-dj-owx"/>
@@ -184,6 +186,7 @@
                 <outletCollection property="overlayViews" destination="kqK-gI-E5v" id="loX-MY-6Bg"/>
                 <outletCollection property="overlayViews" destination="m4e-aB-8GY" id="6Yh-NX-pIr"/>
                 <outletCollection property="overlayViews" destination="14B-nw-cM3" id="vtV-N5-t6X"/>
+                <outletCollection property="overlayViews" destination="f2J-Sq-TNH" id="Ho6-8D-aPf"/>
             </connections>
         </customObject>
     </objects>

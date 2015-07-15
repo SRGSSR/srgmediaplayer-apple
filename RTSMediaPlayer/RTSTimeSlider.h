@@ -50,6 +50,11 @@
  */
 @property (nonatomic, readonly) CMTime time;
 
+/**
+ *  Return YES iff the current slider position matches the conditions of a live feed
+ */
+@property (nonatomic, readonly, getter=isLive) BOOL live;
+
 @end
 
 @protocol RTSTimeSliderDelegate <NSObject>

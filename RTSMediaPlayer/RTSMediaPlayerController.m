@@ -497,6 +497,19 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
 }
 
+- (RTSMediaStreamType) streamType
+{
+	if (CMTIMERANGE_IS_EMPTY(self.timeRange)) {
+		return RTSMediaStreamTypeLive;
+	}
+	else if (CMTIME_IS_INDEFINITE(self.playerItem.duration)) {
+		return RTSMediaStreamTypeDVR;
+	}
+	else {
+		return RTSMediaStreamTypeOnDemand;
+	}
+}
+
 - (id) addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
 {
 	if (!block) {

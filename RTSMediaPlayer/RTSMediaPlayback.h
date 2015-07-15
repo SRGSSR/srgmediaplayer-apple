@@ -4,6 +4,7 @@
 //  Licence information is available from the LICENCE file.
 //
 
+#import <SRGMediaPlayer/RTSMediaPlayerConstants.h>
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
@@ -85,6 +86,11 @@
  *  The current media time range (might be empty or indefinite)
  */
 @property (nonatomic, readonly) CMTimeRange timeRange;
+
+/**
+ *  The stream type
+ */
+@property (readonly) RTSMediaStreamType streamType;
 
 /**
  *  --------------------

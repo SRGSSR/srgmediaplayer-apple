@@ -85,6 +85,26 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackSegmentChange) {
 	RTSMediaPlaybackSegmentSeekUponBlockingEnd,
 };
 
+/**
+ *  @enum RTSMediaStreamType
+ *
+ *  Enumeration of the possible stream types.
+ */
+typedef NS_ENUM(NSInteger, RTSMediaStreamType) {
+	/**
+	 * On-demand stream
+	 */
+	RTSMediaStreamTypeOnDemand,
+	/**
+	 * Live stream
+	 */
+	RTSMediaStreamTypeLive,
+	/**
+	 * DVR stream
+	 */
+	RTSMediaStreamTypeDVR,
+};
+
 FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in seconds.
 
 /**
