@@ -71,6 +71,7 @@
 	[self.mediaPlayerController attachPlayerToView:self.view];
 	[self.mediaPlayerController playIdentifier:self.identifier];
 	
+	[self.liveButton setTitle:RTSMediaPlayerLocalizedString(@"Back to live", nil) forState:UIControlStateNormal];
 	self.liveButton.alpha = 0.f;
 	
 	@weakify(self)

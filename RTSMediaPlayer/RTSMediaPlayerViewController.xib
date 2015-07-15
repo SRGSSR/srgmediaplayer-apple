@@ -155,17 +155,23 @@
                         <constraint firstAttribute="centerX" secondItem="orZ-GR-Obh" secondAttribute="centerX" id="tp9-ea-bQv"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2J-Sq-TNH">
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2J-Sq-TNH">
                     <rect key="frame" x="484" y="50" width="102" height="30"/>
-                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.76000000000000001" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.52000000000000002" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="102" id="osw-dO-Mt3"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
                     <state key="normal" title="Back to live">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="osw-dO-Mt3"/>
+                        </mask>
+                    </variation>
                     <connections>
                         <action selector="goToLive:" destination="-1" eventType="touchUpInside" id="850-9S-0FL"/>
                     </connections>
