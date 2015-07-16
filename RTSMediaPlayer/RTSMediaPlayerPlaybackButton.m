@@ -25,7 +25,7 @@
 	}
 	
 	_mediaPlayerController = mediaPlayerController;
-	[self updateButton];
+	[self refreshButton];
 
 	if (!mediaPlayerController) {
 		return;
@@ -39,22 +39,22 @@
 
 - (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
-	[self updateButton];
+	[self refreshButton];
 }
 
 - (void)play
 {
 	[self.mediaPlayerController play];
-	[self updateButton];
+	[self refreshButton];
 }
 
 - (void)pause
 {
 	[self.mediaPlayerController pause];
-	[self updateButton];
+	[self refreshButton];
 }
 
-- (void)updateButton
+- (void)refreshButton
 {
 	BOOL isPlaying = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	SEL action = isPlaying ? @selector(pause) : @selector(play);
@@ -79,25 +79,25 @@
 - (void)setBounds:(CGRect)bounds
 {
 	[super setBounds:bounds];
-	[self updateButton];
+	[self refreshButton];
 }
 
 - (void)setNormalColor:(UIColor *)normalColor
 {
 	_normalColor = normalColor;
-	[self updateButton];
+	[self refreshButton];
 }
 
 - (void)setHightlightColor:(UIColor *)hightlightColor
 {
 	_hightlightColor = hightlightColor;
-	[self updateButton];
+	[self refreshButton];
 }
 
 - (void)awakeFromNib
 {
 	[super awakeFromNib];
-	[self updateButton];
+	[self refreshButton];
 }
 
 @end
