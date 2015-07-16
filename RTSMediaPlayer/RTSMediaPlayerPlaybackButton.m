@@ -25,7 +25,8 @@
 	}
 	
 	_mediaPlayerController = mediaPlayerController;
-	
+	[self updateButton];
+
 	if (!mediaPlayerController) {
 		return;
 	}
