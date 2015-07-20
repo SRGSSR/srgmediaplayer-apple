@@ -376,4 +376,37 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 					  CGRectGetHeight(trackFrame));
 }
 
+- (void)willMoveToWindow:(UIWindow *)window
+{
+	[super willMoveToWindow:window];
+	
+	if (window) {
+		@weakify(self)
+		self.periodicTimeObserver = [self.playbackController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+			@strongify(self)
+			
+			if (!self.isTracking)
+			{
+				CMTimeRange timeRange = [self.playbackController timeRange];
+				if (!CMTIMERANGE_IS_EMPTY(timeRange))
+				{
+					self.minimumValue = CMTimeGetSeconds(timeRange.start);
+					self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange));
+					
+					AVPlayerItem *playerItem = self.playbackController.playerItem;
+					self.value = CMTimeGetSeconds(playerItem.currentTime);
+				}
+				else
+				{
+					self.minimumValue = 0.;
+					self.maximumValue = 0.;
+					self.value = 0.;
+				}
+			}
+			[self updateTimeRangeLabels];
+			[self setNeedsDisplay];
+		}];
+	}
+}
+
 @end
