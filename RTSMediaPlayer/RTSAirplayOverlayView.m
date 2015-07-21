@@ -52,18 +52,23 @@
 	self.userInteractionEnabled = NO;
 	self.hidden = YES;
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wirelessRouteActiveDidChange:) name:MPVolumeViewWirelessRouteActiveDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(wirelessRouteActiveDidChange:)
+                                                 name:MPVolumeViewWirelessRouteActiveDidChangeNotification
+                                               object:nil];
 	
 	self.volumeView = [[MPVolumeView alloc] init];
 }
 
 - (NSString*) activeAirplayOutputRouteName
 {
-	AVAudioSession* audioSession = [AVAudioSession sharedInstance];
-	AVAudioSessionRouteDescription* currentRoute = audioSession.currentRoute;
-	for (AVAudioSessionPortDescription* outputPort in currentRoute.outputs){
-		if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay])
+	AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+	AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
+
+    for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
+        if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
 			return outputPort.portName;
+        }
 	}
 	
 	return nil;
@@ -85,11 +90,28 @@
 
 #pragma mark - Drawings
 
-- (void) drawRect:(CGRect)rect
+- (void)drawRect:(CGRect)rect
 {
-	CGFloat width = 60.0f;
-	CGFloat height = width * 10 / 16;
-	
+    CGFloat width, height;
+    CGFloat stringRectHeight = 30.0;
+    CGFloat stringRectMargin = 5.0;
+    CGFloat lineWidth = 4.0;
+    CGFloat shapeSeparatorDelta = 5.0f;
+    CGFloat quadCurveHeight = 20.0f;
+
+    CGFloat maxWidth = CGRectGetWidth(self.bounds) - 2*lineWidth;
+    CGFloat maxHeight = CGRectGetHeight(self.bounds) - stringRectHeight - quadCurveHeight - shapeSeparatorDelta - 10.;
+    CGFloat aspectRatio = 16./10.0;
+    
+    if (maxWidth < maxHeight * aspectRatio) {
+        width = maxWidth;
+        height = width / aspectRatio;
+    }
+    else {
+        height = maxHeight;
+        width = height * aspectRatio;
+    }
+    
 	CGFloat midX = CGRectGetMidX(rect);
 	CGFloat midY = CGRectGetMidY(rect);
 	
@@ -99,30 +121,28 @@
 	CGContextSetLineWidth(context, 4.0);
 	CGContextSetStrokeColorWithColor(context, self.tintColor.CGColor);
 	
-	CGRect rectangle = CGRectMake(midX-width,midY-height,width*2,height*2);
+	CGRect rectangle = CGRectMake(midX-width/2.0, midY-height/2.0, width, height);
 	CGContextAddRect(context, rectangle);
 	CGContextStrokePath(context);
-	
-	CGFloat shapeSeparatorDelta = 5.0f;
-	CGFloat quadCurveHeight = 20.0f;
-	
-	CGContextMoveToPoint(context, midX-width/2, midY+height+shapeSeparatorDelta);
-	CGContextAddQuadCurveToPoint(context, midX, midY+height+quadCurveHeight, midX+width/2, midY+height+shapeSeparatorDelta);
+		
+	CGContextMoveToPoint(context, midX-width/4.0, midY+height/2.0+shapeSeparatorDelta);
+	CGContextAddQuadCurveToPoint(context, midX, midY+height/2.0+quadCurveHeight, midX+width/4.0, midY+height/2.0+shapeSeparatorDelta);
 	CGContextSetFillColorWithColor(context, self.tintColor.CGColor);
 	CGContextFillPath(context);
 	
-	CGRect titleRect = CGRectMake(20, midY+height+quadCurveHeight, CGRectGetMaxX(rect)-40, 30.0f);
+    CGRect titleRect = CGRectInset(rectangle, 8.0, 10.0);
 	[self drawTitleInRect:titleRect];
 	
-	CGRect subtitleRect = CGRectMake(20, CGRectGetMaxY(titleRect), CGRectGetMaxX(rect)-40, 30.0f);
+	CGRect subtitleRect = CGRectMake(stringRectMargin, midY+height/2.0+quadCurveHeight-5.0, CGRectGetMaxX(rect)-2*stringRectMargin, stringRectHeight);
 	[self drawSubtitleInRect:subtitleRect];
 }
 
-- (void) drawTitleInRect:(CGRect)rect
+- (void)drawTitleInRect:(CGRect)rect
 {
-	NSDictionary* attributes = [self airplayOverlayViewTitleAttributedDictionary:self];
-	if ([self.dataSource respondsToSelector:@selector(airplayOverlayViewTitleAttributedDictionary:)])
+	NSDictionary *attributes = [self airplayOverlayViewTitleAttributedDictionary:self];
+    if ([self.dataSource respondsToSelector:@selector(airplayOverlayViewTitleAttributedDictionary:)]) {
 		attributes = [self.dataSource airplayOverlayViewTitleAttributedDictionary:self];
+    }
 	
 	NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
 	
@@ -130,19 +150,20 @@
 	[title drawWithRect:rect options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:drawingContext];
 }
 
-- (void) drawSubtitleInRect:(CGRect)rect
+- (void)drawSubtitleInRect:(CGRect)rect
 {
 	NSString *routeName = [self activeAirplayOutputRouteName];
 	
 	NSString *subtitle = [self airplayOverlayView:self subtitleForAirplayRouteName:routeName];
-	if ([self.dataSource respondsToSelector:@selector(airplayOverlayView:subtitleForAirplayRouteName:)])
+    if ([self.dataSource respondsToSelector:@selector(airplayOverlayView:subtitleForAirplayRouteName:)]) {
 		subtitle = [self.dataSource airplayOverlayView:self subtitleForAirplayRouteName:routeName];
+    }
 	
-	if (subtitle.length > 0)
-	{
+	if (subtitle.length > 0) {
 		NSDictionary* attributes = [self airplayOverlayViewSubitleAttributedDictionary:self];
-		if ([self.dataSource respondsToSelector:@selector(airplayOverlayViewSubitleAttributedDictionary:)])
+        if ([self.dataSource respondsToSelector:@selector(airplayOverlayViewSubitleAttributedDictionary:)]) {
 			attributes = [self.dataSource airplayOverlayViewSubitleAttributedDictionary:self];
+        }
 		
 		NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
 		drawingContext.minimumScaleFactor = 3/4;
@@ -155,7 +176,7 @@
 
 #pragma mark - RTSAirplayOverlayViewDataSource
 
-- (NSDictionary *) airplayOverlayViewTitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView
+- (NSDictionary *)airplayOverlayViewTitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView
 {
 	NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
 	style.alignment = NSTextAlignmentCenter;
@@ -165,19 +186,19 @@
 			  NSParagraphStyleAttributeName: style };
 }
 
-- (NSString *) airplayOverlayView:(RTSAirplayOverlayView *)airplayOverlayView subtitleForAirplayRouteName:(NSString *)routeName
+- (NSString *)airplayOverlayView:(RTSAirplayOverlayView *)airplayOverlayView subtitleForAirplayRouteName:(NSString *)routeName
 {
 	return [NSString stringWithFormat:RTSMediaPlayerLocalizedString(@"This video is playing on «%@»", nil), routeName];
 }
 
-- (NSDictionary *) airplayOverlayViewSubitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView
+- (NSDictionary *)airplayOverlayViewSubitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView
 {
 	NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
 	style.alignment = NSTextAlignmentCenter;
 	style.lineBreakMode = NSLineBreakByTruncatingTail;
 	
 	return @{ NSFontAttributeName : [UIFont systemFontOfSize:12.0f],
-			  NSForegroundColorAttributeName : [UIColor darkGrayColor],
+			  NSForegroundColorAttributeName : [UIColor lightGrayColor],
 			  NSParagraphStyleAttributeName: style };
 }
 
