@@ -98,11 +98,17 @@
  *  --------------------
  */
 /**
- *  Register a block for periodical execution during playback
+ *  Register a block for periodical execution during playback and pause!
  *
  *  @param interval Time interval between block executions
  *  @param queue    The serial queue onto which block should be enqueued (main queue if NULL)
  *  @param block	The block to be executed during playback
+ * 
+ *  @warning Two things make these time observers different from the regular registration of periodic time observers on AVPlayer instance.
+ *           First: there is no need to KVO-observe the presence or not of the AVPlayer instance before registration. It is done automatically for you.
+ *           Second: To the contrary of usual periodic time observers, which stops when playback pauses, and restart when
+ *           playback restars, these time observers are continuous, and do NOT stop during pause.
+ *           It is very useful for livestreams and timeshifts, when the UI may need to be updated nonetheless.
  *
  *  @return The time observer. The observer is retained by the media player controller, you can store a weak reference
  *          to it to remove it at a later time if needed

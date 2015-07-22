@@ -60,7 +60,7 @@
                                             </connections>
                                         </slider>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdH-jj-nfU">
-                                            <rect key="frame" x="489" y="7" width="45" height="15.5"/>
+                                            <rect key="frame" x="489" y="7" width="45" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="45" id="G8R-4I-uxy"/>
                                             </constraints>
@@ -68,7 +68,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzH-xw-G6y">
-                                            <rect key="frame" x="5" y="8" width="45" height="15.5"/>
+                                            <rect key="frame" x="5" y="8" width="45" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="45" id="LD7-6d-ZRT"/>
                                             </constraints>

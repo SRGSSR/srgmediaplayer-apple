@@ -58,13 +58,24 @@
 
 #pragma mark - View lifecycle
 
-- (void) viewDidLoad
+- (void)viewDidLoad
 {
 	[super viewDidLoad];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerPlaybackStateDidChange:) name:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerDidShowControlOverlays:) name:RTSMediaPlayerDidShowControlOverlaysNotification object:self.mediaPlayerController];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaPlayerDidHideControlOverlays:) name:RTSMediaPlayerDidHideControlOverlaysNotification object:self.mediaPlayerController];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(mediaPlayerPlaybackStateDidChange:)
+												 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+											   object:self.mediaPlayerController];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(mediaPlayerDidShowControlOverlays:)
+												 name:RTSMediaPlayerDidShowControlOverlaysNotification
+											   object:self.mediaPlayerController];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(mediaPlayerDidHideControlOverlays:)
+												 name:RTSMediaPlayerDidHideControlOverlaysNotification
+											   object:self.mediaPlayerController];
 	
 	[self.mediaPlayerController setDataSource:self.dataSource];
 	
@@ -89,7 +100,7 @@
 	}];
 }
 
-- (UIStatusBarStyle) preferredStatusBarStyle
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
 	return UIStatusBarStyleDefault;
 }
@@ -110,7 +121,9 @@
 
 #pragma mark - RTSMediaPlayerControllerDataSource
 
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
+- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+	  contentURLForIdentifier:(NSString *)identifier
+			completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
 {
 	completionHandler([NSURL URLWithString:self.identifier], nil);
 }
@@ -119,7 +132,7 @@
 
 #pragma mark - Notifications
 
-- (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
+- (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
 	RTSMediaPlayerController *mediaPlayerController = notification.object;
 	switch (mediaPlayerController.playbackState)
@@ -140,27 +153,25 @@
 	}
 }
 
-- (void) mediaPlayerDidShowControlOverlays:(NSNotification *)notification
+- (void)mediaPlayerDidShowControlOverlays:(NSNotification *)notification
 {
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
-- (void) mediaPlayerDidHideControlOverlays:(NSNotification *)notificaiton
+- (void)mediaPlayerDidHideControlOverlays:(NSNotification *)notificaiton
 {
 	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
-
-
 #pragma mark - Actions
 
-- (IBAction) dismiss:(id)sender
+- (IBAction)dismiss:(id)sender
 {
 	[self.mediaPlayerController reset];
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction) goToLive:(id)sender
+- (IBAction)goToLive:(id)sender
 {
 	[UIView animateWithDuration:0.2 animations:^{
 		self.liveButton.alpha = 0.f;
@@ -174,7 +185,7 @@
 	[self.mediaPlayerController playAtTime:CMTimeRangeGetEnd(timeRange)];
 }
 
-- (IBAction) seek:(id)sender
+- (IBAction)seek:(id)sender
 {
 	[self updateLiveButton];
 }

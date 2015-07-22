@@ -18,7 +18,7 @@ static void *s_kvoContext  = &s_kvoContext;
 
 @property (nonatomic) NSMutableDictionary *blocks;
 
-@property (nonatomic) id periodicTimeObserver;
+@property (nonatomic) NSTimer *timer;
 
 @end
 
@@ -46,13 +46,11 @@ static void *s_kvoContext  = &s_kvoContext;
 
 - (void) attachToMediaPlayer:(AVPlayer *)player
 {
-	if (self.player == player)
-	{
+	if (self.player == player) {
 		return;
 	}
 	
-	if (self.player)
-	{
+	if (self.player) {
 		[self detach];
 	}
 	
@@ -64,7 +62,6 @@ static void *s_kvoContext  = &s_kvoContext;
 - (void) detach
 {
 	[self removeObserver];
-	
 	self.player = nil;
 }
 
@@ -75,8 +72,7 @@ static void *s_kvoContext  = &s_kvoContext;
     NSParameterAssert(block);
     NSParameterAssert(identifier);
     
-    if (self.blocks.count == 0)
-    {
+    if (self.blocks.count == 0) {
         [self resestObserver];
     }
     
@@ -89,42 +85,42 @@ static void *s_kvoContext  = &s_kvoContext;
     
     [self.blocks removeObjectForKey:identifier];
     
-    if (self.blocks.count == 0)
-    {
+    if (self.blocks.count == 0) {
         [self removeObserver];
     }
 }
 
 #pragma mark - Observers
 
-- (void) resestObserver
+- (void)resestObserver
 {
 	[self removeObserver];
 	
-	if (! self.player)
-	{
+	if (!self.player) {
 		return;
 	}
 	
-	@weakify(self)
-	self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:self.interval queue:self.queue usingBlock:^(CMTime time) {
-		@strongify(self)
-		
-		for (void (^block)(CMTime) in [self.blocks allValues]) {
-			dispatch_async(dispatch_get_main_queue(), ^{
-				block(time);
-			});
-		}
-	}];
+	[self.timer invalidate];
+	self.timer = [NSTimer scheduledTimerWithTimeInterval:CMTimeGetSeconds(self.interval)
+												  target:self
+												selector:@selector(timerTick:)
+												userInfo:nil
+												 repeats:YES];
 }
 
-- (void) removeObserver
+- (void)timerTick:(NSTimer *)timer
 {
-	if (self.periodicTimeObserver)
-	{
-		[self.player removeTimeObserver:self.periodicTimeObserver];
-		self.periodicTimeObserver = nil;
+	for (void (^block)(CMTime) in [self.blocks allValues]) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			block(self.player.currentTime);
+		});
 	}
+}
+
+- (void)removeObserver
+{
+	[self.timer invalidate];
+	self.timer = nil;
 }
 
 @end
