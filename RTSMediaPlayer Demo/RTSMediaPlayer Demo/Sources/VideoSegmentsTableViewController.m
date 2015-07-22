@@ -4,19 +4,19 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import "DemoSegmentsSelectionViewController.h"
-#import "DemoSegmentsViewController.h"
+#import "VideoSegmentsTableViewController.h"
+#import "VideoSegmentsPlayerViewController.h"
 #import "PseudoILDataProvider.h"
 
-@implementation DemoSegmentsSelectionViewController
+@implementation VideoSegmentsTableViewController
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-	NSAssert([segue.destinationViewController isKindOfClass:[DemoSegmentsViewController class]],
-			 @"Expect DemoSegmentsViewController");
+	NSAssert([segue.destinationViewController isKindOfClass:[VideoSegmentsPlayerViewController class]],
+			 @"Expect VideoSegmentsPlayerViewController");
 	
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-	DemoSegmentsViewController *demoViewController = segue.destinationViewController;
+	VideoSegmentsPlayerViewController *demoViewController = segue.destinationViewController;
 	demoViewController.videoIdentifier = [NSString stringWithFormat:@"%@", @(indexPath.row)];
 }
 

@@ -7,7 +7,7 @@
 #import <libextobjc/EXTScope.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-#import "DemoSegmentsViewController.h"
+#import "VideoSegmentsPlayerViewController.h"
 #import "PseudoILDataProvider.h"
 #import "SegmentCollectionViewCell.h"
 
@@ -42,7 +42,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 	return s_names[@(playbackState)] ?: @"UNKNOWN";
 }
 
-@interface DemoSegmentsViewController () <RTSTimeSliderDelegate>
+@interface VideoSegmentsPlayerViewController () <RTSTimeSliderDelegate>
 
 @property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
@@ -58,7 +58,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 
 @end
 
-@implementation DemoSegmentsViewController
+@implementation VideoSegmentsPlayerViewController
 
 #pragma mark - Object lifecycle
 

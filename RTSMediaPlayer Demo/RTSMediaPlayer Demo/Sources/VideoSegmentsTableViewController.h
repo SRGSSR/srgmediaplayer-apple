@@ -4,8 +4,8 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import "BaseTableViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface AudiosTableViewController : BaseTableViewController
+@interface VideoSegmentsTableViewController : UITableViewController
 
 @end

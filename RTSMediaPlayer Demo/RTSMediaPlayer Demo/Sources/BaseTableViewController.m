@@ -4,22 +4,23 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import "MenuTableViewController.h"
+#import "BaseTableViewController.h"
 
 #import <MediaPlayer/MediaPlayer.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 #import "DemoInlineViewController.h"
 #import "DemoMultiPlayersViewController.h"
+#import "VideoTimeshiftPlayerViewController.h"
 
-@interface MenuTableViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface BaseTableViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSArray *media;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 @end
 
-@implementation MenuTableViewController
+@implementation BaseTableViewController
 
 - (void) viewDidLoad
 {
@@ -46,7 +47,7 @@
 	return nil;
 }
 
-- (NSArray *) media
+- (NSArray *)media
 {
 	if (!_media){
 		NSDictionary *mediaURLs = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle bundleForClass:self.class] pathForResource:[self mediaURLPath] ofType:@"plist"]];
@@ -98,10 +99,15 @@
 		DemoInlineViewController *demoInlineViewController = segue.destinationViewController;
 		demoInlineViewController.mediaURL = [self URLForSelectedMedia];
 	}
+	else if ([segue.identifier isEqualToString:@"DemoTimeshift"])
+	{
+		VideoTimeshiftPlayerViewController *playerViewController = segue.destinationViewController;
+		playerViewController.mediaURL = [self URLForSelectedMedia];
+	}
 	else if ([segue.identifier isEqualToString:@"DemoMultiPlayers"])
 	{
-		DemoMultiPlayersViewController *demoMultiPlayerViewController = segue.destinationViewController;
-		demoMultiPlayerViewController.mediaURLs = [self URLsForSelectedMedia];
+		DemoMultiPlayersViewController *demoVideoMultiplayerTableViewController = segue.destinationViewController;
+		demoVideoMultiplayerTableViewController.mediaURLs = [self URLsForSelectedMedia];
 	}
 }
 

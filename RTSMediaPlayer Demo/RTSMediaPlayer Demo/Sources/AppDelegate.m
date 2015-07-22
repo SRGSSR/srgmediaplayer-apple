@@ -79,7 +79,7 @@
 	UIImage *multiplayerIcon = [UIImage imageNamed:@"screen"];
 	UIImage *audiosIcon = [UIImage imageNamed:@"audios"];
 	
-	NSArray *images = @[moviesIcon, segmentsIcon, multiplayerIcon, audiosIcon];
+	NSArray *images = @[moviesIcon, segmentsIcon, multiplayerIcon, moviesIcon, audiosIcon];
 	
 	[tabBarController.tabBar.items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		UITabBarItem *item = (UITabBarItem *)obj;

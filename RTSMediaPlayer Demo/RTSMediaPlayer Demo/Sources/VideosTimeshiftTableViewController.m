@@ -4,13 +4,13 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import "MoviesTableViewController.h"
+#import "VideosTimeshiftTableViewController.h"
 
-@implementation MoviesTableViewController
+@implementation VideosTimeshiftTableViewController
 
 - (NSString *) mediaURLPath
 {
-	return @"MediaURLs";
+	return @"TimeshiftURLs";
 }
 
 - (NSString *) mediaURLKey
@@ -20,10 +20,7 @@
 
 - (NSArray *) actionCellIdentifiers
 {
-	return @[ @"CellDefaultIOS",
-			  @"CellDefaultRTS",
-			  @"CellInline",
-			  @"CellTimeline" ];
+	return @[ @"CellTimeshift" ];
 }
 
 @end

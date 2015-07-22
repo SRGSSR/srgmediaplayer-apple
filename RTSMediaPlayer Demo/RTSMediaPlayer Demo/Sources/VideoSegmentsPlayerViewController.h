@@ -7,7 +7,7 @@
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <UIKit/UIKit.h>
 
-@interface DemoSegmentsViewController : UIViewController <RTSTimelineSliderDelegate, RTSSegmentedTimelineViewDelegate>
+@interface VideoSegmentsPlayerViewController : UIViewController <RTSTimelineSliderDelegate, RTSSegmentedTimelineViewDelegate>
 
 @property (nonatomic, copy) NSString *videoIdentifier;
 

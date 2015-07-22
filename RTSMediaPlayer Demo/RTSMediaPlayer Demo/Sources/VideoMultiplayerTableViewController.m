@@ -4,9 +4,9 @@
 //  Licence information is available from the LICENCE file.
 //
 
-#import "MultiplayerViewController.h"
+#import "VideoMultiplayerTableViewController.h"
 
-@implementation MultiplayerViewController
+@implementation VideoMultiplayerTableViewController
 
 - (NSString *)mediaURLPath
 {
