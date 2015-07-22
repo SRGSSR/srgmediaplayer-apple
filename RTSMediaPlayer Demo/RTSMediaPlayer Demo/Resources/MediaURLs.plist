@@ -64,18 +64,6 @@
 			<key>url</key>
 			<string>http://rtsdvr2015-lh.akamaihd.net/i/rtsdvr2015test1_ww@317507/master.m3u8</string>
 		</dict>
-		<dict>
-			<key>name</key>
-			<string>RTS DVR test stream (no security)</string>
-			<key>url</key>
-			<string>http://srgssruni22ach-lh.akamaihd.net/i/enc22auni_ch@195192/master.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>RTS DVR test stream (with security)</string>
-			<key>url</key>
-			<string>https://srgssruni22bch-lh.akamaihd.net/i/enc22buni_ch@195196/master.m3u8</string>
-		</dict>
 	</array>
 </dict>
 </plist>
