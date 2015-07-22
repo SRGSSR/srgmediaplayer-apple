@@ -274,7 +274,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark - Draw Methods
 
-- (void) drawRect:(CGRect)rect
+- (void)drawRect:(CGRect)rect
 {
 	[super drawRect:rect];
 	
@@ -284,7 +284,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self drawMinimumValueBar:context];
 }
 
-- (void) drawBar:(CGContextRef)context
+- (void)drawBar:(CGContextRef)context
 {
 	CGRect trackFrame = [self trackRectForBounds:self.bounds];
 	
@@ -298,7 +298,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextStrokePath(context);
 }
 
-- (void) drawDownloadProgressValueBar:(CGContextRef)context
+- (void)drawDownloadProgressValueBar:(CGContextRef)context
 {
 	CGRect trackFrame = [self trackRectForBounds:self.bounds];
 
@@ -308,7 +308,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetLineCap(context, kCGLineCapButt);
 	CGContextMoveToPoint(context, CGRectGetMinX(trackFrame)+2, SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context, CGRectGetMaxX(trackFrame)-2, SLIDER_VERTICAL_CENTER);
-	CGContextSetStrokeColorWithColor(context, [UIColor darkGrayColor].CGColor);
+	CGContextSetStrokeColorWithColor(context, self.borderColor.CGColor);
 	CGContextStrokePath(context);
 	
 	for (NSValue *value in self.playbackController.playerItem.loadedTimeRanges) {
@@ -317,7 +317,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}
 }
 
-- (void) drawTimeRangeProgress:(CMTimeRange)timeRange context:(CGContextRef)context
+- (void)drawTimeRangeProgress:(CMTimeRange)timeRange context:(CGContextRef)context
 {
 	CGFloat lineWidth = 1.0f;
 	
@@ -338,7 +338,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextStrokePath(context);
 }
 
-- (void) drawMinimumValueBar:(CGContextRef)context
+- (void)drawMinimumValueBar:(CGContextRef)context
 {
 	CGRect barFrame = [self minimumValueImageRectForBounds:self.bounds];
 	
@@ -346,7 +346,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 	CGContextSetLineWidth(context, lineWidth);
 	CGContextSetLineCap(context,kCGLineCapRound);
-	CGContextMoveToPoint(context,CGRectGetMinX(barFrame), SLIDER_VERTICAL_CENTER);
+	CGContextMoveToPoint(context,CGRectGetMinX(barFrame)-0.5, SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context, CGRectGetWidth(barFrame), SLIDER_VERTICAL_CENTER);
 	CGContextSetStrokeColorWithColor(context, self.minimumTrackTintColor.CGColor);
 	CGContextStrokePath(context);
