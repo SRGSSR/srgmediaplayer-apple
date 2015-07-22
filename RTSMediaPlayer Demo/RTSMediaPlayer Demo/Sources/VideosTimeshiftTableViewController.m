@@ -8,19 +8,20 @@
 
 @implementation VideosTimeshiftTableViewController
 
-- (NSString *) mediaURLPath
+- (NSString *)mediaURLPath
 {
 	return @"TimeshiftURLs";
 }
 
-- (NSString *) mediaURLKey
+- (NSString *)mediaURLKey
 {
 	return @"Movies";
 }
 
-- (NSArray *) actionCellIdentifiers
+- (NSArray *)actionCellIdentifiers
 {
-	return @[ @"CellTimeshift" ];
+	return @[ @"CellDefaultIOS",
+			  @"CellTimeshift" ];
 }
 
 @end

@@ -785,39 +785,10 @@
                         <rect key="frame" x="0.0" y="44" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lNN-JZ-qlz" userLabel="Timeline Wrapper View">
-                                <rect key="frame" x="0.0" y="416" width="600" height="120"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cwh-PT-Zb1" userLabel="Timeline View" customClass="RTSSegmentedTimelineView">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="120"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="itemWidth">
-                                                <real key="value" value="178"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="itemSpacing">
-                                                <real key="value" value="4"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <outlet property="delegate" destination="Rig-pS-R3F" id="Vtj-ms-sEv"/>
-                                            <outlet property="segmentsController" destination="ZI3-uY-emW" id="alF-qH-n0s"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.85369551809999999" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="Cwh-PT-Zb1" firstAttribute="top" secondItem="lNN-JZ-qlz" secondAttribute="top" id="9om-1J-UAl"/>
-                                    <constraint firstItem="Cwh-PT-Zb1" firstAttribute="leading" secondItem="lNN-JZ-qlz" secondAttribute="leading" id="JLq-Tv-smv"/>
-                                    <constraint firstAttribute="bottom" secondItem="Cwh-PT-Zb1" secondAttribute="bottom" id="V4A-BF-Al2"/>
-                                    <constraint firstAttribute="trailing" secondItem="Cwh-PT-Zb1" secondAttribute="trailing" id="bDg-nA-WDX"/>
-                                    <constraint firstAttribute="height" constant="120" id="wU9-XI-Kf0"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oWc-Es-lWF" userLabel="Bottom Bar View">
                                 <rect key="frame" x="0.0" y="536" width="600" height="64"/>
                                 <subviews>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MFe-bb-rho">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MFe-bb-rho">
                                         <rect key="frame" x="468" y="31" width="81" height="22"/>
                                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -831,7 +802,6 @@
                                         </state>
                                         <connections>
                                             <action selector="goToLive:" destination="Rig-pS-R3F" eventType="touchUpInside" id="5xA-jU-BT6"/>
-                                            <action selector="goToLive:" destination="eMv-Af-zLT" eventType="touchUpInside" id="ce1-sb-aS9"/>
                                         </connections>
                                     </button>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="IOf-Fg-OYX" customClass="RTSTimeSlider">
@@ -843,7 +813,8 @@
                                         <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <outlet property="playbackController" destination="ZI3-uY-emW" id="j7P-Ed-vj4"/>
+                                            <action selector="seek:" destination="Rig-pS-R3F" eventType="valueChanged" id="UVi-0o-ugr"/>
+                                            <outlet property="playbackController" destination="3Zc-fG-clj" id="X4d-lS-cFg"/>
                                             <outlet property="timeLeftValueLabel" destination="bG5-MD-y5n" id="OOV-tT-9gP"/>
                                             <outlet property="valueLabel" destination="OLR-A6-Sxi" id="0dI-Pb-Dss"/>
                                         </connections>
@@ -891,7 +862,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="Xmj-OB-NME"/>
+                                            <outlet property="mediaPlayerController" destination="3Zc-fG-clj" id="hc8-Wi-j3Y"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -934,36 +905,27 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aeo-zc-T88">
                                 <rect key="frame" x="30" y="215" width="540" height="171"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="JdF-zy-nc1" userLabel="Text Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="JdF-zy-nc1" userLabel="Text Label">
                                         <rect key="frame" x="8" y="8" width="524" height="155"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="JdF-zy-nc1" secondAttribute="bottom" constant="8" id="9h4-ih-Mgv"/>
-                                    <constraint firstAttribute="height" constant="171" id="EX2-9p-6gm"/>
-                                    <constraint firstAttribute="trailing" secondItem="JdF-zy-nc1" secondAttribute="trailing" constant="8" id="FM9-wo-F6D"/>
-                                    <constraint firstItem="JdF-zy-nc1" firstAttribute="top" secondItem="Aeo-zc-T88" secondAttribute="top" constant="8" id="GQT-2a-ppQ"/>
-                                    <constraint firstItem="JdF-zy-nc1" firstAttribute="leading" secondItem="Aeo-zc-T88" secondAttribute="leading" constant="8" id="PiK-lK-yX2"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="lNN-JZ-qlz" firstAttribute="leading" secondItem="ZDm-Cr-kIN" secondAttribute="leading" id="09T-Ea-Ywr"/>
-                            <constraint firstItem="oWc-Es-lWF" firstAttribute="top" secondItem="lNN-JZ-qlz" secondAttribute="bottom" id="9J7-a9-WL1"/>
                             <constraint firstAttribute="centerX" secondItem="J72-PW-IrE" secondAttribute="centerX" id="GUl-Pg-eAU"/>
                             <constraint firstItem="L66-lU-U5N" firstAttribute="top" secondItem="JXF-tT-evh" secondAttribute="bottom" constant="10" id="HJo-IR-xgi"/>
-                            <constraint firstItem="Aeo-zc-T88" firstAttribute="leading" secondItem="ZDm-Cr-kIN" secondAttribute="leadingMargin" constant="14" id="L4j-x4-jkF"/>
-                            <constraint firstItem="Aeo-zc-T88" firstAttribute="centerX" secondItem="lNN-JZ-qlz" secondAttribute="centerX" id="LvV-uI-TMM"/>
-                            <constraint firstAttribute="trailing" secondItem="lNN-JZ-qlz" secondAttribute="trailing" id="OMN-uM-fh5"/>
+                            <constraint firstItem="Aeo-zc-T88" firstAttribute="leading" secondItem="ZDm-Cr-kIN" secondAttribute="leadingMargin" constant="14" id="MY5-d7-H53"/>
                             <constraint firstItem="oWc-Es-lWF" firstAttribute="leading" secondItem="ZDm-Cr-kIN" secondAttribute="leading" id="PP1-oL-31O"/>
-                            <constraint firstItem="Aeo-zc-T88" firstAttribute="centerY" secondItem="ZDm-Cr-kIN" secondAttribute="centerY" id="biF-8A-xBc"/>
                             <constraint firstItem="Up7-v8-Thl" firstAttribute="top" secondItem="oWc-Es-lWF" secondAttribute="bottom" id="dak-Ci-ofi"/>
+                            <constraint firstItem="oWc-Es-lWF" firstAttribute="top" secondItem="Aeo-zc-T88" secondAttribute="bottom" constant="150" id="f1i-W8-a9P"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Aeo-zc-T88" secondAttribute="trailing" constant="14" id="iuS-a4-LKy"/>
                             <constraint firstAttribute="centerY" secondItem="J72-PW-IrE" secondAttribute="centerY" id="jAv-GC-6lK"/>
+                            <constraint firstItem="Aeo-zc-T88" firstAttribute="top" secondItem="L66-lU-U5N" secondAttribute="bottom" constant="161" id="p1n-ot-Dju"/>
                             <constraint firstAttribute="trailing" secondItem="oWc-Es-lWF" secondAttribute="trailing" id="qfF-fI-a8L"/>
                             <constraint firstAttribute="trailing" secondItem="L66-lU-U5N" secondAttribute="trailing" id="svj-n7-Jce"/>
                         </constraints>
@@ -976,9 +938,9 @@
                     <connections>
                         <outlet property="blockingOverlayView" destination="Aeo-zc-T88" id="gMO-sH-Oco"/>
                         <outlet property="blockingOverlayViewLabel" destination="JdF-zy-nc1" id="5HQ-xl-xI9"/>
-                        <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="nS8-kq-pBt"/>
+                        <outlet property="liveButton" destination="MFe-bb-rho" id="hce-CC-aqD"/>
+                        <outlet property="mediaPlayerController" destination="3Zc-fG-clj" id="TZC-lg-YEp"/>
                         <outlet property="timelineSlider" destination="IOf-Fg-OYX" id="4dS-HY-4vj"/>
-                        <outlet property="timelineView" destination="Cwh-PT-Zb1" id="1GE-KC-cyE"/>
                         <outlet property="videoView" destination="ZDm-Cr-kIN" id="7EH-06-fjz"/>
                     </connections>
                 </viewController>
@@ -988,20 +950,11 @@
                 <customObject id="3Zc-fG-clj" customClass="RTSMediaPlayerController">
                     <connections>
                         <outlet property="activityView" destination="ZDm-Cr-kIN" id="Rv0-nx-ezI"/>
-                        <outlet property="dataSource" destination="WSj-23-Q78" id="i8P-Hs-eUp"/>
+                        <outlet property="dataSource" destination="Rig-pS-R3F" id="gzz-if-eXZ"/>
                         <outletCollection property="overlayViews" destination="oWc-Es-lWF" id="YHe-eV-fGf"/>
-                        <outletCollection property="overlayViews" destination="Cwh-PT-Zb1" id="ZSj-oO-OFs"/>
-                        <outletCollection property="overlayViews" destination="lNN-JZ-qlz" id="Roo-VM-IjJ"/>
                         <outletCollection property="overlayViews" destination="L66-lU-U5N" id="UJQ-sz-b7F"/>
                     </connections>
                 </customObject>
-                <customObject id="2gH-9J-jvw" customClass="RTSMediaSegmentsController">
-                    <connections>
-                        <outlet property="dataSource" destination="WSj-23-Q78" id="8g2-Rk-AJ2"/>
-                        <outlet property="playerController" destination="3Zc-fG-clj" id="3S3-wv-v5b"/>
-                    </connections>
-                </customObject>
-                <customObject id="WSj-23-Q78" customClass="PseudoILDataProvider"/>
             </objects>
             <point key="canvasLocation" x="-432" y="3580"/>
         </scene>
@@ -1169,6 +1122,20 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Media Cell" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DpN-fm-mvG">
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="CellDefaultIOS" textLabel="cLQ-cC-ehI" style="IBUITableViewCellStyleDefault" id="DYB-T8-yci">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DYB-T8-yci" id="7jC-Dc-kao">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Default iOS Player" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cLQ-cC-ehI">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

@@ -28,21 +28,19 @@
 	self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 }
 
-
-
 #pragma mark - Data
 
-- (NSString *) mediaURLPath
+- (NSString *)mediaURLPath
 {
 	return nil;
 }
 
-- (NSString *) mediaURLKey
+- (NSString *)mediaURLKey
 {
 	return nil;
 }
 
-- (NSArray *) actionCellIdentifiers
+- (NSArray *)actionCellIdentifiers
 {
 	return nil;
 }
@@ -87,7 +85,7 @@
 
 #pragma mark - Navigation
 
-- (BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
 	return (self.selectedIndexPath != nil);
 }
@@ -96,18 +94,19 @@
 {
 	if ([segue.identifier isEqualToString:@"DemoInline"])
 	{
-		DemoInlineViewController *demoInlineViewController = segue.destinationViewController;
-		demoInlineViewController.mediaURL = [self URLForSelectedMedia];
+		DemoInlineViewController *playerViewController = segue.destinationViewController;
+		playerViewController.mediaURL = [self URLForSelectedMedia];
 	}
 	else if ([segue.identifier isEqualToString:@"DemoTimeshift"])
 	{
 		VideoTimeshiftPlayerViewController *playerViewController = segue.destinationViewController;
 		playerViewController.mediaURL = [self URLForSelectedMedia];
+		playerViewController.tokenizeMediaURL = (self.selectedIndexPath.row == 2);
 	}
 	else if ([segue.identifier isEqualToString:@"DemoMultiPlayers"])
 	{
-		DemoMultiPlayersViewController *demoVideoMultiplayerTableViewController = segue.destinationViewController;
-		demoVideoMultiplayerTableViewController.mediaURLs = [self URLsForSelectedMedia];
+		DemoMultiPlayersViewController *playerViewController = segue.destinationViewController;
+		playerViewController.mediaURLs = [self URLsForSelectedMedia];
 	}
 }
 
@@ -145,11 +144,9 @@
 - (UITableViewCell *)configureMediaCellAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-	
 	NSDictionary *media = [self.media objectAtIndex:indexPath.row];
 	cell.textLabel.text = media[@"name"];
 	cell.accessoryType = [indexPath isEqual:self.selectedIndexPath] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-	
 	return cell;
 }
 
@@ -173,28 +170,23 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	if (indexPath.section == 0)
-	{
+	if (indexPath.section == 0) {
 		self.selectedIndexPath = indexPath;
 		[tableView reloadData];
 	}
-	else
-	{
+	else {
 		NSString *identifier = self.actionCellIdentifiers[indexPath.row];
-		
 		NSURL *contentURL = [self URLForSelectedMedia];
-		if (!contentURL)
-		{
+		
+		if (!contentURL) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please select a media" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
-			
-		}else if ([identifier isEqualToString:@"CellDefaultIOS"])
-		{
+		}
+		else if ([identifier isEqualToString:@"CellDefaultIOS"]) {
 			MPMoviePlayerViewController *moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:contentURL];
 			[self presentMoviePlayerViewControllerAnimated:moviePlayerViewController];
 		}
-		else if ([identifier isEqualToString:@"CellDefaultRTS"])
-		{
+		else if ([identifier isEqualToString:@"CellDefaultRTS"]) {
 			RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewController alloc] initWithContentURL:contentURL];
 			[self presentViewController:mediaPlayerViewController animated:YES completion:nil];
 		}

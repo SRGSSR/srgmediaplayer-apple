@@ -7,8 +7,9 @@
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <UIKit/UIKit.h>
 
-@interface VideoTimeshiftPlayerViewController : UIViewController <RTSTimelineSliderDelegate, RTSSegmentedTimelineViewDelegate>
+@interface VideoTimeshiftPlayerViewController : UIViewController 
 
 @property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, assign) BOOL tokenizeMediaURL;
 
 @end
