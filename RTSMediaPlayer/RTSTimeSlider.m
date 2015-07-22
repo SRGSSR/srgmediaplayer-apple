@@ -166,9 +166,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (CMTime) time
 {
-    CMTimeRange timeRange = self.playbackController.timeRange;
-    Float64 timeInSeconds = CMTimeGetSeconds(timeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(timeRange.duration) / (self.maximumValue - self.minimumValue);
-    return CMTimeMakeWithSeconds(timeInSeconds, 1.);
+	CMTimeRange timeRange = self.playbackController.timeRange;
+	Float64 timeInSeconds = CMTimeGetSeconds(timeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(timeRange.duration) / (self.maximumValue - self.minimumValue);
+	return CMTimeMakeWithSeconds(timeInSeconds, 1.);
 }
 
 - (BOOL) isLive
@@ -181,7 +181,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	static const float RTSToleranceInSeconds = 15.f;
 	
 	return self.playbackController.streamType == RTSMediaStreamTypeLive
-		|| (self.playbackController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSToleranceInSeconds));
+	|| (self.playbackController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSToleranceInSeconds));
 }
 
 - (void) updateTimeRangeLabels
@@ -200,7 +200,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}
 	else {
 		self.valueLabel.text = RTSTimeSliderFormatter(self.value);
-		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);		
+		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
 	}
 }
 
@@ -213,7 +213,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	if (! beginTracking || ! [self isDraggable]) {
 		return NO;
 	}
-		
+	
 	return beginTracking;
 }
 
@@ -230,14 +230,14 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	
 	// First seek to the playback controller.
 	[self.playbackController seekToTime:time completionHandler:nil];
-
+	
 	// Next, inform that we are sliding to other views.
 	if (self.slidingDelegate) {
 		[self.slidingDelegate timeSlider:self
 				 isSlidingAtPlaybackTime:time
 							   withValue:self.value];
 	}
-
+	
 	return continueTracking;
 }
 
@@ -267,7 +267,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (UIImage *)thumbImage
 {
 	UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 15, 15)];
-    return [path imageWithColor:self.thumbTintColor];
+	return [path imageWithColor:self.thumbTintColor];
 }
 
 
@@ -289,7 +289,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGRect trackFrame = [self trackRectForBounds:self.bounds];
 	
 	CGFloat lineWidth = 3.0f;
-
+	
 	CGContextSetLineWidth(context, lineWidth);
 	CGContextSetLineCap(context, kCGLineCapRound);
 	CGContextMoveToPoint(context, CGRectGetMinX(trackFrame), SLIDER_VERTICAL_CENTER);
@@ -301,14 +301,14 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void)drawDownloadProgressValueBar:(CGContextRef)context
 {
 	CGRect trackFrame = [self trackRectForBounds:self.bounds];
-
+	
 	CGFloat lineWidth = 1.0f;
 	
 	CGContextSetLineWidth(context, lineWidth);
 	CGContextSetLineCap(context, kCGLineCapButt);
 	CGContextMoveToPoint(context, CGRectGetMinX(trackFrame)+2, SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context, CGRectGetMaxX(trackFrame)-2, SLIDER_VERTICAL_CENTER);
-	CGContextSetStrokeColorWithColor(context, self.borderColor.CGColor);
+	CGContextSetStrokeColorWithColor(context, self.maximumTrackTintColor.CGColor);
 	CGContextStrokePath(context);
 	
 	for (NSValue *value in self.playbackController.playerItem.loadedTimeRanges) {
@@ -334,7 +334,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetLineCap(context,kCGLineCapButt);
 	CGContextMoveToPoint(context, minX, SLIDER_VERTICAL_CENTER);
 	CGContextAddLineToPoint(context, maxX, SLIDER_VERTICAL_CENTER);
-	CGContextSetStrokeColorWithColor(context, self.maximumTrackTintColor.CGColor);
+	CGContextSetStrokeColorWithColor(context, self.borderColor.CGColor);
 	CGContextStrokePath(context);
 }
 
@@ -343,7 +343,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGRect barFrame = [self minimumValueImageRectForBounds:self.bounds];
 	
 	CGFloat lineWidth = 3.0f;
-
+	
 	CGContextSetLineWidth(context, lineWidth);
 	CGContextSetLineCap(context,kCGLineCapRound);
 	CGContextMoveToPoint(context,CGRectGetMinX(barFrame)-0.5, SLIDER_VERTICAL_CENTER);
