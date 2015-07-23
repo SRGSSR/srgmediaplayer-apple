@@ -228,8 +228,12 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	
 	CMTime time = [self time];
 	
-	// First seek to the playback controller.
-	[self.playbackController seekToTime:time completionHandler:nil];
+	// First seek to the playback controller. Seeking where the media has been loaded is fast, which leads to
+	// annoying stuttering for audios. This is less annoying for videos since being able to see where we seek
+	// is valuable
+	if (self.playbackController.mediaType == RTSMediaTypeVideo) {
+		[self.playbackController seekToTime:time completionHandler:nil];
+	}
 	
 	// Next, inform that we are sliding to other views.
 	if (self.slidingDelegate) {

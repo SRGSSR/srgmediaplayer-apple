@@ -16,12 +16,6 @@
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSMediaPlayerLogger.h"
 
-typedef NS_ENUM(NSInteger, RTSMediaType) {
-	RTSMediaTypeUnknown,
-	RTSMediaTypeVideo,
-	RTSMediaTypeAudio
-};
-
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
 
 NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
@@ -497,8 +491,27 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
 }
 
+- (RTSMediaType)mediaType
+{
+	if (! self.player) {
+		return RTSMediaTypeUnknown;
+	}
+	
+	NSArray *tracks = self.player.currentItem.tracks;
+	if (tracks.count == 0) {
+		return RTSMediaTypeUnknown;
+	}
+	
+	NSString *mediaType = [[tracks.firstObject assetTrack] mediaType];
+	return [mediaType isEqualToString:AVMediaTypeVideo] ? RTSMediaTypeVideo : RTSMediaTypeAudio;
+}
+
 - (RTSMediaStreamType) streamType
 {
+	if (! self.playerItem) {
+		return RTSMediaStreamTypeUnknown;
+	}
+	
 	if (CMTIMERANGE_IS_EMPTY(self.timeRange)) {
 		return RTSMediaStreamTypeLive;
 	}
@@ -619,21 +632,6 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			[self registerPeriodicTimeObservers];
 		}
 	}
-}
-
-- (RTSMediaType)mediaType
-{
-	if (! self.player) {
-		return RTSMediaTypeUnknown;
-	}
-	
-	NSArray *tracks = self.player.currentItem.tracks;
-	if (tracks.count == 0) {
-		return RTSMediaTypeUnknown;
-	}
-	
-	NSString *mediaType = [[tracks.firstObject assetTrack] mediaType];
-	return [mediaType isEqualToString:AVMediaTypeVideo] ? RTSMediaTypeVideo : RTSMediaTypeAudio;
 }
 
 - (void)registerPlaybackStartObserver

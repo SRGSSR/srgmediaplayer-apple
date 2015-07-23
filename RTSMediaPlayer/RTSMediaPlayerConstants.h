@@ -7,6 +7,26 @@
 #import <Foundation/Foundation.h>
 
 /**
+ *  @enum RTSMediaType
+ *
+ *  Enumeration of the possible media types.
+ */
+typedef NS_ENUM(NSInteger, RTSMediaType) {
+	/**
+	 *  Unknown type, or type yet unknown
+	 */
+	RTSMediaTypeUnknown,
+	/**
+	 *  Video
+	 */
+	RTSMediaTypeVideo,
+	/**
+	 *  Audio
+	 */
+	RTSMediaTypeAudio
+};
+
+/**
  *  @enum RTSMediaPlaybackState
  *
  *  Enumeration of the possible playback states.
@@ -92,15 +112,19 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackSegmentChange) {
  */
 typedef NS_ENUM(NSInteger, RTSMediaStreamType) {
 	/**
-	 * On-demand stream
+	 *  Unknown type, or type yet unknown
 	 */
 	RTSMediaStreamTypeOnDemand,
 	/**
-	 * Live stream
+	 *  On-demand stream
+	 */
+	RTSMediaStreamTypeOnDemand,
+	/**
+	 *  Live stream
 	 */
 	RTSMediaStreamTypeLive,
 	/**
-	 * DVR stream
+	 *  DVR stream
 	 */
 	RTSMediaStreamTypeDVR,
 };

@@ -484,6 +484,11 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 	return self.playerController.timeRange;
 }
 
+- (RTSMediaType)mediaType
+{
+	return self.playerController.mediaType;
+}
+
 - (RTSMediaStreamType)streamType
 {
 	return self.playerController.streamType;
