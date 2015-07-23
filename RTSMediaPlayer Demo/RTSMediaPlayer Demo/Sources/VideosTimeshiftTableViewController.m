@@ -21,6 +21,7 @@
 - (NSArray *)actionCellIdentifiers
 {
 	return @[ @"CellDefaultIOS",
+			  @"CellDefaultRTS",
 			  @"CellTimeshift" ];
 }
 
