@@ -114,7 +114,7 @@ typedef NS_ENUM(NSInteger, RTSMediaStreamType) {
 	/**
 	 *  Unknown type, or type yet unknown
 	 */
-	RTSMediaStreamTypeOnDemand,
+	RTSMediaStreamTypeUnknown,
 	/**
 	 *  On-demand stream
 	 */

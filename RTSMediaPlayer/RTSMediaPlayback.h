@@ -88,6 +88,11 @@
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
+ *  The media type
+ */
+@property (readonly) RTSMediaType mediaType;
+
+/**
  *  The stream type
  */
 @property (readonly) RTSMediaStreamType streamType;
