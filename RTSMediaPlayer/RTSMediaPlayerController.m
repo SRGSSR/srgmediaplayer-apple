@@ -850,11 +850,11 @@ static void LogProperties(id object)
 		_view = [RTSMediaPlayerView new];
 		_view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		
-		UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap)];
+		UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
 		doubleTapGestureRecognizer.numberOfTapsRequired = 2;
 		[_view addGestureRecognizer:doubleTapGestureRecognizer];
 		
-		UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap)];
+		UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
 		[singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
 		[_view addGestureRecognizer:singleTapGestureRecognizer];
 
@@ -906,7 +906,7 @@ static void LogProperties(id object)
 	}
 }
 
-- (void) handleSingleTap
+- (void) handleSingleTap:(UITapGestureRecognizer *)gestureRecognizer
 {
 	[self toggleOverlays];
 }
@@ -950,7 +950,7 @@ static void LogProperties(id object)
 
 #pragma mark - Resize Aspect
 
-- (void)handleDoubleTap
+- (void)handleDoubleTap:(UITapGestureRecognizer *)gestureRecognizer
 {
 	if (!self.playerView.playerLayer.isReadyForDisplay) {
 		return;
