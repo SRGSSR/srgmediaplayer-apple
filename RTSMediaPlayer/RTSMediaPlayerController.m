@@ -295,7 +295,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[playing setWillExitStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
-		[self registerPlaybackStartObserver];
+		[self registerPlaybackStartBoundaryObserver];
 	}];
 		
 	[reset setWillFireEventBlock:^(TKEvent *event, TKTransition *transition) {
@@ -610,7 +610,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			self.periodicTimeObserver = nil;
 		}
 		
-		[self unregisterPeriodicTimeObservers];
+		[self unregisterCustomPeriodicTimeObservers];
 		
 		_player = player;
 		
@@ -628,14 +628,14 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			[defaultCenter addObserver:self selector:@selector(playerItemNewAccessLogEntry:) name:AVPlayerItemNewAccessLogEntryNotification object:playerItem];
 			[defaultCenter addObserver:self selector:@selector(playerItemNewErrorLogEntry:) name:AVPlayerItemNewErrorLogEntryNotification object:playerItem];
 			
-			[self registerPlaybackStartObserver];
-			[self registerPeriodicTimeObserver];
-			[self registerPeriodicTimeObservers];
+			[self registerPlaybackStartBoundaryObserver];
+			[self registerPlaybackRatePeriodicTimeObserver];
+			[self registerCustomPeriodicTimeObservers];
 		}
 	}
 }
 
-- (void)registerPlaybackStartObserver
+- (void)registerPlaybackStartBoundaryObserver
 {
 	if (self.playbackStartObserver)
 	{
@@ -658,10 +658,9 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 	}];
 }
 
-- (void)registerPeriodicTimeObserver
+- (void)registerPlaybackRatePeriodicTimeObserver
 {
-	if (self.periodicTimeObserver)
-	{
+	if (self.periodicTimeObserver) {
 		[self.player removeTimeObserver:self.periodicTimeObserver];
 		self.periodicTimeObserver = nil;
 	}
@@ -670,14 +669,15 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 	self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 10) queue:dispatch_get_main_queue() usingBlock:^(CMTime playbackTime) {
 		@strongify(self)
 		
-		if (self.player.rate == 0)
+		if (self.player.rate == 0) {
 			return;
+		}
 		
-		if (!CMTIME_IS_VALID(self.previousPlaybackTime))
+		if (!CMTIME_IS_VALID(self.previousPlaybackTime)) {
 			return;
+		}
 		
-		if(CMTimeGetSeconds(self.previousPlaybackTime) > CMTimeGetSeconds(playbackTime))
-		{
+		if (CMTimeGetSeconds(self.previousPlaybackTime) > CMTimeGetSeconds(playbackTime)) {
 			if (![self.stateMachine.currentState isEqual:self.playingState]) {
 				[self fireEvent:self.playEvent userInfo:nil];
 			}
@@ -687,16 +687,16 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 	}];
 }
 
-- (void) registerPeriodicTimeObservers
+- (void)registerCustomPeriodicTimeObservers
 {
-	[self unregisterPeriodicTimeObservers];
+	[self unregisterCustomPeriodicTimeObservers];
 	
 	for (RTSPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
 		[playbackBlockRegistration attachToMediaPlayer:self.player];
 	}
 }
 
-- (void) unregisterPeriodicTimeObservers
+- (void)unregisterCustomPeriodicTimeObservers
 {
 	for (RTSPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
 		[playbackBlockRegistration detach];
@@ -774,7 +774,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		}
 		
 		if (![self.stateMachine.currentState isEqual:self.playingState]) {
-			[self registerPlaybackStartObserver];
+			[self registerPlaybackStartBoundaryObserver];
 		}
 		
 		if ([self.stateMachine.currentState isEqual:self.stalledState]) {
