@@ -708,7 +708,10 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		switch (playerItem.status)
 		{
 			case AVPlayerItemStatusReadyToPlay:
-				if (self.player.rate != 0 && ![self.stateMachine.currentState isEqual:self.readyState] && ![self.stateMachine.currentState isEqual:self.seekingState]) {
+				if (self.player.rate != 0 &&
+					![self.stateMachine.currentState isEqual:self.readyState] &&
+					![self.stateMachine.currentState isEqual:self.seekingState])
+				{
 					[self play];
 				}
 				break;
