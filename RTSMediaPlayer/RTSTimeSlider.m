@@ -86,42 +86,6 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark - Setters and getters
 
-- (void) setPlaybackController:(id<RTSMediaPlayback>)playbackController
-{
-	if (_playbackController)
-	{
-		[_playbackController removePeriodicTimeObserver:self.periodicTimeObserver];
-	}
-	
-	_playbackController = playbackController;
-	
-	@weakify(self)
-	self.periodicTimeObserver = [playbackController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
-		@strongify(self)
-		
-		if (!self.isTracking)
-		{
-			CMTimeRange timeRange = [self.playbackController timeRange];
-			if (!CMTIMERANGE_IS_EMPTY(timeRange))
-			{
-				self.minimumValue = CMTimeGetSeconds(timeRange.start);
-				self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange));
-				
-				AVPlayerItem *playerItem = self.playbackController.playerItem;
-				self.value = CMTimeGetSeconds(playerItem.currentTime);
-			}
-			else
-			{
-				self.minimumValue = 0.;
-				self.maximumValue = 0.;
-				self.value = 0.;
-			}
-		}
-		[self updateTimeRangeLabels];
-		[self setNeedsDisplay];
-	}];
-}
-
 - (BOOL) isDraggable
 {
 	// A slider knob can be dragged iff it corresponds to a valid range
