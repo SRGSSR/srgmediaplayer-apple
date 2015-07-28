@@ -356,7 +356,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 			if (!self.isTracking)
 			{
 				CMTimeRange timeRange = [self.playbackController timeRange];
-				if (!CMTIMERANGE_IS_EMPTY(timeRange))
+				if (!CMTIMERANGE_IS_EMPTY(timeRange) && !CMTIMERANGE_IS_INDEFINITE(timeRange))
 				{
 					self.minimumValue = CMTimeGetSeconds(timeRange.start);
 					self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange));
