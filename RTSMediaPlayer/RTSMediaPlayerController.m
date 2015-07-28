@@ -445,14 +445,14 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	return self.player.currentItem;
 }
 
-- (RTSMediaPlaybackState) playbackState
+- (RTSMediaPlaybackState)playbackState
 {
 	@synchronized(self) {
 		return _playbackState;
 	}
 }
 
-- (void) setPlaybackState:(RTSMediaPlaybackState)playbackState
+- (void)setPlaybackState:(RTSMediaPlaybackState)playbackState
 {
 	@synchronized(self) {
 		if (_playbackState == playbackState) {
@@ -467,7 +467,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
-- (CMTimeRange) timeRange
+- (CMTimeRange)timeRange
 {
 	AVPlayerItem *playerItem = self.playerItem;
 	
@@ -506,7 +506,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	return [mediaType isEqualToString:AVMediaTypeVideo] ? RTSMediaTypeVideo : RTSMediaTypeAudio;
 }
 
-- (RTSMediaStreamType) streamType
+- (RTSMediaStreamType)streamType
 {
 	if (! self.playerItem) {
 		return RTSMediaStreamTypeUnknown;
@@ -523,7 +523,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
-- (id) addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
+- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
 {
 	if (!block) {
 		return nil;
@@ -568,18 +568,19 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 static const void * const AVPlayerItemPlaybackLikelyToKeepUpContext = &AVPlayerItemPlaybackLikelyToKeepUpContext;
 static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoadedTimeRangesContext;
 
-- (AVPlayer *) player
+- (AVPlayer *)player
 {
 	@synchronized(self)
 	{
-		if ([self.stateMachine.currentState isEqual:self.idleState] && !_player) {
-			RTSMediaPlayerLogWarning(@"Media player controller is not ready");
-		}
+// Commented out for now (2015-07-28), as it triggers too many messages to be useful.
+//		if ([self.stateMachine.currentState isEqual:self.idleState] && !_player) {
+//			RTSMediaPlayerLogWarning(@"Media player controller is not ready");
+//		}
 		return _player;
 	}
 }
 
-- (void) setPlayer:(AVPlayer *)player
+- (void)setPlayer:(AVPlayer *)player
 {
 	@synchronized(self)
 	{
