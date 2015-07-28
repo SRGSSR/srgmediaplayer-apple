@@ -598,14 +598,12 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		[defaultCenter removeObserver:self name:AVPlayerItemNewAccessLogEntryNotification object:_player.currentItem];
 		[defaultCenter removeObserver:self name:AVPlayerItemNewErrorLogEntryNotification object:_player.currentItem];
 		
-		if (self.playbackStartObserver)
-		{
+		if (self.playbackStartObserver) {
 			[_player removeTimeObserver:self.playbackStartObserver];
 			self.playbackStartObserver = nil;
 		}
 		
-		if (self.periodicTimeObserver)
-		{
+		if (self.periodicTimeObserver) {
 			[_player removeTimeObserver:self.periodicTimeObserver];
 			self.periodicTimeObserver = nil;
 		}
@@ -637,8 +635,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 
 - (void)registerPlaybackStartBoundaryObserver
 {
-	if (self.playbackStartObserver)
-	{
+	if (self.playbackStartObserver) {
 		[self.player removeTimeObserver:self.playbackStartObserver];
 		self.playbackStartObserver = nil;
 	}
@@ -703,7 +700,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 	}
 }
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if (context == AVPlayerItemStatusContext) {
 		AVPlayer *player = object;
@@ -740,7 +737,6 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 				}
 			}];
 		}
-		
 	}
 	else if (context == AVPlayerRateContext) {
 		float oldRate = [change[NSKeyValueChangeOldKey] floatValue];
