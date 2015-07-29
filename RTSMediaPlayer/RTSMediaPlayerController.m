@@ -348,27 +348,23 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 #pragma mark - Notifications
 
-- (void) postNotificationName:(NSString *)notificationName userInfo:(NSDictionary *)userInfo
+- (void)postNotificationName:(NSString *)notificationName userInfo:(NSDictionary *)userInfo
 {
-	NSNotification *notification = [NSNotification notificationWithName:notificationName object:self userInfo:userInfo];
-    if ([NSThread isMainThread]) {
-		[[NSNotificationCenter defaultCenter] postNotification:notification];
-    }
-    else {
-		[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
-    }
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:userInfo];
+	});
 }
 
 #pragma mark - Playback
 
-- (void) loadPlayerShouldPlayImediately:(BOOL)autoPlay
+- (void)loadPlayerShouldPlayImediately:(BOOL)autoPlay
 {
 	if ([self.stateMachine.currentState isEqual:self.idleState]) {
 		[self fireEvent:self.loadEvent userInfo: @{ RTSMediaPlayerStateMachineAutoPlayInfoKey : @(autoPlay) }];
 	}
 }
 
-- (void) prepareToPlay
+- (void)prepareToPlay
 {
 	[self loadPlayerShouldPlayImediately:NO];
 }
