@@ -343,9 +343,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)postNotificationName:(NSString *)notificationName userInfo:(NSDictionary *)userInfo
 {
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:userInfo];
-	});
+	NSAssert([NSThread isMainThread], @"Oh really, not on main thread?");
+	[[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:userInfo];
 }
 
 #pragma mark - Playback
