@@ -375,6 +375,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 			[self setNeedsDisplay];
 		}];
 	}
+	else {
+		[self.playbackController removePeriodicTimeObserver:self.periodicTimeObserver];
+	}
 }
 
 @end
