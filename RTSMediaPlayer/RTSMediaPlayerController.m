@@ -100,8 +100,9 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 - (instancetype)initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
 {
-	if (!(self = [super init]))
+	if (!(self = [super init])) {
 		return nil;
+	}
 	
 	_identifier = identifier;
 	_dataSource = dataSource;
@@ -119,7 +120,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	return self;
 }
 
-- (void) dealloc
+- (void)dealloc
 {
 	[self reset];
 	
@@ -454,6 +455,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
+#pragma mark - Specialized Accessors
+
 - (CMTimeRange)timeRange
 {
 	AVPlayerItem *playerItem = self.playerItem;
@@ -510,42 +513,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
-- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
-{
-	if (!block) {
-		return nil;
-	}
-	
-	NSString *identifier = [[NSUUID UUID] UUIDString];
-	RTSPeriodicTimeObserver *periodicTimeObserver = [self periodicTimeObserverForInterval:interval queue:queue];
-	[periodicTimeObserver setBlock:block forIdentifier:identifier];
-	
-	if (self.player) {
-		[periodicTimeObserver attachToMediaPlayer:self.player];
-	}
-	
-	// Return the opaque identifier
-	return identifier;
-}
-
-- (void) removePeriodicTimeObserver:(id)observer
-{
-	for (RTSPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
-		[periodicTimeObserver removeBlockWithIdentifier:observer];
-	}
-}
-
-- (RTSPeriodicTimeObserver *) periodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue
-{
-	NSString *key = [NSString stringWithFormat:@"%@-%@-%@-%@-%p", @(interval.value), @(interval.timescale), @(interval.flags), @(interval.epoch), queue];
-	RTSPeriodicTimeObserver *periodicTimeObserver = self.periodicTimeObservers[key];
-	if (!periodicTimeObserver)
-	{
-		periodicTimeObserver = [[RTSPeriodicTimeObserver alloc] initWithInterval:interval queue:queue];
-		self.periodicTimeObservers[key] = periodicTimeObserver;
-	}
-	return periodicTimeObserver;
-}
 
 #pragma mark - AVPlayer
 
@@ -671,6 +638,9 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 	}];
 }
 
+
+#pragma mark - Custom Periodic Observers
+
 - (void)registerCustomPeriodicTimeObservers
 {
 	[self unregisterCustomPeriodicTimeObservers];
@@ -686,6 +656,46 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		[playbackBlockRegistration detach];
 	}
 }
+
+- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
+{
+	if (!block) {
+		return nil;
+	}
+	
+	NSString *identifier = [[NSUUID UUID] UUIDString];
+	RTSPeriodicTimeObserver *periodicTimeObserver = [self periodicTimeObserverForInterval:interval queue:queue];
+	[periodicTimeObserver setBlock:block forIdentifier:identifier];
+	
+	if (self.player) {
+		[periodicTimeObserver attachToMediaPlayer:self.player];
+	}
+	
+	// Return the opaque identifier
+	return identifier;
+}
+
+- (void)removePeriodicTimeObserver:(id)observer
+{
+	for (RTSPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
+		[periodicTimeObserver removeBlockWithIdentifier:observer];
+	}
+}
+
+- (RTSPeriodicTimeObserver *)periodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue
+{
+	NSString *key = [NSString stringWithFormat:@"%@-%@-%@-%@-%p", @(interval.value), @(interval.timescale), @(interval.flags), @(interval.epoch), queue];
+	RTSPeriodicTimeObserver *periodicTimeObserver = self.periodicTimeObservers[key];
+	
+	if (!periodicTimeObserver) {
+		periodicTimeObserver = [[RTSPeriodicTimeObserver alloc] initWithInterval:interval queue:queue];
+		self.periodicTimeObservers[key] = periodicTimeObserver;
+	}
+	
+	return periodicTimeObserver;
+}
+
+#pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -772,6 +782,8 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 	}
 }
 
+#pragma mark - Player Item Notifications
+
 - (void) playerItemDidPlayToEndTime:(NSNotification *)notification
 {
 	[self fireEvent:self.endEvent userInfo:nil];
@@ -821,19 +833,16 @@ static void LogProperties(id object)
 
 #pragma mark - View
 
-- (void) attachPlayerToView:(UIView *)containerView
+- (void)attachPlayerToView:(UIView *)containerView
 {
-	if (self.view.superview)
-		[self.view removeFromSuperview];
-	
+	[self.view removeFromSuperview];
 	self.view.frame = CGRectMake(0, 0, CGRectGetWidth(containerView.bounds), CGRectGetHeight(containerView.bounds));
 	[containerView insertSubview:self.view atIndex:0];
 }
 
-- (UIView *) view
+- (UIView *)view
 {
-	if (!_view)
-	{
+	if (!_view) {
 		_view = [RTSMediaPlayerView new];
 		_view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		
@@ -847,12 +856,12 @@ static void LogProperties(id object)
 		
 		UIView *activityView = self.activityView ?: _view;
 		[activityView addGestureRecognizer:self.activityGestureRecognizer];
-		
 	}
+	
 	return _view;
 }
 
-- (RTSActivityGestureRecognizer *) activityGestureRecognizer
+- (RTSActivityGestureRecognizer *)activityGestureRecognizer
 {
 	if (!_activityGestureRecognizer) {
 		_activityGestureRecognizer = [[RTSActivityGestureRecognizer alloc] initWithTarget:self action:@selector(resetIdleTimer)];
@@ -862,43 +871,61 @@ static void LogProperties(id object)
 	return _activityGestureRecognizer;
 }
 
-- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer;
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer;
 {
 	return [gestureRecognizer isKindOfClass:[RTSActivityGestureRecognizer class]];
 }
 
-- (RTSMediaPlayerView *) playerView
+- (RTSMediaPlayerView *)playerView
 {
 	return (RTSMediaPlayerView *)self.view;
 }
 
+- (void)handleDoubleTap:(UITapGestureRecognizer *)gestureRecognizer
+{
+	if (!self.playerView.playerLayer.isReadyForDisplay) {
+		return;
+	}
+	
+	[self toggleAspect];
+}
+
+- (void)toggleAspect
+{
+	AVPlayerLayer *playerLayer = self.playerView.playerLayer;
+	if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
+		playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+	}
+	else {
+		playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+	}
+}
+
 #pragma mark - Overlays
 
-- (NSArray *) overlayViews
+- (NSArray *)overlayViews
 {
-	@synchronized(self)
-	{
-		if (!_overlayViews)
+	@synchronized(self) {
+		if (!_overlayViews) {
 			_overlayViews = @[ [UIView new] ];
-		
+		}
 		return _overlayViews;
 	}
 }
 
-- (void) setOverlayViews:(NSArray *)overlayViews
+- (void)setOverlayViews:(NSArray *)overlayViews
 {
-	@synchronized(self)
-	{
+	@synchronized(self) {
 		_overlayViews = overlayViews;
 	}
 }
 
-- (void) handleSingleTap:(UITapGestureRecognizer *)gestureRecognizer
+- (void)handleSingleTap:(UITapGestureRecognizer *)gestureRecognizer
 {
 	[self toggleOverlays];
 }
 
-- (void) setOverlaysVisible:(BOOL)visible
+- (void)setOverlaysVisible:(BOOL)visible
 {
 	[self postNotificationName:visible ? RTSMediaPlayerWillShowControlOverlaysNotification : RTSMediaPlayerWillHideControlOverlaysNotification userInfo:nil];
 	for (UIView *overlayView in self.overlayViews) {
@@ -907,7 +934,7 @@ static void LogProperties(id object)
 	[self postNotificationName:visible ? RTSMediaPlayerDidShowControlOverlaysNotification : RTSMediaPlayerDidHideControlOverlaysNotification userInfo:nil];
 }
 
-- (void) toggleOverlays
+- (void)toggleOverlays
 {
 	UIView *firstOverlayView = [self.overlayViews firstObject];
 	[self setOverlaysVisible:firstOverlayView.hidden];
@@ -928,33 +955,11 @@ static void LogProperties(id object)
 	return _idleTimer;
 }
 
-- (void) resetIdleTimer
+- (void)resetIdleTimer
 {
 	int64_t delayInNanoseconds = ((self.overlayViewsHidingDelay > 0.0) ? self.overlayViewsHidingDelay : RTSMediaPlayerOverlayHidingDelay) * NSEC_PER_SEC;
 	int64_t toleranceInNanoseconds = 0.1 * NSEC_PER_SEC;
 	dispatch_source_set_timer(self.idleTimer, dispatch_time(DISPATCH_TIME_NOW, delayInNanoseconds), DISPATCH_TIME_FOREVER, toleranceInNanoseconds);
-}
-
-#pragma mark - Resize Aspect
-
-- (void)handleDoubleTap:(UITapGestureRecognizer *)gestureRecognizer
-{
-	if (!self.playerView.playerLayer.isReadyForDisplay) {
-		return;
-	}
-	
-	[self toggleAspect];
-}
-
-- (void)toggleAspect
-{
-	AVPlayerLayer *playerLayer = self.playerView.playerLayer;
-	if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
-		playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-	}
-	else {
-		playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-	}
 }
 
 #pragma mark - Notifications
