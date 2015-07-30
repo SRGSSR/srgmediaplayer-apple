@@ -8,6 +8,7 @@
 #import "NSBundle+RTSMediaPlayer.h"
 
 @interface RTSAirplayOverlayView () <RTSAirplayOverlayViewDataSource>
+@property (nonatomic, strong) MPVolumeView *volumeView;
 @end
 
 @implementation RTSAirplayOverlayView
@@ -46,6 +47,8 @@
 											 selector:@selector(wirelessRouteActiveDidChange:)
 												 name:MPVolumeViewWirelessRouteActiveDidChangeNotification
 											   object:nil];
+	
+	self.volumeView = [[MPVolumeView alloc] init];
 }
 
 - (void)dealloc
