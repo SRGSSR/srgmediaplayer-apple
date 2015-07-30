@@ -121,9 +121,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 - (void) dealloc
 {
-	if (![self.stateMachine.currentState isEqual:self.idleState]) {
-		RTSMediaPlayerLogWarning(@"The media player controller reached dealloc while still active. You should call the `reset` method before reaching dealloc.");
-	}
+	[self reset];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
