@@ -127,6 +127,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
+	[self.view removeFromSuperview];
 	[self.activityView removeGestureRecognizer:self.activityGestureRecognizer];
 	
 	self.playerView.player = nil;
