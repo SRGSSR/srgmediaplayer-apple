@@ -26,10 +26,9 @@ static void *s_kvoContext  = &s_kvoContext;
 
 #pragma mark - Object lifecycle
 
-- (instancetype) initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue
+- (instancetype)initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue
 {
-	if (self = [super init])
-	{
+	if (self = [super init]) {
 		self.interval = interval;
 		self.queue = queue;
 		self.blocks = [NSMutableDictionary dictionary];
@@ -37,29 +36,25 @@ static void *s_kvoContext  = &s_kvoContext;
 	return self;
 }
 
-- (void) dealloc
+- (void)dealloc
 {
-    [self removeObserver];
+	[self removeObserver];
 }
 
 #pragma mark - Associating with a player
 
-- (void) attachToMediaPlayer:(AVPlayer *)player
+- (void)attachToMediaPlayer:(AVPlayer *)player
 {
 	if (self.player == player) {
 		return;
 	}
 	
-	if (self.player) {
-		[self detach];
-	}
-	
+	[self removeObserver];
 	self.player = player;
-	
-	[self resestObserver];
+	[self startObserver];
 }
 
-- (void) detach
+- (void)detachFromMediaPlayer
 {
 	[self removeObserver];
 	self.player = nil;
@@ -67,40 +62,37 @@ static void *s_kvoContext  = &s_kvoContext;
 
 #pragma mark - Managing blocks
 
-- (void) setBlock:(void (^)(CMTime time))block forIdentifier:(NSString *)identifier
+- (void)setBlock:(void (^)(CMTime time))block forIdentifier:(NSString *)identifier
 {
-    NSParameterAssert(block);
-    NSParameterAssert(identifier);
-    
-    if (self.blocks.count == 0) {
-        [self resestObserver];
-    }
-    
-    [self.blocks setObject:[block copy] forKey:identifier];
+	NSParameterAssert(block);
+	NSParameterAssert(identifier);
+	
+	if (self.blocks.count == 0) {
+		[self startObserver];
+	}
+	
+	[self.blocks setObject:[block copy] forKey:identifier];
 }
 
-- (void) removeBlockWithIdentifier:(id)identifier
+- (void)removeBlockWithIdentifier:(id)identifier
 {
-    NSParameterAssert(identifier);
-    
-    [self.blocks removeObjectForKey:identifier];
-    
-    if (self.blocks.count == 0) {
-        [self removeObserver];
-    }
+	NSParameterAssert(identifier);
+	
+	[self.blocks removeObjectForKey:identifier];
+	
+	if (self.blocks.count == 0) {
+		[self removeObserver];
+	}
 }
 
 #pragma mark - Observers
 
-- (void)resestObserver
+- (void)startObserver
 {
-	[self removeObserver];
-	
-	if (!self.player) {
+	if (!self.player || self.timer) {
 		return;
 	}
 	
-	[self.timer invalidate];
 	self.timer = [NSTimer scheduledTimerWithTimeInterval:CMTimeGetSeconds(self.interval)
 												  target:self
 												selector:@selector(timerTick:)
@@ -110,6 +102,11 @@ static void *s_kvoContext  = &s_kvoContext;
 
 - (void)timerTick:(NSTimer *)timer
 {
+	if (!self.player) { // It may have disappeared, as it is a weak property
+		[self removeObserver];
+		return;
+	}
+	
 	for (void (^block)(CMTime) in [self.blocks allValues]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			block(self.player.currentTime);

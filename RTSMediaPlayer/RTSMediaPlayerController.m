@@ -653,7 +653,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 - (void)unregisterCustomPeriodicTimeObservers
 {
 	for (RTSPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
-		[playbackBlockRegistration detach];
+		[playbackBlockRegistration detachFromMediaPlayer];
 	}
 }
 
