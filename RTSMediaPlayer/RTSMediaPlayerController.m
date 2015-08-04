@@ -71,6 +71,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @property (readonly) RTSMediaPlayerView *playerView;
 @property (readonly) RTSActivityGestureRecognizer *activityGestureRecognizer;
 
+@property (readwrite, weak) id stateTransitionObserver;
+
 @property (readonly) dispatch_source_t idleTimer;
 
 @end
@@ -125,6 +127,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	[self reset];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self.stateTransitionObserver];
 	
 	[self.view removeFromSuperview];
 	[self.activityView removeGestureRecognizer:self.activityGestureRecognizer];
@@ -204,16 +207,16 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	@weakify(self)
 	
-	[[NSNotificationCenter defaultCenter] addObserverForName:TKStateMachineDidChangeStateNotification
-													  object:stateMachine
-													   queue:[NSOperationQueue mainQueue]
-												  usingBlock:^(NSNotification *notification) {
-													  @strongify(self)
-													  TKTransition *t = notification.userInfo[TKStateMachineDidChangeStateTransitionUserInfoKey];
-													  RTSMediaPlayerLogDebug(@"(%@) ---[%@]---> (%@)", t.sourceState.name, t.event.name.lowercaseString, t.destinationState.name);
-													  NSInteger newPlaybackState = [states[t.destinationState.name] integerValue];
-													  self.playbackState = newPlaybackState;
-												  }];
+	self.stateTransitionObserver = [[NSNotificationCenter defaultCenter] addObserverForName:TKStateMachineDidChangeStateNotification
+																					 object:stateMachine
+																					  queue:[NSOperationQueue mainQueue]
+																				 usingBlock:^(NSNotification *notification) {
+																					 @strongify(self)
+																					 TKTransition *t = notification.userInfo[TKStateMachineDidChangeStateTransitionUserInfoKey];
+																					 RTSMediaPlayerLogDebug(@"(%@) ---[%@]---> (%@)", t.sourceState.name, t.event.name.lowercaseString, t.destinationState.name);
+																					 NSInteger newPlaybackState = [states[t.destinationState.name] integerValue];
+																					 self.playbackState = newPlaybackState;
+																				 }];
 	
 	[preparing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
