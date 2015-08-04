@@ -59,6 +59,6 @@
 
 @protocol RTSTimeSliderDelegate <NSObject>
 
-- (void)timeSlider:(RTSTimeSlider *)slider isSlidingAtPlaybackTime:(CMTime)time withValue:(CGFloat)value;
+- (void)timeSlider:(RTSTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(CGFloat)value interactive:(BOOL)interactive;
 
 @end

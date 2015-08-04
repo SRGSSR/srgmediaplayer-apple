@@ -201,8 +201,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	
 	// Next, inform that we are sliding to other views.
 	[self.slidingDelegate timeSlider:self
-			 isSlidingAtPlaybackTime:time
-						   withValue:self.value];
+			 isMovingToPlaybackTime:time
+						   withValue:self.value
+						 interactive:YES];
 	
 	return continueTracking;
 }
@@ -370,8 +371,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				}
 				
 				[self.slidingDelegate timeSlider:self
-						 isSlidingAtPlaybackTime:time
-									   withValue:self.value];
+						  isMovingToPlaybackTime:time
+									   withValue:self.value
+									 interactive:NO];
 				
 				[self setNeedsDisplay];
 				[self updateTimeRangeLabels];
