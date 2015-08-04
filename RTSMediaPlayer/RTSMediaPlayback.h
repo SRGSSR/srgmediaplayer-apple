@@ -72,6 +72,11 @@
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
 
 /**
+ *  Returns the current playback state of the media player.
+ */
+@property (readonly) RTSMediaPlaybackState playbackState;
+
+/**
  *  Play at the specific time. When there is no blocked segment, is equivalent to seekToTime: with a play on completion.
  *
  *  @param time time

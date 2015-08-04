@@ -111,11 +111,6 @@
 @property (readonly, copy) NSString *identifier;
 
 /**
- *  Returns the current playback state of the media player.
- */
-@property (readonly) RTSMediaPlaybackState playbackState;
-
-/**
  *  -------------------
  *  @name Overlay Views
  *  -------------------

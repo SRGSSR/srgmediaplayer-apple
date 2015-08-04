@@ -494,6 +494,11 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 	return self.playerController.streamType;
 }
 
+- (RTSMediaPlaybackState)playbackState
+{
+    return self.playerController.playbackState;
+}
+
 - (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime))block
 {
 	return [self.playerController addPeriodicTimeObserverForInterval:interval queue:queue usingBlock:block];
