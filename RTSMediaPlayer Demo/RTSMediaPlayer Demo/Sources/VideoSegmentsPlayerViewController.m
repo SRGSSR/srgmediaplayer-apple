@@ -103,12 +103,6 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 											 selector:@selector(playbackStateDidChange:)
 												 name:RTSMediaPlayerPlaybackStateDidChangeNotification
 											   object:nil];
-	
-	@weakify(self);
-	self.periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
-		@strongify(self);
-		[self updateAppearanceWithTime:time];
-	}];
 }
 
 - (void)updateAppearanceWithTime:(CMTime)time

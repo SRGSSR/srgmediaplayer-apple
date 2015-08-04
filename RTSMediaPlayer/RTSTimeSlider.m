@@ -200,11 +200,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	}
 	
 	// Next, inform that we are sliding to other views.
-	if (self.slidingDelegate) {
-		[self.slidingDelegate timeSlider:self
-				 isSlidingAtPlaybackTime:time
-							   withValue:self.value];
-	}
+	[self.slidingDelegate timeSlider:self
+			 isSlidingAtPlaybackTime:time
+						   withValue:self.value];
 	
 	return continueTracking;
 }
@@ -353,7 +351,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		self.periodicTimeObserver = [self.playbackController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 			@strongify(self)
 			
-			if (!self.isTracking)
+			if (!self.isTracking && self.playbackController.playbackState != RTSMediaPlaybackStateSeeking)
 			{
 				CMTimeRange timeRange = [self.playbackController timeRange];
 				if (!CMTIMERANGE_IS_EMPTY(timeRange) && !CMTIMERANGE_IS_INDEFINITE(timeRange) && !CMTIMERANGE_IS_INVALID(timeRange))
@@ -370,9 +368,14 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 					self.maximumValue = 0.;
 					self.value = 0.;
 				}
+				
+				[self.slidingDelegate timeSlider:self
+						 isSlidingAtPlaybackTime:time
+									   withValue:self.value];
+				
+				[self setNeedsDisplay];
+				[self updateTimeRangeLabels];
 			}
-			[self updateTimeRangeLabels];
-			[self setNeedsDisplay];
 		}];
 	}
 	else {
