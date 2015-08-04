@@ -39,7 +39,7 @@
 
 - (void)setupView
 {
-	self.contentMode = UIViewContentModeCenter;
+	self.contentMode = UIViewContentModeRedraw;
 	self.userInteractionEnabled = NO;
 	self.hidden = YES;
 	
