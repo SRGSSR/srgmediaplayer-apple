@@ -69,6 +69,10 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	self.borderColor = [UIColor blackColor];
 	
+	self.minimumValue = 0.;
+	self.maximumValue = 0.;
+	self.value = 0.;
+	
 	self.minimumTrackTintColor = [UIColor whiteColor];
 	self.maximumTrackTintColor = [UIColor blackColor];
 	
