@@ -10,19 +10,19 @@
 
 - (void) dealloc
 {
-	self.mediaPlayerController = nil;
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
-	if (self.mediaPlayerController) {
+	if (_mediaPlayerController) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self
 														name:RTSMediaPlayerPlaybackDidFailNotification
-													  object:self.mediaPlayerController];
+													  object:_mediaPlayerController];
 
 		[[NSNotificationCenter defaultCenter] removeObserver:self
 														name:RTSMediaPlayerPlaybackStateDidChangeNotification
-													  object:self.mediaPlayerController];
+													  object:_mediaPlayerController];
 	}
 	
 	self.hidden = YES;

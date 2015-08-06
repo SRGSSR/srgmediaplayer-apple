@@ -13,7 +13,7 @@
 
 - (void) dealloc
 {
-	self.mediaPlayerController = nil;
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
@@ -27,14 +27,12 @@
 	_mediaPlayerController = mediaPlayerController;
 	[self refreshButton];
 
-	if (!mediaPlayerController) {
-		return;
+	if (mediaPlayerController) {
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(mediaPlayerPlaybackStateDidChange:)
+													 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+												   object:mediaPlayerController];
 	}
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(mediaPlayerPlaybackStateDidChange:)
-												 name:RTSMediaPlayerPlaybackStateDidChangeNotification
-											   object:mediaPlayerController];
 }
 
 - (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
