@@ -67,7 +67,7 @@
 		}
 	}
 	
-	return nil;
+	return RTSMediaPlayerLocalizedString(@"External device", nil);
 }
 
 

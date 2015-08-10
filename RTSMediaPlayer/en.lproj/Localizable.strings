@@ -4,5 +4,6 @@
 //  Licence information is available from the LICENCE file.
 //
 "Back to live"="Retour au direct";
+"External device"="Appareil externe";
 "Live"="Direct";
-"This video is playing on «%@»"="This video is playing on «%@»";
+"This video is playing on «%@»"="Cette vidéo est actuellement affichée sur «%@»";
