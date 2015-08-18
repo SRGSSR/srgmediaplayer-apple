@@ -346,9 +346,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)postNotificationName:(NSString *)notificationName userInfo:(NSDictionary *)userInfo
 {
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:userInfo];
-	});
+	NSNotification *notification = [NSNotification notificationWithName:notificationName object:self userInfo:userInfo];
+	if ([NSThread isMainThread]) {
+		[[NSNotificationCenter defaultCenter] postNotification:notification];
+	}
+	else {
+		[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
+	}
 }
 
 #pragma mark - Playback
