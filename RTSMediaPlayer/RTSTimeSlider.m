@@ -7,6 +7,7 @@
 #import "RTSTimeSlider.h"
 
 #import "NSBundle+RTSMediaPlayer.h"
+#import "RTSMediaPlayerLogger.h"
 #import "UIBezierPath+RTSMediaPlayerUtils.h"
 
 #import <SRGMediaPlayer/RTSMediaPlayerController.h>
@@ -135,7 +136,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (CMTime) time
 {
 	CMTimeRange timeRange = self.playbackController.timeRange;
-	Float64 timeInSeconds = CMTimeGetSeconds(timeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(timeRange.duration) / (self.maximumValue - self.minimumValue);
+	Float64 timeInSeconds = (self.value - self.minimumValue) * CMTimeGetSeconds(timeRange.duration) / (self.maximumValue - self.minimumValue);
 	return CMTimeMakeWithSeconds(timeInSeconds, 1.);
 }
 
@@ -149,7 +150,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	static const float RTSToleranceInSeconds = 15.f;
 	
 	return self.playbackController.streamType == RTSMediaStreamTypeLive
-	|| (self.playbackController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSToleranceInSeconds));
+		|| (self.playbackController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSToleranceInSeconds));
 }
 
 - (void) updateTimeRangeLabels
@@ -361,11 +362,11 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				CMTimeRange timeRange = [self.playbackController timeRange];
 				if (!CMTIMERANGE_IS_EMPTY(timeRange) && !CMTIMERANGE_IS_INDEFINITE(timeRange) && !CMTIMERANGE_IS_INVALID(timeRange))
 				{
-					self.minimumValue = CMTimeGetSeconds(timeRange.start);
-					self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange));
+					self.minimumValue = 0.;
+					self.maximumValue = CMTimeGetSeconds(timeRange.duration);
 					
 					AVPlayerItem *playerItem = self.playbackController.playerItem;
-					self.value = CMTimeGetSeconds(playerItem.currentTime);
+					self.value = CMTimeGetSeconds(CMTimeSubtract(playerItem.currentTime, timeRange.start));
 				}
 				else
 				{
@@ -373,6 +374,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 					self.maximumValue = 0.;
 					self.value = 0.;
 				}
+				
+				RTSMediaPlayerLogTrace(@"Min = %@ --- Current = %@ --- Max = %@", @(self.minimumValue), @(self.value), @(self.maximumValue));
 				
 				[self.slidingDelegate timeSlider:self
 						  isMovingToPlaybackTime:time
