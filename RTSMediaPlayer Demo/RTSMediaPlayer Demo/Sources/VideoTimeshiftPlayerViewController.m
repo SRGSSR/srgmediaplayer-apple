@@ -65,7 +65,10 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 	@weakify(self)
 	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 		@strongify(self)
-		[self updateLiveButton];
+		
+		if (self.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
+			[self updateLiveButton];
+		}
 	}];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
