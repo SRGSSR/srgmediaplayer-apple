@@ -195,7 +195,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		[self setNeedsDisplay];
 	}
 	
-	CMTime time = [self time];
+	CMTime time = self.time;
 	
 	// First seek to the playback controller. Seeking where the media has been loaded is fast, which leads to
 	// annoying stuttering for audios. This is less annoying for videos since being able to see where we seek
@@ -216,7 +216,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	if ([self isDraggable]) {
-		[self.playbackController playAtTime:[self time]];
+		[self.playbackController playAtTime:self.time];
 	}
 	
 	[super endTrackingWithTouch:touch withEvent:event];
