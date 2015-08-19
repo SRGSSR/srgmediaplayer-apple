@@ -96,7 +96,9 @@
 		self.valueLabelWidthConstraint.constant = labelWidth;
 		self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
 		
-		[self updateLiveButton];
+		if (self.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
+			[self updateLiveButton];
+		}
 	}];
 }
 

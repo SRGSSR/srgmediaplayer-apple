@@ -7,6 +7,21 @@
 #import <Foundation/Foundation.h>
 
 /**
+ *  ---------------
+ *  @name Constants
+ *  ---------------
+ */
+
+FOUNDATION_EXTERN NSTimeInterval const RTSMediaLiveTolerance; // in seconds.
+FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in seconds.
+
+/**
+ *  -------------------
+ *  @name Enumerations
+ *  -------------------
+ */
+
+/**
  *  @enum RTSMediaType
  *
  *  Enumeration of the possible media types.
@@ -128,8 +143,6 @@ typedef NS_ENUM(NSInteger, RTSMediaStreamType) {
 	 */
 	RTSMediaStreamTypeDVR,
 };
-
-FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in seconds.
 
 /**
  *  -------------------

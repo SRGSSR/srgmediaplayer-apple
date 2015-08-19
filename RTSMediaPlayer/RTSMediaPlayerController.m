@@ -17,6 +17,7 @@
 #import "RTSMediaPlayerLogger.h"
 
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
+NSTimeInterval const RTSMediaLiveTolerance = 30.0;		// same tolerance as built-in iOS player
 
 NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
 
@@ -518,6 +519,23 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 	else {
 		return RTSMediaStreamTypeOnDemand;
+	}
+}
+
+- (BOOL)isLive
+{
+	if (!self.playerItem) {
+		return NO;
+	}
+	
+	if (self.streamType == RTSMediaStreamTypeLive) {
+		return YES;
+	}
+	else if (self.streamType == RTSMediaStreamTypeDVR) {
+		return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), self.playerItem.currentTime)) < RTSMediaLiveTolerance;
+	}
+	else {
+		return NO;
 	}
 }
 

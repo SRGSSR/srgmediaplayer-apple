@@ -52,6 +52,10 @@
 
 /**
  *  Return YES iff the current slider position matches the conditions of a live feed
+ *
+ *  @discussion While dragging, this property may not reflect the value returned by the RTSMediaPlayback live property.
+ *              The slider live property namely returns the current slider knob status, while the corresponding RTSMediaPlayback
+ *              property returns the status of the item currently being played
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 

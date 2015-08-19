@@ -494,6 +494,11 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 	return self.playerController.streamType;
 }
 
+- (BOOL)isLive
+{
+	return self.playerController.live;
+}
+
 - (RTSMediaPlaybackState)playbackState
 {
     return self.playerController.playbackState;

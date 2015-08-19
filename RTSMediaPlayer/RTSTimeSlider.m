@@ -7,6 +7,7 @@
 #import "RTSTimeSlider.h"
 
 #import "NSBundle+RTSMediaPlayer.h"
+#import "RTSMediaPlayerLogger.h"
 #import "UIBezierPath+RTSMediaPlayerUtils.h"
 
 #import <SRGMediaPlayer/RTSMediaPlayerController.h>
@@ -69,7 +70,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	self.borderColor = [UIColor blackColor];
 	
-	self.minimumValue = 0.;
+	self.minimumValue = 0.;			// Always 0
 	self.maximumValue = 0.;
 	self.value = 0.;
 	
@@ -135,8 +136,12 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (CMTime) time
 {
 	CMTimeRange timeRange = self.playbackController.timeRange;
-	Float64 timeInSeconds = CMTimeGetSeconds(timeRange.start) + (self.value - self.minimumValue) * CMTimeGetSeconds(timeRange.duration) / (self.maximumValue - self.minimumValue);
-	return CMTimeMakeWithSeconds(timeInSeconds, 1.);
+	if (CMTIMERANGE_IS_EMPTY(timeRange)) {
+		return kCMTimeZero;
+	}
+	
+	CMTime relativeTime = CMTimeMakeWithSeconds(self.value, NSEC_PER_SEC);
+	return CMTimeAdd(timeRange.start, relativeTime);
 }
 
 - (BOOL) isLive
@@ -144,12 +149,10 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	// Live and timeshift feeds in live conditions. This happens when either the following condition
 	// is met:
 	//  - We have a pure live feed, which is characterized by an empty range
-	//  - We have a timeshift feed, which is characterized by an indefinite player item duration, and which is close
-	//    to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance of 15 seconds
-	static const float RTSToleranceInSeconds = 15.f;
-	
+	//  - We have a timeshift feed, which is characterized by an indefinite player item duration, and whose slider knob is
+	//    dragged close to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance
 	return self.playbackController.streamType == RTSMediaStreamTypeLive
-	|| (self.playbackController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSToleranceInSeconds));
+		|| (self.playbackController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSMediaLiveTolerance));
 }
 
 - (void) updateTimeRangeLabels
@@ -194,7 +197,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		[self setNeedsDisplay];
 	}
 	
-	CMTime time = [self time];
+	CMTime time = self.time;
 	
 	// First seek to the playback controller. Seeking where the media has been loaded is fast, which leads to
 	// annoying stuttering for audios. This is less annoying for videos since being able to see where we seek
@@ -215,7 +218,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	if ([self isDraggable]) {
-		[self.playbackController playAtTime:[self time]];
+		[self.playbackController playAtTime:self.time];
 	}
 	
 	[super endTrackingWithTouch:touch withEvent:event];
@@ -361,21 +364,24 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				CMTimeRange timeRange = [self.playbackController timeRange];
 				if (!CMTIMERANGE_IS_EMPTY(timeRange) && !CMTIMERANGE_IS_INDEFINITE(timeRange) && !CMTIMERANGE_IS_INVALID(timeRange))
 				{
-					self.minimumValue = CMTimeGetSeconds(timeRange.start);
-					self.maximumValue = CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange));
+					self.maximumValue = CMTimeGetSeconds(timeRange.duration);
 					
 					AVPlayerItem *playerItem = self.playbackController.playerItem;
-					self.value = CMTimeGetSeconds(playerItem.currentTime);
+					self.value = CMTimeGetSeconds(CMTimeSubtract(playerItem.currentTime, timeRange.start));
 				}
 				else
 				{
-					self.minimumValue = 0.;
 					self.maximumValue = 0.;
 					self.value = 0.;
 				}
 				
+				RTSMediaPlayerLogTrace(@"Range min = %@ (value = %@) --- Current = %@ (value = %@) --- Range max = %@ (value = %@)",
+									   @(CMTimeGetSeconds(timeRange.start)), @(self.minimumValue),
+									   @(CMTimeGetSeconds(self.playbackController.playerItem.currentTime)), @(self.value),
+									   @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange))), @(self.maximumValue));
+				
 				[self.slidingDelegate timeSlider:self
-						  isMovingToPlaybackTime:time
+						  isMovingToPlaybackTime:self.time
 									   withValue:self.value
 									 interactive:NO];
 				

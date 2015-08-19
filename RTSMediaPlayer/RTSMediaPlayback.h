@@ -95,12 +95,17 @@
 /**
  *  The media type
  */
-@property (readonly) RTSMediaType mediaType;
+@property (nonatomic, readonly) RTSMediaType mediaType;
 
 /**
  *  The stream type
  */
-@property (readonly) RTSMediaStreamType streamType;
+@property (nonatomic, readonly) RTSMediaStreamType streamType;
+
+/**
+ *  YES iff the stream is currently played in live conditions
+ */
+@property (nonatomic, readonly, getter=isLive) BOOL live;
 
 /**
  *  --------------------
