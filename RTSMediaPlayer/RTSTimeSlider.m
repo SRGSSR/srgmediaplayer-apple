@@ -149,13 +149,10 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	// Live and timeshift feeds in live conditions. This happens when either the following condition
 	// is met:
 	//  - We have a pure live feed, which is characterized by an empty range
-	//  - We have a timeshift feed, which is characterized by an indefinite player item duration, and which is close
-	//    to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance of 30 seconds (same tolerance as the
-	//    built-in iOS player)
-	static const float RTSToleranceInSeconds = 30.f;
-	
+	//  - We have a timeshift feed, which is characterized by an indefinite player item duration, and whose slider knob is
+	//    dragged close to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance
 	return self.playbackController.streamType == RTSMediaStreamTypeLive
-		|| (self.playbackController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSToleranceInSeconds));
+		|| (self.playbackController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSMediaLiveTolerance));
 }
 
 - (void) updateTimeRangeLabels
