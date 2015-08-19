@@ -70,7 +70,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	self.borderColor = [UIColor blackColor];
 	
-	self.minimumValue = 0.;
+	self.minimumValue = 0.;			// Always 0
 	self.maximumValue = 0.;
 	self.value = 0.;
 	
@@ -136,8 +136,12 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (CMTime) time
 {
 	CMTimeRange timeRange = self.playbackController.timeRange;
-	Float64 timeInSeconds = (self.value - self.minimumValue) * CMTimeGetSeconds(timeRange.duration) / (self.maximumValue - self.minimumValue);
-	return CMTimeMakeWithSeconds(timeInSeconds, 1.);
+	if (CMTIMERANGE_IS_EMPTY(timeRange)) {
+		return kCMTimeZero;
+	}
+	
+	CMTime relativeTime = CMTimeMakeWithSeconds(self.value, NSEC_PER_SEC);
+	return CMTimeAdd(timeRange.start, relativeTime);
 }
 
 - (BOOL) isLive
@@ -363,7 +367,6 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				CMTimeRange timeRange = [self.playbackController timeRange];
 				if (!CMTIMERANGE_IS_EMPTY(timeRange) && !CMTIMERANGE_IS_INDEFINITE(timeRange) && !CMTIMERANGE_IS_INVALID(timeRange))
 				{
-					self.minimumValue = 0.;
 					self.maximumValue = CMTimeGetSeconds(timeRange.duration);
 					
 					AVPlayerItem *playerItem = self.playbackController.playerItem;
@@ -371,15 +374,17 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				}
 				else
 				{
-					self.minimumValue = 0.;
 					self.maximumValue = 0.;
 					self.value = 0.;
 				}
 				
-				RTSMediaPlayerLogTrace(@"Min = %@ --- Current = %@ --- Max = %@", @(self.minimumValue), @(self.value), @(self.maximumValue));
+				RTSMediaPlayerLogTrace(@"Range min = %@ (value = %@) --- Current = %@ (value = %@) --- Range max = %@ (value = %@)",
+									   @(CMTimeGetSeconds(timeRange.start)), @(self.minimumValue),
+									   @(CMTimeGetSeconds(self.playbackController.playerItem.currentTime)), @(self.value),
+									   @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange))), @(self.maximumValue));
 				
 				[self.slidingDelegate timeSlider:self
-						  isMovingToPlaybackTime:time
+						  isMovingToPlaybackTime:self.time
 									   withValue:self.value
 									 interactive:NO];
 				
