@@ -13,7 +13,6 @@
  */
 
 FOUNDATION_EXTERN NSTimeInterval const RTSMediaLiveTolerance; // in seconds.
-FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlaybackTickInterval; // in seconds.
 
 /**
  *  -------------------
@@ -91,7 +90,6 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 	RTSMediaPlaybackStateEnded,
 };
 
-
 /**
  *  @enum RTSMediaPlaybackSegmentChange
  *
@@ -145,9 +143,37 @@ typedef NS_ENUM(NSInteger, RTSMediaStreamType) {
 };
 
 /**
- *  -------------------
- *  @name Notifications
- *  -------------------
+ *  -------------------------------------------
+ *  @name Media player controller notifications
+ *  -------------------------------------------
+ */
+
+/**
+ *  Posted when the playback state changes, either programatically or by the user (use RTSMediaPlayerPreviousPlaybackStateUserInfoKey 
+ *  to retrieve state information from the notification userInfo dictionary)
+ */
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey; // NSNumber (RTSMediaPlaybackState)
+
+/**
+ *  Posted when playback failed (use RTSMediaPlayerPlaybackDidFailErrorUserInfoKey to retrieve an NSError information
+ *  from the notification userInfo dictionary)
+ */
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey; // NSError
+
+/**
+ *  Overlay notifications
+ */
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerWillShowControlOverlaysNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerDidShowControlOverlaysNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerWillHideControlOverlaysNotification;
+FOUNDATION_EXTERN NSString * const RTSMediaPlayerDidHideControlOverlaysNotification;
+
+/**
+ *  ---------------------------
+ *  @name Segment notifications
+ *  ---------------------------
  */
 
 /**
@@ -174,18 +200,3 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey;
  *  The key to access the boolean indicating whether the change is requested by the user or not.
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey;
-
-
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailNotification;
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey; // NSError
-
-/**
- *  Posted when the playback state changes, either programatically or by the user.
- */
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey; // NSNumber (RTSMediaPlaybackState)
-
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerWillShowControlOverlaysNotification;
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerDidShowControlOverlaysNotification;
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerWillHideControlOverlaysNotification;
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerDidHideControlOverlaysNotification;

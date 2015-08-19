@@ -9,7 +9,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 /**
- *  The RTSMediaPlayback is a protocol shared between the media player controller, and the segments controller.
+ *  RTSMediaPlayback is a protocol shared between the media player controller and the segments controller.
  *  When medias have segment, the segments controller must be used to control the playback.
  */
 @protocol RTSMediaPlayback <NSObject>
@@ -34,8 +34,6 @@
  *  Start playing media specified with its identifier.
  *
  *  @param identifier the identifier of the media to be played.
- *
- *  @discussion the dataSource will be used to determine the URL of the media.
  */
 - (void)playIdentifier:(NSString *)identifier;
 
@@ -67,7 +65,7 @@
  *  Seek to specific time of the playback.
  *
  *  @param time              time in seconds
- *  @param completionHandler the completion handler.
+ *  @param completionHandler the completion handler
  */
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
 
@@ -77,14 +75,21 @@
 @property (readonly) RTSMediaPlaybackState playbackState;
 
 /**
- *  Play at the specific time. When there is no blocked segment, is equivalent to seekToTime: with a play on completion.
+ *  Play at the specific time
  *
  *  @param time time
  */
 - (void)playAtTime:(CMTime)time;
 
-// *** Accessing Playback Information ***
+/**
+ *  ------------------------------------
+ *  @name Accessing playback information
+ *  ------------------------------------
+ */
 
+/**
+ *  The player item
+ */
 - (AVPlayerItem *)playerItem;
 
 /**
@@ -109,21 +114,21 @@
 
 /**
  *  --------------------
- *  @name Time Observers
+ *  @name Time observers
  *  --------------------
  */
+
 /**
- *  Register a block for periodical execution during playback and pause!
+ *  Register a block for periodical execution. Unlike usual AVPlayer time observers, such observers not only run during playback, but
+ *  also when paused. This makes such observers very helpful when UI must be updated continously, even when playback is paused, e.g. 
+ *  in the case of DVR streams
  *
  *  @param interval Time interval between block executions
  *  @param queue    The serial queue onto which block should be enqueued (main queue if NULL)
- *  @param block	The block to be executed during playback
+ *  @param block	The block to be periodically executed
  * 
- *  @warning Two things make these time observers different from the regular registration of periodic time observers on AVPlayer instance.
- *           First: there is no need to KVO-observe the presence or not of the AVPlayer instance before registration. It is done automatically for you.
- *           Second: To the contrary of usual periodic time observers, which stops when playback pauses, and restart when
- *           playback restars, these time observers are continuous, and do NOT stop during pause.
- *           It is very useful for livestreams and timeshifts, when the UI may need to be updated nonetheless.
+ *  @discussion There is no need to KVO-observe the presence or not of the AVPlayer instance before registration. You can register
+ *              time observers earlier if needed
  *
  *  @return The time observer. The observer is retained by the media player controller, you can store a weak reference
  *          to it to remove it at a later time if needed
