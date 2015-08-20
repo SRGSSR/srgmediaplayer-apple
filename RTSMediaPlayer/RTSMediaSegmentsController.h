@@ -10,10 +10,23 @@
 #import <SRGMediaPlayer/RTSMediaPlayerConstants.h>
 #import <SRGMediaPlayer/RTSMediaSegmentsDataSource.h>
 
-
+// Forward declarations
 @class RTSMediaPlayerController;
 @protocol RTSMediaSegment;
 
+/**
+ *  A segments controller mediates playback managed by a media player controller according to a list of segments
+ *  it retrieves from a data source. Segments can either be blocked or visible, and the segments controller is responsible
+ *  of skipping blocked segments or blocking access to them when seeking.
+ *
+ *  To use a segments controller, instantiate or drop an instance in Interface Builder, and bind it to the underlying
+ *  player controller. Also attach a data source from which segments will be retrieved for the media being played. When
+ *  segments need to be retrieved, call 'reloadSegementsForIdentifier:completionHandler:'
+ *
+ *  When controlling playback for a media with segments, call RTSMediaPlayback methods on the segment controller. For
+ *  convenience, you can readily display segments as a timeline (see 'RTSSegmentedTimelineView') and / or on top of a 
+ *  slider (see 'RTSTimelineSlider').
+ */
 @interface RTSMediaSegmentsController : NSObject <RTSMediaPlayback>
 
 /**

@@ -8,6 +8,11 @@
 
 @interface UIBezierPath (RTSMediaPlayerUtils)
 
--(UIImage *)imageWithColor:(UIColor*)color;
+/**
+ *  Return the receiver as an image with the given tint color
+ *
+ *  @param color The tint color
+ */
+- (UIImage *)imageWithColor:(UIColor*)color;
 
 @end
