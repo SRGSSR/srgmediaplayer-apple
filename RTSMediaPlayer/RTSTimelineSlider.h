@@ -16,7 +16,8 @@
  *
  *  To add a slider to a custom player layout, simply drag and drop an RTSTimelineSlider onto the player layout,
  *  and bind its segment controller and delegate outlets. You can of course also instantiate and configure the view 
- *  programmatically. Then call -reloadSegmentsWithIdentifier: when you need to retrieve segments from the controller
+ *  programmatically. Then call 'reloadSegmentsWithIdentifier:completionHandler:' when you need to retrieve segments
+ *  from the controller
  */
 @interface RTSTimelineSlider : RTSTimeSlider
 
@@ -37,6 +38,9 @@
 
 @end
 
+/**
+ *  Protocol describing events associated with the timeline
+ */
 @protocol RTSTimelineSliderDelegate <NSObject>
 
 @optional
@@ -45,6 +49,6 @@
  *  Return the icon to display in the timeline for a segment. If no icon is provided, a tick is displayed instead. The
  *  recommended size for the image is 15x15 points
  */
-- (UIImage *) timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaSegment>)segment;
+- (UIImage *)timelineSlider:(RTSTimelineSlider *)timelineSlider iconImageForSegment:(id<RTSMediaSegment>)segment;
 
 @end

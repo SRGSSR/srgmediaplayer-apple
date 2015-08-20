@@ -6,10 +6,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class RTSMediaPlayerController;
-
+/**
+ *  A view to control the volume. Simply install somewhere onto your custom player interface
+ *
+ *  @discussion This view does not display any route button, unlike MPVolumeView
+ */
 @interface RTSVolumeView : UIView
-
-@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @end
