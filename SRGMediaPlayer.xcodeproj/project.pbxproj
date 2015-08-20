@@ -51,8 +51,6 @@
 		C2731F531AD6A80B00434743 /* NSBundle+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */; };
 		C288F49F1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = C288F49E1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m */; };
 		C2AB24EB1ABC186100EB51B8 /* RTSMediaPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B61E18C01AA750CC00E4FAB9 /* RTSMediaPlayerViewController.xib */; };
-		C2DDAB511AD5227B00BA8061 /* RTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */; };
-		C2DDAB521AD525A200BA8061 /* RTSInvocationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */; };
 		C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */; };
 		E616272C1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.m */; };
 		E65786A41AEFAD68007730CE /* RTSSegmentedTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E65786A31AEFAD68007730CE /* RTSSegmentedTimelineView.m */; };
@@ -164,8 +162,6 @@
 		C288F49D1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerIconTemplate.h; sourceTree = "<group>"; };
 		C288F49E1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerIconTemplate.m; sourceTree = "<group>"; };
 		C2AB24E41ABC184A00EB51B8 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSInvocationRecorder.h; sourceTree = "<group>"; };
-		C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSInvocationRecorder.m; sourceTree = "<group>"; };
 		C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTSMediaPlayerPlaybackTestCase.m; path = "RTSMediaPlayer Tests/RTSMediaPlayerPlaybackTestCase.m"; sourceTree = SOURCE_ROOT; };
 		E60F1C0C1B21C96F00F3272F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E616272A1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPeriodicTimeObserver.h; sourceTree = "<group>"; };
@@ -251,8 +247,6 @@
 			children = (
 				C2246DEA1AC1C570000E03C7 /* RTSActivityGestureRecognizer.h */,
 				C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */,
-				C2DDAB4F1AD5227B00BA8061 /* RTSInvocationRecorder.h */,
-				C2DDAB501AD5227B00BA8061 /* RTSInvocationRecorder.m */,
 				C2150B471AD4007C004A08CE /* RTSMediaPlayerError.h */,
 				C288F49D1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.h */,
 				C288F49E1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m */,
@@ -596,7 +590,6 @@
 				B61E18C11AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m in Sources */,
 				C2731F511AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m in Sources */,
 				9F598B391B305FC400201366 /* RTSPlaybackActivityIndicatorView.m in Sources */,
-				C2DDAB511AD5227B00BA8061 /* RTSInvocationRecorder.m in Sources */,
 				B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */,
 				9F8A80081B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */,
 				B61E19081AA9F3B900E4FAB9 /* RTSVolumeView.m in Sources */,
@@ -615,7 +608,6 @@
 			files = (
 				E6F0237F1B32991D001B6F0B /* RTSMediaSegmentsTestCase.m in Sources */,
 				C2731F531AD6A80B00434743 /* NSBundle+RTSMediaPlayer.m in Sources */,
-				C2DDAB521AD525A200BA8061 /* RTSInvocationRecorder.m in Sources */,
 				E6F023811B3299F6001B6F0B /* RTSMediaPlayerLogger.m in Sources */,
 				C2150B461AD3FBF6004A08CE /* RTSMediaPlayerErrorsTestCase.m in Sources */,
 				E66BDC141AF89C0200FF7858 /* RTSPeriodicTimeObserver.m in Sources */,
