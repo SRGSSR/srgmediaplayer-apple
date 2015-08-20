@@ -1,31 +1,44 @@
 //
-//  RTSPlaybackActivityIndicatorView.m
-//  RTSMediaPlayer Demo
+//  Copyright (c) RTS. All rights reserved.
 //
-//  Created by Cédric Foellmi on 10/06/15.
-//  Copyright (c) 2015 RTS. All rights reserved.
+//  Licence information is available from the LICENCE file.
 //
 
 #import "RTSPlaybackActivityIndicatorView.h"
 #import "RTSMediaPlayerController.h"
 
+static void commonInit(RTSPlaybackActivityIndicatorView *self);
+
 @implementation RTSPlaybackActivityIndicatorView
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+	if (self = [super initWithFrame:frame]) {
+		commonInit(self);
+	}
+	return self;
+}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-	self = [super initWithCoder:aDecoder];
-	if (self) {
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(updateUponPlaybackStateChange:)
-													 name:RTSMediaPlayerPlaybackStateDidChangeNotification
-												   object:nil];
+	if ([super initWithCoder:aDecoder]) {
+		commonInit(self);
 	}
 	return self;
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)updateUponPlaybackStateChange:(NSNotification *)notif
 {
 	RTSMediaPlayerController *controller = notif.object;
+	if (self.mediaPlayerController != controller) {
+		return;
+	}
+	
 	BOOL visible = (controller.playbackState == RTSMediaPlaybackStatePreparing ||
 					controller.playbackState == RTSMediaPlaybackStateStalled ||
 					controller.playbackState == RTSMediaPlaybackStateSeeking);
@@ -34,3 +47,11 @@
 }
 
 @end
+
+static void commonInit(RTSPlaybackActivityIndicatorView *self)
+{
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(updateUponPlaybackStateChange:)
+												 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+											   object:nil];
+}
