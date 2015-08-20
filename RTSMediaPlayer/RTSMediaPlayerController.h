@@ -11,20 +11,21 @@
 #import <SRGMediaPlayer/RTSMediaPlayerConstants.h>
 #import <SRGMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 
-
 /**
  *  RTSMediaPlayerController is inspired by the MPMoviePlayerController class.
  *  A media player (of type RTSMediaPlayerController) manages the playback of a media from a file or a network stream. 
  *  You can incorporate a media player’s view into a view hierarchy owned by your app, or use a RTSMediaPlayerViewController
  *  object to manage the presentation for you.
  *
- *  The media player controller posts several notifications, see for RTSMediaPlayerConstants.h
+ *  The media player controller posts several notifications, see RTSMediaPlayerConstants.h
  *
  *  Errors are handled through the `RTSMediaPlayerPlaybackDidFinishNotification` notification. There are two possible 
  *  source of errors: either the error comes from the dataSource (see `RTSMediaPlayerControllerDataSource`) or from 
  *  the network (playback error).
  *
  *  The media player controller manages its overlays visibility. See the `overlayViews` property.
+ *
+ *  Methods related to playback can be found in the RTSMediaPlayback protocol
  */
 @interface RTSMediaPlayerController : NSObject <RTSMediaPlayback>
 
@@ -33,6 +34,7 @@
  *  @name Initializing a Media Player Controller
  *  --------------------------------------------
  */
+
 /**
 *  Returns a RTSMediaPlayerController object initialized with the media at the specified URL.
 *
@@ -45,8 +47,8 @@
 /**
  *  Returns a RTSMediaPlayerController object initialized with a datasource and a media identifier.
  *
- *  @param identifier <#identifier description#>
- *  @param dataSource <#dataSource description#>
+ *  @param identifier The identifier of the media to be played
+ *  @param dataSource The data source from which the media URL will be retrieved
  *
  *  @return A media player controller
  */
@@ -57,26 +59,27 @@
  *  @name Player Object
  *  -------------------
  */
+
 /**
  *  The player that provides the media content.
  *
- *  @discussion This can be used for exemple to listen to `addPeriodicTimeObserverForInterval:queue:usingBlock:` or to
- *  implement advanced behaviors
+ *  @discussion This can be used to implement advanced behaviors
  */
-@property(readonly) AVPlayer *player;
+@property (readonly) AVPlayer *player;
 
 /**
  *  ------------------------
  *  @name Accessing the View
  *  ------------------------
  */
+
 /**
  *  The view containing the media content.
  *
  *  @discussion This property contains the view used for presenting the media content. To display the view into your own
  *  view hierarchy, use the `attachPlayerToView:` method.
  *  This view has two gesture recognziers: a single tap gesture recognizer and a double tap gesture recognizer which 
- *  respectively toggle overlays visibility and toggle the video of aspect between `AVLayerVideoGravityResizeAspectFill` 
+ *  respectively toggle overlays visibility and toggle the video aspect between `AVLayerVideoGravityResizeAspectFill`
  *  and `AVLayerVideoGravityResizeAspect`.
  *  If you want to handle taps yourself, you can disable these gesture recognizers and add your own gesture recognizer.
  *
@@ -99,12 +102,13 @@
  */
 
 /**
- *  <#Description#>
+ *  The data source from which media information is retrieved
  */
 @property (weak) IBOutlet id<RTSMediaPlayerControllerDataSource> dataSource;
 
 /**
- *  Use this identifier to identify the media through notifications
+ *  The identifier of the media currently attached to the player. You can use this identifier to identify the media through 
+ *  notifications
  *
  *  @see initWithContentIdentifier:dataSource:
  */
@@ -115,8 +119,10 @@
  *  @name Overlay Views
  *  -------------------
  */
+
 /**
- *  Activity View
+ *  View on which user activity is detected (to prevent the UI overlays from being automatically hidden, see 'overlayViews' and 
+ *  'overlayViewsHidingDelay')
  */
 @property (weak) IBOutlet UIView *activityView;
 

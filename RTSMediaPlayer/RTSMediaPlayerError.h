@@ -6,8 +6,17 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  Domain for media player errors
+ */
 FOUNDATION_EXTERN NSString * const RTSMediaPlayerErrorDomain;
 
-typedef NS_ENUM(NSInteger, RTSMediaPlayerError) {
+/**
+ *  Media player error codes
+ */
+typedef NS_ENUM(NSInteger, RTSMediaPlayerError){
+	/**
+	 *  An unknown error has occurred
+	 */
 	RTSMediaPlayerErrorUnknown,
 };

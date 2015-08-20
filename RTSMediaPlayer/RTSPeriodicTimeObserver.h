@@ -8,7 +8,10 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  Call one or several blocks during playback of an associated player
+ *  A periodic time observer calls one or several blocks during playback of an associated player. Unlike usual time
+ *  observers associated with an AVPlayer, an RTSPeriodicTimeObserver executes during the lifetime of the player,
+ *  also when it is paused, which makes it useful when updates must be made continuously (e.g. UI updates for DVR
+ *  streams)
  */
 @interface RTSPeriodicTimeObserver : NSObject
 
