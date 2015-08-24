@@ -8,7 +8,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTSMediaPlayerViewController">
             <connections>
                 <outlet property="liveButton" destination="f2J-Sq-TNH" id="ufj-9B-9fS"/>
+                <outlet property="loadingAcitivityIndicatorView" destination="z3p-uA-NWq" id="C5i-1t-xqK"/>
                 <outlet property="loadingIndicator" destination="d2t-q1-HOm" id="hhI-u7-Sja"/>
+                <outlet property="loadingLabel" destination="yUB-n6-aT0" id="YVj-aE-6vI"/>
                 <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="1fS-p7-nwe"/>
                 <outlet property="playPauseButton" destination="orZ-GR-Obh" id="has-wO-PCl"/>
                 <outlet property="timeLeftValueLabelWidthConstraint" destination="G8R-4I-uxy" id="wwA-Fb-CRF"/>
@@ -75,16 +77,29 @@
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="z3p-uA-NWq">
+                                            <rect key="frame" x="171" y="5" width="20" height="20"/>
+                                            <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        </activityIndicatorView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUB-n6-aT0">
+                                            <rect key="frame" x="205" y="4.5" width="76.5" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="OdH-jj-nfU" firstAttribute="leading" secondItem="dbP-gV-yjr" secondAttribute="trailing" constant="8" id="8qr-K5-vcv"/>
                                         <constraint firstAttribute="centerY" secondItem="dbP-gV-yjr" secondAttribute="centerY" id="CJF-rS-5vg"/>
+                                        <constraint firstItem="yUB-n6-aT0" firstAttribute="leading" secondItem="z3p-uA-NWq" secondAttribute="trailing" constant="14" id="FYV-Du-Mpu"/>
+                                        <constraint firstAttribute="centerX" secondItem="yUB-n6-aT0" secondAttribute="centerX" constant="28" id="IFa-FE-Tex"/>
                                         <constraint firstAttribute="centerY" secondItem="OdH-jj-nfU" secondAttribute="centerY" id="JNq-k4-TTg"/>
                                         <constraint firstItem="dbP-gV-yjr" firstAttribute="leading" secondItem="kzH-xw-G6y" secondAttribute="trailing" constant="8" id="TUn-YV-ePR"/>
                                         <constraint firstAttribute="trailing" secondItem="OdH-jj-nfU" secondAttribute="trailing" constant="8" id="auz-bv-BOE"/>
+                                        <constraint firstAttribute="centerY" secondItem="yUB-n6-aT0" secondAttribute="centerY" constant="0.5" id="h38-Cl-pqC"/>
                                         <constraint firstItem="kzH-xw-G6y" firstAttribute="leading" secondItem="ljr-RB-scX" secondAttribute="leading" constant="5" id="iYP-Zg-gPh"/>
                                         <constraint firstAttribute="centerY" secondItem="kzH-xw-G6y" secondAttribute="centerY" id="qaC-Xk-lko"/>
+                                        <constraint firstAttribute="centerY" secondItem="z3p-uA-NWq" secondAttribute="centerY" id="yP1-xX-JeJ"/>
                                     </constraints>
                                 </view>
                             </subviews>

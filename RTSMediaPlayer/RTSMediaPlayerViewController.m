@@ -27,6 +27,9 @@
 @property (weak) IBOutlet RTSVolumeView *volumeView;
 @property (weak) IBOutlet UIButton *liveButton;
 
+@property (weak) IBOutlet UIActivityIndicatorView *loadingAcitivityIndicatorView;
+@property (weak) IBOutlet UILabel *loadingLabel;
+
 @property (weak) IBOutlet NSLayoutConstraint *valueLabelWidthConstraint;
 @property (weak) IBOutlet NSLayoutConstraint *timeLeftValueLabelWidthConstraint;
 
@@ -107,7 +110,7 @@
 			[self setTimeSliderHidden:NO];
 		}
 		else {
-			[self setTimeSliderHidden:YESo];
+			[self setTimeSliderHidden:YES];
 		}
 	}];
 }
@@ -117,6 +120,15 @@
 	self.timeSlider.timeLeftValueLabel.hidden = hidden;
 	self.timeSlider.valueLabel.hidden = hidden;
 	self.timeSlider.hidden = hidden;
+	
+	self.loadingAcitivityIndicatorView.hidden = !hidden;
+	if (hidden) {
+		[self.loadingAcitivityIndicatorView startAnimating];
+	}
+	else {
+		[self.loadingAcitivityIndicatorView stopAnimating];
+	}
+	self.loadingLabel.hidden = !hidden;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
