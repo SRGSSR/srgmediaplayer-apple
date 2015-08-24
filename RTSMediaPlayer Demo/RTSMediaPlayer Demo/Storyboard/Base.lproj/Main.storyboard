@@ -899,6 +899,11 @@
                                     <constraint firstAttribute="trailing" secondItem="bG5-MD-y5n" secondAttribute="trailing" constant="8" id="q6Z-e6-i7I"/>
                                     <constraint firstItem="MFe-bb-rho" firstAttribute="firstBaseline" secondItem="bG5-MD-y5n" secondAttribute="firstBaseline" id="zLx-Hl-DYf"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="zLx-Hl-DYf"/>
+                                    </mask>
+                                </variation>
                                 <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
                                     <rect key="frame" x="0.0" y="336" width="600" height="64"/>
                                 </variation>
