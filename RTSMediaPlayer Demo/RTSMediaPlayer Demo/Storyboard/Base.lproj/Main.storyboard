@@ -803,6 +803,9 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <variation key="heightClass=compact" misplaced="YES">
+                                            <rect key="frame" x="468" y="31" width="81" height="22"/>
+                                        </variation>
                                         <connections>
                                             <action selector="goToLive:" destination="Rig-pS-R3F" eventType="touchUpInside" id="5xA-jU-BT6"/>
                                         </connections>
@@ -830,6 +833,9 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="heightClass=compact" misplaced="YES">
+                                            <rect key="frame" x="8" y="34" width="35" height="16"/>
+                                        </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bG5-MD-y5n">
                                         <rect key="frame" x="557" y="34" width="35" height="16"/>
@@ -844,6 +850,9 @@
                                             <mask key="constraints">
                                                 <exclude reference="BB1-7o-kaJ"/>
                                             </mask>
+                                        </variation>
+                                        <variation key="heightClass=compact" misplaced="YES">
+                                            <rect key="frame" x="557" y="34" width="35" height="16"/>
                                         </variation>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zg8-jf-hRa" customClass="RTSMediaPlayerPlaybackButton">
@@ -864,6 +873,9 @@
                                                 <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <variation key="heightClass=compact" misplaced="YES">
+                                            <rect key="frame" x="289" y="31" width="22" height="22"/>
+                                        </variation>
                                         <connections>
                                             <outlet property="mediaPlayerController" destination="3Zc-fG-clj" id="hc8-Wi-j3Y"/>
                                         </connections>
@@ -887,6 +899,9 @@
                                     <constraint firstAttribute="trailing" secondItem="bG5-MD-y5n" secondAttribute="trailing" constant="8" id="q6Z-e6-i7I"/>
                                     <constraint firstItem="MFe-bb-rho" firstAttribute="firstBaseline" secondItem="bG5-MD-y5n" secondAttribute="firstBaseline" id="zLx-Hl-DYf"/>
                                 </constraints>
+                                <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="336" width="600" height="64"/>
+                                </variation>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L66-lU-U5N" userLabel="Close Button">
                                 <rect key="frame" x="556" y="10" width="44" height="44"/>
@@ -897,6 +912,9 @@
                                 <state key="normal" image="close_button.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <variation key="heightClass=compact" misplaced="YES">
+                                    <rect key="frame" x="556" y="10" width="44" height="15"/>
+                                </variation>
                                 <connections>
                                     <action selector="dismiss:" destination="Rig-pS-R3F" eventType="touchUpInside" id="ABP-Ay-T1V"/>
                                 </connections>
@@ -911,13 +929,23 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aeo-zc-T88">
                                 <rect key="frame" x="30" y="215" width="540" height="171"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="JdF-zy-nc1" userLabel="Text Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="JdF-zy-nc1" userLabel="Text Label">
                                         <rect key="frame" x="8" y="8" width="524" height="155"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="JdF-zy-nc1" firstAttribute="top" secondItem="Aeo-zc-T88" secondAttribute="top" constant="8" id="9b3-lx-2NR"/>
+                                    <constraint firstAttribute="height" constant="171" id="B21-Ir-bMh"/>
+                                    <constraint firstAttribute="trailing" secondItem="JdF-zy-nc1" secondAttribute="trailing" constant="8" id="QZI-dG-zzX"/>
+                                    <constraint firstItem="JdF-zy-nc1" firstAttribute="leading" secondItem="Aeo-zc-T88" secondAttribute="leading" constant="8" id="YIC-Ku-KF5"/>
+                                    <constraint firstAttribute="bottom" secondItem="JdF-zy-nc1" secondAttribute="bottom" constant="8" id="ahB-g3-Kfy"/>
+                                </constraints>
+                                <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="30" y="186" width="540" height="0.0"/>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -931,10 +959,19 @@
                             <constraint firstItem="oWc-Es-lWF" firstAttribute="top" secondItem="Aeo-zc-T88" secondAttribute="bottom" constant="150" id="f1i-W8-a9P"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Aeo-zc-T88" secondAttribute="trailing" constant="14" id="iuS-a4-LKy"/>
                             <constraint firstAttribute="centerY" secondItem="J72-PW-IrE" secondAttribute="centerY" id="jAv-GC-6lK"/>
+                            <constraint firstAttribute="centerY" secondItem="Aeo-zc-T88" secondAttribute="centerY" constant="-0.5" id="lvF-HS-JUs"/>
                             <constraint firstItem="Aeo-zc-T88" firstAttribute="top" secondItem="L66-lU-U5N" secondAttribute="bottom" constant="161" id="p1n-ot-Dju"/>
                             <constraint firstAttribute="trailing" secondItem="oWc-Es-lWF" secondAttribute="trailing" id="qfF-fI-a8L"/>
                             <constraint firstAttribute="trailing" secondItem="L66-lU-U5N" secondAttribute="trailing" id="svj-n7-Jce"/>
+                            <constraint firstItem="Up7-v8-Thl" firstAttribute="top" secondItem="Aeo-zc-T88" secondAttribute="bottom" constant="214" id="xss-Dd-kom"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="p1n-ot-Dju"/>
+                                <exclude reference="f1i-W8-a9P"/>
+                                <exclude reference="xss-Dd-kom"/>
+                            </mask>
+                        </variation>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="eeQ-Jn-5Tq" appends="YES" id="khQ-0m-YDM"/>
                             <outletCollection property="gestureRecognizers" destination="hMb-cS-sVs" appends="YES" id="dt6-i7-DxU"/>
