@@ -21,7 +21,6 @@
 
 @property (nonatomic, strong) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
-@property (weak) IBOutlet UIActivityIndicatorView *loadingIndicator;
 @property (weak) IBOutlet RTSMediaPlayerPlaybackButton *playPauseButton;
 @property (weak) IBOutlet RTSTimeSlider *timeSlider;
 @property (weak) IBOutlet RTSVolumeView *volumeView;
@@ -166,21 +165,8 @@
 - (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
 	RTSMediaPlayerController *mediaPlayerController = notification.object;
-	switch (mediaPlayerController.playbackState)
-	{
-		case RTSMediaPlaybackStatePreparing:
-		case RTSMediaPlaybackStateReady:
-		case RTSMediaPlaybackStateStalled:
-		case RTSMediaPlaybackStateSeeking:
-			[self.loadingIndicator startAnimating];
-			break;
-		case RTSMediaPlaybackStateEnded:
-			[self dismiss:nil];
-		case RTSMediaPlaybackStatePaused:
-		case RTSMediaPlaybackStatePlaying:
-		default:
-			[self.loadingIndicator stopAnimating];
-			break;
+	if (mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded) {
+		[self dismiss:nil];
 	}
 }
 
