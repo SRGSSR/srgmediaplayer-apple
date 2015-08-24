@@ -690,6 +690,9 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ksY-8n-34g" customClass="RTSPlaybackActivityIndicatorView">
                                 <rect key="frame" x="282" y="281" width="37" height="37"/>
                                 <color key="color" red="0.032045689229461938" green="0.64991066383653529" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="UX5-lT-1mu"/>
+                                </connections>
                             </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KjM-3y-v4n">
                                 <rect key="frame" x="30" y="215" width="540" height="171"/>
@@ -901,6 +904,9 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="J72-PW-IrE" customClass="RTSPlaybackActivityIndicatorView">
                                 <rect key="frame" x="282" y="281" width="37" height="37"/>
                                 <color key="color" red="0.03204568923" green="0.64991066379999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="mediaPlayerController" destination="3Zc-fG-clj" id="oHb-Us-w6O"/>
+                                </connections>
                             </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aeo-zc-T88">
                                 <rect key="frame" x="30" y="215" width="540" height="171"/>
