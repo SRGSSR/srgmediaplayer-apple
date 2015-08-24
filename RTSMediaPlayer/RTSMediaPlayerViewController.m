@@ -88,18 +88,35 @@
 	self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
 	self.liveButton.layer.borderWidth = 1.f;
 	
+	// Hide the time slider while the stream type is unknown (i.e. the needed slider label size cannot be determined)
+	[self setTimeSliderHidden:YES];
+	
 	@weakify(self)
 	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 		@strongify(self)
 		
-		CGFloat labelWidth = (CMTimeGetSeconds(self.mediaPlayerController.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
-		self.valueLabelWidthConstraint.constant = labelWidth;
-		self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
-		
-		if (self.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
-			[self updateLiveButton];
+		if (self.mediaPlayerController.streamType != RTSMediaStreamTypeUnknown) {
+			CGFloat labelWidth = (CMTimeGetSeconds(self.mediaPlayerController.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
+			self.valueLabelWidthConstraint.constant = labelWidth;
+			self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
+			
+			if (self.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
+				[self updateLiveButton];
+			}
+			
+			[self setTimeSliderHidden:NO];
+		}
+		else {
+			[self setTimeSliderHidden:YESo];
 		}
 	}];
+}
+
+- (void)setTimeSliderHidden:(BOOL)hidden
+{
+	self.timeSlider.timeLeftValueLabel.hidden = hidden;
+	self.timeSlider.valueLabel.hidden = hidden;
+	self.timeSlider.hidden = hidden;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
