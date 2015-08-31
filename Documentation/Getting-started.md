@@ -41,8 +41,52 @@ A data source is implicitly provided to an `RTSMediaPlayerViewController` when i
 
 For `RTSMediaPlayerController` and `RTSMediaSegmentsController`, the data source is not provided at creation time, rather specified using dedicated `dataSource` properties. Those have been made available as outlets. The SRG Media Player library namely intends to provide an easy way to create custom player layouts not only in code, but also in Interface Builder for convenience. This topic is discussed further in the next section.
 
-## Designing custom players
+## Designing custom players without segment support
 
-## Components
+Custom player layouts can be designed entirely in Interface Builder.
 
-If 
+![Connecting outlets](Getting-started-images/outlets.jpg)
+
+Start by adding a view controller to a storyboard file, and drop two custom objects from Xcode _Utilities_ panel:
+
+![Custom objects](Getting-started-images/custom-objects.jpg)
+
+The first object class must be set to `RTSMediaPlayerController`, while the other one must be set to a custom data source class you must create, conforming to `RTSMediaPlayerControllerDataSource`. Bind the `dataSource` outlet of the media player controller to its data source.
+
+Creating the player layout is then a matter of dropping more views onto the layout, setting their resizing behavior, and connecting the various outlets at hand. The media player controller itself has three main outlets:
+
+* `dataSource`, described above
+* `activityView`, where taps are detected to toggle on or off UI overlay views
+* the `overlayViews` collection, which contains all views you want to be toggled off after user inactivity, or by interacting with the activity view when overlays are visible. Those overlay views will be toggled on again when interacting with the activity view again
+
+Several controls can then be dropped onto the layout and bound to the player they must be associated with, usually through a `...controller` outlet. Simply use a standard `UIView` in Interface Builder, setting its class to one of the following types:
+
+* `RTSMediaPlayerPlaybackButton`: A play / pause button to control the underlying player
+* `RTSTimeSlider`: A time slider, describing the current playback position, and allowing to seek. Two label outlets can be optionally attached to display the elapsed and remaining times (_Live_ for live streams).
+* `RTSVolumeView`: A view to control volume. Does not need any outlet binding
+* `RTSPlaybackActivityIndicatorView`: An activity indicator automatically shown or hidden depending on the player activity
+* `RTSMediaFailureOverview`: A view displaying player error messages, and hidden when there is none
+* `RTSAirplayOverviewView`: A view displayed when Airplay output is active
+
+For more information about these classes and how they can be customized, please refer to the associated header files. If you need to implement your own custom view, the SRG Media Player library provides further access to playback information, a more advanced topic not covered in this guide.
+
+To start playback, bind your media player controller to an `mediaPlayerController` outlet you need to add to your view controller class, and start playback as soon as your view controller appears:
+
+```objective-c
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+        [self.mediaPlayerController playIdentifier:@"the_video_identifier"];
+    }
+}
+```
+
+Controlling playback can be made programatically using methods from the `RTSMediaPlayback` protocol, described in the next section.
+
+## Controlling playback
+
+
+
+## Designing custom players with segment support
