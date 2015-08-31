@@ -7,6 +7,8 @@ The SRG Media Player library for iOS provides a simple way to add a universal au
 * A default player with the same look & feel as the standard iOS player
 * A set of overlays which can be combined to create the user interface you need
 * Support for segments
+* Support for DVR streams
+* Ability to use several instances of the player at the same time
 
 ## Compatibility
 
@@ -33,6 +35,10 @@ The library can be added to a project through [CocoaPods](http://cocoapods.org/)
 Then run `pod install` to update the dependencies.
 
 For more information about CocoaPods and the `Podfile`, please refer to the [official documentation](http://guides.cocoapods.org/).
+
+## Demo project
+
+To test what the library is capable of, try running the associated demo by opening the workspace and building the associated scheme.
 
 ## Usage
 
