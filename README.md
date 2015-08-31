@@ -20,17 +20,17 @@ The library can be added to a project through [CocoaPods](http://cocoapods.org/)
 
 * The SRG specification repository:
 
-    ```
-    #!ruby
-    source 'ssh://git@bitbucket.org/rtsmb/srgpodspecs.git'
-    ```
+```
+#!ruby
+source 'ssh://git@bitbucket.org/rtsmb/srgpodspecs.git'
+```
     
 * The `SRGMediaPlayer ` dependency:
 
-    ```
-    #!ruby
-    pod 'SRGMediaPlayer', '<version>'
-    ```
+```
+#!ruby
+pod 'SRGMediaPlayer', '<version>'
+```
 
 Then run `pod install` to update the dependencies.
 
