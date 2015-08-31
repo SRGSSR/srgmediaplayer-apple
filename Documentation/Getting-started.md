@@ -14,7 +14,7 @@ This default player view controller is itself based on a set of components which
 * A set of components (slider, play / pause button, timeline, message view, Airplay view, etc.) which can be connected to an underlying media player controller
 * A few protocols which describe how controllers retrieve the data they need, and how playback can be controlled
 
-Let us now discuss these components further and describe how they are glued together.
+Let us now discuss these components further and describe how they can be glued together.
 
 ## Media player view controller
 
@@ -26,20 +26,18 @@ RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewCo
 [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
 ```
 
-The player can simply be supplied the URL to be played. Alternatively, you can provide a data source and an identifier for which the URL must be retrieved from the data source. More on this topic in _Data sources_ section.
+This view controller can simply be supplied the URL to be played. Alternatively, you can provide a data source and an identifier for which the URL must be retrieved from the data source. More on this topic in _Data sources_ section.
 
 The `RTSMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams), but does not provide support for segments. For this you need to design your own player view, see the _Designing custom players_ section below.
 
 ## Data sources
 
-Each controller class has an associated protocol describing how it is fed with data. Controllers are only concerned with media identifiers (strings), for which they ask their data source about data:
+Each controller class has an associated protocol describing how it retrieves the data it needs. Controllers are only concerned with media identifiers (strings), for which they ask their data source about data:
 
 * `RTSMediaPlayerControllerDataSource`: Describes how a media player controller retrieves the URL to be played
-* `RTSMediaSegmentsDataSource`: Describes how a media segments controller retrieves segment information. Segments can be any kind of class conforming to the `RTSMediaSegment` protocol
+* `RTSMediaSegmentsDataSource`: Describes how a media segments controller retrieves segment information. Segments can be any kind of class conforming to the `RTSMediaSegment` protocol. For proprietary classes, you can usually achieve this by having a category conform to the protocol
 
-A data source is implicitly provided to an `RTSMediaPlayerViewController` when it is instantiated (see example in the _Media player view controller_ section).
-
-For `RTSMediaPlayerController` and `RTSMediaSegmentsController`, the data source is not provided at creation time, rather specified using dedicated `dataSource` properties. Those have been made available as outlets. The SRG Media Player library namely intends to provide an easy way to create custom player layouts not only in code, but also in Interface Builder for convenience. This topic is discussed further in the next section.
+A data source is implicitly provided to an `RTSMediaPlayerViewController` when it is instantiated (see example in the _Media player view controller_ section). For `RTSMediaPlayerController` and `RTSMediaSegmentsController`, though, the data source is not provided at creation time, rather specified using dedicated `dataSource` properties. Those have been made available as outlets. The SRG Media Player library namely intends to provide an easy way to create custom player layouts not only in code, but also in Interface Builder for convenience. This topic is discussed in the next section.
 
 ## Designing custom players without segment support
 
@@ -57,7 +55,7 @@ Creating the player layout is then a matter of dropping more views onto the layo
 
 * `dataSource`, described above
 * `activityView`, where taps are detected to toggle on or off UI overlay views
-* the `overlayViews` collection, which contains all views you want to be toggled off after user inactivity, or by interacting with the activity view when overlays are visible. Those overlay views will be toggled on again when interacting with the activity view again
+* the `overlayViews` collection, which contains all views you want to be toggled off depending on user activity
 
 Several controls can then be dropped onto the layout and bound to the player they must be associated with, usually through a `...controller` outlet. Simply use a standard `UIView` in Interface Builder, setting its class to one of the following types:
 
@@ -68,9 +66,9 @@ Several controls can then be dropped onto the layout and bound to the player the
 * `RTSMediaFailureOverview`: A view displaying player error messages, and hidden when there is none
 * `RTSAirplayOverviewView`: A view displayed when Airplay output is active
 
-For more information about these classes and how they can be customized, please refer to the associated header files. If you need to implement your own custom view, the SRG Media Player library provides further access to playback information, a more advanced topic not covered in this guide.
+For more information about these classes and how they can be customized, please refer to the associated header files. If you need to implement your own custom views, the SRG Media Player library provides all the information you need. Since this is a more advanced topic, it is not further discussed in this guide.
 
-To start playback, bind your media player controller to an `mediaPlayerController` outlet you need to add to your view controller class, and start playback as soon as your view controller appears:
+To start playback, bind your media player controller to an `mediaPlayerController` outlet of your view controller class and start playback as soon as your view controller appears:
 
 ```objective-c
 - (void)viewWillAppear:(BOOL)animated
@@ -78,8 +76,19 @@ To start playback, bind your media player controller to an `mediaPlayerControlle
     [super viewWillAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self.mediaPlayerController playIdentifier:@"the_video_identifier"];
+        [self.mediaPlayerController playIdentifier:@"the_media_identifier"];
     }
+}
+```
+
+To play videos, you must attach the controller to a view within your hierarchy first. Assuming you have such a view bound to a `videoView` outlet, just attach the view when available, usually in `-viewDidLoad`:
+
+```objective-c
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.mediaPlayerController attachPlayerToView:self.videoView];
 }
 ```
 
@@ -93,7 +102,7 @@ You can also create your layout and instantiate all or part of the controllers a
 
 Playback can be controlled using the `RTSMediaPlayback` protocol, to which both controller classes `RTSMediaPlayerController` and `RTSMediaSegmentsController` conform. Most properties of this protocol should be self-explanatory.
 
-Periodic time observers need further discussion, though. Unlike standard `AVPlayer` time observers, these observers are `NSTimer`-based and do not stop when playback stops, but live as long as the player lives. This makes it possible to perform periodic updates, even when the player is paused.
+Periodic time observers need further discussion, though. Unlike standard `AVPlayer` time observers, these observers are `NSTimer`-based and do not stop when playback stops, but live as long as the player lives. This makes it possible to perform periodic updates, even when the player is paused (e.g. UI updates for DVR streams).
 
 If you need standard time observers, you can use the `player` property of `RTSMediaPlayerController`. Be careful, though, as such observers can only be added when the `player` property is actually ready (use KVO to detect it).
 
@@ -102,7 +111,7 @@ If you need standard time observers, you can use the `player` property of `RTSMe
 Adding support for segments to a custom player happens in the same way as described in the _Designing custom players without segment support_ section. Add two custom objects to your storyboard:
 
 * Set the class of the first one to a `RTSMediaSegmentsDataSource` you have implemented
-* Set the class of the first one to `RTSMediaSegmentsController`, bind its `playerController` outlet to the media player controller it must manage, and bind its `dataSource` outlet to the data source
+* Set the class of the second one to `RTSMediaSegmentsController`, bind its `playerController` outlet to the media player controller it must manage, and bind its `dataSource` outlet to the data source
 
 To retrieve segments, call `-reloadSegmentsForIdentifier:completionHandler:`. Your data source can implement segment data retrieval, e.g. through a webservice request, returing objects conforming to the `RTSMediaSegment` protocol.
 
@@ -111,9 +120,9 @@ Segments can be easily displayed using two dedicated view classes. Drop `UIView 
 * `RTSTimelineSlider`: A timeline displaying segment start points and providing a way to seek with a single tap. You can use a delegate protocol to display custom icons if you want
 * `RTSSegmentedTimelineView`: An horizontal list of cells displaying segments, used like a collection view.
 
-Do not forget to bind the `segmentsController` property of such views to the segments controller so that they are fed properly. For more information, please refer at the header documentation of those classes.
+Do not forget to bind the `segmentsController` property of such views to the underyling segments controller so that they are fed properly. For more information, please refer to the header documentation of those classes.
 
-Controlling playback is achieved using the `RTSMediaPlayback`. Calling the methods onto the segments controller allows mediating between the user and the media player controller. Based on segments information, the segments controller may namely forbid scrubbing to a specific location or resume after a blocked segment.
+As said before, controlling playback is achieved using the `RTSMediaPlayback`. Calling the various playback methods onto the segments controller allows mediating between the user and the media player controller, preventing forbidden actions. Based on segments information, the segments controller may namely prevent scrubbing to a specific location or resume after a blocked segment.
 
 ## Further reading
 
