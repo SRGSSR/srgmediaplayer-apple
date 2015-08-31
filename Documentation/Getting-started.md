@@ -85,8 +85,36 @@ To start playback, bind your media player controller to an `mediaPlayerControlle
 
 Controlling playback can be made programatically using methods from the `RTSMediaPlayback` protocol, described in the next section.
 
+#### Remark
+
+You can also create your layout and instantiate all or part of the controllers and data sources programatically. These cases are not described further in this guide as they should be obvious enough for Cocoa developers.
+
 ## Controlling playback
 
+Playback can be controlled using the `RTSMediaPlayback` protocol, to which both controller classes `RTSMediaPlayerController` and `RTSMediaSegmentsController` conform. Most properties of this protocol should be self-explanatory.
 
+Periodic time observers need further discussion, though. Unlike standard `AVPlayer` time observers, these observers are `NSTimer`-based and do not stop when playback stops, but live as long as the player lives. This makes it possible to perform periodic updates, even when the player is paused.
+
+If you need standard time observers, you can use the `player` property of `RTSMediaPlayerController`. Be careful, though, as such observers can only be added when the `player` property is actually ready (use KVO to detect it).
 
 ## Designing custom players with segment support
+
+Adding support for segments to a custom player happens in the same way as described in the _Designing custom players without segment support_ section. Add two custom objects to your storyboard:
+
+* Set the class of the first one to a `RTSMediaSegmentsDataSource` you have implemented
+* Set the class of the first one to `RTSMediaSegmentsController`, bind its `playerController` outlet to the media player controller it must manage, and bind its `dataSource` outlet to the data source
+
+To retrieve segments, call `-reloadSegmentsForIdentifier:completionHandler:`. Your data source can implement segment data retrieval, e.g. through a webservice request, returing objects conforming to the `RTSMediaSegment` protocol.
+
+Segments can be easily displayed using two dedicated view classes. Drop `UIView `instances onto your player layout and set their class to either:
+
+* `RTSTimelineSlider`: A timeline displaying segment start points and providing a way to seek with a single tap. You can use a delegate protocol to display custom icons if you want
+* `RTSSegmentedTimelineView`: An horizontal list of cells displaying segments, used like a collection view.
+
+Do not forget to bind the `segmentsController` property of such views to the segments controller so that they are fed properly. For more information, please refer at the header documentation of those classes.
+
+Controlling playback is achieved using the `RTSMediaPlayback`. Calling the methods onto the segments controller allows mediating between the user and the media player controller. Based on segments information, the segments controller may namely forbid scrubbing to a specific location or resume after a blocked segment.
+
+## Further reading
+
+This guide only scratches the surface of what you can do with the SRG Media Player library. For more information, please have a look at the demo implementation. Do not forget to read the header documentation as well.
