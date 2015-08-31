@@ -17,13 +17,14 @@ The library is suitable for applications running on iOS 7 and above.
 The library can be added to a project through [CocoaPods](http://cocoapods.org/). Create a `Podfile` with the following contents:
 
 * The SRG specification repository:
-    
+
 ```
 #!ruby
     source 'ssh://git@bitbucket.org/rtsmb/srgpodspecs.git'
 ```
     
 * The `SRGMediaPlayer ` dependency:
+
 ```
 #!ruby
     pod 'SRGMediaPlayer', '<version>'
@@ -32,6 +33,10 @@ The library can be added to a project through [CocoaPods](http://cocoapods.org/)
 Then run `pod install` to update the dependencies.
 
 For more information about CocoaPods and the `Podfile`, please refer to the [official documentation](http://guides.cocoapods.org/).
+
+## Usage
+
+To learn about how the library can be used, have a look at the [getting started guide](Documentation/Getting-started.md).
 
 ## License
 
