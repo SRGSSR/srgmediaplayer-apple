@@ -6,7 +6,7 @@ The SRG Media Player library for iOS provides a simple way to add a universal au
 
 * A default player with the same look & feel as the standard iOS player
 * A set of overlays which can be combined to create the user interface you need
-* Support for segments
+* Support for segments. Those are simply sections of a video, defined by non-overlapping time ranges, which can be blocked or hidden
 * Support for DVR streams
 * Ability to use several instances of the player at the same time
 
@@ -20,17 +20,17 @@ The library can be added to a project through [CocoaPods](http://cocoapods.org/)
 
 * The SRG specification repository:
 
-```
-#!ruby
+    ```
+    #!ruby
     source 'ssh://git@bitbucket.org/rtsmb/srgpodspecs.git'
-```
+    ```
     
 * The `SRGMediaPlayer ` dependency:
 
-```
-#!ruby
+    ```
+    #!ruby
     pod 'SRGMediaPlayer', '<version>'
-```
+    ```
 
 Then run `pod install` to update the dependencies.
 
