@@ -1,9 +1,26 @@
+source 'ssh://git@bitbucket.org/rtsmb/srgpodspecs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
 platform :ios, '7.0'
 
-pod 'CocoaLumberjack',     '~> 2.0.0'
-pod 'libextobjc/EXTScope', '0.4.1'
-pod 'TransitionKit',       { :git => 'https://github.com/0xced/TransitionKit.git', :commit => '6874dea2229bdefb89f6c8f708f1fae467ee5ba2' }
+inhibit_all_warnings!
 
-target 'RTSMediaPlayerTests' do
+workspace 'SRGMediaPlayer'
+link_with 'SRGMediaPlayerTests', 'SRGMediaPlayer Demo'
+
+target 'SRGMediaPlayer' do
+  pod 'libextobjc/EXTScope', '0.4.1'
+  pod 'TransitionKit',       '2.2.0'
+end
+
+target 'SRGMediaPlayerTests' do
+  pod 'libextobjc/EXTScope', '0.4.1'
+  pod 'TransitionKit',       '2.2.0'
   pod 'MAKVONotificationCenter', '0.0.2'
+end
+
+target 'SRGMediaPlayer Demo' do
+  xcodeproj 'RTSMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj'
+  pod 'CocoaLumberjack', '2.0.0'
+  pod 'SDWebImage', '3.7.0'
 end

@@ -52,6 +52,18 @@
 			<key>url</key>
 			<string>http://stream-i.rts.ch/i/bidbi/2007/bidbi_01082007-,450,k.mp4.csmil/master.m3u8</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>Webcam RTS mobile (with underscores)</string>
+			<key>url</key>
+			<string>http://rtsliveevent1_ww-lh.akamaihd.net/i/event1uni_dvrtest_ww@91227/master.m3u8?__a__=off</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Webcam RTS mobile (without underscores)</string>
+			<key>url</key>
+			<string>http://rtsdvr2015-lh.akamaihd.net/i/rtsdvr2015test1_ww@317507/master.m3u8</string>
+		</dict>
 	</array>
 </dict>
 </plist>

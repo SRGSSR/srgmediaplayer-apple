@@ -1,10 +1,11 @@
 //
-//  Created by Frédéric Humbert-Droz on 10/03/15.
-//  Copyright (c) 2015 RTS. All rights reserved.
+//  Copyright (c) RTS. All rights reserved.
+//
+//  Licence information is available from the LICENCE file.
 //
 
 #import "DemoMultiPlayersViewController.h"
-#import <RTSMediaPlayer/RTSMediaPlayerPlaybackButton.h>
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface DemoMultiPlayersViewController ()
 
@@ -91,7 +92,7 @@
 	self.playerViewsContainer.hidden = !sender.isOn;
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		SEL action = sender.isOn ? @selector(play) : @selector(stop);
+		SEL action = sender.isOn ? @selector(play) : @selector(pause);
 		[self.thumbnailPlayerControllers makeObjectsPerformSelector:action];
 	});	
 }
@@ -144,7 +145,7 @@
 	
 	mediaPlayerController.overlayViews = isMainPlayer ? self.overlayViews : nil;
 	[mediaPlayerController attachPlayerToView:playerView];
-	mediaPlayerController.player.muted = !isMainPlayer;
+	[mediaPlayerController mute:!isMainPlayer];
 	
 	UITapGestureRecognizer *defaultTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.firstObject;
 	UITapGestureRecognizer *switchTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.lastObject;

@@ -1,14 +1,16 @@
 //
-//  Created by Frédéric Humbert-Droz on 06/03/15.
-//  Copyright (c) 2015 RTS. All rights reserved.
+//  Copyright (c) RTS. All rights reserved.
+//
+//  Licence information is available from the LICENCE file.
 //
 
 #import <UIKit/UIKit.h>
 
-@class RTSMediaPlayerController;
-
+/**
+ *  A view to control the volume. Simply install somewhere onto your custom player interface
+ *
+ *  @discussion This view does not display any route button, unlike MPVolumeView
+ */
 @interface RTSVolumeView : UIView
-
-@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @end

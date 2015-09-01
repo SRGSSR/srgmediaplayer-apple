@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Movies</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>RTS DVR test stream (no security)</string>
+			<key>url</key>
+			<string>http://srgssruni22ach-lh.akamaihd.net/i/enc22auni_ch@195192/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>RTS DVR test stream (with security)</string>
+			<key>url</key>
+			<string>https://srgssruni22bch-lh.akamaihd.net/i/enc22buni_ch@195196/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>SwissText Sport DVR Test Stream</string>
+			<key>url</key>
+			<string>http://test.event.api.swisstxt.ch:80/v1/stream/srf/byEventItemIdAndType/270476/hls</string>
+		</dict>
+	</array>
+</dict>
+</plist>

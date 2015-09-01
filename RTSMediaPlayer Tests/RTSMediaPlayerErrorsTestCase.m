@@ -1,15 +1,13 @@
 //
-//  RTSMediaPlayerErrorsTestCase.m
-//  RTSMediaPlayer
+//  Copyright (c) RTS. All rights reserved.
 //
-//  Created by Cédric Luthi on 07.04.15.
-//  Copyright (c) 2015 RTS. All rights reserved.
+//  Licence information is available from the LICENCE file.
 //
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import <RTSMediaPlayer/RTSMediaPlayer.h>
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 
 @interface DataSourceReturningError : NSObject <RTSMediaPlayerControllerDataSource> @end

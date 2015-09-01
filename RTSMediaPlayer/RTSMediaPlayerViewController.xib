@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTSMediaPlayerViewController">
             <connections>
-                <outlet property="loadingIndicator" destination="d2t-q1-HOm" id="hhI-u7-Sja"/>
+                <outlet property="liveButton" destination="f2J-Sq-TNH" id="ufj-9B-9fS"/>
+                <outlet property="loadingAcitivityIndicatorView" destination="z3p-uA-NWq" id="C5i-1t-xqK"/>
+                <outlet property="loadingLabel" destination="yUB-n6-aT0" id="YVj-aE-6vI"/>
                 <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="1fS-p7-nwe"/>
                 <outlet property="playPauseButton" destination="orZ-GR-Obh" id="has-wO-PCl"/>
+                <outlet property="timeLeftValueLabelWidthConstraint" destination="G8R-4I-uxy" id="wwA-Fb-CRF"/>
                 <outlet property="timeSlider" destination="dbP-gV-yjr" id="ICa-MM-Kcj"/>
+                <outlet property="valueLabelWidthConstraint" destination="LD7-6d-ZRT" id="ItF-8i-kPA"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ERh-xZ-n9v"/>
                 <outlet property="volumeView" destination="14B-nw-cM3" id="a1D-qx-5ke"/>
             </connections>
@@ -20,8 +24,11 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="d2t-q1-HOm">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="d2t-q1-HOm" customClass="RTSPlaybackActivityIndicatorView">
                     <rect key="frame" x="290" y="290" width="20" height="20"/>
+                    <connections>
+                        <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="mPb-Pz-AYA"/>
+                    </connections>
                 </activityIndicatorView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqK-gI-E5v" userLabel="Navigation Bar View">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
@@ -48,30 +55,37 @@
                                     <rect key="frame" x="58" y="0.0" width="542" height="30"/>
                                     <subviews>
                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dbP-gV-yjr" customClass="RTSTimeSlider">
-                                            <rect key="frame" x="46" y="0.0" width="447" height="31"/>
-                                            <color key="minimumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <rect key="frame" x="56" y="0.0" width="427" height="31"/>
                                             <connections>
-                                                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="nA7-Kc-l2C"/>
+                                                <action selector="seek:" destination="-1" eventType="valueChanged" id="Kez-Th-9XW"/>
+                                                <outlet property="playbackController" destination="rfJ-1C-Ygo" id="0Z5-H7-CBT"/>
                                                 <outlet property="timeLeftValueLabel" destination="OdH-jj-nfU" id="zcx-hm-PNg"/>
                                                 <outlet property="valueLabel" destination="kzH-xw-G6y" id="cEN-dj-owx"/>
                                             </connections>
                                         </slider>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzH-xw-G6y">
-                                            <rect key="frame" x="5" y="7" width="35" height="15.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdH-jj-nfU">
+                                            <rect key="frame" x="489" y="7" width="45" height="15.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="LD7-6d-ZRT"/>
+                                                <constraint firstAttribute="width" constant="45" id="G8R-4I-uxy"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdH-jj-nfU">
-                                            <rect key="frame" x="499" y="7" width="35" height="15.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzH-xw-G6y">
+                                            <rect key="frame" x="5" y="7" width="45" height="15.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="G8R-4I-uxy"/>
+                                                <constraint firstAttribute="width" constant="45" id="LD7-6d-ZRT"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="z3p-uA-NWq">
+                                            <rect key="frame" x="173" y="5" width="20" height="20"/>
+                                            <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        </activityIndicatorView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUB-n6-aT0">
+                                            <rect key="frame" x="207" y="4" width="72.5" height="19.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -79,11 +93,15 @@
                                     <constraints>
                                         <constraint firstItem="OdH-jj-nfU" firstAttribute="leading" secondItem="dbP-gV-yjr" secondAttribute="trailing" constant="8" id="8qr-K5-vcv"/>
                                         <constraint firstAttribute="centerY" secondItem="dbP-gV-yjr" secondAttribute="centerY" id="CJF-rS-5vg"/>
+                                        <constraint firstItem="yUB-n6-aT0" firstAttribute="leading" secondItem="z3p-uA-NWq" secondAttribute="trailing" constant="14" id="FYV-Du-Mpu"/>
+                                        <constraint firstAttribute="centerX" secondItem="yUB-n6-aT0" secondAttribute="centerX" constant="28" id="IFa-FE-Tex"/>
                                         <constraint firstAttribute="centerY" secondItem="OdH-jj-nfU" secondAttribute="centerY" id="JNq-k4-TTg"/>
                                         <constraint firstItem="dbP-gV-yjr" firstAttribute="leading" secondItem="kzH-xw-G6y" secondAttribute="trailing" constant="8" id="TUn-YV-ePR"/>
                                         <constraint firstAttribute="trailing" secondItem="OdH-jj-nfU" secondAttribute="trailing" constant="8" id="auz-bv-BOE"/>
+                                        <constraint firstAttribute="centerY" secondItem="yUB-n6-aT0" secondAttribute="centerY" constant="0.5" id="h38-Cl-pqC"/>
                                         <constraint firstItem="kzH-xw-G6y" firstAttribute="leading" secondItem="ljr-RB-scX" secondAttribute="leading" constant="5" id="iYP-Zg-gPh"/>
                                         <constraint firstAttribute="centerY" secondItem="kzH-xw-G6y" secondAttribute="centerY" id="qaC-Xk-lko"/>
+                                        <constraint firstAttribute="centerY" secondItem="z3p-uA-NWq" secondAttribute="centerY" id="yP1-xX-JeJ"/>
                                     </constraints>
                                 </view>
                             </subviews>
@@ -139,9 +157,6 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="v8C-if-1dy"/>
                             </constraints>
-                            <connections>
-                                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="Unp-XY-ZrI"/>
-                            </connections>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.40000000596046448" green="0.40000000596046448" blue="0.40000000596046448" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
@@ -154,13 +169,36 @@
                         <constraint firstAttribute="centerX" secondItem="orZ-GR-Obh" secondAttribute="centerX" id="tp9-ea-bQv"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2J-Sq-TNH">
+                    <rect key="frame" x="490" y="50" width="96" height="34"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.52000000000000002" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="102" id="osw-dO-Mt3"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                    <state key="normal" title="Back to live">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="osw-dO-Mt3"/>
+                        </mask>
+                    </variation>
+                    <connections>
+                        <action selector="goToLive:" destination="-1" eventType="touchUpInside" id="850-9S-0FL"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="kqK-gI-E5v" secondAttribute="trailing" id="13J-fR-tYI"/>
+                <constraint firstAttribute="trailing" secondItem="f2J-Sq-TNH" secondAttribute="trailing" constant="14" id="5l4-9y-EDf"/>
                 <constraint firstItem="m4e-aB-8GY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EjJ-Y6-i5x"/>
                 <constraint firstAttribute="trailing" secondItem="m4e-aB-8GY" secondAttribute="trailing" id="Ek5-aN-GFQ"/>
                 <constraint firstItem="kqK-gI-E5v" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="b1o-Vb-QQk"/>
+                <constraint firstItem="f2J-Sq-TNH" firstAttribute="top" secondItem="kqK-gI-E5v" secondAttribute="bottom" id="d7a-A9-gqQ"/>
                 <constraint firstAttribute="centerX" secondItem="d2t-q1-HOm" secondAttribute="centerX" id="ghL-wx-Tv8"/>
                 <constraint firstAttribute="bottom" secondItem="m4e-aB-8GY" secondAttribute="bottom" id="mxb-hA-Ktf"/>
                 <constraint firstAttribute="centerY" secondItem="d2t-q1-HOm" secondAttribute="centerY" id="qRh-aH-gf7"/>
@@ -174,6 +212,7 @@
                 <outletCollection property="overlayViews" destination="kqK-gI-E5v" id="loX-MY-6Bg"/>
                 <outletCollection property="overlayViews" destination="m4e-aB-8GY" id="6Yh-NX-pIr"/>
                 <outletCollection property="overlayViews" destination="14B-nw-cM3" id="vtV-N5-t6X"/>
+                <outletCollection property="overlayViews" destination="f2J-Sq-TNH" id="Ho6-8D-aPf"/>
             </connections>
         </customObject>
     </objects>

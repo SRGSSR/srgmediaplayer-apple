@@ -1,11 +1,44 @@
 //
-//  Created by Cédric Luthi on 26.02.15.
-//  Copyright (c) 2015 RTS. All rights reserved.
+//  Copyright (c) RTS. All rights reserved.
+//
+//  Licence information is available from the LICENCE file.
 //
 
 #import "AppDelegate.h"
 
 #import <CocoaLumberjack/CocoaLumberjack.h>
+
+@interface UIImage (Tinting)
+- (UIImage *)tintedImageWithColor:(UIColor *)color;
+@end
+
+@implementation UIImage (Tinting)
+
+- (UIImage *)tintedImageWithColor:(UIColor *)color
+{
+	if (!color) {
+		return self;
+	}
+	
+	CGRect rect = CGRectMake(0.f, 0.f, self.size.width, self.size.height);
+	UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.f);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	
+	CGContextTranslateCTM(context, 0.f, self.size.height);
+	CGContextScaleCTM(context, 1.0f, -1.0f);
+	
+	CGContextDrawImage(context, rect, self.CGImage);
+	CGContextSetBlendMode(context, kCGBlendModeSourceIn);
+	CGContextSetFillColorWithColor(context, color.CGColor);
+	CGContextFillRect(context, rect);
+	
+	UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	return tintedImage;
+}
+
+@end
 
 
 @interface LogFormatter : NSObject <DDLogFormatter>
@@ -37,6 +70,24 @@
 	ttyLogger.colorsEnabled = YES;
 	ttyLogger.logFormatter = [LogFormatter new];
 	[DDLog addLogger:ttyLogger withLevel:DDLogLevelInfo];
+	
+	
+	UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+	
+	UIImage *moviesIcon = [UIImage imageNamed:@"videos"];
+	UIImage *segmentsIcon = [UIImage imageNamed:@"segments"];
+	UIImage *multiplayerIcon = [UIImage imageNamed:@"screen"];
+	UIImage *audiosIcon = [UIImage imageNamed:@"audios"];
+	
+	NSArray *images = @[moviesIcon, segmentsIcon, multiplayerIcon, moviesIcon, audiosIcon];
+	
+	[tabBarController.tabBar.items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		UITabBarItem *item = (UITabBarItem *)obj;
+		item.image = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+		item.selectedImage = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+	}];
+
+	
 	return YES;
 }
 

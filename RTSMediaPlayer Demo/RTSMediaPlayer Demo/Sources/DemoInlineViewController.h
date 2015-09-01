@@ -1,16 +1,16 @@
 //
-//  Created by Cédric Luthi on 27.02.15.
-//  Copyright (c) 2015 RTS. All rights reserved.
+//  Copyright (c) RTS. All rights reserved.
+//
+//  Licence information is available from the LICENCE file.
 //
 
 #import <UIKit/UIKit.h>
 
-#import <RTSMediaPlayer/RTSMediaPlayer.h>
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface DemoInlineViewController : UIViewController <RTSMediaPlayerControllerDataSource>
 
 @property (nonatomic, weak) IBOutlet UIView *videoContainerView;
-
 @property (nonatomic, strong) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, strong) NSURL *mediaURL;
