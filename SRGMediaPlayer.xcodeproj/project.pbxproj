@@ -443,8 +443,9 @@
 		C201D8ED1A9DC1A40016C629 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = RTS;
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = RTS;
+				ORGANIZATIONNAME = SRG;
 				TargetAttributes = {
 					C201D8F41A9DC1A40016C629 = {
 						CreatedOnToolsVersion = 6.1.1;
