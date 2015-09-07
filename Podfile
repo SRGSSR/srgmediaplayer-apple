@@ -1,4 +1,3 @@
-source 'ssh://git@bitbucket.org/rtsmb/srgpodspecs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '7.0'
