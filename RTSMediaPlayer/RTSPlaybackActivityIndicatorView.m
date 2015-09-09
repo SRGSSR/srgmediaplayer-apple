@@ -21,7 +21,7 @@ static void commonInit(RTSPlaybackActivityIndicatorView *self);
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-	if ([super initWithCoder:aDecoder]) {
+	if (self = [super initWithCoder:aDecoder]) {
 		commonInit(self);
 	}
 	return self;
