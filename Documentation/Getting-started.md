@@ -20,8 +20,7 @@ Let us now discuss these components further and describe how they can be glued t
 
 If you do not need to customize the player appearance, simply instantiate `RTSMediaPlayerViewController` and install it somewhere into your view controller hierarchy, e.g. modally:
 
-```
-#!objective-c
+```objective-c
 RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewController alloc] initWithContentURL:contentURL];
 [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
 ```
