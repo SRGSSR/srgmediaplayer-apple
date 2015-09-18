@@ -159,6 +159,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	AVPlayerItem *playerItem = self.playbackController.playerItem;
 	if (! playerItem || playerItem.status != AVPlayerItemStatusReadyToPlay) {
 		self.valueLabel.text = @"--:--";
+		self.timeLeftValueLabel.text = @"--:--"
 		self.timeLeftValueLabel.text = @"--:--";
 		return;
 	}
@@ -167,9 +168,11 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	{
 		self.valueLabel.text = @"--:--";
 		self.timeLeftValueLabel.text = RTSMediaPlayerLocalizedString(@"Live", nil);
+		self.totalTimeValueLabel.text = RTSMediaPlayerLocalizedString(@"Live", nil);
 	}
 	else {
 		self.valueLabel.text = RTSTimeSliderFormatter(self.value);
+		self.totalTimeValueLabel.text = RTSTimeSliderFormatter(self.maximumValue);
 		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
 	}
 }
