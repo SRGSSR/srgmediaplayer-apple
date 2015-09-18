@@ -40,19 +40,19 @@
 @property (nonatomic, weak) IBOutlet id<RTSTimeSliderDelegate> slidingDelegate;
 
 /**
- *  Must be bound to the label displaying the remaining time
- */
-@property (nonatomic, weak) IBOutlet UILabel *timeLeftValueLabel;
-
-/**
- *  Must be bound to the label displaying the current time
+ *  Label displaying current playing time. Will show default text `--:--` when `live` property is true
  */
 @property (nonatomic, weak) IBOutlet UILabel *valueLabel;
 
 /**
- *  Label displaying the total duration of the stream. Will show `Live` text when `live` property is true.
+ *  Label displaying the total duration of the stream. Will show localized `Live` text when `live` property is true
  */
 @property (nonatomic, weak) IBOutlet UILabel *totalTimeValueLabel;
+
+/**
+ *  Label displaying the remaining time (duration - current playing time). Will show localized `Live` text when `live` property is true
+ */
+@property (nonatomic, weak) IBOutlet UILabel *timeLeftValueLabel;
 
 /**
  *  Bar border color (defaults to black)
