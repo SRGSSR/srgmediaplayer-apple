@@ -156,17 +156,19 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (void) updateTimeRangeLabels
 {
+	NSString *defaultLabelValue = @"--:--";
+	
 	AVPlayerItem *playerItem = self.playbackController.playerItem;
 	if (! playerItem || playerItem.status != AVPlayerItemStatusReadyToPlay) {
-		self.valueLabel.text = @"--:--";
-		self.timeLeftValueLabel.text = @"--:--"
-		self.timeLeftValueLabel.text = @"--:--";
+		self.valueLabel.text = defaultLabelValue;
+		self.timeLeftValueLabel.text = defaultLabelValue;
+		self.timeLeftValueLabel.text = defaultLabelValue;
 		return;
 	}
 	
 	if (self.live)
 	{
-		self.valueLabel.text = @"--:--";
+		self.valueLabel.text = defaultLabelValue;
 		self.timeLeftValueLabel.text = RTSMediaPlayerLocalizedString(@"Live", nil);
 		self.totalTimeValueLabel.text = RTSMediaPlayerLocalizedString(@"Live", nil);
 	}
