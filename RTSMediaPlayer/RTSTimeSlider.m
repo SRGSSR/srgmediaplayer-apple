@@ -53,6 +53,12 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	self = [super initWithFrame:frame];
 	if (self) {
 		[self setup_RTSTimeSlider];
+		
+		self.borderColor = [UIColor blackColor];
+		
+		self.minimumTrackTintColor = [UIColor whiteColor];
+		self.maximumTrackTintColor = [UIColor blackColor];
+		self.thumbTintColor = [UIColor whiteColor];
 	}
 	return self;
 }
@@ -68,16 +74,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (void) setup_RTSTimeSlider
 {
-	self.borderColor = [UIColor blackColor];
-	
 	self.minimumValue = 0.;			// Always 0
 	self.maximumValue = 0.;
 	self.value = 0.;
-	
-	self.minimumTrackTintColor = [UIColor whiteColor];
-	self.maximumTrackTintColor = [UIColor blackColor];
-	
-	self.thumbTintColor = [UIColor whiteColor];
 	
 	UIImage *triangle = [self emptyImage];
 	UIImage *image = [triangle resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
