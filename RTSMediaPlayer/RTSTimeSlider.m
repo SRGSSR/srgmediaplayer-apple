@@ -83,9 +83,6 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	
 	[self setMinimumTrackImage:image forState:UIControlStateNormal];
 	[self setMaximumTrackImage:image forState:UIControlStateNormal];
-	
-	[self setThumbImage:[self thumbImage] forState:UIControlStateNormal];
-	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
 }
 
 #pragma mark - Setters and getters
@@ -107,6 +104,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void) setThumbTintColor:(UIColor *)thumbTintColor
 {
 	self.overriddenThumbTintColor = thumbTintColor;
+	
+	[self setThumbImage:[self thumbImage] forState:UIControlStateNormal];
+	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
 }
 
 - (UIColor *) minimumTrackTintColor
