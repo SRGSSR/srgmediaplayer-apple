@@ -472,19 +472,19 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
 	if (!firstSeekableTimeRangeValue) {
-		return kCMTimeRangeZero;
+		return kCMTimeRangeInvalid;
 	}
 	
 	NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
 	if (!lastSeekableTimeRangeValue) {
-		return kCMTimeRangeZero;
+		return kCMTimeRangeInvalid;
 	}
 	
 	CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
 	CMTimeRange lastSeekableTimeRange = [lastSeekableTimeRangeValue CMTimeRangeValue];
 	
 	if (!CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || !CMTIMERANGE_IS_VALID(lastSeekableTimeRange)) {
-		return kCMTimeRangeZero;
+		return kCMTimeRangeInvalid;
 	}
 	
 	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
@@ -507,11 +507,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (RTSMediaStreamType)streamType
 {
-	if (! self.playerItem) {
+	if (CMTIMERANGE_IS_INVALID(self.timeRange)) {
 		return RTSMediaStreamTypeUnknown;
 	}
-	
-	if (CMTIMERANGE_IS_EMPTY(self.timeRange)) {
+	else if (CMTIMERANGE_IS_EMPTY(self.timeRange)) {
 		return RTSMediaStreamTypeLive;
 	}
 	else if (CMTIME_IS_INDEFINITE(self.playerItem.duration)) {
