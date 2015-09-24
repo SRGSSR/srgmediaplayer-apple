@@ -822,12 +822,12 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 
 - (void) playerItemTimeJumped:(NSNotification *)notification
 {
-	RTSMediaPlayerLogDebug(@"playerItemTimeJumped: %@", notification.userInfo);
+	RTSMediaPlayerLogVerbose(@"playerItemTimeJumped: %@", notification.userInfo);
 }
 
 - (void) playerItemPlaybackStalled:(NSNotification *)notification
 {
-	RTSMediaPlayerLogDebug(@"playerItemPlaybackStalled: %@", notification.userInfo);
+	RTSMediaPlayerLogVerbose(@"playerItemPlaybackStalled: %@", notification.userInfo);
 }
 
 static void LogProperties(id object)
