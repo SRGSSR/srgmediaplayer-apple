@@ -420,7 +420,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		[self fireEvent:self.seekEvent userInfo:nil];
 	}
 	
-	RTSMediaPlayerLogInfo(@"Seeking to %@ sec.", @(CMTimeGetSeconds(time)));
+	RTSMediaPlayerLogDebug(@"Seeking to %.2f sec.", CMTimeGetSeconds(time));
 	
 	[self.player seekToTime:time
 			toleranceBefore:kCMTimeZero
