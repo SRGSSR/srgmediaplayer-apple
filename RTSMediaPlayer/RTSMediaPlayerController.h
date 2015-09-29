@@ -1,7 +1,7 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG. All rights reserved.
 //
-//  Licence information is available from the LICENCE file.
+//  License information is available from the LICENSE file.
 //
 
 #import <UIKit/UIKit.h>
@@ -19,7 +19,7 @@
  *
  *  The media player controller posts several notifications, see RTSMediaPlayerConstants.h
  *
- *  Errors are handled through the `RTSMediaPlayerPlaybackDidFinishNotification` notification. There are two possible 
+ *  Errors are handled through the `RTSMediaPlayerPlaybackDidFailNotification` notification. There are two possible
  *  source of errors: either the error comes from the dataSource (see `RTSMediaPlayerControllerDataSource`) or from 
  *  the network (playback error).
  *

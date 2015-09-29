@@ -1,7 +1,7 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG. All rights reserved.
 //
-//  Licence information is available from the LICENCE file.
+//  License information is available from the LICENSE file.
 //
 
 #import <objc/runtime.h>
@@ -420,7 +420,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		[self fireEvent:self.seekEvent userInfo:nil];
 	}
 	
-	RTSMediaPlayerLogInfo(@"Seeking to %@ sec.", @(CMTimeGetSeconds(time)));
+	RTSMediaPlayerLogDebug(@"Seeking to %.2f sec.", CMTimeGetSeconds(time));
 	
 	[self.player seekToTime:time
 			toleranceBefore:kCMTimeZero
@@ -472,19 +472,19 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
 	if (!firstSeekableTimeRangeValue) {
-		return kCMTimeRangeZero;
+		return kCMTimeRangeInvalid;
 	}
 	
 	NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
 	if (!lastSeekableTimeRangeValue) {
-		return kCMTimeRangeZero;
+		return kCMTimeRangeInvalid;
 	}
 	
 	CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
-	CMTimeRange lastSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
+	CMTimeRange lastSeekableTimeRange = [lastSeekableTimeRangeValue CMTimeRangeValue];
 	
 	if (!CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || !CMTIMERANGE_IS_VALID(lastSeekableTimeRange)) {
-		return kCMTimeRangeZero;
+		return kCMTimeRangeInvalid;
 	}
 	
 	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
@@ -507,11 +507,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (RTSMediaStreamType)streamType
 {
-	if (! self.playerItem) {
+	if (CMTIMERANGE_IS_INVALID(self.timeRange)) {
 		return RTSMediaStreamTypeUnknown;
 	}
-	
-	if (CMTIMERANGE_IS_EMPTY(self.timeRange)) {
+	else if (CMTIMERANGE_IS_EMPTY(self.timeRange)) {
 		return RTSMediaStreamTypeLive;
 	}
 	else if (CMTIME_IS_INDEFINITE(self.playerItem.duration)) {
@@ -823,12 +822,12 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 
 - (void) playerItemTimeJumped:(NSNotification *)notification
 {
-	RTSMediaPlayerLogDebug(@"playerItemTimeJumped: %@", notification.userInfo);
+	RTSMediaPlayerLogVerbose(@"playerItemTimeJumped: %@", notification.userInfo);
 }
 
 - (void) playerItemPlaybackStalled:(NSNotification *)notification
 {
-	RTSMediaPlayerLogDebug(@"playerItemPlaybackStalled: %@", notification.userInfo);
+	RTSMediaPlayerLogVerbose(@"playerItemPlaybackStalled: %@", notification.userInfo);
 }
 
 static void LogProperties(id object)

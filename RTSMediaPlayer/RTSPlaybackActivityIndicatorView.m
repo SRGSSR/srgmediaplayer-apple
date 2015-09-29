@@ -1,7 +1,7 @@
 //
-//  Copyright (c) RTS. All rights reserved.
+//  Copyright (c) SRG. All rights reserved.
 //
-//  Licence information is available from the LICENCE file.
+//  License information is available from the LICENSE file.
 //
 
 #import "RTSPlaybackActivityIndicatorView.h"
@@ -21,7 +21,7 @@ static void commonInit(RTSPlaybackActivityIndicatorView *self);
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-	if ([super initWithCoder:aDecoder]) {
+	if (self = [super initWithCoder:aDecoder]) {
 		commonInit(self);
 	}
 	return self;

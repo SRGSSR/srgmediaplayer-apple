@@ -12,7 +12,6 @@
 		9F40156D1B25A2E00068196C /* segments@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F4015691B25A2E00068196C /* segments@2x.png */; };
 		9F40156E1B25A2E00068196C /* videos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F40156A1B25A2E00068196C /* videos@2x.png */; };
 		9F4015711B25A5680068196C /* LaunchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F4015701B25A5680068196C /* LaunchImage.png */; };
-		9F48459D1B39BC7900C48345 /* libSRGMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F48459C1B39BC7900C48345 /* libSRGMediaPlayer.a */; };
 		9F48459F1B39BD3400C48345 /* SRGMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9F48459E1B39BD3400C48345 /* SRGMediaPlayer.bundle */; };
 		9F4B1D2D1B1C990700BB0FB3 /* VideoSegmentsPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F4B1D2C1B1C990700BB0FB3 /* VideoSegmentsPlayerViewController.m */; };
 		9F727DB61B5F975500FEF5E7 /* VideosTimeshiftTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F727DB51B5F975500FEF5E7 /* VideosTimeshiftTableViewController.m */; };
@@ -36,7 +35,7 @@
 		B6C460E71B205AC200A76705 /* MultiplayerURLs.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6C460E61B205AC200A76705 /* MultiplayerURLs.plist */; };
 		B6C460EA1B205AE400A76705 /* VideoMultiplayerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C460E91B205AE400A76705 /* VideoMultiplayerTableViewController.m */; };
 		C2F54A101A9F713300496C59 /* RTSMediaPlayer_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */; };
-		D3DB92EE703C18EF8A5C6B6B /* libPods-SRGMediaPlayer Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE10DF27C1E51A2963DA91A /* libPods-SRGMediaPlayer Demo.a */; };
+		C60C68FAC43F7E0A83E3014F /* libPods-SRGMediaPlayer Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE10DF27C1E51A2963DA91A /* libPods-SRGMediaPlayer Demo.a */; };
 		E606F8911AF3B044003F0E2A /* SegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */; };
 		E606F8921AF3B044003F0E2A /* SegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */; };
 		E606F8951AF3BBB4003F0E2A /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F8941AF3BBB4003F0E2A /* Segment.m */; };
@@ -153,8 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F48459D1B39BC7900C48345 /* libSRGMediaPlayer.a in Frameworks */,
-				D3DB92EE703C18EF8A5C6B6B /* libPods-SRGMediaPlayer Demo.a in Frameworks */,
+				C60C68FAC43F7E0A83E3014F /* libPods-SRGMediaPlayer Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
