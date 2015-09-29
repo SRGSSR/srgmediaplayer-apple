@@ -20,6 +20,7 @@ end
 
 target 'SRGMediaPlayer Demo' do
   xcodeproj 'RTSMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj'
+  pod 'SRGMediaPlayer', { :path => '.' }
   pod 'CocoaLumberjack', '2.0.0'
   pod 'SDWebImage', '3.7.0'
 end
