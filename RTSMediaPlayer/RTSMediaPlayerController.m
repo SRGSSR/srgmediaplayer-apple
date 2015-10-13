@@ -272,7 +272,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		// See https://developer.apple.com/library/ios/qa/qa1668/_index.html
 		RTSMediaType mediaType = [self mediaType];
 		if (mediaType == RTSMediaTypeVideo) {
-			[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
+			[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 			[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeMoviePlayback error:nil];
 		}
 		else if (mediaType == RTSMediaTypeAudio) {
