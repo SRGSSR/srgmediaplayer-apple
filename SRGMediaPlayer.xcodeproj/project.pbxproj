@@ -322,7 +322,6 @@
 		C201D8F71A9DC1A40016C629 /* RTSMediaPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				C2731F551AD6A8FF00434743 /* Info.plist */,
 				9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */,
 				E67D9B211B0EFDEE00FF2334 /* Protocols */,
 				B61E18F11AA87D4500E4FAB9 /* Controller */,
@@ -361,6 +360,7 @@
 		E699062C1AFB9684005ED143 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C2731F551AD6A8FF00434743 /* Info.plist */,
 				E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */,
 				E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */,
 				E60F1C0B1B21C96F00F3272F /* Localizable.strings */,
