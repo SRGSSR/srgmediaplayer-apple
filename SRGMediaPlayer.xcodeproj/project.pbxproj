@@ -444,7 +444,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = RTS;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = SRG;
 				TargetAttributes = {
 					C201D8F41A9DC1A40016C629 = {
@@ -661,6 +661,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -756,6 +757,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = RTSMediaPlayer/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-Resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -765,6 +767,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = RTSMediaPlayer/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-Resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				WRAPPER_EXTENSION = bundle;
 			};
