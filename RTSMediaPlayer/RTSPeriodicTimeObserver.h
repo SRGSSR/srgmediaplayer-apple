@@ -21,7 +21,7 @@
  *  @param interval    The interval at which the block must be executed
  *  @param queue	   The serial queue onto which block should be enqueued (main queue if NULL)
  */
-- (instancetype)initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue NS_DESIGNATED_INITIALIZER OS_NONNULL_ALL;
+- (instancetype)initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue OS_NONNULL_ALL;
 
 /**
  *  Register a block for a given identifier. If a block with the same identifier has already been registered, it

@@ -36,18 +36,12 @@
 
 @implementation RTSMediaPlayerViewController
 
-- (void) dealloc
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-}
-
-- (instancetype) initWithContentURL:(NSURL *)contentURL
+- (instancetype)initWithContentURL:(NSURL *)contentURL
 {
 	return [self initWithContentIdentifier:contentURL.absoluteString dataSource:self];
 }
 
-- (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
+- (instancetype)initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
 {
 	if (!(self = [super initWithNibName:@"RTSMediaPlayerViewController" bundle:[NSBundle RTSMediaPlayerBundle]]))
 		return nil;
@@ -56,6 +50,12 @@
 	_identifier = identifier;
 	
 	return self;
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
 #pragma mark - View lifecycle

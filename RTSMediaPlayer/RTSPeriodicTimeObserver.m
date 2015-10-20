@@ -24,8 +24,6 @@ static void *s_kvoContext  = &s_kvoContext;
 
 @implementation RTSPeriodicTimeObserver
 
-#pragma mark - Object lifecycle
-
 - (instancetype)initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue
 {
 	if (self = [super init]) {
