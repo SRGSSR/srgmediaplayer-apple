@@ -93,7 +93,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 - (instancetype)init
 {
-	return [self initWithContentURL:[NSURL URLWithString:nil]];
+	return [self initWithContentURL:[NSURL URLWithString:@""]];
 }
 
 - (instancetype)initWithContentURL:(NSURL *)contentURL
@@ -130,6 +130,9 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self.stateTransitionObserver];
 	
+	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
+	[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeDefault error:nil];
+
 	[self.view removeFromSuperview];
 	[self.activityView removeGestureRecognizer:self.activityGestureRecognizer];
 	
@@ -306,8 +309,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
 		@strongify(self)
-		[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
-		[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeDefault error:nil];
+		// Do not reset audio session right here, as it breaks cases where there are multiple players on the same
+		// screen, all playing, but only one with sound (e.g. multi-lives).
 		self.previousPlaybackTime = kCMTimeInvalid;
 		self.playerView.player = nil;
 		self.player = nil;
