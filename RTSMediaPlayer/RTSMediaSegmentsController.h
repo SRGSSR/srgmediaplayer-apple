@@ -40,11 +40,6 @@
 @property(nonatomic, weak) IBOutlet id<RTSMediaSegmentsDataSource> dataSource;
 
 /**
- *  The full length "segment"/media.
- */
-@property(nonatomic, strong, readonly) id<RTSMediaSegment> fullLengthSegment;
-
-/**
  *  Reload segments data for given media identifier.
  *
  *  @param identifier        The media identifier

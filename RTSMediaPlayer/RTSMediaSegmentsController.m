@@ -20,7 +20,6 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlaybackSegmentChangeUserSelectInfoKey";
 
 @interface RTSMediaSegmentsController ()
-@property(nonatomic, strong) id<RTSMediaSegment> fullLengthSegment;
 @property(nonatomic, strong) NSArray *segments;
 @property(nonatomic, strong) NSArray *episodes;
 @property(nonatomic, strong) NSDictionary *indexMapping;
