@@ -13,14 +13,14 @@
 
 /**
  *  RTSMediaPlayerController is inspired by the MPMoviePlayerController class.
- *  A media player (of type RTSMediaPlayerController) manages the playback of a media from a file or a network stream. 
+ *  A media player (of type RTSMediaPlayerController) manages the playback of a media from a file or a network stream.
  *  You can incorporate a media player’s view into a view hierarchy owned by your app, or use a RTSMediaPlayerViewController
  *  object to manage the presentation for you.
  *
  *  The media player controller posts several notifications, see RTSMediaPlayerConstants.h
  *
  *  Errors are handled through the `RTSMediaPlayerPlaybackDidFailNotification` notification. There are two possible
- *  source of errors: either the error comes from the dataSource (see `RTSMediaPlayerControllerDataSource`) or from 
+ *  source of errors: either the error comes from the dataSource (see `RTSMediaPlayerControllerDataSource`) or from
  *  the network (playback error).
  *
  *  The media player controller manages its overlays visibility. See the `overlayViews` property.
@@ -36,12 +36,12 @@
  */
 
 /**
-*  Returns a RTSMediaPlayerController object initialized with the media at the specified URL.
-*
-*  @param contentURL The location of the media file. This file must be located either in your app directory or on a remote server.
-*
-*  @return A media player controller
-*/
+ *  Returns a RTSMediaPlayerController object initialized with the media at the specified URL.
+ *
+ *  @param contentURL The location of the media file. This file must be located either in your app directory or on a remote server.
+ *
+ *  @return A media player controller
+ */
 - (instancetype) initWithContentURL:(NSURL *)contentURL OS_NONNULL_ALL;
 
 /**
@@ -78,7 +78,7 @@
  *
  *  @discussion This property contains the view used for presenting the media content. To display the view into your own
  *  view hierarchy, use the `attachPlayerToView:` method.
- *  This view has two gesture recognziers: a single tap gesture recognizer and a double tap gesture recognizer which 
+ *  This view has two gesture recognziers: a single tap gesture recognizer and a double tap gesture recognizer which
  *  respectively toggle overlays visibility and toggle the video aspect between `AVLayerVideoGravityResizeAspectFill`
  *  and `AVLayerVideoGravityResizeAspect`.
  *  If you want to handle taps yourself, you can disable these gesture recognizers and add your own gesture recognizer.
@@ -88,7 +88,7 @@
 @property(readonly) UIView *view;
 
 /**
- *  Attach the player view into specified container view with default autoresizing mask. The player view will have the 
+ *  Attach the player view into specified container view with default autoresizing mask. The player view will have the
  *  same frame as its `containerView`
  *
  *  @param containerView The parent view in hierarchy what will contains the player layer
@@ -107,12 +107,12 @@
 @property (weak) IBOutlet id<RTSMediaPlayerControllerDataSource> dataSource;
 
 /**
- *  The identifier of the media currently attached to the player. You can use this identifier to identify the media through 
+ *  The identifier of the media currently attached to the player. You can use this identifier to identify the media through
  *  notifications
  *
  *  @see initWithContentIdentifier:dataSource:
  */
-@property (readonly, copy) NSString *identifier;
+@property (readonly, copy, readonly) NSString *identifier;
 
 /**
  *  -------------------
@@ -121,7 +121,7 @@
  */
 
 /**
- *  View on which user activity is detected (to prevent the UI overlays from being automatically hidden, see 'overlayViews' and 
+ *  View on which user activity is detected (to prevent the UI overlays from being automatically hidden, see 'overlayViews' and
  *  'overlayViewsHidingDelay')
  */
 @property (weak) IBOutlet UIView *activityView;
