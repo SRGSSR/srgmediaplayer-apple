@@ -21,6 +21,11 @@
  */
 
 /**
+ *  Returns the current playback state of the media player.
+ */
+@property (readonly) RTSMediaPlaybackState playbackState;
+
+/**
  *  Prepare to play
  */
 - (void)prepareToPlay;
@@ -70,16 +75,19 @@
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
 
 /**
- *  Returns the current playback state of the media player.
- */
-@property (readonly) RTSMediaPlaybackState playbackState;
-
-/**
  *  Play at the specific time
  *
  *  @param time time
  */
 - (void)playAtTime:(CMTime)time;
+
+/**
+ *  Prepare to play the media specified with its identifier at given time.
+ *
+ *  @param identifier the identifier of the media to be played.
+ *  @param time time
+ */
+- (void)playIdentifier:(NSString *)identifier atTime:(CMTime)time;
 
 /**
  *  ------------------------------------
@@ -120,13 +128,13 @@
 
 /**
  *  Register a block for periodical execution. Unlike usual AVPlayer time observers, such observers not only run during playback, but
- *  also when paused. This makes such observers very helpful when UI must be updated continously, even when playback is paused, e.g. 
+ *  also when paused. This makes such observers very helpful when UI must be updated continously, even when playback is paused, e.g.
  *  in the case of DVR streams
  *
  *  @param interval Time interval between block executions
  *  @param queue    The serial queue onto which block should be enqueued (main queue if NULL)
  *  @param block	The block to be periodically executed
- * 
+ *
  *  @discussion There is no need to KVO-observe the presence or not of the AVPlayer instance before registration. You can register
  *              time observers earlier if needed
  *
