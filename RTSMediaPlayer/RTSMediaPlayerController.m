@@ -132,11 +132,10 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	
 	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
 	[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeDefault error:nil];
-
-	[self.view removeFromSuperview];
-	[self.activityView removeGestureRecognizer:self.activityGestureRecognizer];
 	
-	self.playerView.player = nil;
+	[_view removeFromSuperview];
+	[_activityView removeGestureRecognizer:_activityGestureRecognizer];
+	
 	self.player = nil;
 }
 
