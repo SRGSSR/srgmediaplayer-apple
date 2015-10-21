@@ -24,7 +24,7 @@
  *  segments need to be retrieved, call 'reloadSegementsForIdentifier:completionHandler:'
  *
  *  When controlling playback for a media with segments, call RTSMediaPlayback methods on the segment controller. For
- *  convenience, you can readily display segments as a timeline (see 'RTSSegmentedTimelineView') and / or on top of a 
+ *  convenience, you can readily display segments as a timeline (see 'RTSSegmentedTimelineView') and / or on top of a
  *  slider (see 'RTSTimelineSlider').
  */
 @interface RTSMediaSegmentsController : NSObject <RTSMediaPlayback>
@@ -112,7 +112,7 @@
  *  @param index          The index of the last contiguous segment that is blocked. It can be equal to the current index.
  *  @param flexibilityGap A small gap (say ~ 0.1 sec) used for some flexbility for checking contiguity between segment times.
  *
- *  @return The index of the last contiguous segment. Can be equal to index. Playback should restart at end of the visible 
+ *  @return The index of the last contiguous segment. Can be equal to index. Playback should restart at end of the visible
  *  segment at that index. If there is no more segments and no more playable content, returns NSNotFound;
  */
 - (NSInteger)indexOfLastContiguousBlockedSegmentAfterIndex:(NSUInteger)index withFlexibilityGap:(NSTimeInterval)flexibilityGap;

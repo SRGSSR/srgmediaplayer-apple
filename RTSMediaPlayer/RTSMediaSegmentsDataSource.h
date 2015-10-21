@@ -11,7 +11,7 @@
 @protocol RTSMediaSegment;
 
 // Block signatures
-typedef void (^RTSMediaSegmentsCompletionHandler)(id<RTSMediaSegment> fullLength, NSArray *segments, NSError *error);
+typedef void (^RTSMediaSegmentsCompletionHandler)(NSArray *segments, NSError *error);
 
 /**
  * Protocol describing how a media segments controller receives the segment information it requires
@@ -23,11 +23,11 @@ typedef void (^RTSMediaSegmentsCompletionHandler)(id<RTSMediaSegment> fullLength
  *
  *  @param controller        The segments controller making the request
  *  @param identifier        The identifier for which segments must be retrieved
- *  @param completionHandler The block which the implementation must call to return segments and full-length information 
+ *  @param completionHandler The block which the implementation must call to return segments and full-length information
  *                           to the controller, or an error if it could not be retrieved
  */
 - (void)segmentsController:(RTSMediaSegmentsController *)controller
-	 segmentsForIdentifier:(NSString *)identifier
-	 withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler;
+     segmentsForIdentifier:(NSString *)identifier
+     withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler;
 
 @end

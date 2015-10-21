@@ -8,11 +8,21 @@
 #import <Foundation/Foundation.h>
 
 /**
- *  Protocol formally describing a media segment. A class describing a segment must conform to this protocol and implement 
+ *  Protocol formally describing a media segment. A class describing a segment must conform to this protocol and implement
  *  the required methods appropriately. A segment class will in general contain more information (e.g. segment title, thumbnail
  *  URL, etc.), but is not required to
  */
 @protocol RTSMediaSegment <NSObject>
+
+/**
+ *  Parent segment.
+ */
+@property (nonatomic, readonly, weak) id<RTSMediaSegment> parent;
+
+/**
+ *  Media Segment Identifier
+ */
+@property (nonatomic, readonly) NSString *segmentIdentifier; // chiote
 
 /**
  *  Segment start and end times (might be identical)
