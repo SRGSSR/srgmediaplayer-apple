@@ -683,56 +683,66 @@
 	if ([identifier isEqualToString:@"segment"])
 	{
 		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
-		completionHandler(fullLength, @[segment], nil);
+		segment.parent = fullLength;
+		completionHandler(@[segment], nil);
 	}
 	else if ([identifier isEqualToString:@"blocked_segment"])
 	{
 		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		segment.blocked = YES;
-		completionHandler(fullLength, @[segment], nil);
+		segment.parent = fullLength;
+		completionHandler(@[segment], nil);
 	}
 	else if ([identifier isEqualToString:@"hidden_segment"])
 	{
 		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		segment.visible = NO;
-		completionHandler(fullLength, @[segment], nil);
+		segment.parent = fullLength;
+		completionHandler(@[segment], nil);
 	}
 	else if ([identifier isEqualToString:@"hidden_blocked_segment"])
 	{
 		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		segment.blocked = YES;
 		segment.visible = NO;
-		completionHandler(fullLength, @[segment], nil);
+		segment.parent = fullLength;
+		completionHandler(@[segment], nil);
 	}
 	else if ([identifier isEqualToString:@"segment_at_start"])
 	{
 		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
-		completionHandler(fullLength, @[segment], nil);
+		segment.parent = fullLength;
+		completionHandler(@[segment], nil);
 	}
 	else if ([identifier isEqualToString:@"blocked_segment_at_start"])
 	{
 		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
 		segment.blocked = YES;
-		completionHandler(fullLength, @[segment], nil);
+		segment.parent = fullLength;
+		completionHandler(@[segment], nil);
 	}
 	else if ([identifier isEqualToString:@"hidden_segment_at_start"])
 	{
 		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
 		segment.visible = NO;
-		completionHandler(fullLength, @[segment], nil);
+		segment.parent = fullLength;
+		completionHandler(@[segment], nil);
 	}
 	else if ([identifier isEqualToString:@"hidden_blocked_segment_at_start"])
 	{
 		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
 		segment.blocked = YES;
 		segment.visible = NO;
-		completionHandler(fullLength, @[segment], nil);
+		segment.parent = fullLength;
+		completionHandler(@[segment], nil);
 	}
 	else if ([identifier isEqualToString:@"consecutive_segments"])
 	{
 		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
-		completionHandler(fullLength, @[segment1, segment2], nil);
+		segment1.parent = fullLength;
+		segment2.parent = fullLength;
+		completionHandler(@[segment1, segment2], nil);
 	}
 	else if ([identifier isEqualToString:@"consecutive_blocked_segments"])
 	{
@@ -740,7 +750,9 @@
 		segment1.blocked = YES;
 		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment2.blocked = YES;
-		completionHandler(fullLength, @[segment1, segment2], nil);
+		segment1.parent = fullLength;
+		segment2.parent = fullLength;
+		completionHandler(@[segment1, segment2], nil);
 	}
 	else if ([identifier isEqualToString:@"consecutive_blocked_segments_at_start"])
 	{
@@ -748,19 +760,23 @@
 		segment1.blocked = YES;
 		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(3., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment2.blocked = YES;
-		completionHandler(fullLength, @[segment1, segment2], nil);
+		segment1.parent = fullLength;
+		segment2.parent = fullLength;
+		completionHandler(@[segment1, segment2], nil);
 	}
 	else if ([identifier isEqualToString:@"segment_transition_into_blocked_segment"])
 	{
 		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment2.blocked = YES;
-		completionHandler(fullLength, @[segment1, segment2], nil);
+		segment1.parent = fullLength;
+		segment2.parent = fullLength;
+		completionHandler(@[segment1, segment2], nil);
 	}
 	else
 	{
 		NSError *error = [NSError errorWithDomain:@"ch.rts.RTSMediaPlayer-tests" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"No segment are available" }];
-		completionHandler(nil, nil, error);
+		completionHandler(nil, error);
 	}
 }
 

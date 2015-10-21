@@ -13,6 +13,9 @@
 
 @property (nonatomic, copy) NSString *name;
 
+@property (nonatomic, weak) id<RTSMediaSegment> parent;
+@property (nonatomic) NSString *segmentIdentifier; 
+
 @property (nonatomic, getter=isBlocked) BOOL blocked;
 @property (nonatomic, getter=isVisible) BOOL visible;
 
