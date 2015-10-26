@@ -15,9 +15,9 @@
 @protocol RTSMediaSegment <NSObject>
 
 /**
- *  Parent segment.
+ *  Is Segment A Full Length
  */
-@property (nonatomic, readonly, weak) id<RTSMediaSegment> parent;
+@property (nonatomic, readonly) BOOL isFullLength;
 
 /**
  *  Media Segment Identifier

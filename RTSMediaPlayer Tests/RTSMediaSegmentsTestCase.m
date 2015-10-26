@@ -75,7 +75,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
 		
@@ -87,7 +87,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
@@ -113,7 +113,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		
 		return YES;
 	}];
@@ -123,7 +123,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		
 		return YES;
@@ -150,7 +150,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
 		
@@ -162,7 +162,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
@@ -188,7 +188,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		
 		return YES;
 	}];
@@ -198,7 +198,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		
 		return YES;
@@ -226,7 +226,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
 		
@@ -238,7 +238,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
@@ -264,7 +264,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		
 		return YES;
 	}];
@@ -274,7 +274,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		
 		return YES;
@@ -301,7 +301,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
 		
@@ -313,7 +313,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
@@ -339,7 +339,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		
 		return YES;
 	}];
@@ -349,7 +349,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		
 		return YES;
@@ -373,7 +373,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment1");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment1");
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
 		
@@ -385,8 +385,8 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment1");
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment2");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment1");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment2");
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
 		
@@ -412,7 +412,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment1");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment1");
 		
 		return YES;
 	}];
@@ -422,7 +422,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment1");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment1");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		
 		return YES;
@@ -450,7 +450,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment1");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment1");
 		
 		return YES;
 	}];
@@ -460,7 +460,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment1");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment1");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		
 		return YES;
@@ -488,7 +488,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment1");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment1");
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
 		
@@ -500,7 +500,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment1");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment1");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
@@ -514,7 +514,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment2");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment2");
 		
 		return YES;
 	}];
@@ -524,7 +524,7 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment2");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment2");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		
 		return YES;
@@ -551,14 +551,14 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertTrue([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
 		
 		return YES;
 	}];
 	
-	[self.mediaSegmentsController playVisibleSegmentAtIndex:0];
+	[self.mediaSegmentsController playSegment:[self.mediaSegmentsController.visibleSegments firstObject]];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
@@ -578,14 +578,14 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
 		XCTAssertFalse([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
 		
 		return YES;
 	}];
 	
-	[self.mediaSegmentsController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
+	[self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
@@ -605,7 +605,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		
 		return YES;
 	}];
@@ -616,13 +616,13 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		
 		return YES;
 	}];
 	
-	[self.mediaSegmentsController playVisibleSegmentAtIndex:0];
+	[self.mediaSegmentsController playSegment:[self.mediaSegmentsController.visibleSegments firstObject]];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
@@ -641,7 +641,7 @@
 		}
 		
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
 		
 		return YES;
 	}];
@@ -652,13 +652,13 @@
 			return NO;
 		}
 		
-		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] segmentIdentifier], @"segment");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
 		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey]);
 		
 		return YES;
 	}];
 	
-	[self.mediaSegmentsController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
+	[self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
@@ -676,102 +676,103 @@
 
 #pragma mark - RTSMediaSegmentsDataSource protocol
 
-- (void) segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
+- (void)segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
-	Segment *fullLength = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+	Segment *fullLength = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.)) fullLength:YES];
 	fullLength.visible = NO;
+	fullLength.name = @"fullLength";
 	
 	if ([identifier isEqualToString:@"fullLength_with_segment"])
 	{
-		Segment *segment = [[Segment alloc] initWithIdentifier:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
-		segment.parent = fullLength;
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
+		segment.name = @"segment";
 		completionHandler(@[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_blocked_segment"])
 	{
-		Segment *segment = [[Segment alloc] initWithIdentifier:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
 		segment.blocked = YES;
-		segment.parent = fullLength;
+		segment.name = @"segment";
 		completionHandler(@[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_hidden_segment"])
 	{
-		Segment *segment = [[Segment alloc] initWithIdentifier:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
 		segment.visible = NO;
-		segment.parent = fullLength;
+		segment.name = @"segment";
 		completionHandler(@[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_hidden_blocked_segment"])
 	{
-		Segment *segment = [[Segment alloc] initWithIdentifier:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
 		segment.blocked = YES;
 		segment.visible = NO;
-		segment.parent = fullLength;
+		segment.name = @"segment";
 		completionHandler(@[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_segment_at_start"])
 	{
-		Segment *segment = [[Segment alloc] initWithIdentifier:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
-		segment.parent = fullLength;
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
+		segment.name = @"segment";
 		completionHandler(@[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_blocked_segment_at_start"])
 	{
-		Segment *segment = [[Segment alloc] initWithIdentifier:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
 		segment.blocked = YES;
-		segment.parent = fullLength;
+		segment.name = @"segment";
 		completionHandler(@[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_hidden_segment_at_start"])
 	{
-		Segment *segment = [[Segment alloc] initWithIdentifier:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
 		segment.visible = NO;
-		segment.parent = fullLength;
+		segment.name = @"segment";
 		completionHandler(@[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_hidden_blocked_segment_at_start"])
 	{
-		Segment *segment = [[Segment alloc] initWithIdentifier:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
 		segment.blocked = YES;
 		segment.visible = NO;
-		segment.parent = fullLength;
+		segment.name = @"segment";
 		completionHandler(@[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_consecutive_segments"])
 	{
-		Segment *segment1 = [[Segment alloc] initWithIdentifier:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
-		Segment *segment2 = [[Segment alloc] initWithIdentifier:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
-		segment1.parent = fullLength;
-		segment2.parent = fullLength;
+		Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
+		Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.)) fullLength:NO];
+		segment1.name = @"segment1";
+		segment2.name = @"segment2";
 		completionHandler(@[fullLength, segment1, segment2], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_consecutive_blocked_segments"])
 	{
-		Segment *segment1 = [[Segment alloc] initWithIdentifier:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
+		Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.)) fullLength:NO];
 		segment1.blocked = YES;
-		Segment *segment2 = [[Segment alloc] initWithIdentifier:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment2.blocked = YES;
-		segment1.parent = fullLength;
-		segment2.parent = fullLength;
+		segment1.name = @"segment1";
+		segment2.name = @"segment2";
 		completionHandler(@[fullLength, segment1, segment2], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_consecutive_blocked_segments_at_start"])
 	{
-		Segment *segment1 = [[Segment alloc] initWithIdentifier:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., 1.), CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
+		Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(3., 1.), CMTimeMakeWithSeconds(4., 1.)) fullLength:NO];
 		segment1.blocked = YES;
-		Segment *segment2 = [[Segment alloc] initWithIdentifier:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(3., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment2.blocked = YES;
-		segment1.parent = fullLength;
-		segment2.parent = fullLength;
+		segment1.name = @"segment1";
+		segment2.name = @"segment2";
 		completionHandler(@[fullLength, segment1, segment2], nil);
 	}
 	else if ([identifier isEqualToString:@"fullLength_with_segment_transition_into_blocked_segment"])
 	{
-		Segment *segment1 = [[Segment alloc] initWithIdentifier:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
-		Segment *segment2 = [[Segment alloc] initWithIdentifier:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
+		Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.)) fullLength:NO];
+		Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.)) fullLength:NO];
 		segment2.blocked = YES;
-		segment1.parent = fullLength;
-		segment2.parent = fullLength;
+		segment1.name = @"segment1";
+		segment2.name = @"segment2";
 		completionHandler(@[fullLength, segment1, segment2], nil);
 	}
 	else
