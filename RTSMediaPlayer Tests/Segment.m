@@ -16,12 +16,12 @@
 
 #pragma mark - Object lifecycle
 
-- (instancetype)initWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
+- (instancetype)initWithIdentifier:(NSString *)identifier timeRange:(CMTimeRange)timeRange
 {
 	if (self = [super init])
 	{
 		self.timeRange = timeRange;
-		self.name = name;
+		self.segmentIdentifier = identifier;
 		
 		self.blocked = NO;
 		self.visible = YES;
