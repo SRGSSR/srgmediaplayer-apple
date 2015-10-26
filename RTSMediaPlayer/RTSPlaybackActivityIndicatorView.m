@@ -27,6 +27,13 @@ static void commonInit(RTSPlaybackActivityIndicatorView *self);
 	return self;
 }
 
+- (void)setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+{
+	_mediaPlayerController = mediaPlayerController;
+	
+	[self updateWithMediaPlayerController:mediaPlayerController];
+}
+
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -39,9 +46,14 @@ static void commonInit(RTSPlaybackActivityIndicatorView *self);
 		return;
 	}
 	
-	BOOL visible = (controller.playbackState == RTSMediaPlaybackStatePreparing ||
-					controller.playbackState == RTSMediaPlaybackStateStalled ||
-					controller.playbackState == RTSMediaPlaybackStateSeeking);
+	[self updateWithMediaPlayerController:controller];
+}
+
+- (void)updateWithMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+{
+	BOOL visible = (mediaPlayerController.playbackState == RTSMediaPlaybackStatePreparing ||
+					mediaPlayerController.playbackState == RTSMediaPlaybackStateStalled ||
+					mediaPlayerController.playbackState == RTSMediaPlaybackStateSeeking);
 	
 	self.hidden = !visible;
 }

@@ -22,7 +22,6 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 @interface RTSMediaSegmentsController ()
 @property(nonatomic, strong) NSArray *segments;
 @property(nonatomic, strong) NSArray *episodes;
-@property(nonatomic, strong) NSDictionary *indexMapping;
 @property(nonatomic, strong) id playerTimeObserver;
 @property(nonatomic, weak) id<RTSMediaSegment> lastPlaybackPositionSegment;
 @end
@@ -57,25 +56,16 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         self.segments = [NSArray arrayWithArray:segments];
         
         NSMutableArray *episodes = [NSMutableArray array];
-        NSMutableDictionary *indexMapping = [NSMutableDictionary dictionary];
         
         __block NSInteger episodeIndex = -1;
         [self.segments enumerateObjectsUsingBlock:^(id<RTSMediaSegment>segment, NSUInteger idx, BOOL *stop) {
             if ([segment isVisible]) {
                 episodeIndex ++;
-                [indexMapping setObject:@(episodeIndex) forKey:@(idx)];
                 [episodes addObject:segment];
-            }
-            else {
-                [indexMapping setObject:@(NSNotFound) forKey:@(idx)];
             }
         }];
         
         self.episodes = [NSArray arrayWithArray:episodes]; // Ensure there is always an array, even if it is empty.
-        self.indexMapping = [indexMapping copy];
-        
-        NSAssert(self.indexMapping.count == self.segments.count,
-                 @"One must have the same number of index for mapping as we have segments.");
         
         [self addBlockingTimeObserver];
         
@@ -107,9 +97,13 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         
         @strongify(self);
         NSUInteger secondaryIndex;
-        NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:&secondaryIndex];
+        NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:&secondaryIndex onlyVisible:NO];
         id<RTSMediaSegment> currentSegment = (index < self.segments.count) ? self.segments[index] : nil;
         BOOL isTimeBlocked = [self isTimeBlocked:time];
+        
+//        NSLog(@"Playing %@ time %.2fs at index %@ (secondary: %@). Segment last: %@, current: %@)", (isTimeBlocked)? @"blocked" : @"",
+//                               CMTimeGetSeconds(time), @(index), @(secondaryIndex), self.lastPlaybackPositionSegment, currentSegment);
+        
         
         if (self.lastPlaybackPositionSegment != currentSegment) {
             NSDictionary *userInfo = nil;
@@ -132,8 +126,8 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
             }
             
             // Immediately reseting the property after it has been used.
-			self.lastPlaybackPositionSegment = currentSegment;
-			
+            self.lastPlaybackPositionSegment = currentSegment;
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
                                                                 object:self
                                                               userInfo:userInfo];
@@ -200,17 +194,16 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 - (BOOL)isTimeBlocked:(CMTime)time
 {
     NSUInteger secondaryIndex;
-    NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:&secondaryIndex];
+    NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:&secondaryIndex onlyVisible:NO];
     return [self isSegmentBlockedAtIndex:index] && [self isSegmentBlockedAtIndex:secondaryIndex];
 }
 
 - (NSUInteger)indexOfVisibleSegmentForTime:(CMTime)time
 {
-    NSUInteger index = [self indexOfSegmentForTime:time secondaryIndex:NULL];
-    return [self indexOfVisibleSegmentForSegmentIndex:index];
+    return [self indexOfSegmentForTime:time secondaryIndex:NULL onlyVisible:YES];
 }
 
-- (NSUInteger)indexOfSegmentForTime:(CMTime)time secondaryIndex:(NSUInteger *)secondaryIndex
+- (NSUInteger)indexOfSegmentForTime:(CMTime)time secondaryIndex:(NSUInteger *)secondaryIndex onlyVisible:(BOOL)onlyVisible
 {
     CMTime auxTime = CMTimeAdd(time, CMTimeMakeWithSeconds(RTSMediaPlaybackTickInterval, NSEC_PER_SEC));
     
@@ -220,7 +213,8 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     __block NSUInteger result = NSNotFound;
     __block NSUInteger secondaryResult = NSNotFound;
     
-    [self.segments enumerateObjectsUsingBlock:^(id<RTSMediaSegment> segment, NSUInteger idx, BOOL *stop) {
+    NSArray *segments = (onlyVisible) ? self.visibleSegments : self.segments;
+    [segments enumerateObjectsUsingBlock:^(id<RTSMediaSegment> segment, NSUInteger idx, BOOL *stop) {
         if (CMTimeRangeContainsTime(segment.timeRange, time)) {
             result = idx;
         }
@@ -252,14 +246,6 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 - (NSArray *)visibleSegments
 {
     return [NSArray arrayWithArray:self.episodes];
-}
-
-- (NSUInteger)indexOfVisibleSegmentForSegmentIndex:(NSUInteger)segmentIndex
-{
-    if (segmentIndex == NSNotFound || self.segments.count == 0) {
-        return NSNotFound;
-    }
-    return [[self.indexMapping objectForKey:@(segmentIndex)] unsignedIntegerValue];
 }
 
 - (BOOL)isSegmentBlockedAtIndex:(NSUInteger)index
@@ -332,11 +318,10 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 - (NSInteger)currentVisibleSegmentIndex
 {
-    NSUInteger currentSegment = [self indexOfSegmentForTime:self.playerController.player.currentTime secondaryIndex:NULL];
-    if (currentSegment == NSNotFound) {
-        return -1;
-    }
-    NSUInteger currentVisibleSegment = [self indexOfVisibleSegmentForSegmentIndex:currentSegment];
+    NSUInteger currentVisibleSegment = [self indexOfSegmentForTime:self.playerController.player.currentTime
+                                                    secondaryIndex:NULL
+                                                       onlyVisible:YES];
+    
     if (currentVisibleSegment == NSNotFound) {
         return -1;
     }
@@ -345,7 +330,10 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 - (NSInteger)currentSegmentIndex
 {
-    NSUInteger currentSegment = [self indexOfSegmentForTime:self.playerController.player.currentTime secondaryIndex:NULL];
+    NSUInteger currentSegment = [self indexOfSegmentForTime:self.playerController.player.currentTime
+                                             secondaryIndex:NULL
+                                                onlyVisible:NO];
+    
     if (currentSegment == NSNotFound) {
         return -1;
     }
@@ -367,9 +355,9 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     
     if (currentSegment == segment ||
         currentSegment == [segment parent] ||
-        [currentSegment parent] == segment ||
-        [currentSegment parent] == [segment parent])
+        [currentSegment parent] == segment)
     {
+        // Do not test [currentSegment parent] == [segment parent], as it makes no sense.
         [self seekToStartSegment:segment];
     }
     else {
@@ -462,7 +450,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         self.playerController.playbackState == RTSMediaPlaybackStateSeeking &&
         [self isTimeBlocked:time])
     {
-        NSInteger index = [self indexOfSegmentForTime:time secondaryIndex:NULL];
+        NSInteger index = [self indexOfSegmentForTime:time secondaryIndex:NULL onlyVisible:NO];
         
         NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
                                               RTSMediaPlaybackSegmentChangeSegmentInfoKey: self.segments[index]};

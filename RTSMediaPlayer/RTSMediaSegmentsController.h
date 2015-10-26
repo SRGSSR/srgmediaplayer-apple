@@ -76,15 +76,6 @@
 - (NSArray *)visibleSegments;
 
 /**
- *  For each segment index, one must have a given 'visible segment' index.
- *
- *  @param segmentIndex The index of the segment.
- *
- *  @return The index of the episodes corresponding to the provided segment index.
- */
-- (NSUInteger)indexOfVisibleSegmentForSegmentIndex:(NSUInteger)segmentIndex;
-
-/**
  *  Return the index of the visible segment for a given time. Returns NSNotFound if time corresponds to no visible segment.
  *
  *  @param time The time to consider
