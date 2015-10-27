@@ -31,7 +31,7 @@
 /**
  *  The playback controller attached to the slider
  */
-@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;
+@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 /**
  *  The delegate receiving slider events
