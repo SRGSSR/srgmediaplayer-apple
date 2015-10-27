@@ -22,7 +22,6 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 @interface RTSMediaSegmentsController ()
 @property(nonatomic, strong) NSArray *segments;
 @property(nonatomic, strong) id playerTimeObserver;
-@property(nonatomic, weak) id<RTSMediaSegment> segmentBeingBlocked;
 @property(nonatomic, weak) id<RTSMediaSegment> lastPlaybackPositionSegment;
 @end
 
@@ -45,7 +44,6 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     [self removeBlockingTimeObserver];
 	
     self.lastPlaybackPositionSegment = nil;
-	self.segmentBeingBlocked = nil;
     
     RTSMediaSegmentsCompletionHandler reloadCompletionBlock = ^(NSArray *segments, NSError *error) {
         if (error) {
@@ -91,7 +89,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         
         __block id<RTSMediaSegment> currentSegment = nil;
         [self.segments enumerateObjectsUsingBlock:^(id<RTSMediaSegment> segment, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([[segment segmentIdentifier] isEqualToString:self.playerController.identifier] && ![segment isFullLength]) {
+            if ([segment.segmentIdentifier isEqualToString:self.playerController.identifier] && !segment.fullLength) {
 				if (CMTimeRangeContainsTime(segment.timeRange, time)) {
 					currentSegment = segment;
 					*stop = YES;
@@ -102,12 +100,12 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         if (self.lastPlaybackPositionSegment != currentSegment) {
 			NSDictionary *userInfo = nil;
 			
-			if (!currentSegment || (self.lastPlaybackPositionSegment && [currentSegment isBlocked])) {
+            if (!currentSegment || (self.lastPlaybackPositionSegment && currentSegment.blocked)) {
 				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentEnd),
 							 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionSegment,
 							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(NO)};
 			}
-			else if (currentSegment && !self.lastPlaybackPositionSegment && ![currentSegment isBlocked]) {
+			else if (currentSegment && !self.lastPlaybackPositionSegment && !currentSegment.blocked) {
 				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
 							 RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment,
 							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(NO)};
@@ -128,30 +126,26 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 			self.lastPlaybackPositionSegment = currentSegment;			
 		}
 		
-		if ([currentSegment isBlocked]) {
-			if (currentSegment == self.segmentBeingBlocked) {
-				NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingEnd),
-													  RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment};
-				
-				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
-																	object:self
-																  userInfo:userInfo];
-			}
-			else {
-				self.segmentBeingBlocked = currentSegment;
-				// The reason for blocking must be specified, and should actually be accessible from the segment object, IMHO.
-				
-				NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
-													  RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment};
-				
-				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
-																	object:self
-																  userInfo:userInfo];
-				
-				[self.playerController seekToTime:CMTimeRangeGetEnd([currentSegment timeRange]) completionHandler:^(BOOL finished) {
-					self.segmentBeingBlocked = nil;
-				}];
-			}
+        // Managing blocked segments
+		if (currentSegment.blocked) {
+            NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
+                                                  RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment};
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+                                                                object:self
+                                                              userInfo:userInfo];
+            
+            [self.playerController seekToTime:CMTimeRangeGetEnd(currentSegment.timeRange) completionHandler:^(BOOL finished) {
+                NSDictionary *userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingEnd),
+                                           RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionSegment};
+                [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+                                                                    object:self
+                                                                  userInfo:userInfo];
+                
+                self.lastPlaybackPositionSegment = nil;
+                
+                [self.playerController pause];
+            }];
 		}
 	};
 	
