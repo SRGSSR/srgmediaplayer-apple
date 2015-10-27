@@ -7,7 +7,6 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-#import <SRGMediaPlayer/RTSMediaPlayback.h>
 #import <SRGMediaPlayer/RTSMediaPlayerConstants.h>
 #import <SRGMediaPlayer/RTSMediaPlayerControllerDataSource.h>
 

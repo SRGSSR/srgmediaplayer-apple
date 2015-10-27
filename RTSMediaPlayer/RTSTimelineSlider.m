@@ -57,7 +57,7 @@
 {
 	[super drawRect:rect];
 	
-	CMTimeRange timeRange = [self.playbackController timeRange];
+	CMTimeRange timeRange = [self.playerController timeRange];
 	if (CMTIMERANGE_IS_EMPTY(timeRange))
 	{
 		return;
@@ -140,7 +140,7 @@
 	float value = self.minimumValue + (self.maximumValue - self.minimumValue) * xPos / CGRectGetWidth(self.bounds);
 	CMTime time = CMTimeMakeWithSeconds(value, NSEC_PER_SEC);
 	
-	[self.playbackController seekToTime:time completionHandler:nil];
+	[self.playerController seekToTime:time completionHandler:nil];
 }
 
 @end
