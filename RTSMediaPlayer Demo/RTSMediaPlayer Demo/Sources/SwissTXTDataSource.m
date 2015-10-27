@@ -59,7 +59,7 @@
 	[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
 		if (error)
 		{
-			completionHandler ? completionHandler(nil, nil, error) : nil;
+			completionHandler ? completionHandler(nil, error) : nil;
 			return;
 		}
 		
@@ -67,7 +67,7 @@
 		if (!responseObject || ![responseObject isKindOfClass:[NSArray class]])
 		{
 			NSError *parseError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotParseResponse userInfo:nil];
-			completionHandler ? completionHandler(nil, nil, parseError) : nil;
+			completionHandler ? completionHandler(nil, parseError) : nil;
 			return;
 		}
 		
@@ -86,7 +86,7 @@
 			}
 		}
 		
-		completionHandler ? completionHandler(nil, [NSArray arrayWithArray:segments], nil) : nil;
+		completionHandler ? completionHandler([NSArray arrayWithArray:segments], nil) : nil;
 	}];
 }
 

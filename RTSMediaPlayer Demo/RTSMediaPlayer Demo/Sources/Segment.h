@@ -21,6 +21,9 @@
 @property (nonatomic, readonly, copy) NSString *timestampString;
 
 // Default is NO
+@property (nonatomic, getter=isFullLength) BOOL fullLength;
+
+// Default is NO
 @property (nonatomic, getter=isBlocked) BOOL blocked;
 
 // Default is YES
