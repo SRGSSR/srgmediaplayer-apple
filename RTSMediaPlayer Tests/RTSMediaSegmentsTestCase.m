@@ -569,7 +569,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"segment"];
+	[self playIdentifier:@"fullLength_with_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
