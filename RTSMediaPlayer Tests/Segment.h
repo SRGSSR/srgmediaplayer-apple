@@ -11,8 +11,8 @@
 
 - (instancetype)initWithIdentifier:(NSString *)identifier timeRange:(CMTimeRange)timeRange fullLength:(BOOL)fullLength;
 
-@property (nonatomic) NSString *name;
-@property (nonatomic) NSString *segmentIdentifier;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *segmentIdentifier;
 @property (nonatomic) CMTimeRange timeRange;
 @property (nonatomic, getter=isFullLength) BOOL fullLength;
 @property (nonatomic, getter=isBlocked) BOOL blocked;
