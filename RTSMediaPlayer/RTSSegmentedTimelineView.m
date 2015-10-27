@@ -118,7 +118,7 @@ static void commonInit(RTSSegmentedTimelineView *self);
 {
 	id<RTSMediaSegment> segment = self.segmentsController.visibleSegments[indexPath.row];
 	[self scrollToSegment:segment animated:YES];
-    [self.segmentsController playSegment:segment];
+    [self.segmentsController playAtTime:segment.timeRange.start];
 }
 
 #pragma mark - UIScrollViewDelegate protocol

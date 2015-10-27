@@ -168,40 +168,13 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     return self.lastPlaybackPositionSegment;
 }
 
-- (void)playSegment:(id<RTSMediaSegment>)segment
+- (void)playAtTime:(CMTime)time
 {
-    // Do not return if segment == currentSegment as we may want to restart the same segment.
-    if (!segment || [segment isBlocked]) {
-        return;
-    }
-    
-    id<RTSMediaSegment> currentSegment = self.lastPlaybackPositionSegment;
-    
-    if ([[currentSegment segmentIdentifier] isEqualToString:[segment segmentIdentifier]]) {
-        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-        userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] = @(RTSMediaPlaybackSegmentStart);
-        userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] = segment;
-        userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] = @(YES); // <-- this is the reason for doing this here
-        
-        if (self.lastPlaybackPositionSegment) {
-            userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] = self.lastPlaybackPositionSegment;
+    [self.playerController seekToTime:time completionHandler:^(BOOL finished) {
+        if (finished) {
+            [self.playerController play];
         }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
-                                                            object:self
-                                                          userInfo:[userInfo copy]];
-        
-        self.lastPlaybackPositionSegment = segment;
-        
-        [self.playerController seekToTime:segment.timeRange.start completionHandler:^(BOOL finished) {
-            if (finished) {
-                [self.playerController play];
-            }
-        }];
-    }
-    else {
-        [self.playerController playIdentifier:[segment segmentIdentifier]];
-    }
+    }];    
 }
 
 @end

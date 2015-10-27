@@ -68,11 +68,10 @@
 - (id<RTSMediaSegment>)currentSegment;
 
 /**
- *  Asks the segments controller to seek to the visible segment at the given index. Does nothing if the segment
- *  is blocked.
+ *  Asks the segments controller to seek to the given time position in a user-triggered way
  *
- *  @param index The index of the visible segment to seek to.
+ *  @param time The time to seek to
  */
-- (void)playSegment:(id<RTSMediaSegment>)segment;
+- (void)playAtTime:(CMTime)time;
 
 @end
