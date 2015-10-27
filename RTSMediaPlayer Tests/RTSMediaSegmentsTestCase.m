@@ -536,7 +536,7 @@
 }
 
 // Expect a start event for the given segment, with YES for the user-driven information flag
-- (void) testPlayFirstSegment
+- (void) testUserTriggeredSegmentPlay
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
@@ -563,7 +563,7 @@
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
-// Expect a start event for the given segment, with NO for the user-driven information flag (set only when calling -playVisibleSegmentAtIndex:)
+// Expect a start event for the given segment, with NO for the user-driven information flag (set only when calling -playSegment:)
 - (void) testSeekIntoSegment
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
@@ -591,7 +591,7 @@
 }
 
 // Expect a seek
-- (void) testPlayBlockedSegmentAtIndex
+- (void) testUserTriggeredBlockedSegmentPlay
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
