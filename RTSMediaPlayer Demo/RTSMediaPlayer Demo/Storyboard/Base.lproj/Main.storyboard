@@ -267,77 +267,6 @@
             </objects>
             <point key="canvasLocation" x="-3151" y="3550"/>
         </scene>
-        <!--Demo Timeline Configuration View Controller-->
-        <scene sceneID="CAQ-yg-fp9">
-            <objects>
-                <viewController title="Timeshift demo" id="1fa-6n-Xub" userLabel="Demo Timeline Configuration View Controller" customClass="DemoTimelineConfigurationViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wdj-zp-axQ"/>
-                        <viewControllerLayoutGuide type="bottom" id="vR6-oB-dqw"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="z2I-jQ-GTQ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZBF-wo-9Iu">
-                                <rect key="frame" x="272" y="164" width="56" height="30"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="56" id="MBO-e6-JsY"/>
-                                    <constraint firstAttribute="height" constant="30" id="O2M-iR-96K"/>
-                                </constraints>
-                                <state key="normal" title="Play">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="eMv-Af-zLT" kind="presentation" identifier="play" id="eit-MQ-fpe"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C1l-pQ-v6Y">
-                                <rect key="frame" x="158" y="42" width="285" height="70"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Video identifier" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="Sa9-k5-5w1">
-                                        <rect key="frame" x="20" y="24" width="159" height="21"/>
-                                        <animations/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="265862" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VAf-Jy-QUi">
-                                        <rect key="frame" x="156" y="20" width="109" height="30"/>
-                                        <animations/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="1fa-6n-Xub" id="uCL-wK-9cq"/>
-                                        </connections>
-                                    </textField>
-                                </subviews>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="285" id="G6E-6P-QE5"/>
-                                    <constraint firstAttribute="height" constant="70" id="aGq-Ky-hLG"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="centerX" secondItem="C1l-pQ-v6Y" secondAttribute="centerX" constant="-0.5" id="AvU-3W-hu7"/>
-                            <constraint firstAttribute="centerX" secondItem="ZBF-wo-9Iu" secondAttribute="centerX" id="RTA-YD-Ucp"/>
-                            <constraint firstItem="ZBF-wo-9Iu" firstAttribute="top" secondItem="C1l-pQ-v6Y" secondAttribute="bottom" constant="52" id="sgI-Ec-bi3"/>
-                            <constraint firstItem="C1l-pQ-v6Y" firstAttribute="top" secondItem="wdj-zp-axQ" secondAttribute="bottom" constant="42" id="xfk-0K-39m"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="videoIdentifierTextField" destination="VAf-Jy-QUi" id="OVy-MU-DmM"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Cvb-Lm-wyr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="729" y="-170"/>
-        </scene>
         <!--Delegate-->
         <scene sceneID="jYJ-iy-ZlV">
             <objects>
@@ -397,7 +326,7 @@
                                         <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="delegate" destination="eMv-Af-zLT" id="bCX-bT-X5c"/>
-                                            <outlet property="playbackController" destination="maE-8W-Ll7" id="oBV-Sg-qIc"/>
+                                            <outlet property="mediaPlayerController" destination="z6L-aG-cvh" id="bvF-XO-hmY"/>
                                             <outlet property="segmentsController" destination="maE-8W-Ll7" id="zGf-Eq-sHf"/>
                                             <outlet property="timeLeftValueLabel" destination="MgY-Pv-rWN" id="6vf-GK-Exp"/>
                                             <outlet property="valueLabel" destination="yoy-j6-b9D" id="Xm1-Va-udZ"/>
@@ -664,7 +593,7 @@
                                         <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <outlet property="playbackController" destination="ZI3-uY-emW" id="ThG-lM-kET"/>
+                                            <outlet property="mediaPlayerController" destination="n7D-r2-MGc" id="gb8-mA-bEq"/>
                                             <outlet property="timeLeftValueLabel" destination="aEX-o9-gL3" id="MP7-1M-fDm"/>
                                             <outlet property="valueLabel" destination="h0O-aS-7v7" id="Bqx-Pa-Whc"/>
                                         </connections>
@@ -887,7 +816,7 @@
                                         <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="seek:" destination="Rig-pS-R3F" eventType="valueChanged" id="UVi-0o-ugr"/>
-                                            <outlet property="playbackController" destination="3Zc-fG-clj" id="X4d-lS-cFg"/>
+                                            <outlet property="mediaPlayerController" destination="3Zc-fG-clj" id="vQP-fK-kKZ"/>
                                             <outlet property="timeLeftValueLabel" destination="bG5-MD-y5n" id="OOV-tT-9gP"/>
                                             <outlet property="valueLabel" destination="OLR-A6-Sxi" id="0dI-Pb-Dss"/>
                                         </connections>
