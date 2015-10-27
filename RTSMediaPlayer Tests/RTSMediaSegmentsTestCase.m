@@ -559,7 +559,7 @@
 	}];
 	
 	id<RTSMediaSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
-	[self.mediaSegmentsController playAtTime:firstSegment.timeRange.start];
+	[self.mediaSegmentsController playSegment:firstSegment];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
@@ -624,7 +624,7 @@
 	}];
 	
 	id<RTSMediaSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
-	[self.mediaSegmentsController playAtTime:firstSegment.timeRange.start];
+	[self.mediaSegmentsController playSegment:firstSegment];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 

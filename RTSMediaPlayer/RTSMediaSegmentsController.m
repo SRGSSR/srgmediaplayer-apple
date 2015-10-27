@@ -173,14 +173,20 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     return self.lastPlaybackPositionSegment;
 }
 
-- (void)playAtTime:(CMTime)time
+- (void)playSegment:(id<RTSMediaSegment>)segment
 {
     _userTriggered = YES;
-    [self.playerController seekToTime:time completionHandler:^(BOOL finished) {
-        if (finished) {
-            [self.playerController play];
-        }
-    }];    
+    
+    if ([self.playerController.identifier isEqualToString:segment.segmentIdentifier]) {
+        [self.playerController seekToTime:segment.timeRange.start completionHandler:^(BOOL finished) {
+            if (finished) {
+                [self.playerController play];
+            }
+        }];
+    }
+    else {
+        [self.playerController playIdentifier:segment.segmentIdentifier];
+    }
 }
 
 @end

@@ -68,10 +68,10 @@
 - (id<RTSMediaSegment>)currentSegment;
 
 /**
- *  Asks the segments controller to seek to the given time position in a user-triggered way
+ *  Asks the segments controller to play the specified segment intentionally (= user-triggered)
  *
- *  @param time The time to seek to
+ *  @param time The segment to play
  */
-- (void)playAtTime:(CMTime)time;
+- (void)playSegment:(id<RTSMediaSegment>)segment;
 
 @end
