@@ -536,12 +536,12 @@
 }
 
 // Expect a start event for the given segment, with YES for the user-driven information flag
-- (void) testPlaySegmentAtIndex
+- (void) testPlayFirstSegment
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"segment"];
+	[self playIdentifier:@"fullLength_with_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -558,7 +558,8 @@
 		return YES;
 	}];
 	
-	[self.mediaSegmentsController playSegment:[self.mediaSegmentsController.visibleSegments firstObject]];
+	id<RTSMediaSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
+	[self.mediaSegmentsController playSegment:firstSegment];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
