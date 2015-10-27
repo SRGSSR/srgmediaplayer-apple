@@ -89,33 +89,33 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 		
 		// We assume that all logical segments of a full length have an identifier that is IDENTICAL to the fullLength's.
         
-        __block id<RTSMediaSegment> newSegment = nil;
+        __block id<RTSMediaSegment> currentSegment = nil;
         [self.segments enumerateObjectsUsingBlock:^(id<RTSMediaSegment> segment, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([[segment segmentIdentifier] isEqualToString:self.playerController.identifier] && ![segment isFullLength]) {
 				if (CMTimeRangeContainsTime(segment.timeRange, time)) {
-					newSegment = segment;
+					currentSegment = segment;
 					*stop = YES;
 				}
             }
         }];
         
-        if (self.lastPlaybackPositionSegment != newSegment) {
+        if (self.lastPlaybackPositionSegment != currentSegment) {
 			NSDictionary *userInfo = nil;
 			
-			if (!newSegment || (self.lastPlaybackPositionSegment && [newSegment isBlocked])) {
+			if (!currentSegment || (self.lastPlaybackPositionSegment && [currentSegment isBlocked])) {
 				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentEnd),
 							 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionSegment,
 							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(NO)};
 			}
-			else if (newSegment && !self.lastPlaybackPositionSegment && ![newSegment isBlocked]) {
+			else if (currentSegment && !self.lastPlaybackPositionSegment && ![currentSegment isBlocked]) {
 				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
-							 RTSMediaPlaybackSegmentChangeSegmentInfoKey: newSegment,
+							 RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment,
 							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(NO)};
 			}
-			else if (newSegment && self.lastPlaybackPositionSegment) {
+			else if (currentSegment && self.lastPlaybackPositionSegment) {
 				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
 							 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionSegment,
-							 RTSMediaPlaybackSegmentChangeSegmentInfoKey: newSegment,
+							 RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment,
 							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(NO)};
 			}
 			
@@ -125,30 +125,30 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 																  userInfo:userInfo];
 			}
 			
-			self.lastPlaybackPositionSegment = newSegment;			
+			self.lastPlaybackPositionSegment = currentSegment;			
 		}
 		
-		if ([newSegment isBlocked]) {
-			if (newSegment == self.segmentBeingBlocked) {
+		if ([currentSegment isBlocked]) {
+			if (currentSegment == self.segmentBeingBlocked) {
 				NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingEnd),
-													  RTSMediaPlaybackSegmentChangeSegmentInfoKey: newSegment};
+													  RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment};
 				
 				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
 																	object:self
 																  userInfo:userInfo];
 			}
 			else {
-				self.segmentBeingBlocked = newSegment;
+				self.segmentBeingBlocked = currentSegment;
 				// The reason for blocking must be specified, and should actually be accessible from the segment object, IMHO.
 				
 				NSDictionary *userInfo = userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
-													  RTSMediaPlaybackSegmentChangeSegmentInfoKey: newSegment};
+													  RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment};
 				
 				[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
 																	object:self
 																  userInfo:userInfo];
 				
-				[self.playerController seekToTime:CMTimeRangeGetEnd([newSegment timeRange]) completionHandler:^(BOOL finished) {
+				[self.playerController seekToTime:CMTimeRangeGetEnd([currentSegment timeRange]) completionHandler:^(BOOL finished) {
 					self.segmentBeingBlocked = nil;
 				}];
 			}
