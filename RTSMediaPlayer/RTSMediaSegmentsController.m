@@ -100,7 +100,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
             }
         }];
         
-        if (self.lastPlaybackPositionSegment != currentSegment) {
+        if (self.lastPlaybackPositionSegment != currentSegment || _userTriggered) {
 			NSDictionary *userInfo = nil;
 			
             if (!currentSegment || (self.lastPlaybackPositionSegment && currentSegment.blocked)) {
@@ -112,8 +112,6 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
 							 RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment,
 							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(_userTriggered)};
-                
-                _userTriggered = NO;
 			}
 			else if (currentSegment && self.lastPlaybackPositionSegment) {
 				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
@@ -127,7 +125,8 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 																	object:self
 																  userInfo:userInfo];
 			}
-			
+            
+            _userTriggered = NO;
 			self.lastPlaybackPositionSegment = currentSegment;			
 		}
 		
