@@ -195,16 +195,16 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 {
 	[self updateAppearanceWithTime:time];
 
-	// FIXME:
-#if 0
 	if (interactive) {
-		NSUInteger visibleSegmentIndex = [self.timelineView.segmentsController indexOfVisibleSegmentForTime:time];
-		if (visibleSegmentIndex != NSNotFound) {
-			id<RTSMediaSegment> segment = [[self.timelineView.segmentsController visibleSegments] objectAtIndex:visibleSegmentIndex];
+		NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<RTSMediaSegment>  _Nonnull segment, NSDictionary<NSString *,id> * _Nullable bindings) {
+			return [[segment segmentIdentifier] isEqualToString:self.mediaPlayerController.identifier]
+			&& CMTimeRangeContainsTime(segment.timeRange, time);
+		}];
+		id<RTSMediaSegment> segment = [[self.timelineView.segmentsController.visibleSegments filteredArrayUsingPredicate:predicate] firstObject];
+		if (segment) {
 			[self.timelineView scrollToSegment:segment animated:YES];
 		}		
 	}
-#endif
 }
 
 #pragma mark - RTSSegmentedTimelineViewDelegate protocol
