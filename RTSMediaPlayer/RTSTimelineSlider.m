@@ -57,7 +57,7 @@
 {
 	[super drawRect:rect];
 	
-	CMTimeRange timeRange = [self.playbackController timeRange];
+	CMTimeRange timeRange = [self.mediaPlayerController timeRange];
 	if (CMTIMERANGE_IS_EMPTY(timeRange))
 	{
 		return;
@@ -140,8 +140,7 @@
 	float value = self.minimumValue + (self.maximumValue - self.minimumValue) * xPos / CGRectGetWidth(self.bounds);
 	CMTime time = CMTimeMakeWithSeconds(value, NSEC_PER_SEC);
 	
-	// One must go through the segments controller.
-	[self.segmentsController seekToTime:time completionHandler:nil];
+	[self.mediaPlayerController seekToTime:time completionHandler:nil];
 }
 
 @end

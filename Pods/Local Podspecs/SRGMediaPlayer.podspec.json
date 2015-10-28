@@ -1,6 +1,6 @@
 {
   "name": "SRGMediaPlayer",
-  "version": "1.2.3",
+  "version": "1.4.0",
   "summary": "Shared media player for SRG mobile apps.",
   "homepage": "https://github.com/SRGSSR/SRGMediaPlayer-iOS",
   "authors": {
@@ -15,7 +15,7 @@
   "source": {
     "git": "https://github.com/SRGSSR/SRGMediaPlayer-iOS.git",
     "branch": "master",
-    "tag": "1.2.3"
+    "tag": "1.4.0"
   },
   "platforms": {
     "ios": "7.0"

@@ -6,7 +6,6 @@
 
 #import <CoreMedia/CoreMedia.h>
 #import <UIKit/UIKit.h>
-#import <SRGMediaPlayer/RTSMediaPlayback.h>
 
 // Forward declarations
 @class RTSMediaPlayerController;
@@ -32,7 +31,7 @@
 /**
  *  The playback controller attached to the slider
  */
-@property (nonatomic, weak) IBOutlet id<RTSMediaPlayback> playbackController;
+@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 /**
  *  The delegate receiving slider events

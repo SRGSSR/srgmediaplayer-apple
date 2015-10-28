@@ -23,6 +23,7 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 
 @property (nonatomic) CMTimeRange timeRange;
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *segmentIdentifier;
 
 @end
 
@@ -35,10 +36,14 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 	self = [super init];
 	if (self) {
 		self.timeRange = timeRange;
+		self.fullLength = NO;
 		self.blocked = NO;
 		self.visible = YES;
 		
 		self.title = title;
+		
+		// FIXME: Should be specified separately
+		self.segmentIdentifier = title;
 	}
 	return self;
 }
@@ -51,6 +56,12 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 - (instancetype) initWithStart:(NSTimeInterval)start duration:(NSTimeInterval)duration title:(NSString *)title
 {
 	return [self initWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(start, 1.), CMTimeMakeWithSeconds(duration, 1.)) title:title];
+}
+
+- (instancetype)init
+{
+	[self doesNotRecognizeSelector:_cmd];
+	return [self initWithTimeRange:kCMTimeRangeZero title:nil];
 }
 
 #pragma mark - Getters and setters
@@ -76,11 +87,12 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 
 - (NSString *) description
 {
-	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; blocked: %@; visible: %@>",
+	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; fullLength: %@; blocked: %@; visible: %@>",
 			[self class],
 			self,
 			@(CMTimeGetSeconds(self.timeRange.start)),
 			self.title,
+			self.fullLength ? @"YES" : @"NO",
 			self.blocked ? @"YES" : @"NO",
 			self.visible ? @"YES" : @"NO"];
 }

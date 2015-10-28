@@ -135,7 +135,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (CMTime) time
 {
-	CMTimeRange timeRange = self.playbackController.timeRange;
+	CMTimeRange timeRange = self.mediaPlayerController.timeRange;
 	if (CMTIMERANGE_IS_EMPTY(timeRange)) {
 		return kCMTimeZero;
 	}
@@ -151,13 +151,13 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	//  - We have a pure live feed, which is characterized by an empty range
 	//  - We have a timeshift feed, which is characterized by an indefinite player item duration, and whose slider knob is
 	//    dragged close to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance
-	return self.playbackController.streamType == RTSMediaStreamTypeLive
-		|| (self.playbackController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSMediaLiveTolerance));
+	return self.mediaPlayerController.streamType == RTSMediaStreamTypeLive
+		|| (self.mediaPlayerController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSMediaLiveTolerance));
 }
 
 - (void) updateTimeRangeLabels
 {
-	AVPlayerItem *playerItem = self.playbackController.playerItem;
+	AVPlayerItem *playerItem = self.mediaPlayerController.playerItem;
 	if (! playerItem || playerItem.status != AVPlayerItemStatusReadyToPlay) {
 		self.valueLabel.text = @"--:--";
 		self.timeLeftValueLabel.text = @"--:--";
@@ -202,8 +202,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	// First seek to the playback controller. Seeking where the media has been loaded is fast, which leads to
 	// annoying stuttering for audios. This is less annoying for videos since being able to see where we seek
 	// is valuable
-	if (self.playbackController.mediaType == RTSMediaTypeVideo) {
-		[self.playbackController seekToTime:time completionHandler:nil];
+	if (self.mediaPlayerController.mediaType == RTSMediaTypeVideo) {
+		[self.mediaPlayerController seekToTime:time completionHandler:nil];
 	}
 	
 	// Next, inform that we are sliding to other views.
@@ -218,7 +218,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	if ([self isDraggable]) {
-		[self.playbackController playAtTime:self.time];
+		[self.mediaPlayerController playAtTime:self.time];
 	}
 	
 	[super endTrackingWithTouch:touch withEvent:event];
@@ -285,7 +285,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetStrokeColorWithColor(context, self.maximumTrackTintColor.CGColor);
 	CGContextStrokePath(context);
 	
-	for (NSValue *value in self.playbackController.playerItem.loadedTimeRanges) {
+	for (NSValue *value in self.mediaPlayerController.playerItem.loadedTimeRanges) {
 		CMTimeRange timeRange = [value CMTimeRangeValue];
 		[self drawTimeRangeProgress:timeRange context:context];
 	}
@@ -295,7 +295,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	CGFloat lineWidth = 1.0f;
 	
-	CGFloat duration = CMTimeGetSeconds(self.playbackController.playerItem.duration);
+	CGFloat duration = CMTimeGetSeconds(self.mediaPlayerController.playerItem.duration);
 	if (isnan(duration))
 		return;
 	
@@ -356,17 +356,17 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	
 	if (window) {
 		@weakify(self)
-		self.periodicTimeObserver = [self.playbackController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+		self.periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 			@strongify(self)
 			
-			if (!self.isTracking && self.playbackController.playbackState != RTSMediaPlaybackStateSeeking)
+			if (!self.isTracking && self.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking)
 			{
-				CMTimeRange timeRange = [self.playbackController timeRange];
+				CMTimeRange timeRange = [self.mediaPlayerController timeRange];
 				if (!CMTIMERANGE_IS_EMPTY(timeRange) && !CMTIMERANGE_IS_INDEFINITE(timeRange) && !CMTIMERANGE_IS_INVALID(timeRange))
 				{
 					self.maximumValue = CMTimeGetSeconds(timeRange.duration);
 					
-					AVPlayerItem *playerItem = self.playbackController.playerItem;
+					AVPlayerItem *playerItem = self.mediaPlayerController.playerItem;
 					self.value = CMTimeGetSeconds(CMTimeSubtract(playerItem.currentTime, timeRange.start));
 				}
 				else
@@ -377,7 +377,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				
 				RTSMediaPlayerLogTrace(@"Range min = %@ (value = %@) --- Current = %@ (value = %@) --- Range max = %@ (value = %@)",
 									   @(CMTimeGetSeconds(timeRange.start)), @(self.minimumValue),
-									   @(CMTimeGetSeconds(self.playbackController.playerItem.currentTime)), @(self.value),
+									   @(CMTimeGetSeconds(self.mediaPlayerController.playerItem.currentTime)), @(self.value),
 									   @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange))), @(self.maximumValue));
 				
 				[self.slidingDelegate timeSlider:self
@@ -391,7 +391,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		}];
 	}
 	else {
-		[self.playbackController removePeriodicTimeObserver:self.periodicTimeObserver];
+		[self.mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
 	}
 }
 

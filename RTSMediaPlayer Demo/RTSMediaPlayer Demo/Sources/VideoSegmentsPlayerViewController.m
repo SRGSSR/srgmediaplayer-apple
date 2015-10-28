@@ -194,7 +194,9 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 - (void)timeSlider:(RTSTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(CGFloat)value interactive:(BOOL)interactive
 {
 	[self updateAppearanceWithTime:time];
-	
+
+	// FIXME:
+#if 0
 	if (interactive) {
 		NSUInteger visibleSegmentIndex = [self.timelineView.segmentsController indexOfVisibleSegmentForTime:time];
 		if (visibleSegmentIndex != NSNotFound) {
@@ -202,6 +204,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 			[self.timelineView scrollToSegment:segment animated:YES];
 		}		
 	}
+#endif
 }
 
 #pragma mark - RTSSegmentedTimelineViewDelegate protocol

@@ -15,14 +15,14 @@
 @protocol RTSMediaSegment <NSObject>
 
 /**
- *  Parent segment.
+ *  Is Segment A Full Length
  */
-@property (nonatomic, readonly, weak) id<RTSMediaSegment> parent;
+@property (nonatomic, readonly, getter=isFullLength) BOOL fullLength;
 
 /**
  *  Media Segment Identifier
  */
-@property (nonatomic, readonly) NSString *segmentIdentifier; // chiote
+@property (nonatomic, readonly, copy) NSString *segmentIdentifier; // chiote
 
 /**
  *  Segment start and end times (might be identical)

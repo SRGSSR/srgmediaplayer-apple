@@ -39,8 +39,6 @@
 		E606F8911AF3B044003F0E2A /* SegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */; };
 		E606F8921AF3B044003F0E2A /* SegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */; };
 		E606F8951AF3BBB4003F0E2A /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F8941AF3BBB4003F0E2A /* Segment.m */; };
-		E60E17181AF0B2F40062E96E /* DemoTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */; };
-		E67D9B251B0F1CC500FF2334 /* SwissTXTDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E67D9B241B0F1CC500FF2334 /* SwissTXTDataSource.m */; };
 		E69906191AFB44CC005ED143 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906171AFB44CC005ED143 /* close_button.png */; };
 		E699061A1AFB44CC005ED143 /* close_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906181AFB44CC005ED143 /* close_button@2x.png */; };
 		E699061F1AFB4902005ED143 /* red_card.png in Resources */ = {isa = PBXBuildFile; fileRef = E699061B1AFB4902005ED143 /* red_card.png */; };
@@ -49,12 +47,8 @@
 		E69906221AFB4902005ED143 /* yellow_card@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699061E1AFB4902005ED143 /* yellow_card@2x.png */; };
 		E69906251AFB4929005ED143 /* goal.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906231AFB4929005ED143 /* goal.png */; };
 		E69906261AFB4929005ED143 /* goal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69906241AFB4929005ED143 /* goal@2x.png */; };
-		E69906291AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */; };
 		E6A984B21B21764D004D701F /* thumbnail-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = E6A984B01B21764D004D701F /* thumbnail-placeholder.png */; };
 		E6A984B31B21764D004D701F /* thumbnail-placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6A984B11B21764D004D701F /* thumbnail-placeholder@2x.png */; };
-		E6D63EDC1B20303B007E7A7F /* SwissTXTSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D63EDB1B20303B007E7A7F /* SwissTXTSegment.m */; };
-		E6D63EE01B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D63EDE1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.m */; };
-		E6D63EE11B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D63EDF1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,10 +118,6 @@
 		E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentCollectionViewCell.xib; sourceTree = "<group>"; };
 		E606F8931AF3BBB4003F0E2A /* Segment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Segment.h; sourceTree = "<group>"; };
 		E606F8941AF3BBB4003F0E2A /* Segment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Segment.m; sourceTree = "<group>"; };
-		E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTimelineViewController.h; sourceTree = "<group>"; };
-		E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTimelineViewController.m; sourceTree = "<group>"; };
-		E67D9B231B0F1CC500FF2334 /* SwissTXTDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwissTXTDataSource.h; sourceTree = "<group>"; };
-		E67D9B241B0F1CC500FF2334 /* SwissTXTDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwissTXTDataSource.m; sourceTree = "<group>"; };
 		E69906171AFB44CC005ED143 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
 		E69906181AFB44CC005ED143 /* close_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_button@2x.png"; sourceTree = "<group>"; };
 		E699061B1AFB4902005ED143 /* red_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_card.png; sourceTree = "<group>"; };
@@ -136,15 +126,8 @@
 		E699061E1AFB4902005ED143 /* yellow_card@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow_card@2x.png"; sourceTree = "<group>"; };
 		E69906231AFB4929005ED143 /* goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goal.png; sourceTree = "<group>"; };
 		E69906241AFB4929005ED143 /* goal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "goal@2x.png"; sourceTree = "<group>"; };
-		E69906271AFB62D4005ED143 /* DemoTimelineConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoTimelineConfigurationViewController.h; sourceTree = "<group>"; };
-		E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoTimelineConfigurationViewController.m; sourceTree = "<group>"; };
 		E6A984B01B21764D004D701F /* thumbnail-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder.png"; sourceTree = "<group>"; };
 		E6A984B11B21764D004D701F /* thumbnail-placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder@2x.png"; sourceTree = "<group>"; };
-		E6D63EDA1B20303B007E7A7F /* SwissTXTSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwissTXTSegment.h; sourceTree = "<group>"; };
-		E6D63EDB1B20303B007E7A7F /* SwissTXTSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwissTXTSegment.m; sourceTree = "<group>"; };
-		E6D63EDD1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwissTXTSegmentCollectionViewCell.h; sourceTree = "<group>"; };
-		E6D63EDE1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwissTXTSegmentCollectionViewCell.m; sourceTree = "<group>"; };
-		E6D63EDF1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwissTXTSegmentCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,25 +199,6 @@
 				9F727DBA1B5FA4C000FEF5E7 /* VideoTimeshiftPlayerViewController.m */,
 			);
 			name = Timeshift;
-			sourceTree = "<group>";
-		};
-		9FDF08241B1C97F7005BA322 /* IN STANDBY WAITING FOR SWISSTEXT */ = {
-			isa = PBXGroup;
-			children = (
-				E69906271AFB62D4005ED143 /* DemoTimelineConfigurationViewController.h */,
-				E69906281AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m */,
-				E60E17161AF0B2F40062E96E /* DemoTimelineViewController.h */,
-				E60E17171AF0B2F40062E96E /* DemoTimelineViewController.m */,
-				E67D9B231B0F1CC500FF2334 /* SwissTXTDataSource.h */,
-				E67D9B241B0F1CC500FF2334 /* SwissTXTDataSource.m */,
-				E6D63EDA1B20303B007E7A7F /* SwissTXTSegment.h */,
-				E6D63EDB1B20303B007E7A7F /* SwissTXTSegment.m */,
-				E6D63EDD1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.h */,
-				E6D63EDE1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.m */,
-				E6D63EDF1B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.xib */,
-			);
-			name = "IN STANDBY WAITING FOR SWISSTEXT";
-			path = Sources;
 			sourceTree = "<group>";
 		};
 		B61E18CA1AA8605200E4FAB9 /* App */ = {
@@ -339,7 +303,6 @@
 				B61E18CA1AA8605200E4FAB9 /* App */,
 				9F21682A1B5F960E00BE91B3 /* Tabs View Controllers */,
 				B6C460DF1B20589700A76705 /* Demo Players */,
-				9FDF08241B1C97F7005BA322 /* IN STANDBY WAITING FOR SWISSTEXT */,
 				B61E18DD1AA8609000E4FAB9 /* Resources */,
 				B61E18D61AA8607800E4FAB9 /* Storyboard */,
 				B61E18D11AA8607200E4FAB9 /* Supporting Files */,
@@ -470,7 +433,6 @@
 				9F40156C1B25A2E00068196C /* screen@2x.png in Resources */,
 				E69906191AFB44CC005ED143 /* close_button.png in Resources */,
 				9F40156E1B25A2E00068196C /* videos@2x.png in Resources */,
-				E6D63EE11B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.xib in Resources */,
 				9F40156D1B25A2E00068196C /* segments@2x.png in Resources */,
 				E69906221AFB4902005ED143 /* yellow_card@2x.png in Resources */,
 				E69906251AFB4929005ED143 /* goal.png in Resources */,
@@ -529,10 +491,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E67D9B251B0F1CC500FF2334 /* SwissTXTDataSource.m in Sources */,
 				9F727DB61B5F975500FEF5E7 /* VideosTimeshiftTableViewController.m in Sources */,
 				E606F8911AF3B044003F0E2A /* SegmentCollectionViewCell.m in Sources */,
-				E6D63EDC1B20303B007E7A7F /* SwissTXTSegment.m in Sources */,
 				9FDF081F1B1C92C2005BA322 /* VideoSegmentsTableViewController.m in Sources */,
 				B6C460EA1B205AE400A76705 /* VideoMultiplayerTableViewController.m in Sources */,
 				9FDF08221B1C95DD005BA322 /* PseudoILDataProvider.m in Sources */,
@@ -541,14 +501,11 @@
 				B61E18D51AA8607200E4FAB9 /* main.m in Sources */,
 				E606F8951AF3BBB4003F0E2A /* Segment.m in Sources */,
 				B688832B1AAF72B500B9E34E /* DemoMultiPlayersViewController.m in Sources */,
-				E6D63EE01B2033E7007E7A7F /* SwissTXTSegmentCollectionViewCell.m in Sources */,
-				E69906291AFB62D4005ED143 /* DemoTimelineConfigurationViewController.m in Sources */,
 				B61E18EB1AA863B700E4FAB9 /* DemoFullScreenViewController.m in Sources */,
 				B6C460E21B2058C100A76705 /* VideosTableViewController.m in Sources */,
 				9F4B1D2D1B1C990700BB0FB3 /* VideoSegmentsPlayerViewController.m in Sources */,
 				B61E18CF1AA8605200E4FAB9 /* AppDelegate.m in Sources */,
 				B61E18ED1AA863B700E4FAB9 /* BaseTableViewController.m in Sources */,
-				E60E17181AF0B2F40062E96E /* DemoTimelineViewController.m in Sources */,
 				9F727DBB1B5FA4C000FEF5E7 /* VideoTimeshiftPlayerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

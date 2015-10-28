@@ -65,7 +65,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"segment"];
+	[self playIdentifier:@"full_length_with_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -103,7 +103,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"blocked_segment"];
+	[self playIdentifier:@"full_length_with_blocked_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -140,7 +140,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"hidden_segment"];
+	[self playIdentifier:@"full_length_with_hidden_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -178,7 +178,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"hidden_blocked_segment"];
+	[self playIdentifier:@"full_length_with_hidden_blocked_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -216,7 +216,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"segment_at_start"];
+	[self playIdentifier:@"full_length_with_segment_at_start"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -254,7 +254,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"blocked_segment_at_start"];
+	[self playIdentifier:@"full_length_with_blocked_segment_at_start"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -291,7 +291,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"hidden_segment_at_start"];
+	[self playIdentifier:@"full_length_with_hidden_segment_at_start"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -329,7 +329,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"hidden_blocked_segment_at_start"];
+	[self playIdentifier:@"full_length_with_hidden_blocked_segment_at_start"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -363,7 +363,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"consecutive_segments"];
+	[self playIdentifier:@"full_length_with_consecutive_segments"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -402,7 +402,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"consecutive_blocked_segments"];
+	[self playIdentifier:@"full_length_with_consecutive_blocked_segments"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -440,7 +440,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"consecutive_blocked_segments_at_start"];
+	[self playIdentifier:@"full_length_with_consecutive_blocked_segments_at_start"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -478,7 +478,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"segment_transition_into_blocked_segment"];
+	[self playIdentifier:@"full_length_with_segment_transition_into_blocked_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -536,12 +536,12 @@
 }
 
 // Expect a start event for the given segment, with YES for the user-driven information flag
-- (void) testPlaySegmentAtIndex
+- (void) testUserTriggeredSegmentPlay
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"segment"];
+	[self playIdentifier:@"full_length_with_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -558,17 +558,18 @@
 		return YES;
 	}];
 	
-	[self.mediaSegmentsController playVisibleSegmentAtIndex:0];
+	id<RTSMediaSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
+	[self.mediaSegmentsController playSegment:firstSegment];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
-// Expect a start event for the given segment, with NO for the user-driven information flag (set only when calling -playVisibleSegmentAtIndex:)
+// Expect a start event for the given segment, with NO for the user-driven information flag (set only when calling -playSegment:)
 - (void) testSeekIntoSegment
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"segment"];
+	[self playIdentifier:@"full_length_with_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -585,17 +586,17 @@
 		return YES;
 	}];
 	
-	[self.mediaSegmentsController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
+	[self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
 // Expect a seek
-- (void) testPlayBlockedSegmentAtIndex
+- (void) testUserTriggeredBlockedSegmentPlay
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"blocked_segment"];
+	[self playIdentifier:@"full_length_with_blocked_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -622,7 +623,8 @@
 		return YES;
 	}];
 	
-	[self.mediaSegmentsController playVisibleSegmentAtIndex:0];
+	id<RTSMediaSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
+	[self.mediaSegmentsController playSegment:firstSegment];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
@@ -631,7 +633,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
 	}];
-	[self playIdentifier:@"blocked_segment"];
+	[self playIdentifier:@"full_length_with_blocked_segment"];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 	
 	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
@@ -658,7 +660,7 @@
 		return YES;
 	}];
 	
-	[self.mediaSegmentsController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
+	[self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
@@ -676,102 +678,88 @@
 
 #pragma mark - RTSMediaSegmentsDataSource protocol
 
-- (void) segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
+- (void)segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
-	Segment *fullLength = [[Segment alloc] initWithName:@"full_length" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+	Segment *fullLength = [[Segment alloc] initWithIdentifier:identifier name:@"full_length" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+	fullLength.fullLength = YES;
+	fullLength.visible = NO;
 	
-	if ([identifier isEqualToString:@"segment"])
+	if ([identifier isEqualToString:@"full_length_with_segment"])
 	{
-		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
-		segment.parent = fullLength;
-		completionHandler(@[segment], nil);
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		completionHandler(@[fullLength, segment], nil);
 	}
-	else if ([identifier isEqualToString:@"blocked_segment"])
+	else if ([identifier isEqualToString:@"full_length_with_blocked_segment"])
 	{
-		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		segment.blocked = YES;
-		segment.parent = fullLength;
-		completionHandler(@[segment], nil);
+		completionHandler(@[fullLength, segment], nil);
 	}
-	else if ([identifier isEqualToString:@"hidden_segment"])
+	else if ([identifier isEqualToString:@"full_length_with_hidden_segment"])
 	{
-		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		segment.visible = NO;
-		segment.parent = fullLength;
-		completionHandler(@[segment], nil);
+		completionHandler(@[fullLength, segment], nil);
 	}
-	else if ([identifier isEqualToString:@"hidden_blocked_segment"])
+	else if ([identifier isEqualToString:@"full_length_with_hidden_blocked_segment"])
 	{
-		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		segment.blocked = YES;
 		segment.visible = NO;
-		segment.parent = fullLength;
-		completionHandler(@[segment], nil);
+		completionHandler(@[fullLength, segment], nil);
 	}
-	else if ([identifier isEqualToString:@"segment_at_start"])
+	else if ([identifier isEqualToString:@"full_length_with_segment_at_start"])
 	{
-		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
-		segment.parent = fullLength;
-		completionHandler(@[segment], nil);
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+		completionHandler(@[fullLength, segment], nil);
 	}
-	else if ([identifier isEqualToString:@"blocked_segment_at_start"])
+	else if ([identifier isEqualToString:@"full_length_with_blocked_segment_at_start"])
 	{
-		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
 		segment.blocked = YES;
-		segment.parent = fullLength;
-		completionHandler(@[segment], nil);
+		completionHandler(@[fullLength, segment], nil);
 	}
-	else if ([identifier isEqualToString:@"hidden_segment_at_start"])
+	else if ([identifier isEqualToString:@"full_length_with_hidden_segment_at_start"])
 	{
-		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
 		segment.visible = NO;
-		segment.parent = fullLength;
-		completionHandler(@[segment], nil);
+		completionHandler(@[fullLength, segment], nil);
 	}
-	else if ([identifier isEqualToString:@"hidden_blocked_segment_at_start"])
+	else if ([identifier isEqualToString:@"full_length_with_hidden_blocked_segment_at_start"])
 	{
-		Segment *segment = [[Segment alloc] initWithName:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
 		segment.blocked = YES;
 		segment.visible = NO;
-		segment.parent = fullLength;
-		completionHandler(@[segment], nil);
+		completionHandler(@[fullLength, segment], nil);
 	}
-	else if ([identifier isEqualToString:@"consecutive_segments"])
+	else if ([identifier isEqualToString:@"full_length_with_consecutive_segments"])
 	{
-		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
-		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
-		segment1.parent = fullLength;
-		segment2.parent = fullLength;
-		completionHandler(@[segment1, segment2], nil);
+		Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
+		completionHandler(@[fullLength, segment1, segment2], nil);
 	}
-	else if ([identifier isEqualToString:@"consecutive_blocked_segments"])
+	else if ([identifier isEqualToString:@"full_length_with_consecutive_blocked_segments"])
 	{
-		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment1.blocked = YES;
-		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment2.blocked = YES;
-		segment1.parent = fullLength;
-		segment2.parent = fullLength;
-		completionHandler(@[segment1, segment2], nil);
+		completionHandler(@[fullLength, segment1, segment2], nil);
 	}
-	else if ([identifier isEqualToString:@"consecutive_blocked_segments_at_start"])
+	else if ([identifier isEqualToString:@"full_length_with_consecutive_blocked_segments_at_start"])
 	{
-		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(3., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment1.blocked = YES;
-		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(3., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment2.blocked = YES;
-		segment1.parent = fullLength;
-		segment2.parent = fullLength;
-		completionHandler(@[segment1, segment2], nil);
+		completionHandler(@[fullLength, segment1, segment2], nil);
 	}
-	else if ([identifier isEqualToString:@"segment_transition_into_blocked_segment"])
+	else if ([identifier isEqualToString:@"full_length_with_segment_transition_into_blocked_segment"])
 	{
-		Segment *segment1 = [[Segment alloc] initWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
-		Segment *segment2 = [[Segment alloc] initWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
+		Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+		Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment2.blocked = YES;
-		segment1.parent = fullLength;
-		segment2.parent = fullLength;
-		completionHandler(@[segment1, segment2], nil);
+		completionHandler(@[fullLength, segment1, segment2], nil);
 	}
 	else
 	{

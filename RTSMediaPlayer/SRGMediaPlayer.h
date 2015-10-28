@@ -4,7 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <SRGMediaPlayer/RTSMediaPlayback.h>
 #import <SRGMediaPlayer/RTSMediaPlayerConstants.h>
 #import <SRGMediaPlayer/RTSMediaPlayerController.h>
 #import <SRGMediaPlayer/RTSMediaPlayerControllerDataSource.h>

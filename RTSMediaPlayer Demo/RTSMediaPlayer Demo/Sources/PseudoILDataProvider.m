@@ -49,13 +49,14 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 	  withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
 	if ([identifier isEqualToString:@"error"]) {
-		completionHandler(nil, nil, [NSError errorWithDomain:@"Demo" code:123456 userInfo:@{NSLocalizedDescriptionKey: @"error"}]);
+		completionHandler(nil, [NSError errorWithDomain:@"Demo" code:123456 userInfo:@{NSLocalizedDescriptionKey: @"error"}]);
 	}
 	else {
 		double duration = 31.0*60.0 + 57.0;
 		Segment *fullLength = [[Segment alloc] initWithStart:0 duration:duration title:@"fullLength"];
+		fullLength.visible = NO;
 		
-		NSMutableArray *segments = [NSMutableArray array];
+		NSMutableArray *segments = [NSMutableArray arrayWithObject:fullLength];
 		NSInteger row = [identifier integerValue];
 		NSError *error = nil;
 		
@@ -128,7 +129,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 			error = [NSError errorWithDomain:@"Demo" code:999 userInfo:@{NSLocalizedDescriptionKey:@"Segments Demo Error"}];
 		}
 		
-		completionHandler(fullLength, segments, error);
+		completionHandler(segments, error);
 	}
 }
 
