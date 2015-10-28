@@ -9,12 +9,12 @@
 
 @interface Segment : NSObject <RTSMediaSegment>
 
-- (instancetype)initWithIdentifier:(NSString *)identifier timeRange:(CMTimeRange)timeRange;
+- (instancetype)initWithIdentifier:(NSString *)identifier name:(NSString *)name timeRange:(CMTimeRange)timeRange;
 
-@property (nonatomic, weak) id<RTSMediaSegment> parent;
-@property (nonatomic) NSString *segmentIdentifier;
+@property (nonatomic, readonly, copy) NSString *name;
 
-@property (nonatomic, getter=isBlocked) BOOL blocked;
-@property (nonatomic, getter=isVisible) BOOL visible;
+@property (nonatomic, getter=isFullLength) BOOL fullLength;			// Default is NO
+@property (nonatomic, getter=isBlocked) BOOL blocked;				// Default is NO
+@property (nonatomic, getter=isVisible) BOOL visible;				// Default is YES
 
 @end

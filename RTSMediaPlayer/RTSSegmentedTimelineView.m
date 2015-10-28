@@ -117,8 +117,8 @@ static void commonInit(RTSSegmentedTimelineView *self);
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	id<RTSMediaSegment> segment = self.segmentsController.visibleSegments[indexPath.row];
-	[self scrollToSegmentAtTime:segment.timeRange.start withIdentifier:segment.segmentIdentifier animated:YES];
-	[self.segmentsController playVisibleSegmentAtIndex:indexPath.row];
+	[self scrollToSegment:segment animated:YES];
+    [self.segmentsController playSegment:segment];
 }
 
 #pragma mark - UIScrollViewDelegate protocol
@@ -171,19 +171,12 @@ static void commonInit(RTSSegmentedTimelineView *self);
 
 - (void)scrollToSegmentAtTime:(CMTime)time animated:(BOOL)animated
 {
-	[self scrollToSegmentAtTime:time withIdentifier:self.segmentsController.playerController.identifier animated:animated];
-}
-
-- (void) scrollToSegmentAtTime:(CMTime)time withIdentifier:(NSString *)identifier animated:(BOOL)animated
-{
-	for (id<RTSMediaSegment> segment in self.segmentsController.visibleSegments) {
-		// Scroll to the segment if its identifier matches (physical segment) or the one of its parent matches (logical segment)
-		if (([segment.segmentIdentifier isEqualToString:identifier] || [segment.parent.segmentIdentifier isEqualToString:identifier])
-			&& CMTimeRangeContainsTime(segment.timeRange, time)) {
-			[self scrollToSegment:segment animated:animated];
-			return;
-		}
-	}
+    for (id<RTSMediaSegment> segment in self.segmentsController.visibleSegments) {
+        if (CMTimeRangeContainsTime(segment.timeRange, time)) {
+            [self scrollToSegment:segment animated:animated];
+            break;
+        }
+    }
 }
 
 @end

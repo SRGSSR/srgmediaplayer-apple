@@ -7,7 +7,6 @@
 #import <SRGMediaPlayer/RTSMediaSegmentsDataSource.h>
 #import <SRGMediaPlayer/RTSTimeSlider.h>
 
-@class RTSMediaPlayerController;
 @protocol RTSTimelineSliderDelegate;
 
 /**

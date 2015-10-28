@@ -8,22 +8,21 @@
 
 @interface Segment ()
 
+@property (nonatomic, copy) NSString *segmentIdentifier;
+@property (nonatomic, copy) NSString *name;
 @property (nonatomic) CMTimeRange timeRange;
 
 @end
 
 @implementation Segment
 
-#pragma mark - Object lifecycle
-
-- (instancetype)initWithIdentifier:(NSString *)identifier timeRange:(CMTimeRange)timeRange
+- (instancetype)initWithIdentifier:(NSString *)identifier name:(NSString *)name timeRange:(CMTimeRange)timeRange
 {
 	if (self = [super init])
 	{
-		self.timeRange = timeRange;
+		self.name = name;
 		self.segmentIdentifier = identifier;
-		
-		self.blocked = NO;
+		self.timeRange = timeRange;
 		self.visible = YES;
 	}
 	return self;
