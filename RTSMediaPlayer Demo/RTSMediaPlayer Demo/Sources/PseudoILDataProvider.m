@@ -54,6 +54,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 	else {
 		double duration = 31.0*60.0 + 57.0;
 		Segment *fullLength = [[Segment alloc] initWithIdentifier:identifier name:@"Full length" start:0 duration:duration];
+		fullLength.fullLength = YES;
 		fullLength.visible = NO;
 		
 		NSMutableArray *segments = [NSMutableArray arrayWithObject:fullLength];
