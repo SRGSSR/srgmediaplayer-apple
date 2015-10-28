@@ -18,6 +18,11 @@
  *  it retrieves from a data source. Segments can either be blocked or visible, and the segments controller is responsible
  *  of skipping blocked segments or blocking access to them when seeking.
  *
+ *  Segments with the same identifiers are treated as logical segments (part of a single media, and sharing its identifier), 
+ *  whereas segments with different identifiers are treated as physical segments (separate medias with different identifiers).
+ *  The segment controller transparently manages playback so that seeks occur in logical segments. For physical segments,
+ *  playback is stopped and restarted when a segment is changed.
+ *
  *  To use a segments controller, instantiate or drop an instance in Interface Builder, and bind it to the underlying
  *  player controller. Also attach a data source from which segments will be retrieved for the media being played. When
  *  segments need to be retrieved, call 'reloadSegementsForIdentifier:completionHandler:'
