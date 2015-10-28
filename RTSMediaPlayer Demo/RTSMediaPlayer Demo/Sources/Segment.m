@@ -22,7 +22,7 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 @interface Segment ()
 
 @property (nonatomic) CMTimeRange timeRange;
-@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *segmentIdentifier;
 
 @end
@@ -31,7 +31,7 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 
 #pragma mark - Object lifecycle
 
-- (instancetype) initWithTimeRange:(CMTimeRange)timeRange title:(NSString *)title
+- (instancetype) initWithIdentifier:(NSString *)identifier name:(NSString *)name timeRange:(CMTimeRange)timeRange;
 {
 	self = [super init];
 	if (self) {
@@ -40,28 +40,26 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 		self.blocked = NO;
 		self.visible = YES;
 		
-		self.title = title;
-		
-		// FIXME: Should be specified separately
-		self.segmentIdentifier = title;
+		self.segmentIdentifier = identifier;
+		self.name = name;
 	}
 	return self;
 }
 
-- (instancetype) initWithTime:(CMTime)time title:(NSString *)title
+- (instancetype) initWithIdentifier:(NSString *)identifier name:(NSString *)name time:(CMTime)time;
 {
-	return [self initWithTimeRange:CMTimeRangeMake(time, kCMTimeZero) title:title];
+	return [self initWithIdentifier:identifier name:name timeRange:CMTimeRangeMake(time, kCMTimeZero)];
 }
 
-- (instancetype) initWithStart:(NSTimeInterval)start duration:(NSTimeInterval)duration title:(NSString *)title
+- (instancetype) initWithIdentifier:(NSString *)identifier name:(NSString *)name start:(NSTimeInterval)start duration:(NSTimeInterval)duration;
 {
-	return [self initWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(start, 1.), CMTimeMakeWithSeconds(duration, 1.)) title:title];
+	return [self initWithIdentifier:identifier name:name timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(start, 1.), CMTimeMakeWithSeconds(duration, 1.))];
 }
 
 - (instancetype)init
 {
 	[self doesNotRecognizeSelector:_cmd];
-	return [self initWithTimeRange:kCMTimeRangeZero title:nil];
+	return [self initWithIdentifier:nil name:nil timeRange:kCMTimeRangeZero];
 }
 
 #pragma mark - Getters and setters
@@ -87,11 +85,12 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 
 - (NSString *) description
 {
-	return [NSString stringWithFormat:@"<%@: %p; time: %@; title: %@; fullLength: %@; blocked: %@; visible: %@>",
+	return [NSString stringWithFormat:@"<%@: %p; time: %@; identifier: %@; name: %@; fullLength: %@; blocked: %@; visible: %@>",
 			[self class],
 			self,
 			@(CMTimeGetSeconds(self.timeRange.start)),
-			self.title,
+			self.segmentIdentifier,
+			self.name,
 			self.fullLength ? @"YES" : @"NO",
 			self.blocked ? @"YES" : @"NO",
 			self.visible ? @"YES" : @"NO"];

@@ -181,7 +181,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 	Segment *segment = notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey];
 	BOOL wasSelected = [notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue];
 	
-	NSLog(@"Segment [%@]: previous = %@, current = %@, user selected: %@", StringForSegmentChange(segmentChange), previousSegment.title, segment.title, wasSelected ? @"YES" : @"NO");
+	NSLog(@"Segment [%@]: previous = %@, current = %@, user selected: %@", StringForSegmentChange(segmentChange), previousSegment.name, segment.name, wasSelected ? @"YES" : @"NO");
 }
 
 - (void)playbackStateDidChange:(NSNotification *)notification

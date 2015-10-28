@@ -25,7 +25,7 @@
 {
 	_segment = segment;
 	
-	self.titleLabel.text = segment.title;
+	self.titleLabel.text = segment.name;
 	
 	if (!CMTIMERANGE_IS_EMPTY(segment.timeRange)) {
 		self.durationLabel.hidden = NO;
