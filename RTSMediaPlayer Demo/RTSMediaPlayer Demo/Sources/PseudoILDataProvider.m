@@ -24,8 +24,8 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 		completionHandler(nil, [NSError errorWithDomain:@"Demo" code:123456 userInfo:@{NSLocalizedDescriptionKey: @"error"}]);
 	}
 	else {
-		// 19:30 RTS, token unnecessary. Length: 31:57.
-		completionHandler([NSURL URLWithString:@"http://rtsch-i.akamaihd.net/i/tj/2015/tj_20150601_full_f_859152-,101,701,1201,k.mp4.csmil/master.m3u8"], nil);
+		// Length is 30 minutes
+		completionHandler([NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"], nil);
 	}	
 }
 
