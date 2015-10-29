@@ -664,6 +664,52 @@
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
+// Expect a switch between the two segments
+- (void) testUserTriggeredSegmentPlayAfterUserTriggeredSegmentPlay
+{
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+	}];
+	[self playIdentifier:@"full_length_with_consecutive_segments"];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
+	
+	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
+		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart)
+		{
+			return NO;
+		}
+		
+		XCTAssertNil(notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment1");
+		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
+		XCTAssertTrue([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
+		
+		return YES;
+	}];
+	
+	id<RTSMediaSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
+	[self.mediaSegmentsController playSegment:firstSegment];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
+	
+	[self expectationForNotification:RTSMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL(NSNotification *notification) {
+		if ([notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSwitch)
+		{
+			return NO;
+		}
+		
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment1");
+		XCTAssertEqualObjects([notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment2");
+		XCTAssertNotNil(notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey]);
+		XCTAssertTrue([notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
+		
+		return YES;
+	}];
+	
+	id<RTSMediaSegment> secondSegment = [self.mediaSegmentsController.visibleSegments objectAtIndex:1];
+	[self.mediaSegmentsController playSegment:secondSegment];
+	[self waitForExpectationsWithTimeout:60. handler:nil];
+}
+
 @end
 
 @implementation SegmentsTestDataSource

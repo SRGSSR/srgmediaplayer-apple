@@ -170,12 +170,22 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 - (void)playSegment:(id<RTSMediaSegment>)segment
 {
-	// Immediately send the event. We thus also update the current segment information right here
+    NSDictionary *userInfo = nil;
+    if (!self.lastPlaybackPositionSegment) {
+        userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
+                     RTSMediaPlaybackSegmentChangeSegmentInfoKey: segment,
+                     RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(YES)};
+    }
+    else {
+        userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
+                     RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionSegment,
+                     RTSMediaPlaybackSegmentChangeSegmentInfoKey: segment,
+                     RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(YES)};
+    }
+    
+    // Immediately send the event. We thus also update the current segment information right here
     self.lastPlaybackPositionSegment = segment;
-
-	NSDictionary *userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
-							   RTSMediaPlaybackSegmentChangeSegmentInfoKey: segment,
-							   RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(YES)};
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
                                                         object:self
                                                       userInfo:userInfo];
