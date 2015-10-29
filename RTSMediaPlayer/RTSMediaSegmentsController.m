@@ -83,7 +83,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 + (BOOL)isFullLengthSegment:(id<RTSMediaSegment>)segment
 {
-    return objc_getAssociatedObject(segment, RTSMediaSegmentFullLengthKey);
+    return [objc_getAssociatedObject(segment, RTSMediaSegmentFullLengthKey) boolValue];
 }
 
 - (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler
