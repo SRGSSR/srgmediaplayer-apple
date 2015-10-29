@@ -78,7 +78,7 @@
 /**
  *  The current segment in which the playback head is located.
  *
- *  @return The segment. Returns -1 if the position corresponds to no segments.
+ *  @return The segment. Returns nil if the position corresponds to no segments.
  */
 - (id<RTSMediaSegment>)currentSegment;
 
