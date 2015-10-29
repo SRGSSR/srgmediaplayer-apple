@@ -53,7 +53,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
             return;
         }
         
-        self.segments = [NSArray arrayWithArray:segments];
+        self.segments = segments;
         
         [self addBlockingTimeObserver];
         
