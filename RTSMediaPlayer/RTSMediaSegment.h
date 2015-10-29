@@ -15,11 +15,6 @@
 @protocol RTSMediaSegment <NSObject>
 
 /**
- *  Is Segment A Full Length
- */
-@property (nonatomic, readonly, getter=isFullLength) BOOL fullLength;
-
-/**
  *  Media Segment Identifier
  */
 @property (nonatomic, readonly, copy) NSString *segmentIdentifier; // chiote

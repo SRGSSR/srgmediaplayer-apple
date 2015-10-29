@@ -58,9 +58,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
             [sanitizedSegments removeObjectsInArray:segmentsForIdentifier];
             continue;
         }
-        
-        // Mark the full length
-        objc_setAssociatedObject(fullLengthSegment, RTSMediaSegmentFullLengthKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        [self markFullLengthSegment:fullLengthSegment];
         
         // Discard those segments which are not contained within the full length
         for (id<RTSMediaSegment> segment in segmentsForIdentifier) {
@@ -76,6 +74,16 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     }
     
     return [sanitizedSegments copy];
+}
+
++ (void)markFullLengthSegment:(id<RTSMediaSegment>)segment
+{
+    objc_setAssociatedObject(segment, RTSMediaSegmentFullLengthKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
++ (BOOL)isFullLengthSegment:(id<RTSMediaSegment>)segment
+{
+    return objc_getAssociatedObject(segment, RTSMediaSegmentFullLengthKey);
 }
 
 - (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler
@@ -137,10 +145,9 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         }
 		
 		// We assume that all logical segments of a full length have an identifier that is IDENTICAL to the fullLength's.
-        
         __block id<RTSMediaSegment> currentSegment = nil;
         [self.segments enumerateObjectsUsingBlock:^(id<RTSMediaSegment> segment, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([segment.segmentIdentifier isEqualToString:self.playerController.identifier] && !segment.fullLength) {
+            if ([segment.segmentIdentifier isEqualToString:self.playerController.identifier] && ![RTSMediaSegmentsController isFullLengthSegment:segment]) {
 				if (CMTimeRangeContainsTime(segment.timeRange, time)) {
 					currentSegment = segment;
 					*stop = YES;
