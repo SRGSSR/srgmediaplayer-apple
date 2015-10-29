@@ -108,7 +108,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 - (void)updateAppearanceWithTime:(CMTime)time
 {
 	for (SegmentCollectionViewCell *segmentCell in [self.timelineView visibleCells]) {
-		[segmentCell updateAppearanceWithTime:time];
+		[segmentCell updateAppearanceWithTime:time identifier:self.mediaPlayerController.identifier];
 	}
 }
 
