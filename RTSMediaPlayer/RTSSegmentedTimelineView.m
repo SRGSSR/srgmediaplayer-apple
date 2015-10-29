@@ -159,6 +159,10 @@ static void commonInit(RTSSegmentedTimelineView *self);
 
 - (void) scrollToSegment:(id<RTSMediaSegment>)segment animated:(BOOL)animated
 {
+    if (!segment) {
+        return;
+    }
+    
 	NSInteger segmentIndex = [self.segmentsController.visibleSegments indexOfObject:segment];
 	if (segmentIndex == NSNotFound) {
 		return;
@@ -167,16 +171,6 @@ static void commonInit(RTSSegmentedTimelineView *self);
 	[self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:segmentIndex inSection:0]
 								atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
 										animated:animated];
-}
-
-- (void)scrollToSegmentAtTime:(CMTime)time animated:(BOOL)animated
-{
-    for (id<RTSMediaSegment> segment in self.segmentsController.visibleSegments) {
-        if (CMTimeRangeContainsTime(segment.timeRange, time)) {
-            [self scrollToSegment:segment animated:animated];
-            break;
-        }
-    }
 }
 
 @end
