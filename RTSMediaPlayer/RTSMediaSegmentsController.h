@@ -39,6 +39,11 @@
 @interface RTSMediaSegmentsController : NSObject
 
 /**
+ * Return YES iff the segment corresponds to a full length
+ */
++ (BOOL)isFullLengthSegment:(id<RTSMediaSegment>)segment;
+
+/**
  *  The player controller associated with the segments controller.
  */
 @property(nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;

@@ -85,10 +85,11 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 
 - (NSString *) description
 {
-	return [NSString stringWithFormat:@"<%@: %p; time: %@; identifier: %@; name: %@; fullLength: %@; blocked: %@; visible: %@>",
+	return [NSString stringWithFormat:@"<%@: %p; start: %@; duration: %@; identifier: %@; name: %@; fullLength: %@; blocked: %@; visible: %@>",
 			[self class],
 			self,
 			@(CMTimeGetSeconds(self.timeRange.start)),
+			@(CMTimeGetSeconds(self.timeRange.duration)),
 			self.segmentIdentifier,
 			self.name,
 			self.fullLength ? @"YES" : @"NO",
