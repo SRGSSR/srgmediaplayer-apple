@@ -76,12 +76,6 @@
  */
 - (void)scrollToSegment:(id<RTSMediaSegment>)segment animated:(BOOL)animated;
 
-/**
- *  Scroll to make the segment to which the specified time belongs visible (does nothing if the time does not match
- *  any segment)
- */
-- (void)scrollToSegmentAtTime:(CMTime)time animated:(BOOL)animated;
-
 @end
 
 /**

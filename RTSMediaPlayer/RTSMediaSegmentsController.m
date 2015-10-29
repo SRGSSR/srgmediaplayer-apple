@@ -12,6 +12,10 @@
 #import "RTSMediaSegmentsController.h"
 #import "RTSMediaPlayerLogger.h"
 
+#import <objc/runtime.h>
+
+static void *RTSMediaSegmentFullLengthKey = &RTSMediaSegmentFullLengthKey;
+
 NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
 NSString * const RTSMediaPlaybackSegmentDidChangeNotification = @"RTSMediaPlaybackSegmentDidChangeNotification";
 NSString * const RTSMediaPlaybackSegmentChangeSegmentInfoKey = @"RTSMediaPlaybackSegmentChangeSegmentInfoKey";
@@ -26,6 +30,61 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 @end
 
 @implementation RTSMediaSegmentsController
+
++ (NSArray *)sanitizeSegments:(NSArray *)segments
+{
+    if (segments.count == 0) {
+        return segments;
+    }
+    
+    NSMutableArray *sanitizedSegments = [NSMutableArray arrayWithArray:segments];
+    
+    NSArray *segmentIdentifiers = [segments valueForKeyPath:@"@distinctUnionOfObjects.segmentIdentifier"];
+    for (NSString *identifier in segmentIdentifiers) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"segmentIdentifier == %@", identifier];
+        NSArray *segmentsForIdentifier = [segments filteredArrayUsingPredicate:predicate];
+        
+        // The full length is the longest available segment starting at 0
+        NSPredicate *fullLengthCandidatePredicate = [NSPredicate predicateWithBlock:^BOOL(id<RTSMediaSegment> _Nonnull segment, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return CMTimeCompare(segment.timeRange.start, kCMTimeZero) == 0;
+        }];
+        id<RTSMediaSegment> fullLengthSegment = [[segmentsForIdentifier filteredArrayUsingPredicate:fullLengthCandidatePredicate] sortedArrayUsingComparator:^NSComparisonResult(id<RTSMediaSegment> _Nonnull segment1, id<RTSMediaSegment> _Nonnull segment2) {
+            return CMTimeCompare(segment1.timeRange.duration, segment2.timeRange.duration);
+        }].lastObject;
+        
+        // No full length found. Remove the segment family
+        if (!fullLengthSegment) {
+            RTSMediaPlayerLogError(@"The segments %@ do not contain any full length and were thus discarded", segmentsForIdentifier);
+            [sanitizedSegments removeObjectsInArray:segmentsForIdentifier];
+            continue;
+        }
+        [self markFullLengthSegment:fullLengthSegment];
+        
+        // Discard those segments which are not contained within the full length
+        for (id<RTSMediaSegment> segment in segmentsForIdentifier) {
+            if (segment == fullLengthSegment) {
+                continue;
+            }
+            
+            if (!CMTimeRangeContainsTimeRange(fullLengthSegment.timeRange, segment.timeRange)) {
+                RTSMediaPlayerLogError(@"The segment %@ is not contained in the associated full length %@ and was thus discarded", segment, fullLengthSegment);
+                [sanitizedSegments removeObject:segment];
+            }
+        }
+    }
+    
+    return [sanitizedSegments copy];
+}
+
++ (void)markFullLengthSegment:(id<RTSMediaSegment>)segment
+{
+    objc_setAssociatedObject(segment, RTSMediaSegmentFullLengthKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
++ (BOOL)isFullLengthSegment:(id<RTSMediaSegment>)segment
+{
+    return objc_getAssociatedObject(segment, RTSMediaSegmentFullLengthKey);
+}
 
 - (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler
 {
@@ -53,7 +112,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
             return;
         }
         
-        self.segments = [NSArray arrayWithArray:segments];
+        self.segments = [RTSMediaSegmentsController sanitizeSegments:segments];
         
         [self addBlockingTimeObserver];
         
@@ -86,10 +145,9 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         }
 		
 		// We assume that all logical segments of a full length have an identifier that is IDENTICAL to the fullLength's.
-        
         __block id<RTSMediaSegment> currentSegment = nil;
         [self.segments enumerateObjectsUsingBlock:^(id<RTSMediaSegment> segment, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([segment.segmentIdentifier isEqualToString:self.playerController.identifier] && !segment.fullLength) {
+            if ([segment.segmentIdentifier isEqualToString:self.playerController.identifier] && ![RTSMediaSegmentsController isFullLengthSegment:segment]) {
 				if (CMTimeRangeContainsTime(segment.timeRange, time)) {
 					currentSegment = segment;
 					*stop = YES;
@@ -170,12 +228,22 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 - (void)playSegment:(id<RTSMediaSegment>)segment
 {
-	// Immediately send the event. We thus also update the current segment information right here
+    NSDictionary *userInfo = nil;
+    if (!self.lastPlaybackPositionSegment) {
+        userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
+                     RTSMediaPlaybackSegmentChangeSegmentInfoKey: segment,
+                     RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(YES)};
+    }
+    else {
+        userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
+                     RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionSegment,
+                     RTSMediaPlaybackSegmentChangeSegmentInfoKey: segment,
+                     RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(YES)};
+    }
+    
+    // Immediately send the event. We thus also update the current segment information right here
     self.lastPlaybackPositionSegment = segment;
-
-	NSDictionary *userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
-							   RTSMediaPlaybackSegmentChangeSegmentInfoKey: segment,
-							   RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(YES)};
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
                                                         object:self
                                                       userInfo:userInfo];

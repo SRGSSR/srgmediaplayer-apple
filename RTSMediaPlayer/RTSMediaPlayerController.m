@@ -752,6 +752,8 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 					else {
 						// Not using [self seek...] to avoid triggering undesirable state events.
 						[self.player seekToTime:[self.startTimeValue CMTimeValue]
+								toleranceBefore:kCMTimeZero
+								 toleranceAfter:kCMTimeZero
 							  completionHandler:^(BOOL finished) {
 								  if (finished) {
 									  [self play];

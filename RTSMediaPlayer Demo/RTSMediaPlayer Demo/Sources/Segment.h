@@ -9,12 +9,12 @@
 
 @interface Segment : NSObject <RTSMediaSegment>
 
-- (instancetype) initWithTimeRange:(CMTimeRange)timeRange title:(NSString *)title NS_DESIGNATED_INITIALIZER;
+- (instancetype) initWithIdentifier:(NSString *)identifier name:(NSString *)name timeRange:(CMTimeRange)timeRange NS_DESIGNATED_INITIALIZER;
 
-- (instancetype) initWithTime:(CMTime)time title:(NSString *)title;
-- (instancetype) initWithStart:(NSTimeInterval)start duration:(NSTimeInterval)duration title:(NSString *)title;
+- (instancetype) initWithIdentifier:(NSString *)identifier name:(NSString *)name time:(CMTime)time;
+- (instancetype) initWithIdentifier:(NSString *)identifier name:(NSString *)name start:(NSTimeInterval)start duration:(NSTimeInterval)duration;
 
-@property (nonatomic, readonly, copy) NSString *title;
+@property (nonatomic, readonly, copy) NSString *name;
 @property (nonatomic, readonly) NSURL *thumbnailURL;
 
 @property (nonatomic, readonly, copy) NSString *durationString;

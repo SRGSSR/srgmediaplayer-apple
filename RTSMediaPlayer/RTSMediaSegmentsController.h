@@ -20,8 +20,13 @@
  *
  *  Segments with the same identifiers are treated as logical segments (part of a single media, and sharing its identifier), 
  *  whereas segments with different identifiers are treated as physical segments (separate medias with different identifiers).
- *  The segment controller transparently manages playback so that seeks occur in logical segments. For physical segments,
- *  playback is stopped and restarted when a segment is changed.
+ *
+ *  For logical segments, the segment controller locates the largest segment with start time = 0 and considers it as being the
+ *  full-length media, to which other segments must belong to (segments which would incorrectly not belong to it will be
+ *  discarded with a warning). It them manages playback between them transparently.
+ *
+ *  For physical segments, switching to another segment changes the media actually played (the previous one is stopped, and
+ *  playback is started for the new one). Logical and physical segments can be freely mixed together.
  *
  *  To use a segments controller, instantiate or drop an instance in Interface Builder, and bind it to the underlying
  *  player controller. Also attach a data source from which segments will be retrieved for the media being played. When
@@ -32,6 +37,11 @@
  *  slider (see 'RTSTimelineSlider').
  */
 @interface RTSMediaSegmentsController : NSObject
+
+/**
+ * Return YES iff the segment corresponds to a full length
+ */
++ (BOOL)isFullLengthSegment:(id<RTSMediaSegment>)segment;
 
 /**
  *  The player controller associated with the segments controller.
@@ -68,7 +78,7 @@
 /**
  *  The current segment in which the playback head is located.
  *
- *  @return The segment. Returns -1 if the position corresponds to no segments.
+ *  @return The segment. Returns nil if the position corresponds to no segments.
  */
 - (id<RTSMediaSegment>)currentSegment;
 

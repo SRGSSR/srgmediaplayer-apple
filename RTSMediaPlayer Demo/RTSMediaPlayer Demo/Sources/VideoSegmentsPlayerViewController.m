@@ -108,7 +108,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 - (void)updateAppearanceWithTime:(CMTime)time
 {
 	for (SegmentCollectionViewCell *segmentCell in [self.timelineView visibleCells]) {
-		[segmentCell updateAppearanceWithTime:time];
+		[segmentCell updateAppearanceWithTime:time identifier:self.mediaPlayerController.identifier];
 	}
 }
 
@@ -181,7 +181,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 	Segment *segment = notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey];
 	BOOL wasSelected = [notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue];
 	
-	NSLog(@"Segment [%@]: previous = %@, current = %@, user selected: %@", StringForSegmentChange(segmentChange), previousSegment.title, segment.title, wasSelected ? @"YES" : @"NO");
+	NSLog(@"Segment [%@]: previous = %@, current = %@, user selected: %@", StringForSegmentChange(segmentChange), previousSegment.name, segment.name, wasSelected ? @"YES" : @"NO");
 }
 
 - (void)playbackStateDidChange:(NSNotification *)notification
@@ -195,16 +195,16 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 {
 	[self updateAppearanceWithTime:time];
 
-	// FIXME:
-#if 0
 	if (interactive) {
-		NSUInteger visibleSegmentIndex = [self.timelineView.segmentsController indexOfVisibleSegmentForTime:time];
-		if (visibleSegmentIndex != NSNotFound) {
-			id<RTSMediaSegment> segment = [[self.timelineView.segmentsController visibleSegments] objectAtIndex:visibleSegmentIndex];
+		NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<RTSMediaSegment>  _Nonnull segment, NSDictionary<NSString *,id> * _Nullable bindings) {
+			return [[segment segmentIdentifier] isEqualToString:self.mediaPlayerController.identifier]
+			&& CMTimeRangeContainsTime(segment.timeRange, time);
+		}];
+		id<RTSMediaSegment> segment = [[self.timelineView.segmentsController.visibleSegments filteredArrayUsingPredicate:predicate] firstObject];
+		if (segment) {
 			[self.timelineView scrollToSegment:segment animated:YES];
 		}		
 	}
-#endif
 }
 
 #pragma mark - RTSSegmentedTimelineViewDelegate protocol

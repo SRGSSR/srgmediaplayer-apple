@@ -12,6 +12,6 @@
 
 @property (nonatomic, strong) Segment *segment;
 
-- (void)updateAppearanceWithTime:(CMTime)time;
+- (void)updateAppearanceWithTime:(CMTime)time identifier:(NSString *)identifier;
 
 @end
