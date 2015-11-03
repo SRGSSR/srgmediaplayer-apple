@@ -73,6 +73,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @property (readwrite, weak) id stateTransitionObserver;
 
+@property (nonatomic, getter=isPictureInPictureEnabledWhenAvailable) BOOL pictureInPictureEnabledWhenAvailable;
+
 @property (readonly) dispatch_source_t idleTimer;
 
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
@@ -110,6 +112,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	
 	_identifier = identifier;
 	_dataSource = dataSource;
+	
+	_pictureInPictureEnabledWhenAvailable = YES;
 	
 	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	self.periodicTimeObservers = [NSMutableDictionary dictionary];
@@ -910,8 +914,10 @@ static void LogProperties(id object)
         
         UIView *activityView = self.activityView ?: mediaPlayerView;
         [activityView addGestureRecognizer:self.activityGestureRecognizer];
-        
-        self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:mediaPlayerView.playerLayer];
+		
+		if (self.pictureInPictureEnabledWhenAvailable) {
+			self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:mediaPlayerView.playerLayer];
+		}
         
         _view = mediaPlayerView;
     }
@@ -957,6 +963,31 @@ static void LogProperties(id object)
 	else {
 		playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
 	}
+}
+
+#pragma mark - Picture in picture
+
+- (void)setPictureInPictureEnabledWhenAvailable:(BOOL)pictureInPictureEnabledWhenAvailable
+{
+	if (_pictureInPictureEnabledWhenAvailable == pictureInPictureEnabledWhenAvailable) {
+		return;
+	}
+	
+	_pictureInPictureEnabledWhenAvailable = pictureInPictureEnabledWhenAvailable;
+	
+	// Manage the PIP controller accordingly
+	if (_view) {
+		if (!pictureInPictureEnabledWhenAvailable) {
+			if (self.pictureInPictureController.pictureInPictureActive) {
+				[self.pictureInPictureController stopPictureInPicture];
+			}
+			self.pictureInPictureController = nil;
+		}
+		else if (!self.pictureInPictureController) {
+			self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerView.playerLayer];
+		}
+	}
+	
 }
 
 #pragma mark - Overlays
