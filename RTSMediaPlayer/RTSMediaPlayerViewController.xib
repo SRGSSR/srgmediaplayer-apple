@@ -11,7 +11,6 @@
                 <outlet property="loadingAcitivityIndicatorView" destination="z3p-uA-NWq" id="C5i-1t-xqK"/>
                 <outlet property="loadingLabel" destination="yUB-n6-aT0" id="YVj-aE-6vI"/>
                 <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="1fS-p7-nwe"/>
-                <outlet property="pictureInPictureButton" destination="NH0-ev-1HR" id="XN2-dR-rc1"/>
                 <outlet property="playPauseButton" destination="orZ-GR-Obh" id="has-wO-PCl"/>
                 <outlet property="timeLeftValueLabelWidthConstraint" destination="G8R-4I-uxy" id="wwA-Fb-CRF"/>
                 <outlet property="timeSlider" destination="dbP-gV-yjr" id="ICa-MM-Kcj"/>
@@ -171,16 +170,15 @@
                                 <constraint firstAttribute="height" constant="30" id="v8C-if-1dy"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NH0-ev-1HR" userLabel="PIP Button">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NH0-ev-1HR" userLabel="PIP Button" customClass="RTSPictureInPictureButton">
                             <rect key="frame" x="555" y="9" width="43" height="34"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="43" id="CnR-zb-Iat"/>
                                 <constraint firstAttribute="height" constant="34" id="lAW-4N-dHl"/>
                             </constraints>
-                            <state key="normal" image="picture_in_picture_start_button.png"/>
                             <connections>
-                                <action selector="togglePictureInPicture:" destination="-1" eventType="touchUpInside" id="NyP-q3-woB"/>
+                                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="hEL-3V-GIi"/>
                             </connections>
                         </button>
                     </subviews>
@@ -246,7 +244,4 @@
             </connections>
         </customObject>
     </objects>
-    <resources>
-        <image name="picture_in_picture_start_button.png" width="28" height="22"/>
-    </resources>
 </document>
