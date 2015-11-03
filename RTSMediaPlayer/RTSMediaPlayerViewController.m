@@ -32,6 +32,8 @@
 @property (weak) IBOutlet NSLayoutConstraint *valueLabelWidthConstraint;
 @property (weak) IBOutlet NSLayoutConstraint *timeLeftValueLabelWidthConstraint;
 
+@property (weak) IBOutlet UIButton *pictureInPictureButton;
+
 @end
 
 @implementation RTSMediaPlayerViewController
@@ -87,6 +89,8 @@
 	[self.liveButton setTitle:RTSMediaPlayerLocalizedString(@"Back to live", nil) forState:UIControlStateNormal];
 	self.liveButton.alpha = 0.f;
 	
+    self.pictureInPictureButton.hidden = (self.mediaPlayerController.pictureInPictureController == nil);
+    
 	self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
 	self.liveButton.layer.borderWidth = 1.f;
 	
@@ -205,6 +209,25 @@
 - (IBAction)seek:(id)sender
 {
 	[self updateLiveButton];
+}
+
+- (IBAction)togglePictureInPicture:(id)sender
+{
+    AVPictureInPictureController *pictureInPictureController = self.mediaPlayerController.pictureInPictureController;
+    if (!pictureInPictureController.pictureInPicturePossible) {
+        return;
+    }
+    
+    NSString *buttonImagePath = nil;
+    if (pictureInPictureController.pictureInPictureActive) {
+        buttonImagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"picture_in_picture_start_button" ofType:@"png"];
+        [pictureInPictureController stopPictureInPicture];
+    }
+    else {
+        buttonImagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"picture_in_picture_stop_button" ofType:@"png"];
+        [pictureInPictureController startPictureInPicture];
+    }
+    [self.pictureInPictureButton setImage:[UIImage imageWithContentsOfFile:buttonImagePath] forState:UIControlStateNormal];
 }
 
 @end

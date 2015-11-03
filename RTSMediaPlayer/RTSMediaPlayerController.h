@@ -6,6 +6,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <AVKit/AVKit.h>
 
 #import <SRGMediaPlayer/RTSMediaPlayerConstants.h>
 #import <SRGMediaPlayer/RTSMediaPlayerControllerDataSource.h>
@@ -272,5 +273,17 @@
  *  @param observer The time observer to remove
  */
 - (void)removePeriodicTimeObserver:(id)observer;
+
+@end
+
+/**
+ *  Picture in picture functionality (not available on all devices)
+ */
+@interface RTSMediaPlayerController (PictureInPicture)
+
+/**
+ *  Return the picture in picture controller if available, nil otherwise
+ */
+@property (nonatomic, readonly) AVPictureInPictureController *pictureInPictureController;
 
 @end

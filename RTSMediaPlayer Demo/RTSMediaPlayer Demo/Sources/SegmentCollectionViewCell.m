@@ -65,7 +65,6 @@
 		self.progressView.progress = 0.;
 		self.backgroundColor = [UIColor blackColor];
 	}
-	
 }
 
 @end
