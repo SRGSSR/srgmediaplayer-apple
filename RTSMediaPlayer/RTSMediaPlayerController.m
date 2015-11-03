@@ -1024,7 +1024,7 @@ static void LogProperties(id object)
 
 - (void)applicationWillResignActive:(NSNotification *)notification
 {
-	if ([self mediaType] == RTSMediaTypeVideo) {
+	if ([self mediaType] == RTSMediaTypeVideo && !self.pictureInPictureController.isPictureInPicturePossible) {
 		[self.player pause];
 		[self fireEvent:self.pauseEvent userInfo:nil];
 	}
