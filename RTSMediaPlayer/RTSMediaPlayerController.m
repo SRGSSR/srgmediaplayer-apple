@@ -980,12 +980,14 @@ static void LogProperties(id object)
 {
 	if (_pictureInPictureController) {
 		[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:RTSMediaPlayerPictureInPictureContext];
+        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:RTSMediaPlayerPictureInPictureContext];
 	}
 	
 	_pictureInPictureController = pictureInPictureController;
 	
 	if (pictureInPictureController) {
 		[pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:RTSMediaPlayerPictureInPictureContext];
+        [pictureInPictureController addObserver:self forKeyPath:@"pictureInPictureActive" options:NSKeyValueObservingOptionNew context:RTSMediaPlayerPictureInPictureContext];
 	}
 }
 
