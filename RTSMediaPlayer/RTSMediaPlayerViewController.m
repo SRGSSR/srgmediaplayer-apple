@@ -211,4 +211,23 @@
 	[self updateLiveButton];
 }
 
+- (IBAction)togglePictureInPicture:(id)sender
+{
+    AVPictureInPictureController *pictureInPictureController = self.mediaPlayerController.pictureInPictureController;
+    if (!pictureInPictureController.pictureInPicturePossible) {
+        return;
+    }
+    
+    NSString *buttonImagePath = nil;
+    if (pictureInPictureController.pictureInPictureActive) {
+        buttonImagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"picture_in_picture_start_button" ofType:@"png"];
+        [pictureInPictureController stopPictureInPicture];
+    }
+    else {
+        buttonImagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"picture_in_picture_stop_button" ofType:@"png"];
+        [pictureInPictureController startPictureInPicture];
+    }
+    [self.pictureInPictureButton setImage:[UIImage imageWithContentsOfFile:buttonImagePath] forState:UIControlStateNormal];
+}
+
 @end

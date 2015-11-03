@@ -179,6 +179,9 @@
                                 <constraint firstAttribute="height" constant="34" id="lAW-4N-dHl"/>
                             </constraints>
                             <state key="normal" image="picture_in_picture_start_button.png"/>
+                            <connections>
+                                <action selector="togglePictureInPicture:" destination="-1" eventType="touchUpInside" id="NyP-q3-woB"/>
+                            </connections>
                         </button>
                     </subviews>
                     <animations/>
