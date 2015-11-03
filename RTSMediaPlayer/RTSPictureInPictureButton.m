@@ -9,6 +9,8 @@
 #import "NSBundle+RTSMediaPlayer.h"
 #import "RTSMediaPlayerController.h"
 
+extern NSString * const RTSMediaPlayerPictureInPictureStateChangeNotification;
+
 static void commonInit(RTSPictureInPictureButton *self);
 
 @implementation RTSPictureInPictureButton
@@ -38,11 +40,11 @@ static void commonInit(RTSPictureInPictureButton *self);
 
 #pragma mark Getters and setters
 
-- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+- (void)setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
 	if (_mediaPlayerController) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self
-														name:RTSMediaPlayerPlaybackStateDidChangeNotification
+														name:RTSMediaPlayerPictureInPictureStateChangeNotification
 													  object:_mediaPlayerController];
 	}
 	
@@ -51,8 +53,8 @@ static void commonInit(RTSPictureInPictureButton *self);
 	
 	if (mediaPlayerController) {
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(mediaPlayerPlaybackStateDidChange:)
-													 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+												 selector:@selector(pictureInPictureStateDidChange:)
+													 name:RTSMediaPlayerPictureInPictureStateChangeNotification
 												   object:mediaPlayerController];
 	}
 }
@@ -96,7 +98,7 @@ static void commonInit(RTSPictureInPictureButton *self);
 
 #pragma mark Notifications
 
-- (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
+- (void)pictureInPictureStateDidChange:(NSNotification *)notification
 {
 	[self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
 }

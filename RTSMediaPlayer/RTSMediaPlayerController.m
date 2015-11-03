@@ -16,6 +16,8 @@
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSMediaPlayerLogger.h"
 
+static const void * const RTSMediaPlayerPictureInPictureContext = &RTSMediaPlayerPictureInPictureContext;
+
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
 NSTimeInterval const RTSMediaLiveTolerance = 30.0;		// same tolerance as built-in iOS player
 
@@ -23,6 +25,8 @@ NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
 
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
 NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFail";
+
+NSString * const RTSMediaPlayerPictureInPictureStateChangeNotification = @"RTSMediaPlayerPictureInPictureStateChangeNotification";
 
 NSString * const RTSMediaPlayerWillShowControlOverlaysNotification = @"RTSMediaPlayerWillShowControlOverlays";
 NSString * const RTSMediaPlayerDidShowControlOverlaysNotification = @"RTSMediaPlayerDidShowControlOverlays";
@@ -131,6 +135,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 - (void)dealloc
 {
 	[self reset];
+	
+	self.pictureInPictureController = nil;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self.stateTransitionObserver];
@@ -834,6 +840,9 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			[player play];
 		}
 	}
+	else if (context == RTSMediaPlayerPictureInPictureContext) {
+		[self postNotificationName:RTSMediaPlayerPictureInPictureStateChangeNotification userInfo:nil];
+	}
 	else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
@@ -967,6 +976,19 @@ static void LogProperties(id object)
 
 #pragma mark - Picture in picture
 
+- (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
+{
+	if (_pictureInPictureController) {
+		[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:RTSMediaPlayerPictureInPictureContext];
+	}
+	
+	_pictureInPictureController = pictureInPictureController;
+	
+	if (pictureInPictureController) {
+		[pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:RTSMediaPlayerPictureInPictureContext];
+	}
+}
+
 - (void)setPictureInPictureEnabledWhenAvailable:(BOOL)pictureInPictureEnabledWhenAvailable
 {
 	if (_pictureInPictureEnabledWhenAvailable == pictureInPictureEnabledWhenAvailable) {
@@ -988,6 +1010,7 @@ static void LogProperties(id object)
 		}
 	}
 	
+	[self postNotificationName:RTSMediaPlayerPictureInPictureStateChangeNotification userInfo:nil];
 }
 
 #pragma mark - Overlays
