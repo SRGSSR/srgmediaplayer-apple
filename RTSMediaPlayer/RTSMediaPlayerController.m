@@ -75,6 +75,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @property (readonly) dispatch_source_t idleTimer;
 
+@property (nonatomic) AVPictureInPictureController *pictureInPictureController;
+
 @end
 
 @implementation RTSMediaPlayerController
@@ -893,23 +895,28 @@ static void LogProperties(id object)
 
 - (UIView *)view
 {
-	if (!_view) {
-		_view = [RTSMediaPlayerView new];
-		_view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		
-		UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-		doubleTapGestureRecognizer.numberOfTapsRequired = 2;
-		[_view addGestureRecognizer:doubleTapGestureRecognizer];
-		
-		UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-		[singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
-		[_view addGestureRecognizer:singleTapGestureRecognizer];
-		
-		UIView *activityView = self.activityView ?: _view;
-		[activityView addGestureRecognizer:self.activityGestureRecognizer];
-	}
-	
-	return _view;
+    if (!_view) {
+        RTSMediaPlayerView *mediaPlayerView = [RTSMediaPlayerView new];
+        
+        mediaPlayerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+        doubleTapGestureRecognizer.numberOfTapsRequired = 2;
+        [mediaPlayerView addGestureRecognizer:doubleTapGestureRecognizer];
+        
+        UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+        [singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
+        [mediaPlayerView addGestureRecognizer:singleTapGestureRecognizer];
+        
+        UIView *activityView = self.activityView ?: mediaPlayerView;
+        [activityView addGestureRecognizer:self.activityGestureRecognizer];
+        
+        self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:mediaPlayerView.playerLayer];
+        
+        _view = mediaPlayerView;
+    }
+    
+    return _view;
 }
 
 - (RTSActivityGestureRecognizer *)activityGestureRecognizer
