@@ -1080,20 +1080,9 @@ static void LogProperties(id object)
 
 - (void)applicationWillResignActive:(NSNotification *)notification
 {
-	if ([self mediaType] == RTSMediaTypeVideo) {
-        if (self.pictureInPictureController.isPictureInPicturePossible) {
-            if (!self.pictureInPictureController.isPictureInPictureActive
-                    && (self.playbackState == RTSMediaPlaybackStatePlaying || self.playbackState == RTSMediaPlaybackStateSeeking)) {
-                // If the player controller is not attached to the main view of a view controller, putting the application in
-                // the background won't automatically switch to PiP. We need to do it manually. If the player view is the main
-                // view, starting the PiP twice does not hurt
-                [self.pictureInPictureController startPictureInPicture];
-            }
-        }
-        else {
-            [self.player pause];
-            [self fireEvent:self.pauseEvent userInfo:nil];
-        }
+	if ([self mediaType] == RTSMediaTypeVideo && !self.pictureInPictureController.isPictureInPicturePossible) {
+        [self.player pause];
+        [self fireEvent:self.pauseEvent userInfo:nil];
 	}
 }
 
