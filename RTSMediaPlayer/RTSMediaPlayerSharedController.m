@@ -6,6 +6,8 @@
 
 #import "RTSMediaPlayerSharedController.h"
 
+#import "RTSMediaPlayerViewController.h"
+
 @implementation RTSMediaPlayerSharedController
 
 - (instancetype)initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
@@ -18,7 +20,18 @@
 
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
-	NSLog(@"---> Restore");
+	if (! self.currentViewController) {
+		RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewController alloc] initWithContentIdentifier:self.identifier dataSource:self.dataSource];
+		UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+		if (rootViewController.presentedViewController) {
+			[rootViewController dismissViewControllerAnimated:YES completion:^{
+				[rootViewController presentViewController:mediaPlayerViewController animated:YES completion:nil];
+			}];
+		}
+		else {
+			[rootViewController presentViewController:mediaPlayerViewController animated:YES completion:nil];
+		}
+	}
 	completionHandler(YES);
 }
 
