@@ -10,6 +10,7 @@
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerPlaybackButton.h"
 #import "RTSPictureInPictureButton.h"
+#import "RTSPictureInPictureDelegate.h"
 #import "RTSPlaybackActivityIndicatorView.h"
 #import "RTSTimeSlider.h"
 #import "RTSVolumeView.h"

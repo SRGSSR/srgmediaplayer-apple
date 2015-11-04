@@ -89,6 +89,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @synthesize player = _player;
 @synthesize view = _view;
+@synthesize pictureInPictureController = _pictureInPictureController;
 @synthesize overlayViews = _overlayViews;
 @synthesize activityGestureRecognizer = _activityGestureRecognizer;
 @synthesize playbackState = _playbackState;
@@ -136,7 +137,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 {
 	[self reset];
 	
-	self.pictureInPictureController = nil;
+	[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:(void *)RTSMediaPlayerPictureInPictureContext];
+	[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:(void *)RTSMediaPlayerPictureInPictureContext];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self.stateTransitionObserver];
@@ -924,14 +926,20 @@ static void LogProperties(id object)
         UIView *activityView = self.activityView ?: mediaPlayerView;
         [activityView addGestureRecognizer:self.activityGestureRecognizer];
 		
-		if (self.pictureInPictureEnabledWhenAvailable) {
-			self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:mediaPlayerView.playerLayer];
-		}
-        
         _view = mediaPlayerView;
     }
     
     return _view;
+}
+
+- (AVPictureInPictureController *)pictureInPictureController
+{
+	if (!_pictureInPictureController) {
+		_pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerView.playerLayer];
+		[_pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPictureContext];
+		[_pictureInPictureController addObserver:self forKeyPath:@"pictureInPictureActive" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPictureContext];
+	}
+	return _pictureInPictureController;
 }
 
 - (RTSActivityGestureRecognizer *)activityGestureRecognizer
@@ -972,47 +980,6 @@ static void LogProperties(id object)
 	else {
 		playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
 	}
-}
-
-#pragma mark - Picture in picture
-
-- (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
-{
-	if (_pictureInPictureController) {
-		[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:(void *)RTSMediaPlayerPictureInPictureContext];
-        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:(void *)RTSMediaPlayerPictureInPictureContext];
-	}
-	
-	_pictureInPictureController = pictureInPictureController;
-	
-	if (pictureInPictureController) {
-		[pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPictureContext];
-        [pictureInPictureController addObserver:self forKeyPath:@"pictureInPictureActive" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPictureContext];
-	}
-}
-
-- (void)setPictureInPictureEnabledWhenAvailable:(BOOL)pictureInPictureEnabledWhenAvailable
-{
-	if (_pictureInPictureEnabledWhenAvailable == pictureInPictureEnabledWhenAvailable) {
-		return;
-	}
-	
-	_pictureInPictureEnabledWhenAvailable = pictureInPictureEnabledWhenAvailable;
-	
-	// Manage the PIP controller accordingly
-	if (_view) {
-		if (!pictureInPictureEnabledWhenAvailable) {
-			if (self.pictureInPictureController.pictureInPictureActive) {
-				[self.pictureInPictureController stopPictureInPicture];
-			}
-			self.pictureInPictureController = nil;
-		}
-		else if (!self.pictureInPictureController) {
-			self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerView.playerLayer];
-		}
-	}
-	
-	[self postNotificationName:RTSMediaPlayerPictureInPictureStateChangeNotification userInfo:nil];
 }
 
 #pragma mark - Overlays

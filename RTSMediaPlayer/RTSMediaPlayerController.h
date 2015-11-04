@@ -288,11 +288,6 @@
 @interface RTSMediaPlayerController (PictureInPicture)
 
 /**
- *  Set to YES to enable picture in picture for devices where it might be available (default is YES)
- */
-@property (nonatomic, getter=isPictureInPictureEnabledWhenAvailable) BOOL pictureInPictureEnabledWhenAvailable;
-
-/**
  *  Return the picture in picture controller if available, nil otherwise
  */
 @property (nonatomic, readonly) AVPictureInPictureController *pictureInPictureController;
