@@ -209,7 +209,10 @@ static RTSMediaPlayerController *s_mediaPlayerController = nil;
 
 - (IBAction)dismiss:(id)sender
 {
-	[s_mediaPlayerController reset];
+    if (!s_mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
+        [s_mediaPlayerController reset];
+    }
+    
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
