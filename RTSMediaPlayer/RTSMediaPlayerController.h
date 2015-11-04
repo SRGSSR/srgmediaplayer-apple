@@ -281,9 +281,9 @@
  *
  *  Remark: When the application is sent to the background, the behavior is the same as the vanilla picture in picture
  *          controller: If the managed player layer is the one of a view controller's root view ('full screen'), picture
- *          in picture is automatically enabled when switching to the background. Otherwise the player will be paused
- *          automatically, except if you start picture in picture yourself when the app goes to the background
- *          (by calling -[AVPictureInPictureController startPictureInPicture]
+ *          in picture is automatically enabled when switching to the background (provided the corresponding flag has been
+ *          enabled in the system settings). Otherwise the player will be paused automatically, except if you start picture 
+ *          in picture yourself when the app goes to the background (by calling -[AVPictureInPictureController startPictureInPicture]
  */
 @interface RTSMediaPlayerController (PictureInPicture)
 
