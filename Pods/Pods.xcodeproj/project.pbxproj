@@ -7,234 +7,236 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0012E94664265798913642D7CD7E770F /* RTSMediaPlayerIconTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 7401116E45A9527763A5BAEB9CE8FD7E /* RTSMediaPlayerIconTemplate.h */; };
+		02CF7BD7729EE029E6F628EF0E06EE32 /* RTSMediaSegmentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = C52F7369492DF97F717502838BA6452B /* RTSMediaSegmentsController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		02F9ACC263A68D789E2E73576773B8B4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
-		03797F6C10A2AEE5D60A2C2CD8771E04 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D5BE2B820CCC5A1AAF8454CF113E136 /* DDAbstractDatabaseLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		03C839530B2776A6D5CB0EC906CA8602 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D8466B268D42D69342FBC7E78CCCE71C /* EXTRuntimeExtensions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		04600F7CA523B6BC2D51DE20DF8F7F17 /* libextobjc-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 05FA82965BADDE7A3AC96083F9049815 /* libextobjc-dummy.m */; };
 		047AD5D33D2DB36B6B50110FF5309137 /* TKStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = 860D2197EFC049B02F5A0BC4982452AB /* TKStateMachine.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		04DB8AF1FF2519E18CEED27E0127B5A1 /* SDWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CF08DBACD41707E6E13EC8D23894BD /* SDWebImagePrefetcher.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		05F105BCDD0A4A20E5E5BEA40233D953 /* picture_in_picture_start_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D100903E69E6511B7814A1B524FDC47B /* picture_in_picture_start_button@2x.png */; };
-		074420D1740C18E2C11D2596A67ACE66 /* DDMultiFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = A07B0A0F90F7496F9358E9BA5973AFB3 /* DDMultiFormatter.h */; };
-		0809CCE3AF8252888DD76EC46E607A01 /* RTSMediaPlayerPlaybackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F00F45A6E90BC795ED352E5EE11865F /* RTSMediaPlayerPlaybackButton.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		0679C0984F8B8DADD9B9704E4672826D /* DDDispatchQueueLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41FF2AEF85B906D800B87975270738 /* DDDispatchQueueLogFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		072D256B116083F41893213F5B1BC346 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5BE2AE3112B65E7ACDC87B925F997CA /* RTSMediaPlayerController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		088D493E3FA4CF5345E25AE671A98847 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
 		09C7BA39943C92189550E84AAD5635FA /* picture_in_picture_stop_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0FB06FCF48D80F74802486FB86155052 /* picture_in_picture_stop_button@2x.png */; };
-		0DAFE23DF744786737599CB88F78DC29 /* RTSPictureInPictureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E60CBB4C103E8CCF7C3B58F44DCA9390 /* RTSPictureInPictureButton.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		11F79C400500D5ABC03FE08277A3218F /* DDDispatchQueueLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = DCF132FDCF55FDF5651EB47FAF02CBDD /* DDDispatchQueueLogFormatter.h */; };
+		0C44E884959751318B92CDFD7BAEE973 /* DDAbstractDatabaseLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 16F2A7AE82FB2D5B0F50C1C5C4C6B8AD /* DDAbstractDatabaseLogger.h */; };
+		0F05F19A18AB2AA523DD83B0126E0E28 /* RTSVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 400702C53C64669CBD877A33EC49BED9 /* RTSVolumeView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		0F0ABC449F67DB9571922B5735926A9E /* SRGMediaPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 47F60D80A92425F57B19BAC251531EAD /* SRGMediaPlayer-dummy.m */; };
+		0FEFDA83AA220D0B5B7CAF5A34D7BC8E /* DDASLLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = F3659D49CD0BEEAD062BB9796D6BC659 /* DDASLLogger.h */; };
+		15D11012C58E80D9A3170329695A4BF8 /* DDDispatchQueueLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = D9F66C1B11B323261C7DC5BCB7C67BA8 /* DDDispatchQueueLogFormatter.h */; };
+		17949C1896760500FCEF59C0103E3407 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 264EF1CF40486C7C951B04B5D76514B4 /* UIBezierPath+RTSMediaPlayerUtils.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		188144664E3FC65C907A26906D390903 /* RTSMediaPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 056EC11B1F8CFFB5A9500BE3D53D12F9 /* RTSMediaPlayerViewController.xib */; };
+		19B64B33F7EC9CC0A8DEBC5A12E0EB07 /* RTSTimeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = A8A23CBFF7721EFB625441BAFA79CFF3 /* RTSTimeSlider.h */; };
+		1D7D5BAAB4F0754B82AE1967F8E716A0 /* RTSSegmentedTimelineView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 351D2C34BA319392558FE05E3E3F5F2B /* RTSSegmentedTimelineView+Private.h */; };
 		205DB3A9E99C4B17387CB0B3A9BF2C5F /* metamacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 34963DE84DE201810E8A65B40899F365 /* metamacros.h */; };
-		2491E031D1CA6ACF7CFD03D765C5284B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
-		255616247A23274A15A5A5F5C001BB7D /* DDAbstractDatabaseLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CEF7B1949238B90777609F3C30E35C4 /* DDAbstractDatabaseLogger.h */; };
-		25C76C94EA2512422E52DD76F23A3DFF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
-		2A45ABE7AA44AD8308C0589B0D3B1973 /* RTSMediaSegmentsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E9931CEA1ED856BB16235A513FE0A2B /* RTSMediaSegmentsController.h */; };
-		2B6FA5532CC8163BB27EAE6AB113980B /* RTSActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = EA586D28FEB84070083798646E5B1ABE /* RTSActivityGestureRecognizer.h */; };
+		25F17A16CDBC9FAB793F18F4C131866E /* RTSPlaybackActivityIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BC1D48D7378B8E66B0FB28279F7907B /* RTSPlaybackActivityIndicatorView.h */; };
+		290872E12C6F3F523478FF9C6B2DFB05 /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = B287005B4ACCC017A145ED36F29EDDC0 /* DDASLLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		2B5D33FE9540128A01C41CB53AEB9477 /* DDAssertMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 403E56A651F20687B7E3D11358999A74 /* DDAssertMacros.h */; };
 		2C6AEC70A3E09CC7BD16C30B5B941981 /* SDWebImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ECFB2161C220584CD4F649E8EAE3896 /* SDWebImageManager.h */; };
-		2DC901CBFF417BF298A3F2F2558F41E7 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 3593B9C182FFE902FD31413C66F66358 /* DDLog.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		30F18479B87F8EA74AA9BFB6258585A8 /* DDASLLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = BFE19F2D2EC47FC4A02DEDC6B5A6F901 /* DDASLLogger.h */; };
+		2D3FD7D5FF2BBB3BE8CE07CD592DA5F5 /* RTSMediaPlayerConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = AB0030EF37E737CA924617BFD8879D6D /* RTSMediaPlayerConstants.h */; };
 		31EE4181BD044CEFC442E3EC7F30911C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
+		32E07D524D878484CE5BE7D125909881 /* DDContextFilterLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 080071470A13479EA7C1277AF3437AA4 /* DDContextFilterLogFormatter.h */; };
+		332AAB3985C1598AAB0DF47F1B4EC88A /* NSBundle+RTSMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D07C47900A4F6652B7FC0FD2FD5F90D /* NSBundle+RTSMediaPlayer.h */; };
+		35B8F694465ACE1AA4E15EB401B9D78A /* RTSMediaSegmentsController.h in Headers */ = {isa = PBXBuildFile; fileRef = F088C8F9C85D636B2AAF7859FA621583 /* RTSMediaSegmentsController.h */; };
 		3654E9155C6986E8E5A2B2228A3A75B6 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D1180321745BB3B3340C83CBA4A9F0 /* UIImageView+HighlightedWebCache.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		36D4A4260AB573E71FC63133ED51EE5C /* RTSPlaybackActivityIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8790EDE6F3A3E85847BDF0ADD6B52105 /* RTSPlaybackActivityIndicatorView.h */; };
 		37A315C532DA1A156F9676951702EFB9 /* SDWebImageDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 565D0DE3F083F3D803EE8CA97CDAECC5 /* SDWebImageDownloader.h */; };
-		38C8995F24BFB75AD7391844F9A9DDA4 /* NSBundle+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 895AABE3936D6BC631512954700AA02A /* NSBundle+RTSMediaPlayer.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		39219A48DA5F0F07E7EE89F51E4CB2E7 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 351296F3F84DF0203275D0024267BB86 /* NSData+ImageContentType.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		39F06FD5FC1BB3C8842229F5DC110162 /* RTSMediaPlayerSharedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BDC139524C2A6578586A2CD579C19B0 /* RTSMediaPlayerSharedController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		3B680104DFEEAC07F84CFB71E2F47C45 /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A55AE49A764E1C9190DB2836E7F0230 /* SDWebImageDownloader.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		3B71154DCAE67732640C392BEC397F3F /* RTSMediaFailureOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 195DF4EF7508AD1C3B99BFFF03AD3072 /* RTSMediaFailureOverlayView.h */; };
+		3BB851E7FAB3A7D06DD51E2051567749 /* RTSTimeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 20073BB03291089AA241D6E7E603DBDB /* RTSTimeSlider.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		3C50ABE4F9916821DD80C3B7F64E6756 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 800AB2378792B8E66DBCD8E8A899DE67 /* DDAbstractDatabaseLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		3D1C916C58C28519CF9F3328A19D8D84 /* RTSMediaPlayerControllerDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B353F669765230CC03573586EFAB101 /* RTSMediaPlayerControllerDataSource.h */; };
 		3E101EB9C3024E5438DCCC384FF942B9 /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 073CEF75A52937E6787FDA6EA3C9D1FA /* SDWebImageManager.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		3E9EA7915BFCB2FD7D39DA16FCB46E8E /* RTSPeriodicTimeObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D51EB80F3641076DE2AA9A39F80C6A2 /* RTSPeriodicTimeObserver.h */; };
-		460A8BBE394A83B3C42C544CCF4725FF /* RTSAirplayOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A734BD7652CD8511A635D293AC5AB8A8 /* RTSAirplayOverlayView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		441B103196F5B756B35876086132FA79 /* CocoaLumberjack-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AC9ABAF76C80C58EAF6698E91F06DCBE /* CocoaLumberjack-dummy.m */; };
+		465FFD135A92CA35538C5B4DE9CC8F40 /* DDMultiFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CA0ED75C3D63B1B5C123B7FBA825362 /* DDMultiFormatter.h */; };
 		46C6D0143AB94CDD866FB320B9DB3C14 /* NSData+ImageContentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 76C518201A486FCF7036C9F9DDBD593D /* NSData+ImageContentType.h */; };
 		46C9A38DB6B48F3545E24AC494E6B606 /* Pods-SRGMediaPlayer Demo-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E83C46437AFC017D901BB73B85892975 /* Pods-SRGMediaPlayer Demo-dummy.m */; };
 		484AE21F0F0F83F24A0C2604E0293B87 /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = C277115335E4939B34A795881E53ECE7 /* UIImage+GIF.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		4C7A1C330E7C2BACA5EF2CFF48564BF4 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3E2610725712B2D0976CAA1DD242BE /* UIImageView+WebCache.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		4EB1C9409FFB017D6D5C19A1EA4DBFDD /* DDASLLogCapture.h in Headers */ = {isa = PBXBuildFile; fileRef = 856BF69DE05F3A48F80C6DF2970E0DAA /* DDASLLogCapture.h */; };
+		4F98D00DDB02A6F0D37A26DDF01AC88D /* RTSVolumeView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C46FE5F25FFFBEE9AE2D45DEAB4C38F /* RTSVolumeView.h */; };
+		50183C0BCFF1D9005F4D435A67A447BE /* NSBundle+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D242D82029592A8E98E2FA4ECE6B6C5 /* NSBundle+RTSMediaPlayer.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		505651BE6DF50CBA5C6BE87452D20BCF /* UIImageView+HighlightedWebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = D8DD99E890B5B9C7A22168DCDFF7F2F2 /* UIImageView+HighlightedWebCache.h */; };
-		51CA06A5BDB911D02A1A99C52BCEC274 /* RTSMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D819456C1FC2DACAB16935CD400277B5 /* RTSMediaPlayerViewController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		55110E0C056C0E501CF913A6C367BF30 /* RTSMediaSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = 51C7996FF3AF533340D25138ED78D775 /* RTSMediaSegment.h */; };
-		56B82E7BC769F3898F967110EA4B7EBF /* RTSTimeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = BBA6FEEB8CE7143E11A8910268F8CCEE /* RTSTimeSlider.h */; };
+		5206EEF73CABDC08195AA921F524AFCF /* RTSMediaSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = 14DFFD9CD927A54AE441370B385AB98B /* RTSMediaSegment.h */; };
+		543404CF3C743EEDEF1CD1B605371682 /* DDLogMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 39C3B0892405B06E29674F176BA083A1 /* DDLogMacros.h */; };
+		5448005D72F55F3975CD2B924C6E6051 /* RTSSegmentedTimelineView.h in Headers */ = {isa = PBXBuildFile; fileRef = 97EFE6E671F52DD3A8FAEEB9FA58B82E /* RTSSegmentedTimelineView.h */; };
 		57FDB0D84B88BA790448FB0099B256FB /* UIImage+MultiFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = 6437C050025F1A8C69647B6744A18170 /* UIImage+MultiFormat.h */; };
 		59F641FBC88EE2EF39F40E40083E12BC /* UIImage+MultiFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A4ABBE282B6ED7636C16F53A6A30000 /* UIImage+MultiFormat.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		5B5760EF067CB93F57E0F827FD45D62A /* DDFileLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C3172257084ACE280B202C8367B6D6 /* DDFileLogger.h */; };
-		5D4EA216461A2AAD8160A9A99F459C4F /* RTSTimelineSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E6CF2902BC485BE183B287CA6FB5419 /* RTSTimelineSlider.h */; };
-		5E08757EA537152E1F91A37B9D8603CB /* RTSMediaPlayerIconTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A08AC993055523133C44132C9181FA6 /* RTSMediaPlayerIconTemplate.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		5CAE7A038FB4414BC21DFB474C67E525 /* RTSMediaPlayerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E2FCDA23A268315397258434AE37F99 /* RTSMediaPlayerController.h */; };
+		5E0BACBB0265E41F9800A97C8D227956 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCAD61057AB3F7974035DF81CEA77E6 /* DDLog.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		5E3DC39227AA175313E3CF5D5E713D2B /* RTSTimelineSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F5F31AD954B98C8A7CC088A6CA3F5A8 /* RTSTimelineSlider.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		5F3EE26F89DD06119073DD4557191BAA /* TKTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A68FBAD09BA03A479545F4676ECDD58F /* TKTransition.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		619EE4A61B952ADF7C4BD9A34F1912A4 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 864B1C63696B7E2DE8003BB6C1B2BFEC /* SDImageCache.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		6378C12BCABDE751BD86ADCD0305A3DD /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = A2194E0140915804BE28929F6BE44BDC /* EXTScope.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		64492A752A1DD1BAE51FE0C91E24A7C5 /* MAKVONotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 204262FB289DEB4D53784575A7A8218C /* MAKVONotificationCenter.h */; };
+		647E763CC2FAE7302CA4954AF0741CEF /* SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FF3FCDCA1615A9765C0E85BDD5DA7471 /* SRGMediaPlayer.h */; };
 		66DF0113456E0EF7B189E50B957C5A18 /* SDWebImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 75D358061BEF667798A47E62CA7244B9 /* SDWebImageDownloaderOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		683D4409569BB94EA3E3CA4B20630763 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DD298F4EF2F68C4B172982286D20D49 /* ImageIO.framework */; };
 		69A52474C005A51B3D728BB3F75603A8 /* TKEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBA82FA2A69F1475B025C8889D69269 /* TKEvent.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		6B6104A872717D464907DDA5127D55B7 /* SDWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = 4100F904FC83AEE7F55CF2F3BB3EEA91 /* SDWebImageCompat.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		6D5C0BF6F162433FDE02C6DA7D63998D /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = F6CED2C80E66082B12C6527506BB8BEA /* RTSActivityGestureRecognizer.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		712B3F3512E2F893F50DADF4739C91A9 /* MAKVONotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F5A4726E60E2E37D6072EC1C76692F9 /* MAKVONotificationCenter.h */; };
-		71BE8610F4814EDF8F39FB7C3175DC4D /* NSBundle+RTSMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D112FD82292D04A730C7BB48A01342E /* NSBundle+RTSMediaPlayer.h */; };
+		6BB3B276F0D93DFE7F2A3E109F8323D7 /* UIBezierPath+RTSMediaPlayerUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 032EC15783BEDB7B5D479EE8EBE3E7B4 /* UIBezierPath+RTSMediaPlayerUtils.h */; };
+		6BC1FE26BA876C5A2E4FEA5B6D48C3D5 /* RTSPictureInPictureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B820841A02E8960DC5C023B838567D2 /* RTSPictureInPictureButton.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		6E9B670F97443C0D876405C6AFD282C4 /* RTSActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 189A5793CF0C1550DFC7F841404467E1 /* RTSActivityGestureRecognizer.h */; };
+		70B2CE8895EC83D30627C52657FA1956 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
+		7334104E14F92CDF85EB379A18B17AF6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
 		73FD34365A5B80EC64B0B5A8E99AF46E /* TKState.h in Headers */ = {isa = PBXBuildFile; fileRef = A4F85A759F06DA2C165FC5F9C67479D9 /* TKState.h */; };
-		74A72CE87E1D2542B081987D590C0054 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D41FBFDCE84082026CCFDEFDC5D422B /* RTSMediaPlayerView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		751C7CA61D9FD97DF80431FC9050736F /* UIButton+WebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 442BD5A86D7383D426EA6C87AB86FA93 /* UIButton+WebCache.h */; };
+		75B514A3A91AAE791BAAA7D8567DF3C3 /* RTSMediaPlayerLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1626FEABA8322FAF7DB77965D0CD7D8D /* RTSMediaPlayerLogger.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		75D7CEA58A5F72C5F13499A11A573EEA /* SDWebImage-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 36868875BC2FD7CD9ACA53E772A68147 /* SDWebImage-dummy.m */; };
+		77D0A69BB15536F3701C1A804BCB303A /* RTSSegmentedTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58612FB52C5F6038F574466956E68D78 /* RTSSegmentedTimelineView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		7B4209F8A03EDFE35F5A2FE3E68A5F9E /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A9AF464109F811C1D056C2A88E808DD /* SDWebImageDecoder.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		7F47EBDA28826BDBD28A502091E9D9FD /* SDWebImagePrefetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D283561CA0E408531C1CA0651571381 /* SDWebImagePrefetcher.h */; };
-		8111483DFF2761B0DFF962A1F2CCFF01 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = A34CFAC8DDDFCF901D6B3306BA8F81E2 /* RTSMediaPlayerController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		82463068167CD868C00690F0FDE97F2F /* RTSMediaPlayerConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 76B494EECC9E24E91CB06AE3475E7074 /* RTSMediaPlayerConstants.h */; };
-		83CF1AF3486A0CB280C38035D82DE469 /* RTSMediaSegmentsDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 23E8FD958B89A90FBF0A59B78C46BB6F /* RTSMediaSegmentsDataSource.h */; };
+		844725E99C4D73C771071026134D54AD /* RTSMediaPlayerLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 0ADB0FC6F17DC2DDE4A7DEE2919DBA0E /* RTSMediaPlayerLogger.h */; };
 		84B20F9AD0AF3457B500F8BC35778D37 /* EXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = 372F3516A3AB19E2A41076CDC6F0D732 /* EXTScope.h */; };
 		8526C9EF4EE664BFA507C921AFACEF23 /* TransitionKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A3CCA72533E35C4376B1E8AECC9627F /* TransitionKit.h */; };
-		87101A3F32B76456A1DA6A53B94DA48C /* DDLegacyMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A49CC750FFF7DE75FFA9D08376CDB24 /* DDLegacyMacros.h */; };
+		87F16D7041A290EE0B6F4155AD415AD7 /* RTSMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C5955AC277987B258743C2C0ED9AA /* RTSMediaPlayerViewController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		8A5EF08B282C58B36C3CBAE52E4E9939 /* RTSPeriodicTimeObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 7AB00895DD9B386C6C50E7BD16FDDA4C /* RTSPeriodicTimeObserver.h */; };
+		8B185DF7227B0655745A5403AEAFA3AA /* MAKVONotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F4A9A142ED5E92D9AA87572495C4C9B /* MAKVONotificationCenter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		8B228D33BF43F2721D891A543294B9D4 /* EXTRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B4F749B699C8BECAFB9CFF3C5067E07 /* EXTRuntimeExtensions.h */; };
+		8B2D4A2BC3D2BE84507730F877769C22 /* RTSTimelineSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = E0A79048B88B2396CA8B241E4C370370 /* RTSTimelineSlider.h */; };
+		8C1DCA6320AEE2322D2B8F7C05D79CBC /* RTSMediaPlayerPlaybackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = AECB98CB48D8A54561231BA7CBF48754 /* RTSMediaPlayerPlaybackButton.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		8FCF03256348F725F5F693B90604004C /* DDLog+LOGV.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B721B922F5586521F2760D7AB0F6757 /* DDLog+LOGV.h */; };
 		8FE5788EF14F6E44BD11EA5B8C3C1587 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
 		90144EA34E633F7A8746D9C8BF0FF942 /* SDWebImageDownloaderOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 15D66C1B89B8779333C904B6E1F0FE50 /* SDWebImageDownloaderOperation.h */; };
-		92DD1D2420D5CDC9E8DC119774640582 /* MAKVONotificationCenter-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9C7597779CEFEB509A41C6CB3B7A8C /* MAKVONotificationCenter-dummy.m */; };
-		94A7B9B14481425C2DDCA7134B6CFE29 /* DDLogMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = E48B8D8C7A1D8B53264520564A9E74C0 /* DDLogMacros.h */; };
-		94C0F4FC0D64125FFCC0C8337FE0D8D9 /* RTSPictureInPictureButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 96657F7188FD7EA27D76049532897184 /* RTSPictureInPictureButton.h */; };
+		91CEA40D11B04A366C83E7AF3BA114E2 /* RTSMediaPlayerPlaybackButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D66C6E339957897EE46B8E416EA0B5D /* RTSMediaPlayerPlaybackButton.h */; };
+		922DBC3DCF77C0D696C257266CB1D143 /* RTSMediaPlayerSharedController.h in Headers */ = {isa = PBXBuildFile; fileRef = 567915E8F9E63D2C8346232AB3EE72BF /* RTSMediaPlayerSharedController.h */; };
 		94DFD50A9CA85C47AF2E0B5FE4ACF44C /* picture_in_picture_start_button.png in Resources */ = {isa = PBXBuildFile; fileRef = A014B558C4A4061CF12C0C8B7A10A83A /* picture_in_picture_start_button.png */; };
-		9519B2B0FD510DA51C50F98272C708DB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
-		9963F1022659847BC4689E340781A5F7 /* DDMultiFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 802E684068E098955EF33B966554232A /* DDMultiFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		99F872BB5976264AD7648F8F8252D8B5 /* TKTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = F0CB4E3EC1ACD76F2309A54B490DF091 /* TKTransition.h */; };
-		9AA0500C7701A5A4F5F52F9BD461A2C9 /* RTSMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F0034A76781F9D4E17C26CC9B5E6FC7 /* RTSMediaPlayerViewController.h */; };
-		9B697D1C9652FA7111984DA029295F18 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1576AF0FBEA908362154E9878A77C30D /* UIBezierPath+RTSMediaPlayerUtils.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		9BBFE9BD2DF389998A91D470A349E71E /* DDLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 96A667AAB780D9E6EF1E90494EF6EC3D /* DDLog.h */; };
 		9CBD70A4073CADEA85505099A2F048CA /* TKState.m in Sources */ = {isa = PBXBuildFile; fileRef = ED6E8C065CD2C3099D1687C1E5DAC818 /* TKState.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		9CEAF912C0F91A14185E10E19A017DAC /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB780FC546BBDF4EAB61B3344179BC4 /* UIButton+WebCache.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		9F8E7D22E8CBBB4BAB2F4E4C377730C3 /* DDDispatchQueueLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B4C76CB2B2A79A9CF1A1FAE8453E67D /* DDDispatchQueueLogFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		A18624854BE2A0655CB8429C39142F15 /* RTSAirplayOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4631E92BB7FE8AF5C6994BA2E47BB396 /* RTSAirplayOverlayView.h */; };
+		9F89FD79E2F149BD4EE130701C668623 /* RTSMediaPlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = F90E5F22DE1B7772D15C7D2181F439A6 /* RTSMediaPlayerView.h */; };
+		A3B2AC8EBC59348A469B097DAD252A9E /* RTSAirplayOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF01343011A89EEDFEAF6490ECE6EBD /* RTSAirplayOverlayView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		A45EDDA65D0E28ABE5FE5C83162EBCB8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
-		A693CDC5D9F0C58012C45266747069FB /* SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = BACA3231098D350CE7A03ABC07A2F8D0 /* SRGMediaPlayer.h */; };
 		A6EC3E1CCB6DC24720F3D5902677421E /* SDWebImageCompat.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CC3A4489FFEE078645C51D22848F697 /* SDWebImageCompat.h */; };
 		A886E6FAB67ED86C0345F5E99393B4E8 /* Pods-SRGMediaPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 636BDB57C616F0808016A2F49571D943 /* Pods-SRGMediaPlayer-dummy.m */; };
 		AAE115E50155948641D97F4C4782327B /* TKEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 40C40C0517D7C210D4A32215DEB225C1 /* TKEvent.h */; };
 		AB4F1FCA11D5B546C3190BA294F2D2CE /* picture_in_picture_stop_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0DD59F3B900845747AFAB5D3B59CFDF3 /* picture_in_picture_stop_button.png */; };
 		AD22FBED3B2F3B5E300F4631FF325B0D /* SDImageCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 20C7708C9D92468D5D2DD3A56794B5F4 /* SDImageCache.h */; };
 		AEF152DEB9D69B47F9BBF7E427E90A0E /* TKStateMachine.h in Headers */ = {isa = PBXBuildFile; fileRef = C7A3C431941CA5458B46FDA87ADD17E9 /* TKStateMachine.h */; };
-		AF20A60F61E3563DB250CD39835460A4 /* RTSMediaPlayerLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FD51A09A3C2FC9B4EFFE6B2050E923D /* RTSMediaPlayerLogger.h */; };
-		B01933A1EB15CBEC2D20C73746619223 /* RTSTimeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 54590C5E6A14B0A8AF87A770C481C830 /* RTSTimeSlider.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		B05D150682148F1DAA905BF987133F91 /* SRGMediaPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C59640B76A7EC3402C7CF18157B47930 /* SRGMediaPlayer-dummy.m */; };
+		B0C23F16EE03E58A231EDE2DF2176484 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
 		B108EF8640D45C3EC1F32CD7AC6DE75E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */; };
-		B4469C192E52E8BEBA817370FC01CC16 /* DDTTYLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = B7C4A5A149C2FA90527CF3411BB5A98A /* DDTTYLogger.h */; };
-		B46FE0B790F4178AC7259A1774A4DD45 /* RTSMediaPlayerError.h in Headers */ = {isa = PBXBuildFile; fileRef = 6539C7995A3FEF57D7337C23451BD382 /* RTSMediaPlayerError.h */; };
-		B60B316C1115818E805F389A5A5B554D /* RTSVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9937B3F391889B60BE1B138CBA48C1 /* RTSVolumeView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		B2AA4A0BD14417A8C3B9F25DCC3004CD /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64DD8198BA91362956E94FBA6C5F1D55 /* RTSMediaPlayerView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		B53B01F6239CAB7FA92952CAF5782046 /* RTSPeriodicTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D2B7E0825783E8B58132C973144BDFC /* RTSPeriodicTimeObserver.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		B8291EBC0CA538454602E54BDA92A1B7 /* TransitionKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 15854EBB45118A734AE77C8EFB408F10 /* TransitionKit-dummy.m */; };
 		B90A14A93102F84A5D15F196E5B6EBD0 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 590B20B4F330E1F5B20E76579FD368BD /* thumb_timeline_slider@2x.png */; };
 		B9B24F1882156B9384823BC873391481 /* UIView+WebCacheOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 605FCA5E9AB5C444FED020AAB684D140 /* UIView+WebCacheOperation.h */; };
-		C075A7A539DE42F0C6D3A6242794396D /* DDLog+LOGV.h in Headers */ = {isa = PBXBuildFile; fileRef = F2C1E2FB52E4E77133D85A9E67400115 /* DDLog+LOGV.h */; };
-		C2C3D7E5128186C2C4341103E7A3CEFD /* RTSMediaPlayerControllerDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 436D4D66998FEA9FC73205FDB7456D40 /* RTSMediaPlayerControllerDataSource.h */; };
+		BD165017B1FD88D53583F667406D6C4A /* RTSAirplayOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92A668E41EDE01AA8F07F342E71DE417 /* RTSAirplayOverlayView.h */; };
+		BDB754B571FE4D24074E4077B6DB9E59 /* RTSPlaybackActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCEED06CD71289211C6D0016C78F9557 /* RTSPlaybackActivityIndicatorView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		BF141AF8BCCD8F98282F4890D74811C7 /* RTSMediaPlayerIconTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFD8A35EB93AF8400B52C3237564FE56 /* RTSMediaPlayerIconTemplate.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		C266471307687F2C78DD5299710D6476 /* RTSMediaSegmentsDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = E63D7F8BC04EE5A49924B9CAC75EA2CB /* RTSMediaSegmentsDataSource.h */; };
+		C30B27C05BBD1D362797F8D346CF65CE /* RTSMediaPlayerError.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C708C12FCBEFA9D60A5658FC85CA376 /* RTSMediaPlayerError.h */; };
 		C32516863188EAD0CB8D27A796372599 /* UIImage+GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E1763D689FFF87A52680D3FDBBCCA2F /* UIImage+GIF.h */; };
-		CB56A3D3D7DF36CB191B69DEFE6B2523 /* RTSTimelineSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D954D8F29A00818993228C95C20B613 /* RTSTimelineSlider.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		CB66D85094EA6CC648F20D3C00D759BD /* RTSPlaybackActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 948D861ADF353CA9FFF5E99279D491AD /* RTSPlaybackActivityIndicatorView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		CC23A6B1EF29D5738DB7E6A4C4C5E6A9 /* UIBezierPath+RTSMediaPlayerUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 5D057E15586FC56B33048E8BAC095206 /* UIBezierPath+RTSMediaPlayerUtils.h */; };
-		CCC36C4F1FF3D03E1905352D0FD10F2D /* RTSMediaPlayerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FEF3BDF423D0FB8D1F1B10CAF3F0429 /* RTSMediaPlayerController.h */; };
-		CDBBE5A3FBF01CDB444069458F82B46D /* RTSMediaPlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9D9B1866A235E71D4A4730D5995B71 /* RTSMediaPlayerView.h */; };
+		C4DF8B928773C9389DD863AF9C94AE44 /* DDFileLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 60E8C22A158832359347FBF503904900 /* DDFileLogger.h */; };
+		C52CA98CF0B8721838FE71DBA2C57B61 /* RTSMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 4880246AD0F529BF3AA4BC70510AB8E4 /* RTSMediaPlayerViewController.h */; };
+		C6C1CE6F0FE7B9BCC376994B076C6A46 /* DDASLLogCapture.h in Headers */ = {isa = PBXBuildFile; fileRef = 45E98FDB33105E3209D272B148B1CE43 /* DDASLLogCapture.h */; };
+		CEC31FC415B209A86D1E3F3D987D1561 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E4F3CC0DB01EDD694C663935537E34A /* DDTTYLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		CF8333B5FEC0C76FD7155FE88D951248 /* SDWebImageDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = FF3208FF08E5445EB9E5049F4C5D94F3 /* SDWebImageDecoder.h */; };
-		CFE5C8E484C1A315DF15FC5A6AB290DC /* MAKVONotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEEDB0CCE1D7171BF2A14EA821DC4C0 /* MAKVONotificationCenter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		D013147D33DFD4BB07EF67356637EBD6 /* CocoaLumberjack-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C1182FBD91CE65DF92FCB250164E4F38 /* CocoaLumberjack-dummy.m */; };
-		D2FE045FE1246DD6BB381A36C5EE6618 /* RTSSegmentedTimelineView.h in Headers */ = {isa = PBXBuildFile; fileRef = 794487971C4FE2A25EE41624DA53C184 /* RTSSegmentedTimelineView.h */; };
-		D390F5404CF6C017394BFDF62B81C369 /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E9F3ACC7B6EABE2515A28E5F1A555204 /* DDASLLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		D3DB7356B0132F5A1B583821E57D8D2B /* RTSMediaPlayerPlaybackButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 238CF568DD97F6AE12AA74D3752867FC /* RTSMediaPlayerPlaybackButton.h */; };
-		D6EC088B52AC456294B52D9A10D3E1D8 /* DDLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E025924B7FFF696893FA9AED7414E0F /* DDLog.h */; };
-		DBD57F0F5A295A846AEE4059D4C574A0 /* DDContextFilterLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = C20A2D409BA46CBC7BA4ADB254B0599F /* DDContextFilterLogFormatter.h */; };
+		D8ABCFB7612D6B5A73C95097C86E8231 /* DDLegacyMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = E4DE4F89DAB8FA383B5E6F93DF5D5FE4 /* DDLegacyMacros.h */; };
+		D96011C1DAFA2097C63E40F4A755C651 /* MAKVONotificationCenter-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B55C3B9D3FCE1920190077B75294E12D /* MAKVONotificationCenter-dummy.m */; };
 		DFA903AEAA86C439F3771D76762EF9B1 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = D5587E079E37932F12CFD7D3DBDD14A3 /* UIView+WebCacheOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		E042F3EE15E5D06B958372257805F086 /* SDWebImageOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 1693790C9228360FA63950C2D796CFA5 /* SDWebImageOperation.h */; };
-		E163BC8D683AEF9616D52FE7400FDEF0 /* RTSMediaSegmentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29462A75A226AEB08A9D5569FF62068D /* RTSMediaSegmentsController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		E294203B4F3E88E7F9A26F1E2531662B /* RTSMediaFailureOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C547C034DB87B91FF685570712DACF /* RTSMediaFailureOverlayView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		E3252CB153EE98BECD740061C25EB2B6 /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = D6659B05639E62909E635CCBC9C64753 /* DDFileLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		E46543EBBF497AE9C145001B8A5B4190 /* DDASLLogCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = DF3C067A0564228D3BB6A38DBE49E1D0 /* DDASLLogCapture.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		E513793AAEFBA5BC0E1FFBA32F0F269E /* RTSSegmentedTimelineView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C4077BBB5D4B6181B8BD32DE0ABC3065 /* RTSSegmentedTimelineView+Private.h */; };
-		E56D3243C25496272BAAC8D2993040C9 /* DDContextFilterLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DA567F211197DCF017E9C1DEBE99A390 /* DDContextFilterLogFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		E6AC6B176D06529E3D96193BA337F919 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F5DBFBC5F68988572E653E56B24A710 /* DDTTYLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		EBFA8C50285CE31949D31FB83B6ECE38 /* RTSMediaPlayerIconTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 28CC448DF852D60C90DEA042E385E7DB /* RTSMediaPlayerIconTemplate.h */; };
-		ED85A4550324EFC28C3D086E5BBA6399 /* RTSPeriodicTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F3D8EF6266EBEF5F45CE74B858F28F4 /* RTSPeriodicTimeObserver.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		E19C86913CC96F2492DF2B1B30DF9361 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = F2C6DE5AF13B030160DA556A9B427A5C /* RTSActivityGestureRecognizer.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		E3569F4C706127E1D62D72E6EE081522 /* DDTTYLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 015E3785E55C1218B705344EF1718A74 /* DDTTYLogger.h */; };
+		E46F35C5104FC8B0206DA03DF9504D0B /* DDContextFilterLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BF281968A61358CDEEA742C606D84145 /* DDContextFilterLogFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		EAE1800BDD4DBD33DA58AF27A3727260 /* RTSMediaFailureOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3434004C31F95D4E4B8055462AB282 /* RTSMediaFailureOverlayView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		ED70CFE6ACD672EB77C53BE0863D58B3 /* RTSPictureInPictureButton.h in Headers */ = {isa = PBXBuildFile; fileRef = F4EE15BCD44D72AD0C4A93670B578410 /* RTSPictureInPictureButton.h */; };
 		EF2E5E9490743E84AEAD0DDCD300CF54 /* UIImageView+WebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 572E9757319756864DBF2880DCA92575 /* UIImageView+WebCache.h */; };
-		EF4BDEFAF75E54C83DADB5CA3D5BBF8D /* CocoaLumberjack.h in Headers */ = {isa = PBXBuildFile; fileRef = A6FD6EAFF3FB2C115C60C656510CE4B5 /* CocoaLumberjack.h */; };
 		EFC946653ABAC8A49619051ED3C854FE /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = 842E376D79BCE4B3566D04D8D3E00F32 /* thumb_timeline_slider.png */; };
+		EFFEC720BE18DF2D57725426E39DFCEC /* CocoaLumberjack.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EB4F1EB8C84A429B00E359621EE3696 /* CocoaLumberjack.h */; };
 		F05A25DF1CC9AE53BB4BB1D9E0F33775 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F63313E10A1A1E03793B79EDC66EBB28 /* Info.plist */; };
-		F09B792D730EB21AA48B6725560FA781 /* RTSMediaPlayerLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 114294C3E1C09F9B93965EA5F8ABAAD4 /* RTSMediaPlayerLogger.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		F4DE988BB0F91A58833DC6C4246A32EC /* RTSMediaFailureOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 144E6B217498B9B2469637901CE4FDF8 /* RTSMediaFailureOverlayView.h */; };
+		F4DEBB4A58A8FD4D2045ECA1D9BE1E96 /* DDMultiFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F85C53C026D7D822C8A19E113FB0605F /* DDMultiFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		F68036CF58587C3BA08E2FC793964432 /* DDASLLogCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B3B5C3CCC57CDE14E2D5BFA66B6A701 /* DDASLLogCapture.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		F7711D66D4A2F17A24AC9D7F4FCEA987 /* Pods-SRGMediaPlayerTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B85BEDC5434700DE04DB1B9C0D630F7 /* Pods-SRGMediaPlayerTests-dummy.m */; };
-		F96BDD049CC6879DC58CF9FA735A584D /* RTSVolumeView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5374A0D72CEB6C1B5A873BCC6A8C3C0E /* RTSVolumeView.h */; };
-		FE931DD708DA77DECADF02020F08221B /* DDAssertMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C446A8A3B52FBB30AEF91D4D575DA2A /* DDAssertMacros.h */; };
-		FFEC5E0972726D68404AC24E0BAB7556 /* RTSSegmentedTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = EE7632CD9A421EE90D2F806723176488 /* RTSSegmentedTimelineView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		FD71AE5B6579B94E4B6C6F419009986D /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 36128EB85EC9892A18C4B9A76E389A5B /* DDFileLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0646C5A719DDA560E9FB1142FF613274 /* PBXContainerItemProxy */ = {
+		20CF2CF6EF6575B2810CAB774D7AAA9E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 158117D77AED03B83733E51D2D22983B;
-			remoteInfo = TransitionKit;
+			remoteGlobalIDString = C5B09B2142282ACA7938339DB7CD5B3C;
+			remoteInfo = CocoaLumberjack;
 		};
-		06676D712B371D914334B4BE9111CEEE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 158117D77AED03B83733E51D2D22983B;
-			remoteInfo = TransitionKit;
-		};
-		088761C728AC3D2225FA440B27AF40F5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0EE5634CAD0D778C76414552FE5B44AB;
-			remoteInfo = libextobjc;
-		};
-		207A6F447090D100C64094FA480FD6FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D6A59060ED94BEFC862C14BDC135218B;
-			remoteInfo = SRGMediaPlayer;
-		};
-		2A8DBB7F8D20EFCD65BE8F70B5E44690 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0EE5634CAD0D778C76414552FE5B44AB;
-			remoteInfo = libextobjc;
-		};
-		63A07A52BDF51A0F35491A89D65F702F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0EE5634CAD0D778C76414552FE5B44AB;
-			remoteInfo = libextobjc;
-		};
-		65C7D0C2E527ABD0CA51B7642B60B3DC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0EE5634CAD0D778C76414552FE5B44AB;
-			remoteInfo = libextobjc;
-		};
-		6774D56831DDA8DB4CFA651DBEECFB70 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5352D432641F0656C90741034E32F31E;
-			remoteInfo = SDWebImage;
-		};
-		78A55822EAA748BB33B79071D69D5327 /* PBXContainerItemProxy */ = {
+		2BF37B950EB891D5961293B49B52B356 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 5562CCA2F1498FBFA646B509B7C8B1E9;
 			remoteInfo = "SRGMediaPlayer-SRGMediaPlayer";
 		};
-		B7DAC67D143372661467DA6C404A00FE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3A6D3D3009DB639820194C29418B2893;
-			remoteInfo = MAKVONotificationCenter;
-		};
-		EE9A58FA92BFFD35754B358CCA50FB55 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E0697E7D9638BAB4E91806AB9AB7A159;
-			remoteInfo = CocoaLumberjack;
-		};
-		F326E090EFD1867514351D1780A07FA9 /* PBXContainerItemProxy */ = {
+		343B48A75209AC049E9FD90AD8B75466 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 158117D77AED03B83733E51D2D22983B;
 			remoteInfo = TransitionKit;
 		};
-		FE1114F3391A2F7AED7D42E0EFE2FDBB /* PBXContainerItemProxy */ = {
+		50491350A09852AF8B7C4354512E8AC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EE5634CAD0D778C76414552FE5B44AB;
+			remoteInfo = libextobjc;
+		};
+		5D882F494FD9F24269F92D0A4E3FDC94 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 51755F9770ED957BB8C6F87624F40A7F;
+			remoteInfo = SRGMediaPlayer;
+		};
+		5DA2CA1E0E8A9B17ADA41906767D3B10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EE5634CAD0D778C76414552FE5B44AB;
+			remoteInfo = libextobjc;
+		};
+		90B6EA2E88405A1633011E933E0F9453 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 88E51F076557CBC967F2436E3C1D2EB3;
+			remoteInfo = MAKVONotificationCenter;
+		};
+		978C25123B2729D2DF826FC6A8912E0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EE5634CAD0D778C76414552FE5B44AB;
+			remoteInfo = libextobjc;
+		};
+		991E81AE55D059CDF3026F367637B733 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 158117D77AED03B83733E51D2D22983B;
+			remoteInfo = TransitionKit;
+		};
+		9D0ED8C7D59C3CFF7C861B99713ED3D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5352D432641F0656C90741034E32F31E;
+			remoteInfo = SDWebImage;
+		};
+		B596E55A8A8BAB64B1B627A43D9A2F40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0EE5634CAD0D778C76414552FE5B44AB;
+			remoteInfo = libextobjc;
+		};
+		B9C970904664348FF8885E4EB993E125 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 158117D77AED03B83733E51D2D22983B;
+			remoteInfo = TransitionKit;
+		};
+		C3945F1E8B495EBE54A800AF317C85FA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
@@ -244,182 +246,184 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		015E3785E55C1218B705344EF1718A74 /* DDTTYLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDTTYLogger.h; path = Classes/DDTTYLogger.h; sourceTree = "<group>"; };
 		025ABE1CFD4642B02B7B1A5A449E437C /* MAKVONotificationCenter-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MAKVONotificationCenter-prefix.pch"; sourceTree = "<group>"; };
-		03C3172257084ACE280B202C8367B6D6 /* DDFileLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDFileLogger.h; path = Classes/DDFileLogger.h; sourceTree = "<group>"; };
+		032EC15783BEDB7B5D479EE8EBE3E7B4 /* UIBezierPath+RTSMediaPlayerUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+RTSMediaPlayerUtils.h"; sourceTree = "<group>"; };
 		056EC11B1F8CFFB5A9500BE3D53D12F9 /* RTSMediaPlayerViewController.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; path = RTSMediaPlayerViewController.xib; sourceTree = "<group>"; };
 		05FA82965BADDE7A3AC96083F9049815 /* libextobjc-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "libextobjc-dummy.m"; sourceTree = "<group>"; };
 		073CEF75A52937E6787FDA6EA3C9D1FA /* SDWebImageManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageManager.m; path = SDWebImage/SDWebImageManager.m; sourceTree = "<group>"; };
 		0756AE602888F4A14C5C6C975B353226 /* libextobjc-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "libextobjc-Private.xcconfig"; sourceTree = "<group>"; };
+		080071470A13479EA7C1277AF3437AA4 /* DDContextFilterLogFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDContextFilterLogFormatter.h; path = Classes/Extensions/DDContextFilterLogFormatter.h; sourceTree = "<group>"; };
+		0ADB0FC6F17DC2DDE4A7DEE2919DBA0E /* RTSMediaPlayerLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerLogger.h; sourceTree = "<group>"; };
+		0BC1D48D7378B8E66B0FB28279F7907B /* RTSPlaybackActivityIndicatorView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSPlaybackActivityIndicatorView.h; sourceTree = "<group>"; };
 		0BCB417AC8229AC7A9314CD82F001A95 /* CocoaLumberjack.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = CocoaLumberjack.xcconfig; sourceTree = "<group>"; };
-		0D5BE2B820CCC5A1AAF8454CF113E136 /* DDAbstractDatabaseLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDAbstractDatabaseLogger.m; path = Classes/DDAbstractDatabaseLogger.m; sourceTree = "<group>"; };
+		0D66C6E339957897EE46B8E416EA0B5D /* RTSMediaPlayerPlaybackButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerPlaybackButton.h; sourceTree = "<group>"; };
 		0DD59F3B900845747AFAB5D3B59CFDF3 /* picture_in_picture_stop_button.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = picture_in_picture_stop_button.png; sourceTree = "<group>"; };
 		0E9C1F56F013BABE62FDBD5A7D31E033 /* Pods-SRGMediaPlayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0FB06FCF48D80F74802486FB86155052 /* picture_in_picture_stop_button@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "picture_in_picture_stop_button@2x.png"; sourceTree = "<group>"; };
-		0FD51A09A3C2FC9B4EFFE6B2050E923D /* RTSMediaPlayerLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerLogger.h; sourceTree = "<group>"; };
-		114294C3E1C09F9B93965EA5F8ABAAD4 /* RTSMediaPlayerLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerLogger.m; sourceTree = "<group>"; };
-		1576AF0FBEA908362154E9878A77C30D /* UIBezierPath+RTSMediaPlayerUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+RTSMediaPlayerUtils.m"; sourceTree = "<group>"; };
+		144E6B217498B9B2469637901CE4FDF8 /* RTSMediaFailureOverlayView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaFailureOverlayView.h; sourceTree = "<group>"; };
+		14DFFD9CD927A54AE441370B385AB98B /* RTSMediaSegment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegment.h; sourceTree = "<group>"; };
 		15854EBB45118A734AE77C8EFB408F10 /* TransitionKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TransitionKit-dummy.m"; sourceTree = "<group>"; };
 		15D66C1B89B8779333C904B6E1F0FE50 /* SDWebImageDownloaderOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageDownloaderOperation.h; path = SDWebImage/SDWebImageDownloaderOperation.h; sourceTree = "<group>"; };
+		1626FEABA8322FAF7DB77965D0CD7D8D /* RTSMediaPlayerLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerLogger.m; sourceTree = "<group>"; };
 		1693790C9228360FA63950C2D796CFA5 /* SDWebImageOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageOperation.h; path = SDWebImage/SDWebImageOperation.h; sourceTree = "<group>"; };
+		16B005CD23AB982BD8B4556A296EEFB2 /* libCocoaLumberjack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCocoaLumberjack.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		16F2A7AE82FB2D5B0F50C1C5C4C6B8AD /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDAbstractDatabaseLogger.h; path = Classes/DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
 		17F8A04954D9FEF149D3118487F1F2D7 /* Pods-SRGMediaPlayer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SRGMediaPlayer-acknowledgements.markdown"; sourceTree = "<group>"; };
-		195DF4EF7508AD1C3B99BFFF03AD3072 /* RTSMediaFailureOverlayView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaFailureOverlayView.h; sourceTree = "<group>"; };
-		1CEF7B1949238B90777609F3C30E35C4 /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDAbstractDatabaseLogger.h; path = Classes/DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
-		1D112FD82292D04A730C7BB48A01342E /* NSBundle+RTSMediaPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSBundle+RTSMediaPlayer.h"; sourceTree = "<group>"; };
-		1E025924B7FFF696893FA9AED7414E0F /* DDLog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDLog.h; path = Classes/DDLog.h; sourceTree = "<group>"; };
+		189A5793CF0C1550DFC7F841404467E1 /* RTSActivityGestureRecognizer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSActivityGestureRecognizer.h; sourceTree = "<group>"; };
+		1D07C47900A4F6652B7FC0FD2FD5F90D /* NSBundle+RTSMediaPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSBundle+RTSMediaPlayer.h"; sourceTree = "<group>"; };
 		1EBA009B7851166A14A80E5BB81451DD /* liblibextobjc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibextobjc.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EBEDA09A32A7E821A30FA13A1ACF37E /* MAKVONotificationCenter-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "MAKVONotificationCenter-Private.xcconfig"; sourceTree = "<group>"; };
+		20073BB03291089AA241D6E7E603DBDB /* RTSTimeSlider.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSTimeSlider.m; sourceTree = "<group>"; };
+		204262FB289DEB4D53784575A7A8218C /* MAKVONotificationCenter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MAKVONotificationCenter.h; sourceTree = "<group>"; };
 		20C7708C9D92468D5D2DD3A56794B5F4 /* SDImageCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDImageCache.h; path = SDWebImage/SDImageCache.h; sourceTree = "<group>"; };
-		238CF568DD97F6AE12AA74D3752867FC /* RTSMediaPlayerPlaybackButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerPlaybackButton.h; sourceTree = "<group>"; };
-		23E8FD958B89A90FBF0A59B78C46BB6F /* RTSMediaSegmentsDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegmentsDataSource.h; sourceTree = "<group>"; };
+		264EF1CF40486C7C951B04B5D76514B4 /* UIBezierPath+RTSMediaPlayerUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+RTSMediaPlayerUtils.m"; sourceTree = "<group>"; };
 		273033C3C53DC628ED86B0ABBC149030 /* Pods-SRGMediaPlayer Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayer Demo.debug.xcconfig"; sourceTree = "<group>"; };
-		28CC448DF852D60C90DEA042E385E7DB /* RTSMediaPlayerIconTemplate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerIconTemplate.h; sourceTree = "<group>"; };
-		29462A75A226AEB08A9D5569FF62068D /* RTSMediaSegmentsController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaSegmentsController.m; sourceTree = "<group>"; };
 		2A6CC3664ED1B896D25F581A847DA7C3 /* TransitionKit-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "TransitionKit-Private.xcconfig"; sourceTree = "<group>"; };
+		2B820841A02E8960DC5C023B838567D2 /* RTSPictureInPictureButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSPictureInPictureButton.m; sourceTree = "<group>"; };
 		2BB6052148A181DB1F63EBB70F0F7E02 /* Pods-SRGMediaPlayer Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayer Demo.release.xcconfig"; sourceTree = "<group>"; };
+		2BDC139524C2A6578586A2CD579C19B0 /* RTSMediaPlayerSharedController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerSharedController.m; sourceTree = "<group>"; };
+		2D242D82029592A8E98E2FA4ECE6B6C5 /* NSBundle+RTSMediaPlayer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+RTSMediaPlayer.m"; sourceTree = "<group>"; };
 		2D283561CA0E408531C1CA0651571381 /* SDWebImagePrefetcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImagePrefetcher.h; path = SDWebImage/SDWebImagePrefetcher.h; sourceTree = "<group>"; };
 		2DA8958B37D430EEDDB663E2AFD42E60 /* Pods-SRGMediaPlayer Demo-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SRGMediaPlayer Demo-acknowledgements.plist"; sourceTree = "<group>"; };
 		2EBA82FA2A69F1475B025C8889D69269 /* TKEvent.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TKEvent.m; path = Code/TKEvent.m; sourceTree = "<group>"; };
-		2F3D8EF6266EBEF5F45CE74B858F28F4 /* RTSPeriodicTimeObserver.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSPeriodicTimeObserver.m; sourceTree = "<group>"; };
 		34963DE84DE201810E8A65B40899F365 /* metamacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = metamacros.h; path = extobjc/metamacros.h; sourceTree = "<group>"; };
 		351296F3F84DF0203275D0024267BB86 /* NSData+ImageContentType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSData+ImageContentType.m"; path = "SDWebImage/NSData+ImageContentType.m"; sourceTree = "<group>"; };
-		3593B9C182FFE902FD31413C66F66358 /* DDLog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDLog.m; path = Classes/DDLog.m; sourceTree = "<group>"; };
+		351D2C34BA319392558FE05E3E3F5F2B /* RTSSegmentedTimelineView+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RTSSegmentedTimelineView+Private.h"; sourceTree = "<group>"; };
+		36128EB85EC9892A18C4B9A76E389A5B /* DDFileLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDFileLogger.m; path = Classes/DDFileLogger.m; sourceTree = "<group>"; };
 		36868875BC2FD7CD9ACA53E772A68147 /* SDWebImage-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SDWebImage-dummy.m"; sourceTree = "<group>"; };
 		372F3516A3AB19E2A41076CDC6F0D732 /* EXTScope.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXTScope.h; path = extobjc/EXTScope.h; sourceTree = "<group>"; };
+		39C3B0892405B06E29674F176BA083A1 /* DDLogMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDLogMacros.h; path = Classes/DDLogMacros.h; sourceTree = "<group>"; };
 		3A55AE49A764E1C9190DB2836E7F0230 /* SDWebImageDownloader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDownloader.m; path = SDWebImage/SDWebImageDownloader.m; sourceTree = "<group>"; };
+		3CA0ED75C3D63B1B5C123B7FBA825362 /* DDMultiFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDMultiFormatter.h; path = Classes/Extensions/DDMultiFormatter.h; sourceTree = "<group>"; };
 		3CC3A4489FFEE078645C51D22848F697 /* SDWebImageCompat.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageCompat.h; path = SDWebImage/SDWebImageCompat.h; sourceTree = "<group>"; };
 		3E119B0F4116DC0AAAFF27AE397B99FD /* Pods-SRGMediaPlayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayerTests.release.xcconfig"; sourceTree = "<group>"; };
-		3E6CF2902BC485BE183B287CA6FB5419 /* RTSTimelineSlider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSTimelineSlider.h; sourceTree = "<group>"; };
-		3F5A4726E60E2E37D6072EC1C76692F9 /* MAKVONotificationCenter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MAKVONotificationCenter.h; sourceTree = "<group>"; };
+		400702C53C64669CBD877A33EC49BED9 /* RTSVolumeView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSVolumeView.m; sourceTree = "<group>"; };
+		403E56A651F20687B7E3D11358999A74 /* DDAssertMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDAssertMacros.h; path = Classes/DDAssertMacros.h; sourceTree = "<group>"; };
 		40C40C0517D7C210D4A32215DEB225C1 /* TKEvent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TKEvent.h; path = Code/TKEvent.h; sourceTree = "<group>"; };
 		4100F904FC83AEE7F55CF2F3BB3EEA91 /* SDWebImageCompat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageCompat.m; path = SDWebImage/SDWebImageCompat.m; sourceTree = "<group>"; };
-		436D4D66998FEA9FC73205FDB7456D40 /* RTSMediaPlayerControllerDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerControllerDataSource.h; sourceTree = "<group>"; };
 		442BD5A86D7383D426EA6C87AB86FA93 /* UIButton+WebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIButton+WebCache.h"; path = "SDWebImage/UIButton+WebCache.h"; sourceTree = "<group>"; };
-		4631E92BB7FE8AF5C6994BA2E47BB396 /* RTSAirplayOverlayView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSAirplayOverlayView.h; sourceTree = "<group>"; };
+		45E98FDB33105E3209D272B148B1CE43 /* DDASLLogCapture.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDASLLogCapture.h; path = Classes/DDASLLogCapture.h; sourceTree = "<group>"; };
+		47F60D80A92425F57B19BAC251531EAD /* SRGMediaPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SRGMediaPlayer-dummy.m"; sourceTree = "<group>"; };
+		48002281E6A068508FE20261C6446058 /* libMAKVONotificationCenter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMAKVONotificationCenter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		4880246AD0F529BF3AA4BC70510AB8E4 /* RTSMediaPlayerViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerViewController.h; sourceTree = "<group>"; };
 		49A3370151660DFD4A3A845CF1285069 /* MAKVONotificationCenter.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MAKVONotificationCenter.xcconfig; sourceTree = "<group>"; };
 		49AE359CF6B4A4E9EDF83F8EB50783D3 /* Pods-SRGMediaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayer.release.xcconfig"; sourceTree = "<group>"; };
-		4A49CC750FFF7DE75FFA9D08376CDB24 /* DDLegacyMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDLegacyMacros.h; path = Classes/DDLegacyMacros.h; sourceTree = "<group>"; };
 		4A9AF464109F811C1D056C2A88E808DD /* SDWebImageDecoder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDecoder.m; path = SDWebImage/SDWebImageDecoder.m; sourceTree = "<group>"; };
 		4B4F749B699C8BECAFB9CFF3C5067E07 /* EXTRuntimeExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXTRuntimeExtensions.h; path = extobjc/EXTRuntimeExtensions.h; sourceTree = "<group>"; };
 		4E37F47F8B8CC9C91B39061A7536E3E9 /* libTransitionKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTransitionKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		50249AA5891B8CB66281D3FB9B20F91C /* CocoaLumberjack-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CocoaLumberjack-prefix.pch"; sourceTree = "<group>"; };
-		5084AF52281C65C56978EEDCA012C567 /* libMAKVONotificationCenter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMAKVONotificationCenter.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		51C7996FF3AF533340D25138ED78D775 /* RTSMediaSegment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegment.h; sourceTree = "<group>"; };
-		5374A0D72CEB6C1B5A873BCC6A8C3C0E /* RTSVolumeView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSVolumeView.h; sourceTree = "<group>"; };
-		54590C5E6A14B0A8AF87A770C481C830 /* RTSTimeSlider.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSTimeSlider.m; sourceTree = "<group>"; };
 		565D0DE3F083F3D803EE8CA97CDAECC5 /* SDWebImageDownloader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageDownloader.h; path = SDWebImage/SDWebImageDownloader.h; sourceTree = "<group>"; };
+		567915E8F9E63D2C8346232AB3EE72BF /* RTSMediaPlayerSharedController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerSharedController.h; sourceTree = "<group>"; };
 		572E9757319756864DBF2880DCA92575 /* UIImageView+WebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+WebCache.h"; path = "SDWebImage/UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		579F4CC2050D6A5CFC6C331429B6A926 /* TransitionKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TransitionKit.xcconfig; sourceTree = "<group>"; };
+		58612FB52C5F6038F574466956E68D78 /* RTSSegmentedTimelineView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSSegmentedTimelineView.m; sourceTree = "<group>"; };
 		58F6D2C0397D6542A2A779C187096AFE /* Pods-SRGMediaPlayer Demo-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SRGMediaPlayer Demo-acknowledgements.markdown"; sourceTree = "<group>"; };
 		590B20B4F330E1F5B20E76579FD368BD /* thumb_timeline_slider@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "thumb_timeline_slider@2x.png"; sourceTree = "<group>"; };
-		5A08AC993055523133C44132C9181FA6 /* RTSMediaPlayerIconTemplate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerIconTemplate.m; sourceTree = "<group>"; };
-		5B4C76CB2B2A79A9CF1A1FAE8453E67D /* DDDispatchQueueLogFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDDispatchQueueLogFormatter.m; path = Classes/Extensions/DDDispatchQueueLogFormatter.m; sourceTree = "<group>"; };
-		5D057E15586FC56B33048E8BAC095206 /* UIBezierPath+RTSMediaPlayerUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+RTSMediaPlayerUtils.h"; sourceTree = "<group>"; };
-		5D954D8F29A00818993228C95C20B613 /* RTSTimelineSlider.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineSlider.m; sourceTree = "<group>"; };
-		5E9D9B1866A235E71D4A4730D5995B71 /* RTSMediaPlayerView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerView.h; sourceTree = "<group>"; };
+		5B7C5955AC277987B258743C2C0ED9AA /* RTSMediaPlayerViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerViewController.m; sourceTree = "<group>"; };
 		5ECFB2161C220584CD4F649E8EAE3896 /* SDWebImageManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageManager.h; path = SDWebImage/SDWebImageManager.h; sourceTree = "<group>"; };
+		5FF01343011A89EEDFEAF6490ECE6EBD /* RTSAirplayOverlayView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSAirplayOverlayView.m; sourceTree = "<group>"; };
 		605FCA5E9AB5C444FED020AAB684D140 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIView+WebCacheOperation.h"; path = "SDWebImage/UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
+		60E8C22A158832359347FBF503904900 /* DDFileLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDFileLogger.h; path = Classes/DDFileLogger.h; sourceTree = "<group>"; };
 		636BDB57C616F0808016A2F49571D943 /* Pods-SRGMediaPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SRGMediaPlayer-dummy.m"; sourceTree = "<group>"; };
 		6437C050025F1A8C69647B6744A18170 /* UIImage+MultiFormat.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+MultiFormat.h"; path = "SDWebImage/UIImage+MultiFormat.h"; sourceTree = "<group>"; };
-		6539C7995A3FEF57D7337C23451BD382 /* RTSMediaPlayerError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerError.h; sourceTree = "<group>"; };
+		64DD8198BA91362956E94FBA6C5F1D55 /* RTSMediaPlayerView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerView.m; sourceTree = "<group>"; };
 		68F12CB1199756ED0088E7AFD54AC4C2 /* libextobjc-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "libextobjc-prefix.pch"; sourceTree = "<group>"; };
 		6B3E2610725712B2D0976CAA1DD242BE /* UIImageView+WebCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+WebCache.m"; path = "SDWebImage/UIImageView+WebCache.m"; sourceTree = "<group>"; };
-		6D41FBFDCE84082026CCFDEFDC5D422B /* RTSMediaPlayerView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerView.m; sourceTree = "<group>"; };
-		6D51EB80F3641076DE2AA9A39F80C6A2 /* RTSPeriodicTimeObserver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSPeriodicTimeObserver.h; sourceTree = "<group>"; };
 		6DD298F4EF2F68C4B172982286D20D49 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/ImageIO.framework; sourceTree = DEVELOPER_DIR; };
-		6E9931CEA1ED856BB16235A513FE0A2B /* RTSMediaSegmentsController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegmentsController.h; sourceTree = "<group>"; };
-		6FEF3BDF423D0FB8D1F1B10CAF3F0429 /* RTSMediaPlayerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerController.h; sourceTree = "<group>"; };
-		7216AD1C026B0B87B8DE400C40877CD3 /* SRGMediaPlayer.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SRGMediaPlayer.xcconfig; sourceTree = "<group>"; };
+		6EB4F1EB8C84A429B00E359621EE3696 /* CocoaLumberjack.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CocoaLumberjack.h; path = Classes/CocoaLumberjack.h; sourceTree = "<group>"; };
+		7401116E45A9527763A5BAEB9CE8FD7E /* RTSMediaPlayerIconTemplate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerIconTemplate.h; sourceTree = "<group>"; };
 		75D31824DE68061EF20C01F318D87233 /* SDWebImage-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "SDWebImage-Private.xcconfig"; sourceTree = "<group>"; };
 		75D358061BEF667798A47E62CA7244B9 /* SDWebImageDownloaderOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDownloaderOperation.m; path = SDWebImage/SDWebImageDownloaderOperation.m; sourceTree = "<group>"; };
-		76B494EECC9E24E91CB06AE3475E7074 /* RTSMediaPlayerConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerConstants.h; sourceTree = "<group>"; };
 		76C518201A486FCF7036C9F9DDBD593D /* NSData+ImageContentType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSData+ImageContentType.h"; path = "SDWebImage/NSData+ImageContentType.h"; sourceTree = "<group>"; };
-		794487971C4FE2A25EE41624DA53C184 /* RTSSegmentedTimelineView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSSegmentedTimelineView.h; sourceTree = "<group>"; };
 		7A0304F062936C66730C1E5249E9D32F /* Pods-SRGMediaPlayerTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SRGMediaPlayerTests-resources.sh"; sourceTree = "<group>"; };
 		7A4ABBE282B6ED7636C16F53A6A30000 /* UIImage+MultiFormat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+MultiFormat.m"; path = "SDWebImage/UIImage+MultiFormat.m"; sourceTree = "<group>"; };
+		7AB00895DD9B386C6C50E7BD16FDDA4C /* RTSPeriodicTimeObserver.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSPeriodicTimeObserver.h; sourceTree = "<group>"; };
+		7B353F669765230CC03573586EFAB101 /* RTSMediaPlayerControllerDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerControllerDataSource.h; sourceTree = "<group>"; };
+		7B3B5C3CCC57CDE14E2D5BFA66B6A701 /* DDASLLogCapture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDASLLogCapture.m; path = Classes/DDASLLogCapture.m; sourceTree = "<group>"; };
 		7B85BEDC5434700DE04DB1B9C0D630F7 /* Pods-SRGMediaPlayerTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SRGMediaPlayerTests-dummy.m"; sourceTree = "<group>"; };
 		7E1763D689FFF87A52680D3FDBBCCA2F /* UIImage+GIF.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+GIF.h"; path = "SDWebImage/UIImage+GIF.h"; sourceTree = "<group>"; };
-		7FEEDB0CCE1D7171BF2A14EA821DC4C0 /* MAKVONotificationCenter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MAKVONotificationCenter.m; sourceTree = "<group>"; };
-		802E684068E098955EF33B966554232A /* DDMultiFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDMultiFormatter.m; path = Classes/Extensions/DDMultiFormatter.m; sourceTree = "<group>"; };
+		800AB2378792B8E66DBCD8E8A899DE67 /* DDAbstractDatabaseLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDAbstractDatabaseLogger.m; path = Classes/DDAbstractDatabaseLogger.m; sourceTree = "<group>"; };
 		842E376D79BCE4B3566D04D8D3E00F32 /* thumb_timeline_slider.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = thumb_timeline_slider.png; sourceTree = "<group>"; };
-		856BF69DE05F3A48F80C6DF2970E0DAA /* DDASLLogCapture.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDASLLogCapture.h; path = Classes/DDASLLogCapture.h; sourceTree = "<group>"; };
+		856CB346B13240100F0C0E7A2B61675B /* libSRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSRGMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		860D2197EFC049B02F5A0BC4982452AB /* TKStateMachine.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TKStateMachine.m; path = Code/TKStateMachine.m; sourceTree = "<group>"; };
 		864B1C63696B7E2DE8003BB6C1B2BFEC /* SDImageCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDImageCache.m; path = SDWebImage/SDImageCache.m; sourceTree = "<group>"; };
-		8790EDE6F3A3E85847BDF0ADD6B52105 /* RTSPlaybackActivityIndicatorView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSPlaybackActivityIndicatorView.h; sourceTree = "<group>"; };
-		895AABE3936D6BC631512954700AA02A /* NSBundle+RTSMediaPlayer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+RTSMediaPlayer.m"; sourceTree = "<group>"; };
 		8A3CCA72533E35C4376B1E8AECC9627F /* TransitionKit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TransitionKit.h; path = Code/TransitionKit.h; sourceTree = "<group>"; };
-		8F0034A76781F9D4E17C26CC9B5E6FC7 /* RTSMediaPlayerViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerViewController.h; sourceTree = "<group>"; };
+		8BE8323406E597B15CA028935E9617AE /* CocoaLumberjack-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "CocoaLumberjack-Private.xcconfig"; sourceTree = "<group>"; };
+		8C46FE5F25FFFBEE9AE2D45DEAB4C38F /* RTSVolumeView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSVolumeView.h; sourceTree = "<group>"; };
+		8E4F3CC0DB01EDD694C663935537E34A /* DDTTYLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDTTYLogger.m; path = Classes/DDTTYLogger.m; sourceTree = "<group>"; };
+		8F4A9A142ED5E92D9AA87572495C4C9B /* MAKVONotificationCenter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MAKVONotificationCenter.m; sourceTree = "<group>"; };
+		8F5F31AD954B98C8A7CC088A6CA3F5A8 /* RTSTimelineSlider.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSTimelineSlider.m; sourceTree = "<group>"; };
 		91D36B9C96D6234FE8B1F53C2966B4AE /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		93C547C034DB87B91FF685570712DACF /* RTSMediaFailureOverlayView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaFailureOverlayView.m; sourceTree = "<group>"; };
+		92A668E41EDE01AA8F07F342E71DE417 /* RTSAirplayOverlayView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSAirplayOverlayView.h; sourceTree = "<group>"; };
 		941930AEE9830995174F7AD263FC212C /* libextobjc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = libextobjc.xcconfig; sourceTree = "<group>"; };
-		948D861ADF353CA9FFF5E99279D491AD /* RTSPlaybackActivityIndicatorView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSPlaybackActivityIndicatorView.m; sourceTree = "<group>"; };
-		96657F7188FD7EA27D76049532897184 /* RTSPictureInPictureButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSPictureInPictureButton.h; sourceTree = "<group>"; };
-		9C446A8A3B52FBB30AEF91D4D575DA2A /* DDAssertMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDAssertMacros.h; path = Classes/DDAssertMacros.h; sourceTree = "<group>"; };
+		96A667AAB780D9E6EF1E90494EF6EC3D /* DDLog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDLog.h; path = Classes/DDLog.h; sourceTree = "<group>"; };
+		97EFE6E671F52DD3A8FAEEB9FA58B82E /* RTSSegmentedTimelineView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSSegmentedTimelineView.h; sourceTree = "<group>"; };
+		9B721B922F5586521F2760D7AB0F6757 /* DDLog+LOGV.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "DDLog+LOGV.h"; path = "Classes/DDLog+LOGV.h"; sourceTree = "<group>"; };
+		9C708C12FCBEFA9D60A5658FC85CA376 /* RTSMediaPlayerError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerError.h; sourceTree = "<group>"; };
+		9D2B7E0825783E8B58132C973144BDFC /* RTSPeriodicTimeObserver.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSPeriodicTimeObserver.m; sourceTree = "<group>"; };
+		9E2FCDA23A268315397258434AE37F99 /* RTSMediaPlayerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerController.h; sourceTree = "<group>"; };
 		9EFD66C86B6AE4727C1DED45163C9DBF /* Pods-SRGMediaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
-		9F00F45A6E90BC795ED352E5EE11865F /* RTSMediaPlayerPlaybackButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerPlaybackButton.m; sourceTree = "<group>"; };
-		9F5DBFBC5F68988572E653E56B24A710 /* DDTTYLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDTTYLogger.m; path = Classes/DDTTYLogger.m; sourceTree = "<group>"; };
 		A014B558C4A4061CF12C0C8B7A10A83A /* picture_in_picture_start_button.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = picture_in_picture_start_button.png; sourceTree = "<group>"; };
-		A07B0A0F90F7496F9358E9BA5973AFB3 /* DDMultiFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDMultiFormatter.h; path = Classes/Extensions/DDMultiFormatter.h; sourceTree = "<group>"; };
 		A2194E0140915804BE28929F6BE44BDC /* EXTScope.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = EXTScope.m; path = extobjc/EXTScope.m; sourceTree = "<group>"; };
-		A34CFAC8DDDFCF901D6B3306BA8F81E2 /* RTSMediaPlayerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerController.m; sourceTree = "<group>"; };
 		A4E3C75131DB73B535BA7338F6201845 /* libSDWebImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSDWebImage.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4F85A759F06DA2C165FC5F9C67479D9 /* TKState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TKState.h; path = Code/TKState.h; sourceTree = "<group>"; };
 		A68FBAD09BA03A479545F4676ECDD58F /* TKTransition.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TKTransition.m; path = Code/TKTransition.m; sourceTree = "<group>"; };
-		A6FD6EAFF3FB2C115C60C656510CE4B5 /* CocoaLumberjack.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CocoaLumberjack.h; path = Classes/CocoaLumberjack.h; sourceTree = "<group>"; };
-		A70655F22F84A5D45237F8FFE8D63E95 /* SRGMediaPlayer-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayer-prefix.pch"; sourceTree = "<group>"; };
-		A734BD7652CD8511A635D293AC5AB8A8 /* RTSAirplayOverlayView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSAirplayOverlayView.m; sourceTree = "<group>"; };
+		A8A23CBFF7721EFB625441BAFA79CFF3 /* RTSTimeSlider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSTimeSlider.h; sourceTree = "<group>"; };
 		A9D1180321745BB3B3340C83CBA4A9F0 /* UIImageView+HighlightedWebCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+HighlightedWebCache.m"; path = "SDWebImage/UIImageView+HighlightedWebCache.m"; sourceTree = "<group>"; };
+		AB0030EF37E737CA924617BFD8879D6D /* RTSMediaPlayerConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerConstants.h; sourceTree = "<group>"; };
+		AC9ABAF76C80C58EAF6698E91F06DCBE /* CocoaLumberjack-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CocoaLumberjack-dummy.m"; sourceTree = "<group>"; };
 		AD64994C675F893E8D9C54BE9CBA1B1C /* libPods-SRGMediaPlayer Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AECB98CB48D8A54561231BA7CBF48754 /* RTSMediaPlayerPlaybackButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerPlaybackButton.m; sourceTree = "<group>"; };
+		B287005B4ACCC017A145ED36F29EDDC0 /* DDASLLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDASLLogger.m; path = Classes/DDASLLogger.m; sourceTree = "<group>"; };
 		B2A29824DE050F4D839FFE5236FFC8FC /* TransitionKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TransitionKit-prefix.pch"; sourceTree = "<group>"; };
-		B7C4A5A149C2FA90527CF3411BB5A98A /* DDTTYLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDTTYLogger.h; path = Classes/DDTTYLogger.h; sourceTree = "<group>"; };
+		B55C3B9D3FCE1920190077B75294E12D /* MAKVONotificationCenter-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MAKVONotificationCenter-dummy.m"; sourceTree = "<group>"; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		BACA3231098D350CE7A03ABC07A2F8D0 /* SRGMediaPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayer.h; sourceTree = "<group>"; };
-		BBA6FEEB8CE7143E11A8910268F8CCEE /* RTSTimeSlider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSTimeSlider.h; sourceTree = "<group>"; };
-		BC9C7597779CEFEB509A41C6CB3B7A8C /* MAKVONotificationCenter-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MAKVONotificationCenter-dummy.m"; sourceTree = "<group>"; };
 		BEB780FC546BBDF4EAB61B3344179BC4 /* UIButton+WebCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIButton+WebCache.m"; path = "SDWebImage/UIButton+WebCache.m"; sourceTree = "<group>"; };
-		BFE19F2D2EC47FC4A02DEDC6B5A6F901 /* DDASLLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDASLLogger.h; path = Classes/DDASLLogger.h; sourceTree = "<group>"; };
-		C1182FBD91CE65DF92FCB250164E4F38 /* CocoaLumberjack-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CocoaLumberjack-dummy.m"; sourceTree = "<group>"; };
-		C20A2D409BA46CBC7BA4ADB254B0599F /* DDContextFilterLogFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDContextFilterLogFormatter.h; path = Classes/Extensions/DDContextFilterLogFormatter.h; sourceTree = "<group>"; };
+		BF281968A61358CDEEA742C606D84145 /* DDContextFilterLogFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDContextFilterLogFormatter.m; path = Classes/Extensions/DDContextFilterLogFormatter.m; sourceTree = "<group>"; };
 		C277115335E4939B34A795881E53ECE7 /* UIImage+GIF.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+GIF.m"; path = "SDWebImage/UIImage+GIF.m"; sourceTree = "<group>"; };
-		C4077BBB5D4B6181B8BD32DE0ABC3065 /* RTSSegmentedTimelineView+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RTSSegmentedTimelineView+Private.h"; sourceTree = "<group>"; };
-		C59640B76A7EC3402C7CF18157B47930 /* SRGMediaPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SRGMediaPlayer-dummy.m"; sourceTree = "<group>"; };
+		C52F7369492DF97F717502838BA6452B /* RTSMediaSegmentsController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaSegmentsController.m; sourceTree = "<group>"; };
 		C7A3C431941CA5458B46FDA87ADD17E9 /* TKStateMachine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TKStateMachine.h; path = Code/TKStateMachine.h; sourceTree = "<group>"; };
+		C7A5BDF28AF06441F81A735EC1279E88 /* SRGMediaPlayer-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayer-prefix.pch"; sourceTree = "<group>"; };
 		C7BFAE63F13CD1FF182292CA19DEAF7B /* libPods-SRGMediaPlayerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDCAD61057AB3F7974035DF81CEA77E6 /* DDLog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDLog.m; path = Classes/DDLog.m; sourceTree = "<group>"; };
 		CF094B2DDD6BB7544D36EA2031192084 /* SRGMediaPlayer-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "SRGMediaPlayer-Private.xcconfig"; sourceTree = "<group>"; };
 		D100903E69E6511B7814A1B524FDC47B /* picture_in_picture_start_button@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "picture_in_picture_start_button@2x.png"; sourceTree = "<group>"; };
 		D2CF08DBACD41707E6E13EC8D23894BD /* SDWebImagePrefetcher.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImagePrefetcher.m; path = SDWebImage/SDWebImagePrefetcher.m; sourceTree = "<group>"; };
 		D51B704591F77DD6BF0C58F6F01D9DCF /* Pods-SRGMediaPlayerTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SRGMediaPlayerTests-acknowledgements.plist"; sourceTree = "<group>"; };
 		D5587E079E37932F12CFD7D3DBDD14A3 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+WebCacheOperation.m"; path = "SDWebImage/UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
-		D6659B05639E62909E635CCBC9C64753 /* DDFileLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDFileLogger.m; path = Classes/DDFileLogger.m; sourceTree = "<group>"; };
 		D6B281524891C1EFD36A3E5A0DFDE13C /* Pods-SRGMediaPlayer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SRGMediaPlayer-acknowledgements.plist"; sourceTree = "<group>"; };
-		D779A125C630931B0CCC00E185B26F48 /* MAKVONotificationCenter-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "MAKVONotificationCenter-Private.xcconfig"; sourceTree = "<group>"; };
-		D7F53FF1980C14B02D26EE17E03F1180 /* libCocoaLumberjack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCocoaLumberjack.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D819456C1FC2DACAB16935CD400277B5 /* RTSMediaPlayerViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerViewController.m; sourceTree = "<group>"; };
 		D8466B268D42D69342FBC7E78CCCE71C /* EXTRuntimeExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = EXTRuntimeExtensions.m; path = extobjc/EXTRuntimeExtensions.m; sourceTree = "<group>"; };
 		D8DD99E890B5B9C7A22168DCDFF7F2F2 /* UIImageView+HighlightedWebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+HighlightedWebCache.h"; path = "SDWebImage/UIImageView+HighlightedWebCache.h"; sourceTree = "<group>"; };
-		DA567F211197DCF017E9C1DEBE99A390 /* DDContextFilterLogFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDContextFilterLogFormatter.m; path = Classes/Extensions/DDContextFilterLogFormatter.m; sourceTree = "<group>"; };
-		DB11BBEE5F55B0CAF7E36A705D1EC891 /* libSRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSRGMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCF132FDCF55FDF5651EB47FAF02CBDD /* DDDispatchQueueLogFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDDispatchQueueLogFormatter.h; path = Classes/Extensions/DDDispatchQueueLogFormatter.h; sourceTree = "<group>"; };
-		DD2C4A1615C5C6CDDA1B639E571984F9 /* CocoaLumberjack-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "CocoaLumberjack-Private.xcconfig"; sourceTree = "<group>"; };
-		DF3C067A0564228D3BB6A38DBE49E1D0 /* DDASLLogCapture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDASLLogCapture.m; path = Classes/DDASLLogCapture.m; sourceTree = "<group>"; };
-		E48B8D8C7A1D8B53264520564A9E74C0 /* DDLogMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDLogMacros.h; path = Classes/DDLogMacros.h; sourceTree = "<group>"; };
+		D9F66C1B11B323261C7DC5BCB7C67BA8 /* DDDispatchQueueLogFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDDispatchQueueLogFormatter.h; path = Classes/Extensions/DDDispatchQueueLogFormatter.h; sourceTree = "<group>"; };
+		DD41FF2AEF85B906D800B87975270738 /* DDDispatchQueueLogFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDDispatchQueueLogFormatter.m; path = Classes/Extensions/DDDispatchQueueLogFormatter.m; sourceTree = "<group>"; };
+		DFD8A35EB93AF8400B52C3237564FE56 /* RTSMediaPlayerIconTemplate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerIconTemplate.m; sourceTree = "<group>"; };
+		E0A79048B88B2396CA8B241E4C370370 /* RTSTimelineSlider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSTimelineSlider.h; sourceTree = "<group>"; };
+		E4DE4F89DAB8FA383B5E6F93DF5D5FE4 /* DDLegacyMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDLegacyMacros.h; path = Classes/DDLegacyMacros.h; sourceTree = "<group>"; };
+		E5BE2AE3112B65E7ACDC87B925F997CA /* RTSMediaPlayerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerController.m; sourceTree = "<group>"; };
 		E5DCF5AA652A62364FE079D2FE3E5665 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		E60CBB4C103E8CCF7C3B58F44DCA9390 /* RTSPictureInPictureButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSPictureInPictureButton.m; sourceTree = "<group>"; };
+		E63D7F8BC04EE5A49924B9CAC75EA2CB /* RTSMediaSegmentsDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegmentsDataSource.h; sourceTree = "<group>"; };
 		E69A6257BF55E8B596154A5BF4BF10CA /* Pods-SRGMediaPlayerTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SRGMediaPlayerTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		E83C46437AFC017D901BB73B85892975 /* Pods-SRGMediaPlayer Demo-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SRGMediaPlayer Demo-dummy.m"; sourceTree = "<group>"; };
-		E9F3ACC7B6EABE2515A28E5F1A555204 /* DDASLLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDASLLogger.m; path = Classes/DDASLLogger.m; sourceTree = "<group>"; };
-		EA586D28FEB84070083798646E5B1ABE /* RTSActivityGestureRecognizer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSActivityGestureRecognizer.h; sourceTree = "<group>"; };
 		ED10D0CB71F6B47BADE15960C77AD1C9 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED4F22811BB19898C447E23F410A26A7 /* Pods-SRGMediaPlayer-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SRGMediaPlayer-resources.sh"; sourceTree = "<group>"; };
 		ED6E8C065CD2C3099D1687C1E5DAC818 /* TKState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TKState.m; path = Code/TKState.m; sourceTree = "<group>"; };
-		EE7632CD9A421EE90D2F806723176488 /* RTSSegmentedTimelineView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSSegmentedTimelineView.m; sourceTree = "<group>"; };
-		EF9937B3F391889B60BE1B138CBA48C1 /* RTSVolumeView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSVolumeView.m; sourceTree = "<group>"; };
+		EE77AF37F97B195D5691DFBAD2AE856E /* SRGMediaPlayer.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SRGMediaPlayer.xcconfig; sourceTree = "<group>"; };
+		F088C8F9C85D636B2AAF7859FA621583 /* RTSMediaSegmentsController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegmentsController.h; sourceTree = "<group>"; };
 		F0CB4E3EC1ACD76F2309A54B490DF091 /* TKTransition.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TKTransition.h; path = Code/TKTransition.h; sourceTree = "<group>"; };
 		F18C7312909BAD3566B064AD6E53237E /* SDWebImage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SDWebImage.xcconfig; sourceTree = "<group>"; };
-		F2C1E2FB52E4E77133D85A9E67400115 /* DDLog+LOGV.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "DDLog+LOGV.h"; path = "Classes/DDLog+LOGV.h"; sourceTree = "<group>"; };
+		F2C6DE5AF13B030160DA556A9B427A5C /* RTSActivityGestureRecognizer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSActivityGestureRecognizer.m; sourceTree = "<group>"; };
+		F3659D49CD0BEEAD062BB9796D6BC659 /* DDASLLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDASLLogger.h; path = Classes/DDASLLogger.h; sourceTree = "<group>"; };
+		F4EE15BCD44D72AD0C4A93670B578410 /* RTSPictureInPictureButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSPictureInPictureButton.h; sourceTree = "<group>"; };
 		F63313E10A1A1E03793B79EDC66EBB28 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F6CED2C80E66082B12C6527506BB8BEA /* RTSActivityGestureRecognizer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSActivityGestureRecognizer.m; sourceTree = "<group>"; };
+		F85C53C026D7D822C8A19E113FB0605F /* DDMultiFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDMultiFormatter.m; path = Classes/Extensions/DDMultiFormatter.m; sourceTree = "<group>"; };
+		F90E5F22DE1B7772D15C7D2181F439A6 /* RTSMediaPlayerView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerView.h; sourceTree = "<group>"; };
 		F9C7540C19FA0F10B263A0CDD2C26C9C /* Pods-SRGMediaPlayer Demo-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SRGMediaPlayer Demo-resources.sh"; sourceTree = "<group>"; };
+		FC3434004C31F95D4E4B8055462AB282 /* RTSMediaFailureOverlayView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSMediaFailureOverlayView.m; sourceTree = "<group>"; };
 		FC97FAF909239C3D74BF067008EE5551 /* SDWebImage-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SDWebImage-prefix.pch"; sourceTree = "<group>"; };
+		FCEED06CD71289211C6D0016C78F9557 /* RTSPlaybackActivityIndicatorView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = RTSPlaybackActivityIndicatorView.m; sourceTree = "<group>"; };
 		FF3208FF08E5445EB9E5049F4C5D94F3 /* SDWebImageDecoder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageDecoder.h; path = SDWebImage/SDWebImageDecoder.h; sourceTree = "<group>"; };
+		FF3FCDCA1615A9765C0E85BDD5DA7471 /* SRGMediaPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayer.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -431,19 +435,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0C40EDAB53B80AADA48FD0EDEF1A182D /* Frameworks */ = {
+		133A627C06590613EDB4DA8E8CB3CDD4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2491E031D1CA6ACF7CFD03D765C5284B /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1FE775756EAB29E9C61054F0F35D6C22 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				25C76C94EA2512422E52DD76F23A3DFF /* Foundation.framework in Frameworks */,
+				7334104E14F92CDF85EB379A18B17AF6 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,11 +475,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7563A4343E8DC726B2B1AC74A684BACA /* Frameworks */ = {
+		9E38B975215DFF000CDB7FA442F42B6A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9519B2B0FD510DA51C50F98272C708DB /* Foundation.framework in Frameworks */,
+				70B2CE8895EC83D30627C52657FA1956 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B421CAC54B32001C22D8F96219DE0581 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0C23F16EE03E58A231EDE2DF2176484 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,43 +522,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		0D2D28913E69232F421D98FC7FDE7FDF /* RTSMediaPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				F63313E10A1A1E03793B79EDC66EBB28 /* Info.plist */,
-				056EC11B1F8CFFB5A9500BE3D53D12F9 /* RTSMediaPlayerViewController.xib */,
-				A014B558C4A4061CF12C0C8B7A10A83A /* picture_in_picture_start_button.png */,
-				D100903E69E6511B7814A1B524FDC47B /* picture_in_picture_start_button@2x.png */,
-				0DD59F3B900845747AFAB5D3B59CFDF3 /* picture_in_picture_stop_button.png */,
-				0FB06FCF48D80F74802486FB86155052 /* picture_in_picture_stop_button@2x.png */,
-				842E376D79BCE4B3566D04D8D3E00F32 /* thumb_timeline_slider.png */,
-				590B20B4F330E1F5B20E76579FD368BD /* thumb_timeline_slider@2x.png */,
-			);
-			path = RTSMediaPlayer;
-			sourceTree = "<group>";
-		};
 		1BF9E40C42E66D141386FB3FDA48821B /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
 				0BCB417AC8229AC7A9314CD82F001A95 /* CocoaLumberjack.xcconfig */,
-				DD2C4A1615C5C6CDDA1B639E571984F9 /* CocoaLumberjack-Private.xcconfig */,
-				C1182FBD91CE65DF92FCB250164E4F38 /* CocoaLumberjack-dummy.m */,
+				8BE8323406E597B15CA028935E9617AE /* CocoaLumberjack-Private.xcconfig */,
+				AC9ABAF76C80C58EAF6698E91F06DCBE /* CocoaLumberjack-dummy.m */,
 				50249AA5891B8CB66281D3FB9B20F91C /* CocoaLumberjack-prefix.pch */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/CocoaLumberjack";
-			sourceTree = "<group>";
-		};
-		1D7C4E7456CD293593B8C393DAD1FCA8 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				7216AD1C026B0B87B8DE400C40877CD3 /* SRGMediaPlayer.xcconfig */,
-				CF094B2DDD6BB7544D36EA2031192084 /* SRGMediaPlayer-Private.xcconfig */,
-				C59640B76A7EC3402C7CF18157B47930 /* SRGMediaPlayer-dummy.m */,
-				A70655F22F84A5D45237F8FFE8D63E95 /* SRGMediaPlayer-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "Pods/Target Support Files/SRGMediaPlayer";
 			sourceTree = "<group>";
 		};
 		23F98280AEA4A23ACF4493C1A81C3A42 /* SDWebImage */ = {
@@ -575,64 +552,12 @@
 			name = EXTScope;
 			sourceTree = "<group>";
 		};
-		28D40666F5B5B63EA8EBDC4843C5A4BE /* RTSMediaPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				1D112FD82292D04A730C7BB48A01342E /* NSBundle+RTSMediaPlayer.h */,
-				895AABE3936D6BC631512954700AA02A /* NSBundle+RTSMediaPlayer.m */,
-				EA586D28FEB84070083798646E5B1ABE /* RTSActivityGestureRecognizer.h */,
-				F6CED2C80E66082B12C6527506BB8BEA /* RTSActivityGestureRecognizer.m */,
-				4631E92BB7FE8AF5C6994BA2E47BB396 /* RTSAirplayOverlayView.h */,
-				A734BD7652CD8511A635D293AC5AB8A8 /* RTSAirplayOverlayView.m */,
-				195DF4EF7508AD1C3B99BFFF03AD3072 /* RTSMediaFailureOverlayView.h */,
-				93C547C034DB87B91FF685570712DACF /* RTSMediaFailureOverlayView.m */,
-				76B494EECC9E24E91CB06AE3475E7074 /* RTSMediaPlayerConstants.h */,
-				6FEF3BDF423D0FB8D1F1B10CAF3F0429 /* RTSMediaPlayerController.h */,
-				A34CFAC8DDDFCF901D6B3306BA8F81E2 /* RTSMediaPlayerController.m */,
-				436D4D66998FEA9FC73205FDB7456D40 /* RTSMediaPlayerControllerDataSource.h */,
-				6539C7995A3FEF57D7337C23451BD382 /* RTSMediaPlayerError.h */,
-				28CC448DF852D60C90DEA042E385E7DB /* RTSMediaPlayerIconTemplate.h */,
-				5A08AC993055523133C44132C9181FA6 /* RTSMediaPlayerIconTemplate.m */,
-				0FD51A09A3C2FC9B4EFFE6B2050E923D /* RTSMediaPlayerLogger.h */,
-				114294C3E1C09F9B93965EA5F8ABAAD4 /* RTSMediaPlayerLogger.m */,
-				238CF568DD97F6AE12AA74D3752867FC /* RTSMediaPlayerPlaybackButton.h */,
-				9F00F45A6E90BC795ED352E5EE11865F /* RTSMediaPlayerPlaybackButton.m */,
-				5E9D9B1866A235E71D4A4730D5995B71 /* RTSMediaPlayerView.h */,
-				6D41FBFDCE84082026CCFDEFDC5D422B /* RTSMediaPlayerView.m */,
-				8F0034A76781F9D4E17C26CC9B5E6FC7 /* RTSMediaPlayerViewController.h */,
-				D819456C1FC2DACAB16935CD400277B5 /* RTSMediaPlayerViewController.m */,
-				51C7996FF3AF533340D25138ED78D775 /* RTSMediaSegment.h */,
-				6E9931CEA1ED856BB16235A513FE0A2B /* RTSMediaSegmentsController.h */,
-				29462A75A226AEB08A9D5569FF62068D /* RTSMediaSegmentsController.m */,
-				23E8FD958B89A90FBF0A59B78C46BB6F /* RTSMediaSegmentsDataSource.h */,
-				6D51EB80F3641076DE2AA9A39F80C6A2 /* RTSPeriodicTimeObserver.h */,
-				2F3D8EF6266EBEF5F45CE74B858F28F4 /* RTSPeriodicTimeObserver.m */,
-				96657F7188FD7EA27D76049532897184 /* RTSPictureInPictureButton.h */,
-				E60CBB4C103E8CCF7C3B58F44DCA9390 /* RTSPictureInPictureButton.m */,
-				8790EDE6F3A3E85847BDF0ADD6B52105 /* RTSPlaybackActivityIndicatorView.h */,
-				948D861ADF353CA9FFF5E99279D491AD /* RTSPlaybackActivityIndicatorView.m */,
-				794487971C4FE2A25EE41624DA53C184 /* RTSSegmentedTimelineView.h */,
-				EE7632CD9A421EE90D2F806723176488 /* RTSSegmentedTimelineView.m */,
-				C4077BBB5D4B6181B8BD32DE0ABC3065 /* RTSSegmentedTimelineView+Private.h */,
-				BBA6FEEB8CE7143E11A8910268F8CCEE /* RTSTimeSlider.h */,
-				54590C5E6A14B0A8AF87A770C481C830 /* RTSTimeSlider.m */,
-				3E6CF2902BC485BE183B287CA6FB5419 /* RTSTimelineSlider.h */,
-				5D954D8F29A00818993228C95C20B613 /* RTSTimelineSlider.m */,
-				5374A0D72CEB6C1B5A873BCC6A8C3C0E /* RTSVolumeView.h */,
-				EF9937B3F391889B60BE1B138CBA48C1 /* RTSVolumeView.m */,
-				BACA3231098D350CE7A03ABC07A2F8D0 /* SRGMediaPlayer.h */,
-				5D057E15586FC56B33048E8BAC095206 /* UIBezierPath+RTSMediaPlayerUtils.h */,
-				1576AF0FBEA908362154E9878A77C30D /* UIBezierPath+RTSMediaPlayerUtils.m */,
-			);
-			path = RTSMediaPlayer;
-			sourceTree = "<group>";
-		};
 		2B6D681DA2D6DD605E4BF66A5CEE1543 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
 				49A3370151660DFD4A3A845CF1285069 /* MAKVONotificationCenter.xcconfig */,
-				D779A125C630931B0CCC00E185B26F48 /* MAKVONotificationCenter-Private.xcconfig */,
-				BC9C7597779CEFEB509A41C6CB3B7A8C /* MAKVONotificationCenter-dummy.m */,
+				1EBEDA09A32A7E821A30FA13A1ACF37E /* MAKVONotificationCenter-Private.xcconfig */,
+				B55C3B9D3FCE1920190077B75294E12D /* MAKVONotificationCenter-dummy.m */,
 				025ABE1CFD4642B02B7B1A5A449E437C /* MAKVONotificationCenter-prefix.pch */,
 			);
 			name = "Support Files";
@@ -726,7 +651,7 @@
 		700EE408DF8DAB2C836575A0AD0AA160 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C22A4C49F001236AACAEA3EDD9E9BAF5 /* SRGMediaPlayer */,
+				97A7BB343BC8D2A3B22B9F36885ABF57 /* SRGMediaPlayer */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
@@ -750,6 +675,18 @@
 				AA080F10EF1B0B933A207B69A65ACD54 /* Support Files */,
 			);
 			path = libextobjc;
+			sourceTree = "<group>";
+		};
+		7D81B91D2238C5845EB6BDC85A5295E5 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				EE77AF37F97B195D5691DFBAD2AE856E /* SRGMediaPlayer.xcconfig */,
+				CF094B2DDD6BB7544D36EA2031192084 /* SRGMediaPlayer-Private.xcconfig */,
+				47F60D80A92425F57B19BAC251531EAD /* SRGMediaPlayer-dummy.m */,
+				C7A5BDF28AF06441F81A735EC1279E88 /* SRGMediaPlayer-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "Pods/Target Support Files/SRGMediaPlayer";
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -777,30 +714,41 @@
 		948C099F56E7335D61D4FC41078DA709 /* Default */ = {
 			isa = PBXGroup;
 			children = (
-				A6FD6EAFF3FB2C115C60C656510CE4B5 /* CocoaLumberjack.h */,
+				6EB4F1EB8C84A429B00E359621EE3696 /* CocoaLumberjack.h */,
 			);
 			name = Default;
+			sourceTree = "<group>";
+		};
+		97A7BB343BC8D2A3B22B9F36885ABF57 /* SRGMediaPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				BD8958631F6E7E47231D60C8677DEBA0 /* RTSMediaPlayer */,
+				EC9AB36B75FE57DFB0F97BC67E8185C0 /* Resources */,
+				7D81B91D2238C5845EB6BDC85A5295E5 /* Support Files */,
+			);
+			name = SRGMediaPlayer;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		9A6AE543A91E8FFA22AB48DA4E0F55D1 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				856BF69DE05F3A48F80C6DF2970E0DAA /* DDASLLogCapture.h */,
-				DF3C067A0564228D3BB6A38DBE49E1D0 /* DDASLLogCapture.m */,
-				BFE19F2D2EC47FC4A02DEDC6B5A6F901 /* DDASLLogger.h */,
-				E9F3ACC7B6EABE2515A28E5F1A555204 /* DDASLLogger.m */,
-				1CEF7B1949238B90777609F3C30E35C4 /* DDAbstractDatabaseLogger.h */,
-				0D5BE2B820CCC5A1AAF8454CF113E136 /* DDAbstractDatabaseLogger.m */,
-				9C446A8A3B52FBB30AEF91D4D575DA2A /* DDAssertMacros.h */,
-				03C3172257084ACE280B202C8367B6D6 /* DDFileLogger.h */,
-				D6659B05639E62909E635CCBC9C64753 /* DDFileLogger.m */,
-				4A49CC750FFF7DE75FFA9D08376CDB24 /* DDLegacyMacros.h */,
-				1E025924B7FFF696893FA9AED7414E0F /* DDLog.h */,
-				3593B9C182FFE902FD31413C66F66358 /* DDLog.m */,
-				F2C1E2FB52E4E77133D85A9E67400115 /* DDLog+LOGV.h */,
-				E48B8D8C7A1D8B53264520564A9E74C0 /* DDLogMacros.h */,
-				B7C4A5A149C2FA90527CF3411BB5A98A /* DDTTYLogger.h */,
-				9F5DBFBC5F68988572E653E56B24A710 /* DDTTYLogger.m */,
+				45E98FDB33105E3209D272B148B1CE43 /* DDASLLogCapture.h */,
+				7B3B5C3CCC57CDE14E2D5BFA66B6A701 /* DDASLLogCapture.m */,
+				F3659D49CD0BEEAD062BB9796D6BC659 /* DDASLLogger.h */,
+				B287005B4ACCC017A145ED36F29EDDC0 /* DDASLLogger.m */,
+				16F2A7AE82FB2D5B0F50C1C5C4C6B8AD /* DDAbstractDatabaseLogger.h */,
+				800AB2378792B8E66DBCD8E8A899DE67 /* DDAbstractDatabaseLogger.m */,
+				403E56A651F20687B7E3D11358999A74 /* DDAssertMacros.h */,
+				60E8C22A158832359347FBF503904900 /* DDFileLogger.h */,
+				36128EB85EC9892A18C4B9A76E389A5B /* DDFileLogger.m */,
+				E4DE4F89DAB8FA383B5E6F93DF5D5FE4 /* DDLegacyMacros.h */,
+				96A667AAB780D9E6EF1E90494EF6EC3D /* DDLog.h */,
+				CDCAD61057AB3F7974035DF81CEA77E6 /* DDLog.m */,
+				9B721B922F5586521F2760D7AB0F6757 /* DDLog+LOGV.h */,
+				39C3B0892405B06E29674F176BA083A1 /* DDLogMacros.h */,
+				015E3785E55C1218B705344EF1718A74 /* DDTTYLogger.h */,
+				8E4F3CC0DB01EDD694C663935537E34A /* DDTTYLogger.m */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -862,36 +810,86 @@
 			path = "../Target Support Files/SDWebImage";
 			sourceTree = "<group>";
 		};
-		B9AE6292204EB362183199AA33B8E328 /* Resources */ = {
+		BD8958631F6E7E47231D60C8677DEBA0 /* RTSMediaPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				0D2D28913E69232F421D98FC7FDE7FDF /* RTSMediaPlayer */,
+				1D07C47900A4F6652B7FC0FD2FD5F90D /* NSBundle+RTSMediaPlayer.h */,
+				2D242D82029592A8E98E2FA4ECE6B6C5 /* NSBundle+RTSMediaPlayer.m */,
+				189A5793CF0C1550DFC7F841404467E1 /* RTSActivityGestureRecognizer.h */,
+				F2C6DE5AF13B030160DA556A9B427A5C /* RTSActivityGestureRecognizer.m */,
+				92A668E41EDE01AA8F07F342E71DE417 /* RTSAirplayOverlayView.h */,
+				5FF01343011A89EEDFEAF6490ECE6EBD /* RTSAirplayOverlayView.m */,
+				144E6B217498B9B2469637901CE4FDF8 /* RTSMediaFailureOverlayView.h */,
+				FC3434004C31F95D4E4B8055462AB282 /* RTSMediaFailureOverlayView.m */,
+				AB0030EF37E737CA924617BFD8879D6D /* RTSMediaPlayerConstants.h */,
+				9E2FCDA23A268315397258434AE37F99 /* RTSMediaPlayerController.h */,
+				E5BE2AE3112B65E7ACDC87B925F997CA /* RTSMediaPlayerController.m */,
+				7B353F669765230CC03573586EFAB101 /* RTSMediaPlayerControllerDataSource.h */,
+				9C708C12FCBEFA9D60A5658FC85CA376 /* RTSMediaPlayerError.h */,
+				7401116E45A9527763A5BAEB9CE8FD7E /* RTSMediaPlayerIconTemplate.h */,
+				DFD8A35EB93AF8400B52C3237564FE56 /* RTSMediaPlayerIconTemplate.m */,
+				0ADB0FC6F17DC2DDE4A7DEE2919DBA0E /* RTSMediaPlayerLogger.h */,
+				1626FEABA8322FAF7DB77965D0CD7D8D /* RTSMediaPlayerLogger.m */,
+				0D66C6E339957897EE46B8E416EA0B5D /* RTSMediaPlayerPlaybackButton.h */,
+				AECB98CB48D8A54561231BA7CBF48754 /* RTSMediaPlayerPlaybackButton.m */,
+				567915E8F9E63D2C8346232AB3EE72BF /* RTSMediaPlayerSharedController.h */,
+				2BDC139524C2A6578586A2CD579C19B0 /* RTSMediaPlayerSharedController.m */,
+				F90E5F22DE1B7772D15C7D2181F439A6 /* RTSMediaPlayerView.h */,
+				64DD8198BA91362956E94FBA6C5F1D55 /* RTSMediaPlayerView.m */,
+				4880246AD0F529BF3AA4BC70510AB8E4 /* RTSMediaPlayerViewController.h */,
+				5B7C5955AC277987B258743C2C0ED9AA /* RTSMediaPlayerViewController.m */,
+				14DFFD9CD927A54AE441370B385AB98B /* RTSMediaSegment.h */,
+				F088C8F9C85D636B2AAF7859FA621583 /* RTSMediaSegmentsController.h */,
+				C52F7369492DF97F717502838BA6452B /* RTSMediaSegmentsController.m */,
+				E63D7F8BC04EE5A49924B9CAC75EA2CB /* RTSMediaSegmentsDataSource.h */,
+				7AB00895DD9B386C6C50E7BD16FDDA4C /* RTSPeriodicTimeObserver.h */,
+				9D2B7E0825783E8B58132C973144BDFC /* RTSPeriodicTimeObserver.m */,
+				F4EE15BCD44D72AD0C4A93670B578410 /* RTSPictureInPictureButton.h */,
+				2B820841A02E8960DC5C023B838567D2 /* RTSPictureInPictureButton.m */,
+				0BC1D48D7378B8E66B0FB28279F7907B /* RTSPlaybackActivityIndicatorView.h */,
+				FCEED06CD71289211C6D0016C78F9557 /* RTSPlaybackActivityIndicatorView.m */,
+				97EFE6E671F52DD3A8FAEEB9FA58B82E /* RTSSegmentedTimelineView.h */,
+				58612FB52C5F6038F574466956E68D78 /* RTSSegmentedTimelineView.m */,
+				351D2C34BA319392558FE05E3E3F5F2B /* RTSSegmentedTimelineView+Private.h */,
+				A8A23CBFF7721EFB625441BAFA79CFF3 /* RTSTimeSlider.h */,
+				20073BB03291089AA241D6E7E603DBDB /* RTSTimeSlider.m */,
+				E0A79048B88B2396CA8B241E4C370370 /* RTSTimelineSlider.h */,
+				8F5F31AD954B98C8A7CC088A6CA3F5A8 /* RTSTimelineSlider.m */,
+				8C46FE5F25FFFBEE9AE2D45DEAB4C38F /* RTSVolumeView.h */,
+				400702C53C64669CBD877A33EC49BED9 /* RTSVolumeView.m */,
+				FF3FCDCA1615A9765C0E85BDD5DA7471 /* SRGMediaPlayer.h */,
+				032EC15783BEDB7B5D479EE8EBE3E7B4 /* UIBezierPath+RTSMediaPlayerUtils.h */,
+				264EF1CF40486C7C951B04B5D76514B4 /* UIBezierPath+RTSMediaPlayerUtils.m */,
 			);
-			name = Resources;
+			path = RTSMediaPlayer;
 			sourceTree = "<group>";
 		};
-		C22A4C49F001236AACAEA3EDD9E9BAF5 /* SRGMediaPlayer */ = {
+		BEF8EB1AD738D45CA5F9350C02708099 /* RTSMediaPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				28D40666F5B5B63EA8EBDC4843C5A4BE /* RTSMediaPlayer */,
-				B9AE6292204EB362183199AA33B8E328 /* Resources */,
-				1D7C4E7456CD293593B8C393DAD1FCA8 /* Support Files */,
+				F63313E10A1A1E03793B79EDC66EBB28 /* Info.plist */,
+				056EC11B1F8CFFB5A9500BE3D53D12F9 /* RTSMediaPlayerViewController.xib */,
+				A014B558C4A4061CF12C0C8B7A10A83A /* picture_in_picture_start_button.png */,
+				D100903E69E6511B7814A1B524FDC47B /* picture_in_picture_start_button@2x.png */,
+				0DD59F3B900845747AFAB5D3B59CFDF3 /* picture_in_picture_stop_button.png */,
+				0FB06FCF48D80F74802486FB86155052 /* picture_in_picture_stop_button@2x.png */,
+				842E376D79BCE4B3566D04D8D3E00F32 /* thumb_timeline_slider.png */,
+				590B20B4F330E1F5B20E76579FD368BD /* thumb_timeline_slider@2x.png */,
 			);
-			name = SRGMediaPlayer;
-			path = ..;
+			path = RTSMediaPlayer;
 			sourceTree = "<group>";
 		};
 		CCA510CFBEA2D207524CDA0D73C3B561 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				ED10D0CB71F6B47BADE15960C77AD1C9 /* SRGMediaPlayer.bundle */,
-				D7F53FF1980C14B02D26EE17E03F1180 /* libCocoaLumberjack.a */,
-				5084AF52281C65C56978EEDCA012C567 /* libMAKVONotificationCenter.a */,
+				16B005CD23AB982BD8B4556A296EEFB2 /* libCocoaLumberjack.a */,
+				48002281E6A068508FE20261C6446058 /* libMAKVONotificationCenter.a */,
 				91D36B9C96D6234FE8B1F53C2966B4AE /* libPods-SRGMediaPlayer.a */,
 				AD64994C675F893E8D9C54BE9CBA1B1C /* libPods-SRGMediaPlayer Demo.a */,
 				C7BFAE63F13CD1FF182292CA19DEAF7B /* libPods-SRGMediaPlayerTests.a */,
 				A4E3C75131DB73B535BA7338F6201845 /* libSDWebImage.a */,
-				DB11BBEE5F55B0CAF7E36A705D1EC891 /* libSRGMediaPlayer.a */,
+				856CB346B13240100F0C0E7A2B61675B /* libSRGMediaPlayer.a */,
 				4E37F47F8B8CC9C91B39061A7536E3E9 /* libTransitionKit.a */,
 				1EBA009B7851166A14A80E5BB81451DD /* liblibextobjc.a */,
 			);
@@ -918,22 +916,30 @@
 		E2BF2CF197A21A438B7A32384F997358 /* MAKVONotificationCenter */ = {
 			isa = PBXGroup;
 			children = (
-				3F5A4726E60E2E37D6072EC1C76692F9 /* MAKVONotificationCenter.h */,
-				7FEEDB0CCE1D7171BF2A14EA821DC4C0 /* MAKVONotificationCenter.m */,
+				204262FB289DEB4D53784575A7A8218C /* MAKVONotificationCenter.h */,
+				8F4A9A142ED5E92D9AA87572495C4C9B /* MAKVONotificationCenter.m */,
 				2B6D681DA2D6DD605E4BF66A5CEE1543 /* Support Files */,
 			);
 			path = MAKVONotificationCenter;
 			sourceTree = "<group>";
 		};
+		EC9AB36B75FE57DFB0F97BC67E8185C0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BEF8EB1AD738D45CA5F9350C02708099 /* RTSMediaPlayer */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		F58B2949693F375163A28D8D4FCCFB41 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				C20A2D409BA46CBC7BA4ADB254B0599F /* DDContextFilterLogFormatter.h */,
-				DA567F211197DCF017E9C1DEBE99A390 /* DDContextFilterLogFormatter.m */,
-				DCF132FDCF55FDF5651EB47FAF02CBDD /* DDDispatchQueueLogFormatter.h */,
-				5B4C76CB2B2A79A9CF1A1FAE8453E67D /* DDDispatchQueueLogFormatter.m */,
-				A07B0A0F90F7496F9358E9BA5973AFB3 /* DDMultiFormatter.h */,
-				802E684068E098955EF33B966554232A /* DDMultiFormatter.m */,
+				080071470A13479EA7C1277AF3437AA4 /* DDContextFilterLogFormatter.h */,
+				BF281968A61358CDEEA742C606D84145 /* DDContextFilterLogFormatter.m */,
+				D9F66C1B11B323261C7DC5BCB7C67BA8 /* DDDispatchQueueLogFormatter.h */,
+				DD41FF2AEF85B906D800B87975270738 /* DDDispatchQueueLogFormatter.m */,
+				3CA0ED75C3D63B1B5C123B7FBA825362 /* DDMultiFormatter.h */,
+				F85C53C026D7D822C8A19E113FB0605F /* DDMultiFormatter.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -948,47 +954,6 @@
 				8B228D33BF43F2721D891A543294B9D4 /* EXTRuntimeExtensions.h in Headers */,
 				84B20F9AD0AF3457B500F8BC35778D37 /* EXTScope.h in Headers */,
 				205DB3A9E99C4B17387CB0B3A9BF2C5F /* metamacros.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		120CF666EB1EC8736E3E734039DB4B5A /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				71BE8610F4814EDF8F39FB7C3175DC4D /* NSBundle+RTSMediaPlayer.h in Headers */,
-				2B6FA5532CC8163BB27EAE6AB113980B /* RTSActivityGestureRecognizer.h in Headers */,
-				A18624854BE2A0655CB8429C39142F15 /* RTSAirplayOverlayView.h in Headers */,
-				3B71154DCAE67732640C392BEC397F3F /* RTSMediaFailureOverlayView.h in Headers */,
-				82463068167CD868C00690F0FDE97F2F /* RTSMediaPlayerConstants.h in Headers */,
-				CCC36C4F1FF3D03E1905352D0FD10F2D /* RTSMediaPlayerController.h in Headers */,
-				C2C3D7E5128186C2C4341103E7A3CEFD /* RTSMediaPlayerControllerDataSource.h in Headers */,
-				B46FE0B790F4178AC7259A1774A4DD45 /* RTSMediaPlayerError.h in Headers */,
-				EBFA8C50285CE31949D31FB83B6ECE38 /* RTSMediaPlayerIconTemplate.h in Headers */,
-				AF20A60F61E3563DB250CD39835460A4 /* RTSMediaPlayerLogger.h in Headers */,
-				D3DB7356B0132F5A1B583821E57D8D2B /* RTSMediaPlayerPlaybackButton.h in Headers */,
-				CDBBE5A3FBF01CDB444069458F82B46D /* RTSMediaPlayerView.h in Headers */,
-				9AA0500C7701A5A4F5F52F9BD461A2C9 /* RTSMediaPlayerViewController.h in Headers */,
-				55110E0C056C0E501CF913A6C367BF30 /* RTSMediaSegment.h in Headers */,
-				2A45ABE7AA44AD8308C0589B0D3B1973 /* RTSMediaSegmentsController.h in Headers */,
-				83CF1AF3486A0CB280C38035D82DE469 /* RTSMediaSegmentsDataSource.h in Headers */,
-				3E9EA7915BFCB2FD7D39DA16FCB46E8E /* RTSPeriodicTimeObserver.h in Headers */,
-				94C0F4FC0D64125FFCC0C8337FE0D8D9 /* RTSPictureInPictureButton.h in Headers */,
-				36D4A4260AB573E71FC63133ED51EE5C /* RTSPlaybackActivityIndicatorView.h in Headers */,
-				E513793AAEFBA5BC0E1FFBA32F0F269E /* RTSSegmentedTimelineView+Private.h in Headers */,
-				D2FE045FE1246DD6BB381A36C5EE6618 /* RTSSegmentedTimelineView.h in Headers */,
-				56B82E7BC769F3898F967110EA4B7EBF /* RTSTimeSlider.h in Headers */,
-				5D4EA216461A2AAD8160A9A99F459C4F /* RTSTimelineSlider.h in Headers */,
-				F96BDD049CC6879DC58CF9FA735A584D /* RTSVolumeView.h in Headers */,
-				A693CDC5D9F0C58012C45266747069FB /* SRGMediaPlayer.h in Headers */,
-				CC23A6B1EF29D5738DB7E6A4C4C5E6A9 /* UIBezierPath+RTSMediaPlayerUtils.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4B602257AC039EFFE5E3C1A31C9F4B5B /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				712B3F3512E2F893F50DADF4739C91A9 /* MAKVONotificationCenter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1014,24 +979,66 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B8675A221406E1C440CFD6AB777FA07C /* Headers */ = {
+		7D831108639D5E1E1F554664110F3E8C /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF4BDEFAF75E54C83DADB5CA3D5BBF8D /* CocoaLumberjack.h in Headers */,
-				4EB1C9409FFB017D6D5C19A1EA4DBFDD /* DDASLLogCapture.h in Headers */,
-				30F18479B87F8EA74AA9BFB6258585A8 /* DDASLLogger.h in Headers */,
-				255616247A23274A15A5A5F5C001BB7D /* DDAbstractDatabaseLogger.h in Headers */,
-				FE931DD708DA77DECADF02020F08221B /* DDAssertMacros.h in Headers */,
-				DBD57F0F5A295A846AEE4059D4C574A0 /* DDContextFilterLogFormatter.h in Headers */,
-				11F79C400500D5ABC03FE08277A3218F /* DDDispatchQueueLogFormatter.h in Headers */,
-				5B5760EF067CB93F57E0F827FD45D62A /* DDFileLogger.h in Headers */,
-				87101A3F32B76456A1DA6A53B94DA48C /* DDLegacyMacros.h in Headers */,
-				C075A7A539DE42F0C6D3A6242794396D /* DDLog+LOGV.h in Headers */,
-				D6EC088B52AC456294B52D9A10D3E1D8 /* DDLog.h in Headers */,
-				94A7B9B14481425C2DDCA7134B6CFE29 /* DDLogMacros.h in Headers */,
-				074420D1740C18E2C11D2596A67ACE66 /* DDMultiFormatter.h in Headers */,
-				B4469C192E52E8BEBA817370FC01CC16 /* DDTTYLogger.h in Headers */,
+				EFFEC720BE18DF2D57725426E39DFCEC /* CocoaLumberjack.h in Headers */,
+				C6C1CE6F0FE7B9BCC376994B076C6A46 /* DDASLLogCapture.h in Headers */,
+				0FEFDA83AA220D0B5B7CAF5A34D7BC8E /* DDASLLogger.h in Headers */,
+				0C44E884959751318B92CDFD7BAEE973 /* DDAbstractDatabaseLogger.h in Headers */,
+				2B5D33FE9540128A01C41CB53AEB9477 /* DDAssertMacros.h in Headers */,
+				32E07D524D878484CE5BE7D125909881 /* DDContextFilterLogFormatter.h in Headers */,
+				15D11012C58E80D9A3170329695A4BF8 /* DDDispatchQueueLogFormatter.h in Headers */,
+				C4DF8B928773C9389DD863AF9C94AE44 /* DDFileLogger.h in Headers */,
+				D8ABCFB7612D6B5A73C95097C86E8231 /* DDLegacyMacros.h in Headers */,
+				8FCF03256348F725F5F693B90604004C /* DDLog+LOGV.h in Headers */,
+				9BBFE9BD2DF389998A91D470A349E71E /* DDLog.h in Headers */,
+				543404CF3C743EEDEF1CD1B605371682 /* DDLogMacros.h in Headers */,
+				465FFD135A92CA35538C5B4DE9CC8F40 /* DDMultiFormatter.h in Headers */,
+				E3569F4C706127E1D62D72E6EE081522 /* DDTTYLogger.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8026915C132DD965CFB928AC92611A40 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				332AAB3985C1598AAB0DF47F1B4EC88A /* NSBundle+RTSMediaPlayer.h in Headers */,
+				6E9B670F97443C0D876405C6AFD282C4 /* RTSActivityGestureRecognizer.h in Headers */,
+				BD165017B1FD88D53583F667406D6C4A /* RTSAirplayOverlayView.h in Headers */,
+				F4DE988BB0F91A58833DC6C4246A32EC /* RTSMediaFailureOverlayView.h in Headers */,
+				2D3FD7D5FF2BBB3BE8CE07CD592DA5F5 /* RTSMediaPlayerConstants.h in Headers */,
+				5CAE7A038FB4414BC21DFB474C67E525 /* RTSMediaPlayerController.h in Headers */,
+				3D1C916C58C28519CF9F3328A19D8D84 /* RTSMediaPlayerControllerDataSource.h in Headers */,
+				C30B27C05BBD1D362797F8D346CF65CE /* RTSMediaPlayerError.h in Headers */,
+				0012E94664265798913642D7CD7E770F /* RTSMediaPlayerIconTemplate.h in Headers */,
+				844725E99C4D73C771071026134D54AD /* RTSMediaPlayerLogger.h in Headers */,
+				91CEA40D11B04A366C83E7AF3BA114E2 /* RTSMediaPlayerPlaybackButton.h in Headers */,
+				922DBC3DCF77C0D696C257266CB1D143 /* RTSMediaPlayerSharedController.h in Headers */,
+				9F89FD79E2F149BD4EE130701C668623 /* RTSMediaPlayerView.h in Headers */,
+				C52CA98CF0B8721838FE71DBA2C57B61 /* RTSMediaPlayerViewController.h in Headers */,
+				5206EEF73CABDC08195AA921F524AFCF /* RTSMediaSegment.h in Headers */,
+				35B8F694465ACE1AA4E15EB401B9D78A /* RTSMediaSegmentsController.h in Headers */,
+				C266471307687F2C78DD5299710D6476 /* RTSMediaSegmentsDataSource.h in Headers */,
+				8A5EF08B282C58B36C3CBAE52E4E9939 /* RTSPeriodicTimeObserver.h in Headers */,
+				ED70CFE6ACD672EB77C53BE0863D58B3 /* RTSPictureInPictureButton.h in Headers */,
+				25F17A16CDBC9FAB793F18F4C131866E /* RTSPlaybackActivityIndicatorView.h in Headers */,
+				1D7D5BAAB4F0754B82AE1967F8E716A0 /* RTSSegmentedTimelineView+Private.h in Headers */,
+				5448005D72F55F3975CD2B924C6E6051 /* RTSSegmentedTimelineView.h in Headers */,
+				19B64B33F7EC9CC0A8DEBC5A12E0EB07 /* RTSTimeSlider.h in Headers */,
+				8B2D4A2BC3D2BE84507730F877769C22 /* RTSTimelineSlider.h in Headers */,
+				4F98D00DDB02A6F0D37A26DDF01AC88D /* RTSVolumeView.h in Headers */,
+				647E763CC2FAE7302CA4954AF0741CEF /* SRGMediaPlayer.h in Headers */,
+				6BB3B276F0D93DFE7F2A3E109F8323D7 /* UIBezierPath+RTSMediaPlayerUtils.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4DE5F85E1035587BAAEA096149A6D8F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64492A752A1DD1BAE51FE0C91E24A7C5 /* MAKVONotificationCenter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1084,21 +1091,24 @@
 			productReference = 4E37F47F8B8CC9C91B39061A7536E3E9 /* libTransitionKit.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		3A6D3D3009DB639820194C29418B2893 /* MAKVONotificationCenter */ = {
+		51755F9770ED957BB8C6F87624F40A7F /* SRGMediaPlayer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CB4CEACC62C043CE8C4A44C7F38E3FE5 /* Build configuration list for PBXNativeTarget "MAKVONotificationCenter" */;
+			buildConfigurationList = 6E6419A4EABF47BBCF3D7626D75F0132 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer" */;
 			buildPhases = (
-				F2E6197D5D8F82D082AAE0DEC61859E1 /* Sources */,
-				0C40EDAB53B80AADA48FD0EDEF1A182D /* Frameworks */,
-				4B602257AC039EFFE5E3C1A31C9F4B5B /* Headers */,
+				E626C8224575D00B2F41A1BE5CAC9A89 /* Sources */,
+				133A627C06590613EDB4DA8E8CB3CDD4 /* Frameworks */,
+				8026915C132DD965CFB928AC92611A40 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				74D37A20B4F8F33A367650EE6A8C86C6 /* PBXTargetDependency */,
+				913A4F9BF5AB66F1A4C1B59CFF8A0B24 /* PBXTargetDependency */,
+				B6F05BD7A249DE5FB7E4E2775923C93D /* PBXTargetDependency */,
 			);
-			name = MAKVONotificationCenter;
-			productName = MAKVONotificationCenter;
-			productReference = 5084AF52281C65C56978EEDCA012C567 /* libMAKVONotificationCenter.a */;
+			name = SRGMediaPlayer;
+			productName = SRGMediaPlayer;
+			productReference = 856CB346B13240100F0C0E7A2B61675B /* libSRGMediaPlayer.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		5352D432641F0656C90741034E32F31E /* SDWebImage */ = {
@@ -1145,13 +1155,30 @@
 			buildRules = (
 			);
 			dependencies = (
-				D12DF746893477D02377A006F0201F7D /* PBXTargetDependency */,
-				59EF44316E286597900C3B5D40C2A9F3 /* PBXTargetDependency */,
-				AF7FA68A66EC52298A119BB74932C43D /* PBXTargetDependency */,
+				78E6AC0C4B0059D1C492FB2CD788ECED /* PBXTargetDependency */,
+				6AF353FFB6C492DFB973378C226AC34B /* PBXTargetDependency */,
+				673BEA4C9719A9367817DCAFD30ACAF4 /* PBXTargetDependency */,
 			);
 			name = "Pods-SRGMediaPlayerTests";
 			productName = "Pods-SRGMediaPlayerTests";
 			productReference = C7BFAE63F13CD1FF182292CA19DEAF7B /* libPods-SRGMediaPlayerTests.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		88E51F076557CBC967F2436E3C1D2EB3 /* MAKVONotificationCenter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0307CEA8156932952D7B4C608C298471 /* Build configuration list for PBXNativeTarget "MAKVONotificationCenter" */;
+			buildPhases = (
+				C95621E66219D0DE7076428447A97C16 /* Sources */,
+				9E38B975215DFF000CDB7FA442F42B6A /* Frameworks */,
+				B4DE5F85E1035587BAAEA096149A6D8F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MAKVONotificationCenter;
+			productName = MAKVONotificationCenter;
+			productReference = 48002281E6A068508FE20261C6446058 /* libMAKVONotificationCenter.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		A4171FD0085A0D870AAA3FA25A7717D4 /* Pods-SRGMediaPlayer */ = {
@@ -1164,8 +1191,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				4ADDFF9EC1786DDA1BBB6D10E8E8EF8E /* PBXTargetDependency */,
-				F178D65FEA59461567A090DA1A50732F /* PBXTargetDependency */,
+				3932CBED5857FBDCFC7F1275CF707392 /* PBXTargetDependency */,
+				8361E35AF419CC5ADF34CA543EA903C3 /* PBXTargetDependency */,
 			);
 			name = "Pods-SRGMediaPlayer";
 			productName = "Pods-SRGMediaPlayer";
@@ -1182,44 +1209,24 @@
 			buildRules = (
 			);
 			dependencies = (
-				5FC33102022EE5064E5D80B3AF3E02BD /* PBXTargetDependency */,
-				1B4FC59295B8803B78BBA7B994636DBB /* PBXTargetDependency */,
-				FD44F4AB8FDD227F2727AF99BF24A26C /* PBXTargetDependency */,
-				50D748326128363C2198BE0D515D9519 /* PBXTargetDependency */,
-				28E9599F5E26AF0970D732F890D85738 /* PBXTargetDependency */,
+				217FCD12FA3D6BBF69E0DF35A8507396 /* PBXTargetDependency */,
+				507B3CE85411A0BF7A54CEFB53F8B99C /* PBXTargetDependency */,
+				0ED6512D62AFC99BD5EFE034EA176196 /* PBXTargetDependency */,
+				6250AE77CC5F545BAFECA71A56A7F472 /* PBXTargetDependency */,
+				51521382529C7226B62AA4DAC17435AD /* PBXTargetDependency */,
 			);
 			name = "Pods-SRGMediaPlayer Demo";
 			productName = "Pods-SRGMediaPlayer Demo";
 			productReference = AD64994C675F893E8D9C54BE9CBA1B1C /* libPods-SRGMediaPlayer Demo.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		D6A59060ED94BEFC862C14BDC135218B /* SRGMediaPlayer */ = {
+		C5B09B2142282ACA7938339DB7CD5B3C /* CocoaLumberjack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DE9D198DE24F085C9E5A47B886DDBEEE /* Build configuration list for PBXNativeTarget "SRGMediaPlayer" */;
+			buildConfigurationList = C713ECB55ED92AA242B0362118B20DEF /* Build configuration list for PBXNativeTarget "CocoaLumberjack" */;
 			buildPhases = (
-				F9FFBFD52E98EF7782F4573C6D915623 /* Sources */,
-				1FE775756EAB29E9C61054F0F35D6C22 /* Frameworks */,
-				120CF666EB1EC8736E3E734039DB4B5A /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				77863B848DB5B1263409397F1AB54769 /* PBXTargetDependency */,
-				229FA12D285FD0EB905532AC71AF4DCE /* PBXTargetDependency */,
-				100244D7C993FC025938FDC0D3682034 /* PBXTargetDependency */,
-			);
-			name = SRGMediaPlayer;
-			productName = SRGMediaPlayer;
-			productReference = DB11BBEE5F55B0CAF7E36A705D1EC891 /* libSRGMediaPlayer.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		E0697E7D9638BAB4E91806AB9AB7A159 /* CocoaLumberjack */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E9B9405E663D8494549B08F0FE1835E4 /* Build configuration list for PBXNativeTarget "CocoaLumberjack" */;
-			buildPhases = (
-				F87EB9B54CCD86EADD8DC58497C0CB92 /* Sources */,
-				7563A4343E8DC726B2B1AC74A684BACA /* Frameworks */,
-				B8675A221406E1C440CFD6AB777FA07C /* Headers */,
+				B51F206D140A6D120755A51F022891A7 /* Sources */,
+				B421CAC54B32001C22D8F96219DE0581 /* Frameworks */,
+				7D831108639D5E1E1F554664110F3E8C /* Headers */,
 			);
 			buildRules = (
 			);
@@ -1227,7 +1234,7 @@
 			);
 			name = CocoaLumberjack;
 			productName = CocoaLumberjack;
-			productReference = D7F53FF1980C14B02D26EE17E03F1180 /* libCocoaLumberjack.a */;
+			productReference = 16B005CD23AB982BD8B4556A296EEFB2 /* libCocoaLumberjack.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -1251,13 +1258,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E0697E7D9638BAB4E91806AB9AB7A159 /* CocoaLumberjack */,
-				3A6D3D3009DB639820194C29418B2893 /* MAKVONotificationCenter */,
+				C5B09B2142282ACA7938339DB7CD5B3C /* CocoaLumberjack */,
+				88E51F076557CBC967F2436E3C1D2EB3 /* MAKVONotificationCenter */,
 				A4171FD0085A0D870AAA3FA25A7717D4 /* Pods-SRGMediaPlayer */,
 				BAFFC09744DC8C94E880192C65F2EC58 /* Pods-SRGMediaPlayer Demo */,
 				6172AFBF054AB565B6F78AA062F5D9FC /* Pods-SRGMediaPlayerTests */,
 				5352D432641F0656C90741034E32F31E /* SDWebImage */,
-				D6A59060ED94BEFC862C14BDC135218B /* SRGMediaPlayer */,
+				51755F9770ED957BB8C6F87624F40A7F /* SRGMediaPlayer */,
 				5562CCA2F1498FBFA646B509B7C8B1E9 /* SRGMediaPlayer-SRGMediaPlayer */,
 				158117D77AED03B83733E51D2D22983B /* TransitionKit */,
 				0EE5634CAD0D778C76414552FE5B44AB /* libextobjc */,
@@ -1329,11 +1336,65 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B51F206D140A6D120755A51F022891A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				441B103196F5B756B35876086132FA79 /* CocoaLumberjack-dummy.m in Sources */,
+				F68036CF58587C3BA08E2FC793964432 /* DDASLLogCapture.m in Sources */,
+				290872E12C6F3F523478FF9C6B2DFB05 /* DDASLLogger.m in Sources */,
+				3C50ABE4F9916821DD80C3B7F64E6756 /* DDAbstractDatabaseLogger.m in Sources */,
+				E46F35C5104FC8B0206DA03DF9504D0B /* DDContextFilterLogFormatter.m in Sources */,
+				0679C0984F8B8DADD9B9704E4672826D /* DDDispatchQueueLogFormatter.m in Sources */,
+				FD71AE5B6579B94E4B6C6F419009986D /* DDFileLogger.m in Sources */,
+				5E0BACBB0265E41F9800A97C8D227956 /* DDLog.m in Sources */,
+				F4DEBB4A58A8FD4D2045ECA1D9BE1E96 /* DDMultiFormatter.m in Sources */,
+				CEC31FC415B209A86D1E3F3D987D1561 /* DDTTYLogger.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C95621E66219D0DE7076428447A97C16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D96011C1DAFA2097C63E40F4A755C651 /* MAKVONotificationCenter-dummy.m in Sources */,
+				8B185DF7227B0655745A5403AEAFA3AA /* MAKVONotificationCenter.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D5474656CE34CBADD90C55D3D3F7EFE2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				46C9A38DB6B48F3545E24AC494E6B606 /* Pods-SRGMediaPlayer Demo-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E626C8224575D00B2F41A1BE5CAC9A89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50183C0BCFF1D9005F4D435A67A447BE /* NSBundle+RTSMediaPlayer.m in Sources */,
+				E19C86913CC96F2492DF2B1B30DF9361 /* RTSActivityGestureRecognizer.m in Sources */,
+				A3B2AC8EBC59348A469B097DAD252A9E /* RTSAirplayOverlayView.m in Sources */,
+				EAE1800BDD4DBD33DA58AF27A3727260 /* RTSMediaFailureOverlayView.m in Sources */,
+				072D256B116083F41893213F5B1BC346 /* RTSMediaPlayerController.m in Sources */,
+				BF141AF8BCCD8F98282F4890D74811C7 /* RTSMediaPlayerIconTemplate.m in Sources */,
+				75B514A3A91AAE791BAAA7D8567DF3C3 /* RTSMediaPlayerLogger.m in Sources */,
+				8C1DCA6320AEE2322D2B8F7C05D79CBC /* RTSMediaPlayerPlaybackButton.m in Sources */,
+				39F06FD5FC1BB3C8842229F5DC110162 /* RTSMediaPlayerSharedController.m in Sources */,
+				B2AA4A0BD14417A8C3B9F25DCC3004CD /* RTSMediaPlayerView.m in Sources */,
+				87F16D7041A290EE0B6F4155AD415AD7 /* RTSMediaPlayerViewController.m in Sources */,
+				02CF7BD7729EE029E6F628EF0E06EE32 /* RTSMediaSegmentsController.m in Sources */,
+				B53B01F6239CAB7FA92952CAF5782046 /* RTSPeriodicTimeObserver.m in Sources */,
+				6BC1FE26BA876C5A2E4FEA5B6D48C3D5 /* RTSPictureInPictureButton.m in Sources */,
+				BDB754B571FE4D24074E4077B6DB9E59 /* RTSPlaybackActivityIndicatorView.m in Sources */,
+				77D0A69BB15536F3701C1A804BCB303A /* RTSSegmentedTimelineView.m in Sources */,
+				3BB851E7FAB3A7D06DD51E2051567749 /* RTSTimeSlider.m in Sources */,
+				5E3DC39227AA175313E3CF5D5E713D2B /* RTSTimelineSlider.m in Sources */,
+				0F05F19A18AB2AA523DD83B0126E0E28 /* RTSVolumeView.m in Sources */,
+				0F0ABC449F67DB9571922B5735926A9E /* SRGMediaPlayer-dummy.m in Sources */,
+				17949C1896760500FCEF59C0103E3407 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1359,139 +1420,86 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F2E6197D5D8F82D082AAE0DEC61859E1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				92DD1D2420D5CDC9E8DC119774640582 /* MAKVONotificationCenter-dummy.m in Sources */,
-				CFE5C8E484C1A315DF15FC5A6AB290DC /* MAKVONotificationCenter.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F87EB9B54CCD86EADD8DC58497C0CB92 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D013147D33DFD4BB07EF67356637EBD6 /* CocoaLumberjack-dummy.m in Sources */,
-				E46543EBBF497AE9C145001B8A5B4190 /* DDASLLogCapture.m in Sources */,
-				D390F5404CF6C017394BFDF62B81C369 /* DDASLLogger.m in Sources */,
-				03797F6C10A2AEE5D60A2C2CD8771E04 /* DDAbstractDatabaseLogger.m in Sources */,
-				E56D3243C25496272BAAC8D2993040C9 /* DDContextFilterLogFormatter.m in Sources */,
-				9F8E7D22E8CBBB4BAB2F4E4C377730C3 /* DDDispatchQueueLogFormatter.m in Sources */,
-				E3252CB153EE98BECD740061C25EB2B6 /* DDFileLogger.m in Sources */,
-				2DC901CBFF417BF298A3F2F2558F41E7 /* DDLog.m in Sources */,
-				9963F1022659847BC4689E340781A5F7 /* DDMultiFormatter.m in Sources */,
-				E6AC6B176D06529E3D96193BA337F919 /* DDTTYLogger.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F9FFBFD52E98EF7782F4573C6D915623 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				38C8995F24BFB75AD7391844F9A9DDA4 /* NSBundle+RTSMediaPlayer.m in Sources */,
-				6D5C0BF6F162433FDE02C6DA7D63998D /* RTSActivityGestureRecognizer.m in Sources */,
-				460A8BBE394A83B3C42C544CCF4725FF /* RTSAirplayOverlayView.m in Sources */,
-				E294203B4F3E88E7F9A26F1E2531662B /* RTSMediaFailureOverlayView.m in Sources */,
-				8111483DFF2761B0DFF962A1F2CCFF01 /* RTSMediaPlayerController.m in Sources */,
-				5E08757EA537152E1F91A37B9D8603CB /* RTSMediaPlayerIconTemplate.m in Sources */,
-				F09B792D730EB21AA48B6725560FA781 /* RTSMediaPlayerLogger.m in Sources */,
-				0809CCE3AF8252888DD76EC46E607A01 /* RTSMediaPlayerPlaybackButton.m in Sources */,
-				74A72CE87E1D2542B081987D590C0054 /* RTSMediaPlayerView.m in Sources */,
-				51CA06A5BDB911D02A1A99C52BCEC274 /* RTSMediaPlayerViewController.m in Sources */,
-				E163BC8D683AEF9616D52FE7400FDEF0 /* RTSMediaSegmentsController.m in Sources */,
-				ED85A4550324EFC28C3D086E5BBA6399 /* RTSPeriodicTimeObserver.m in Sources */,
-				0DAFE23DF744786737599CB88F78DC29 /* RTSPictureInPictureButton.m in Sources */,
-				CB66D85094EA6CC648F20D3C00D759BD /* RTSPlaybackActivityIndicatorView.m in Sources */,
-				FFEC5E0972726D68404AC24E0BAB7556 /* RTSSegmentedTimelineView.m in Sources */,
-				B01933A1EB15CBEC2D20C73746619223 /* RTSTimeSlider.m in Sources */,
-				CB56A3D3D7DF36CB191B69DEFE6B2523 /* RTSTimelineSlider.m in Sources */,
-				B60B316C1115818E805F389A5A5B554D /* RTSVolumeView.m in Sources */,
-				B05D150682148F1DAA905BF987133F91 /* SRGMediaPlayer-dummy.m in Sources */,
-				9B697D1C9652FA7111984DA029295F18 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		100244D7C993FC025938FDC0D3682034 /* PBXTargetDependency */ = {
+		0ED6512D62AFC99BD5EFE034EA176196 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = libextobjc;
-			target = 0EE5634CAD0D778C76414552FE5B44AB /* libextobjc */;
-			targetProxy = 088761C728AC3D2225FA440B27AF40F5 /* PBXContainerItemProxy */;
+			name = SRGMediaPlayer;
+			target = 51755F9770ED957BB8C6F87624F40A7F /* SRGMediaPlayer */;
+			targetProxy = 5D882F494FD9F24269F92D0A4E3FDC94 /* PBXContainerItemProxy */;
 		};
-		1B4FC59295B8803B78BBA7B994636DBB /* PBXTargetDependency */ = {
+		217FCD12FA3D6BBF69E0DF35A8507396 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CocoaLumberjack;
+			target = C5B09B2142282ACA7938339DB7CD5B3C /* CocoaLumberjack */;
+			targetProxy = 20CF2CF6EF6575B2810CAB774D7AAA9E /* PBXContainerItemProxy */;
+		};
+		3932CBED5857FBDCFC7F1275CF707392 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TransitionKit;
+			target = 158117D77AED03B83733E51D2D22983B /* TransitionKit */;
+			targetProxy = B9C970904664348FF8885E4EB993E125 /* PBXContainerItemProxy */;
+		};
+		507B3CE85411A0BF7A54CEFB53F8B99C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SDWebImage;
 			target = 5352D432641F0656C90741034E32F31E /* SDWebImage */;
-			targetProxy = 6774D56831DDA8DB4CFA651DBEECFB70 /* PBXContainerItemProxy */;
+			targetProxy = 9D0ED8C7D59C3CFF7C861B99713ED3D3 /* PBXContainerItemProxy */;
 		};
-		229FA12D285FD0EB905532AC71AF4DCE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TransitionKit;
-			target = 158117D77AED03B83733E51D2D22983B /* TransitionKit */;
-			targetProxy = 06676D712B371D914334B4BE9111CEEE /* PBXContainerItemProxy */;
-		};
-		28E9599F5E26AF0970D732F890D85738 /* PBXTargetDependency */ = {
+		51521382529C7226B62AA4DAC17435AD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libextobjc;
 			target = 0EE5634CAD0D778C76414552FE5B44AB /* libextobjc */;
-			targetProxy = 65C7D0C2E527ABD0CA51B7642B60B3DC /* PBXContainerItemProxy */;
+			targetProxy = 978C25123B2729D2DF826FC6A8912E0A /* PBXContainerItemProxy */;
 		};
-		4ADDFF9EC1786DDA1BBB6D10E8E8EF8E /* PBXTargetDependency */ = {
+		6250AE77CC5F545BAFECA71A56A7F472 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = TransitionKit;
 			target = 158117D77AED03B83733E51D2D22983B /* TransitionKit */;
-			targetProxy = FE1114F3391A2F7AED7D42E0EFE2FDBB /* PBXContainerItemProxy */;
+			targetProxy = 343B48A75209AC049E9FD90AD8B75466 /* PBXContainerItemProxy */;
 		};
-		50D748326128363C2198BE0D515D9519 /* PBXTargetDependency */ = {
+		673BEA4C9719A9367817DCAFD30ACAF4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libextobjc;
+			target = 0EE5634CAD0D778C76414552FE5B44AB /* libextobjc */;
+			targetProxy = 5DA2CA1E0E8A9B17ADA41906767D3B10 /* PBXContainerItemProxy */;
+		};
+		6AF353FFB6C492DFB973378C226AC34B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = TransitionKit;
 			target = 158117D77AED03B83733E51D2D22983B /* TransitionKit */;
-			targetProxy = F326E090EFD1867514351D1780A07FA9 /* PBXContainerItemProxy */;
+			targetProxy = 991E81AE55D059CDF3026F367637B733 /* PBXContainerItemProxy */;
 		};
-		59EF44316E286597900C3B5D40C2A9F3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TransitionKit;
-			target = 158117D77AED03B83733E51D2D22983B /* TransitionKit */;
-			targetProxy = 0646C5A719DDA560E9FB1142FF613274 /* PBXContainerItemProxy */;
-		};
-		5FC33102022EE5064E5D80B3AF3E02BD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = CocoaLumberjack;
-			target = E0697E7D9638BAB4E91806AB9AB7A159 /* CocoaLumberjack */;
-			targetProxy = EE9A58FA92BFFD35754B358CCA50FB55 /* PBXContainerItemProxy */;
-		};
-		77863B848DB5B1263409397F1AB54769 /* PBXTargetDependency */ = {
+		74D37A20B4F8F33A367650EE6A8C86C6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "SRGMediaPlayer-SRGMediaPlayer";
 			target = 5562CCA2F1498FBFA646B509B7C8B1E9 /* SRGMediaPlayer-SRGMediaPlayer */;
-			targetProxy = 78A55822EAA748BB33B79071D69D5327 /* PBXContainerItemProxy */;
+			targetProxy = 2BF37B950EB891D5961293B49B52B356 /* PBXContainerItemProxy */;
 		};
-		AF7FA68A66EC52298A119BB74932C43D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libextobjc;
-			target = 0EE5634CAD0D778C76414552FE5B44AB /* libextobjc */;
-			targetProxy = 2A8DBB7F8D20EFCD65BE8F70B5E44690 /* PBXContainerItemProxy */;
-		};
-		D12DF746893477D02377A006F0201F7D /* PBXTargetDependency */ = {
+		78E6AC0C4B0059D1C492FB2CD788ECED /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MAKVONotificationCenter;
-			target = 3A6D3D3009DB639820194C29418B2893 /* MAKVONotificationCenter */;
-			targetProxy = B7DAC67D143372661467DA6C404A00FE /* PBXContainerItemProxy */;
+			target = 88E51F076557CBC967F2436E3C1D2EB3 /* MAKVONotificationCenter */;
+			targetProxy = 90B6EA2E88405A1633011E933E0F9453 /* PBXContainerItemProxy */;
 		};
-		F178D65FEA59461567A090DA1A50732F /* PBXTargetDependency */ = {
+		8361E35AF419CC5ADF34CA543EA903C3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libextobjc;
 			target = 0EE5634CAD0D778C76414552FE5B44AB /* libextobjc */;
-			targetProxy = 63A07A52BDF51A0F35491A89D65F702F /* PBXContainerItemProxy */;
+			targetProxy = B596E55A8A8BAB64B1B627A43D9A2F40 /* PBXContainerItemProxy */;
 		};
-		FD44F4AB8FDD227F2727AF99BF24A26C /* PBXTargetDependency */ = {
+		913A4F9BF5AB66F1A4C1B59CFF8A0B24 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = SRGMediaPlayer;
-			target = D6A59060ED94BEFC862C14BDC135218B /* SRGMediaPlayer */;
-			targetProxy = 207A6F447090D100C64094FA480FD6FB /* PBXContainerItemProxy */;
+			name = TransitionKit;
+			target = 158117D77AED03B83733E51D2D22983B /* TransitionKit */;
+			targetProxy = C3945F1E8B495EBE54A800AF317C85FA /* PBXContainerItemProxy */;
+		};
+		B6F05BD7A249DE5FB7E4E2775923C93D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libextobjc;
+			target = 0EE5634CAD0D778C76414552FE5B44AB /* libextobjc */;
+			targetProxy = 50491350A09852AF8B7C4354512E8AC4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1530,22 +1538,6 @@
 			};
 			name = Release;
 		};
-		0712F61DB975D07EBDDB90E4EF21D7FC /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF094B2DDD6BB7544D36EA2031192084 /* SRGMediaPlayer-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SRGMediaPlayer/SRGMediaPlayer-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		1FF4395D5728D671DA9F5B2CB696CEAA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0E9C1F56F013BABE62FDBD5A7D31E033 /* Pods-SRGMediaPlayerTests.debug.xcconfig */;
@@ -1556,38 +1548,6 @@
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		287ABBCE7D4C73F63CDB0AF8A1C4A41C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF094B2DDD6BB7544D36EA2031192084 /* SRGMediaPlayer-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SRGMediaPlayer/SRGMediaPlayer-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		2A45318592E75174F1730D27CDF8C21B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D779A125C630931B0CCC00E185B26F48 /* MAKVONotificationCenter-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/MAKVONotificationCenter/MAKVONotificationCenter-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1606,21 +1566,21 @@
 			};
 			name = Release;
 		};
-		3A058EA2C221128BCF3BDE08AF60A40B /* Release */ = {
+		3A6DF5ED4364E0E86332EB0A43E2893F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D779A125C630931B0CCC00E185B26F48 /* MAKVONotificationCenter-Private.xcconfig */;
+			baseConfigurationReference = 1EBEDA09A32A7E821A30FA13A1ACF37E /* MAKVONotificationCenter-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/MAKVONotificationCenter/MAKVONotificationCenter-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Release;
+			name = Debug;
 		};
 		3D250651855BAEC74B5C598027CBA39B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1730,12 +1690,44 @@
 			};
 			name = Release;
 		};
+		81C7317090A074A5279CA9DE9524A00E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BE8323406E597B15CA028935E9617AE /* CocoaLumberjack-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/CocoaLumberjack/CocoaLumberjack-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		84EA1BFD0051BD76A9D0B57859D1E9A0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2A6CC3664ED1B896D25F581A847DA7C3 /* TransitionKit-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/TransitionKit/TransitionKit-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		9AC6520002AFF288C83A536D5B997DD7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF094B2DDD6BB7544D36EA2031192084 /* SRGMediaPlayer-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SRGMediaPlayer/SRGMediaPlayer-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
@@ -1761,22 +1753,6 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
-		};
-		AA986B6197F75F2ACB29BF1F77DE5B83 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = DD2C4A1615C5C6CDDA1B639E571984F9 /* CocoaLumberjack-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/CocoaLumberjack/CocoaLumberjack-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
 		};
 		B37F0F91F85060E28F1DAAB522DC7EC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1833,12 +1809,12 @@
 			};
 			name = Debug;
 		};
-		B9A953D87E02025F92F20D5B28DA7095 /* Release */ = {
+		B94E3EDD9DD45968A2F2E90A9E2E48BB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DD2C4A1615C5C6CDDA1B639E571984F9 /* CocoaLumberjack-Private.xcconfig */;
+			baseConfigurationReference = 1EBEDA09A32A7E821A30FA13A1ACF37E /* MAKVONotificationCenter-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/CocoaLumberjack/CocoaLumberjack-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/MAKVONotificationCenter/MAKVONotificationCenter-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
@@ -1881,9 +1857,50 @@
 			};
 			name = Release;
 		};
+		E4444BBC9D4664EF5793E13425750BFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF094B2DDD6BB7544D36EA2031192084 /* SRGMediaPlayer-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SRGMediaPlayer/SRGMediaPlayer-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		FBF50FCAB12275874EEF823970BDB636 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BE8323406E597B15CA028935E9617AE /* CocoaLumberjack-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/CocoaLumberjack/CocoaLumberjack-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0307CEA8156932952D7B4C608C298471 /* Build configuration list for PBXNativeTarget "MAKVONotificationCenter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A6DF5ED4364E0E86332EB0A43E2893F /* Debug */,
+				B94E3EDD9DD45968A2F2E90A9E2E48BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1C450805480F718FD16967298BD9381E /* Build configuration list for PBXNativeTarget "SDWebImage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1898,6 +1915,15 @@
 			buildConfigurations = (
 				B37F0F91F85060E28F1DAAB522DC7EC1 /* Debug */,
 				052A17875CB827423D627183396CEB60 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6E6419A4EABF47BBCF3D7626D75F0132 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4444BBC9D4664EF5793E13425750BFB /* Debug */,
+				9AC6520002AFF288C83A536D5B997DD7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1947,29 +1973,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CB4CEACC62C043CE8C4A44C7F38E3FE5 /* Build configuration list for PBXNativeTarget "MAKVONotificationCenter" */ = {
+		C713ECB55ED92AA242B0362118B20DEF /* Build configuration list for PBXNativeTarget "CocoaLumberjack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2A45318592E75174F1730D27CDF8C21B /* Debug */,
-				3A058EA2C221128BCF3BDE08AF60A40B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DE9D198DE24F085C9E5A47B886DDBEEE /* Build configuration list for PBXNativeTarget "SRGMediaPlayer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				287ABBCE7D4C73F63CDB0AF8A1C4A41C /* Debug */,
-				0712F61DB975D07EBDDB90E4EF21D7FC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E9B9405E663D8494549B08F0FE1835E4 /* Build configuration list for PBXNativeTarget "CocoaLumberjack" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA986B6197F75F2ACB29BF1F77DE5B83 /* Debug */,
-				B9A953D87E02025F92F20D5B28DA7095 /* Release */,
+				FBF50FCAB12275874EEF823970BDB636 /* Debug */,
+				81C7317090A074A5279CA9DE9524A00E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

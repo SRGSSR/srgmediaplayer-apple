@@ -59,6 +59,7 @@
 		E67FDACA1AFA166F0050DCE6 /* RTSTimelineSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */; };
 		E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */; };
 		E69906301AFB969F005ED143 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */; };
+		E6B1F3201BEA461000B77092 /* RTSMediaPlayerSharedController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6B1F31F1BEA461000B77092 /* RTSMediaPlayerSharedController.m */; };
 		E6C2F49A1BE8960D0003DEC6 /* picture_in_picture_start_button.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C2F4981BE895100003DEC6 /* picture_in_picture_start_button.png */; };
 		E6C2F49B1BE896100003DEC6 /* picture_in_picture_start_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C2F4991BE895100003DEC6 /* picture_in_picture_start_button@2x.png */; };
 		E6C2F49E1BE89A1A0003DEC6 /* picture_in_picture_stop_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6C2F49D1BE8995E0003DEC6 /* picture_in_picture_stop_button@2x.png */; };
@@ -184,6 +185,8 @@
 		E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumb_timeline_slider.png; sourceTree = "<group>"; };
 		E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumb_timeline_slider@2x.png"; sourceTree = "<group>"; };
 		E6A6D0E31AFA017600E15BCF /* RTSSegmentedTimelineView+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RTSSegmentedTimelineView+Private.h"; sourceTree = "<group>"; };
+		E6B1F31E1BEA461000B77092 /* RTSMediaPlayerSharedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerSharedController.h; sourceTree = "<group>"; };
+		E6B1F31F1BEA461000B77092 /* RTSMediaPlayerSharedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerSharedController.m; sourceTree = "<group>"; };
 		E6C2F4981BE895100003DEC6 /* picture_in_picture_start_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picture_in_picture_start_button.png; sourceTree = "<group>"; };
 		E6C2F4991BE895100003DEC6 /* picture_in_picture_start_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picture_in_picture_start_button@2x.png"; sourceTree = "<group>"; };
 		E6C2F49C1BE8995E0003DEC6 /* picture_in_picture_stop_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picture_in_picture_stop_button.png; sourceTree = "<group>"; };
@@ -278,6 +281,8 @@
 				B61E18BE1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.h */,
 				B61E18BF1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m */,
 				B61E18C01AA750CC00E4FAB9 /* RTSMediaPlayerViewController.xib */,
+				E6B1F31E1BEA461000B77092 /* RTSMediaPlayerSharedController.h */,
+				E6B1F31F1BEA461000B77092 /* RTSMediaPlayerSharedController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -613,6 +618,7 @@
 				B60440FB1AA20E8D00C7DA57 /* RTSMediaPlayerView.m in Sources */,
 				9F8A80081B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */,
 				B61E19081AA9F3B900E4FAB9 /* RTSVolumeView.m in Sources */,
+				E6B1F3201BEA461000B77092 /* RTSMediaPlayerSharedController.m in Sources */,
 				E616272C1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.m in Sources */,
 				C2246DEC1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m in Sources */,
 				E6C2F4A41BE8A3530003DEC6 /* RTSPictureInPictureButton.m in Sources */,

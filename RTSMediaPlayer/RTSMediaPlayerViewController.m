@@ -10,14 +10,14 @@
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerPlaybackButton.h"
 #import "RTSPictureInPictureButton.h"
-#import "RTSPictureInPictureDelegate.h"
 #import "RTSPlaybackActivityIndicatorView.h"
+#import "RTSMediaPlayerSharedController.h"
 #import "RTSTimeSlider.h"
 #import "RTSVolumeView.h"
 
 #import <libextobjc/EXTScope.h>
 
-static RTSMediaPlayerController *s_mediaPlayerController = nil;
+static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @interface RTSMediaPlayerViewController () <RTSMediaPlayerControllerDataSource>
 
@@ -51,7 +51,8 @@ static RTSMediaPlayerController *s_mediaPlayerController = nil;
         return;
     }
     
-    s_mediaPlayerController = [[RTSMediaPlayerController alloc] init];
+    // Use subclass for the shared instance, listening to PIP events
+    s_mediaPlayerController = [[RTSMediaPlayerSharedController alloc] init];
 }
 
 - (instancetype)initWithContentURL:(NSURL *)contentURL
