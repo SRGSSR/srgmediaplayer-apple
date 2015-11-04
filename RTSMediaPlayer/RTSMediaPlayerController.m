@@ -979,15 +979,15 @@ static void LogProperties(id object)
 - (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
 {
 	if (_pictureInPictureController) {
-		[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:RTSMediaPlayerPictureInPictureContext];
-        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:RTSMediaPlayerPictureInPictureContext];
+		[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:(void *)RTSMediaPlayerPictureInPictureContext];
+        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:(void *)RTSMediaPlayerPictureInPictureContext];
 	}
 	
 	_pictureInPictureController = pictureInPictureController;
 	
 	if (pictureInPictureController) {
-		[pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:RTSMediaPlayerPictureInPictureContext];
-        [pictureInPictureController addObserver:self forKeyPath:@"pictureInPictureActive" options:NSKeyValueObservingOptionNew context:RTSMediaPlayerPictureInPictureContext];
+		[pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPictureContext];
+        [pictureInPictureController addObserver:self forKeyPath:@"pictureInPictureActive" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPictureContext];
 	}
 }
 
