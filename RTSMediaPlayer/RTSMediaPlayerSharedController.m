@@ -35,4 +35,11 @@
 	completionHandler(YES);
 }
 
+- (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
+{
+	if (!self.currentViewController) {
+		[self reset];
+	}
+}
+
 @end
