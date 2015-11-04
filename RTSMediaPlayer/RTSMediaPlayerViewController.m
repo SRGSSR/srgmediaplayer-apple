@@ -141,6 +141,15 @@ static RTSMediaPlayerController *s_mediaPlayerController = nil;
 	}];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	
+	if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
+		[s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
+	}
+}
+
 - (void)setTimeSliderHidden:(BOOL)hidden
 {
 	self.timeSlider.timeLeftValueLabel.hidden = hidden;
@@ -233,6 +242,13 @@ static RTSMediaPlayerController *s_mediaPlayerController = nil;
 - (IBAction)seek:(id)sender
 {
 	[self updateLiveButton];
+}
+
+- (IBAction)startPictureInPicture:(id)sender
+{
+    if (s_mediaPlayerController.pictureInPictureController.isPictureInPicturePossible) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 @end
