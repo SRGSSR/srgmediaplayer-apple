@@ -7,11 +7,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTSMediaPlayerViewController">
             <connections>
+                <outlet property="bottomBarView" destination="m4e-aB-8GY" id="85E-pM-TDr"/>
                 <outlet property="liveButton" destination="f2J-Sq-TNH" id="ufj-9B-9fS"/>
-                <outlet property="loadingAcitivityIndicatorView" destination="z3p-uA-NWq" id="C5i-1t-xqK"/>
+                <outlet property="loadingActivityIndicatorView" destination="z3p-uA-NWq" id="C5i-1t-xqK"/>
                 <outlet property="loadingLabel" destination="yUB-n6-aT0" id="YVj-aE-6vI"/>
-                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="1fS-p7-nwe"/>
+                <outlet property="navigationBarView" destination="kqK-gI-E5v" id="UNx-yj-PRU"/>
+                <outlet property="pictureInPictureButton" destination="NH0-ev-1HR" id="EeD-Yd-LjN"/>
                 <outlet property="playPauseButton" destination="orZ-GR-Obh" id="has-wO-PCl"/>
+                <outlet property="playbackActivityIndicatorView" destination="d2t-q1-HOm" id="LVj-ZY-2bs"/>
                 <outlet property="timeLeftValueLabelWidthConstraint" destination="G8R-4I-uxy" id="wwA-Fb-CRF"/>
                 <outlet property="timeSlider" destination="dbP-gV-yjr" id="ICa-MM-Kcj"/>
                 <outlet property="valueLabelWidthConstraint" destination="LD7-6d-ZRT" id="ItF-8i-kPA"/>
@@ -27,9 +30,6 @@
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="d2t-q1-HOm" customClass="RTSPlaybackActivityIndicatorView">
                     <rect key="frame" x="290" y="290" width="20" height="20"/>
                     <animations/>
-                    <connections>
-                        <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="mPb-Pz-AYA"/>
-                    </connections>
                 </activityIndicatorView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqK-gI-E5v" userLabel="Navigation Bar View">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
@@ -61,7 +61,6 @@
                                             <animations/>
                                             <connections>
                                                 <action selector="seek:" destination="-1" eventType="valueChanged" id="Kez-Th-9XW"/>
-                                                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="2nS-hm-72g"/>
                                                 <outlet property="timeLeftValueLabel" destination="OdH-jj-nfU" id="zcx-hm-PNg"/>
                                                 <outlet property="valueLabel" destination="kzH-xw-G6y" id="cEN-dj-owx"/>
                                             </connections>
@@ -158,9 +157,6 @@
                                     <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
-                            <connections>
-                                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="joE-pC-wnt"/>
-                            </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="14B-nw-cM3" customClass="RTSVolumeView">
                             <rect key="frame" x="8" y="50" width="584" height="30"/>
@@ -177,9 +173,6 @@
                                 <constraint firstAttribute="width" constant="43" id="CnR-zb-Iat"/>
                                 <constraint firstAttribute="height" constant="34" id="lAW-4N-dHl"/>
                             </constraints>
-                            <connections>
-                                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="hEL-3V-GIi"/>
-                            </connections>
                         </button>
                     </subviews>
                     <animations/>
@@ -234,14 +227,5 @@
             </constraints>
             <point key="canvasLocation" x="13" y="-98"/>
         </view>
-        <customObject id="rfJ-1C-Ygo" customClass="RTSMediaPlayerController">
-            <connections>
-                <outlet property="activityView" destination="iN0-l3-epB" id="8M8-ep-18R"/>
-                <outletCollection property="overlayViews" destination="kqK-gI-E5v" id="loX-MY-6Bg"/>
-                <outletCollection property="overlayViews" destination="m4e-aB-8GY" id="6Yh-NX-pIr"/>
-                <outletCollection property="overlayViews" destination="14B-nw-cM3" id="vtV-N5-t6X"/>
-                <outletCollection property="overlayViews" destination="f2J-Sq-TNH" id="Ho6-8D-aPf"/>
-            </connections>
-        </customObject>
     </objects>
 </document>
