@@ -10,14 +10,6 @@
 
 @implementation RTSMediaPlayerSharedController
 
-- (instancetype)initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
-{
-	if (self = [super initWithContentIdentifier:identifier dataSource:dataSource]) {
-		self.pictureInPictureController.delegate = self;
-	}
-	return self;
-}
-
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
 	if (! self.currentViewController) {
@@ -40,6 +32,16 @@
 	if (!self.currentViewController) {
 		[self reset];
 	}
+}
+
+- (AVPictureInPictureController *)pictureInPictureController
+{
+    // Lazily installs itself as delegate, in case the PIP controller gets recreated
+    AVPictureInPictureController *pictureInPictureController = super.pictureInPictureController;
+    if (!pictureInPictureController.delegate) {
+        pictureInPictureController.delegate = self;
+    }
+    return pictureInPictureController;
 }
 
 @end
