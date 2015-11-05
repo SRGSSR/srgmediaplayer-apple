@@ -99,6 +99,11 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 											 selector:@selector(mediaPlayerDidHideControlOverlays:)
 												 name:RTSMediaPlayerDidHideControlOverlaysNotification
 											   object:s_mediaPlayerController];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 	
 	[s_mediaPlayerController setDataSource:self.dataSource];
 	
@@ -232,6 +237,15 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (void)mediaPlayerDidHideControlOverlays:(NSNotification *)notificaiton
 {
 	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    AVPictureInPictureController *pictureInPictureController = s_mediaPlayerController.pictureInPictureController;
+    
+    if (pictureInPictureController.isPictureInPictureActive) {
+        [pictureInPictureController stopPictureInPicture];
+    }
 }
 
 #pragma mark - Actions
