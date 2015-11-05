@@ -77,8 +77,6 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @property (readwrite, weak) id stateTransitionObserver;
 
-@property (nonatomic, getter=isPictureInPictureEnabledWhenAvailable) BOOL pictureInPictureEnabledWhenAvailable;
-
 @property (readonly) dispatch_source_t idleTimer;
 
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
@@ -117,8 +115,6 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	
 	_identifier = identifier;
 	_dataSource = dataSource;
-	
-	_pictureInPictureEnabledWhenAvailable = YES;
 	
 	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	self.periodicTimeObservers = [NSMutableDictionary dictionary];
