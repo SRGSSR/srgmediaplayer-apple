@@ -57,9 +57,8 @@
 {
 	[super drawRect:rect];
 	
-	CMTimeRange timeRange = [self.mediaPlayerController timeRange];
-	if (CMTIMERANGE_IS_EMPTY(timeRange))
-	{
+	CMTimeRange timeRange = [self.segmentsController.playerController timeRange];
+	if (CMTIMERANGE_IS_EMPTY(timeRange)) {
 		return;
 	}
 	
@@ -69,8 +68,7 @@
 	CGFloat thumbStartXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.minimumValue]);
 	CGFloat thumbEndXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.maximumValue]);
 	
-	for (id<RTSMediaSegment> segment in self.segmentsController.visibleSegments)
-	{	
+	for (id<RTSMediaSegment> segment in self.segmentsController.visibleSegments) {	
 		// Skip events not in the timeline
 		if (CMTIME_COMPARE_INLINE(segment.timeRange.start, < , timeRange.start)
 			|| CMTIME_COMPARE_INLINE(segment.timeRange.start, >, CMTimeRangeGetEnd(timeRange)))
@@ -85,8 +83,7 @@
 			iconImage = [self.delegate timelineSlider:self iconImageForSegment:segment];
 		}
 		
-		if (iconImage)
-		{
+		if (iconImage) {
 			CGFloat iconSide = 15.f;
 			
 			CGRect tickRect = CGRectMake(tickXPos - iconSide / 2.f,
@@ -95,8 +92,7 @@
 										 iconSide);
 			[iconImage drawInRect:tickRect];
 		}
-		else
-		{
+		else {
 			static const CGFloat kTickWidth = 3.f;
 			CGFloat tickHeight = 19.f;
 			
@@ -140,7 +136,7 @@
 	float value = self.minimumValue + (self.maximumValue - self.minimumValue) * xPos / CGRectGetWidth(self.bounds);
 	CMTime time = CMTimeMakeWithSeconds(value, NSEC_PER_SEC);
 	
-	[self.mediaPlayerController seekToTime:time completionHandler:nil];
+	[self.segmentsController.playerController seekToTime:time completionHandler:nil];
 }
 
 @end
