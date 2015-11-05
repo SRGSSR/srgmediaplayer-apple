@@ -25,7 +25,7 @@ FOUNDATION_EXTERN UIImage *RTSPictureInPictureButtonStopImage(void);
 @interface RTSPictureInPictureButton : UIButton
 
 /**
- *  The media player to which the PIP button must be associated with.
+ *  The media player to which the picture in picture button must be associated with.
  */
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 

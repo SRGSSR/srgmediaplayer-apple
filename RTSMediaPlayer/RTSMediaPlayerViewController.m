@@ -51,7 +51,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
         return;
     }
     
-    // Use subclass for the shared instance, listening to PIP events
+    // Use subclass for the shared instance, listening to picture in picture events
     s_mediaPlayerController = [[RTSMediaPlayerSharedController alloc] init];
 }
 
