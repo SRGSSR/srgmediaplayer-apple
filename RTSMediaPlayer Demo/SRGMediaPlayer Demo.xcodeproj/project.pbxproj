@@ -377,7 +377,7 @@
 		C2F549E81A9F713300496C59 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = RTS;
 				TargetAttributes = {
 					C2F549EF1A9F713300496C59 = {
@@ -568,6 +568,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -638,6 +639,7 @@
 				INFOPLIST_FILE = "RTSMediaPlayer Demo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-Demo";
 				PRODUCT_NAME = "SRGMediaPlayer Demo";
 			};
 			name = Debug;
@@ -654,6 +656,7 @@
 				INFOPLIST_FILE = "RTSMediaPlayer Demo/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-Demo";
 				PRODUCT_NAME = "SRGMediaPlayer Demo";
 			};
 			name = Release;
