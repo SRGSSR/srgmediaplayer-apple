@@ -148,15 +148,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 	}];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
-	
-    if ([self isBeingPresented]) {
-        s_mediaPlayerController.currentViewController = self;
-    }
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
@@ -164,15 +155,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 	if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
 		[s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
 	}
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    if ([self isBeingDismissed]) {
-        s_mediaPlayerController.currentViewController = nil;
-    }
 }
 
 - (void)setTimeSliderHidden:(BOOL)hidden
@@ -276,13 +258,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (IBAction)seek:(id)sender
 {
 	[self updateLiveButton];
-}
-
-- (IBAction)startPictureInPicture:(id)sender
-{
-    if (s_mediaPlayerController.pictureInPictureController.isPictureInPicturePossible) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
 }
 
 @end
