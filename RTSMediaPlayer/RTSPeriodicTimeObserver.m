@@ -11,24 +11,25 @@
 static void *s_kvoContext  = &s_kvoContext;
 
 @interface RTSPeriodicTimeObserver ()
-
 @property (nonatomic) CMTime interval;
 @property (nonatomic) dispatch_queue_t queue;
 @property (nonatomic, weak) AVPlayer *player;
-
 @property (nonatomic) NSMutableDictionary *blocks;
-
 @property (nonatomic) NSTimer *timer;
-
 @end
 
 @implementation RTSPeriodicTimeObserver
+
+- (instancetype)init
+{
+	return [self initWithInterval:CMTimeMakeWithSeconds(1, NSEC_PER_SEC) queue:NULL];
+}
 
 - (instancetype)initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue
 {
 	if (self = [super init]) {
 		self.interval = interval;
-		self.queue = queue;
+		self.queue = queue ?: dispatch_get_main_queue();
 		self.blocks = [NSMutableDictionary dictionary];
 	}
 	return self;
@@ -106,7 +107,7 @@ static void *s_kvoContext  = &s_kvoContext;
 	}
 	
 	for (void (^block)(CMTime) in [self.blocks allValues]) {
-		dispatch_async(dispatch_get_main_queue(), ^{
+		dispatch_async(self.queue, ^{
 			block(self.player.currentTime);
 		});
 	}
