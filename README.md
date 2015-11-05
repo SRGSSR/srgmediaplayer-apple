@@ -4,7 +4,7 @@
 
 The SRG Media Player library for iOS provides a simple way to add a universal audio / video player to any application. It provides:
 
-* A default player with the same look & feel as the standard iOS player
+* A default player with the same look & feel as the standard iOS player, and automatic support for picture in picture for compatible devices
 * A set of overlays which can be combined to create the user interface you need
 * Support for segments. Those are simply sections of a video, defined by non-overlapping time ranges, which can be blocked or hidden
 * Support for DVR streams
