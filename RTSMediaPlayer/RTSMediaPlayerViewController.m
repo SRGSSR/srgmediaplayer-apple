@@ -148,6 +148,11 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 	[super viewWillAppear:animated];
 	
 	s_mediaPlayerController.currentViewController = self;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
 	
 	if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
 		[s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
