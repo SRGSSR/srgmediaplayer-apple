@@ -27,7 +27,7 @@ RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewCo
 
 This view controller can simply be supplied the URL to be played. Alternatively, you can provide a data source and an identifier for which the URL must be retrieved from the data source. More on this topic in _Data sources_ section.
 
-The `RTSMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams), but does not provide support for segments. For this you need to design your own player view, see the _Designing custom players_ section below.
+The `RTSMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams) and picture in picture for compatible devices, but does not provide support for segments. For this you need to design your own player view, see the _Designing custom players_ section below.
 
 ## Data sources
 

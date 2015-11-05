@@ -9,24 +9,34 @@
 #import "NSBundle+RTSMediaPlayer.h"
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerPlaybackButton.h"
+#import "RTSPictureInPictureButton.h"
+#import "RTSPlaybackActivityIndicatorView.h"
+#import "RTSMediaPlayerSharedController.h"
 #import "RTSTimeSlider.h"
 #import "RTSVolumeView.h"
 
 #import <libextobjc/EXTScope.h>
+
+// Shared instance to manage picture in picture playback
+static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @interface RTSMediaPlayerViewController () <RTSMediaPlayerControllerDataSource>
 
 @property (nonatomic, weak) id<RTSMediaPlayerControllerDataSource> dataSource;
 @property (nonatomic, strong) NSString *identifier;
 
-@property (nonatomic, strong) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+@property (nonatomic, weak) IBOutlet UIView *navigationBarView;
+@property (nonatomic, weak) IBOutlet UIView *bottomBarView;
+
+@property (nonatomic, weak) IBOutlet RTSPictureInPictureButton *pictureInPictureButton;
+@property (nonatomic, weak) IBOutlet RTSPlaybackActivityIndicatorView *playbackActivityIndicatorView;
 
 @property (weak) IBOutlet RTSMediaPlayerPlaybackButton *playPauseButton;
 @property (weak) IBOutlet RTSTimeSlider *timeSlider;
 @property (weak) IBOutlet RTSVolumeView *volumeView;
 @property (weak) IBOutlet UIButton *liveButton;
 
-@property (weak) IBOutlet UIActivityIndicatorView *loadingAcitivityIndicatorView;
+@property (weak) IBOutlet UIActivityIndicatorView *loadingActivityIndicatorView;
 @property (weak) IBOutlet UILabel *loadingLabel;
 
 @property (weak) IBOutlet NSLayoutConstraint *valueLabelWidthConstraint;
@@ -35,6 +45,15 @@
 @end
 
 @implementation RTSMediaPlayerViewController
+
++ (void)initialize
+{
+    if (self != [RTSMediaPlayerViewController class]) {
+        return;
+    }
+    
+    s_mediaPlayerController = [[RTSMediaPlayerSharedController alloc] init];
+}
 
 - (instancetype)initWithContentURL:(NSURL *)contentURL
 {
@@ -54,6 +73,8 @@
 
 - (void)dealloc
 {
+    s_mediaPlayerController.overlayViews = nil;
+    
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
@@ -67,26 +88,39 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(mediaPlayerPlaybackStateDidChange:)
 												 name:RTSMediaPlayerPlaybackStateDidChangeNotification
-											   object:self.mediaPlayerController];
+											   object:s_mediaPlayerController];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(mediaPlayerDidShowControlOverlays:)
 												 name:RTSMediaPlayerDidShowControlOverlaysNotification
-											   object:self.mediaPlayerController];
+											   object:s_mediaPlayerController];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(mediaPlayerDidHideControlOverlays:)
 												 name:RTSMediaPlayerDidHideControlOverlaysNotification
-											   object:self.mediaPlayerController];
+											   object:s_mediaPlayerController];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 	
-	[self.mediaPlayerController setDataSource:self.dataSource];
+	[s_mediaPlayerController setDataSource:self.dataSource];
 	
-	[self.mediaPlayerController attachPlayerToView:self.view];
-	[self.mediaPlayerController playIdentifier:self.identifier];
-	
+	[s_mediaPlayerController attachPlayerToView:self.view];
+	[s_mediaPlayerController playIdentifier:self.identifier];
+    
+    s_mediaPlayerController.activityView = self.view;
+    s_mediaPlayerController.overlayViews = @[self.navigationBarView, self.bottomBarView, self.volumeView, self.liveButton];
+    
+    self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
+    self.playbackActivityIndicatorView.mediaPlayerController = s_mediaPlayerController;
+    self.timeSlider.mediaPlayerController = s_mediaPlayerController;
+    self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
+    
 	[self.liveButton setTitle:RTSMediaPlayerLocalizedString(@"Back to live", nil) forState:UIControlStateNormal];
 	self.liveButton.alpha = 0.f;
-	
+    
 	self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
 	self.liveButton.layer.borderWidth = 1.f;
 	
@@ -94,15 +128,15 @@
 	[self setTimeSliderHidden:YES];
 	
 	@weakify(self)
-	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+	[s_mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
 		@strongify(self)
 		
-		if (self.mediaPlayerController.streamType != RTSMediaStreamTypeUnknown) {
-			CGFloat labelWidth = (CMTimeGetSeconds(self.mediaPlayerController.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
+		if (s_mediaPlayerController.streamType != RTSMediaStreamTypeUnknown) {
+			CGFloat labelWidth = (CMTimeGetSeconds(s_mediaPlayerController.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
 			self.valueLabelWidthConstraint.constant = labelWidth;
 			self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
 			
-			if (self.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
+			if (s_mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
 				[self updateLiveButton];
 			}
 			
@@ -114,18 +148,45 @@
 	}];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	
+    if ([self isBeingPresented]) {
+        s_mediaPlayerController.currentViewController = self;
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	
+	if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
+		[s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
+	}
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if ([self isBeingDismissed]) {
+        s_mediaPlayerController.currentViewController = nil;
+    }
+}
+
 - (void)setTimeSliderHidden:(BOOL)hidden
 {
 	self.timeSlider.timeLeftValueLabel.hidden = hidden;
 	self.timeSlider.valueLabel.hidden = hidden;
 	self.timeSlider.hidden = hidden;
 	
-	self.loadingAcitivityIndicatorView.hidden = !hidden;
+	self.loadingActivityIndicatorView.hidden = !hidden;
 	if (hidden) {
-		[self.loadingAcitivityIndicatorView startAnimating];
+		[self.loadingActivityIndicatorView startAnimating];
 	}
 	else {
-		[self.loadingAcitivityIndicatorView stopAnimating];
+		[self.loadingActivityIndicatorView stopAnimating];
 	}
 	self.loadingLabel.hidden = !hidden;
 }
@@ -139,7 +200,7 @@
 
 - (void)updateLiveButton
 {
-	if (self.mediaPlayerController.streamType == RTSMediaStreamTypeDVR) {
+	if (s_mediaPlayerController.streamType == RTSMediaStreamTypeDVR) {
 		[UIView animateWithDuration:0.2 animations:^{
 			self.liveButton.alpha = self.timeSlider.live ? 0.f : 1.f;
 		}];
@@ -157,8 +218,6 @@
 {
 	completionHandler([NSURL URLWithString:self.identifier], nil);
 }
-
-
 
 #pragma mark - Notifications
 
@@ -180,11 +239,23 @@
 	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
+- (void)applicationDidBecomeActive:(NSNotification *)notification
+{
+    AVPictureInPictureController *pictureInPictureController = s_mediaPlayerController.pictureInPictureController;
+    
+    if (pictureInPictureController.isPictureInPictureActive) {
+        [pictureInPictureController stopPictureInPicture];
+    }
+}
+
 #pragma mark - Actions
 
 - (IBAction)dismiss:(id)sender
 {
-	[self.mediaPlayerController reset];
+    if (!s_mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
+        [s_mediaPlayerController reset];
+    }
+    
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -194,17 +265,24 @@
 		self.liveButton.alpha = 0.f;
 	}];
 	
-	CMTimeRange timeRange = self.mediaPlayerController.timeRange;
+	CMTimeRange timeRange = s_mediaPlayerController.timeRange;
 	if (CMTIMERANGE_IS_INDEFINITE(timeRange) || CMTIMERANGE_IS_EMPTY(timeRange)) {
 		return;
 	}
 	
-	[self.mediaPlayerController playAtTime:CMTimeRangeGetEnd(timeRange)];
+	[s_mediaPlayerController playAtTime:CMTimeRangeGetEnd(timeRange)];
 }
 
 - (IBAction)seek:(id)sender
 {
 	[self updateLiveButton];
+}
+
+- (IBAction)startPictureInPicture:(id)sender
+{
+    if (s_mediaPlayerController.pictureInPictureController.isPictureInPicturePossible) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 @end

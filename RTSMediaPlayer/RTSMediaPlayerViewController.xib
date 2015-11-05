@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTSMediaPlayerViewController">
             <connections>
+                <outlet property="bottomBarView" destination="m4e-aB-8GY" id="85E-pM-TDr"/>
                 <outlet property="liveButton" destination="f2J-Sq-TNH" id="ufj-9B-9fS"/>
-                <outlet property="loadingAcitivityIndicatorView" destination="z3p-uA-NWq" id="C5i-1t-xqK"/>
+                <outlet property="loadingActivityIndicatorView" destination="z3p-uA-NWq" id="C5i-1t-xqK"/>
                 <outlet property="loadingLabel" destination="yUB-n6-aT0" id="YVj-aE-6vI"/>
-                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="1fS-p7-nwe"/>
+                <outlet property="navigationBarView" destination="kqK-gI-E5v" id="UNx-yj-PRU"/>
+                <outlet property="pictureInPictureButton" destination="NH0-ev-1HR" id="EeD-Yd-LjN"/>
                 <outlet property="playPauseButton" destination="orZ-GR-Obh" id="has-wO-PCl"/>
+                <outlet property="playbackActivityIndicatorView" destination="d2t-q1-HOm" id="LVj-ZY-2bs"/>
                 <outlet property="timeLeftValueLabelWidthConstraint" destination="G8R-4I-uxy" id="wwA-Fb-CRF"/>
                 <outlet property="timeSlider" destination="dbP-gV-yjr" id="ICa-MM-Kcj"/>
                 <outlet property="valueLabelWidthConstraint" destination="LD7-6d-ZRT" id="ItF-8i-kPA"/>
@@ -27,9 +30,6 @@
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="d2t-q1-HOm" customClass="RTSPlaybackActivityIndicatorView">
                     <rect key="frame" x="290" y="290" width="20" height="20"/>
                     <animations/>
-                    <connections>
-                        <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="mPb-Pz-AYA"/>
-                    </connections>
                 </activityIndicatorView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqK-gI-E5v" userLabel="Navigation Bar View">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
@@ -38,7 +38,7 @@
                             <rect key="frame" x="0.0" y="20" width="600" height="30"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xXz-Ch-pSc">
-                                    <rect key="frame" x="8" y="0.0" width="42" height="30"/>
+                                    <rect key="frame" x="8" y="0.0" width="43" height="30"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                     <state key="normal" title="Done">
@@ -54,20 +54,19 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ljr-RB-scX">
-                                    <rect key="frame" x="58" y="0.0" width="542" height="30"/>
+                                    <rect key="frame" x="59" y="0.0" width="541" height="30"/>
                                     <subviews>
                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dbP-gV-yjr" customClass="RTSTimeSlider">
-                                            <rect key="frame" x="56" y="0.0" width="427" height="31"/>
+                                            <rect key="frame" x="56" y="0.0" width="426" height="31"/>
                                             <animations/>
                                             <connections>
                                                 <action selector="seek:" destination="-1" eventType="valueChanged" id="Kez-Th-9XW"/>
-                                                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="2nS-hm-72g"/>
                                                 <outlet property="timeLeftValueLabel" destination="OdH-jj-nfU" id="zcx-hm-PNg"/>
                                                 <outlet property="valueLabel" destination="kzH-xw-G6y" id="cEN-dj-owx"/>
                                             </connections>
                                         </slider>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdH-jj-nfU">
-                                            <rect key="frame" x="489" y="7" width="45" height="15.5"/>
+                                            <rect key="frame" x="488" y="7" width="45" height="15.5"/>
                                             <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="45" id="G8R-4I-uxy"/>
@@ -85,12 +84,12 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="z3p-uA-NWq">
-                                            <rect key="frame" x="173" y="5" width="20" height="20"/>
+                                            <rect key="frame" x="173.5" y="5" width="20" height="20"/>
                                             <animations/>
                                             <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </activityIndicatorView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUB-n6-aT0">
-                                            <rect key="frame" x="207" y="4" width="72.5" height="19.5"/>
+                                            <rect key="frame" x="207.5" y="4" width="71" height="19.5"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <nil key="highlightedColor"/>
@@ -158,9 +157,6 @@
                                     <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
-                            <connections>
-                                <outlet property="mediaPlayerController" destination="rfJ-1C-Ygo" id="joE-pC-wnt"/>
-                            </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="14B-nw-cM3" customClass="RTSVolumeView">
                             <rect key="frame" x="8" y="50" width="584" height="30"/>
@@ -170,20 +166,33 @@
                                 <constraint firstAttribute="height" constant="30" id="v8C-if-1dy"/>
                             </constraints>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NH0-ev-1HR" userLabel="PIP Button" customClass="RTSPictureInPictureButton">
+                            <rect key="frame" x="555" y="9" width="43" height="34"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="43" id="CnR-zb-Iat"/>
+                                <constraint firstAttribute="height" constant="34" id="lAW-4N-dHl"/>
+                            </constraints>
+                            <connections>
+                                <action selector="startPictureInPicture:" destination="-1" eventType="touchUpInside" id="f14-lc-n6R"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <animations/>
                     <color key="backgroundColor" red="0.40000000596046448" green="0.40000000596046448" blue="0.40000000596046448" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="orZ-GR-Obh" firstAttribute="top" secondItem="m4e-aB-8GY" secondAttribute="top" constant="15" id="79V-2E-3vt"/>
                         <constraint firstAttribute="trailing" secondItem="14B-nw-cM3" secondAttribute="trailing" constant="8" id="HKW-FO-P52"/>
+                        <constraint firstItem="orZ-GR-Obh" firstAttribute="centerY" secondItem="NH0-ev-1HR" secondAttribute="centerY" id="JnF-45-O6N"/>
                         <constraint firstAttribute="bottom" secondItem="14B-nw-cM3" secondAttribute="bottom" id="ViO-qD-cSB"/>
+                        <constraint firstAttribute="trailing" secondItem="NH0-ev-1HR" secondAttribute="trailing" constant="2" id="cDY-Nm-0nP"/>
                         <constraint firstItem="14B-nw-cM3" firstAttribute="leading" secondItem="m4e-aB-8GY" secondAttribute="leading" constant="8" id="icB-y7-22D"/>
                         <constraint firstAttribute="height" constant="80" id="l55-Ns-7FI"/>
                         <constraint firstAttribute="centerX" secondItem="orZ-GR-Obh" secondAttribute="centerX" id="tp9-ea-bQv"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2J-Sq-TNH">
-                    <rect key="frame" x="490" y="50" width="96" height="34"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2J-Sq-TNH" userLabel="Back To Live Button">
+                    <rect key="frame" x="491" y="50" width="95" height="34"/>
                     <animations/>
                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.52000000000000002" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -221,14 +230,5 @@
             </constraints>
             <point key="canvasLocation" x="13" y="-98"/>
         </view>
-        <customObject id="rfJ-1C-Ygo" customClass="RTSMediaPlayerController">
-            <connections>
-                <outlet property="activityView" destination="iN0-l3-epB" id="8M8-ep-18R"/>
-                <outletCollection property="overlayViews" destination="kqK-gI-E5v" id="loX-MY-6Bg"/>
-                <outletCollection property="overlayViews" destination="m4e-aB-8GY" id="6Yh-NX-pIr"/>
-                <outletCollection property="overlayViews" destination="14B-nw-cM3" id="vtV-N5-t6X"/>
-                <outletCollection property="overlayViews" destination="f2J-Sq-TNH" id="Ho6-8D-aPf"/>
-            </connections>
-        </customObject>
     </objects>
 </document>

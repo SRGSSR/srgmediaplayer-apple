@@ -16,6 +16,9 @@
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSMediaPlayerLogger.h"
 
+static const void * const RTSMediaPlayerPictureInPicturePossibleContext = &RTSMediaPlayerPictureInPicturePossibleContext;
+static const void * const RTSMediaPlayerPictureInPictureActiveContext = &RTSMediaPlayerPictureInPictureActiveContext;
+
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
 NSTimeInterval const RTSMediaLiveTolerance = 30.0;		// same tolerance as built-in iOS player
 
@@ -23,6 +26,8 @@ NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
 
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
 NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFail";
+
+NSString * const RTSMediaPlayerPictureInPictureStateChangeNotification = @"RTSMediaPlayerPictureInPictureStateChangeNotification";
 
 NSString * const RTSMediaPlayerWillShowControlOverlaysNotification = @"RTSMediaPlayerWillShowControlOverlays";
 NSString * const RTSMediaPlayerDidShowControlOverlaysNotification = @"RTSMediaPlayerDidShowControlOverlays";
@@ -75,12 +80,15 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @property (readonly) dispatch_source_t idleTimer;
 
+@property (nonatomic) AVPictureInPictureController *pictureInPictureController;
+
 @end
 
 @implementation RTSMediaPlayerController
 
 @synthesize player = _player;
 @synthesize view = _view;
+@synthesize pictureInPictureController = _pictureInPictureController;
 @synthesize overlayViews = _overlayViews;
 @synthesize activityGestureRecognizer = _activityGestureRecognizer;
 @synthesize playbackState = _playbackState;
@@ -125,7 +133,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 - (void)dealloc
 {
 	[self reset];
-	
+		
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self.stateTransitionObserver];
 	
@@ -421,6 +429,14 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)reset
 {
+    // Reset the PIP controller so that it gets lazily attached again. This forces a new player layer relationship,
+    // preventing black screen issues when playing another media identifier while already in picture in picture mode
+    if (_pictureInPictureController) {
+        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:(void *)RTSMediaPlayerPictureInPicturePossibleContext];
+        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:(void *)RTSMediaPlayerPictureInPictureActiveContext];
+        _pictureInPictureController = nil;
+    }
+    
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(prepareToPlay) object:nil];
 	if (![self.stateMachine.currentState isEqual:self.idleState]) {
 		[self fireEvent:self.resetEvent userInfo:nil];
@@ -828,6 +844,14 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			[player play];
 		}
 	}
+	else if (context == RTSMediaPlayerPictureInPicturePossibleContext || context == RTSMediaPlayerPictureInPictureActiveContext) {
+		[self postNotificationName:RTSMediaPlayerPictureInPictureStateChangeNotification userInfo:nil];
+        
+        // Always show overlays again when picture in picture is disabled
+        if (context == RTSMediaPlayerPictureInPictureActiveContext && !self.pictureInPictureController.isPictureInPictureActive) {
+            [self setOverlaysVisible:YES];
+        }
+	}
 	else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
@@ -893,23 +917,36 @@ static void LogProperties(id object)
 
 - (UIView *)view
 {
-	if (!_view) {
-		_view = [RTSMediaPlayerView new];
-		_view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    if (!_view) {
+        RTSMediaPlayerView *mediaPlayerView = [RTSMediaPlayerView new];
+        
+        mediaPlayerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+        doubleTapGestureRecognizer.numberOfTapsRequired = 2;
+        [mediaPlayerView addGestureRecognizer:doubleTapGestureRecognizer];
+        
+        UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+        [singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
+        [mediaPlayerView addGestureRecognizer:singleTapGestureRecognizer];
+        
+        UIView *activityView = self.activityView ?: mediaPlayerView;
+        [activityView addGestureRecognizer:self.activityGestureRecognizer];
 		
-		UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-		doubleTapGestureRecognizer.numberOfTapsRequired = 2;
-		[_view addGestureRecognizer:doubleTapGestureRecognizer];
-		
-		UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-		[singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
-		[_view addGestureRecognizer:singleTapGestureRecognizer];
-		
-		UIView *activityView = self.activityView ?: _view;
-		[activityView addGestureRecognizer:self.activityGestureRecognizer];
+        _view = mediaPlayerView;
+    }
+    
+    return _view;
+}
+
+- (AVPictureInPictureController *)pictureInPictureController
+{
+	if (!_pictureInPictureController) {
+		_pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerView.playerLayer];
+		[_pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPicturePossibleContext];
+		[_pictureInPictureController addObserver:self forKeyPath:@"pictureInPictureActive" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPictureActiveContext];
 	}
-	
-	return _view;
+	return _pictureInPictureController;
 }
 
 - (RTSActivityGestureRecognizer *)activityGestureRecognizer
@@ -1017,9 +1054,9 @@ static void LogProperties(id object)
 
 - (void)applicationWillResignActive:(NSNotification *)notification
 {
-	if ([self mediaType] == RTSMediaTypeVideo) {
-		[self.player pause];
-		[self fireEvent:self.pauseEvent userInfo:nil];
+	if ([self mediaType] == RTSMediaTypeVideo && !self.pictureInPictureController.isPictureInPicturePossible) {
+        [self.player pause];
+        [self fireEvent:self.pauseEvent userInfo:nil];
 	}
 }
 

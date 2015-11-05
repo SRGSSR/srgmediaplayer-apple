@@ -14,6 +14,7 @@
 #import <SRGMediaPlayer/RTSMediaPlayerPlaybackButton.h>
 #import <SRGMediaPlayer/RTSAirplayOverlayView.h>
 #import <SRGMediaPlayer/RTSMediaFailureOverlayView.h>
+#import <SRGMediaPlayer/RTSPictureInPictureButton.h>
 #import <SRGMediaPlayer/RTSTimeSlider.h>
 #import <SRGMediaPlayer/RTSVolumeView.h>
 #import <SRGMediaPlayer/RTSPlaybackActivityIndicatorView.h>
