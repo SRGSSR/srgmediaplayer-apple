@@ -12,10 +12,12 @@
 
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
+    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    
 	// If no RTSMediaPlayerViewController instance is currently displayed (always modally)
-	if (! self.currentViewController) {
+	if (![rootViewController.presentedViewController isKindOfClass:[RTSMediaPlayerViewController class]]) {
 		RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewController alloc] initWithContentIdentifier:self.identifier dataSource:self.dataSource];
-		UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+		
 		
 		// Dismiss any modal currently displayed if needed
 		if (rootViewController.presentedViewController) {
@@ -34,7 +36,8 @@
 {
 	// Reset the status of the player when picture in picture is exited anywhere except from the RTSMediaPlayerViewController
 	// itself
-	if (!self.currentViewController) {
+    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+	if (![rootViewController.presentedViewController isKindOfClass:[RTSMediaPlayerViewController class]]) {
 		[self reset];
 	}
 }
