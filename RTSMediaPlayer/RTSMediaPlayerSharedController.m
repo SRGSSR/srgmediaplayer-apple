@@ -10,6 +10,13 @@
 
 @implementation RTSMediaPlayerSharedController
 
+- (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
+{
+	// RTSMediaPlayerViewController is always displayed modally, the following therefore always works
+	UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+	[rootViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;

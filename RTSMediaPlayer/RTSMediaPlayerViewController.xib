@@ -173,9 +173,6 @@
                                 <constraint firstAttribute="width" constant="43" id="CnR-zb-Iat"/>
                                 <constraint firstAttribute="height" constant="34" id="lAW-4N-dHl"/>
                             </constraints>
-                            <connections>
-                                <action selector="startPictureInPicture:" destination="-1" eventType="touchUpInside" id="f14-lc-n6R"/>
-                            </connections>
                         </button>
                     </subviews>
                     <animations/>

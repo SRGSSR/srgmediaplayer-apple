@@ -260,11 +260,4 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 	[self updateLiveButton];
 }
 
-- (IBAction)startPictureInPicture:(id)sender
-{
-    if (s_mediaPlayerController.pictureInPictureController.isPictureInPicturePossible) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-}
-
 @end
