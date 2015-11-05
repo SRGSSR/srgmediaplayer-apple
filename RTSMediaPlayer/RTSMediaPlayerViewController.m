@@ -17,6 +17,7 @@
 
 #import <libextobjc/EXTScope.h>
 
+// Shared instance to manage picture in picture playback
 static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @interface RTSMediaPlayerViewController () <RTSMediaPlayerControllerDataSource>
@@ -51,7 +52,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
         return;
     }
     
-    // Use subclass for the shared instance, listening to picture in picture events
     s_mediaPlayerController = [[RTSMediaPlayerSharedController alloc] init];
 }
 
@@ -147,7 +147,9 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
 	[super viewWillAppear:animated];
 	
-	s_mediaPlayerController.currentViewController = self;
+    if ([self isBeingPresented]) {
+        s_mediaPlayerController.currentViewController = self;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -157,6 +159,15 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 	if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
 		[s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
 	}
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if ([self isBeingDismissed]) {
+        s_mediaPlayerController.currentViewController = nil;
+    }
 }
 
 - (void)setTimeSliderHidden:(BOOL)hidden
