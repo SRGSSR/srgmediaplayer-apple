@@ -16,7 +16,8 @@
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSMediaPlayerLogger.h"
 
-static const void * const RTSMediaPlayerPictureInPictureContext = &RTSMediaPlayerPictureInPictureContext;
+static const void * const RTSMediaPlayerPictureInPicturePossibleContext = &RTSMediaPlayerPictureInPicturePossibleContext;
+static const void * const RTSMediaPlayerPictureInPictureActiveContext = &RTSMediaPlayerPictureInPictureActiveContext;
 
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
 NSTimeInterval const RTSMediaLiveTolerance = 30.0;		// same tolerance as built-in iOS player
@@ -431,8 +432,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
     // Reset the PIP controller so that it gets lazily attached again. This forces a new player layer relationship,
     // preventing black screen issues when playing another media identifier while already in picture in picture mode
     if (_pictureInPictureController) {
-        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:(void *)RTSMediaPlayerPictureInPictureContext];
-        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:(void *)RTSMediaPlayerPictureInPictureContext];
+        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:(void *)RTSMediaPlayerPictureInPicturePossibleContext];
+        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:(void *)RTSMediaPlayerPictureInPictureActiveContext];
         _pictureInPictureController = nil;
     }
     
@@ -843,8 +844,13 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			[player play];
 		}
 	}
-	else if (context == RTSMediaPlayerPictureInPictureContext) {
+	else if (context == RTSMediaPlayerPictureInPicturePossibleContext || context == RTSMediaPlayerPictureInPictureActiveContext) {
 		[self postNotificationName:RTSMediaPlayerPictureInPictureStateChangeNotification userInfo:nil];
+        
+        // Always show overlays again when picture in picture is disabled
+        if (context == RTSMediaPlayerPictureInPictureActiveContext && !self.pictureInPictureController.isPictureInPictureActive) {
+            [self setOverlaysVisible:YES];
+        }
 	}
 	else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -937,8 +943,8 @@ static void LogProperties(id object)
 {
 	if (!_pictureInPictureController) {
 		_pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerView.playerLayer];
-		[_pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPictureContext];
-		[_pictureInPictureController addObserver:self forKeyPath:@"pictureInPictureActive" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPictureContext];
+		[_pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPicturePossibleContext];
+		[_pictureInPictureController addObserver:self forKeyPath:@"pictureInPictureActive" options:NSKeyValueObservingOptionNew context:(void *)RTSMediaPlayerPictureInPictureActiveContext];
 	}
 	return _pictureInPictureController;
 }
