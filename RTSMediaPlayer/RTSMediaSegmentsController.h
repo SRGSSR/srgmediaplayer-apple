@@ -21,9 +21,9 @@
  *  Segments with the same identifiers are treated as logical segments (part of a single media, and sharing its identifier), 
  *  whereas segments with different identifiers are treated as physical segments (separate medias with different identifiers).
  *
- *  For logical segments, the segment controller locates the largest segment with start time = 0 and considers it as being the
- *  full-length media, to which other segments must belong to (segments which would incorrectly not belong to it will be
- *  discarded with a warning). It them manages playback between them transparently.
+ *  For logical segments, the segment controller locates the largest segment and considers it as being the full-length media, 
+ *  to which other segments must belong to (segments which would incorrectly not belong to it will be discarded with a warning). 
+ *  It them manages playback between them transparently.
  *
  *  For physical segments, switching to another segment changes the media actually played (the previous one is stopped, and
  *  playback is started for the new one). Logical and physical segments can be freely mixed together.
