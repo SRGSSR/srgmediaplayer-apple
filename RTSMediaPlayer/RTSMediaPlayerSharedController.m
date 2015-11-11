@@ -29,14 +29,20 @@
 		// Dismiss any modal currently displayed if needed
 		if (rootViewController.presentedViewController) {
 			[rootViewController dismissViewControllerAnimated:YES completion:^{
-				[rootViewController presentViewController:mediaPlayerViewController animated:YES completion:nil];
+				[rootViewController presentViewController:mediaPlayerViewController animated:YES completion:^{
+					// It is very important that this block is called at the very end of the process, otherwise silly
+					// things might happen during the transition (e.g. player rate set to 0)
+					completionHandler(YES);
+				}];
 			}];
 		}
 		else {
-			[rootViewController presentViewController:mediaPlayerViewController animated:YES completion:nil];
+			[rootViewController presentViewController:mediaPlayerViewController animated:YES completion:^{
+				// See comment above
+				completionHandler(YES);
+			}];
 		}
 	}
-	completionHandler(YES);
 }
 
 - (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController

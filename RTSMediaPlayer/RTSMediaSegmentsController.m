@@ -44,11 +44,8 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"segmentIdentifier == %@", identifier];
         NSArray *segmentsForIdentifier = [segments filteredArrayUsingPredicate:predicate];
         
-        // The full length is the longest available segment starting at 0
-        NSPredicate *fullLengthCandidatePredicate = [NSPredicate predicateWithBlock:^BOOL(id<RTSMediaSegment> _Nonnull segment, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return CMTimeCompare(segment.timeRange.start, kCMTimeZero) == 0;
-        }];
-        id<RTSMediaSegment> fullLengthSegment = [[segmentsForIdentifier filteredArrayUsingPredicate:fullLengthCandidatePredicate] sortedArrayUsingComparator:^NSComparisonResult(id<RTSMediaSegment> _Nonnull segment1, id<RTSMediaSegment> _Nonnull segment2) {
+        // The full length is the longest available segment (might not start at 0)
+        id<RTSMediaSegment> fullLengthSegment = [segmentsForIdentifier sortedArrayUsingComparator:^NSComparisonResult(id<RTSMediaSegment> _Nonnull segment1, id<RTSMediaSegment> _Nonnull segment2) {
             return CMTimeCompare(segment1.timeRange.duration, segment2.timeRange.duration);
         }].lastObject;
         

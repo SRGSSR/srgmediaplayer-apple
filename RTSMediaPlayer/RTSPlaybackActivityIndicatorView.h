@@ -13,7 +13,13 @@
  *  An activity indicator displaying the current status of the associated media player controller.
  *
  *  Simply install an instance somewhere onto your custom player interface and bind to a media player
- *  controller
+ *  controller.
+ *
+ *  Besides setting the mediaPlayerController outlet and appearance properties (color, size, alpha), 
+ *  you should never:
+ *    - call startAnimating or stopAnimating
+ *    - change the values of the hidden or hidesWhenStopped properties
+ *  These properties are automatically managed for you, altering them results in undefined behavior
  */
 @interface RTSPlaybackActivityIndicatorView : UIActivityIndicatorView
 
