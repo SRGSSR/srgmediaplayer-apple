@@ -11,6 +11,7 @@
 #import "RTSMediaSegment.h"
 #import "RTSMediaSegmentsController.h"
 #import "RTSMediaPlayerLogger.h"
+#import "RTSMediaSegmentsDataSource.h"
 
 #import <objc/runtime.h>
 

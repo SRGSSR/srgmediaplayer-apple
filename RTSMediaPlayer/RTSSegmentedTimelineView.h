@@ -5,13 +5,12 @@
 //
 
 #import <CoreMedia/CoreMedia.h>
-#import <SRGMediaPlayer/RTSMediaSegmentsDataSource.h>
 #import <UIKit/UIKit.h>
 
 // Forward declarations
 @class RTSMediaSegmentsController;
-@class RTSMediaPlayerController;
 @protocol RTSSegmentedTimelineViewDelegate;
+@protocol RTSMediaSegment;
 
 /**
  *  A view displaying segments associated with a stream as a linear collection of cells

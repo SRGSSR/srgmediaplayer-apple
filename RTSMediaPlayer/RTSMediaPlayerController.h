@@ -8,8 +8,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
 
-#import <SRGMediaPlayer/RTSMediaPlayerConstants.h>
-#import <SRGMediaPlayer/RTSMediaPlayerControllerDataSource.h>
+#import "RTSMediaPlayerConstants.h"
+
+@protocol RTSMediaPlayerControllerDataSource;
 
 /**
  *  RTSMediaPlayerController is inspired by the MPMoviePlayerController class.

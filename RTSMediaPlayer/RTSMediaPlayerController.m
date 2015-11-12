@@ -9,6 +9,7 @@
 #import <libextobjc/EXTScope.h>
 
 #import "RTSMediaPlayerController.h"
+#import "RTSMediaPlayerControllerDataSource.h"
 
 #import "RTSMediaPlayerError.h"
 #import "RTSMediaPlayerView.h"
