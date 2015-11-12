@@ -5,13 +5,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
-#import <SRGMediaPlayer/RTSMediaPlayerConstants.h>
-#import <SRGMediaPlayer/RTSMediaSegmentsDataSource.h>
+#import "RTSMediaPlayerConstants.h"
 
 // Forward declarations
 @class RTSMediaPlayerController;
 @protocol RTSMediaSegment;
+@protocol RTSMediaSegmentsDataSource;
 
 /**
  *  A segments controller mediates playback managed by a media player controller according to a list of segments

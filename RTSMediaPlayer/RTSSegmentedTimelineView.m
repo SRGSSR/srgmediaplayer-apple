@@ -4,12 +4,13 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSSegmentedTimelineView.h"
-
 #import <AVFoundation/AVFoundation.h>
+
+#import "RTSSegmentedTimelineView.h"
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaSegment.h"
 #import "RTSMediaSegmentsController.h"
+#import "RTSMediaSegmentsDataSource.h"
 
 // Function declarations
 static void commonInit(RTSSegmentedTimelineView *self);

@@ -5,7 +5,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <SRGMediaPlayer/RTSMediaPlayerController.h>
+
+@class RTSMediaPlayerController;
 
 /**
  *  View displaying playback errors. Simply install an instance somewhere onto your custom player interface and bind to 

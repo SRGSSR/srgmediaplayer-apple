@@ -5,7 +5,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <SRGMediaPlayer/RTSMediaPlayerControllerDataSource.h>
+
+@protocol RTSMediaPlayerControllerDataSource;
 
 /**
  *  RTSMediaPlayerViewController is inspired by the MPMoviePlayerViewController class.
