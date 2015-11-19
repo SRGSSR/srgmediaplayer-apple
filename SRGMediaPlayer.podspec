@@ -19,4 +19,9 @@ Pod::Spec.new do |s|
 
   s.dependency "libextobjc/EXTScope", "~> 0.4.1"
   s.dependency "TransitionKit",       "~> 2.2.0"
+
+  s.subspec 'Version' do |ve|
+    ve.source_files = "RTSMediaPlayer/RTSMediaPlayerVersion.m","RTSMediaPlaye/RTSMediaPlayerVersion.h"
+    ve.compiler_flags = '-DRTS_MEDIA_PLAYER_VERSION=' + s.version.to_s
+  end
 end
