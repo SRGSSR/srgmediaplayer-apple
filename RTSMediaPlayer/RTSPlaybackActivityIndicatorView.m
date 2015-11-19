@@ -52,6 +52,15 @@ static void commonInit(RTSPlaybackActivityIndicatorView *self);
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    
+    if (newWindow) {
+        [self updateWithMediaPlayerController:self.mediaPlayerController];
+    }
+}
+
 - (void)updateUponPlaybackStateChange:(NSNotification *)notif
 {
 	[self updateWithMediaPlayerController:self.mediaPlayerController];

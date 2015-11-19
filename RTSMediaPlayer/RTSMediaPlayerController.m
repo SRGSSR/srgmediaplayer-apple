@@ -91,6 +91,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @synthesize view = _view;
 @synthesize pictureInPictureController = _pictureInPictureController;
 @synthesize overlayViews = _overlayViews;
+@synthesize overlayViewsHidingDelay = _overlayViewsHidingDelay;
 @synthesize activityGestureRecognizer = _activityGestureRecognizer;
 @synthesize playbackState = _playbackState;
 @synthesize stateMachine = _stateMachine;
@@ -1054,6 +1055,21 @@ static void LogProperties(id object)
 	int64_t delayInNanoseconds = ((self.overlayViewsHidingDelay > 0.0) ? self.overlayViewsHidingDelay : RTSMediaPlayerOverlayHidingDelay) * NSEC_PER_SEC;
 	int64_t toleranceInNanoseconds = 0.1 * NSEC_PER_SEC;
 	dispatch_source_set_timer(self.idleTimer, dispatch_time(DISPATCH_TIME_NOW, delayInNanoseconds), DISPATCH_TIME_FOREVER, toleranceInNanoseconds);
+}
+
+- (NSTimeInterval)overlayViewsHidingDelay
+{
+    return _overlayViewsHidingDelay;
+}
+
+- (void)setOverlayViewsHidingDelay:(NSTimeInterval)flag
+{
+	if (_overlayViewsHidingDelay != flag) {
+		[self willChangeValueForKey:@"overlayViewsHidingDelay"];
+		_overlayViewsHidingDelay = flag;
+		[self didChangeValueForKey:@"overlayViewsHidingDelay"];
+		[self resetIdleTimer];
+	}
 }
 
 #pragma mark - Notifications
