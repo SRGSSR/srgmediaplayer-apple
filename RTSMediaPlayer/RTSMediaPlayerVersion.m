@@ -8,7 +8,7 @@
 
 NSString * const RTSMediaPlayerVersion(void)
 {
-#ifdef RTS_ANALYTICS_VERSION
+#ifdef RTS_MEDIA_PLAYER_VERSION
     return @(OS_STRINGIFY(RTS_MEDIA_PLAYER_VERSION));
 #else
     return @"dev";
