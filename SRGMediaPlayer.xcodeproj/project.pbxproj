@@ -59,6 +59,7 @@
 		E67FDACA1AFA166F0050DCE6 /* RTSTimelineSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E67FDAC91AFA166F0050DCE6 /* RTSTimelineSlider.m */; };
 		E6977F8B1BFDFE4C008692A8 /* RTSMediaPlayerVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = E6977F8A1BFDFE4C008692A8 /* RTSMediaPlayerVersion.m */; };
 		E6977F8C1BFDFFBD008692A8 /* RTSMediaPlayerVersion.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E6977F891BFDFE4C008692A8 /* RTSMediaPlayerVersion.h */; };
+		E6977F8D1BFE0893008692A8 /* RTSMediaPlayerVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = E6977F8A1BFDFE4C008692A8 /* RTSMediaPlayerVersion.m */; };
 		E699062F1AFB969F005ED143 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062D1AFB969F005ED143 /* thumb_timeline_slider.png */; };
 		E69906301AFB969F005ED143 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E699062E1AFB969F005ED143 /* thumb_timeline_slider@2x.png */; };
 		E6B1F3201BEA461000B77092 /* RTSMediaPlayerSharedController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6B1F31F1BEA461000B77092 /* RTSMediaPlayerSharedController.m */; };
@@ -649,6 +650,7 @@
 				C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */,
 				B6EC78081AA5ABE7009AE043 /* RTSMediaPlayerController.m in Sources */,
 				E6F023831B329EBA001B6F0B /* RTSMediaSegmentsController.m in Sources */,
+				E6977F8D1BFE0893008692A8 /* RTSMediaPlayerVersion.m in Sources */,
 				E6F023861B329FD0001B6F0B /* Segment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
