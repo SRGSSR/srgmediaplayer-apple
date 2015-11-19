@@ -166,7 +166,6 @@
 		C2332DA61B287BDA00AA21BB /* RTSMediaPlayerLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerLogger.m; sourceTree = "<group>"; };
 		C2731F4F1AD6A69D00434743 /* NSBundle+RTSMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+RTSMediaPlayer.h"; sourceTree = "<group>"; };
 		C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+RTSMediaPlayer.m"; sourceTree = "<group>"; };
-		C2731F551AD6A8FF00434743 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C288F49D1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerIconTemplate.h; sourceTree = "<group>"; };
 		C288F49E1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerIconTemplate.m; sourceTree = "<group>"; };
 		C2AB24E41ABC184A00EB51B8 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -383,7 +382,6 @@
 		E699062C1AFB9684005ED143 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C2731F551AD6A8FF00434743 /* Info.plist */,
 				E60F1C0B1B21C96F00F3272F /* Localizable.strings */,
 				E6C2F4981BE895100003DEC6 /* picture_in_picture_start_button.png */,
 				E6C2F4991BE895100003DEC6 /* picture_in_picture_start_button@2x.png */,
