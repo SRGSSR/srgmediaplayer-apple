@@ -788,7 +788,6 @@
 		C2AB24E81ABC184A00EB51B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = RTSMediaPlayer/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-Resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				WRAPPER_EXTENSION = bundle;
@@ -798,7 +797,6 @@
 		C2AB24E91ABC184A00EB51B8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = RTSMediaPlayer/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-Resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				WRAPPER_EXTENSION = bundle;

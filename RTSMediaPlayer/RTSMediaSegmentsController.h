@@ -19,6 +19,7 @@
  *
  *  Segments with the same identifiers are treated as logical segments (part of a single media, and sharing its identifier), 
  *  whereas segments with different identifiers are treated as physical segments (separate medias with different identifiers).
+ *  Segments are sorted according to their start time.
  *
  *  For logical segments, the segment controller locates the largest segment and considers it as being the full-length media, 
  *  to which other segments must belong to (segments which would incorrectly not belong to it will be discarded with a warning). 
@@ -87,5 +88,15 @@
  *  @param time The segment to play
  */
 - (void)playSegment:(id<RTSMediaSegment>)segment;
+
+/**
+ *  Return the index of a segment relative to its full-length
+ *
+ *  @param segment The segment to check
+ *
+ *  @return NSNotFound if the segment is a physical segment, a full-length, nil or not known. Otherwise the 0-based index 
+ *          is returned
+ */
+- (NSUInteger)indexForSegment:(id<RTSMediaSegment>)segment;
 
 @end
