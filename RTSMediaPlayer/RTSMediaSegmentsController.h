@@ -17,9 +17,10 @@
  *  it retrieves from a data source. Segments can either be blocked or visible, and the segments controller is responsible
  *  of skipping blocked segments or blocking access to them when seeking.
  *
- *  Segments with the same identifiers are treated as logical segments (part of a single media, and sharing its identifier), 
- *  whereas segments with different identifiers are treated as physical segments (separate medias with different identifiers).
- *  Segments are sorted according to their start time.
+ *  When a data source is requested for segments, it might return segments with other identifiers as well. Segments with the 
+ *  same identifiers are treated as logical segments (part of a single media, and sharing its identifier), whereas segments 
+ *  with different identifiers are treated as physical segments (separate medias with different identifiers). Segments which
+ *  are incorrect (e.g. outside a full-length) are ignored.
  *
  *  For logical segments, the segment controller locates the largest segment and considers it as being the full-length media, 
  *  to which other segments must belong to (segments which would incorrectly not belong to it will be discarded with a warning). 
@@ -64,7 +65,7 @@
 /**
  *  The segments
  *
- *  @return A an array containing the segments.
+ *  @return A an array containing the valid segments which were retrieved from the data source.
  */
 - (NSArray *)segments;
 
@@ -90,11 +91,36 @@
 - (void)playSegment:(id<RTSMediaSegment>)segment;
 
 /**
+ *  Return the parent segment matching a given segment, nil if none
+ *
+ *  @param segment The segment to check
+ *
+ *  @discussion If the segment is a physical segment or a full-length, the method returns nil
+ */
+- (id<RTSMediaSegment>)parentSegmentForSegment:(id<RTSMediaSegment>)segment;
+
+/**
+ *  Return all related child segments for a given segment, nil if none
+ *
+ *  @param segment The segment to check
+ */
+- (NSArray *)childSegmentsForSegment:(id<RTSMediaSegment>)segment;
+
+/**
+ *  Return sibling segments for a given segment (including itself)
+ *
+ *  @param segment The segment to check
+ *
+ *  @return If the segment is a full-length or a physical segment, this method returns nil
+ */
+- (NSArray *)siblingSegmentsForSegment:(id<RTSMediaSegment>)segment;
+
+/**
  *  Return the index of a segment relative to its full-length
  *
  *  @param segment The segment to check
  *
- *  @return NSNotFound if the segment is a physical segment, a full-length, nil or not known. Otherwise the 0-based index 
+ *  @return NSNotFound if the segment is a physical segment, a full-length, nil or not known. Otherwise the 0-based index
  *          is returned
  */
 - (NSUInteger)indexForSegment:(id<RTSMediaSegment>)segment;
