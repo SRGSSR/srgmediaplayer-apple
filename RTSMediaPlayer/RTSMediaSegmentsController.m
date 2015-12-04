@@ -51,8 +51,6 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
             return CMTimeCompare(segment1.timeRange.duration, segment2.timeRange.duration);
         }].lastObject;
         NSAssert(fullLengthSegment != nil, @"Expect a full-length by construction");
-        
-        // Add the full-length first, followed by segments in increasing start time order
         [self markFullLengthSegment:fullLengthSegment];
         
         // Discard those segments which are not contained within the full length
@@ -68,7 +66,21 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         }
     }
     
-    return [sanitizedSegments copy];
+    // Preserve the initial ordering
+    return [sanitizedSegments sortedArrayUsingComparator:^NSComparisonResult(id<RTSMediaSegment>  _Nonnull segment1, id<RTSMediaSegment>  _Nonnull segment2) {
+        NSUInteger index1 = [segments indexOfObject:segment1];
+        NSUInteger index2 = [segments indexOfObject:segment2];
+        
+        if (index1 == index2) {
+            return NSOrderedSame;
+        }
+        else if (index1 < index2) {
+            return NSOrderedAscending;
+        }
+        else {
+            return NSOrderedDescending;
+        }
+    }];
 }
 
 + (void)markFullLengthSegment:(id<RTSMediaSegment>)segment
