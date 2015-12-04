@@ -8,6 +8,7 @@
 #import <libextobjc/EXTScope.h>
 
 #import "RTSMediaPlayerController.h"
+#import "RTSMediaPlayerController+Private.h"
 #import "RTSMediaSegment.h"
 #import "RTSMediaSegmentsController.h"
 #import "RTSMediaPlayerLogger.h"
@@ -78,6 +79,13 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 + (BOOL)isFullLengthSegment:(id<RTSMediaSegment>)segment
 {
     return [objc_getAssociatedObject(segment, RTSMediaSegmentFullLengthKey) boolValue];
+}
+
+- (void)setPlayerController:(RTSMediaPlayerController *)playerController
+{
+    _playerController = playerController;
+    
+    playerController.segmentsController = self;
 }
 
 - (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler
@@ -298,5 +306,9 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     
     return [[self siblingSegmentsForSegment:segment] indexOfObject:segment];
 }
+
+@end
+
+@implementation RTSMediaPlayerController (RTSMediaSegmentsController)
 
 @end
