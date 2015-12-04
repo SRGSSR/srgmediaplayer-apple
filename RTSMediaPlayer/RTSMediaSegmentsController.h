@@ -126,3 +126,12 @@
 - (NSUInteger)indexForSegment:(id<RTSMediaSegment>)segment;
 
 @end
+
+@interface RTSMediaPlayerController (RTSMediaSegmentsController)
+
+/**
+ *  Return the segments controller mediating playback for the receiver, nil if none
+ */
+@property (nonatomic, readonly, weak) RTSMediaSegmentsController *segmentsController;
+
+@end

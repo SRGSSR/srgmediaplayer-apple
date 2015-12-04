@@ -52,6 +52,7 @@
 		C2F54A201A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A1F1A9F791900496C59 /* RTSMediaPlayerPlaybackTestCase.m */; };
 		E616272C1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.m */; };
 		E63521DEBE2DDC5C054D4163 /* libPods-SRGMediaPlayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35ED11281514ECD629133ED9 /* libPods-SRGMediaPlayerTests.a */; };
+		E6503BEE1C1176480035B088 /* RTSMediaPlayerController+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = E6503BED1C1176480035B088 /* RTSMediaPlayerController+Private.m */; };
 		E65786A41AEFAD68007730CE /* RTSSegmentedTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E65786A31AEFAD68007730CE /* RTSSegmentedTimelineView.m */; };
 		E66BDC141AF89C0200FF7858 /* RTSPeriodicTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E616272B1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.m */; };
 		E67D9B121B0EFB5200FF2334 /* RTSAirplayOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67D9B0F1B0EFB5200FF2334 /* RTSAirplayOverlayView.m */; };
@@ -175,6 +176,8 @@
 		E616272A1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPeriodicTimeObserver.h; sourceTree = "<group>"; };
 		E616272B1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSPeriodicTimeObserver.m; sourceTree = "<group>"; };
 		E642C453C59FDEE420B7BC27 /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6503BEC1C1176480035B088 /* RTSMediaPlayerController+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTSMediaPlayerController+Private.h"; sourceTree = "<group>"; };
+		E6503BED1C1176480035B088 /* RTSMediaPlayerController+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTSMediaPlayerController+Private.m"; sourceTree = "<group>"; };
 		E65786A21AEFAD68007730CE /* RTSSegmentedTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSSegmentedTimelineView.h; sourceTree = "<group>"; };
 		E65786A31AEFAD68007730CE /* RTSSegmentedTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSSegmentedTimelineView.m; sourceTree = "<group>"; };
 		E67D9B0E1B0EFB5200FF2334 /* RTSAirplayOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSAirplayOverlayView.h; sourceTree = "<group>"; };
@@ -285,11 +288,13 @@
 			children = (
 				C201D9321A9DC9C30016C629 /* RTSMediaPlayerController.h */,
 				C201D9331A9DC9C30016C629 /* RTSMediaPlayerController.m */,
+				E6503BEC1C1176480035B088 /* RTSMediaPlayerController+Private.h */,
+				E6503BED1C1176480035B088 /* RTSMediaPlayerController+Private.m */,
+				E6B1F31E1BEA461000B77092 /* RTSMediaPlayerSharedController.h */,
+				E6B1F31F1BEA461000B77092 /* RTSMediaPlayerSharedController.m */,
 				B61E18BE1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.h */,
 				B61E18BF1AA750CC00E4FAB9 /* RTSMediaPlayerViewController.m */,
 				B61E18C01AA750CC00E4FAB9 /* RTSMediaPlayerViewController.xib */,
-				E6B1F31E1BEA461000B77092 /* RTSMediaPlayerSharedController.h */,
-				E6B1F31F1BEA461000B77092 /* RTSMediaPlayerSharedController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -613,6 +618,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C288F49F1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m in Sources */,
+				E6503BEE1C1176480035B088 /* RTSMediaPlayerController+Private.m in Sources */,
 				B61E18FC1AA9EEDB00E4FAB9 /* RTSTimeSlider.m in Sources */,
 				E65786A41AEFAD68007730CE /* RTSSegmentedTimelineView.m in Sources */,
 				E67D9B121B0EFB5200FF2334 /* RTSAirplayOverlayView.m in Sources */,

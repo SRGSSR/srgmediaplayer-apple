@@ -10,6 +10,7 @@
 
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerControllerDataSource.h"
+#import "RTSMediaSegmentsController.h"
 
 #import "RTSMediaPlayerError.h"
 #import "RTSMediaPlayerView.h"
@@ -82,6 +83,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @property (readonly) dispatch_source_t idleTimer;
 
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
+
+@property (nonatomic, weak) RTSMediaSegmentsController *segmentsController;
 
 @end
 
