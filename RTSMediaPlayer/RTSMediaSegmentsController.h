@@ -6,9 +6,9 @@
 
 #import <UIKit/UIKit.h>
 #import "RTSMediaPlayerConstants.h"
+#import "RTSMediaPlayerController.h"
 
 // Forward declarations
-@class RTSMediaPlayerController;
 @protocol RTSMediaSegment;
 @protocol RTSMediaSegmentsDataSource;
 
