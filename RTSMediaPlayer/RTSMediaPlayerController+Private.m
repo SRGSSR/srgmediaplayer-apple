@@ -8,4 +8,6 @@
 
 @implementation RTSMediaPlayerController (Private)
 
+@dynamic segmentsController;
+
 @end
