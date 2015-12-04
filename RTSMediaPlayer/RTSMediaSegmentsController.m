@@ -311,4 +311,6 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 @implementation RTSMediaPlayerController (RTSMediaSegmentsController)
 
+@dynamic segmentsController;
+
 @end
