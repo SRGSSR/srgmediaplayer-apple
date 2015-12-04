@@ -57,6 +57,18 @@
 	}];
 	[self.mediaPlayerController play];
 	[self waitForExpectationsWithTimeout:30. handler:nil];
+	
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStateSeeking;
+	}];
+	[self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(5., 1.)];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
+	
+	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
+		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded;
+	}];
+	[self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(30. * 60. - 5., 1.)];
+	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void) testPlayThenResetDoesNotPlayTheMedia
