@@ -28,7 +28,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 @interface RTSMediaSegmentsController ()
 @property(nonatomic, strong) NSArray *segments;
 @property(nonatomic, strong) id playerTimeObserver;
-@property(nonatomic, weak) id<RTSMediaSegment> lastPlaybackPositionSegment;
+@property(nonatomic, weak) id<RTSMediaSegment> lastPlaybackPositionLogicalSegment;
 @end
 
 @implementation RTSMediaSegmentsController
@@ -116,7 +116,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     
     [self removeBlockingTimeObserver];
 	
-    self.lastPlaybackPositionSegment = nil;
+    self.lastPlaybackPositionLogicalSegment = nil;
     
     RTSMediaSegmentsCompletionHandler reloadCompletionBlock = ^(NSArray *segments, NSError *error) {
         if (error) {
@@ -169,22 +169,22 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
             }
         }];
         
-        if (self.lastPlaybackPositionSegment != currentSegment) {
+        if (self.lastPlaybackPositionLogicalSegment != currentSegment) {
 			NSDictionary *userInfo = nil;
 			
-            if (!currentSegment || (self.lastPlaybackPositionSegment && currentSegment.blocked)) {
+            if (!currentSegment || (self.lastPlaybackPositionLogicalSegment && currentSegment.blocked)) {
 				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentEnd),
-							 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionSegment,
+							 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionLogicalSegment,
 							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(NO)};
 			}
-			else if (currentSegment && !self.lastPlaybackPositionSegment && !currentSegment.blocked) {
+			else if (currentSegment && !self.lastPlaybackPositionLogicalSegment && !currentSegment.blocked) {
 				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
 							 RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment,
 							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(NO)};
 			}
-			else if (currentSegment && self.lastPlaybackPositionSegment) {
+			else if (currentSegment && self.lastPlaybackPositionLogicalSegment) {
 				userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
-							 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionSegment,
+							 RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionLogicalSegment,
 							 RTSMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment,
 							 RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(NO)};
 			}
@@ -195,7 +195,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 																  userInfo:userInfo];
 			}
             
-			self.lastPlaybackPositionSegment = currentSegment;			
+			self.lastPlaybackPositionLogicalSegment = currentSegment;			
 		}
 		
         // Managing blocked segments
@@ -209,12 +209,12 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
             
             [self.playerController seekToTime:CMTimeRangeGetEnd(currentSegment.timeRange) completionHandler:^(BOOL finished) {
                 NSDictionary *userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingEnd),
-                                           RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionSegment};
+                                           RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionLogicalSegment};
                 [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
                                                                     object:self
                                                                   userInfo:userInfo];
                 
-                self.lastPlaybackPositionSegment = nil;
+                self.lastPlaybackPositionLogicalSegment = nil;
                 
                 [self.playerController pause];
             }];
@@ -237,30 +237,35 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 
 - (id<RTSMediaSegment>)currentSegment
 {
-    return self.lastPlaybackPositionSegment;
+    return self.lastPlaybackPositionLogicalSegment;
 }
 
 - (void)playSegment:(id<RTSMediaSegment>)segment
 {
-    NSDictionary *userInfo = nil;
-    if (!self.lastPlaybackPositionSegment) {
-        userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
-                     RTSMediaPlaybackSegmentChangeSegmentInfoKey: segment,
-                     RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(YES)};
+    if (![RTSMediaSegmentsController isFullLengthSegment:segment]) {
+        NSDictionary *userInfo = nil;
+        if (!self.lastPlaybackPositionLogicalSegment) {
+            userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentStart),
+                         RTSMediaPlaybackSegmentChangeSegmentInfoKey: segment,
+                         RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(YES)};
+        }
+        else {
+            userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
+                         RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionLogicalSegment,
+                         RTSMediaPlaybackSegmentChangeSegmentInfoKey: segment,
+                         RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(YES)};
+        }
+        
+        // Immediately send the event. We thus also update the current segment information right here
+        self.lastPlaybackPositionLogicalSegment = segment;
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
+                                                            object:self
+                                                          userInfo:userInfo];
     }
     else {
-        userInfo = @{RTSMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSwitch),
-                     RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey: self.lastPlaybackPositionSegment,
-                     RTSMediaPlaybackSegmentChangeSegmentInfoKey: segment,
-                     RTSMediaPlaybackSegmentChangeUserSelectInfoKey: @(YES)};
+        self.lastPlaybackPositionLogicalSegment = nil;
     }
-    
-    // Immediately send the event. We thus also update the current segment information right here
-    self.lastPlaybackPositionSegment = segment;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlaybackSegmentDidChangeNotification
-                                                        object:self
-                                                      userInfo:userInfo];
     
     if ([self.playerController.identifier isEqualToString:segment.segmentIdentifier]) {
         [self.playerController seekToTime:segment.timeRange.start completionHandler:^(BOOL finished) {
