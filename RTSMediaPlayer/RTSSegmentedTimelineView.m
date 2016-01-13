@@ -118,8 +118,16 @@ static void commonInit(RTSSegmentedTimelineView *self);
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
 	id<RTSMediaSegment> segment = self.segmentsController.visibleSegments[indexPath.row];
+	[self.segmentsController playSegment:segment];
+	
+	// It is necessary to cal -[playSegment:] first to update the identifier. Otherwise, the immediate highlight of the
+	// cells, based on that rather than time, cannot work.
+	
+	if ([self.delegate respondsToSelector:@selector(timelineView:didSelectSegmentAtIndexPath:)]) {
+		[self.delegate timelineView:self didSelectSegmentAtIndexPath:indexPath];
+	}
+	
 	[self scrollToSegment:segment animated:YES];
-    [self.segmentsController playSegment:segment];
 }
 
 #pragma mark - UIScrollViewDelegate protocol
@@ -160,10 +168,10 @@ static void commonInit(RTSSegmentedTimelineView *self);
 
 - (void) scrollToSegment:(id<RTSMediaSegment>)segment animated:(BOOL)animated
 {
-    if (!segment) {
-        return;
-    }
-    
+	if (!segment) {
+		return;
+	}
+	
 	NSInteger segmentIndex = [self.segmentsController.visibleSegments indexOfObject:segment];
 	if (segmentIndex == NSNotFound) {
 		return;
