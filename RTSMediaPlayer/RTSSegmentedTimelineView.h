@@ -16,11 +16,11 @@
  *  A view displaying segments associated with a stream as a linear collection of cells
  *
  *  To add a timeline to a custom player layout, simply drag and drop an RTSTimelineView onto the player layout,
- *  and bind its segment controller and delegate outlets. You can of course instantiate and configure the view 
- *  programatically as well. Then call -reloadSegmentsWithIdentifier:completionHandler: when you need to retrieve 
+ *  and bind its segment controller and delegate outlets. You can of course instantiate and configure the view
+ *  programatically as well. Then call -reloadSegmentsWithIdentifier:completionHandler: when you need to retrieve
  *  segments from the controller
  *
- *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual 
+ *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual
  *  UICollectionView
  */
 @interface RTSSegmentedTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
@@ -71,7 +71,8 @@
 - (NSArray *)visibleCells;
 
 /**
- *  Scroll to make the specified segment visible (does nothing if the segment does not belong to the displayed segments)
+ *  Scroll to make the specified segment visible (does nothing if the segment does not belong to the visible segments
+ *  of the segmentsController.
  */
 - (void)scrollToSegment:(id<RTSMediaSegment>)segment animated:(BOOL)animated;
 
@@ -94,6 +95,11 @@
 - (UICollectionViewCell *)timelineView:(RTSSegmentedTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment;
 
 @optional
+
+/**
+ * Called when the timeline sees one of its visible segment selected by the user.
+ */
+- (void)timelineView:(RTSSegmentedTimelineView *)timelineView didSelectSegmentAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  * Called when the timeline has been scrolled interactively
