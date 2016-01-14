@@ -343,6 +343,7 @@
 				C2F549ED1A9F713300496C59 /* Frameworks */,
 				C2F549EE1A9F713300496C59 /* Resources */,
 				C7E62927C080516ABF3F2439 /* Copy Pods Resources */,
+				79B0004173223FCFA9FBA78E /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -454,6 +455,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		79B0004173223FCFA9FBA78E /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-SRGMediaPlayer Demo/Pods-SRGMediaPlayer Demo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C5640A74CF63A6C84C0C6A29 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
