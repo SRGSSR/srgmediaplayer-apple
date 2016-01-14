@@ -40,11 +40,6 @@
 @interface RTSMediaSegmentsController : NSObject
 
 /**
- * Return YES iff the segment corresponds to a full length
- */
-+ (BOOL)isFullLengthSegment:(id<RTSMediaSegment>)segment;
-
-/**
  *  The player controller associated with the segments controller.
  */
 @property(nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;
@@ -89,41 +84,6 @@
  *  @param time The segment to play
  */
 - (void)playSegment:(id<RTSMediaSegment>)segment;
-
-/**
- *  Return the parent segment matching a given segment, nil if none
- *
- *  @param segment The segment to check
- *
- *  @discussion If the segment is a physical segment or a full-length, the method returns nil
- */
-- (id<RTSMediaSegment>)parentSegmentForSegment:(id<RTSMediaSegment>)segment;
-
-/**
- *  Return all related child segments for a given segment, nil if none
- *
- *  @param segment The segment to check
- */
-- (NSArray *)childSegmentsForSegment:(id<RTSMediaSegment>)segment;
-
-/**
- *  Return sibling segments for a given segment (including itself)
- *
- *  @param segment The segment to check
- *
- *  @return If the segment is a full-length or a physical segment, this method returns nil
- */
-- (NSArray *)siblingSegmentsForSegment:(id<RTSMediaSegment>)segment;
-
-/**
- *  Return the index of a segment relative to its full-length
- *
- *  @param segment The segment to check
- *
- *  @return NSNotFound if the segment is a physical segment, a full-length, nil or not known. Otherwise the 0-based index
- *          is returned
- */
-- (NSUInteger)indexForSegment:(id<RTSMediaSegment>)segment;
 
 @end
 
