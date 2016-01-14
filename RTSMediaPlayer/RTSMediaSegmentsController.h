@@ -85,31 +85,6 @@
  */
 - (void)playSegment:(id<RTSMediaSegment>)segment;
 
-/**
- *  Return the parent segment matching a given segment, nil if none
- *
- *  @param segment The segment to check
- *
- *  @discussion If the segment is a physical segment, the method returns nil
- */
-- (id<RTSMediaSegment>)parentSegmentForSegment:(id<RTSMediaSegment>)segment;
-
-/**
- *  Return all related logical child segments for a given segment, nil if none
- *
- *  @param segment The segment to check
- */
-- (NSArray *)childSegmentsForSegment:(id<RTSMediaSegment>)segment;
-
-/**
- *  Return sibling segments for a given segment (including itself)
- *
- *  @param segment The segment to check
- *
- *  @return If the segment is a physical segment, this method returns nil
- */
-- (NSArray *)siblingSegmentsForSegment:(id<RTSMediaSegment>)segment;
-
 @end
 
 @interface RTSMediaPlayerController (RTSMediaSegmentsController)

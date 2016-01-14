@@ -215,42 +215,6 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     }
 }
 
-- (id<RTSMediaSegment>)parentSegmentForSegment:(id<RTSMediaSegment>)segment
-{
-    if (!segment || !segment.logical) {
-        return nil;
-    }
-    
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<RTSMediaSegment>  _Nonnull otherSegment, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return !otherSegment.logical && [segment.segmentIdentifier isEqualToString:otherSegment.segmentIdentifier];
-    }];
-    return [self.segments filteredArrayUsingPredicate:predicate].firstObject;
-}
-
-- (NSArray *)childSegmentsForSegment:(id<RTSMediaSegment>)segment
-{
-    if (!segment || segment.logical) {
-        return nil;
-    }
-    
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<RTSMediaSegment>  _Nonnull otherSegment, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return otherSegment.logical && [segment.segmentIdentifier isEqualToString:otherSegment.segmentIdentifier];
-    }];
-    return [self.segments filteredArrayUsingPredicate:predicate];
-}
-
-- (NSArray *)siblingSegmentsForSegment:(id<RTSMediaSegment>)segment
-{
-    if (!segment || !segment.logical) {
-        return nil;
-    }
-    
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<RTSMediaSegment>  _Nonnull otherSegment, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return otherSegment.logical && [segment.segmentIdentifier isEqualToString:otherSegment.segmentIdentifier];
-    }];
-    return [self.segments filteredArrayUsingPredicate:predicate];
-}
-
 @end
 
 @implementation RTSMediaPlayerController (RTSMediaSegmentsController)
