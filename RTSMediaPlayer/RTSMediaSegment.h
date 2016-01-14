@@ -20,6 +20,11 @@
 @property (nonatomic, readonly, copy) NSString *segmentIdentifier; // chiote
 
 /**
+ * Whether the segment is a logical or a physical segment
+ */
+@property (nonatomic, readonly, getter=isLogical) BOOL logical;
+
+/**
  *  Segment start and end times (might be identical)
  */
 @property (nonatomic, readonly) CMTimeRange timeRange;
