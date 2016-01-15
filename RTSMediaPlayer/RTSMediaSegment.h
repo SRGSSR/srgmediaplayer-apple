@@ -20,11 +20,6 @@
 @property (nonatomic, readonly, copy) NSString *segmentIdentifier; // chiote
 
 /**
- * Whether the segment is a logical or a physical segment
- */
-@property (nonatomic, readonly, getter=isLogical) BOOL logical;
-
-/**
  *  Segment start and end times (might be identical)
  */
 @property (nonatomic, readonly) CMTimeRange timeRange;
@@ -38,5 +33,10 @@
  *  Must return YES iff the segment is visible
  */
 @property (nonatomic, readonly, getter=isVisible) BOOL visible;
+
+/**
+ * Whether the segment is a logical or a physical segment
+ */
+@property (nonatomic, readonly, getter=isLogical) BOOL logical;
 
 @end
