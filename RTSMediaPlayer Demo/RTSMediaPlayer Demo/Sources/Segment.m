@@ -29,6 +29,8 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 
 @implementation Segment
 
+@synthesize logical = _logical;
+
 #pragma mark - Object lifecycle
 
 - (instancetype) initWithIdentifier:(NSString *)identifier name:(NSString *)name timeRange:(CMTimeRange)timeRange;
