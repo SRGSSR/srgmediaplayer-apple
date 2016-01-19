@@ -648,6 +648,7 @@
 			baseConfigurationReference = 100779AD208991A55C4E92F5 /* Pods-SRGMediaPlayer Demo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/Headers/Public\"",
@@ -665,6 +666,7 @@
 			baseConfigurationReference = 6E09A7BE7B656051B76E8285 /* Pods-SRGMediaPlayer Demo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/Headers/Public\"",
