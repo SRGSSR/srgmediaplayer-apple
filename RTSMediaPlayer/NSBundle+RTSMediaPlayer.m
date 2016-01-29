@@ -6,6 +6,8 @@
 
 #import "NSBundle+RTSMediaPlayer.h"
 
+#import "RTSMediaPlayerController.h"
+
 @implementation NSBundle (RTSMediaPlayer)
 
 + (instancetype) RTSMediaPlayerBundle
@@ -13,7 +15,7 @@
 	static NSBundle *mediaPlayerBundle;
 	static dispatch_once_t once;
 	dispatch_once(&once, ^{
-		NSURL *mediaPlayerBundleURL = [[NSBundle mainBundle] URLForResource:@"SRGMediaPlayer" withExtension:@"bundle"];
+		NSURL *mediaPlayerBundleURL = [[NSBundle bundleForClass:[RTSMediaPlayerController class]] URLForResource:@"SRGMediaPlayer" withExtension:@"bundle"];
 		NSAssert(mediaPlayerBundleURL != nil, @"SRGMediaPlayer.bundle not found in the main bundle's resources");
 		mediaPlayerBundle = [NSBundle bundleWithURL:mediaPlayerBundleURL];
 	});
