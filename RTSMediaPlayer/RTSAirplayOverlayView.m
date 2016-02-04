@@ -193,7 +193,7 @@
 
 - (NSString *)airplayOverlayView:(RTSAirplayOverlayView *)airplayOverlayView subtitleForAirplayRouteName:(NSString *)routeName
 {
-	return [NSString stringWithFormat:RTSMediaPlayerLocalizedString(@"This video is playing on «%@»", nil), routeName];
+	return [NSString stringWithFormat:RTSMediaPlayerLocalizedString(@"This media is playing on «%@»", nil), routeName];
 }
 
 - (NSDictionary *)airplayOverlayViewSubitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView
