@@ -175,6 +175,9 @@
 		E60F1C0C1B21C96F00F3272F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E616272A1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPeriodicTimeObserver.h; sourceTree = "<group>"; };
 		E616272B1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSPeriodicTimeObserver.m; sourceTree = "<group>"; };
+		E6300AA41C6B843C003DA85F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E6300AA51C6B8442003DA85F /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E6300AA61C6B8447003DA85F /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E642C453C59FDEE420B7BC27 /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6503BEC1C1176480035B088 /* RTSMediaPlayerController+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTSMediaPlayerController+Private.h"; sourceTree = "<group>"; };
 		E6503BED1C1176480035B088 /* RTSMediaPlayerController+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTSMediaPlayerController+Private.m"; sourceTree = "<group>"; };
@@ -497,6 +500,9 @@
 			knownRegions = (
 				en,
 				fr,
+				de,
+				it,
+				rm,
 			);
 			mainGroup = C201D8EC1A9DC1A40016C629;
 			productRefGroup = C201D8F61A9DC1A40016C629 /* Products */;
@@ -693,6 +699,9 @@
 			children = (
 				E60F1C0C1B21C96F00F3272F /* en */,
 				E6D220171B21C9A70009BB17 /* fr */,
+				E6300AA41C6B843C003DA85F /* de */,
+				E6300AA51C6B8442003DA85F /* it */,
+				E6300AA61C6B8447003DA85F /* rm */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

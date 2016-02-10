@@ -1,7 +1,9 @@
+// 
+// Copyright (c) SRG. All rights reserved.
+// 
+// License information is available from the LICENSE file.
 //
-//  Copyright (c) SRG. All rights reserved.
-//
-//  License information is available from the LICENSE file.
-//
-"Live"="Live";
-"This video is playing on «%@»"="Cette vidéo est en lecture sur «%@»";
+"Back to live" = "Retour au direct";
+"External device" = "un appareil externe";
+"Live" = "Direct";
+"This media is playing on «%@»" = "Ce média est actuellement lu sur «%@»";
