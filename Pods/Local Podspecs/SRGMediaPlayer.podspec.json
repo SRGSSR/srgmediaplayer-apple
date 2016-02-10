@@ -27,7 +27,8 @@
   "resource_bundles": {
     "SRGMediaPlayer": [
       "RTSMediaPlayer/*.xib",
-      "RTSMediaPlayer/*.png"
+      "RTSMediaPlayer/*.png",
+      "RTSMediaPlayer/*.lproj"
     ]
   },
   "dependencies": {
