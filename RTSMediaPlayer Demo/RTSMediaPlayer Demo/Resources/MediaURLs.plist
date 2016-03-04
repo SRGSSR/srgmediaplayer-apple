@@ -6,21 +6,9 @@
 	<array>
 		<dict>
 			<key>name</key>
-			<string>RTS1 Live</string>
+			<string>Eurosport FR</string>
 			<key>url</key>
-			<string>https://srgssruni9ch-lh.akamaihd.net/i/enc9uni_ch@191320/master.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>RTS2 Live</string>
-			<key>url</key>
-			<string>https://srgssruni10ch-lh.akamaihd.net/i/enc10uni_ch@191367/master.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>RTS en continu</string>
-			<key>url</key>
-			<string>https://srgssruni11ch-lh.akamaihd.net/i/enc11uni_ch@191455/master.m3u8</string>
+			<string>http://esioslive6-i.akamaihd.net/hls/live/202892/AL_P_ESP1_FR_FRA/playlist.m3u8</string>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -51,18 +39,6 @@
 			<string>Bidoum</string>
 			<key>url</key>
 			<string>http://stream-i.rts.ch/i/bidbi/2007/bidbi_01082007-,450,k.mp4.csmil/master.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>Webcam RTS mobile (with underscores)</string>
-			<key>url</key>
-			<string>http://rtsliveevent1_ww-lh.akamaihd.net/i/event1uni_dvrtest_ww@91227/master.m3u8?__a__=off</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>Webcam RTS mobile (without underscores)</string>
-			<key>url</key>
-			<string>http://rtsdvr2015-lh.akamaihd.net/i/rtsdvr2015test1_ww@317507/master.m3u8</string>
 		</dict>
 	</array>
 </dict>
