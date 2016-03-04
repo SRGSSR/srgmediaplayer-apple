@@ -6,12 +6,6 @@
 	<array>
 		<dict>
 			<key>name</key>
-			<string>La 1erre - Timeshifting</string>
-			<key>url</key>
-			<string>http://rsr1.timeshifting.rsr.ch/feed.mp3</string>
-		</dict>
-		<dict>
-			<key>name</key>
 			<string>La 1ere - MP3</string>
 			<key>url</key>
 			<string>http://stream.srg-ssr.ch/m/la-1ere/mp3_128</string>
@@ -21,12 +15,6 @@
 			<string>La 1ere - AAC HTTP</string>
 			<key>url</key>
 			<string>http://stream.srg-ssr.ch/m/la-1ere/aacp_96</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>La 1ere - AAC RTMP</string>
-			<key>url</key>
-			<string>rtmp://rtmp.streaming.swisstxt.ch/live/la-1ere.96.stream</string>
 		</dict>
 		<dict>
 			<key>name</key>
