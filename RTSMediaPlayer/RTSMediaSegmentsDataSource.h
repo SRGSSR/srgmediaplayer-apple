@@ -23,8 +23,8 @@ typedef void (^RTSMediaSegmentsCompletionHandler)(NSArray *segments, NSError *er
  *
  *  @param controller        The segments controller making the request
  *  @param identifier        The identifier for which segments must be retrieved
- *  @param completionHandler The block which the implementation must call to return segments and full-length information
- *                           to the controller, or an error if it could not be retrieved
+ *  @param completionHandler The block which the implementation must call to return segments to the controller, or an 
+ *                           error
  */
 - (void)segmentsController:(RTSMediaSegmentsController *)controller
      segmentsForIdentifier:(NSString *)identifier

@@ -9,14 +9,14 @@
 
 /**
  *  A periodic time observer calls one or several blocks during playback of an associated player. Unlike usual time
- *  observers associated with an AVPlayer, an RTSPeriodicTimeObserver executes during the lifetime of the player,
+ *  observers associated with an `AVPlayer`, an `RTSPeriodicTimeObserver` executes during the lifetime of the player,
  *  also when it is paused, which makes it useful when updates must be made continuously (e.g. UI updates for DVR
  *  streams)
  */
 @interface RTSPeriodicTimeObserver : NSObject
 
 /**
- *  Create a periodic time observer. Does nothing until attached to a player (see -attachToMediaPlayer:)
+ *  Create a periodic time observer. Does nothing until attached to a player (see `-attachToMediaPlayer:`)
  *
  *  @param interval    The interval at which the block must be executed
  *  @param queue	   The serial queue onto which block should be enqueued (main queue if NULL)
@@ -28,7 +28,7 @@
  *  is simply replaced
  *
  *  @param block      The block to register (mandatory)
- *  @param identifier The identifier to which the block must be associated (mandatory)
+ *  @param identifier The identifier to which the block must be associated (g)
  */
 - (void)setBlock:(void (^)(CMTime time))block forIdentifier:(NSString *)identifier;
 

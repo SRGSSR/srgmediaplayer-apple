@@ -6,5 +6,5 @@
 
 #import <Foundation/Foundation.h>
 
-// Library version
+// Return the library version
 OBJC_EXPORT NSString * const RTSMediaPlayerVersion(void);

@@ -31,11 +31,11 @@
  *
  *  To use a segments controller, instantiate or drop an instance in Interface Builder, and bind it to the underlying
  *  player controller. Also attach a data source from which segments will be retrieved for the media being played. When
- *  segments need to be retrieved, call 'reloadSegementsForIdentifier:completionHandler:'
+ *  segments need to be retrieved, call `reloadSegementsForIdentifier:completionHandler:`
  *
- *  When controlling playback for a media with segments, call RTSMediaPlayback methods on the segment controller. For
- *  convenience, you can readily display segments as a timeline (see 'RTSSegmentedTimelineView') and / or on top of a
- *  slider (see 'RTSTimelineSlider').
+ *  When controlling playback for a media with segments, call `RTSMediaPlayback` methods on the segment controller. For
+ *  convenience, you can readily display segments as a timeline (see `RTSSegmentedTimelineView`) and / or on top of a
+ *  slider (see `RTSTimelineSlider`).
  */
 @interface RTSMediaSegmentsController : NSObject
 
@@ -50,26 +50,20 @@
 @property(nonatomic, weak) IBOutlet id<RTSMediaSegmentsDataSource> dataSource;
 
 /**
- *  Reload segments data for given media identifier.
- *
- *  @param identifier        The media identifier
- *  @param completionHandler The completion handler.
+ *  Reload segments data for given media identifier. The completion handler block (optional) will be called when reloading
+ *  ends
  */
 - (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler;
 
 /**
- *  The segments
- *
- *  @return A an array containing the valid segments which were retrieved from the data source.
+ *  The segment list currently managed by the segments controller
  */
-- (NSArray *)segments;
+- (NSArray<id<RTSMediaSegment>> *)segments;
 
 /**
  *  The visible segments
- *
- *  @return A an array containing the data sources of each episodes.
  */
-- (NSArray *)visibleSegments;
+- (NSArray<id<RTSMediaSegment>> *)visibleSegments;
 
 /**
  *  The current segment in which the playback head is located.
@@ -79,9 +73,7 @@
 - (id<RTSMediaSegment>)currentSegment;
 
 /**
- *  Asks the segments controller to play the specified segment intentionally (= user-triggered)
- *
- *  @param time The segment to play
+ *  Asks the segments controller to play the specified segment
  */
 - (void)playSegment:(id<RTSMediaSegment>)segment;
 

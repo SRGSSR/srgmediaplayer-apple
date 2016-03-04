@@ -9,32 +9,25 @@
 @protocol RTSMediaPlayerControllerDataSource;
 
 /**
- *  RTSMediaPlayerViewController is inspired by the MPMoviePlayerViewController class.
- *  The RTSMediaPlayerViewController class implements a simple view controller for displaying full-screen movies. It mimics the default 
- *  iOS Movie player based on MPMoviePlayerViewController.
+ *  `RTSMediaPlayerViewController` is inspired by the `MPMoviePlayerViewController` class, and intends to provide a full-screen
+ *  standard media player looking like the default iOS media player.
  *
- *  The RTSMediaPlayerViewController has to be presented modally using `-presentViewController:animated:completion:`
+ *  The RTSMediaPlayerViewController has to be presented modally using `-presentViewController:animated:completion:`. If you
+ *  need a customized layout, create your own view controller and implement media playback using `RTSMediaPlayerController`
  */
 @interface RTSMediaPlayerViewController : UIViewController
 
 /**
- *  Returns a RTSMediaPlayerViewController object initialized with the media at the specified URL which mimics the standard 
- *  MPMoviePlayerViewController style.
- *
- *  @param contentURL The URL of the media to be played
- *
- *  @return A media player view controller
+ *  Returns an `RTSMediaPlayerViewController` object initialized with the media at the specified URL
  */
 - (instancetype) initWithContentURL:(NSURL *)contentURL OS_NONNULL_ALL;
 
 /**
- *  Returns a RTSMediaPlayerController object initialized with a datasource and a media identifier which mimics the standard
- *  MPMoviePlayerViewController style.
+ *  Returns a RTSMediaPlayerController object initialized with a datasource and a media identifier. The media URL will be
+ *  retrieved from the data source based on its identifier
  *
  *  @param identifier The identifier of the media to be played
  *  @param dataSource The data source from which the media URL will be retrieved
- *
- *  @return A media player view controller
  */
 - (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource OS_NONNULL_ALL;
 
