@@ -21,10 +21,10 @@
  *  and the remaining time.
  *
  *  The slider can be customized as follows:
- *    - borderColor: Color of the small border around the non-elapsed time track (defaults to black)
- *    - minimumTrackTintColor: Elapsed time track color (defaults to white)
- *    - maximumTrackTintColor: Preloaded track color (defaults to black)
- *    - thumbTintColor: Thumb color (defaults to white)
+ *    - `borderColor`: Color of the small border around the non-elapsed time track (defaults to black)
+ *    - `minimumTrackTintColor`: Elapsed time track color (defaults to white)
+ *    - `maximumTrackTintColor`: Preloaded track color (defaults to black)
+ *    - `thumbTintColor`: Thumb color (defaults to white)
  */
 @interface RTSTimeSlider : UISlider
 
@@ -39,12 +39,12 @@
 @property (nonatomic, weak) IBOutlet id<RTSTimeSliderDelegate> slidingDelegate;
 
 /**
- *  Must be bound to the label displaying the remaining time
+ *  Outlet which must be bound to the label displaying the remaining time
  */
 @property (nonatomic, weak) IBOutlet UILabel *timeLeftValueLabel;
 
 /**
- *  Must be bound to the label displaying the current time
+ *  Outlet which must be bound to the label displaying the current time
  */
 @property (nonatomic, weak) IBOutlet UILabel *valueLabel;
 

@@ -427,9 +427,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[self.player pause];
 }
 
-- (void)mute:(BOOL)flag
+- (void)setMuted:(BOOL)muted
 {
-	self.player.muted = flag;
+	self.player.muted = muted;
 }
 
 - (BOOL)isMuted
