@@ -41,6 +41,7 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 		self.fullLength = NO;
 		self.blocked = NO;
 		self.visible = YES;
+		self.logical = NO;
 		
 		self.segmentIdentifier = identifier;
 		self.name = name;

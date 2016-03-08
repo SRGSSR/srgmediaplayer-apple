@@ -29,4 +29,7 @@
 // Default is YES
 @property (nonatomic, getter=isVisible) BOOL visible;
 
+// Default is NO
+@property (nonatomic, getter=isLogical) BOOL logical;
+
 @end
