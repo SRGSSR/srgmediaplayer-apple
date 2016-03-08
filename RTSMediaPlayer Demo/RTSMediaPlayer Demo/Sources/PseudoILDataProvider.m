@@ -68,6 +68,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 			// 3 visible segments
 			for (NSUInteger i = 0; i < 3; i++) {
 				Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:[NSString stringWithFormat:@"Segment #%@", @(i)] start:5*(i*5+1) duration:10];
+				segment.logical = YES;
 				[segments addObject:segment];
 			}
 		}
@@ -75,6 +76,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 			// 5 segments, 2 visible
 			for (NSUInteger i = 0; i < 5; i++) {
 				Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:[NSString stringWithFormat:@"Segment #%@", @(i)] start:5*(i*5+1) duration:10];
+				segment.logical = YES;
 				segment.visible = (i%2 != 0);
 				[segments addObject:segment];
 			}
@@ -85,6 +87,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 				BOOL blocked = (i%2 != 0);
 				NSString *name = [NSString stringWithFormat:@"%@Segment #%@", (blocked) ? @"Blocked ": @"", @(i)];
 				Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:name start:5*(i*5+1) duration:10];
+				segment.logical = YES;
 				segment.blocked = blocked;
 				[segments addObject:segment];
 			}
@@ -95,6 +98,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 				BOOL blocked = (i == 0);
 				NSString *name = [NSString stringWithFormat:@"%@Segment #%@", (blocked) ? @"Blocked ": @"", @(i)];
 				Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:name start:25*i duration:10];
+				segment.logical = YES;
 				segment.blocked = blocked;
 				[segments addObject:segment];
 			}
@@ -105,6 +109,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 				BOOL blocked = (i%2 == 0);
 				NSString *name = [NSString stringWithFormat:@"%@Segment #%@", (blocked) ? @"Blocked ": @"", @(i)];
 				Segment *segment = [[Segment alloc] initWithIdentifier:identifier name:name start:5*(i*5+1) duration:10];
+				segment.logical = YES;
 				segment.blocked = blocked;
 				segment.visible = (i > 1);
 				[segments addObject:segment];
@@ -113,18 +118,22 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 		else if (row == 5) {
 			// Two consecutive segments
 			Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #0" start:2. duration:3.];
+			segment1.logical = YES;
 			[segments addObject:segment1];
 			
 			Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #1" start:5. duration:4.];
+			segment2.logical = YES;
 			[segments addObject:segment2];
 		}
 		else if (row == 6) {
 			// Two consecutive blocked segments
 			Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #0" start:2. duration:3.];
+			segment1.logical = YES;
 			segment1.blocked = YES;
 			[segments addObject:segment1];
 			
 			Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #1" start:5. duration:4.];
+			segment2.logical = YES;
 			segment2.blocked = YES;
 			[segments addObject:segment2];
 		}
@@ -132,27 +141,35 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 			// One full-length with several logical segments, followed by another full-length (e.g. bonus)
 			// Two consecutive blocked segments
 			Segment *episodeSegment1 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #0" start:2. duration:30.];
+			episodeSegment1.logical = YES;
 			[segments addObject:episodeSegment1];
 			
 			Segment *episodeSegment2 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #1" start:32. duration:20.];
+			episodeSegment2.logical = YES;
 			[segments addObject:episodeSegment2];
 			
 			Segment *episodeSegment3 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #2" start:52. duration:20.];
+			episodeSegment3.logical = YES;
 			[segments addObject:episodeSegment3];
 
 			Segment *episodeSegment4 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #3" start:72. duration:30.];
+			episodeSegment4.logical = YES;
 			[segments addObject:episodeSegment4];
 
 			Segment *episodeSegment5 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #4" start:110. duration:10.];
+			episodeSegment5.logical = YES;
 			[segments addObject:episodeSegment5];
 
 			Segment *episodeSegment6 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #5" start:120. duration:500.];
+			episodeSegment6.logical = YES;
 			[segments addObject:episodeSegment6];
 
 			Segment *episodeSegment7 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #6" start:650. duration:30.];
+			episodeSegment7.logical = YES;
 			[segments addObject:episodeSegment7];
 
 			Segment *episodeSegment8 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #7" start:680. duration:40.];
+			episodeSegment8.logical = YES;
 			[segments addObject:episodeSegment8];
 			
 			Segment *bonusSegment = [[Segment alloc] initWithIdentifier:@"bonus" name:@"Bonus" start:0. duration:10. * 60.];
