@@ -34,6 +34,12 @@
 			<key>url</key>
 			<string>http://streaming.swisstxt.ch/m/drs2/mp3_128</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>Timeshift</string>
+			<key>url</key>
+			<string>http://lsaplus.swisstxt.ch/audio/rsp_96.stream/playlist.m3u8</string>
+		</dict>
 	</array>
 </dict>
 </plist>
