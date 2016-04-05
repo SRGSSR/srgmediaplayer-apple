@@ -15,13 +15,13 @@
 /**
  *  A view displaying segments associated with a stream as a linear collection of cells
  *
- *  To add a timeline to a custom player layout, simply drag and drop an RTSTimelineView onto the player layout,
+ *  To add a timeline to a custom player layout, simply drag and drop an `RTSTimelineView` onto the player layout,
  *  and bind its segment controller and delegate outlets. You can of course instantiate and configure the view
- *  programatically as well. Then call -reloadSegmentsWithIdentifier:completionHandler: when you need to retrieve
+ *  programatically as well. Then call `-reloadSegmentsWithIdentifier:completionHandler:` when you need to retrieve
  *  segments from the controller
  *
- *  Customisation of timeline cells is achieved through subclassing of UICollectionViewCell, exactly like a usual
- *  UICollectionView
+ *  Customisation of timeline cells is achieved through subclassing of `UICollectionViewCell`, exactly like a usual
+ *  `UICollectionView`
  */
 @interface RTSSegmentedTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -46,14 +46,16 @@
 @property (nonatomic) IBInspectable CGFloat itemSpacing;
 
 /**
- *  Register cell classes for reuse. Cells must be subclasses of UICollectionViewCell and can be instantiated either
- *  programmatically or using a nib. For more information about cell reuse, refer to UICollectionView documentation
+ *  Register cell classes for reuse. Cells must be subclasses of `UICollectionViewCell` and can be instantiated either
+ *  programmatically or using a nib. For more information about cell reuse, refer to `UICollectionView` documentation.
+ *  To dequeue cells from the reuse queue, call -dequeueReusableCellWithReuseIdentifier:forSegment:
  */
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 - (void)registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
 
 /**
- *  Call this method to trigger a reload of the segments from the data source
+ *  Call this method to trigger a reload of the segments from the data source, for the specified identifier. An optional
+ *  completion handler block can be provided
  */
 - (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler;
 
@@ -63,7 +65,7 @@
  *  @param identifier The cell identifier (must be appropriately set for the cell)
  *  @param segment    The segment for which a cell must be dequeued
  */
-- (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaSegment>)segment;
+- (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaSegment>)segment;
 
 /**
  * Return the list of currently visible cells
@@ -84,7 +86,7 @@
 @protocol RTSSegmentedTimelineViewDelegate <NSObject>
 
 /**
- *  Return the cell to be displayed for a segment. You should call -dequeueReusableCellWithReuseIdentifier:forSegment:
+ *  Return the cell to be displayed for a segment. You should call `-dequeueReusableCellWithReuseIdentifier:forSegment:`
  *  within the implementation of this method to reuse existing cells and improve scrolling smoothness
  *
  *  @param timelineView The timeline

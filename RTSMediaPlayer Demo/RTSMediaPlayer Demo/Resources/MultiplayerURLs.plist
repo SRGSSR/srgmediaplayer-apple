@@ -6,15 +6,15 @@
 	<array>
 		<dict>
 			<key>name</key>
-			<string>Live RTS</string>
+			<string>Live</string>
 			<key>url</key>
-			<string>https://srgssruni7ch-lh.akamaihd.net/i/enc7uni_ch@191283/master.m3u8</string>
+			<string>http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch1/appleman.m3u8</string>
 			<key>urls</key>
 			<array>
-				<string>https://srgssruni7ch-lh.akamaihd.net/i/enc7uni_ch@191283/master.m3u8</string>
-				<string>https://srgssruni9ch-lh.akamaihd.net/i/enc9uni_ch@191320/master.m3u8</string>
-				<string>https://srgssruni10ch-lh.akamaihd.net/i/enc10uni_ch@191367/master.m3u8</string>
-				<string>https://srgssruni11ch-lh.akamaihd.net/i/enc11uni_ch@191455/master.m3u8</string>
+				<string>http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch1/appleman.m3u8</string>
+				<string>http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch2/appleman.m3u8</string>
+				<string>http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch3/appleman.m3u8</string>
+				<string>http://esioslive6-i.akamaihd.net/hls/live/202892/AL_P_ESP1_FR_FRA/playlist.m3u8</string>
 			</array>
 		</dict>
 	</array>

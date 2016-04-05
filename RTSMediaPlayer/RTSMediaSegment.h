@@ -17,7 +17,7 @@
 /**
  *  Media Segment Identifier
  */
-@property (nonatomic, readonly, copy) NSString *segmentIdentifier; // chiote
+@property (nonatomic, readonly, copy) NSString *segmentIdentifier;
 
 /**
  *  Segment start and end times (might be identical)
@@ -35,7 +35,7 @@
 @property (nonatomic, readonly, getter=isVisible) BOOL visible;
 
 /**
- * Whether the segment is a logical or a physical segment
+ * Whether the segment is a logical segment (part of a larger media) or a physical segment (a media of its own)
  */
 @property (nonatomic, readonly, getter=isLogical) BOOL logical;
 
