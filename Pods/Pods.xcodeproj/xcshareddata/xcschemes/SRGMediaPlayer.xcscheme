@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '4C9965270B403803C40C1CB0'
+               BlueprintIdentifier = 'B313EA4A908D3719E4031A75'
                BlueprintName = 'SRGMediaPlayer'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libSRGMediaPlayer.a'>
