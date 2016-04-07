@@ -200,6 +200,9 @@
 /**
  *  Start playing a media specified using its identifier, starting at a specific time. Retrieving the media URL requires
  *  a data source to be bound to the player controller
+ *
+ *  @discussion If time is kCMTimeZero, playback will beging at the default position (start of a VOD, or live for a DVR).
+ *              If you need to start at the beginning of a DVR stream, use a small time (e.g. CMTimeMakeWithSeconds(1., 4.))
  */
 - (void)playIdentifier:(NSString *)identifier atTime:(CMTime)time;
 

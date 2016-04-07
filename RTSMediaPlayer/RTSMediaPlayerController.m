@@ -452,6 +452,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler
 {
+	if (CMTIME_IS_INVALID(time)) {
+		return;
+	}
+	
 	if (self.stateMachine.currentState != self.seekingState) {
 		[self fireEvent:self.seekEvent userInfo:nil];
 	}
@@ -459,8 +463,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	RTSMediaPlayerLogDebug(@"Seeking to %.2f sec.", CMTimeGetSeconds(time));
 	
 	[self.player seekToTime:time
-			toleranceBefore:kCMTimeZero
-			 toleranceAfter:kCMTimeZero
 		  completionHandler:completionHandler];
 }
 
@@ -773,8 +775,6 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 					else {
 						// Not using [self seek...] to avoid triggering undesirable state events.
 						[self.player seekToTime:[self.startTimeValue CMTimeValue]
-								toleranceBefore:kCMTimeZero
-								 toleranceAfter:kCMTimeZero
 							  completionHandler:^(BOOL finished) {
 								  if (finished) {
 									  [self play];

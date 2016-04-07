@@ -450,6 +450,18 @@
 				</array>
 			</dict>
 		</dict>
+		<key>0FAEAF34D71DB252B74114C95DF1EDF6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>A8A7FC68FA0AECEFAB833E89E96519B0</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string>-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.6.6 -w -Xanalyzer -analyzer-disable-all-checks</string>
+			</dict>
+		</dict>
 		<key>1018D052232F993D9DB52D09681A9CDB</key>
 		<dict>
 			<key>fileRef</key>
@@ -1020,18 +1032,6 @@
 			<string>RTSActivityGestureRecognizer.m</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
-		</dict>
-		<key>22587B86ED428BDF646EDB7C14F7BBF1</key>
-		<dict>
-			<key>fileRef</key>
-			<string>A8A7FC68FA0AECEFAB833E89E96519B0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.6.5 -w -Xanalyzer -analyzer-disable-all-checks</string>
-			</dict>
 		</dict>
 		<key>226A4C3704BDD38CF5AF9A4048CE3A23</key>
 		<dict>
@@ -5145,7 +5145,7 @@
 				<string>EFE3ECD3D629ACA43FFD4065217A6A85</string>
 				<string>B2B144124A9C07CBF452B2E34145C097</string>
 				<string>1A5C7DDD9BBE29F5D27E6D506044AA84</string>
-				<string>22587B86ED428BDF646EDB7C14F7BBF1</string>
+				<string>0FAEAF34D71DB252B74114C95DF1EDF6</string>
 				<string>43368F41B7F99279F5248E2DAB502AF5</string>
 				<string>164820CC72368FDDD9EB8489561DFF2A</string>
 				<string>DD1EB2FCD2C3251C3E59D5FE1D819F66</string>
