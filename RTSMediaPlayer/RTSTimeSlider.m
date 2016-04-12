@@ -152,7 +152,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	//  - We have a timeshift feed, which is characterized by an indefinite player item duration, and whose slider knob is
 	//    dragged close to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance
 	return self.mediaPlayerController.streamType == RTSMediaStreamTypeLive
-		|| (self.mediaPlayerController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < RTSMediaLiveTolerance));
+		|| (self.mediaPlayerController.streamType == RTSMediaStreamTypeDVR && (self.maximumValue - self.value < self.mediaPlayerController.liveTolerance));
 }
 
 - (void) updateTimeRangeLabels

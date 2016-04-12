@@ -22,7 +22,7 @@ static const void * const RTSMediaPlayerPictureInPicturePossibleContext = &RTSMe
 static const void * const RTSMediaPlayerPictureInPictureActiveContext = &RTSMediaPlayerPictureInPictureActiveContext;
 
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
-NSTimeInterval const RTSMediaLiveTolerance = 30.0;		// same tolerance as built-in iOS player
+NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.0;		// same tolerance as built-in iOS player
 
 NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
 
@@ -131,6 +131,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 											   object:nil];
 	
 	[self.stateMachine activate];
+
+	self.liveTolerance = RTSMediaLiveDefaultTolerance;
 	
 	return self;
 }
@@ -560,6 +562,17 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
+- (void)setLiveTolerance:(NSTimeInterval)liveTolerance
+{
+	if (liveTolerance < 0.) {
+		RTSMediaPlayerLogWarning(@"Live tolerance cannot be negative. Set to 0");
+		_liveTolerance = 0.;
+	}
+	else {
+		_liveTolerance = liveTolerance;
+	}
+}
+
 - (BOOL)isLive
 {
 	if (!self.playerItem) {
@@ -570,7 +583,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		return YES;
 	}
 	else if (self.streamType == RTSMediaStreamTypeDVR) {
-		return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), self.playerItem.currentTime)) < RTSMediaLiveTolerance;
+		return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), self.playerItem.currentTime)) < self.liveTolerance;
 	}
 	else {
 		return NO;

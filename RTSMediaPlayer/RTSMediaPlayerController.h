@@ -239,6 +239,13 @@
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 
 /**
+ *  Return the tolerance (in seconds) for a DVR stream to be considered being played in live conditions. If the stream
+ *  playhead is located within the last liveTolerance conditions of the stream, it is considered to be live, not live
+ *  otherwise. The default value is 30 seconds and matches the standard iOS behavior
+ */
+@property (nonatomic) NSTimeInterval liveTolerance;
+
+/**
  *  --------------------
  *  @name Time observers
  *  --------------------
