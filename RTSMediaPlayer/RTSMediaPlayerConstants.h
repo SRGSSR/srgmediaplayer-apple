@@ -12,7 +12,7 @@
  *  ---------------
  */
 
-FOUNDATION_EXTERN NSTimeInterval const RTSMediaLiveTolerance; // in seconds.
+FOUNDATION_EXTERN NSTimeInterval const RTSMediaLiveDefaultTolerance; // in seconds.
 
 /**
  *  -------------------

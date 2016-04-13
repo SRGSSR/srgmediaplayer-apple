@@ -166,6 +166,11 @@
 - (void)play;
 
 /**
+ *  Prepare the player to play the specified identifier, but does not start playback
+ */
+- (void)prepareToPlayIdentifier:(NSString *)identifier;
+
+/**
  *  Start playing a media specified using its identifier. Retrieving the media URL requires a data source to be bound
  *  to the player controller
  */
@@ -237,6 +242,13 @@
  *  Return YES iff the stream is currently played in live conditions
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
+
+/**
+ *  Return the tolerance (in seconds) for a DVR stream to be considered being played in live conditions. If the stream
+ *  playhead is located within the last liveTolerance conditions of the stream, it is considered to be live, not live
+ *  otherwise. The default value is 30 seconds and matches the standard iOS behavior
+ */
+@property (nonatomic) NSTimeInterval liveTolerance;
 
 /**
  *  --------------------
