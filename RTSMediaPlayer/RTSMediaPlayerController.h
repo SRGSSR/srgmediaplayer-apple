@@ -166,6 +166,11 @@
 - (void)play;
 
 /**
+ *  Prepare the player to play the specified identifier, but does not start playback
+ */
+- (void)prepareToPlayIdentifier:(NSString *)identifier;
+
+/**
  *  Start playing a media specified using its identifier. Retrieving the media URL requires a data source to be bound
  *  to the player controller
  */

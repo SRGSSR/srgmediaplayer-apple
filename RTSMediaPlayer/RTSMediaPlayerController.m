@@ -398,6 +398,16 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
+- (void)prepareToPlayIdentifier:(NSString *)identifier
+{
+	if (![self.identifier isEqualToString:identifier]) {
+		[self reset];
+		self.identifier = identifier;
+	}
+	
+	[self prepareToPlay];
+}
+
 - (void)playIdentifier:(NSString *)identifier
 {
 	if (![self.identifier isEqualToString:identifier]) {
@@ -781,8 +791,8 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		AVPlayerItem *playerItem = player.currentItem;
 		switch (playerItem.status) {
 			case AVPlayerItemStatusReadyToPlay:
-				if (![self.stateMachine.currentState isEqual:self.playingState]) {
-					if (!self.startTimeValue || CMTIME_COMPARE_INLINE([self.startTimeValue CMTimeValue], ==, kCMTimeZero)) {
+				if (![self.stateMachine.currentState isEqual:self.playingState] && self.startTimeValue) {
+					if (CMTIME_COMPARE_INLINE([self.startTimeValue CMTimeValue], ==, kCMTimeZero)) {
 						[self play];
 					}
 					else {
