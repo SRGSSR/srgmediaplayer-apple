@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version               = "1.7.0"
   s.summary               = "Shared media player for SRG mobile apps."
   s.homepage              = "https://github.com/SRGSSR/SRGMediaPlayer-iOS"
-  s.authors               = { "Frédéric Humbert-Droz" => "fred.hd@me.com", "Cédric Luthi" => "cedric.luthi@rts.ch", "Cédric Foellmi" => "cedric@onekilopars.ec", "Samuel Défago" => "defagos@gmail.com" }
+  s.authors               = { "Frédéric Humbert-Droz" => "fred.hd@me.com", "Cédric Luthi" => "cedric.luthi@rts.ch", "Cédric Foellmi" => "cedric@onekilopars.ec", "Samuel Défago" => "defagos@gmail.com", "Pierre-Yves Bertholon" => "py.bertholon@gmail.com" }
   s.license	              = { :type => 'MIT' }
 
   s.source                = { :git => "https://github.com/SRGSSR/SRGMediaPlayer-iOS.git", :branch => "master", :tag => "#{s.version}" }
