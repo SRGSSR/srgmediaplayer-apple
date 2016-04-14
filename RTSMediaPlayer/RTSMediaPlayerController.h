@@ -143,6 +143,11 @@
  */
 @property (assign) NSTimeInterval overlayViewsHidingDelay;
 
+/**
+ *  Return YES iff overlays are currently visible
+ */
+@property (readonly, getter=areOverlaysVisible) BOOL overlaysVisible;
+
 
 /**
  *  -------------------------

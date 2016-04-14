@@ -121,6 +121,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	
 	_identifier = identifier;
 	_dataSource = dataSource;
+	_overlaysVisible = YES;		// The player always open with visible overlays
 	
 	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	self.periodicTimeObservers = [NSMutableDictionary dictionary];
@@ -1043,6 +1044,8 @@ static void LogProperties(id object)
 
 - (void)setOverlaysVisible:(BOOL)visible
 {
+	_overlaysVisible = visible;
+	
 	[self postNotificationName:visible ? RTSMediaPlayerWillShowControlOverlaysNotification : RTSMediaPlayerWillHideControlOverlaysNotification userInfo:nil];
 	for (UIView *overlayView in self.overlayViews) {
 		overlayView.hidden = !visible;
