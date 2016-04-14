@@ -475,8 +475,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	
 	RTSMediaPlayerLogDebug(@"Seeking to %.2f sec.", CMTimeGetSeconds(time));
 	
-	[self.player seekToTime:time
-		  completionHandler:completionHandler];
+    [self.player seekToTime:time
+            toleranceBefore:kCMTimeZero
+             toleranceAfter:kCMTimeZero
+          completionHandler:completionHandler];
 }
 
 - (void)playAtTime:(CMTime)time
@@ -799,6 +801,8 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 					else {
 						// Not using [self seek...] to avoid triggering undesirable state events.
 						[self.player seekToTime:[self.startTimeValue CMTimeValue]
+                                toleranceBefore:kCMTimeZero
+                                 toleranceAfter:kCMTimeZero
 							  completionHandler:^(BOOL finished) {
 								  if (finished) {
 									  [self play];
