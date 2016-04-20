@@ -726,7 +726,7 @@
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
 
-- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
 {
 	if ([identifier isEqualToString:@"VIDEO-full1"])
 	{
@@ -739,7 +739,13 @@
 	else {
 		completionHandler(nil, [NSError errorWithDomain:@"ch.rts.RTSMediaPlayer-tests" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Unknown media identifier" }]);
 	}
+	
+	// No need for a connection handle, completion handlers are called immediately
+	return nil;
 }
+
+- (void)cancelContentURLRequest:(id)request
+{}
 
 #pragma mark - RTSMediaSegmentsDataSource protocol
 

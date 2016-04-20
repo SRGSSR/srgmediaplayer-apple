@@ -16,9 +16,9 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
 
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-	   contentURLForIdentifier:(NSString *)identifier
-			 completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+- (id) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+	 contentURLForIdentifier:(NSString *)identifier
+		   completionHandler:(void (^)(NSURL *, NSError *))completionHandler
 {
 	if ([identifier isEqualToString:@"error"]) {
 		completionHandler(nil, [NSError errorWithDomain:@"Demo" code:123456 userInfo:@{NSLocalizedDescriptionKey: @"error"}]);
@@ -29,8 +29,14 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 	else {
 		// Length is 30 minutes
 		completionHandler([NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"], nil);
-	}	
+	}
+	
+	// No need for a connection handle, completion handlers are called immediately
+	return nil;
 }
+
+- (void) cancelContentURLRequest:(id)request
+{}
 
 - (NSURL *)tokenRequestURLForURL:(NSURL *)url
 {

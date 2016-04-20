@@ -86,6 +86,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @property (nonatomic, weak) RTSMediaSegmentsController *segmentsController;
 
+@property (nonatomic) id contentURLRequestHandle;
+
 @end
 
 @implementation RTSMediaPlayerController
@@ -160,9 +162,9 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 #pragma mark - RTSMediaPlayerControllerDataSource
 
 // Used when initialized with `initWithContentURL:`
-- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-	  contentURLForIdentifier:(NSString *)identifier
-			completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
+- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+	contentURLForIdentifier:(NSString *)identifier
+		  completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
 {
 	if (!identifier) {
 		@throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -171,7 +173,11 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	}
 	
 	completionHandler([NSURL URLWithString:identifier], nil);
+	return nil;
 }
+
+- (void)cancelContentURLRequest:(id)request
+{}
 
 #pragma mark - Loading
 
@@ -247,7 +253,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 										 userInfo:nil];
 		}
 		
-		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
+		self.contentURLRequestHandle = [self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
 			if (contentURL) {
 				[self fireEvent:self.loadSuccessEvent userInfo:@{ RTSMediaPlayerStateMachineContentURLInfoKey : contentURL }];
 			}
@@ -255,6 +261,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 				[self fireEvent:self.resetEvent
 					   userInfo:ErrorUserInfo(error, @"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error.")];
 			}
+			
+			self.contentURLRequestHandle = nil;
 		}];
 	}];
 	
@@ -379,6 +387,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 - (void)loadPlayerAndAutoStartAtTime:(NSValue *)startTimeValue
 {
 	if ([self.stateMachine.currentState isEqual:self.idleState]) {
+		if (self.contentURLRequestHandle) {
+			[self.dataSource cancelContentURLRequest:self.contentURLRequestHandle];
+		}
+		
 		self.startTimeValue = startTimeValue;
 		[self fireEvent:self.loadEvent userInfo:nil];
 	}
@@ -449,6 +461,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)reset
 {
+	if (self.contentURLRequestHandle) {
+		[self.dataSource cancelContentURLRequest:self.contentURLRequestHandle];
+	}
+	
     // Reset the PIP controller so that it gets lazily attached again. This forces a new player layer relationship,
     // preventing black screen issues when playing another media identifier while already in picture in picture mode
     if (_pictureInPictureController) {

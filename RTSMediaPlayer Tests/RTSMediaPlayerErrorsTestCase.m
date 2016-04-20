@@ -12,18 +12,35 @@
 
 @interface DataSourceReturningError : NSObject <RTSMediaPlayerControllerDataSource> @end
 @implementation DataSourceReturningError
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+
+- (id) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
 {
 	completionHandler(nil, [NSError errorWithDomain:@"AppDomain" code:-1 userInfo:nil]);
+	
+	// No need for a connection identifier, completion handlers are called immediately
+	return nil;
 }
+
+- (void)cancelContentURLRequest:(id)request
+{}
+
 @end
 
 @interface InvalidDataSource : NSObject <RTSMediaPlayerControllerDataSource> @end
+
 @implementation InvalidDataSource
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+
+- (id) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
 {
 	completionHandler(nil, nil);
+	
+	// No need for a connection identifier, completion handlers are called immediately
+	return nil;
 }
+
+- (void)cancelContentURLRequest:(id)request
+{}
+
 @end
 
 
