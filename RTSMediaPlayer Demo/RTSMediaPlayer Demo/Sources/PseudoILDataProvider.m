@@ -53,7 +53,7 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 
 #pragma mark - RTSMediaSegmentsDataSource protocol
 
-- (void) segmentsController:(RTSMediaSegmentsController *)controller
+- (id) segmentsController:(RTSMediaSegmentsController *)controller
 	  segmentsForIdentifier:(NSString *)identifier
 	  withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
@@ -188,6 +188,11 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 		
 		completionHandler(segments, error);
 	}
+	
+	return nil;
 }
+
+- (void)cancelSegmentsRequest:(id)request
+{}
 
 @end

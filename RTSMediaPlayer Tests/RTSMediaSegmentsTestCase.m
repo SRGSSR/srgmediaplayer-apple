@@ -749,7 +749,7 @@
 
 #pragma mark - RTSMediaSegmentsDataSource protocol
 
-- (void)segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
+- (id)segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
 	if ([identifier isEqualToString:@"SEGMENTS-full_length_with_segment"])
 	{
@@ -892,6 +892,11 @@
 		NSError *error = [NSError errorWithDomain:@"ch.rts.RTSMediaPlayer-tests" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"No segment are available" }];
 		completionHandler(nil, error);
 	}
+	
+	return nil;
 }
+
+- (void)cancelSegmentsRequest:(id)request
+{}
 
 @end
