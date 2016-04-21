@@ -215,7 +215,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ ready, playing, seeking ] toState:paused];
 	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:ended];
 	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:stalled];
-	TKEvent *reset = [TKEvent eventWithName:@"Reset" transitioningFromStates:stateMachine.states.allObjects toState:idle];
+    NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
+    [allStatesButIdle removeObject:idle];
+    TKEvent *reset = [TKEvent eventWithName:@"Reset" transitioningFromStates:[allStatesButIdle allObjects] toState:idle];
 	
 	[stateMachine addEvents:@[ load, loadSuccess, play, seek, pause, end, stall, reset ]];
 	
