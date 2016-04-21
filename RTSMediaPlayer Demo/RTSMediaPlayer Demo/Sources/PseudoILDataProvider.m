@@ -16,21 +16,27 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
 
-- (void) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-	   contentURLForIdentifier:(NSString *)identifier
-			 completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+- (id) mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+	 contentURLForIdentifier:(NSString *)identifier
+		   completionHandler:(void (^)(NSString*, NSURL *, NSError *))completionHandler
 {
 	if ([identifier isEqualToString:@"error"]) {
-		completionHandler(nil, [NSError errorWithDomain:@"Demo" code:123456 userInfo:@{NSLocalizedDescriptionKey: @"error"}]);
+		completionHandler(identifier, nil, [NSError errorWithDomain:@"Demo" code:123456 userInfo:@{NSLocalizedDescriptionKey: @"error"}]);
 	}
 	else if ([identifier isEqualToString:@"bonus"]) {
-		completionHandler([NSURL URLWithString:@"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v"], nil);
+		completionHandler(identifier, [NSURL URLWithString:@"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v"], nil);
 	}
 	else {
 		// Length is 30 minutes
-		completionHandler([NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"], nil);
-	}	
+		completionHandler(identifier, [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"], nil);
+	}
+	
+	// No need for a connection handle, completion handlers are called immediately
+	return nil;
 }
+
+- (void) cancelContentURLRequest:(id)request
+{}
 
 - (NSURL *)tokenRequestURLForURL:(NSURL *)url
 {
@@ -47,12 +53,12 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 
 #pragma mark - RTSMediaSegmentsDataSource protocol
 
-- (void) segmentsController:(RTSMediaSegmentsController *)controller
+- (id) segmentsController:(RTSMediaSegmentsController *)controller
 	  segmentsForIdentifier:(NSString *)identifier
 	  withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
 	if ([identifier isEqualToString:@"error"]) {
-		completionHandler(nil, [NSError errorWithDomain:@"Demo" code:123456 userInfo:@{NSLocalizedDescriptionKey: @"error"}]);
+		completionHandler(identifier, nil, [NSError errorWithDomain:@"Demo" code:123456 userInfo:@{NSLocalizedDescriptionKey: @"error"}]);
 	}
 	else {
 		double duration = 31.0*60.0 + 57.0;
@@ -180,8 +186,13 @@ static NSString * const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/t
 			error = [NSError errorWithDomain:@"Demo" code:999 userInfo:@{NSLocalizedDescriptionKey:@"Segments Demo Error"}];
 		}
 		
-		completionHandler(segments, error);
+		completionHandler(identifier, segments, error);
 	}
+	
+	return nil;
 }
+
+- (void)cancelSegmentsRequest:(id)request
+{}
 
 @end

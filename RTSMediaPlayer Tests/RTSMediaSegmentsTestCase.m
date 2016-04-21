@@ -726,24 +726,30 @@
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
 
-- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSString *, NSURL *, NSError *))completionHandler
 {
 	if ([identifier isEqualToString:@"VIDEO-full1"])
 	{
-		completionHandler([NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"], nil);
+		completionHandler(identifier, [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"], nil);
 	}
 	else if ([identifier isEqualToString:@"VIDEO-full2"])
 	{
-		completionHandler([NSURL URLWithString:@"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v"], nil);
+		completionHandler(identifier, [NSURL URLWithString:@"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v"], nil);
 	}
 	else {
-		completionHandler(nil, [NSError errorWithDomain:@"ch.rts.RTSMediaPlayer-tests" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Unknown media identifier" }]);
+		completionHandler(identifier, nil, [NSError errorWithDomain:@"ch.rts.RTSMediaPlayer-tests" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"Unknown media identifier" }]);
 	}
+	
+	// No need for a connection handle, completion handlers are called immediately
+	return nil;
 }
+
+- (void)cancelContentURLRequest:(id)request
+{}
 
 #pragma mark - RTSMediaSegmentsDataSource protocol
 
-- (void)segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
+- (id)segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
 	if ([identifier isEqualToString:@"SEGMENTS-full_length_with_segment"])
 	{
@@ -752,7 +758,7 @@
 		
 		Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		segment.logical = YES;
-		completionHandler(@[fullLength, segment], nil);
+		completionHandler(identifier, @[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_blocked_segment"])
 	{
@@ -762,7 +768,7 @@
 		Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		segment.logical = YES;
 		segment.blocked = YES;
-		completionHandler(@[fullLength, segment], nil);
+		completionHandler(identifier, @[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_segment"])
 	{
@@ -772,7 +778,7 @@
 		Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
 		segment.logical = YES;
 		segment.visible = NO;
-		completionHandler(@[fullLength, segment], nil);
+		completionHandler(identifier, @[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_blocked_segment"])
 	{
@@ -783,7 +789,7 @@
 		segment.logical = YES;
 		segment.blocked = YES;
 		segment.visible = NO;
-		completionHandler(@[fullLength, segment], nil);
+		completionHandler(identifier, @[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_segment_at_start"])
 	{
@@ -792,7 +798,7 @@
 		
 		Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
 		segment.logical = YES;
-		completionHandler(@[fullLength, segment], nil);
+		completionHandler(identifier, @[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_blocked_segment_at_start"])
 	{
@@ -802,7 +808,7 @@
 		Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
 		segment.logical = YES;
 		segment.blocked = YES;
-		completionHandler(@[fullLength, segment], nil);
+		completionHandler(identifier, @[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_segment_at_start"])
 	{	Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
@@ -811,7 +817,7 @@
 		Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
 		segment.logical = YES;
 		segment.visible = NO;
-		completionHandler(@[fullLength, segment], nil);
+		completionHandler(identifier, @[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_blocked_segment_at_start"])
 	{
@@ -822,7 +828,7 @@
 		segment.logical = YES;
 		segment.blocked = YES;
 		segment.visible = NO;
-		completionHandler(@[fullLength, segment], nil);
+		completionHandler(identifier, @[fullLength, segment], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_consecutive_segments"])
 	{
@@ -835,7 +841,7 @@
 		Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
 		segment2.logical = YES;
 		
-		completionHandler(@[fullLength, segment1, segment2], nil);
+		completionHandler(identifier, @[fullLength, segment1, segment2], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_consecutive_blocked_segments"])
 	{
@@ -850,7 +856,7 @@
 		segment2.logical = YES;
 		segment2.blocked = YES;
 		
-		completionHandler(@[fullLength, segment1, segment2], nil);
+		completionHandler(identifier, @[fullLength, segment1, segment2], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_consecutive_blocked_segments_at_start"])
 	{
@@ -865,7 +871,7 @@
 		segment2.logical = YES;
 		segment2.blocked = YES;
 		
-		completionHandler(@[fullLength, segment1, segment2], nil);
+		completionHandler(identifier, @[fullLength, segment1, segment2], nil);
 	}
 	else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_segment_transition_into_blocked_segment"])
 	{
@@ -879,13 +885,18 @@
 		segment2.logical = YES;
 		segment2.blocked = YES;
 		
-		completionHandler(@[fullLength, segment1, segment2], nil);
+		completionHandler(identifier, @[fullLength, segment1, segment2], nil);
 	}
 	else
 	{
 		NSError *error = [NSError errorWithDomain:@"ch.rts.RTSMediaPlayer-tests" code:1 userInfo:@{ NSLocalizedDescriptionKey : @"No segment are available" }];
-		completionHandler(nil, error);
+		completionHandler(identifier, nil, error);
 	}
+	
+	return nil;
 }
+
+- (void)cancelSegmentsRequest:(id)request
+{}
 
 @end

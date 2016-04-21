@@ -16,12 +16,18 @@
 
 #pragma mark - RTSMediaPlayerControllerDataSource
 
-- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-	  contentURLForIdentifier:(NSString *)identifier
-			completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+	contentURLForIdentifier:(NSString *)identifier
+		  completionHandler:(void (^)(NSString *, NSURL *, NSError *))completionHandler
 {
-	completionHandler(self.mediaURL, nil);
+	completionHandler(identifier, self.mediaURL, nil);
+	
+	// No need for a connection handle, completion handlers are called immediately
+	return nil;
 }
+
+- (void)cancelContentURLRequest:(id)request
+{}
 
 #pragma mark - UIViewController
 

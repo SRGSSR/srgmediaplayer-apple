@@ -86,6 +86,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @property (nonatomic, weak) RTSMediaSegmentsController *segmentsController;
 
+@property (nonatomic) id contentURLRequestHandle;
+
 @end
 
 @implementation RTSMediaPlayerController
@@ -160,9 +162,9 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 #pragma mark - RTSMediaPlayerControllerDataSource
 
 // Used when initialized with `initWithContentURL:`
-- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-	  contentURLForIdentifier:(NSString *)identifier
-			completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
+- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+	contentURLForIdentifier:(NSString *)identifier
+		  completionHandler:(void (^)(NSString *identifier, NSURL *contentURL, NSError *error))completionHandler
 {
 	if (!identifier) {
 		@throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -170,8 +172,12 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 									 userInfo:nil];
 	}
 	
-	completionHandler([NSURL URLWithString:identifier], nil);
+	completionHandler(identifier, [NSURL URLWithString:identifier], nil);
+	return nil;
 }
+
+- (void)cancelContentURLRequest:(id)request
+{}
 
 #pragma mark - Loading
 
@@ -209,9 +215,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ ready, playing, seeking ] toState:paused];
 	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:ended];
 	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:stalled];
-	NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
-	[allStatesButIdle removeObject:idle];
-	TKEvent *reset = [TKEvent eventWithName:@"Reset" transitioningFromStates:[allStatesButIdle allObjects] toState:idle];
+    NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
+    [allStatesButIdle removeObject:idle];
+    TKEvent *reset = [TKEvent eventWithName:@"Reset" transitioningFromStates:[allStatesButIdle allObjects] toState:idle];
 	
 	[stateMachine addEvents:@[ load, loadSuccess, play, seek, pause, end, stall, reset ]];
 	
@@ -239,6 +245,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 																					 self.playbackState = newPlaybackState;
 																				 }];
 	
+    [idle setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        @strongify(self)
+        
+        [self.dataSource cancelContentURLRequest:self.contentURLRequestHandle];
+        self.contentURLRequestHandle = nil;
+    }];
+    
 	[preparing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		if (!self.dataSource) {
@@ -247,8 +260,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 										 userInfo:nil];
 		}
 		
-		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
-			if (contentURL) {
+		self.contentURLRequestHandle = [self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSString *identifier, NSURL *contentURL, NSError *error) {
+            self.contentURLRequestHandle = nil;
+            
+            if (![identifier isEqualToString:self.identifier]) {
+                return;
+            }
+            else if (contentURL) {
 				[self fireEvent:self.loadSuccessEvent userInfo:@{ RTSMediaPlayerStateMachineContentURLInfoKey : contentURL }];
 			}
 			else {
