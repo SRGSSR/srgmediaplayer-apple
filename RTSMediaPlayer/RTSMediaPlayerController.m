@@ -164,7 +164,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 // Used when initialized with `initWithContentURL:`
 - (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 	contentURLForIdentifier:(NSString *)identifier
-		  completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
+		  completionHandler:(void (^)(NSString *identifier, NSURL *contentURL, NSError *error))completionHandler
 {
 	if (!identifier) {
 		@throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -172,7 +172,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 									 userInfo:nil];
 	}
 	
-	completionHandler([NSURL URLWithString:identifier], nil);
+	completionHandler(identifier, [NSURL URLWithString:identifier], nil);
 	return nil;
 }
 
@@ -215,9 +215,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ ready, playing, seeking ] toState:paused];
 	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:ended];
 	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:stalled];
-	NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
-	[allStatesButIdle removeObject:idle];
-	TKEvent *reset = [TKEvent eventWithName:@"Reset" transitioningFromStates:[allStatesButIdle allObjects] toState:idle];
+	TKEvent *reset = [TKEvent eventWithName:@"Reset" transitioningFromStates:stateMachine.states.allObjects toState:idle];
 	
 	[stateMachine addEvents:@[ load, loadSuccess, play, seek, pause, end, stall, reset ]];
 	
@@ -245,6 +243,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 																					 self.playbackState = newPlaybackState;
 																				 }];
 	
+    [idle setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        @strongify(self)
+        
+        [self.dataSource cancelContentURLRequest:self.contentURLRequestHandle];
+        self.contentURLRequestHandle = nil;
+    }];
+    
 	[preparing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		if (!self.dataSource) {
@@ -253,16 +258,19 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 										 userInfo:nil];
 		}
 		
-		self.contentURLRequestHandle = [self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
-			if (contentURL) {
+		self.contentURLRequestHandle = [self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSString *identifier, NSURL *contentURL, NSError *error) {
+            self.contentURLRequestHandle = nil;
+            
+            if (![identifier isEqualToString:self.identifier]) {
+                return;
+            }
+            else if (contentURL) {
 				[self fireEvent:self.loadSuccessEvent userInfo:@{ RTSMediaPlayerStateMachineContentURLInfoKey : contentURL }];
 			}
 			else {
 				[self fireEvent:self.resetEvent
 					   userInfo:ErrorUserInfo(error, @"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error.")];
 			}
-			
-			self.contentURLRequestHandle = nil;
 		}];
 	}];
 	
@@ -387,10 +395,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 - (void)loadPlayerAndAutoStartAtTime:(NSValue *)startTimeValue
 {
 	if ([self.stateMachine.currentState isEqual:self.idleState]) {
-		if (self.contentURLRequestHandle) {
-			[self.dataSource cancelContentURLRequest:self.contentURLRequestHandle];
-		}
-		
 		self.startTimeValue = startTimeValue;
 		[self fireEvent:self.loadEvent userInfo:nil];
 	}
@@ -461,10 +465,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)reset
 {
-	if (self.contentURLRequestHandle) {
-		[self.dataSource cancelContentURLRequest:self.contentURLRequestHandle];
-	}
-	
     // Reset the PIP controller so that it gets lazily attached again. This forces a new player layer relationship,
     // preventing black screen issues when playing another media identifier while already in picture in picture mode
     if (_pictureInPictureController) {

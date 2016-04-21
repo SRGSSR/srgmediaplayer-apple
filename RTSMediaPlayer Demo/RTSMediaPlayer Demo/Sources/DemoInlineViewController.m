@@ -18,9 +18,9 @@
 
 - (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 	contentURLForIdentifier:(NSString *)identifier
-		  completionHandler:(void (^)(NSURL *, NSError *))completionHandler
+		  completionHandler:(void (^)(NSString *, NSURL *, NSError *))completionHandler
 {
-	completionHandler(self.mediaURL, nil);
+	completionHandler(identifier, self.mediaURL, nil);
 	
 	// No need for a connection handle, completion handlers are called immediately
 	return nil;

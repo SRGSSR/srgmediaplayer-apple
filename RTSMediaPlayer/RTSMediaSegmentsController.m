@@ -55,7 +55,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 	
     self.lastPlaybackPositionLogicalSegment = nil;
     
-    RTSMediaSegmentsCompletionHandler reloadCompletionBlock = ^(NSArray *segments, NSError *error) {
+    RTSMediaSegmentsCompletionHandler reloadCompletionBlock = ^(NSString *identifier, NSArray *segments, NSError *error) {
 		self.segmentsRequestHandle = nil;
 		
         if (error) {

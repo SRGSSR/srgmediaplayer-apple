@@ -25,7 +25,7 @@
  */
 - (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 	contentURLForIdentifier:(NSString *)identifier
-		  completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler;
+		  completionHandler:(void (^)(NSString *identifier, NSURL *contentURL, NSError *error))completionHandler;
 - (void)cancelContentURLRequest:(id)request;
 
 @end

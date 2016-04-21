@@ -197,9 +197,9 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 	  contentURLForIdentifier:(NSString *)identifier
-			completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
+			completionHandler:(void (^)(NSString *identifier, NSURL *contentURL, NSError *error))completionHandler
 {
-	completionHandler([NSURL URLWithString:self.identifier], nil);
+	completionHandler(identifier, [NSURL URLWithString:self.identifier], nil);
 	
 	// No need for a connection handle, completion handlers are called immediately
 	return nil;

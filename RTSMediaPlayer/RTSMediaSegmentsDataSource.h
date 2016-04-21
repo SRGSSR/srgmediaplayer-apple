@@ -11,7 +11,7 @@
 @protocol RTSMediaSegment;
 
 // Block signatures
-typedef void (^RTSMediaSegmentsCompletionHandler)(NSArray *segments, NSError *error);
+typedef void (^RTSMediaSegmentsCompletionHandler)(NSString *identifier, NSArray *segments, NSError *error);
 
 /**
  * Protocol describing how a media segments controller receives the segment information it requires
@@ -29,8 +29,8 @@ typedef void (^RTSMediaSegmentsCompletionHandler)(NSArray *segments, NSError *er
  *  *  @return A connection handle which can be used to cancel the request
  */
 - (id)segmentsController:(RTSMediaSegmentsController *)controller
-     segmentsForIdentifier:(NSString *)identifier
-     withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler;
+   segmentsForIdentifier:(NSString *)identifier
+   withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler;
 - (void)cancelSegmentsRequest:(id)request;
 
 @end
