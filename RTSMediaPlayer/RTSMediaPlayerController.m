@@ -102,6 +102,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @synthesize stateMachine = _stateMachine;
 @synthesize idleTimer = _idleTimer;
 @synthesize identifier = _identifier;
+@synthesize muted = _muted;
 
 #pragma mark - Initialization
 
@@ -284,6 +285,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		
 		// The player observes its "currentItem.status" keyPath, see callback in `observeValueForKeyPath:ofObject:change:context:`
 		self.player = [AVPlayer playerWithURL:contentURL];
+		self.player.muted = _muted;
 		
 		self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
 		self.player.allowsExternalPlayback = YES;
@@ -457,12 +459,14 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)setMuted:(BOOL)muted
 {
+	_muted = muted;
+	
 	self.player.muted = muted;
 }
 
 - (BOOL)isMuted
 {
-	return self.player.muted;
+	return _muted;
 }
 
 - (void)reset
