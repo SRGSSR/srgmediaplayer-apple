@@ -1286,18 +1286,6 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>32FAF1754C15B553A7820E64B6C20798</key>
-		<dict>
-			<key>fileRef</key>
-			<string>A8A7FC68FA0AECEFAB833E89E96519B0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.8.0 -w -Xanalyzer -analyzer-disable-all-checks</string>
-			</dict>
-		</dict>
 		<key>3375FFB448B12BBF7F7A1C34C982EE08</key>
 		<dict>
 			<key>containerPortal</key>
@@ -5145,7 +5133,7 @@
 				<string>EFE3ECD3D629ACA43FFD4065217A6A85</string>
 				<string>B2B144124A9C07CBF452B2E34145C097</string>
 				<string>1A5C7DDD9BBE29F5D27E6D506044AA84</string>
-				<string>32FAF1754C15B553A7820E64B6C20798</string>
+				<string>DB8C1F0D2AC5E2F19DD418463D6BCFAD</string>
 				<string>43368F41B7F99279F5248E2DAB502AF5</string>
 				<string>164820CC72368FDDD9EB8489561DFF2A</string>
 				<string>DD1EB2FCD2C3251C3E59D5FE1D819F66</string>
@@ -6117,6 +6105,18 @@
 			<string>../Target Support Files/MAKVONotificationCenter</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
+		</dict>
+		<key>DB8C1F0D2AC5E2F19DD418463D6BCFAD</key>
+		<dict>
+			<key>fileRef</key>
+			<string>A8A7FC68FA0AECEFAB833E89E96519B0</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string>-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.8.1 -w -Xanalyzer -analyzer-disable-all-checks</string>
+			</dict>
 		</dict>
 		<key>DBE5E310B5EEFCF5772B1334150115E8</key>
 		<dict>
