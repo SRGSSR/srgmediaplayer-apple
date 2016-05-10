@@ -736,11 +736,13 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			return;
 		}
 		
-		if (!CMTIME_IS_VALID(self.previousPlaybackTime)) {
-			return;
+		if ((self.player.rate == 1) && [self.stateMachine.currentState isEqual:self.pausedState]) {
+			[self fireEvent:self.playEvent userInfo:nil];
 		}
 		
-		if (CMTimeGetSeconds(self.previousPlaybackTime) > CMTimeGetSeconds(playbackTime)) {
+		if (CMTIME_IS_VALID(self.previousPlaybackTime) &&
+			(CMTIME_COMPARE_INLINE(self.previousPlaybackTime, >, playbackTime)))
+		{
 			if (![self.stateMachine.currentState isEqual:self.playingState]) {
 				[self fireEvent:self.playEvent userInfo:nil];
 			}
