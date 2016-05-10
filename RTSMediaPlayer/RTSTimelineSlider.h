@@ -14,9 +14,9 @@
  *  A slider displaying segment start times along its track as small icons. The slider can be tapped at any point to 
  *  jump at the corresponding location.
  *
- *  To add a slider to a custom player layout, simply drag and drop an RTSTimelineSlider onto the player layout,
+ *  To add a slider to a custom player layout, simply drag and drop an `RTSTimelineSlider` instance onto the player layout,
  *  and bind its segment controller and delegate outlets. You can of course also instantiate and configure the view 
- *  programmatically. Then call 'reloadSegmentsWithIdentifier:completionHandler:' when you need to retrieve segments
+ *  programmatically. Then call `reloadSegmentsWithIdentifier:completionHandler:` when you need to retrieve segments
  *  from the controller
  */
 @interface RTSTimelineSlider : RTSTimeSlider

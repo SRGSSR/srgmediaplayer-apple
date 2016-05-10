@@ -25,6 +25,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 @property(nonatomic, strong) NSArray *segments;
 @property(nonatomic, strong) id playerTimeObserver;
 @property(nonatomic, weak) id<RTSMediaSegment> lastPlaybackPositionLogicalSegment;
+@property(nonatomic, strong) id segmentsRequestHandle;
 @end
 
 @implementation RTSMediaSegmentsController
@@ -54,7 +55,9 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 	
     self.lastPlaybackPositionLogicalSegment = nil;
     
-    RTSMediaSegmentsCompletionHandler reloadCompletionBlock = ^(NSArray *segments, NSError *error) {
+    RTSMediaSegmentsCompletionHandler reloadCompletionBlock = ^(NSString *identifier, NSArray *segments, NSError *error) {
+		self.segmentsRequestHandle = nil;
+		
         if (error) {
             if (completionHandler) {
                 completionHandler(error);
@@ -70,8 +73,12 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
             completionHandler(nil);
         }
     };
+	
+	if (self.segmentsRequestHandle) {
+		[self.dataSource cancelSegmentsRequest:self.segmentsRequestHandle];
+	}
     
-    [self.dataSource segmentsController:self segmentsForIdentifier:identifier withCompletionHandler:reloadCompletionBlock];
+    self.segmentsRequestHandle = [self.dataSource segmentsController:self segmentsForIdentifier:identifier withCompletionHandler:reloadCompletionBlock];
 }
 
 - (void)removeBlockingTimeObserver

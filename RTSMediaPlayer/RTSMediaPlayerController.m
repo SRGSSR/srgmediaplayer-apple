@@ -22,7 +22,7 @@ static const void * const RTSMediaPlayerPictureInPicturePossibleContext = &RTSMe
 static const void * const RTSMediaPlayerPictureInPictureActiveContext = &RTSMediaPlayerPictureInPictureActiveContext;
 
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
-NSTimeInterval const RTSMediaLiveTolerance = 30.0;		// same tolerance as built-in iOS player
+NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.0;		// same tolerance as built-in iOS player
 
 NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
 
@@ -86,6 +86,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @property (nonatomic, weak) RTSMediaSegmentsController *segmentsController;
 
+@property (nonatomic) id contentURLRequestHandle;
+
 @end
 
 @implementation RTSMediaPlayerController
@@ -100,6 +102,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @synthesize stateMachine = _stateMachine;
 @synthesize idleTimer = _idleTimer;
 @synthesize identifier = _identifier;
+@synthesize muted = _muted;
 
 #pragma mark - Initialization
 
@@ -121,6 +124,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	
 	_identifier = identifier;
 	_dataSource = dataSource;
+	_overlaysVisible = YES;		// The player always open with visible overlays
 	
 	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	self.periodicTimeObservers = [NSMutableDictionary dictionary];
@@ -131,6 +135,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 											   object:nil];
 	
 	[self.stateMachine activate];
+
+	self.liveTolerance = RTSMediaLiveDefaultTolerance;
 	
 	return self;
 }
@@ -157,9 +163,9 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 #pragma mark - RTSMediaPlayerControllerDataSource
 
 // Used when initialized with `initWithContentURL:`
-- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-	  contentURLForIdentifier:(NSString *)identifier
-			completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler
+- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+	contentURLForIdentifier:(NSString *)identifier
+		  completionHandler:(void (^)(NSString *identifier, NSURL *contentURL, NSError *error))completionHandler
 {
 	if (!identifier) {
 		@throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -167,8 +173,12 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 									 userInfo:nil];
 	}
 	
-	completionHandler([NSURL URLWithString:identifier], nil);
+	completionHandler(identifier, [NSURL URLWithString:identifier], nil);
+	return nil;
 }
+
+- (void)cancelContentURLRequest:(id)request
+{}
 
 #pragma mark - Loading
 
@@ -206,9 +216,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ ready, playing, seeking ] toState:paused];
 	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:ended];
 	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:stalled];
-	NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
-	[allStatesButIdle removeObject:idle];
-	TKEvent *reset = [TKEvent eventWithName:@"Reset" transitioningFromStates:[allStatesButIdle allObjects] toState:idle];
+    NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
+    [allStatesButIdle removeObject:idle];
+    TKEvent *reset = [TKEvent eventWithName:@"Reset" transitioningFromStates:[allStatesButIdle allObjects] toState:idle];
 	
 	[stateMachine addEvents:@[ load, loadSuccess, play, seek, pause, end, stall, reset ]];
 	
@@ -236,6 +246,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 																					 self.playbackState = newPlaybackState;
 																				 }];
 	
+    [idle setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
+        @strongify(self)
+        
+        [self.dataSource cancelContentURLRequest:self.contentURLRequestHandle];
+        self.contentURLRequestHandle = nil;
+    }];
+    
 	[preparing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		if (!self.dataSource) {
@@ -244,8 +261,13 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 										 userInfo:nil];
 		}
 		
-		[self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSURL *contentURL, NSError *error) {
-			if (contentURL) {
+		self.contentURLRequestHandle = [self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSString *identifier, NSURL *contentURL, NSError *error) {
+            self.contentURLRequestHandle = nil;
+            
+            if (![identifier isEqualToString:self.identifier]) {
+                return;
+            }
+            else if (contentURL) {
 				[self fireEvent:self.loadSuccessEvent userInfo:@{ RTSMediaPlayerStateMachineContentURLInfoKey : contentURL }];
 			}
 			else {
@@ -263,6 +285,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		
 		// The player observes its "currentItem.status" keyPath, see callback in `observeValueForKeyPath:ofObject:change:context:`
 		self.player = [AVPlayer playerWithURL:contentURL];
+		self.player.muted = _muted;
 		
 		self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
 		self.player.allowsExternalPlayback = YES;
@@ -274,10 +297,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[ready setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		
-		if (self.startTimeValue) {
-			[self.player play];
-		}
-		else if (self.player.rate == 0) {
+		if (self.player.rate == 0) {
 			[self fireEvent:self.pauseEvent userInfo:nil];
 		}
 	}];
@@ -399,6 +419,16 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
+- (void)prepareToPlayIdentifier:(NSString *)identifier
+{
+	if (![self.identifier isEqualToString:identifier]) {
+		[self reset];
+		self.identifier = identifier;
+	}
+	
+	[self prepareToPlay];
+}
+
 - (void)playIdentifier:(NSString *)identifier
 {
 	if (![self.identifier isEqualToString:identifier]) {
@@ -427,14 +457,16 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[self.player pause];
 }
 
-- (void)mute:(BOOL)flag
+- (void)setMuted:(BOOL)muted
 {
-	self.player.muted = flag;
+	_muted = muted;
+	
+	self.player.muted = muted;
 }
 
 - (BOOL)isMuted
 {
-	return self.player.muted;
+	return _muted;
 }
 
 - (void)reset
@@ -455,25 +487,30 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler
 {
+	if (CMTIME_IS_INVALID(time)) {
+		return;
+	}
+	
 	if (self.stateMachine.currentState != self.seekingState) {
 		[self fireEvent:self.seekEvent userInfo:nil];
 	}
 	
 	RTSMediaPlayerLogDebug(@"Seeking to %.2f sec.", CMTimeGetSeconds(time));
 	
-	[self.player seekToTime:time
-			toleranceBefore:kCMTimeZero
-			 toleranceAfter:kCMTimeZero
-		  completionHandler:completionHandler];
+    [self.player seekToTime:time
+            toleranceBefore:kCMTimeZero
+             toleranceAfter:kCMTimeZero
+          completionHandler:completionHandler];
 }
 
 - (void)playAtTime:(CMTime)time
 {
-	[self seekToTime:time completionHandler:^(BOOL finished) {
-		if (finished) {
-			[self play];
-		}
-	}];
+	if ([self.stateMachine.currentState isEqual:self.idleState]) {
+		[self loadPlayerAndAutoStartAtTime:[NSValue valueWithCMTime:time]];
+	}
+	else {
+		[self seekToTime:time completionHandler:nil];
+	}
 }
 
 - (AVPlayerItem *)playerItem
@@ -560,6 +597,17 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	}
 }
 
+- (void)setLiveTolerance:(NSTimeInterval)liveTolerance
+{
+	if (liveTolerance < 0.) {
+		RTSMediaPlayerLogWarning(@"Live tolerance cannot be negative. Set to 0");
+		_liveTolerance = 0.;
+	}
+	else {
+		_liveTolerance = liveTolerance;
+	}
+}
+
 - (BOOL)isLive
 {
 	if (!self.playerItem) {
@@ -570,7 +618,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		return YES;
 	}
 	else if (self.streamType == RTSMediaStreamTypeDVR) {
-		return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), self.playerItem.currentTime)) < RTSMediaLiveTolerance;
+		return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), self.playerItem.currentTime)) < self.liveTolerance;
 	}
 	else {
 		return NO;
@@ -688,11 +736,13 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			return;
 		}
 		
-		if (!CMTIME_IS_VALID(self.previousPlaybackTime)) {
-			return;
+		if ((self.player.rate == 1) && [self.stateMachine.currentState isEqual:self.pausedState]) {
+			[self fireEvent:self.playEvent userInfo:nil];
 		}
 		
-		if (CMTimeGetSeconds(self.previousPlaybackTime) > CMTimeGetSeconds(playbackTime)) {
+		if (CMTIME_IS_VALID(self.previousPlaybackTime) &&
+			(CMTIME_COMPARE_INLINE(self.previousPlaybackTime, >, playbackTime)))
+		{
 			if (![self.stateMachine.currentState isEqual:self.playingState]) {
 				[self fireEvent:self.playEvent userInfo:nil];
 			}
@@ -768,18 +818,15 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		AVPlayerItem *playerItem = player.currentItem;
 		switch (playerItem.status) {
 			case AVPlayerItemStatusReadyToPlay:
-				if (self.player.rate != 0 &&
-					![self.stateMachine.currentState isEqual:self.readyState] &&
-					![self.stateMachine.currentState isEqual:self.seekingState])
-				{
-					if (!self.startTimeValue || CMTIME_COMPARE_INLINE([self.startTimeValue CMTimeValue], ==, kCMTimeZero)) {
+				if (![self.stateMachine.currentState isEqual:self.playingState] && self.startTimeValue) {
+					if (CMTIME_COMPARE_INLINE([self.startTimeValue CMTimeValue], ==, kCMTimeZero)) {
 						[self play];
 					}
 					else {
 						// Not using [self seek...] to avoid triggering undesirable state events.
 						[self.player seekToTime:[self.startTimeValue CMTimeValue]
-								toleranceBefore:kCMTimeZero
-								 toleranceAfter:kCMTimeZero
+                                toleranceBefore:kCMTimeZero
+                                 toleranceAfter:kCMTimeZero
 							  completionHandler:^(BOOL finished) {
 								  if (finished) {
 									  [self play];
@@ -787,6 +834,9 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 							  }];
 					}
 				}
+                else if ([self.stateMachine.currentState isEqual:self.seekingState]) {
+                    [self.player play];
+                }
 				break;
 			case AVPlayerItemStatusFailed:
 				[self fireEvent:self.resetEvent userInfo:ErrorUserInfo(playerItem.error, @"The AVPlayerItem did report a failed status without an error.")];
@@ -1025,6 +1075,8 @@ static void LogProperties(id object)
 
 - (void)setOverlaysVisible:(BOOL)visible
 {
+	_overlaysVisible = visible;
+	
 	[self postNotificationName:visible ? RTSMediaPlayerWillShowControlOverlaysNotification : RTSMediaPlayerWillHideControlOverlaysNotification userInfo:nil];
 	for (UIView *overlayView in self.overlayViews) {
 		overlayView.hidden = !visible;

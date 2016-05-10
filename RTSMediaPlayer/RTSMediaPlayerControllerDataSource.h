@@ -20,9 +20,12 @@
  *  @param identifier            The identifier for which the URL must be retrieved
  *  @param completionHandler     The block which the implementation must call to return the URL to the controller, or
  *                               an error if it could not be retrieved
+ *
+ *  @return A connection handle which can be used to cancel the request
  */
-- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-	  contentURLForIdentifier:(NSString *)identifier
-			completionHandler:(void (^)(NSURL *contentURL, NSError *error))completionHandler;
+- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+	contentURLForIdentifier:(NSString *)identifier
+		  completionHandler:(void (^)(NSString *identifier, NSURL *contentURL, NSError *error))completionHandler;
+- (void)cancelContentURLRequest:(id)request;
 
 @end

@@ -17,8 +17,8 @@
  *
  *  Besides setting the mediaPlayerController outlet and appearance properties (color, size, alpha), 
  *  you should never:
- *    - call startAnimating or stopAnimating
- *    - change the values of the hidden or hidesWhenStopped properties
+ *    - call `startAnimating` or `stopAnimating`
+ *    - change the values of the hidden or `hidesWhenStopped` properties
  *  These properties are automatically managed for you, altering them results in undefined behavior
  */
 @interface RTSPlaybackActivityIndicatorView : UIActivityIndicatorView

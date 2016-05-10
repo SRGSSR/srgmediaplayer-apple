@@ -1,13 +1,14 @@
 {
   "name": "SRGMediaPlayer",
-  "version": "1.6.4",
+  "version": "1.8.3",
   "summary": "Shared media player for SRG mobile apps.",
   "homepage": "https://github.com/SRGSSR/SRGMediaPlayer-iOS",
   "authors": {
     "Frédéric Humbert-Droz": "fred.hd@me.com",
     "Cédric Luthi": "cedric.luthi@rts.ch",
     "Cédric Foellmi": "cedric@onekilopars.ec",
-    "Samuel Défago": "defagos@gmail.com"
+    "Samuel Défago": "defagos@gmail.com",
+    "Pierre-Yves Bertholon": "py.bertholon@gmail.com"
   },
   "license": {
     "type": "MIT"
@@ -15,7 +16,7 @@
   "source": {
     "git": "https://github.com/SRGSSR/SRGMediaPlayer-iOS.git",
     "branch": "master",
-    "tag": "1.6.4"
+    "tag": "1.8.3"
   },
   "platforms": {
     "ios": "7.0"
@@ -46,7 +47,7 @@
         "RTSMediaPlayer/RTSMediaPlayerVersion.m",
         "RTSMediaPlayer/RTSMediaPlayerVersion.h"
       ],
-      "compiler_flags": "-DRTS_MEDIA_PLAYER_VERSION=1.6.4"
+      "compiler_flags": "-DRTS_MEDIA_PLAYER_VERSION=1.8.3"
     }
   ]
 }
