@@ -14,11 +14,11 @@ PODS:
   - SDWebImage (3.7.0):
     - SDWebImage/Core (= 3.7.0)
   - SDWebImage/Core (3.7.0)
-  - SRGMediaPlayer (1.8.1):
+  - SRGMediaPlayer (1.8.2):
     - libextobjc/EXTScope (~> 0.4.1)
-    - SRGMediaPlayer/Version (= 1.8.1)
+    - SRGMediaPlayer/Version (= 1.8.2)
     - TransitionKit (~> 2.2.0)
-  - SRGMediaPlayer/Version (1.8.1):
+  - SRGMediaPlayer/Version (1.8.2):
     - libextobjc/EXTScope (~> 0.4.1)
     - TransitionKit (~> 2.2.0)
   - TransitionKit (2.2.0)
@@ -40,7 +40,7 @@ SPEC CHECKSUMS:
   libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
   MAKVONotificationCenter: eddfb85e77040323ee43a0fddbe616926ec005a8
   SDWebImage: b42db92951f9d565c55f1d7f1d5efe47e33a7515
-  SRGMediaPlayer: de8787ddd229b2f39db79b4bb590ea1691f8f29d
+  SRGMediaPlayer: d9d5e1bd64181fbb4d5e8996f0699b7ed563500b
   TransitionKit: 5c9001a77acc409d71f26a4eba0159cf8619c418
 
 COCOAPODS: 0.39.0
