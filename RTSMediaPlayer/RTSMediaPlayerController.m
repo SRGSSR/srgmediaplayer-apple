@@ -832,6 +832,9 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 							  }];
 					}
 				}
+                else if ([self.stateMachine.currentState isEqual:self.seekingState]) {
+                    [self.player play];
+                }
 				break;
 			case AVPlayerItemStatusFailed:
 				[self fireEvent:self.resetEvent userInfo:ErrorUserInfo(playerItem.error, @"The AVPlayerItem did report a failed status without an error.")];
