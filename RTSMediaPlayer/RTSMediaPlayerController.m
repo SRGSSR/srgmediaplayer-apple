@@ -55,6 +55,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @property (readwrite) TKState *playingState;
 @property (readwrite) TKState *seekingState;
 @property (readwrite) TKState *stalledState;
+@property (readwrite) TKState *endedState;
 
 @property (readwrite) TKEvent *loadEvent;
 @property (readwrite) TKEvent *loadSuccessEvent;
@@ -357,6 +358,7 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	self.playingState = playing;
 	self.stalledState = stalled;
 	self.seekingState = seeking;
+	self.endedState = ended;
 	
 	self.loadEvent = load;
 	self.loadSuccessEvent = loadSuccess;
@@ -411,6 +413,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)play
 {
+	if ([self.stateMachine.currentState isEqual:self.endedState]) {
+		[self reset];
+	}
+	
 	if ([self.stateMachine.currentState isEqual:self.idleState]) {
 		[self loadPlayerAndAutoStartAtTime:[NSValue valueWithCMTime:kCMTimeZero]];
 	}
@@ -819,7 +825,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		switch (playerItem.status) {
 			case AVPlayerItemStatusReadyToPlay:
 				if (![self.stateMachine.currentState isEqual:self.playingState] && self.startTimeValue) {
-					if (CMTIME_COMPARE_INLINE([self.startTimeValue CMTimeValue], ==, kCMTimeZero)) {
+					if (CMTIME_COMPARE_INLINE([self.startTimeValue CMTimeValue], ==, kCMTimeZero) || CMTIME_IS_INVALID([self.startTimeValue CMTimeValue])) {
 						[self play];
 					}
 					else {
