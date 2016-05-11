@@ -819,7 +819,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		switch (playerItem.status) {
 			case AVPlayerItemStatusReadyToPlay:
 				if (![self.stateMachine.currentState isEqual:self.playingState] && self.startTimeValue) {
-					if (CMTIME_COMPARE_INLINE([self.startTimeValue CMTimeValue], ==, kCMTimeZero)) {
+					if (CMTIME_COMPARE_INLINE([self.startTimeValue CMTimeValue], ==, kCMTimeZero) || CMTIME_IS_INVALID([self.startTimeValue CMTimeValue])) {
 						[self play];
 					}
 					else {
