@@ -719,7 +719,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 	@weakify(self)
 	self.playbackStartObserver = [self.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:resultTime]] queue:NULL usingBlock:^{
 		@strongify(self)
-		if (![self.stateMachine.currentState isEqual:self.playingState]) {
+		if (![self.stateMachine.currentState isEqual:self.playingState] && ![self.stateMachine.currentState isEqual:self.endedState]) {
 			[self fireEvent:self.playEvent userInfo:nil];
 		}
 		[self.player removeTimeObserver:self.playbackStartObserver];
