@@ -1818,18 +1818,6 @@
 			<key>productType</key>
 			<string>com.apple.product-type.library.static</string>
 		</dict>
-		<key>4B4504820F39654B52F5A75EED964D56</key>
-		<dict>
-			<key>fileRef</key>
-			<string>A8A7FC68FA0AECEFAB833E89E96519B0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.8.3 -w -Xanalyzer -analyzer-disable-all-checks</string>
-			</dict>
-		</dict>
 		<key>4CAAFD85FC04FBFFB61A22F14C8D4684</key>
 		<dict>
 			<key>fileRef</key>
@@ -4573,6 +4561,18 @@
 				</array>
 			</dict>
 		</dict>
+		<key>A6572CFD226BDD9A8D0110D095D9B6CB</key>
+		<dict>
+			<key>fileRef</key>
+			<string>A8A7FC68FA0AECEFAB833E89E96519B0</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string>-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.8.4 -w -Xanalyzer -analyzer-disable-all-checks</string>
+			</dict>
+		</dict>
 		<key>A6C9F62F7C92008E8617ABAC38635FAA</key>
 		<dict>
 			<key>baseConfigurationReference</key>
@@ -5145,7 +5145,7 @@
 				<string>EFE3ECD3D629ACA43FFD4065217A6A85</string>
 				<string>B2B144124A9C07CBF452B2E34145C097</string>
 				<string>1A5C7DDD9BBE29F5D27E6D506044AA84</string>
-				<string>4B4504820F39654B52F5A75EED964D56</string>
+				<string>A6572CFD226BDD9A8D0110D095D9B6CB</string>
 				<string>43368F41B7F99279F5248E2DAB502AF5</string>
 				<string>164820CC72368FDDD9EB8489561DFF2A</string>
 				<string>DD1EB2FCD2C3251C3E59D5FE1D819F66</string>
