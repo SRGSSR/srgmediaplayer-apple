@@ -87,6 +87,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	
 	[self setThumbImage:[self thumbImage] forState:UIControlStateNormal];
 	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
+	
+	self.seekingDuringTracking = YES;
 }
 
 #pragma mark - Setters and getters
@@ -199,10 +201,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	
 	CMTime time = self.time;
 	
-	// First seek to the playback controller. Seeking where the media has been loaded is fast, which leads to
-	// annoying stuttering for audios. This is less annoying for videos since being able to see where we seek
-	// is valuable
-	if (self.mediaPlayerController.mediaType == RTSMediaTypeVideo) {
+	if (self.seekingDuringTracking) {
 		[self.mediaPlayerController seekToTime:time completionHandler:nil];
 	}
 	

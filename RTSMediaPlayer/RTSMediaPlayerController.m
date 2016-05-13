@@ -413,6 +413,10 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)play
 {
+	if(!self.identifier) {
+		return;
+	}
+	
 	if ([self.stateMachine.currentState isEqual:self.endedState]) {
 		[self reset];
 	}

@@ -69,6 +69,14 @@
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 
+/**
+ *  Set to YES to have the player seek when the slider knob is moved, or to NO if seeking must be performed only
+ *  after the knob was released
+ *
+ *  Defaults to YES
+ */
+@property (nonatomic, assign, getter=isSeekingDuringTracking) BOOL seekingDuringTracking;
+
 @end
 
 /**
