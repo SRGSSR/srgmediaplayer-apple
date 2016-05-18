@@ -298,7 +298,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	[ready setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
 		@strongify(self)
 		
-		if (self.player.rate == 0) {
+		// Preparing to play, but starting paused
+		if (self.player.rate == 0 && !self.startTimeValue) {
 			[self fireEvent:self.pauseEvent userInfo:nil];
 		}
 	}];
