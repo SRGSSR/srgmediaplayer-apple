@@ -89,6 +89,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 @property (nonatomic) id contentURLRequestHandle;
 
+@property (nonatomic, assign) BOOL playScheduled;
+
 @end
 
 @implementation RTSMediaPlayerController
@@ -829,6 +831,11 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		AVPlayerItem *playerItem = player.currentItem;
 		switch (playerItem.status) {
 			case AVPlayerItemStatusReadyToPlay:
+                if (self.playScheduled) {
+                    self.playScheduled = NO;
+                    [self fireEvent:self.playEvent userInfo:nil];
+                }
+                
 				if (![self.stateMachine.currentState isEqual:self.playingState] && self.startTimeValue) {
 					if (CMTIME_COMPARE_INLINE([self.startTimeValue CMTimeValue], ==, kCMTimeZero) || CMTIME_IS_INVALID([self.startTimeValue CMTimeValue])) {
 						[self play];
@@ -898,7 +905,9 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			[self fireEvent:self.pauseEvent userInfo:nil];
 		}
 		else if (newRate == 1 && oldRate == 0 && self.stateMachine.currentState != self.playingState) {
-			[self fireEvent:self.playEvent userInfo:nil];
+			// Ugly trick. We do not want to emit play events before the player is ready to play, so we schedule the play
+			// to be sent when the player is really ready to play
+            self.playScheduled = YES;
 		}
 	}
 	else if (context == AVPlayerItemPlaybackLikelyToKeepUpContext) {
