@@ -650,6 +650,8 @@ static const void * const AVPlayerRateContext = &AVPlayerRateContext;
 static const void * const AVPlayerItemPlaybackLikelyToKeepUpContext = &AVPlayerItemPlaybackLikelyToKeepUpContext;
 static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoadedTimeRangesContext;
 
+static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEmptyContext;
+
 - (AVPlayer *)player
 {
 	@synchronized(self)
@@ -672,6 +674,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		[_player removeObserver:self forKeyPath:@"rate" context:(void *)AVPlayerRateContext];
 		[_player removeObserver:self forKeyPath:@"currentItem.playbackLikelyToKeepUp" context:(void *)AVPlayerItemPlaybackLikelyToKeepUpContext];
 		[_player removeObserver:self forKeyPath:@"currentItem.loadedTimeRanges" context:(void *)AVPlayerItemLoadedTimeRangesContext];
+        [_player removeObserver:self forKeyPath:@"currentItem.playbackBufferEmpty" context:(void *)AVPlayerItemBufferEmptyContext];
 		
 		[defaultCenter removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:_player.currentItem];
 		[defaultCenter removeObserver:self name:AVPlayerItemFailedToPlayToEndTimeNotification object:_player.currentItem];
@@ -700,6 +703,7 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			[player addObserver:self forKeyPath:@"rate" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:(void *)AVPlayerRateContext];
 			[player addObserver:self forKeyPath:@"currentItem.playbackLikelyToKeepUp" options:0 context:(void *)AVPlayerItemPlaybackLikelyToKeepUpContext];
 			[player addObserver:self forKeyPath:@"currentItem.loadedTimeRanges" options:NSKeyValueObservingOptionNew context:(void *)AVPlayerItemLoadedTimeRangesContext];
+            [player addObserver:self forKeyPath:@"currentItem.playbackBufferEmpty" options:NSKeyValueObservingOptionNew context:(void *)AVPlayerItemBufferEmptyContext];
 			
 			[defaultCenter addObserver:self selector:@selector(playerItemDidPlayToEndTime:) name:AVPlayerItemDidPlayToEndTimeNotification object:playerItem];
 			[defaultCenter addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:playerItem];
@@ -931,6 +935,9 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 			[player play];
 		}
 	}
+    else if (context == AVPlayerItemBufferEmptyContext) {
+        [self fireEvent:self.stallEvent userInfo:nil];
+    }
 	else if (context == RTSMediaPlayerPictureInPicturePossibleContext || context == RTSMediaPlayerPictureInPictureActiveContext) {
 		[self postNotificationName:RTSMediaPlayerPictureInPictureStateChangeNotification userInfo:nil];
         
