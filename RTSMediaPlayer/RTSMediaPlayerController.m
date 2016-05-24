@@ -90,6 +90,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @property (nonatomic) id contentURLRequestHandle;
 
 @property (nonatomic, assign) BOOL playScheduled;
+@property (nonatomic, assign) BOOL pauseScheduled;
 
 @end
 
@@ -302,7 +303,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		
 		// Preparing to play, but starting paused
 		if (self.player.rate == 0 && !self.startTimeValue) {
-			[self fireEvent:self.pauseEvent userInfo:nil];
+			// Ugly trick. We do not want to emit pause events before the player is ready to play, so we schedule the pause
+			// to be sent when the player is really ready to play
+			self.pauseScheduled = YES;
 		}
 	}];
 	
@@ -875,8 +878,12 @@ static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoa
 		CMTimeRange timerange = [timeRanges.firstObject CMTimeRangeValue]; // Yes, subscripting with [0] may lead to a crash??
 		if (CMTimeGetSeconds(timerange.duration) >= bufferMinDuration && self.player.rate == 0) {
 			[self.player prerollAtRate:0.0 completionHandler:^(BOOL finished) {
-				if (![self.stateMachine.currentState isEqual:self.pausedState] &&
-					![self.stateMachine.currentState isEqual:self.seekingState])
+				if (self.pauseScheduled) {
+					self.pauseScheduled = NO;
+					[self fireEvent:self.pauseEvent userInfo:nil];
+				}
+				else if (![self.stateMachine.currentState isEqual:self.pausedState] &&
+						 ![self.stateMachine.currentState isEqual:self.seekingState])
 				{
 					[self play];
 				}
