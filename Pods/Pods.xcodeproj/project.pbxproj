@@ -436,6 +436,18 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>0F0805695EAB85E48F87E0C1BAA50620</key>
+		<dict>
+			<key>fileRef</key>
+			<string>A8A7FC68FA0AECEFAB833E89E96519B0</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string>-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.8.9 -w -Xanalyzer -analyzer-disable-all-checks</string>
+			</dict>
+		</dict>
 		<key>0F1F20B36AE47E8290FFA963B1519CC4</key>
 		<dict>
 			<key>fileRef</key>
@@ -4484,18 +4496,6 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
-		<key>A27286D83740C3E5D99478A8AC6DD24E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>A8A7FC68FA0AECEFAB833E89E96519B0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.8.8 -w -Xanalyzer -analyzer-disable-all-checks</string>
-			</dict>
-		</dict>
 		<key>A2D0EE5602557677B5D9AB8D46F2F1AF</key>
 		<dict>
 			<key>fileRef</key>
@@ -5145,7 +5145,7 @@
 				<string>EFE3ECD3D629ACA43FFD4065217A6A85</string>
 				<string>B2B144124A9C07CBF452B2E34145C097</string>
 				<string>1A5C7DDD9BBE29F5D27E6D506044AA84</string>
-				<string>A27286D83740C3E5D99478A8AC6DD24E</string>
+				<string>0F0805695EAB85E48F87E0C1BAA50620</string>
 				<string>43368F41B7F99279F5248E2DAB502AF5</string>
 				<string>164820CC72368FDDD9EB8489561DFF2A</string>
 				<string>DD1EB2FCD2C3251C3E59D5FE1D819F66</string>
