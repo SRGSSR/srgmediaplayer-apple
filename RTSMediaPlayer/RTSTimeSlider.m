@@ -89,6 +89,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	[self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
 	
 	self.seekingDuringTracking = YES;
+	self.knobLivePosition = RTSTimeSliderLiveKnobPositionLeft;
 }
 
 #pragma mark - Setters and getters
@@ -367,11 +368,13 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 					
 					AVPlayerItem *playerItem = self.mediaPlayerController.playerItem;
 					self.value = CMTimeGetSeconds(CMTimeSubtract(playerItem.currentTime, timeRange.start));
+					self.userInteractionEnabled = YES;
 				}
 				else
 				{
-					self.maximumValue = 0.;
-					self.value = 0.;
+					self.maximumValue = (self.knobLivePosition == RTSTimeSliderLiveKnobPositionLeft) ? 0. : 1.;
+					self.value = 1.;
+					self.userInteractionEnabled = NO;
 				}
 				
 				RTSMediaPlayerLogTrace(@"Range min = %@ (value = %@) --- Current = %@ (value = %@) --- Range max = %@ (value = %@)",
