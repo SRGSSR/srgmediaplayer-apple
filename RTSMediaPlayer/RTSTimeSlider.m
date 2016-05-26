@@ -368,7 +368,12 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 			if (!self.isTracking && self.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking)
 			{
 				CMTimeRange timeRange = [self.mediaPlayerController timeRange];
-				if (!CMTIMERANGE_IS_EMPTY(timeRange) && !CMTIMERANGE_IS_INDEFINITE(timeRange) && !CMTIMERANGE_IS_INVALID(timeRange))
+                if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded) {
+                    self.maximumValue = 0.f;
+                    self.value = 0.f;
+                    self.userInteractionEnabled = YES;
+                }
+                else if(!CMTIMERANGE_IS_EMPTY(timeRange) && !CMTIMERANGE_IS_INDEFINITE(timeRange) && !CMTIMERANGE_IS_INVALID(timeRange))
 				{
 					self.maximumValue = CMTimeGetSeconds(timeRange.duration);
 					
@@ -378,8 +383,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				}
 				else
 				{
-					self.maximumValue = (self.knobLivePosition == RTSTimeSliderLiveKnobPositionLeft) ? 0. : 1.;
-					self.value = 1.;
+                    float value = (self.knobLivePosition == RTSTimeSliderLiveKnobPositionLeft) ? 0. : 1.;
+                    self.maximumValue = value;
+					self.value = value;
 					self.userInteractionEnabled = NO;
 				}
 				
