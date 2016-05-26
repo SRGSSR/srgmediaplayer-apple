@@ -65,11 +65,21 @@
 
 + (UIBezierPath *) stopBezierPathWithSize:(CGSize)size
 {
+    CGFloat marginX = 0;
+    CGFloat marginY = 0;
+    
+    if (size.width > size.height) {
+        marginX += (size.width - size.height) / 2.f;
+    }
+    else if (size.height > size.width) {
+        marginY += (size.height - size.width) / 2.f;
+    }
+    
     UIBezierPath *stopBezierPath = [UIBezierPath bezierPath];
-    [stopBezierPath moveToPoint:CGPointMake(0, 0)];
-    [stopBezierPath addLineToPoint:CGPointMake(size.width, 0)];
-    [stopBezierPath addLineToPoint:CGPointMake(size.width, size.height)];
-    [stopBezierPath addLineToPoint:CGPointMake(0, size.height)];
+    [stopBezierPath moveToPoint:CGPointMake(marginX, marginY)];
+    [stopBezierPath addLineToPoint:CGPointMake(size.width - 2*marginX, marginY)];
+    [stopBezierPath addLineToPoint:CGPointMake(size.width - 2*marginX, size.height - 2*marginY)];
+    [stopBezierPath addLineToPoint:CGPointMake(marginX, size.height - 2*marginY)];
     [stopBezierPath closePath];
     
     return stopBezierPath;
