@@ -63,6 +63,18 @@
 	return pauseBezierPath;
 }
 
++ (UIBezierPath *) stopBezierPathWithSize:(CGSize)size
+{
+    UIBezierPath *stopBezierPath = [UIBezierPath bezierPath];
+    [stopBezierPath moveToPoint:CGPointMake(0, 0)];
+    [stopBezierPath addLineToPoint:CGPointMake(size.width, 0)];
+    [stopBezierPath addLineToPoint:CGPointMake(size.width, size.height)];
+    [stopBezierPath addLineToPoint:CGPointMake(0, size.height)];
+    [stopBezierPath closePath];
+    
+    return stopBezierPath;
+}
+
 #pragma mark - Images
 
 + (UIImage *) playImageWithSize:(CGSize)size color:(UIColor *)color
@@ -77,7 +89,7 @@
 
 + (UIImage *) stopImageWithSize:(CGSize)size color:(UIColor *)color
 {
-	return nil;
+	return [self imageWithBezierPath:[self stopBezierPathWithSize:size] size:size color:color];
 }
 
 @end
