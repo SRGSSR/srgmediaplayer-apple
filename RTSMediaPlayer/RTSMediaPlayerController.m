@@ -521,11 +521,16 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)playAtTime:(CMTime)time
 {
+	[self playAtTime:time completionHandler:nil];
+}
+
+- (void)playAtTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
+{
 	if ([self.stateMachine.currentState isEqual:self.idleState]) {
 		[self loadPlayerAndAutoStartAtTime:[NSValue valueWithCMTime:time]];
 	}
 	else {
-		[self seekToTime:time completionHandler:nil];
+		[self seekToTime:time completionHandler:completionHandler];
 	}
 }
 

@@ -211,11 +211,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     }
     
     if ([self.playerController.identifier isEqualToString:segment.segmentIdentifier]) {
-        [self.playerController seekToTime:segment.timeRange.start completionHandler:^(BOOL finished) {
-            if (finished) {
-                [self.playerController play];
-            }
-        }];
+        [self.playerController playAtTime:segment.timeRange.start];
     }
     else {
         [self.playerController playIdentifier:segment.segmentIdentifier];

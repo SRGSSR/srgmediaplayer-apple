@@ -203,9 +203,15 @@
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
 
 /**
- *  Play the current media, starting at a specific time
+ *  Play the current media, starting at a specific time (the player seeks if it was already playing)
  */
 - (void)playAtTime:(CMTime)time;
+
+/**
+ *  Play the current media, starting at a specific time, and calling the completion handler when playback resumes
+ *  at the specified time (the player seeks if it was already playing)
+ */
+- (void)playAtTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
 
 /**
  *  Start playing a media specified using its identifier, starting at a specific time. Retrieving the media URL requires
