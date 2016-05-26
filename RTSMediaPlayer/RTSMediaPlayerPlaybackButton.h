@@ -6,6 +6,24 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  Behaviors supported by the playback button
+ */
+typedef NS_ENUM(NSInteger, RTSMediaPlayerPlaybackButtonBehavior) {
+	/**
+	 *  Default behavior (play / pause)
+	 */
+	RTSMediaPlayerPlaybackButtonBehaviorDefault,
+	/**
+	 *  Play / pause only for on-demand and DVR streams. Play / stop for live streams
+	 */
+	RTSMediaPlayerPlaybackButtonBehaviorStopForLiveOnly,
+	/**
+	 *  Play / stop only for all kinds of streams
+	 */
+	RTSMediaPlayerPlaybackButtonBehaviorStopForAll
+};
+
 // Forward declarations
 @class RTSMediaPlayerController;
 
@@ -28,5 +46,10 @@
  */
 @property (nonatomic) IBInspectable UIColor *normalColor;
 @property (nonatomic) IBInspectable UIColor *hightlightColor;
+
+/**
+ *  Button behavior. Default is RTSMediaPlayerPlaybackButtonBehaviorDefault
+ */
+@property (nonatomic) RTSMediaPlayerPlaybackButtonBehavior behavior;
 
 @end

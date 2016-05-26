@@ -48,7 +48,12 @@
 
 - (void)pause
 {
-	[self.mediaPlayerController pause];
+	if (self.behavior == RTSMediaPlayerPlaybackButtonBehaviorStopForLiveOnly || self.behavior == RTSMediaPlayerPlaybackButtonBehaviorStopForAll) {
+		[self.mediaPlayerController reset];
+	}
+	else {
+		[self.mediaPlayerController pause];
+	}
 	[self refreshButton];
 }
 
@@ -63,7 +68,8 @@
 	UIImage *normalImage = nil;
 	UIImage *highlightedImage = nil;
 	if (isPlaying) {
-		if (self.mediaPlayerController.streamType == RTSMediaStreamTypeLive) {
+		if ((self.behavior == RTSMediaPlayerPlaybackButtonBehaviorStopForLiveOnly && self.mediaPlayerController.streamType == RTSMediaStreamTypeLive)
+				|| self.behavior == RTSMediaPlayerPlaybackButtonBehaviorStopForAll) {
 			normalImage = [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.normalColor];
 			highlightedImage = [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.hightlightColor];
 		}
