@@ -75,4 +75,9 @@
 	return [self imageWithBezierPath:[self pauseBezierPathWithSize:size] size:size color:color];
 }
 
++ (UIImage *) stopImageWithSize:(CGSize)size color:(UIColor *)color
+{
+	return nil;
+}
+
 @end

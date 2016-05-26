@@ -63,8 +63,14 @@
 	UIImage *normalImage = nil;
 	UIImage *highlightedImage = nil;
 	if (isPlaying) {
-		normalImage = [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
-		highlightedImage = [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
+		if (self.mediaPlayerController.streamType == RTSMediaStreamTypeLive) {
+			normalImage = [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.normalColor];
+			highlightedImage = [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.hightlightColor];
+		}
+		else {
+			normalImage = [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
+			highlightedImage = [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
+		}
 	}
 	else {
 		normalImage = [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.normalColor];

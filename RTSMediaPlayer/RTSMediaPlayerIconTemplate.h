@@ -27,4 +27,12 @@
  */
 + (UIImage *) pauseImageWithSize:(CGSize)size color:(UIColor *)color;
 
+/**
+ *  Stop image
+ *
+ *  @param size  The desired image size
+ *  @param color The desired tint color
+ */
++ (UIImage *) stopImageWithSize:(CGSize)size color:(UIColor *)color;
+
 @end
