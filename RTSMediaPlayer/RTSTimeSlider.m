@@ -92,6 +92,11 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	self.knobLivePosition = RTSTimeSliderLiveKnobPositionLeft;
 }
 
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Setters and getters
 
 - (BOOL) isDraggable
@@ -161,7 +166,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void) updateTimeRangeLabels
 {
 	AVPlayerItem *playerItem = self.mediaPlayerController.playerItem;
-	if (! playerItem || playerItem.status != AVPlayerItemStatusReadyToPlay) {
+	if (! playerItem || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded
+			|| playerItem.status != AVPlayerItemStatusReadyToPlay) {
 		self.valueLabel.text = @"--:--";
 		self.timeLeftValueLabel.text = @"--:--";
 		return;
@@ -391,9 +397,36 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				[self updateTimeRangeLabels];
 			}
 		}];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(timesliderPlaybackStateDidChange:)
+													 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+												   object:self.mediaPlayerController];
 	}
 	else {
 		[self.mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:RTSMediaPlayerPlaybackStateDidChangeNotification
+													  object:self.mediaPlayerController];
+	}
+}
+
+#pragma mark Notifications
+
+- (void)timesliderPlaybackStateDidChange:(NSNotification *)notification
+{
+	if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle
+			|| self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded) {
+		self.value = 0.f;
+		self.maximumValue = 0.f;
+		
+		[self.slidingDelegate timeSlider:self
+				  isMovingToPlaybackTime:self.time
+							   withValue:self.value
+							 interactive:NO];
+		
+		[self setNeedsDisplay];
+		[self updateTimeRangeLabels];
 	}
 }
 
