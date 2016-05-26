@@ -249,6 +249,14 @@
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 
 /**
+ *  The minimum window length which must be available for a stream to be considered to be a DVR stream, in seconds. The 
+ *  default value is 0. This setting can be used so that streams detected as DVR ones because their window is small can
+ *  behave as live streams. This is useful to avoid usual related seeking issues, or slider hiccups during playback, most
+ *  notably
+ */
+@property (nonatomic) NSTimeInterval minimumDVRWindowLength;
+
+/**
  *  Return the tolerance (in seconds) for a DVR stream to be considered being played in live conditions. If the stream
  *  playhead is located within the last liveTolerance conditions of the stream, it is considered to be live, not live
  *  otherwise. The default value is 30 seconds and matches the standard iOS behavior
