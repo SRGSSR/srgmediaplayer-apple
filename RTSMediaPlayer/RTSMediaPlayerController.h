@@ -203,9 +203,15 @@
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
 
 /**
- *  Play the current media, starting at a specific time
+ *  Play the current media, starting at a specific time (the player seeks if it was already playing)
  */
 - (void)playAtTime:(CMTime)time;
+
+/**
+ *  Play the current media, starting at a specific time, and calling the completion handler when playback resumes
+ *  at the specified time (the player seeks if it was already playing)
+ */
+- (void)playAtTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
 
 /**
  *  Start playing a media specified using its identifier, starting at a specific time. Retrieving the media URL requires
@@ -247,6 +253,14 @@
  *  Return YES iff the stream is currently played in live conditions
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
+
+/**
+ *  The minimum window length which must be available for a stream to be considered to be a DVR stream, in seconds. The 
+ *  default value is 0. This setting can be used so that streams detected as DVR ones because their window is small can
+ *  behave as live streams. This is useful to avoid usual related seeking issues, or slider hiccups during playback, most
+ *  notably
+ */
+@property (nonatomic) NSTimeInterval minimumDVRWindowLength;
 
 /**
  *  Return the tolerance (in seconds) for a DVR stream to be considered being played in live conditions. If the stream

@@ -521,11 +521,16 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)playAtTime:(CMTime)time
 {
+	[self playAtTime:time completionHandler:nil];
+}
+
+- (void)playAtTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
+{
 	if ([self.stateMachine.currentState isEqual:self.idleState]) {
 		[self loadPlayerAndAutoStartAtTime:[NSValue valueWithCMTime:time]];
 	}
 	else {
-		[self seekToTime:time completionHandler:nil];
+		[self seekToTime:time completionHandler:completionHandler];
 	}
 }
 
@@ -579,7 +584,15 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		return kCMTimeRangeInvalid;
 	}
 	
-	return CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
+	CMTimeRange timeRange = CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
+    
+    // DVR window size too small. Check that we the stream is not an on-demand one first, of course
+	if (CMTIME_IS_INDEFINITE(self.playerItem.duration) && CMTimeGetSeconds(timeRange.duration) < self.minimumDVRWindowLength) {
+        return CMTimeRangeMake(timeRange.start, kCMTimeZero);
+    }
+    else {
+        return timeRange;
+    }
 }
 
 - (RTSMediaType)mediaType
@@ -599,10 +612,12 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (RTSMediaStreamType)streamType
 {
-	if (CMTIMERANGE_IS_INVALID(self.timeRange)) {
+    CMTimeRange timeRange = self.timeRange;
+    
+	if (CMTIMERANGE_IS_INVALID(timeRange)) {
 		return RTSMediaStreamTypeUnknown;
 	}
-	else if (CMTIMERANGE_IS_EMPTY(self.timeRange)) {
+	else if (CMTIMERANGE_IS_EMPTY(timeRange)) {
 		return RTSMediaStreamTypeLive;
 	}
 	else if (CMTIME_IS_INDEFINITE(self.playerItem.duration)) {
@@ -611,6 +626,17 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	else {
 		return RTSMediaStreamTypeOnDemand;
 	}
+}
+
+- (void)setMinimumDVRWindowLength:(NSTimeInterval)minimumDVRWindowLength
+{
+    if (minimumDVRWindowLength < 0.) {
+        RTSMediaPlayerLogWarning(@"The minimum DVR window length cannot be negative. Set to 0");
+        _minimumDVRWindowLength = 0.;
+    }
+    else {
+        _minimumDVRWindowLength = minimumDVRWindowLength;
+    }
 }
 
 - (void)setLiveTolerance:(NSTimeInterval)liveTolerance
