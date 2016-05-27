@@ -48,6 +48,13 @@ typedef NS_ENUM(NSInteger, RTSMediaPlayerPlaybackButtonBehavior) {
 @property (nonatomic) IBInspectable UIColor *hightlightColor;
 
 /**
+ * Image customization (default images are used if not set)
+ */
+@property (nonatomic) UIImage *playImage;
+@property (nonatomic) UIImage *pauseImage;
+@property (nonatomic) UIImage *stopImage;
+
+/**
  *  Button behavior. Default is RTSMediaPlayerPlaybackButtonBehaviorDefault
  */
 @property (nonatomic) RTSMediaPlayerPlaybackButtonBehavior behavior;

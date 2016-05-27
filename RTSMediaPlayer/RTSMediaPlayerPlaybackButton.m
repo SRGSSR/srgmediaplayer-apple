@@ -75,20 +75,38 @@
 	UIImage *highlightedImage = nil;
 	if (isPlaying) {
 		if ([self hasStopButton]) {
-			normalImage = [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.normalColor];
-			highlightedImage = [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.hightlightColor];
+            normalImage = self.stopImage ?: [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.normalColor];
+            highlightedImage = self.stopImage ?: [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.hightlightColor];
 		}
 		else {
-			normalImage = [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
-			highlightedImage = [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
+            normalImage = self.pauseImage ?: [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
+            highlightedImage = self.pauseImage ?: [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
 		}
 	}
 	else {
-		normalImage = [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.normalColor];
-		highlightedImage = [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.hightlightColor];
+        normalImage = self.playImage ?: [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.normalColor];
+        highlightedImage = self.playImage ?: [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.hightlightColor];
 	}
 	[self setImage:normalImage forState:UIControlStateNormal];
 	[self setImage:highlightedImage forState:UIControlStateHighlighted];
+}
+
+- (void)setPlayImage:(UIImage *)playImage
+{
+    _playImage = playImage;
+    [self refreshButton];
+}
+
+- (void)setPauseImage:(UIImage *)pauseImage
+{
+    _pauseImage = pauseImage;
+    [self refreshButton];
+}
+
+- (void)setStopImage:(UIImage *)stopImage
+{
+    _stopImage = stopImage;
+    [self refreshButton];
 }
 
 - (void)setBounds:(CGRect)bounds

@@ -2542,18 +2542,6 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>625AC1A10BBD318212F1C5953D8181A3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>A8A7FC68FA0AECEFAB833E89E96519B0</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.8.12 -w -Xanalyzer -analyzer-disable-all-checks</string>
-			</dict>
-		</dict>
 		<key>62BDE562977B2272F795827DAEAAAE30</key>
 		<dict>
 			<key>includeInIndex</key>
@@ -3331,6 +3319,18 @@
 			<string>libMAKVONotificationCenter.a</string>
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>79B54C0837938780A5BAD5A6B0FCE284</key>
+		<dict>
+			<key>fileRef</key>
+			<string>A8A7FC68FA0AECEFAB833E89E96519B0</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string>-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.8.13 -w -Xanalyzer -analyzer-disable-all-checks</string>
+			</dict>
 		</dict>
 		<key>7A1AE9166791E5CF7F3266C139FD39C2</key>
 		<dict>
@@ -5145,7 +5145,7 @@
 				<string>EFE3ECD3D629ACA43FFD4065217A6A85</string>
 				<string>B2B144124A9C07CBF452B2E34145C097</string>
 				<string>1A5C7DDD9BBE29F5D27E6D506044AA84</string>
-				<string>625AC1A10BBD318212F1C5953D8181A3</string>
+				<string>79B54C0837938780A5BAD5A6B0FCE284</string>
 				<string>43368F41B7F99279F5248E2DAB502AF5</string>
 				<string>164820CC72368FDDD9EB8489561DFF2A</string>
 				<string>DD1EB2FCD2C3251C3E59D5FE1D819F66</string>

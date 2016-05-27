@@ -356,6 +356,11 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 					  CGRectGetHeight(trackFrame));
 }
 
+- (float)resetValue
+{
+    return (self.knobLivePosition == RTSTimeSliderLiveKnobPositionLeft) ? 0. : 1.;
+}
+
 - (void)willMoveToWindow:(UIWindow *)window
 {
 	[super willMoveToWindow:window];
@@ -368,7 +373,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 			if (!self.isTracking && self.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking)
 			{
 				CMTimeRange timeRange = [self.mediaPlayerController timeRange];
-                if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded) {
+                if (self.mediaPlayerController.streamType == RTSMediaStreamTypeOnDemand
+                        && (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded)) {
                     self.maximumValue = 0.f;
                     self.value = 0.f;
                     self.userInteractionEnabled = YES;
@@ -383,7 +389,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				}
 				else
 				{
-                    float value = (self.knobLivePosition == RTSTimeSliderLiveKnobPositionLeft) ? 0. : 1.;
+                    float value = [self resetValue];
                     self.maximumValue = value;
 					self.value = value;
 					self.userInteractionEnabled = NO;
@@ -423,8 +429,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle
 			|| self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded) {
-		self.value = 0.f;
-		self.maximumValue = 0.f;
+        float value = [self resetValue];
+		self.value = value;
+		self.maximumValue = value;
 		
 		[self.slidingDelegate timeSlider:self
 				  isMovingToPlaybackTime:self.time
