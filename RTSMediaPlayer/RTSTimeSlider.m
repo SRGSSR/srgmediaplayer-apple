@@ -429,9 +429,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle
 			|| self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded) {
-        float value = [self resetValue];
-		self.value = value;
-		self.maximumValue = value;
+		self.value = 0.f;
+		self.maximumValue = 0.f;
 		
 		[self.slidingDelegate timeSlider:self
 				  isMovingToPlaybackTime:self.time
