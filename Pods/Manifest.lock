@@ -21,15 +21,15 @@ PODS:
   - SRGMediaPlayer/Version (1.8.16):
     - libextobjc/EXTScope (~> 0.4.1)
     - TransitionKit (~> 2.2.0)
-  - TransitionKit (2.2.0)
+  - TransitionKit (2.2.1)
 
 DEPENDENCIES:
   - CocoaLumberjack (= 2.0.0)
-  - libextobjc/EXTScope (= 0.4.1)
+  - libextobjc/EXTScope
   - MAKVONotificationCenter (= 0.0.2)
   - SDWebImage (= 3.7.0)
   - SRGMediaPlayer (from `.`)
-  - TransitionKit (= 2.2.0)
+  - TransitionKit
 
 EXTERNAL SOURCES:
   SRGMediaPlayer:
@@ -41,6 +41,8 @@ SPEC CHECKSUMS:
   MAKVONotificationCenter: eddfb85e77040323ee43a0fddbe616926ec005a8
   SDWebImage: b42db92951f9d565c55f1d7f1d5efe47e33a7515
   SRGMediaPlayer: 065aeab0f0e59776b7d4121dae92cddabc1f618a
-  TransitionKit: 5c9001a77acc409d71f26a4eba0159cf8619c418
+  TransitionKit: 9ceccda4cd0cdc0a05ef85eb235e5a3292c3c250
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: b28331eb8d6414b940f98bf09fae09412a15b9aa
+
+COCOAPODS: 1.0.1

@@ -1,26 +1,28 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '7.0'
-
 inhibit_all_warnings!
 
 workspace 'SRGMediaPlayer'
-link_with 'SRGMediaPlayerTests', 'SRGMediaPlayer Demo'
 
 target 'SRGMediaPlayer' do
-  pod 'libextobjc/EXTScope', '0.4.1'
-  pod 'TransitionKit',       '2.2.0'
-end
+  pod 'SRGMediaPlayer', :path => '.'
+  
+  target 'SRGMediaPlayerTests' do
+    inherit! :search_paths
 
-target 'SRGMediaPlayerTests' do
-  pod 'libextobjc/EXTScope', '0.4.1'
-  pod 'TransitionKit',       '2.2.0'
-  pod 'MAKVONotificationCenter', '0.0.2'
+    pod 'MAKVONotificationCenter', '0.0.2'
+    pod 'libextobjc/EXTScope'
+    pod 'TransitionKit'
+  end
+
+  xcodeproj 'SRGMediaPlayer.xcodeproj'
 end
 
 target 'SRGMediaPlayer Demo' do
-  xcodeproj 'RTSMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj'
-  pod 'SRGMediaPlayer', { :path => '.' }
+  pod 'SRGMediaPlayer', :path => '.'
   pod 'CocoaLumberjack', '2.0.0'
   pod 'SDWebImage', '3.7.0'
+  
+  xcodeproj 'RTSMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj'
 end

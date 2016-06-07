@@ -2,10 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SRGMediaPlayer.xcodeproj">
+      location = "group:RTSMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:RTSMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj">
+      location = "group:SRGMediaPlayer.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
