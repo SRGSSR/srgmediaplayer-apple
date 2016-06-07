@@ -152,12 +152,6 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] removeObserver:self.stateTransitionObserver];
 	
-// Leave the two lines with AVAudioSession below COMMENTED.
-// This "reset" behavior is good in theory. But it breaks use cases with multiple players sharing the same audio session.
-// As a general rule, do NOT reset the audio session, but rather change to your needs at the point you need it.
-//	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
-//	[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeDefault error:nil];
-	
 	[_view removeFromSuperview];
 	[_activityView removeGestureRecognizer:_activityGestureRecognizer];
 	
@@ -307,27 +301,6 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 			// to be sent when the player is really ready to play
 			self.pauseScheduled = YES;
 		}
-	}];
-	
-	[playing setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		
-		// See https://developer.apple.com/library/ios/qa/qa1668/_index.html
-		RTSMediaType mediaType = [self mediaType];
-		if (mediaType == RTSMediaTypeVideo) {
-			[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-			[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeMoviePlayback error:nil];
-		}
-		else if (mediaType == RTSMediaTypeAudio) {
-			[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-			[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeDefault error:nil];
-		}
-// As a general rule, do NOT reset the audio session, but rather change to your needs at the point you need it (as above).
-// See also -dealloc method on why the lines below must remain commented.
-//		else {
-//			[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
-//			[[AVAudioSession sharedInstance] setMode:AVAudioSessionModeDefault error:nil];
-//		}
 	}];
 	
 	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
