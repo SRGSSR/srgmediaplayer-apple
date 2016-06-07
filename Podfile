@@ -5,24 +5,29 @@ inhibit_all_warnings!
 
 workspace 'SRGMediaPlayer'
 
+# Will be inherited by all targets below
+pod 'SRGMediaPlayer', :path => '.'
+
 target 'SRGMediaPlayer' do
-  pod 'SRGMediaPlayer', :path => '.'
-  
+  # Test target, inherit search paths only, not linking
+  # For more information, see http://blog.cocoapods.org/CocoaPods-1.0-Migration-Guide/
   target 'SRGMediaPlayerTests' do
     inherit! :search_paths
 
-    pod 'MAKVONotificationCenter', '0.0.2'
+    # Repeat SRGMediaPlayer podspec dependencies
     pod 'libextobjc/EXTScope'
     pod 'TransitionKit'
+
+    # Target-specific dependencies
+    pod 'MAKVONotificationCenter', '0.0.2'
   end
 
   xcodeproj 'SRGMediaPlayer.xcodeproj'
 end
 
 target 'SRGMediaPlayer Demo' do
-  pod 'SRGMediaPlayer', :path => '.'
   pod 'CocoaLumberjack', '2.0.0'
-  pod 'SDWebImage', '3.7.0'
+  pod 'SDWebImage', '3.8.0'
   
   xcodeproj 'RTSMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj'
 end
