@@ -9,9 +9,9 @@ workspace 'SRGMediaPlayer'
 pod 'SRGMediaPlayer', :path => '.'
 
 target 'SRGMediaPlayer' do
-  # Test target, inherit search paths only, not linking
-  # For more information, see http://blog.cocoapods.org/CocoaPods-1.0-Migration-Guide/
   target 'SRGMediaPlayerTests' do
+    # Test target, inherit search paths only, not linking
+    # For more information, see http://blog.cocoapods.org/CocoaPods-1.0-Migration-Guide/
     inherit! :search_paths
 
     # Repeat SRGMediaPlayer podspec dependencies
