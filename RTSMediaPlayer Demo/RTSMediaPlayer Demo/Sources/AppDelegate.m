@@ -71,7 +71,6 @@
 	ttyLogger.logFormatter = [LogFormatter new];
 	[DDLog addLogger:ttyLogger withLevel:DDLogLevelInfo];
 	
-	
 	UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
 	
 	UIImage *moviesIcon = [UIImage imageNamed:@"videos"];
