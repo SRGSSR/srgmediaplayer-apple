@@ -16,7 +16,7 @@ The library is suitable for applications running on iOS 7 and above.
 
 ## Installation
 
-The library can be added to a project using [CocoaPods](http://cocoapods.org/) by adding the `SRGMediaPlayer` dependency to its `Podfile`:
+The library can be added to a project using [CocoaPods](http://cocoapods.org/) version 1.0 or above by adding the `SRGMediaPlayer` dependency to its `Podfile`:
     
 ```ruby
 pod 'SRGMediaPlayer', '<version>'

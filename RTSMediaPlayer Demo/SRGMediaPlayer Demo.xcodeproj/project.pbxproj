@@ -12,13 +12,13 @@
 		9F40156D1B25A2E00068196C /* segments@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F4015691B25A2E00068196C /* segments@2x.png */; };
 		9F40156E1B25A2E00068196C /* videos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F40156A1B25A2E00068196C /* videos@2x.png */; };
 		9F4015711B25A5680068196C /* LaunchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F4015701B25A5680068196C /* LaunchImage.png */; };
-		9F48459F1B39BD3400C48345 /* SRGMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9F48459E1B39BD3400C48345 /* SRGMediaPlayer.bundle */; };
 		9F4B1D2D1B1C990700BB0FB3 /* VideoSegmentsPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F4B1D2C1B1C990700BB0FB3 /* VideoSegmentsPlayerViewController.m */; };
 		9F727DB61B5F975500FEF5E7 /* VideosTimeshiftTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F727DB51B5F975500FEF5E7 /* VideosTimeshiftTableViewController.m */; };
 		9F727DB81B5F989A00FEF5E7 /* TimeshiftURLs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F727DB71B5F989A00FEF5E7 /* TimeshiftURLs.plist */; };
 		9F727DBB1B5FA4C000FEF5E7 /* VideoTimeshiftPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F727DBA1B5FA4C000FEF5E7 /* VideoTimeshiftPlayerViewController.m */; };
 		9FDF081F1B1C92C2005BA322 /* VideoSegmentsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDF081E1B1C92C2005BA322 /* VideoSegmentsTableViewController.m */; };
 		9FDF08221B1C95DD005BA322 /* PseudoILDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FDF08211B1C95DD005BA322 /* PseudoILDataProvider.m */; };
+		A3196C0DC1E5B0418DF3AFD9 /* libPods-SRGMediaPlayer Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE10DF27C1E51A2963DA91A /* libPods-SRGMediaPlayer Demo.a */; };
 		B61E18CF1AA8605200E4FAB9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18CC1AA8605200E4FAB9 /* AppDelegate.m */; };
 		B61E18D51AA8607200E4FAB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B61E18D31AA8607200E4FAB9 /* main.m */; };
 		B61E18DB1AA8607800E4FAB9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B61E18D71AA8607800E4FAB9 /* LaunchScreen.xib */; };
@@ -35,7 +35,6 @@
 		B6C460E71B205AC200A76705 /* MultiplayerURLs.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6C460E61B205AC200A76705 /* MultiplayerURLs.plist */; };
 		B6C460EA1B205AE400A76705 /* VideoMultiplayerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C460E91B205AE400A76705 /* VideoMultiplayerTableViewController.m */; };
 		C2F54A101A9F713300496C59 /* RTSMediaPlayer_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */; };
-		C60C68FAC43F7E0A83E3014F /* libPods-SRGMediaPlayer Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE10DF27C1E51A2963DA91A /* libPods-SRGMediaPlayer Demo.a */; };
 		E606F8911AF3B044003F0E2A /* SegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */; };
 		E606F8921AF3B044003F0E2A /* SegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */; };
 		E606F8951AF3BBB4003F0E2A /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E606F8941AF3BBB4003F0E2A /* Segment.m */; };
@@ -62,9 +61,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07CDC290EDCC0AAD28FC4F5C /* Pods-SRGMediaPlayer-SRGMediaPlayer Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-SRGMediaPlayer Demo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SRGMediaPlayer-SRGMediaPlayer Demo/Pods-SRGMediaPlayer-SRGMediaPlayer Demo.release.xcconfig"; sourceTree = "<group>"; };
 		0AE10DF27C1E51A2963DA91A /* libPods-SRGMediaPlayer Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		100779AD208991A55C4E92F5 /* Pods-SRGMediaPlayer Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer Demo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-SRGMediaPlayer Demo/Pods-SRGMediaPlayer Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		1822D47330A920F02889458B /* libPods-RTSMediaPlayer Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RTSMediaPlayer Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		46F72F8D727E954312FB45CD /* libPods-SRGMediaPlayer-SRGMediaPlayer Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer-SRGMediaPlayer Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E09A7BE7B656051B76E8285 /* Pods-SRGMediaPlayer Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer Demo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SRGMediaPlayer Demo/Pods-SRGMediaPlayer Demo.release.xcconfig"; sourceTree = "<group>"; };
 		9F4015671B25A2E00068196C /* audios@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audios@2x.png"; sourceTree = "<group>"; };
 		9F4015681B25A2E00068196C /* screen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "screen@2x.png"; sourceTree = "<group>"; };
@@ -85,6 +86,7 @@
 		9FDF081E1B1C92C2005BA322 /* VideoSegmentsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoSegmentsTableViewController.m; sourceTree = "<group>"; };
 		9FDF08201B1C95DD005BA322 /* PseudoILDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PseudoILDataProvider.h; sourceTree = "<group>"; };
 		9FDF08211B1C95DD005BA322 /* PseudoILDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PseudoILDataProvider.m; sourceTree = "<group>"; };
+		AE4CDC3FBB34B850EB2EA07E /* libPods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B61E18CB1AA8605200E4FAB9 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B61E18CC1AA8605200E4FAB9 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		B61E18D21AA8607200E4FAB9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -113,6 +115,8 @@
 		C2F549F01A9F713300496C59 /* SRGMediaPlayer Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGMediaPlayer Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A091A9F713300496C59 /* SRGMediaPlayer DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGMediaPlayer DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F54A0F1A9F713300496C59 /* RTSMediaPlayer_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayer_DemoTests.m; sourceTree = "<group>"; };
+		CD919ECC078CAEADA356C751 /* Pods-SRGMediaPlayer-SRGMediaPlayer Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-SRGMediaPlayer Demo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-SRGMediaPlayer-SRGMediaPlayer Demo/Pods-SRGMediaPlayer-SRGMediaPlayer Demo.debug.xcconfig"; sourceTree = "<group>"; };
+		E462171BF6B6E182A78E2236 /* Pods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo/Pods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.release.xcconfig"; sourceTree = "<group>"; };
 		E606F88E1AF3B044003F0E2A /* SegmentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentCollectionViewCell.h; sourceTree = "<group>"; };
 		E606F88F1AF3B044003F0E2A /* SegmentCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentCollectionViewCell.m; sourceTree = "<group>"; };
 		E606F8901AF3B044003F0E2A /* SegmentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 		E69906241AFB4929005ED143 /* goal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "goal@2x.png"; sourceTree = "<group>"; };
 		E6A984B01B21764D004D701F /* thumbnail-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder.png"; sourceTree = "<group>"; };
 		E6A984B11B21764D004D701F /* thumbnail-placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder@2x.png"; sourceTree = "<group>"; };
+		F8DAE54C01813767FC793751 /* Pods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo/Pods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,7 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C60C68FAC43F7E0A83E3014F /* libPods-SRGMediaPlayer Demo.a in Frameworks */,
+				A3196C0DC1E5B0418DF3AFD9 /* libPods-SRGMediaPlayer Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +159,10 @@
 			children = (
 				100779AD208991A55C4E92F5 /* Pods-SRGMediaPlayer Demo.debug.xcconfig */,
 				6E09A7BE7B656051B76E8285 /* Pods-SRGMediaPlayer Demo.release.xcconfig */,
+				CD919ECC078CAEADA356C751 /* Pods-SRGMediaPlayer-SRGMediaPlayer Demo.debug.xcconfig */,
+				07CDC290EDCC0AAD28FC4F5C /* Pods-SRGMediaPlayer-SRGMediaPlayer Demo.release.xcconfig */,
+				F8DAE54C01813767FC793751 /* Pods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.debug.xcconfig */,
+				E462171BF6B6E182A78E2236 /* Pods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -327,6 +336,8 @@
 				9F48459E1B39BD3400C48345 /* SRGMediaPlayer.bundle */,
 				1822D47330A920F02889458B /* libPods-RTSMediaPlayer Demo.a */,
 				0AE10DF27C1E51A2963DA91A /* libPods-SRGMediaPlayer Demo.a */,
+				46F72F8D727E954312FB45CD /* libPods-SRGMediaPlayer-SRGMediaPlayer Demo.a */,
+				AE4CDC3FBB34B850EB2EA07E /* libPods-SRGMediaPlayerAbstract-SRGMediaPlayer Demo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -338,12 +349,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C2F54A131A9F713300496C59 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer Demo" */;
 			buildPhases = (
-				C5640A74CF63A6C84C0C6A29 /* Check Pods Manifest.lock */,
+				C5640A74CF63A6C84C0C6A29 /* [CP] Check Pods Manifest.lock */,
 				C2F549EC1A9F713300496C59 /* Sources */,
 				C2F549ED1A9F713300496C59 /* Frameworks */,
 				C2F549EE1A9F713300496C59 /* Resources */,
-				C7E62927C080516ABF3F2439 /* Copy Pods Resources */,
-				79B0004173223FCFA9FBA78E /* Embed Pods Frameworks */,
+				C7E62927C080516ABF3F2439 /* [CP] Copy Pods Resources */,
+				79B0004173223FCFA9FBA78E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -429,7 +440,6 @@
 				9F4015711B25A5680068196C /* LaunchImage.png in Resources */,
 				E69906261AFB4929005ED143 /* goal@2x.png in Resources */,
 				B61E18EF1AA8643500E4FAB9 /* MediaURLs.plist in Resources */,
-				9F48459F1B39BD3400C48345 /* SRGMediaPlayer.bundle in Resources */,
 				B61E18DF1AA8609000E4FAB9 /* Images.xcassets in Resources */,
 				9F40156C1B25A2E00068196C /* screen@2x.png in Resources */,
 				E69906191AFB44CC005ED143 /* close_button.png in Resources */,
@@ -455,14 +465,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		79B0004173223FCFA9FBA78E /* Embed Pods Frameworks */ = {
+		79B0004173223FCFA9FBA78E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,14 +480,14 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-SRGMediaPlayer Demo/Pods-SRGMediaPlayer Demo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C5640A74CF63A6C84C0C6A29 /* Check Pods Manifest.lock */ = {
+		C5640A74CF63A6C84C0C6A29 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -485,14 +495,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		C7E62927C080516ABF3F2439 /* Copy Pods Resources */ = {
+		C7E62927C080516ABF3F2439 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

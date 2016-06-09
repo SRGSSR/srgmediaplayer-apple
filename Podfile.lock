@@ -11,25 +11,25 @@ PODS:
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4.1)
   - MAKVONotificationCenter (0.0.2)
-  - SDWebImage (3.7.0):
-    - SDWebImage/Core (= 3.7.0)
-  - SDWebImage/Core (3.7.0)
-  - SRGMediaPlayer (1.8.16):
+  - SDWebImage (3.8.0):
+    - SDWebImage/Core (= 3.8.0)
+  - SDWebImage/Core (3.8.0)
+  - SRGMediaPlayer (1.8.17):
     - libextobjc/EXTScope (~> 0.4.1)
-    - SRGMediaPlayer/Version (= 1.8.16)
+    - SRGMediaPlayer/Version (= 1.8.17)
     - TransitionKit (~> 2.2.0)
-  - SRGMediaPlayer/Version (1.8.16):
+  - SRGMediaPlayer/Version (1.8.17):
     - libextobjc/EXTScope (~> 0.4.1)
     - TransitionKit (~> 2.2.0)
-  - TransitionKit (2.2.0)
+  - TransitionKit (2.2.1)
 
 DEPENDENCIES:
   - CocoaLumberjack (= 2.0.0)
-  - libextobjc/EXTScope (= 0.4.1)
+  - libextobjc/EXTScope
   - MAKVONotificationCenter (= 0.0.2)
-  - SDWebImage (= 3.7.0)
+  - SDWebImage (= 3.8.0)
   - SRGMediaPlayer (from `.`)
-  - TransitionKit (= 2.2.0)
+  - TransitionKit
 
 EXTERNAL SOURCES:
   SRGMediaPlayer:
@@ -39,8 +39,10 @@ SPEC CHECKSUMS:
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
   libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
   MAKVONotificationCenter: eddfb85e77040323ee43a0fddbe616926ec005a8
-  SDWebImage: b42db92951f9d565c55f1d7f1d5efe47e33a7515
-  SRGMediaPlayer: 065aeab0f0e59776b7d4121dae92cddabc1f618a
-  TransitionKit: 5c9001a77acc409d71f26a4eba0159cf8619c418
+  SDWebImage: 7d9fe229266696de91eadf840c77ca15efd4bbd2
+  SRGMediaPlayer: 12cbc75ff56fdc33cb885ddb863b53d633d13629
+  TransitionKit: 9ceccda4cd0cdc0a05ef85eb235e5a3292c3c250
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 2273d7c51bf706b67e95e5792a0750c59c7b4a34
+
+COCOAPODS: 1.0.1
