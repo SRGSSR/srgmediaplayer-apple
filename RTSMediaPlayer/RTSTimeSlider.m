@@ -7,7 +7,7 @@
 #import "RTSTimeSlider.h"
 
 #import "NSBundle+RTSMediaPlayer.h"
-#import "RTSMediaPlayerLogger.h"
+#import "RTSMediaPlayerLogger+Private.h"
 #import "UIBezierPath+RTSMediaPlayerUtils.h"
 
 #import <SRGMediaPlayer/RTSMediaPlayerController.h>

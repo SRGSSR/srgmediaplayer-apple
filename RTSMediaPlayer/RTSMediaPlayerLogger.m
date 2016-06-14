@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSMediaPlayerLogger.h"
+#import "RTSMediaPlayerLogger+Private.h"
 
 #pragma clang diagnostic ignored "-Wformat-nonliteral"
 
