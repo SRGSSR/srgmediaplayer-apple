@@ -12,7 +12,7 @@
 		9F598B391B305FC400201366 /* RTSPlaybackActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F598B381B305FC400201366 /* RTSPlaybackActivityIndicatorView.m */; };
 		9F598B3A1B305FD000201366 /* RTSPlaybackActivityIndicatorView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9F598B371B305FC400201366 /* RTSPlaybackActivityIndicatorView.h */; };
 		9F8A80081B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F8A80071B204A0C00EF2E86 /* UIBezierPath+RTSMediaPlayerUtils.m */; };
-		9F8D26521B39B72500503613 /* RTSMediaPlayerLogger.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2332DA51B287BDA00AA21BB /* RTSMediaPlayerLogger.h */; };
+		9F8D26521B39B72500503613 /* RTSMediaPlayerLogger+Private.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C2332DA51B287BDA00AA21BB /* RTSMediaPlayerLogger+Private.h */; };
 		9F8D26531B39B72500503613 /* RTSPeriodicTimeObserver.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E616272A1AF1F5D2007FA568 /* RTSPeriodicTimeObserver.h */; };
 		9FFFA9E01B25C5A0000E8501 /* SRGMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C201D8F81A9DC1A40016C629 /* SRGMediaPlayer.h */; };
 		9FFFA9E11B25C5A0000E8501 /* RTSMediaPlayerConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9FAD24AD1B1DD28C00B6D3E9 /* RTSMediaPlayerConstants.h */; };
@@ -98,7 +98,7 @@
 				E6977F8C1BFDFFBD008692A8 /* RTSMediaPlayerVersion.h in CopyFiles */,
 				E6C2F4A31BE89F1F0003DEC6 /* RTSPictureInPictureButton.h in CopyFiles */,
 				E6C3EB551B416279009C1BFE /* RTSActivityGestureRecognizer.h in CopyFiles */,
-				9F8D26521B39B72500503613 /* RTSMediaPlayerLogger.h in CopyFiles */,
+				9F8D26521B39B72500503613 /* RTSMediaPlayerLogger+Private.h in CopyFiles */,
 				9F8D26531B39B72500503613 /* RTSPeriodicTimeObserver.h in CopyFiles */,
 				9F598B3A1B305FD000201366 /* RTSPlaybackActivityIndicatorView.h in CopyFiles */,
 				9FFFA9E01B25C5A0000E8501 /* SRGMediaPlayer.h in CopyFiles */,
@@ -163,7 +163,7 @@
 		C2150B471AD4007C004A08CE /* RTSMediaPlayerError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerError.h; sourceTree = "<group>"; };
 		C2246DEA1AC1C570000E03C7 /* RTSActivityGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSActivityGestureRecognizer.h; sourceTree = "<group>"; };
 		C2246DEB1AC1C570000E03C7 /* RTSActivityGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSActivityGestureRecognizer.m; sourceTree = "<group>"; };
-		C2332DA51B287BDA00AA21BB /* RTSMediaPlayerLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerLogger.h; sourceTree = "<group>"; };
+		C2332DA51B287BDA00AA21BB /* RTSMediaPlayerLogger+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTSMediaPlayerLogger+Private.h"; sourceTree = "<group>"; };
 		C2332DA61B287BDA00AA21BB /* RTSMediaPlayerLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerLogger.m; sourceTree = "<group>"; };
 		C2731F4F1AD6A69D00434743 /* NSBundle+RTSMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+RTSMediaPlayer.h"; sourceTree = "<group>"; };
 		C2731F501AD6A69D00434743 /* NSBundle+RTSMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+RTSMediaPlayer.m"; sourceTree = "<group>"; };
@@ -298,7 +298,7 @@
 				C2150B471AD4007C004A08CE /* RTSMediaPlayerError.h */,
 				C288F49D1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.h */,
 				C288F49E1AD810B800D01C01 /* RTSMediaPlayerIconTemplate.m */,
-				C2332DA51B287BDA00AA21BB /* RTSMediaPlayerLogger.h */,
+				C2332DA51B287BDA00AA21BB /* RTSMediaPlayerLogger+Private.h */,
 				C2332DA61B287BDA00AA21BB /* RTSMediaPlayerLogger.m */,
 				E6977F891BFDFE4C008692A8 /* RTSMediaPlayerVersion.h */,
 				E6977F8A1BFDFE4C008692A8 /* RTSMediaPlayerVersion.m */,

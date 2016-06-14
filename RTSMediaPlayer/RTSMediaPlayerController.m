@@ -16,7 +16,7 @@
 #import "RTSMediaPlayerView.h"
 #import "RTSPeriodicTimeObserver.h"
 #import "RTSActivityGestureRecognizer.h"
-#import "RTSMediaPlayerLogger.h"
+#import "RTSMediaPlayerLogger+Private.h"
 
 static const void * const RTSMediaPlayerPictureInPicturePossibleContext = &RTSMediaPlayerPictureInPicturePossibleContext;
 static const void * const RTSMediaPlayerPictureInPictureActiveContext = &RTSMediaPlayerPictureInPictureActiveContext;
