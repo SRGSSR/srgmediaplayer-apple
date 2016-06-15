@@ -188,7 +188,7 @@
 	style.alignment = NSTextAlignmentCenter;
 	
 	return @{ NSFontAttributeName : [UIFont boldSystemFontOfSize:14.0f],
-			  NSForegroundColorAttributeName : [UIColor whiteColor],
+			  NSForegroundColorAttributeName : self.tintColor,
 			  NSParagraphStyleAttributeName: style };
 }
 
@@ -204,7 +204,7 @@
 	style.lineBreakMode = NSLineBreakByTruncatingTail;
 	
 	return @{ NSFontAttributeName : [UIFont systemFontOfSize:12.0f],
-			  NSForegroundColorAttributeName : [UIColor lightGrayColor],
+			  NSForegroundColorAttributeName : self.tintColor,
 			  NSParagraphStyleAttributeName: style };
 }
 
