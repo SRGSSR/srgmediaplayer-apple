@@ -104,8 +104,9 @@
 	CGFloat shapeSeparatorDelta = 5.0f;
 	CGFloat quadCurveHeight = 20.0f;
 	
-	CGFloat maxWidth = CGRectGetWidth(self.bounds) - 2*lineWidth;
-	CGFloat maxHeight = CGRectGetHeight(self.bounds) - stringRectHeight - quadCurveHeight - shapeSeparatorDelta - 10.;
+	static const CGFloat kFillFactor = 0.6;
+	CGFloat maxWidth = CGRectGetWidth(self.bounds) * kFillFactor - 2*lineWidth;
+	CGFloat maxHeight = CGRectGetHeight(self.bounds) * kFillFactor - stringRectHeight - quadCurveHeight - shapeSeparatorDelta - 10.;
 	CGFloat aspectRatio = 16./10.0;
 	
 	if (maxWidth < maxHeight * aspectRatio) {
