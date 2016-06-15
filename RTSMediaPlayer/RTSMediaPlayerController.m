@@ -847,15 +847,21 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
 						[self play];
 					}
 					else {
-						// Not using [self seek...] to avoid triggering undesirable state events.
-						[self.player seekToTime:[self.startTimeValue CMTimeValue]
-                                toleranceBefore:kCMTimeZero
-                                 toleranceAfter:kCMTimeZero
-							  completionHandler:^(BOOL finished) {
-								  if (finished) {
-									  [self play];
-								  }
-							  }];
+						CMTime time = [self.startTimeValue CMTimeValue];
+						if (CMTIME_IS_VALID(time)) {
+							// Not using [self seek...] to avoid triggering undesirable state events.
+							[self.player seekToTime:time
+									toleranceBefore:kCMTimeZero
+									 toleranceAfter:kCMTimeZero
+								  completionHandler:^(BOOL finished) {
+									  if (finished) {
+										  [self play];
+									  }
+								  }];
+						}
+						else {
+							[self play];
+						}
 					}
 				}
                 else if ([self.stateMachine.currentState isEqual:self.seekingState]) {

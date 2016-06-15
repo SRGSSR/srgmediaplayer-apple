@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RTSMediaPlayerViewController">
@@ -29,7 +29,6 @@
             <subviews>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="d2t-q1-HOm" customClass="RTSPlaybackActivityIndicatorView">
                     <rect key="frame" x="290" y="290" width="20" height="20"/>
-                    <animations/>
                 </activityIndicatorView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqK-gI-E5v" userLabel="Navigation Bar View">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
@@ -39,7 +38,6 @@
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xXz-Ch-pSc">
                                     <rect key="frame" x="8" y="0.0" width="43" height="30"/>
-                                    <animations/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                     <state key="normal" title="Done">
                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -58,7 +56,6 @@
                                     <subviews>
                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dbP-gV-yjr" customClass="RTSTimeSlider">
                                             <rect key="frame" x="56" y="0.0" width="426" height="31"/>
-                                            <animations/>
                                             <connections>
                                                 <action selector="seek:" destination="-1" eventType="valueChanged" id="Kez-Th-9XW"/>
                                                 <outlet property="timeLeftValueLabel" destination="OdH-jj-nfU" id="zcx-hm-PNg"/>
@@ -67,7 +64,6 @@
                                         </slider>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OdH-jj-nfU">
                                             <rect key="frame" x="488" y="7" width="45" height="15.5"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="45" id="G8R-4I-uxy"/>
                                             </constraints>
@@ -76,7 +72,6 @@
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzH-xw-G6y">
                                             <rect key="frame" x="5" y="7" width="45" height="15.5"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="45" id="LD7-6d-ZRT"/>
                                             </constraints>
@@ -85,17 +80,14 @@
                                         </label>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="z3p-uA-NWq">
                                             <rect key="frame" x="173.5" y="5" width="20" height="20"/>
-                                            <animations/>
                                             <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </activityIndicatorView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUB-n6-aT0">
                                             <rect key="frame" x="207.5" y="4" width="71" height="19.5"/>
-                                            <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="OdH-jj-nfU" firstAttribute="leading" secondItem="dbP-gV-yjr" secondAttribute="trailing" constant="8" id="8qr-K5-vcv"/>
@@ -112,7 +104,6 @@
                                     </constraints>
                                 </view>
                             </subviews>
-                            <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="ljr-RB-scX" firstAttribute="leading" secondItem="xXz-Ch-pSc" secondAttribute="trailing" constant="8" id="8SW-74-aPZ"/>
@@ -126,7 +117,6 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" red="0.40000000596046448" green="0.40000000596046448" blue="0.40000000596046448" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="0ft-QU-H1T"/>
@@ -135,12 +125,16 @@
                         <constraint firstItem="BEG-pM-Pvu" firstAttribute="leading" secondItem="kqK-gI-E5v" secondAttribute="leading" id="fuo-hn-ij3"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9bq-Le-IXI" customClass="RTSAirplayOverlayView">
+                    <rect key="frame" x="0.0" y="50" width="600" height="470"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="0.34999999999999998" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m4e-aB-8GY" userLabel="Bottom Bar View">
                     <rect key="frame" x="0.0" y="520" width="600" height="80"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="orZ-GR-Obh" customClass="RTSMediaPlayerPlaybackButton">
                             <rect key="frame" x="289" y="15" width="22" height="22"/>
-                            <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="Jf3-q0-NQb"/>
@@ -160,7 +154,6 @@
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="14B-nw-cM3" customClass="RTSVolumeView">
                             <rect key="frame" x="8" y="50" width="584" height="30"/>
-                            <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="v8C-if-1dy"/>
@@ -168,14 +161,12 @@
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NH0-ev-1HR" userLabel="PIP Button" customClass="RTSPictureInPictureButton">
                             <rect key="frame" x="555" y="9" width="43" height="34"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="43" id="CnR-zb-Iat"/>
                                 <constraint firstAttribute="height" constant="34" id="lAW-4N-dHl"/>
                             </constraints>
                         </button>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" red="0.40000000596046448" green="0.40000000596046448" blue="0.40000000596046448" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="orZ-GR-Obh" firstAttribute="top" secondItem="m4e-aB-8GY" secondAttribute="top" constant="15" id="79V-2E-3vt"/>
@@ -190,7 +181,6 @@
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2J-Sq-TNH" userLabel="Back To Live Button">
                     <rect key="frame" x="491" y="50" width="95" height="34"/>
-                    <animations/>
                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="0.52000000000000002" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="102" id="osw-dO-Mt3"/>
@@ -211,15 +201,18 @@
                     </connections>
                 </button>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="kqK-gI-E5v" secondAttribute="trailing" id="13J-fR-tYI"/>
                 <constraint firstAttribute="trailing" secondItem="f2J-Sq-TNH" secondAttribute="trailing" constant="14" id="5l4-9y-EDf"/>
                 <constraint firstItem="m4e-aB-8GY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EjJ-Y6-i5x"/>
                 <constraint firstAttribute="trailing" secondItem="m4e-aB-8GY" secondAttribute="trailing" id="Ek5-aN-GFQ"/>
+                <constraint firstAttribute="trailing" secondItem="9bq-Le-IXI" secondAttribute="trailing" id="Hbk-eC-357"/>
+                <constraint firstItem="m4e-aB-8GY" firstAttribute="top" secondItem="9bq-Le-IXI" secondAttribute="bottom" id="LF2-Y2-9Wn"/>
+                <constraint firstItem="9bq-Le-IXI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ZGq-fw-geu"/>
                 <constraint firstItem="kqK-gI-E5v" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="b1o-Vb-QQk"/>
                 <constraint firstItem="f2J-Sq-TNH" firstAttribute="top" secondItem="kqK-gI-E5v" secondAttribute="bottom" id="d7a-A9-gqQ"/>
+                <constraint firstItem="9bq-Le-IXI" firstAttribute="top" secondItem="kqK-gI-E5v" secondAttribute="bottom" id="fnV-xm-WWN"/>
                 <constraint firstAttribute="centerX" secondItem="d2t-q1-HOm" secondAttribute="centerX" id="ghL-wx-Tv8"/>
                 <constraint firstAttribute="bottom" secondItem="m4e-aB-8GY" secondAttribute="bottom" id="mxb-hA-Ktf"/>
                 <constraint firstAttribute="centerY" secondItem="d2t-q1-HOm" secondAttribute="centerY" id="qRh-aH-gf7"/>
