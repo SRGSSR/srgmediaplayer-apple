@@ -6,6 +6,7 @@
 
 #import "AppDelegate.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
 
 @interface UIImage (Tinting)
@@ -70,6 +71,8 @@
 	ttyLogger.colorsEnabled = YES;
 	ttyLogger.logFormatter = [LogFormatter new];
 	[DDLog addLogger:ttyLogger withLevel:DDLogLevelInfo];
+	
+	[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 	
 	UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
 	
