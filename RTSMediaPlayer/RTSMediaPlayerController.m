@@ -133,11 +133,6 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	self.periodicTimeObservers = [NSMutableDictionary dictionary];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(applicationWillResignActive:)
-												 name:UIApplicationWillResignActiveNotification
-											   object:nil];
-	
 	[self.stateMachine activate];
 
 	self.liveTolerance = RTSMediaLiveDefaultTolerance;
@@ -1161,16 +1156,6 @@ static void LogProperties(id object)
 		_overlayViewsHidingDelay = flag;
 		[self didChangeValueForKey:@"overlayViewsHidingDelay"];
 		[self resetIdleTimer];
-	}
-}
-
-#pragma mark - Notifications
-
-- (void)applicationWillResignActive:(NSNotification *)notification
-{
-	if ([self mediaType] == RTSMediaTypeVideo && !self.pictureInPictureController.isPictureInPictureActive) {
-        [self.player pause];
-        [self fireEvent:self.pauseEvent userInfo:nil];
 	}
 }
 
