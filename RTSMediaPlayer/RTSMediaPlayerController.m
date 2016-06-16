@@ -392,6 +392,8 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 
 - (void)play
 {
+    self.playScheduled = NO;
+    
 	if(!self.identifier) {
 		return;
 	}
@@ -832,13 +834,15 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    BOOL playScheduled = self.playScheduled;
+    self.playScheduled = NO;
+    
 	if (context == AVPlayerItemStatusContext) {
 		AVPlayer *player = object;
 		AVPlayerItem *playerItem = player.currentItem;
 		switch (playerItem.status) {
 			case AVPlayerItemStatusReadyToPlay:
-                if (self.playScheduled) {
-                    self.playScheduled = NO;
+                if (playScheduled) {
                     [self fireEvent:self.playEvent userInfo:nil];
 					[self play];
                 }
@@ -847,25 +851,19 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
 						[self play];
 					}
 					else {
-						CMTime time = [self.startTimeValue CMTimeValue];
-						if (CMTIME_IS_VALID(time)) {
-							// Not using [self seek...] to avoid triggering undesirable state events.
-							[self.player seekToTime:time
-									toleranceBefore:kCMTimeZero
-									 toleranceAfter:kCMTimeZero
-								  completionHandler:^(BOOL finished) {
-									  if (finished) {
-										  [self play];
-									  }
-								  }];
-						}
-						else {
-							[self play];
-						}
+						// Not using [self seek...] to avoid triggering undesirable state events.
+						[self.player seekToTime:[self.startTimeValue CMTimeValue]
+                                toleranceBefore:kCMTimeZero
+                                 toleranceAfter:kCMTimeZero
+							  completionHandler:^(BOOL finished) {
+								  if (finished) {
+									  [self play];
+								  }
+							  }];
 					}
 				}
                 else if ([self.stateMachine.currentState isEqual:self.seekingState]) {
-                    [self.player play];
+                    [self play];
                 }
 				break;
 			case AVPlayerItemStatusFailed:
@@ -937,7 +935,7 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
 		}
 		
 		if ([self.stateMachine.currentState isEqual:self.stalledState]) {
-			[player play];
+			[self play];
 		}
 	}
     else if (context == AVPlayerItemBufferEmptyContext) {
