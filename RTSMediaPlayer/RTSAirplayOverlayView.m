@@ -11,7 +11,7 @@
 @property (nonatomic, strong) MPVolumeView *volumeView;
 @end
 
-static const CGFloat RTSAirplayOverlayViewDefaultFillFactor;
+static const CGFloat RTSAirplayOverlayViewDefaultFillFactor = 0.6f;
 
 @implementation RTSAirplayOverlayView
 
@@ -76,10 +76,10 @@ static const CGFloat RTSAirplayOverlayViewDefaultFillFactor;
 - (void)setFillFactor:(CGFloat)fillFactor
 {
     if (fillFactor <= 0.f) {
-        fillFactor = RTSAirplayOverlayViewDefaultFillFactor;
+        _fillFactor = RTSAirplayOverlayViewDefaultFillFactor;
     }
     else if (fillFactor > 1.f) {
-        fillFactor = 1.f;
+        _fillFactor = 1.f;
     }
     else {
         _fillFactor = fillFactor;
