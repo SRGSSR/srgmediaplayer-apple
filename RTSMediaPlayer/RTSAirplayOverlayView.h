@@ -44,6 +44,11 @@
 @interface RTSAirplayOverlayView : UIView
 
 /**
+ * A filling factor for the overlay contents, > 0 and <= 1 (full frame). Defaults to 0.6
+ */
+@property (nonatomic) CGFloat fillFactor;
+
+/**
  *  An optional data source for customization
  */
 @property (nonatomic, weak) IBOutlet id<RTSAirplayOverlayViewDataSource> dataSource;

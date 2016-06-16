@@ -11,6 +11,8 @@
 @property (nonatomic, strong) MPVolumeView *volumeView;
 @end
 
+static const CGFloat RTSAirplayOverlayViewDefaultFillFactor;
+
 @implementation RTSAirplayOverlayView
 
 - (id)initWithFrame:(CGRect)frame
@@ -42,6 +44,7 @@
 	self.contentMode = UIViewContentModeRedraw;
 	self.userInteractionEnabled = NO;
 	self.hidden = YES;
+    self.fillFactor = RTSAirplayOverlayViewDefaultFillFactor;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(wirelessRouteActiveDidChange:)
@@ -68,6 +71,21 @@
 	}
 	
 	return RTSMediaPlayerLocalizedString(@"External device", nil);
+}
+
+- (void)setFillFactor:(CGFloat)fillFactor
+{
+    if (fillFactor <= 0.f) {
+        fillFactor = RTSAirplayOverlayViewDefaultFillFactor;
+    }
+    else if (fillFactor > 1.f) {
+        fillFactor = 1.f;
+    }
+    else {
+        _fillFactor = fillFactor;
+    }
+    
+    [self setNeedsDisplay];
 }
 
 
@@ -104,9 +122,8 @@
 	CGFloat shapeSeparatorDelta = 5.0f;
 	CGFloat quadCurveHeight = 20.0f;
 	
-	static const CGFloat kFillFactor = 0.6;
-	CGFloat maxWidth = CGRectGetWidth(self.bounds) * kFillFactor - 2*lineWidth;
-	CGFloat maxHeight = CGRectGetHeight(self.bounds) * kFillFactor - stringRectHeight - quadCurveHeight - shapeSeparatorDelta - 10.;
+	CGFloat maxWidth = CGRectGetWidth(self.bounds) * self.fillFactor - 2*lineWidth;
+	CGFloat maxHeight = CGRectGetHeight(self.bounds) * self.fillFactor - stringRectHeight - quadCurveHeight - shapeSeparatorDelta - 10.;
 	CGFloat aspectRatio = 16./10.0;
 	
 	if (maxWidth < maxHeight * aspectRatio) {
