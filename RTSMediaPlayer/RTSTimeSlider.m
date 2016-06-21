@@ -74,11 +74,6 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	self.maximumValue = 0.;
 	self.value = 0.;
 	
-	self.minimumTrackTintColor = [UIColor whiteColor];
-	self.maximumTrackTintColor = [UIColor blackColor];
-	
-	self.thumbTintColor = [UIColor whiteColor];
-	
 	UIImage *triangle = [self emptyImage];
 	UIImage *image = [triangle resizableImageWithCapInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
 	
@@ -110,7 +105,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (UIColor *) thumbTintColor
 {
-	return self.overriddenThumbTintColor;
+	return self.overriddenThumbTintColor ?: [UIColor whiteColor];
 }
 
 - (void) setThumbTintColor:(UIColor *)thumbTintColor
@@ -120,7 +115,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (UIColor *) minimumTrackTintColor
 {
-	return self.overriddenMinimumTrackTintColor;
+	return self.overriddenMinimumTrackTintColor ?: [UIColor whiteColor];
 }
 
 - (void) setMinimumTrackTintColor:(UIColor *)minimumTrackTintColor
@@ -130,7 +125,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (UIColor *) maximumTrackTintColor
 {
-	return self.overriddenMaximumTrackTintColor;
+	return self.overriddenMaximumTrackTintColor ?: [UIColor blackColor];
 }
 
 - (void) setMaximumTrackTintColor:(UIColor *)maximumTrackTintColor
