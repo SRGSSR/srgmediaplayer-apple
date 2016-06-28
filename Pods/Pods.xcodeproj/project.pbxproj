@@ -1562,23 +1562,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		18CE948D8BEE10D54E1666437651141A /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 650D1B647FC3C89E214E823A17232A26 /* SRGMediaPlayer.xcconfig */;
-			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/SRGMediaPlayer";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/SRGMediaPlayer/ResourceBundle-SRGMediaPlayer-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = SRGMediaPlayer;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
 		210AD7BBAAF102516A30F60A6B0EDF1D /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 54C8ED03984B73BC30B0F3B37E521F24 /* TransitionKit.xcconfig */;
@@ -1600,15 +1583,15 @@
 			};
 			name = Release;
 		};
-		3357EDAECAC953CB945FB32B4C04C2F2 /* Release */ = {
+		23EFF0A63FF9EC06CCFE220889EFFC91 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9E996A8B47448FDA2EC3A3E38C64D603 /* Pods-SRGMediaPlayer Demo.release.xcconfig */;
+			baseConfigurationReference = B2A9418E6E1CBB657D99ADB490EF8C27 /* Pods-SRGMediaPlayer.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
@@ -1621,7 +1604,66 @@
 			};
 			name = Release;
 		};
-		3FA2475660FFC880302AD18E29B2E5FC /* Debug */ = {
+		2B5B7B4B1FB56343FFFF3265680151E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 650D1B647FC3C89E214E823A17232A26 /* SRGMediaPlayer.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SRGMediaPlayer/SRGMediaPlayer-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		3058FE0809AA17BE52C6CE9862436159 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EB12AA2AB6F35CA54A11CACA9F25F4E /* Pods-SRGMediaPlayerTests.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		426909BFDE4CCB24B499E387D4737D71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 650D1B647FC3C89E214E823A17232A26 /* SRGMediaPlayer.xcconfig */;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/SRGMediaPlayer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/SRGMediaPlayer/ResourceBundle-SRGMediaPlayer-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		47BEF9D903506B003EA5C2B249729489 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1656,31 +1698,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
-			};
-			name = Debug;
-		};
-		4C9227413DCC6A89A7ADCF340263434C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 650D1B647FC3C89E214E823A17232A26 /* SRGMediaPlayer.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SRGMediaPlayer/SRGMediaPlayer-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -1768,7 +1789,24 @@
 			};
 			name = Debug;
 		};
-		6CAD5ABF084B32840FBEB2D4F45BA3F7 /* Debug */ = {
+		7318C6DD16B4F985F87DEA3730779CA1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 650D1B647FC3C89E214E823A17232A26 /* SRGMediaPlayer.xcconfig */;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/SRGMediaPlayer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/SRGMediaPlayer/ResourceBundle-SRGMediaPlayer-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		75D1B6B1451297D5A3FC728051D93670 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5AA3623EE64490CB68A19227D539948C /* Pods-SRGMediaPlayer Demo.debug.xcconfig */;
 			buildSettings = {
@@ -1776,7 +1814,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
@@ -1788,27 +1826,6 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
-		};
-		87D4AC6D6D18C14A6B8922BC188058CC /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B324E7A3BD65BFFDD1DED90AFDD85B4 /* Pods-SRGMediaPlayerTests.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
 		};
 		88D8B6B1AAE6C839D654AFAAB1F6BA7C /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1831,22 +1848,64 @@
 			};
 			name = Release;
 		};
-		A3CFF987A4403B367B5C610371F26D75 /* Debug */ = {
+		A41C10F8F4C2FBF43EA6166151DFF918 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 650D1B647FC3C89E214E823A17232A26 /* SRGMediaPlayer.xcconfig */;
 			buildSettings = {
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/SRGMediaPlayer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/SRGMediaPlayer/ResourceBundle-SRGMediaPlayer-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = SRGMediaPlayer;
+				GCC_PREFIX_HEADER = "Target Support Files/SRGMediaPlayer/SRGMediaPlayer-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
 			};
-			name = Debug;
+			name = Release;
+		};
+		AAF678CED40D3499169D10F63CA0719E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
 		};
 		C4F93314109A719FA8EEAD864FCDD452 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1869,15 +1928,15 @@
 			};
 			name = Release;
 		};
-		C9F3638283006F4B2BA0960C747C669B /* Debug */ = {
+		C7ED1547DDF8124220DB7A7F988FB2B3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EB12AA2AB6F35CA54A11CACA9F25F4E /* Pods-SRGMediaPlayerTests.debug.xcconfig */;
+			baseConfigurationReference = 42AAA652E46632E1238A8ED869A274D3 /* Pods-SRGMediaPlayer.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
@@ -1889,6 +1948,48 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
+		};
+		C823FFEC2EB7B77F92D88C0742CA0BDC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9E996A8B47448FDA2EC3A3E38C64D603 /* Pods-SRGMediaPlayer Demo.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		CDA6328435652F9494D9CFA6469285A5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5B324E7A3BD65BFFDD1DED90AFDD85B4 /* Pods-SRGMediaPlayerTests.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
 		};
 		CDADB525FA663B294E9384352DBDABFF /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1932,48 +2033,6 @@
 			};
 			name = Debug;
 		};
-		D6DEE69BAADACD6455189FFE8501DDFD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 42AAA652E46632E1238A8ED869A274D3 /* Pods-SRGMediaPlayer.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		DAAB053E720AD7312CA131EF4D4F247C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 650D1B647FC3C89E214E823A17232A26 /* SRGMediaPlayer.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SRGMediaPlayer/SRGMediaPlayer-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		DBA1D34F78392B84A0772088BA7543F6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 25CB57A08D7FF53925935825B732B16D /* MAKVONotificationCenter.xcconfig */;
@@ -1995,73 +2054,14 @@
 			};
 			name = Release;
 		};
-		EF1040F484312C90455FECB4E16CA3E3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2A9418E6E1CBB657D99ADB490EF8C27 /* Pods-SRGMediaPlayer.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		F325026B55060D3B22BEC0BAB5FA7344 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"POD_CONFIGURATION_RELEASE=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = "${SRCROOT}/../build";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		1E3CC3940B5068F54FDF29B4EB62C53E /* Build configuration list for PBXNativeTarget "Pods-SRGMediaPlayerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C9F3638283006F4B2BA0960C747C669B /* Debug */,
-				87D4AC6D6D18C14A6B8922BC188058CC /* Release */,
+				3058FE0809AA17BE52C6CE9862436159 /* Debug */,
+				CDA6328435652F9494D9CFA6469285A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2069,8 +2069,8 @@
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3FA2475660FFC880302AD18E29B2E5FC /* Debug */,
-				F325026B55060D3B22BEC0BAB5FA7344 /* Release */,
+				47BEF9D903506B003EA5C2B249729489 /* Debug */,
+				AAF678CED40D3499169D10F63CA0719E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2078,8 +2078,8 @@
 		5C9895E50F1B49C846E1B12AE5AE383C /* Build configuration list for PBXNativeTarget "Pods-SRGMediaPlayer Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6CAD5ABF084B32840FBEB2D4F45BA3F7 /* Debug */,
-				3357EDAECAC953CB945FB32B4C04C2F2 /* Release */,
+				75D1B6B1451297D5A3FC728051D93670 /* Debug */,
+				C823FFEC2EB7B77F92D88C0742CA0BDC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2105,8 +2105,8 @@
 		A28542EE086EB7AC0A343C26254CD3DA /* Build configuration list for PBXNativeTarget "Pods-SRGMediaPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D6DEE69BAADACD6455189FFE8501DDFD /* Debug */,
-				EF1040F484312C90455FECB4E16CA3E3 /* Release */,
+				C7ED1547DDF8124220DB7A7F988FB2B3 /* Debug */,
+				23EFF0A63FF9EC06CCFE220889EFFC91 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2123,8 +2123,8 @@
 		C3E39E9AE06DF6167260B59DB4609DAD /* Build configuration list for PBXNativeTarget "SRGMediaPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4C9227413DCC6A89A7ADCF340263434C /* Debug */,
-				DAAB053E720AD7312CA131EF4D4F247C /* Release */,
+				2B5B7B4B1FB56343FFFF3265680151E6 /* Debug */,
+				A41C10F8F4C2FBF43EA6166151DFF918 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2141,8 +2141,8 @@
 		D6E5F9424E337D487FD18F8AE3708E4D /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-SRGMediaPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A3CFF987A4403B367B5C610371F26D75 /* Debug */,
-				18CE948D8BEE10D54E1666437651141A /* Release */,
+				426909BFDE4CCB24B499E387D4737D71 /* Debug */,
+				7318C6DD16B4F985F87DEA3730779CA1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
