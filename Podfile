@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '7.0'
+platform :ios, '8.0'
 inhibit_all_warnings!
 
 workspace 'SRGMediaPlayer'
@@ -26,8 +26,8 @@ target 'SRGMediaPlayer' do
 end
 
 target 'SRGMediaPlayer Demo' do
-  pod 'CocoaLumberjack', '2.0.0'
-  pod 'SDWebImage', '3.8.0'
+  pod 'CocoaLumberjack', '~> 2.3.0'
+  pod 'SDWebImage', '~> 3.8.0'
   
   xcodeproj 'RTSMediaPlayer Demo/SRGMediaPlayer Demo.xcodeproj'
 end
