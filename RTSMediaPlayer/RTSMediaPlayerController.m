@@ -477,6 +477,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		return;
 	}
 	
+	// Avoid exception: "AVPlayerItem cannot service a seek request with a completion handler until its status is AVPlayerItemStatusReadyToPlay"
+	if (!self.player || self.player.status != AVPlayerItemStatusReadyToPlay) {
+		return;
+  	}
+	
 	if (self.stateMachine.currentState != self.seekingState) {
 		[self fireEvent:self.seekEvent userInfo:nil];
 	}
