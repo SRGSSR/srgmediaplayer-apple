@@ -875,7 +875,13 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
         self.startTimeValue = nil;
 	}
 	else if (context == AVPlayerItemLoadedTimeRangesContext) {
-		NSArray *timeRanges = (NSArray *)[change objectForKey:NSKeyValueChangeNewKey];
+		// Might happen that we get NSNull
+		id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+		if (![newValue isKindOfClass:[NSArray class]]) {
+			return;
+		}
+		
+		NSArray *timeRanges = newValue;
 		if (timeRanges.count == 0) {
 			return;
 		}
