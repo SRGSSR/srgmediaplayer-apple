@@ -241,6 +241,9 @@
 
 /**
  *  The media type (audio / video). See `RTSMediaType` for possible values
+ *
+ *  Warning: Is currently unreliable when Airplay playback has been started before the media is played
+ *           Related to https://openradar.appspot.com/27079167
  */
 @property (nonatomic, readonly) RTSMediaType mediaType;
 
