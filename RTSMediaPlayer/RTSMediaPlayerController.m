@@ -728,7 +728,7 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
 	}
 	
 	CMTime currentTime = self.player.currentItem.currentTime;
-	CMTime timeToAdd   = CMTimeMake(1, 10);
+	CMTime timeToAdd   = self.player.externalPlaybackActive ? CMTimeMake(8, 10) : CMTimeMake(1, 10);
 	CMTime resultTime  = CMTimeAdd(currentTime,timeToAdd);
 	
 	@weakify(self)
