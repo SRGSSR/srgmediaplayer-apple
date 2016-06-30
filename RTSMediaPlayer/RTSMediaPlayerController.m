@@ -728,15 +728,20 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
 	}
 	
 	CMTime currentTime = self.player.currentItem.currentTime;
-	CMTime timeToAdd   = self.player.externalPlaybackActive ? CMTimeMake(8, 10) : CMTimeMake(1, 10);
+	CMTime timeToAdd   = CMTimeMake(1, 10);
 	CMTime resultTime  = CMTimeAdd(currentTime,timeToAdd);
 	
 	@weakify(self)
 	self.playbackStartObserver = [self.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:resultTime]] queue:NULL usingBlock:^{
 		@strongify(self)
-		if (![self.stateMachine.currentState isEqual:self.playingState] && ![self.stateMachine.currentState isEqual:self.endedState]) {
-			[self fireEvent:self.playEvent userInfo:nil];
-		}
+		
+		// Track information is not immediately available in some cases. Wait just a little before actually sending the playing event
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+			if (![self.stateMachine.currentState isEqual:self.playingState] && ![self.stateMachine.currentState isEqual:self.endedState]) {
+				[self fireEvent:self.playEvent userInfo:nil];
+			}
+		});
+		
 		[self.player removeTimeObserver:self.playbackStartObserver];
 		self.playbackStartObserver = nil;
 	}];
