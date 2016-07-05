@@ -105,10 +105,7 @@
 	_selectedIndex = selectedIndex;
 	
 	RTSMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[selectedIndex];
-	mainMediaPlayerController.playerCustomizationBlock = ^(AVPlayer *player) {
-		player.allowsExternalPlayback = YES;
-	};
-	mainMediaPlayerController.player.allowsExternalPlayback = YES;
+	mainMediaPlayerController.allowsExternalPlayback = YES;
 	[self attachPlayer:mainMediaPlayerController toView:self.mainPlayerView];
 	
 	[self.playerViewsContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -126,10 +123,7 @@
 		[self.playerViewsContainer addSubview:playerView];
 		
 		RTSMediaPlayerController *thumbnailMediaPlayerController = self.mediaPlayerControllers[index];
-		thumbnailMediaPlayerController.playerCustomizationBlock = ^(AVPlayer *player) {
-			player.allowsExternalPlayback = NO;
-		};
-		thumbnailMediaPlayerController.player.allowsExternalPlayback = NO;
+		thumbnailMediaPlayerController.allowsExternalPlayback = NO;
 		[self attachPlayer:thumbnailMediaPlayerController toView:playerView];
 	}
 }

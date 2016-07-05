@@ -107,6 +107,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @synthesize idleTimer = _idleTimer;
 @synthesize identifier = _identifier;
 @synthesize muted = _muted;
+@synthesize allowsExternalPlayback = _allowsExternalPlayback;
+@synthesize usesExternalPlaybackWhileExternalScreenIsActive = _usesExternalPlaybackWhileExternalScreenIsActive;
 
 #pragma mark - Initialization
 
@@ -129,6 +131,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	_identifier = identifier;
 	_dataSource = dataSource;
 	_overlaysVisible = YES;		// The player always open with visible overlays
+	_allowsExternalPlayback = YES;
+	_usesExternalPlaybackWhileExternalScreenIsActive = NO;
 	
 	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	self.periodicTimeObservers = [NSMutableDictionary dictionary];
@@ -279,11 +283,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		// The player observes its "currentItem.status" keyPath, see callback in `observeValueForKeyPath:ofObject:change:context:`
 		self.player = [AVPlayer playerWithURL:contentURL];
 		self.player.muted = _muted;
-		self.player.allowsExternalPlayback = YES;
-		self.player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
-		
+		self.player.allowsExternalPlayback = _allowsExternalPlayback;
+		self.player.usesExternalPlaybackWhileExternalScreenIsActive = _usesExternalPlaybackWhileExternalScreenIsActive;
 		self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-        self.playerCustomizationBlock ? self.playerCustomizationBlock(self.player) : nil;
 		
 		self.playerView.player = self.player;
 	}];
@@ -454,6 +456,28 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 - (BOOL)isMuted
 {
 	return _muted;
+}
+
+- (void)setAllowsExternalPlayback:(BOOL)allowsExternalPlayback
+{
+	_allowsExternalPlayback = allowsExternalPlayback;
+	self.player.allowsExternalPlayback = allowsExternalPlayback;
+}
+
+- (BOOL)allowsExternalPlayback
+{
+	return _allowsExternalPlayback;
+}
+
+- (void)setUsesExternalPlaybackWhileExternalScreenIsActive:(BOOL)usesExternalPlaybackWhileExternalScreenIsActive
+{
+	_usesExternalPlaybackWhileExternalScreenIsActive = usesExternalPlaybackWhileExternalScreenIsActive;
+	self.player.usesExternalPlaybackWhileExternalScreenIsActive = usesExternalPlaybackWhileExternalScreenIsActive;
+}
+
+- (BOOL)usesExternalPlaybackWhileExternalScreenIsActive
+{
+	return _usesExternalPlaybackWhileExternalScreenIsActive;
 }
 
 - (void)reset
