@@ -279,10 +279,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		// The player observes its "currentItem.status" keyPath, see callback in `observeValueForKeyPath:ofObject:change:context:`
 		self.player = [AVPlayer playerWithURL:contentURL];
 		self.player.muted = _muted;
-		
-		self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
 		self.player.allowsExternalPlayback = YES;
 		self.player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
+		
+		self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+        self.playerCustomizationBlock ? self.playerCustomizationBlock(self.player) : nil;
 		
 		self.playerView.player = self.player;
 	}];

@@ -72,6 +72,11 @@
 @property (readonly) AVPlayer *player;
 
 /**
+ *  Block which gets called right after player creation. Implement it to taylor player properties to your needs
+ */
+@property (nonatomic, copy) void (^playerCustomizationBlock)(AVPlayer *player);
+
+/**
  *  ------------------------
  *  @name Accessing the View
  *  ------------------------
