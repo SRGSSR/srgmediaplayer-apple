@@ -107,6 +107,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @synthesize idleTimer = _idleTimer;
 @synthesize identifier = _identifier;
 @synthesize muted = _muted;
+@synthesize allowsExternalPlayback = _allowsExternalPlayback;
+@synthesize usesExternalPlaybackWhileExternalScreenIsActive = _usesExternalPlaybackWhileExternalScreenIsActive;
 
 #pragma mark - Initialization
 
@@ -129,6 +131,8 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	_identifier = identifier;
 	_dataSource = dataSource;
 	_overlaysVisible = YES;		// The player always open with visible overlays
+	_allowsExternalPlayback = YES;
+	_usesExternalPlaybackWhileExternalScreenIsActive = NO;
 	
 	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	self.periodicTimeObservers = [NSMutableDictionary dictionary];
@@ -279,10 +283,9 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 		// The player observes its "currentItem.status" keyPath, see callback in `observeValueForKeyPath:ofObject:change:context:`
 		self.player = [AVPlayer playerWithURL:contentURL];
 		self.player.muted = _muted;
-		
+		self.player.allowsExternalPlayback = _allowsExternalPlayback;
+		self.player.usesExternalPlaybackWhileExternalScreenIsActive = _usesExternalPlaybackWhileExternalScreenIsActive;
 		self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-		self.player.allowsExternalPlayback = YES;
-		self.player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
 		
 		self.playerView.player = self.player;
 	}];
@@ -455,6 +458,28 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	return _muted;
 }
 
+- (void)setAllowsExternalPlayback:(BOOL)allowsExternalPlayback
+{
+	_allowsExternalPlayback = allowsExternalPlayback;
+	self.player.allowsExternalPlayback = allowsExternalPlayback;
+}
+
+- (BOOL)allowsExternalPlayback
+{
+	return _allowsExternalPlayback;
+}
+
+- (void)setUsesExternalPlaybackWhileExternalScreenIsActive:(BOOL)usesExternalPlaybackWhileExternalScreenIsActive
+{
+	_usesExternalPlaybackWhileExternalScreenIsActive = usesExternalPlaybackWhileExternalScreenIsActive;
+	self.player.usesExternalPlaybackWhileExternalScreenIsActive = usesExternalPlaybackWhileExternalScreenIsActive;
+}
+
+- (BOOL)usesExternalPlaybackWhileExternalScreenIsActive
+{
+	return _usesExternalPlaybackWhileExternalScreenIsActive;
+}
+
 - (void)reset
 {
     // Reset the PIP controller so that it gets lazily attached again. This forces a new player layer relationship,
@@ -476,6 +501,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
 	if (CMTIME_IS_INVALID(time)) {
 		return;
 	}
+	
+	// Avoid exception: "AVPlayerItem cannot service a seek request with a completion handler until its status is AVPlayerItemStatusReadyToPlay"
+	if (!self.player || self.player.status != AVPlayerItemStatusReadyToPlay) {
+		return;
+  	}
 	
 	if (self.stateMachine.currentState != self.seekingState) {
 		[self fireEvent:self.seekEvent userInfo:nil];
@@ -729,9 +759,14 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
 	@weakify(self)
 	self.playbackStartObserver = [self.player addBoundaryTimeObserverForTimes:@[[NSValue valueWithCMTime:resultTime]] queue:NULL usingBlock:^{
 		@strongify(self)
-		if (![self.stateMachine.currentState isEqual:self.playingState] && ![self.stateMachine.currentState isEqual:self.endedState]) {
-			[self fireEvent:self.playEvent userInfo:nil];
-		}
+		
+		// Track information is not immediately available in some cases. Wait just a little before actually sending the playing event
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+			if (![self.stateMachine.currentState isEqual:self.playingState] && ![self.stateMachine.currentState isEqual:self.endedState]) {
+				[self fireEvent:self.playEvent userInfo:nil];
+			}
+		});
+		
 		[self.player removeTimeObserver:self.playbackStartObserver];
 		self.playbackStartObserver = nil;
 	}];
@@ -870,7 +905,13 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
         self.startTimeValue = nil;
 	}
 	else if (context == AVPlayerItemLoadedTimeRangesContext) {
-		NSArray *timeRanges = (NSArray *)[change objectForKey:NSKeyValueChangeNewKey];
+		// Might happen that we get NSNull
+		id newValue = [change objectForKey:NSKeyValueChangeNewKey];
+		if (![newValue isKindOfClass:[NSArray class]]) {
+			return;
+		}
+		
+		NSArray *timeRanges = newValue;
 		if (timeRanges.count == 0) {
 			return;
 		}

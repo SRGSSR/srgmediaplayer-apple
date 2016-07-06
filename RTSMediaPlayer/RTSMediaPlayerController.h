@@ -241,6 +241,9 @@
 
 /**
  *  The media type (audio / video). See `RTSMediaType` for possible values
+ *
+ *  Warning: Is currently unreliable when Airplay playback has been started before the media is played
+ *           Related to https://openradar.appspot.com/27079167
  */
 @property (nonatomic, readonly) RTSMediaType mediaType;
 
@@ -298,6 +301,18 @@
  *  @param observer The time observer to remove
  */
 - (void)removePeriodicTimeObserver:(id)observer;
+
+/**
+ *  -------------
+ *  @name Airplay
+ *  -------------
+ */
+
+/**
+ *  Refer to the corresponding `AVPlayer` properties for more information
+ */
+@property (nonatomic) BOOL allowsExternalPlayback;
+@property (nonatomic) BOOL usesExternalPlaybackWhileExternalScreenIsActive;
 
 @end
 

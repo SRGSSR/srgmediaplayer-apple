@@ -37,6 +37,7 @@
 	for (NSURL *mediaURL in mediaURLs)
 	{
 		RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:mediaURL];
+		
 		UITapGestureRecognizer *switchTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchMainPlayer:)];
 		[mediaPlayerController.view addGestureRecognizer:switchTapGestureRecognizer];
 		[self.mediaPlayerControllers addObject:mediaPlayerController];
@@ -104,6 +105,7 @@
 	_selectedIndex = selectedIndex;
 	
 	RTSMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[selectedIndex];
+	mainMediaPlayerController.allowsExternalPlayback = YES;
 	[self attachPlayer:mainMediaPlayerController toView:self.mainPlayerView];
 	
 	[self.playerViewsContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -121,6 +123,7 @@
 		[self.playerViewsContainer addSubview:playerView];
 		
 		RTSMediaPlayerController *thumbnailMediaPlayerController = self.mediaPlayerControllers[index];
+		thumbnailMediaPlayerController.allowsExternalPlayback = NO;
 		[self attachPlayer:thumbnailMediaPlayerController toView:playerView];
 	}
 }
@@ -142,7 +145,6 @@
 	if (isMainPlayer) {
 		[self.playPauseButton setMediaPlayerController:mediaPlayerController];
 	}
-	
 	mediaPlayerController.overlayViews = isMainPlayer ? self.overlayViews : nil;
 	[mediaPlayerController attachPlayerToView:playerView];
 	mediaPlayerController.muted = !isMainPlayer;

@@ -38,6 +38,22 @@
 @end
 
 /**
+ *  Airplay view delegate protocol, providing optional customization behaviour to `RTSAirplayOverlayView`
+ */
+@protocol RTSAirplayOverlayViewDelegate <NSObject>
+@optional
+
+/**
+ *  The view is hidden or not, depending of the AVAudioSession current route, output port.
+ *  In case you want to not show it, because of routing just audio, you can force to hide it.
+ *  Example: Use it with isExternalPlaybackActive on the AVPlayer you want.
+ *  By defaut, returning YES.
+ */
+- (BOOL)airplayOverlayViewCouldBeDisplayed:(RTSAirplayOverlayView *)airplayOverlayView;
+
+@end
+
+/**
  *  View automatically displaying whether Airplay playback is being made. Simply install somewhere onto your custom player
  *  interface, the view will automatically appear when Airplay playback begins and disappear when it ends
  */
@@ -52,5 +68,10 @@
  *  An optional data source for customization
  */
 @property (nonatomic, weak) IBOutlet id<RTSAirplayOverlayViewDataSource> dataSource;
+
+/**
+ *  An optional delegate for customization
+ */
+@property (nonatomic, weak) IBOutlet id<RTSAirplayOverlayViewDelegate> delegate;
 
 @end

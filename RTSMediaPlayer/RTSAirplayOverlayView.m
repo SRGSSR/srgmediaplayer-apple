@@ -101,7 +101,13 @@ static const CGFloat RTSAirplayOverlayViewDefaultFillFactor = 0.6f;
 	BOOL hidden = YES;
 	for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
 		if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
-			hidden = NO;
+            hidden = NO;
+            if (self.delegate && [self.delegate respondsToSelector:@selector(airplayOverlayViewCouldBeDisplayed:)]) {
+                if (![self.delegate airplayOverlayViewCouldBeDisplayed:self]) {
+                    hidden = YES;
+                }
+            }
+
 			break;
 		}
 	}
