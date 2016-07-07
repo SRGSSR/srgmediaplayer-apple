@@ -251,6 +251,9 @@
 
 /**
  *  The stream type (live / DVR / VOD). See `RTSMediaStreamType` for possible values
+ *
+ *  Warning: Is currently unreliable when Airplay playback has been started before the media is played
+ *           Related to https://openradar.appspot.com/27079167
  */
 @property (nonatomic, readonly) RTSMediaStreamType streamType;
 
