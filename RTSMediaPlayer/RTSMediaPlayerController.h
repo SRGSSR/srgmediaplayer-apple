@@ -67,7 +67,9 @@
 /**
  *  The player that provides the media content.
  *
- *  @discussion This can be used to implement advanced behaviors
+ *  @discussion This can be used to implement advanced behaviors. This property should not be used to alter player properties,
+ *              but merely for KVO registration or information extraction. Altering player properties in any way results in
+ *              undefined behavior
  */
 @property (readonly) AVPlayer *player;
 
@@ -311,8 +313,8 @@
 /**
  *  Refer to the corresponding `AVPlayer` properties for more information
  */
-@property (nonatomic) BOOL allowsExternalPlayback;
-@property (nonatomic) BOOL usesExternalPlaybackWhileExternalScreenIsActive;
+@property (nonatomic) BOOL allowsExternalPlayback;									// Default is YES
+@property (nonatomic) BOOL usesExternalPlaybackWhileExternalScreenIsActive;			// Default is NO
 
 @end
 
