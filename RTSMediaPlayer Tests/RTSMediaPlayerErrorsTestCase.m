@@ -70,9 +70,7 @@
 	[self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
 		XCTAssertEqualObjects(error.domain, RTSMediaPlayerErrorDomain);
-		XCTAssertEqual(error.code, RTSMediaPlayerErrorUnknown);
-		XCTAssertEqualObjects(error.localizedDescription, @"An unknown error occured.");
-		XCTAssertEqualObjects(error.localizedFailureReason, @"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error.");
+		XCTAssertEqual(error.code, RTSMediaPlayerErrorDataSource);
 		return YES;
 	}];
 	[mediaPlayerController play];
@@ -85,8 +83,8 @@
 	RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:url];
 	[self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL(NSNotification *notification) {
 		NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
-		XCTAssertEqualObjects(error.domain, AVFoundationErrorDomain);
-		XCTAssertEqual(error.code, AVErrorUnknown);
+		XCTAssertEqualObjects(error.domain, RTSMediaPlayerErrorDomain);
+		XCTAssertEqual(error.code, RTSMediaPlayerErrorPlayback);
 		return YES;
 	}];
 	[mediaPlayerController play];

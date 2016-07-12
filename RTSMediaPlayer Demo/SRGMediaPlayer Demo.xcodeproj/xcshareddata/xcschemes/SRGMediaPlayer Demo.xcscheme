@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C2AB24E31ABC184A00EB51B8"
+               BuildableName = "SRGMediaPlayer.bundle"
+               BlueprintName = "SRGMediaPlayer Resources"
+               ReferencedContainer = "container:../SRGMediaPlayer.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "C2F549EF1A9F713300496C59"
                BuildableName = "SRGMediaPlayer Demo.app"
                BlueprintName = "SRGMediaPlayer Demo"

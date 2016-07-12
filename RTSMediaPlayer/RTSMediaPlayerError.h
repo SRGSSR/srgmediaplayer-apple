@@ -16,7 +16,17 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlayerErrorDomain;
  */
 typedef NS_ENUM(NSInteger, RTSMediaPlayerError){
 	/**
-	 *  An unknown error has occurred
+	 *  Unknown error
 	 */
 	RTSMediaPlayerErrorUnknown,
+    
+    /**
+     *  Data source error (e.g. did not return any valid URL)
+     */
+    RTSMediaPlayerErrorDataSource,
+    
+    /**
+     *  Playback error (e.g. playlist could not be read)
+     */
+    RTSMediaPlayerErrorPlayback,
 };

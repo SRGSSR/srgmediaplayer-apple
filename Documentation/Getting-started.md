@@ -123,6 +123,41 @@ Do not forget to bind the `segmentsController` property of such views to the und
 
 As said before, controlling playback is achieved using the `RTSMediaPlayback`. Calling the various playback methods onto the segments controller allows mediating between the user and the media player controller, preventing forbidden actions. Based on segments information, the segments controller may namely prevent scrubbing to a specific location or resume after a blocked segment.
 
+### Airplay support
+
+Two properties are provided to control Airplay behavior, `allowsExternalPlayback` and `usesExternalPlaybackWhileExternalScreenIsActive`. Those properties merely mirror the ones of `AVPlayer`, but can be set at any time (since the underlying `AVPlayer` lifetime is controlled by `RTSMediaPlayerController`, setting its properties is not supported and may result in undefined behavior).
+
+To add Airplay support to your application:
+
+* Enable the corresponding background mode for your target
+* Enable `allowsExternalPlayback` (which is the default)
+
+There are currently a few issues with Airplay playback. Bug reports have been submitted to Apple and there's hope those will be fixed in the future:
+
+* The `mediaType` information is unreliable. It is correct in most cases, but not if Airplay was enabled before playback started
+* If several instances of the player coexist at the same time, the last for which `-play` is called will steal the session. If this player has `allowsExternalPlayback` set to `NO`, the Airplay session will be dropped
+* Media metadata displayed on an Apple TV is incorrect if Airplay was enabled before playback started
+
+In all cases, when casting to an Apple TV, ensure the most recent software updates have been applied.
+
+### Audio session management
+
+No audio session specific management is provided by the library. Managing audio sessions is entirely the responsibility of the application, which gives you complete freedom over how playback happens, especially in the background or when switching between applications. For more information, please refer to the [official documentation](https://developer.apple.com/library/ios/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/Introduction/Introduction.html). This is a somewhat tricky topic, you should therefore read the documentation well, experiment, and test the behavior of your application on a real device. 
+
+In particular, you should ask yourself:
+
+* What should happen when I was playing music with another app and my app is launched? Should the music continue? Maybe resume after my app stops playing?
+* Do I want to be able to control Airplay playback from the lock screen or the control center?
+* Do I want videos to be _listened to_ when the device is locked, maybe also when the application is in the background?
+
+Moreover, you should check that your application behaves well when receiving phone calls (in particular, audio playback should stop).
+
+### Control center integration
+
+For proper integration into the control center and the lock screen, use the `MPRemoteCommandCenter` class. For everything to work properly on a device, `[[UIApplication sharedApplication] beginReceivingRemoteControlEvents]` must have been called first (e.g. in your application delegate) and your audio session category should be set to `AVAudioSessionCategoryPlayback`. For more information, please refer to the `MPRemoteCommandCenter` documentation.
+
+Note that control center integration does not work in the iOS simulator, you will need a real device for tests.
+
 ## Further reading
 
 This guide only scratches the surface of what you can do with the SRG Media Player library. For more information, please have a look at the demo implementation. Do not forget to read the header documentation as well.
