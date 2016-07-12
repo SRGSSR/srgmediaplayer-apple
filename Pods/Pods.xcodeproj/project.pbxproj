@@ -56,7 +56,6 @@
 		5A1BB2BD556C948F956F0253B08CFA83 /* NSBundle+RTSMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 861BF0D706683E0B448A46BA6991E96C /* NSBundle+RTSMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5A8EC364E61C09A475D6B2E05AB0CE84 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2632D902B22B298E34EC36A1A9EE9837 /* SDWebImageDecoder.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		5BB65F27929D0C6CFB600188F555AB45 /* SDWebImage-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BA53C421D18260402A3DEA9904FEBA31 /* SDWebImage-dummy.m */; };
-		5C359A47FA709C64CA33F68D245824D9 /* RTSMediaPlayerVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF7E4D71F3BEF865598CE3DE86C8581 /* RTSMediaPlayerVersion.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.9.7 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		5DCBA219BC81D9190F11EE56F93BB908 /* DDTTYLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = C3BFB1C3589B450A73BE6FD99E1EE5DD /* DDTTYLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6378C12BCABDE751BD86ADCD0305A3DD /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = AB64205685E39918307A0EAE067654B6 /* EXTScope.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		63BD62C62CD07F6C9031456F27AE06CA /* RTSMediaSegmentsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 00FA5E091D157AA1FC10F7F3D3F1D665 /* RTSMediaSegmentsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -105,6 +104,7 @@
 		A430DC972854447C904A3193000B04B2 /* SDWebImageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 846CA790C7E0F4CB6C82AA4BA6DF2620 /* SDWebImageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A56B87D8B7029A18AD823C4355F95B2E /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = D51E8653FCC9876D7C1224A1A0214771 /* UIImageView+WebCache.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		A5B3BA4276168EADBC77F77DF821DE75 /* RTSPictureInPictureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7437C133861F1BBC1E2F0C09132F2 /* RTSPictureInPictureButton.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		A84F10BBCEE4AA86C622657231047D5C /* RTSMediaPlayerVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CF7E4D71F3BEF865598CE3DE86C8581 /* RTSMediaPlayerVersion.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks -DRTS_MEDIA_PLAYER_VERSION=1.9.8 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		A89B71D906477ECFDBEEBF0C5B886B90 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 54DBA7525F366EBB756262043529913F /* DDLog.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		AB343393808856410CAE8B64ABFCB434 /* TKEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = B21B1EB0EE7186AE9143387D29D26868 /* TKEvent.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		AD9DF1439C2810A8988153EA22492655 /* TKEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = D4AA2CAE4911861F47641E4CFD8A7E0C /* TKEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1374,7 +1374,7 @@
 				3A6092FB87DBDB09E18FB8B30BE3D47E /* RTSMediaPlayerLogger.m in Sources */,
 				0051F1136C1019030816FBA20CBE9F56 /* RTSMediaPlayerPlaybackButton.m in Sources */,
 				C7174260E50BA77776EC5884C81A3891 /* RTSMediaPlayerSharedController.m in Sources */,
-				5C359A47FA709C64CA33F68D245824D9 /* RTSMediaPlayerVersion.m in Sources */,
+				A84F10BBCEE4AA86C622657231047D5C /* RTSMediaPlayerVersion.m in Sources */,
 				B79100076F195E71B7CBDE6E1286CCC4 /* RTSMediaPlayerView.m in Sources */,
 				486EDEA66BADAEE4340A05BB2EF042A1 /* RTSMediaPlayerViewController.m in Sources */,
 				E7C01222199FBED2DEF7460134C2AA0F /* RTSMediaSegmentsController.m in Sources */,
