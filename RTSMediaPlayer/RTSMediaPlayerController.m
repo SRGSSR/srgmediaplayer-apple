@@ -278,7 +278,7 @@ static NSDictionary *ErrorUserInfo(RTSMediaPlayerError code, NSString *localized
             else {
                 NSError *dataSourceError = error ?: [NSError errorWithDomain:RTSMediaPlayerErrorDomain
                                                                         code:RTSMediaPlayerErrorDataSource
-                                                                    userInfo:@{ NSLocalizedDescriptionKey : RTSMediaPlayerLocalizedString(@"Media not available yet", nil) }];
+                                                                    userInfo:@{ NSLocalizedDescriptionKey : RTSMediaPlayerLocalizedString(@"Media not available", nil) }];
                 [self fireEvent:self.resetEvent userInfo:@{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey : dataSourceError }];
 			}
 		}];
