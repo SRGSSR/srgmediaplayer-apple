@@ -18,6 +18,8 @@
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSMediaPlayerLogger+Private.h"
 
+#import "NSBundle+RTSMediaPlayer.h"
+
 static const void * const RTSMediaPlayerPictureInPicturePossibleContext = &RTSMediaPlayerPictureInPicturePossibleContext;
 static const void * const RTSMediaPlayerPictureInPictureActiveContext = &RTSMediaPlayerPictureInPictureActiveContext;
 
@@ -179,12 +181,18 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 #pragma mark - Loading
 
-static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
+static NSDictionary *ErrorUserInfo(RTSMediaPlayerError code, NSString *localizedDescription, NSError *underlyingError)
 {
-	NSDictionary *userInfo = @{ NSLocalizedFailureReasonErrorKey: failureReason ?: @"Unknown failure reason.",
-								NSLocalizedDescriptionKey: @"An unknown error occured." };
-	NSError *unknownError = [NSError errorWithDomain:RTSMediaPlayerErrorDomain code:RTSMediaPlayerErrorUnknown userInfo:userInfo];
-	return @{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey: error ?: unknownError };
+	NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+	userInfo[NSLocalizedDescriptionKey] = localizedDescription ?: RTSMediaPlayerLocalizedString(@"An unknown error occurred", nil);
+	userInfo[NSUnderlyingErrorKey] = underlyingError ?: [NSError errorWithDomain:RTSMediaPlayerErrorDomain
+																			code:RTSMediaPlayerErrorUnknown
+																		userInfo:@{ NSLocalizedDescriptionKey : RTSMediaPlayerLocalizedString(@"An unknown error occurred", nil) }];
+	
+	NSError *returnedError = [NSError errorWithDomain:RTSMediaPlayerErrorDomain
+												 code:code
+											 userInfo:userInfo];
+	return @{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey : returnedError };
 }
 
 - (TKStateMachine *)stateMachine
@@ -267,9 +275,11 @@ static NSDictionary * ErrorUserInfo(NSError *error, NSString *failureReason)
             else if (contentURL) {
 				[self fireEvent:self.loadSuccessEvent userInfo:@{ RTSMediaPlayerStateMachineContentURLInfoKey : contentURL }];
 			}
-			else {
-				[self fireEvent:self.resetEvent
-					   userInfo:ErrorUserInfo(error, @"The RTSMediaPlayerControllerDataSource implementation returned a nil contentURL and a nil error.")];
+            else {
+                NSError *dataSourceError = error ?: [NSError errorWithDomain:RTSMediaPlayerErrorDomain
+                                                                        code:RTSMediaPlayerErrorDataSource
+                                                                    userInfo:@{ NSLocalizedDescriptionKey : RTSMediaPlayerLocalizedString(@"Media not available yet", nil) }];
+                [self fireEvent:self.resetEvent userInfo:@{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey : dataSourceError }];
 			}
 		}];
 	}];
@@ -871,7 +881,7 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
 		AVPlayer *player = object;
 		AVPlayerItem *playerItem = player.currentItem;
 		switch (playerItem.status) {
-			case AVPlayerItemStatusReadyToPlay:
+            case AVPlayerItemStatusReadyToPlay: {
                 if (playScheduled) {
                     [self fireEvent:self.playEvent userInfo:nil];
 					[self play];
@@ -896,11 +906,19 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
                     [self play];
                 }
 				break;
-			case AVPlayerItemStatusFailed:
-				[self fireEvent:self.resetEvent userInfo:ErrorUserInfo(playerItem.error, @"The AVPlayerItem did report a failed status without an error.")];
+            }
+                
+            case AVPlayerItemStatusFailed: {
+                NSDictionary *userInfo = ErrorUserInfo(RTSMediaPlayerErrorPlayback,
+													   RTSMediaPlayerLocalizedString(@"The media cannot be played", nil),
+													   playerItem.error);
+                [self fireEvent:self.resetEvent userInfo:userInfo];
 				break;
-			case AVPlayerItemStatusUnknown:
+            }
+                
+            case AVPlayerItemStatusUnknown: {
 				break;
+            }
 		}
         self.startTimeValue = nil;
 	}
@@ -999,8 +1017,10 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
 
 - (void) playerItemFailedToPlayToEndTime:(NSNotification *)notification
 {
-	NSError *error = notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey];
-	[self fireEvent:self.resetEvent userInfo:ErrorUserInfo(error, @"AVPlayerItemFailedToPlayToEndTimeNotification did not provide an error.")];
+	NSDictionary *userInfo = ErrorUserInfo(RTSMediaPlayerErrorPlayback,
+										   RTSMediaPlayerLocalizedString(@"The media cannot be played", nil),
+										   notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
+    [self fireEvent:self.resetEvent userInfo:userInfo];
 }
 
 - (void) playerItemTimeJumped:(NSNotification *)notification
