@@ -22,6 +22,7 @@ NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey = @"RTSMediaPlaybackS
 NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlaybackSegmentChangeUserSelectInfoKey";
 
 @interface RTSMediaSegmentsController ()
+@property(nonatomic, strong) NSString *identifier;
 @property(nonatomic, strong) NSArray *segments;
 @property(nonatomic, strong) id playerTimeObserver;
 @property(nonatomic, weak) id<RTSMediaSegment> lastPlaybackPositionLogicalSegment;
@@ -40,6 +41,8 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
 - (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler
 {
     NSParameterAssert(identifier);
+    
+    self.identifier = identifier;
     
     if (!self.playerController) {
         @throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -74,7 +77,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
         }
     };
 	
-	if (self.segmentsRequestHandle) {
+	if (![self.identifier isEqualToString:identifier] && self.segmentsRequestHandle) {
 		[self.dataSource cancelSegmentsRequest:self.segmentsRequestHandle];
 	}
     
