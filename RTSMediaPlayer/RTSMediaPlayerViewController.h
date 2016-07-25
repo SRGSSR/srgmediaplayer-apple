@@ -23,7 +23,7 @@
 - (instancetype) initWithContentURL:(NSURL *)contentURL OS_NONNULL_ALL;
 
 /**
- *  Returns a RTSMediaPlayerController object initialized with a datasource and a media identifier. The media URL will be
+ *  Returns a RTSMediaPlayerViewController object initialized with a datasource and a media identifier. The media URL will be
  *  retrieved from the data source based on its identifier
  *
  *  @param identifier The identifier of the media to be played
