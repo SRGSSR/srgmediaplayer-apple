@@ -26,8 +26,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C201D8F41A9DC1A40016C629"
-            BuildableName = "libSRGMediaPlayer.a"
+            BlueprintIdentifier = "E69A1DA81D61B9380064E6C1"
+            BuildableName = "SRGMediaPlayer.framework"
             BlueprintName = "SRGMediaPlayer"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>
