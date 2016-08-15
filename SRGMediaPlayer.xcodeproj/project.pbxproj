@@ -106,16 +106,16 @@
 		E69A1FBE1D61BFAE0064E6C1 /* VideoTimeshiftPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F941D61BFAE0064E6C1 /* VideoTimeshiftPlayerViewController.m */; };
 		E69A1FC41D61C06B0064E6C1 /* SRGMediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; };
 		E69A1FC51D61C06B0064E6C1 /* SRGMediaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E69A1FC71D61C31B0064E6C1 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FC61D61C31B0064E6C1 /* CocoaLumberjack.framework */; };
-		E69A1FC81D61C31B0064E6C1 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FC61D61C31B0064E6C1 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E69A1FCA1D61C3270064E6C1 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FC91D61C3270064E6C1 /* WebImage.framework */; };
-		E69A1FCB1D61C3270064E6C1 /* WebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FC91D61C3270064E6C1 /* WebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E69A1FD61D61C6830064E6C1 /* SRGMediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; };
 		E69A1FE31D61C6D20064E6C1 /* RTSMediaPlayerErrorsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDD1D61C6D20064E6C1 /* RTSMediaPlayerErrorsTestCase.m */; };
 		E69A1FE41D61C6D20064E6C1 /* RTSMediaPlayerPlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDE1D61C6D20064E6C1 /* RTSMediaPlayerPlaybackTestCase.m */; };
 		E69A1FE51D61C6D20064E6C1 /* RTSMediaSegmentsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDF1D61C6D20064E6C1 /* RTSMediaSegmentsTestCase.m */; };
 		E69A1FE61D61C6D20064E6C1 /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FE11D61C6D20064E6C1 /* Segment.m */; };
 		E69A1FE71D61C6D20064E6C1 /* SRGMediaPlayer_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FE21D61C6D20064E6C1 /* SRGMediaPlayer_tests.m */; };
+		E69A1FEA1D61DD870064E6C1 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */; };
+		E69A1FEB1D61DD870064E6C1 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E69A1FEC1D61DD870064E6C1 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE91D61DD870064E6C1 /* WebImage.framework */; };
+		E69A1FED1D61DD870064E6C1 /* WebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE91D61DD870064E6C1 /* WebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F90EE7B27DDA4C504ED93629 /* libPods-SRGMediaPlayer-tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05E918D1654F8CC2553EED74 /* libPods-SRGMediaPlayer-tests.a */; };
 /* End PBXBuildFile section */
 
@@ -143,8 +143,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E69A1FCB1D61C3270064E6C1 /* WebImage.framework in Embed Frameworks */,
-				E69A1FC81D61C31B0064E6C1 /* CocoaLumberjack.framework in Embed Frameworks */,
+				E69A1FED1D61DD870064E6C1 /* WebImage.framework in Embed Frameworks */,
+				E69A1FEB1D61DD870064E6C1 /* CocoaLumberjack.framework in Embed Frameworks */,
 				E69A1FC51D61C06B0064E6C1 /* SRGMediaPlayer.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -277,8 +277,6 @@
 		E69A1F921D61BFAE0064E6C1 /* VideosTimeshiftTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideosTimeshiftTableViewController.m; sourceTree = "<group>"; };
 		E69A1F931D61BFAE0064E6C1 /* VideoTimeshiftPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoTimeshiftPlayerViewController.h; sourceTree = "<group>"; };
 		E69A1F941D61BFAE0064E6C1 /* VideoTimeshiftPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoTimeshiftPlayerViewController.m; sourceTree = "<group>"; };
-		E69A1FC61D61C31B0064E6C1 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = "<group>"; };
-		E69A1FC91D61C3270064E6C1 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
 		E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGMediaPlayer-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69A1FD51D61C6830064E6C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E69A1FDD1D61C6D20064E6C1 /* RTSMediaPlayerErrorsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerErrorsTestCase.m; sourceTree = "<group>"; };
@@ -287,6 +285,8 @@
 		E69A1FE01D61C6D20064E6C1 /* Segment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Segment.h; sourceTree = "<group>"; };
 		E69A1FE11D61C6D20064E6C1 /* Segment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Segment.m; sourceTree = "<group>"; };
 		E69A1FE21D61C6D20064E6C1 /* SRGMediaPlayer_tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayer_tests.m; sourceTree = "<group>"; };
+		E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Demo/Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = "<group>"; };
+		E69A1FE91D61DD870064E6C1 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Demo/Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
 		F2B15CAACF7F5CD95288E68A /* Pods-SRGMediaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer/Pods-SRGMediaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -303,8 +303,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E69A1FCA1D61C3270064E6C1 /* WebImage.framework in Frameworks */,
-				E69A1FC71D61C31B0064E6C1 /* CocoaLumberjack.framework in Frameworks */,
+				E69A1FEC1D61DD870064E6C1 /* WebImage.framework in Frameworks */,
+				E69A1FEA1D61DD870064E6C1 /* CocoaLumberjack.framework in Frameworks */,
 				E69A1FC41D61C06B0064E6C1 /* SRGMediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -559,8 +559,8 @@
 		E69A1FCC1D61C32D0064E6C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E69A1FC61D61C31B0064E6C1 /* CocoaLumberjack.framework */,
-				E69A1FC91D61C3270064E6C1 /* WebImage.framework */,
+				E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */,
+				E69A1FE91D61DD870064E6C1 /* WebImage.framework */,
 				3C5FC1E08CA3F0C8CA810E82 /* libPods-SRGMediaPlayer.a */,
 				05E918D1654F8CC2553EED74 /* libPods-SRGMediaPlayer-tests.a */,
 			);
@@ -1118,6 +1118,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Demo/Carthage/Build/iOS",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1147,6 +1148,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Demo/Carthage/Build/iOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
