@@ -116,6 +116,7 @@
 		E6FC7F991D62072400A55085 /* RTSSegmentedTimelineView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F681D62072400A55085 /* RTSSegmentedTimelineView+Private.h */; };
 		E6FC7F9A1D62072400A55085 /* RTSSegmentedTimelineView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F691D62072400A55085 /* RTSSegmentedTimelineView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F9B1D62072400A55085 /* RTSSegmentedTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F6A1D62072400A55085 /* RTSSegmentedTimelineView.m */; };
+		E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F9C1D62097E00A55085 /* SRGMediaPlayer.m */; };
 		F90EE7B27DDA4C504ED93629 /* libPods-SRGMediaPlayer-tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05E918D1654F8CC2553EED74 /* libPods-SRGMediaPlayer-tests.a */; };
 /* End PBXBuildFile section */
 
@@ -287,6 +288,7 @@
 		E6FC7F681D62072400A55085 /* RTSSegmentedTimelineView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTSSegmentedTimelineView+Private.h"; sourceTree = "<group>"; };
 		E6FC7F691D62072400A55085 /* RTSSegmentedTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSSegmentedTimelineView.h; sourceTree = "<group>"; };
 		E6FC7F6A1D62072400A55085 /* RTSSegmentedTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSSegmentedTimelineView.m; sourceTree = "<group>"; };
+		E6FC7F9C1D62097E00A55085 /* SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayer.m; sourceTree = "<group>"; };
 		F2B15CAACF7F5CD95288E68A /* Pods-SRGMediaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer/Pods-SRGMediaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -364,6 +366,7 @@
 				E69A1DFF1D61BAFD0064E6C1 /* Resources */,
 				E69A1DDF1D61BAFD0064E6C1 /* Info.plist */,
 				E69A1E121D61BAFD0064E6C1 /* SRGMediaPlayer.h */,
+				E6FC7F9C1D62097E00A55085 /* SRGMediaPlayer.m */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -897,6 +900,7 @@
 				E6FC7F901D62072400A55085 /* RTSMediaPlayerSharedController.m in Sources */,
 				E6FC7F701D62072400A55085 /* RTSMediaPlayerIconTemplate.m in Sources */,
 				E6FC7F841D62072400A55085 /* RTSPlaybackActivityIndicatorView.m in Sources */,
+				E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */,
 				E6FC7F6C1D62072400A55085 /* RTSActivityGestureRecognizer.m in Sources */,
 				E6FC7F7A1D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */,
 				E6FC7F761D62072400A55085 /* RTSPeriodicTimeObserver.m in Sources */,

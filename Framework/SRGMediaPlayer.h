@@ -9,6 +9,8 @@
 FOUNDATION_EXPORT double SRGMediaPlayerVersionNumber;
 FOUNDATION_EXPORT const unsigned char SRGMediaPlayerVersionString[];
 
+FOUNDATION_EXPORT NSString * SRGMediaPlayerMarketingVersion(void);
+
 #import "RTSAirplayOverlayView.h"
 #import "RTSMediaFailureOverlayView.h"
 #import "RTSMediaPlayerConstants.h"
