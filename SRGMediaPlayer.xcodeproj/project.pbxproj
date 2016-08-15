@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4374BB7A80C92730BEB39F20 /* libPods-SRGMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C5FC1E08CA3F0C8CA810E82 /* libPods-SRGMediaPlayer.a */; };
-		E69A1E131D61BAFD0064E6C1 /* RTSActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = E69A1DB31D61BAFD0064E6C1 /* RTSActivityGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E69A1E131D61BAFD0064E6C1 /* RTSActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = E69A1DB31D61BAFD0064E6C1 /* RTSActivityGestureRecognizer.h */; };
 		E69A1E141D61BAFD0064E6C1 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1DB41D61BAFD0064E6C1 /* RTSActivityGestureRecognizer.m */; };
 		E69A1E151D61BAFD0064E6C1 /* RTSMediaPlayerConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = E69A1DB51D61BAFD0064E6C1 /* RTSMediaPlayerConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E69A1E161D61BAFD0064E6C1 /* RTSMediaPlayerError.h in Headers */ = {isa = PBXBuildFile; fileRef = E69A1DB61D61BAFD0064E6C1 /* RTSMediaPlayerError.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -20,7 +20,7 @@
 		E69A1E1E1D61BAFD0064E6C1 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1DBE1D61BAFD0064E6C1 /* RTSMediaPlayerView.m */; };
 		E69A1E1F1D61BAFD0064E6C1 /* RTSPeriodicTimeObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E69A1DBF1D61BAFD0064E6C1 /* RTSPeriodicTimeObserver.h */; };
 		E69A1E201D61BAFD0064E6C1 /* RTSPeriodicTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1DC01D61BAFD0064E6C1 /* RTSPeriodicTimeObserver.m */; };
-		E69A1E351D61BAFD0064E6C1 /* NSBundle+RTSMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = E69A1DDB1D61BAFD0064E6C1 /* NSBundle+RTSMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E69A1E351D61BAFD0064E6C1 /* NSBundle+RTSMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = E69A1DDB1D61BAFD0064E6C1 /* NSBundle+RTSMediaPlayer.h */; };
 		E69A1E361D61BAFD0064E6C1 /* NSBundle+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1DDC1D61BAFD0064E6C1 /* NSBundle+RTSMediaPlayer.m */; };
 		E69A1E371D61BAFD0064E6C1 /* UIBezierPath+RTSMediaPlayerUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E69A1DDD1D61BAFD0064E6C1 /* UIBezierPath+RTSMediaPlayerUtils.h */; };
 		E69A1E381D61BAFD0064E6C1 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1DDE1D61BAFD0064E6C1 /* UIBezierPath+RTSMediaPlayerUtils.m */; };
@@ -362,12 +362,12 @@
 			children = (
 				E69A1DB21D61BAFD0064E6C1 /* Core */,
 				E69A1DDA1D61BAFD0064E6C1 /* Helpers */,
-				E69A1DDF1D61BAFD0064E6C1 /* Info.plist */,
 				E69A1DE01D61BAFD0064E6C1 /* Overlays */,
 				E69A1DF11D61BAFD0064E6C1 /* Player */,
 				E69A1DFB1D61BAFD0064E6C1 /* Protocols */,
 				E69A1DFF1D61BAFD0064E6C1 /* Resources */,
 				E69A1E0C1D61BAFD0064E6C1 /* Segments */,
+				E69A1DDF1D61BAFD0064E6C1 /* Info.plist */,
 				E69A1E121D61BAFD0064E6C1 /* SRGMediaPlayer.h */,
 			);
 			path = Framework;
@@ -1007,6 +1007,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MARKETING_VERSION = 2.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1040,6 +1041,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MARKETING_VERSION = 2.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
