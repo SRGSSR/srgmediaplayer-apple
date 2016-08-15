@@ -123,10 +123,23 @@
 		E69A1FC81D61C31B0064E6C1 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FC61D61C31B0064E6C1 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E69A1FCA1D61C3270064E6C1 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FC91D61C3270064E6C1 /* WebImage.framework */; };
 		E69A1FCB1D61C3270064E6C1 /* WebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FC91D61C3270064E6C1 /* WebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E69A1FD61D61C6830064E6C1 /* SRGMediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; };
+		E69A1FE31D61C6D20064E6C1 /* RTSMediaPlayerErrorsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDD1D61C6D20064E6C1 /* RTSMediaPlayerErrorsTestCase.m */; };
+		E69A1FE41D61C6D20064E6C1 /* RTSMediaPlayerPlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDE1D61C6D20064E6C1 /* RTSMediaPlayerPlaybackTestCase.m */; };
+		E69A1FE51D61C6D20064E6C1 /* RTSMediaSegmentsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDF1D61C6D20064E6C1 /* RTSMediaSegmentsTestCase.m */; };
+		E69A1FE61D61C6D20064E6C1 /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FE11D61C6D20064E6C1 /* Segment.m */; };
+		E69A1FE71D61C6D20064E6C1 /* SRGMediaPlayer_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FE21D61C6D20064E6C1 /* SRGMediaPlayer_tests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		E69A1FC11D61C0180064E6C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C201D8ED1A9DC1A40016C629 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E69A1DA81D61B9380064E6C1;
+			remoteInfo = SRGMediaPlayer;
+		};
+		E69A1FD71D61C6830064E6C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C201D8ED1A9DC1A40016C629 /* Project object */;
 			proxyType = 1;
@@ -293,6 +306,14 @@
 		E69A1F941D61BFAE0064E6C1 /* VideoTimeshiftPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoTimeshiftPlayerViewController.m; sourceTree = "<group>"; };
 		E69A1FC61D61C31B0064E6C1 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		E69A1FC91D61C3270064E6C1 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
+		E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGMediaPlayer-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E69A1FD51D61C6830064E6C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E69A1FDD1D61C6D20064E6C1 /* RTSMediaPlayerErrorsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerErrorsTestCase.m; sourceTree = "<group>"; };
+		E69A1FDE1D61C6D20064E6C1 /* RTSMediaPlayerPlaybackTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerPlaybackTestCase.m; sourceTree = "<group>"; };
+		E69A1FDF1D61C6D20064E6C1 /* RTSMediaSegmentsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaSegmentsTestCase.m; sourceTree = "<group>"; };
+		E69A1FE01D61C6D20064E6C1 /* Segment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Segment.h; sourceTree = "<group>"; };
+		E69A1FE11D61C6D20064E6C1 /* Segment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Segment.m; sourceTree = "<group>"; };
+		E69A1FE21D61C6D20064E6C1 /* SRGMediaPlayer_tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayer_tests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,6 +334,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E69A1FCE1D61C6830064E6C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E69A1FD61D61C6830064E6C1 /* SRGMediaPlayer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -321,6 +350,7 @@
 			children = (
 				E69A1DB11D61BAFD0064E6C1 /* Framework */,
 				E69A1F571D61BFAE0064E6C1 /* Demo */,
+				E69A1FD21D61C6830064E6C1 /* Tests */,
 				E69A1FCC1D61C32D0064E6C1 /* Frameworks */,
 				C201D8F61A9DC1A40016C629 /* Products */,
 			);
@@ -334,6 +364,7 @@
 			children = (
 				E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */,
 				E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-demo.app */,
+				E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -606,6 +637,28 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E69A1FD21D61C6830064E6C1 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E69A1FDC1D61C6D20064E6C1 /* Sources */,
+				E69A1FD51D61C6830064E6C1 /* Info.plist */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		E69A1FDC1D61C6D20064E6C1 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E69A1FDD1D61C6D20064E6C1 /* RTSMediaPlayerErrorsTestCase.m */,
+				E69A1FDE1D61C6D20064E6C1 /* RTSMediaPlayerPlaybackTestCase.m */,
+				E69A1FDF1D61C6D20064E6C1 /* RTSMediaSegmentsTestCase.m */,
+				E69A1FE01D61C6D20064E6C1 /* Segment.h */,
+				E69A1FE11D61C6D20064E6C1 /* Segment.m */,
+				E69A1FE21D61C6D20064E6C1 /* SRGMediaPlayer_tests.m */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -692,6 +745,24 @@
 			productReference = E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-demo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E69A1FD01D61C6830064E6C1 /* SRGMediaPlayer-tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E69A1FD91D61C6830064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-tests" */;
+			buildPhases = (
+				E69A1FCD1D61C6830064E6C1 /* Sources */,
+				E69A1FCE1D61C6830064E6C1 /* Frameworks */,
+				E69A1FCF1D61C6830064E6C1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E69A1FD81D61C6830064E6C1 /* PBXTargetDependency */,
+			);
+			name = "SRGMediaPlayer-tests";
+			productName = "SRGMediaPlayer-tests";
+			productReference = E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -706,6 +777,9 @@
 						CreatedOnToolsVersion = 7.3.1;
 					};
 					E69A1E661D61BEFC0064E6C1 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					E69A1FD01D61C6830064E6C1 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
 				};
@@ -728,6 +802,7 @@
 			projectRoot = "";
 			targets = (
 				E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer */,
+				E69A1FD01D61C6830064E6C1 /* SRGMediaPlayer-tests */,
 				E69A1E661D61BEFC0064E6C1 /* SRGMediaPlayer-demo */,
 			);
 		};
@@ -776,6 +851,13 @@
 				E69A1FA01D61BFAE0064E6C1 /* LaunchImage.png in Resources */,
 				E69A1FA11D61BFAE0064E6C1 /* MediaURLs.plist in Resources */,
 				E69A1FAB1D61BFAE0064E6C1 /* yellow_card.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E69A1FCF1D61C6830064E6C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -839,6 +921,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E69A1FCD1D61C6830064E6C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E69A1FE51D61C6D20064E6C1 /* RTSMediaSegmentsTestCase.m in Sources */,
+				E69A1FE41D61C6D20064E6C1 /* RTSMediaPlayerPlaybackTestCase.m in Sources */,
+				E69A1FE31D61C6D20064E6C1 /* RTSMediaPlayerErrorsTestCase.m in Sources */,
+				E69A1FE71D61C6D20064E6C1 /* SRGMediaPlayer_tests.m in Sources */,
+				E69A1FE61D61C6D20064E6C1 /* Segment.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -846,6 +940,11 @@
 			isa = PBXTargetDependency;
 			target = E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer */;
 			targetProxy = E69A1FC11D61C0180064E6C1 /* PBXContainerItemProxy */;
+		};
+		E69A1FD81D61C6830064E6C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer */;
+			targetProxy = E69A1FD71D61C6830064E6C1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1058,6 +1157,46 @@
 			};
 			name = Release;
 		};
+		E69A1FDA1D61C6830064E6C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E69A1FDB1D61C6830064E6C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1083,6 +1222,14 @@
 			buildConfigurations = (
 				E69A1E7C1D61BEFC0064E6C1 /* Debug */,
 				E69A1E7D1D61BEFC0064E6C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E69A1FD91D61C6830064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E69A1FDA1D61C6830064E6C1 /* Debug */,
+				E69A1FDB1D61C6830064E6C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
