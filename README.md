@@ -16,13 +16,13 @@ The library is suitable for applications running on iOS 8 and above.
 
 ## Installation
 
-The library can be added to a project using [CocoaPods](http://cocoapods.org/) version 1.0 or above by adding the `SRGMediaPlayer` dependency to its `Podfile`:
+The library can be added to a project using [Carthage](https://github.com/Carthage/Carthage)  by adding the following dependency to your `Cartfile`:
     
-```ruby
-pod 'SRGMediaPlayer', '<version>'
+```
+github "SRGSSR/SRGMediaPlayer-iOS" == <version>
 ```
 
-For more information about CocoaPods and the `Podfile`, please refer to the [official documentation](http://guides.cocoapods.org/).
+Then run `carthage update` to update the dependencies. You will need to manually add the `.framework` generated in the `Carthage/Build/iOS` folder to your projet. Refer to the [official documentation](https://github.com/Carthage/Carthage) for more information.
 
 ## Demo project
 
