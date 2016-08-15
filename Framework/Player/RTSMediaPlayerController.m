@@ -6,8 +6,8 @@
 
 #import <objc/runtime.h>
 
-#import "TransitionKit.h"
-#import "EXTScope.h"
+#import <TransitionKit/TransitionKit.h>
+#import <libextobjc/EXTScope.h>
 
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerControllerDataSource.h"

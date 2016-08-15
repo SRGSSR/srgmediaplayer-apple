@@ -11,8 +11,7 @@
 #import "UIBezierPath+RTSMediaPlayerUtils.h"
 
 #import <SRGMediaPlayer/RTSMediaPlayerController.h>
-
-#import "EXTScope.h"
+#import <libextobjc/EXTScope.h>
 
 #define SLIDER_VERTICAL_CENTER self.frame.size.height/2
 

@@ -6,7 +6,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-#import "EXTScope.h"
+#import <libextobjc/EXTScope.h>
 
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerController+Private.h"

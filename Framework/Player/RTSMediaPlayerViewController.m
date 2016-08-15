@@ -16,7 +16,7 @@
 #import "RTSTimeSlider.h"
 #import "RTSVolumeView.h"
 
-#import "EXTScope.h"
+#import <libextobjc/EXTScope.h>
 
 // Shared instance to manage picture in picture playback
 static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;

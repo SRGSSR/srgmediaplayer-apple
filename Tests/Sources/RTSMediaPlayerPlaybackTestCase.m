@@ -6,7 +6,7 @@
 
 #import <XCTest/XCTest.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
-//#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 @interface RTSMediaPlayerPlaybackTestCase : XCTestCase
 @property RTSMediaPlayerController *mediaPlayerController;
@@ -71,7 +71,6 @@
 	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-#if 0
 - (void) testPlayThenResetDoesNotPlayTheMedia
 {
 	__block NSInteger playbackStateKVOChangeCount = 0;
@@ -112,7 +111,6 @@
 	[self.mediaPlayerController reset];
 	[self waitForExpectationsWithTimeout:30. handler:nil];
 }
-#endif
 
 - (void) testPlayingMovieWithIdentifier
 {
