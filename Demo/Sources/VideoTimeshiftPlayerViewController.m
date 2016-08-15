@@ -4,7 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <libextobjc/EXTScope.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 #import "VideoTimeshiftPlayerViewController.h"
@@ -62,12 +61,10 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 	self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
 	self.liveButton.layer.borderWidth = 1.f;
 
-	@weakify(self)
+	__weak __typeof(self) weakSelf = self;
 	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
-		@strongify(self)
-		
-		if (self.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
-			[self updateLiveButton];
+		if (weakSelf.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
+			[weakSelf updateLiveButton];
 		}
 	}];
 

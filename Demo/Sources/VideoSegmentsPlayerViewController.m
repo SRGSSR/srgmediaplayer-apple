@@ -4,7 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <libextobjc/EXTScope.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 #import "VideoSegmentsPlayerViewController.h"

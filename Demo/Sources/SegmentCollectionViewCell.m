@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <SDWebImage/UIImageView+WebCache.h>
+#import <WebImage/WebImage.h>
 #import "SegmentCollectionViewCell.h"
 
 @interface SegmentCollectionViewCell ()
