@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#import <Foundation/Foundation.h>
+
 //! Project version number for SRGMediaPlayer.
 FOUNDATION_EXPORT double SRGMediaPlayerVersionNumber;
 
