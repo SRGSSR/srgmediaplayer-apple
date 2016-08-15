@@ -73,7 +73,7 @@
 		E6FC7F6E1D62072400A55085 /* RTSMediaPlayerError.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F331D62072400A55085 /* RTSMediaPlayerError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F6F1D62072400A55085 /* RTSMediaPlayerIconTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F341D62072400A55085 /* RTSMediaPlayerIconTemplate.h */; };
 		E6FC7F701D62072400A55085 /* RTSMediaPlayerIconTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F351D62072400A55085 /* RTSMediaPlayerIconTemplate.m */; };
-		E6FC7F711D62072400A55085 /* RTSMediaPlayerLogger+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F361D62072400A55085 /* RTSMediaPlayerLogger+Private.h */; };
+		E6FC7F711D62072400A55085 /* RTSMediaPlayerLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F361D62072400A55085 /* RTSMediaPlayerLogger.h */; };
 		E6FC7F721D62072400A55085 /* RTSMediaPlayerLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F371D62072400A55085 /* RTSMediaPlayerLogger.m */; };
 		E6FC7F731D62072400A55085 /* RTSMediaPlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F381D62072400A55085 /* RTSMediaPlayerView.h */; };
 		E6FC7F741D62072400A55085 /* RTSMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F391D62072400A55085 /* RTSMediaPlayerView.m */; };
@@ -245,7 +245,7 @@
 		E6FC7F331D62072400A55085 /* RTSMediaPlayerError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerError.h; sourceTree = "<group>"; };
 		E6FC7F341D62072400A55085 /* RTSMediaPlayerIconTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerIconTemplate.h; sourceTree = "<group>"; };
 		E6FC7F351D62072400A55085 /* RTSMediaPlayerIconTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerIconTemplate.m; sourceTree = "<group>"; };
-		E6FC7F361D62072400A55085 /* RTSMediaPlayerLogger+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTSMediaPlayerLogger+Private.h"; sourceTree = "<group>"; };
+		E6FC7F361D62072400A55085 /* RTSMediaPlayerLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerLogger.h; sourceTree = "<group>"; };
 		E6FC7F371D62072400A55085 /* RTSMediaPlayerLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerLogger.m; sourceTree = "<group>"; };
 		E6FC7F381D62072400A55085 /* RTSMediaPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerView.h; sourceTree = "<group>"; };
 		E6FC7F391D62072400A55085 /* RTSMediaPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerView.m; sourceTree = "<group>"; };
@@ -518,7 +518,7 @@
 				E6FC7F331D62072400A55085 /* RTSMediaPlayerError.h */,
 				E6FC7F341D62072400A55085 /* RTSMediaPlayerIconTemplate.h */,
 				E6FC7F351D62072400A55085 /* RTSMediaPlayerIconTemplate.m */,
-				E6FC7F361D62072400A55085 /* RTSMediaPlayerLogger+Private.h */,
+				E6FC7F361D62072400A55085 /* RTSMediaPlayerLogger.h */,
 				E6FC7F371D62072400A55085 /* RTSMediaPlayerLogger.m */,
 				E6FC7F381D62072400A55085 /* RTSMediaPlayerView.h */,
 				E6FC7F391D62072400A55085 /* RTSMediaPlayerView.m */,
@@ -622,7 +622,7 @@
 				E6FC7F8D1D62072400A55085 /* RTSMediaPlayerController.h in Headers */,
 				E69A1E621D61BAFD0064E6C1 /* SRGMediaPlayer.h in Headers */,
 				E6FC7F6B1D62072400A55085 /* RTSActivityGestureRecognizer.h in Headers */,
-				E6FC7F711D62072400A55085 /* RTSMediaPlayerLogger+Private.h in Headers */,
+				E6FC7F711D62072400A55085 /* RTSMediaPlayerLogger.h in Headers */,
 				E6FC7F771D62072400A55085 /* NSBundle+RTSMediaPlayer.h in Headers */,
 				E6FC7F851D62072400A55085 /* RTSTimelineSlider.h in Headers */,
 				E6FC7F7F1D62072400A55085 /* RTSMediaPlayerPlaybackButton.h in Headers */,

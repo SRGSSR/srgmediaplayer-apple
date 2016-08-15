@@ -17,7 +17,7 @@
 #import "RTSMediaPlayerView.h"
 #import "RTSPeriodicTimeObserver.h"
 #import "RTSActivityGestureRecognizer.h"
-#import "RTSMediaPlayerLogger+Private.h"
+#import "RTSMediaPlayerLogger.h"
 
 #import "NSBundle+RTSMediaPlayer.h"
 
