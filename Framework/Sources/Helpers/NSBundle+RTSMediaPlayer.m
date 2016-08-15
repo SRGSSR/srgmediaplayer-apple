@@ -12,12 +12,12 @@
 
 + (instancetype) RTSMediaPlayerBundle
 {
-	static NSBundle *mediaPlayerBundle;
+	static NSBundle *bundle;
 	static dispatch_once_t once;
 	dispatch_once(&once, ^{
-		mediaPlayerBundle = [NSBundle bundleForClass:[RTSMediaPlayerController class]];
+		bundle = [NSBundle bundleForClass:[RTSMediaPlayerController class]];
 	});
-	return mediaPlayerBundle;
+	return bundle;
 }
 
 @end
