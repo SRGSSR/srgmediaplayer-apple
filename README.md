@@ -19,7 +19,7 @@ The library is suitable for applications running on iOS 8 and above.
 The library can be added to a project using [Carthage](https://github.com/Carthage/Carthage)  by adding the following dependency to your `Cartfile`:
     
 ```
-github "SRGSSR/SRGMediaPlayer-iOS" == <version>
+github "SRGSSR/SRGMediaPlayer-iOS"
 ```
 
 Then run `carthage update` to update the dependencies. You will need to manually add the `.framework` generated in the `Carthage/Build/iOS` folder to your projet. Refer to the [official documentation](https://github.com/Carthage/Carthage) for more information.
