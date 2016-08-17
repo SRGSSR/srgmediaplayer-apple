@@ -177,9 +177,13 @@ static void commonInit(RTSSegmentedTimelineView *self);
 		return;
 	}
 	
-	[self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:segmentIndex inSection:0]
-								atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-										animated:animated];
+    // Avoid exceptions if trying to scroll to an invalid item
+    @try {
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:segmentIndex inSection:0]
+                                    atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                            animated:animated];
+    }
+    @catch (NSException *exception) {}
 }
 
 @end
