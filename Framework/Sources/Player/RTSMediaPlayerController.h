@@ -4,13 +4,11 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
+#import <UIKit/UIKit.h>
 
 #import "RTSMediaPlayerConstants.h"
-
-@protocol RTSMediaPlayerControllerDataSource;
 
 /**
  *  `RTSMediaPlayerController` is inspired by the `MPMoviePlayerController` class.
@@ -46,17 +44,7 @@
  *
  *  @return A media player controller
  */
-- (instancetype) initWithContentURL:(NSURL *)contentURL OS_NONNULL_ALL;
-
-/**
- *  Returns a `RTSMediaPlayerController` object initialized with a datasource and a media identifier.
- *
- *  @param identifier The identifier of the media to be played
- *  @param dataSource The data source from which the media URL will be retrieved
- *
- *  @return A media player controller
- */
-- (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource NS_DESIGNATED_INITIALIZER OS_NONNULL2;
+- (instancetype)initWithContentURL:(NSURL *)contentURL NS_DESIGNATED_INITIALIZER;
 
 /**
  *  -------------------
@@ -71,7 +59,7 @@
  *              but merely for KVO registration or information extraction. Altering player properties in any way results in
  *              undefined behavior
  */
-@property (readonly) AVPlayer *player;
+@property (nonatomic, readonly) AVPlayer *player;
 
 /**
  *  ------------------------
@@ -93,7 +81,7 @@
  *
  *  @see `attachPlayerToView:`
  */
-@property(readonly) UIView *view;
+@property (nonatomic, readonly) UIView *view;
 
 /**
  *  Attach the player view into specified container view with default autoresizing mask. The player view will have the
@@ -101,26 +89,13 @@
  *
  *  @param `containerView` The parent view in hierarchy what will contains the player layer
  */
-- (void) attachPlayerToView:(UIView *)containerView;
+- (void)attachPlayerToView:(UIView *)containerView;
 
 /**
  *  --------------------------------
  *  @name Accessing Media Properties
  *  --------------------------------
  */
-
-/**
- *  The data source from which media information is retrieved
- */
-@property (weak) IBOutlet id<RTSMediaPlayerControllerDataSource> dataSource;
-
-/**
- *  The identifier of the media currently attached to the player. You can use this identifier to identify the media through
- *  notifications
- *
- *  @see `initWithContentIdentifier:dataSource:`
- */
-@property (readonly, copy, readonly) NSString *identifier;
 
 /**
  *  -------------------
@@ -132,23 +107,23 @@
  *  View on which user activity is detected (to prevent the UI overlays from being automatically hidden, see 'overlayViews' and
  *  'overlayViewsHidingDelay')
  */
-@property (weak) IBOutlet UIView *activityView;
+@property (nonatomic, weak) IBOutlet UIView *activityView;
 
 /**
  *  A collection of views that will be shown / hidden automatically or manually when user interacts with the view.
  */
-@property (copy) IBOutletCollection(UIView) NSArray *overlayViews;
+@property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
 
 /**
  *  The delay after which the overlay views are hidden. Default to `RTSMediaPlayerOverlayHidingDelay` (5 sec).
  *  Ignored if <= 0.0;
  */
-@property (assign) NSTimeInterval overlayViewsHidingDelay;
+@property (nonatomic) NSTimeInterval overlayViewsHidingDelay;
 
 /**
  *  Return YES iff overlays are currently visible
  */
-@property (readonly, getter=areOverlaysVisible) BOOL overlaysVisible;
+@property (nonatomic, readonly, getter=areOverlaysVisible) BOOL overlaysVisible;
 
 
 /**
@@ -160,7 +135,7 @@
 /**
  *  Returns the current playback state of the media player. See `RTSMediaPlaybackState` for possible values
  */
-@property (readonly) RTSMediaPlaybackState playbackState;
+@property (nonatomic, readonly) RTSMediaPlaybackState playbackState;
 
 /**
  *  Prepare the player to play, but does not start playback

@@ -108,7 +108,6 @@
 		E6FC7F911D62072400A55085 /* RTSMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F5E1D62072400A55085 /* RTSMediaPlayerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F921D62072400A55085 /* RTSMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F5F1D62072400A55085 /* RTSMediaPlayerViewController.m */; };
 		E6FC7F931D62072400A55085 /* RTSMediaPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6FC7F601D62072400A55085 /* RTSMediaPlayerViewController.xib */; };
-		E6FC7F941D62072400A55085 /* RTSMediaPlayerControllerDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F621D62072400A55085 /* RTSMediaPlayerControllerDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F951D62072400A55085 /* RTSMediaSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F631D62072400A55085 /* RTSMediaSegment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F961D62072400A55085 /* RTSMediaSegmentsDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F641D62072400A55085 /* RTSMediaSegmentsDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F971D62072400A55085 /* RTSMediaSegmentsController.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F661D62072400A55085 /* RTSMediaSegmentsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -280,7 +279,6 @@
 		E6FC7F5E1D62072400A55085 /* RTSMediaPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerViewController.h; sourceTree = "<group>"; };
 		E6FC7F5F1D62072400A55085 /* RTSMediaPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerViewController.m; sourceTree = "<group>"; };
 		E6FC7F601D62072400A55085 /* RTSMediaPlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RTSMediaPlayerViewController.xib; sourceTree = "<group>"; };
-		E6FC7F621D62072400A55085 /* RTSMediaPlayerControllerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerControllerDataSource.h; sourceTree = "<group>"; };
 		E6FC7F631D62072400A55085 /* RTSMediaSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegment.h; sourceTree = "<group>"; };
 		E6FC7F641D62072400A55085 /* RTSMediaSegmentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegmentsDataSource.h; sourceTree = "<group>"; };
 		E6FC7F661D62072400A55085 /* RTSMediaSegmentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegmentsController.h; sourceTree = "<group>"; };
@@ -581,7 +579,6 @@
 		E6FC7F611D62072400A55085 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				E6FC7F621D62072400A55085 /* RTSMediaPlayerControllerDataSource.h */,
 				E6FC7F631D62072400A55085 /* RTSMediaSegment.h */,
 				E6FC7F641D62072400A55085 /* RTSMediaSegmentsDataSource.h */,
 			);
@@ -633,7 +630,6 @@
 				E6FC7F911D62072400A55085 /* RTSMediaPlayerViewController.h in Headers */,
 				E6FC7F8B1D62072400A55085 /* RTSMediaPlayerController+Private.h in Headers */,
 				E6FC7F961D62072400A55085 /* RTSMediaSegmentsDataSource.h in Headers */,
-				E6FC7F941D62072400A55085 /* RTSMediaPlayerControllerDataSource.h in Headers */,
 				E6FC7F6E1D62072400A55085 /* RTSMediaPlayerError.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
