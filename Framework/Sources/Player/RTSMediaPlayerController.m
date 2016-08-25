@@ -104,6 +104,8 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 
 - (void)setPlaybackState:(RTSMediaPlaybackState)playbackState
 {
+	NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes are notified on the main thread");
+	
 	if (_playbackState == playbackState) {
 		return;
 	}
@@ -265,7 +267,11 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 	}
 	
 	self.playbackState = RTSMediaPlaybackStateSeeking;
-	[self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:completionHandler];
+	[self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+		if (finished) {
+			self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
+		}
+	}];
 }
 
 #pragma mark Notifications
@@ -295,8 +301,6 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
 	// TODO: Warning: Might not be executed on the main thread!
-	NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes are notified on the main thread");
-	
 	if (context == s_kvoContext) {
 		NSLog(@"KVO change for %@ with change %@", keyPath, change);
 		
