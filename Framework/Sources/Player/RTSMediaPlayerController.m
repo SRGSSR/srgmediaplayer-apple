@@ -10,7 +10,6 @@
 
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerControllerDataSource.h"
-#import "RTSMediaSegmentsController.h"
 
 #import "RTSMediaPlayerError.h"
 #import "RTSMediaPlayerView.h"
@@ -19,9 +18,6 @@
 #import "RTSMediaPlayerLogger.h"
 
 #import "NSBundle+RTSMediaPlayer.h"
-
-static const void * const RTSMediaPlayerPictureInPicturePossibleContext = &RTSMediaPlayerPictureInPicturePossibleContext;
-static const void * const RTSMediaPlayerPictureInPictureActiveContext = &RTSMediaPlayerPictureInPictureActiveContext;
 
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
 NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.0;		// same tolerance as built-in iOS player
@@ -45,29 +41,7 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"PreviousPlay
 NSString * const RTSMediaPlayerStateMachineContentURLInfoKey = @"ContentURL";
 NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"BlockingReason";
 
-@interface RTSMediaPlayerController () <RTSMediaPlayerControllerDataSource, UIGestureRecognizerDelegate>
-
-@property (readwrite, copy) NSString *identifier;
-
-@property (readonly) TKStateMachine *stateMachine;
-
-@property (readwrite) TKState *idleState;
-@property (readwrite) TKState *readyState;
-@property (readwrite) TKState *pausedState;
-@property (readwrite) TKState *playingState;
-@property (readwrite) TKState *seekingState;
-@property (readwrite) TKState *stalledState;
-@property (readwrite) TKState *endedState;
-
-@property (readwrite) TKEvent *loadEvent;
-@property (readwrite) TKEvent *loadSuccessEvent;
-@property (readwrite) TKEvent *playEvent;
-@property (readwrite) TKEvent *pauseEvent;
-@property (readwrite) TKEvent *seekEvent;
-@property (readwrite) TKEvent *endEvent;
-@property (readwrite) TKEvent *stopEvent;
-@property (readwrite) TKEvent *stallEvent;
-@property (readwrite) TKEvent *resetEvent;
+@interface RTSMediaPlayerController () <UIGestureRecognizerDelegate>
 
 @property (readwrite) RTSMediaPlaybackState playbackState;
 @property (readwrite) AVPlayer *player;
@@ -81,18 +55,9 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @property (readonly) RTSMediaPlayerView *playerView;
 @property (readonly) RTSActivityGestureRecognizer *activityGestureRecognizer;
 
-@property (readwrite, weak) id stateTransitionObserver;
-
 @property (readonly) dispatch_source_t idleTimer;
 
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
-
-@property (nonatomic, weak) RTSMediaSegmentsController *segmentsController;
-
-@property (nonatomic) id contentURLRequestHandle;
-
-@property (nonatomic, assign) BOOL playScheduled;
-@property (nonatomic, assign) BOOL pauseScheduled;
 
 @end
 
@@ -105,12 +70,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 @synthesize overlayViewsHidingDelay = _overlayViewsHidingDelay;
 @synthesize activityGestureRecognizer = _activityGestureRecognizer;
 @synthesize playbackState = _playbackState;
-@synthesize stateMachine = _stateMachine;
 @synthesize idleTimer = _idleTimer;
-@synthesize identifier = _identifier;
-@synthesize muted = _muted;
-@synthesize allowsExternalPlayback = _allowsExternalPlayback;
-@synthesize usesExternalPlaybackWhileExternalScreenIsActive = _usesExternalPlaybackWhileExternalScreenIsActive;
 
 #pragma mark - Initialization
 
@@ -121,28 +81,14 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 - (instancetype)initWithContentURL:(NSURL *)contentURL
 {
-	return [self initWithContentIdentifier:contentURL.absoluteString dataSource:self];
-}
-
-- (instancetype)initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
-{
-	if (!(self = [super init])) {
-		return nil;
+	if (self = [super init]) {
+		_overlaysVisible = YES;
+		
+		self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
+		self.periodicTimeObservers = [NSMutableDictionary dictionary];
+		
+		self.liveTolerance = RTSMediaLiveDefaultTolerance;
 	}
-	
-	_identifier = identifier;
-	_dataSource = dataSource;
-	_overlaysVisible = YES;		// The player always open with visible overlays
-	_allowsExternalPlayback = YES;
-	_usesExternalPlaybackWhileExternalScreenIsActive = NO;
-	
-	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
-	self.periodicTimeObservers = [NSMutableDictionary dictionary];
-	
-	[self.stateMachine activate];
-
-	self.liveTolerance = RTSMediaLiveDefaultTolerance;
-	
 	return self;
 }
 
@@ -151,7 +97,6 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	[self reset];
 		
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[NSNotificationCenter defaultCenter] removeObserver:self.stateTransitionObserver];
 	
 	[_view removeFromSuperview];
 	[_activityView removeGestureRecognizer:_activityGestureRecognizer];
@@ -159,27 +104,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	self.player = nil;
 }
 
-#pragma mark - RTSMediaPlayerControllerDataSource
-
-// Used when initialized with `initWithContentURL:`
-- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-	contentURLForIdentifier:(NSString *)identifier
-		  completionHandler:(void (^)(NSString *identifier, NSURL *contentURL, NSError *error))completionHandler
-{
-	if (!identifier) {
-		@throw [NSException exceptionWithName:NSInternalInconsistencyException
-									   reason:@"Trying to play a media with a nil identifier."
-									 userInfo:nil];
-	}
-	
-	completionHandler(identifier, [NSURL URLWithString:identifier], nil);
-	return nil;
-}
-
-- (void)cancelContentURLRequest:(id)request
-{}
-
-#pragma mark - Loading
+#pragma mark - Errors
 
 static NSDictionary *ErrorUserInfo(RTSMediaPlayerError code, NSString *localizedDescription, NSError *underlyingError)
 {
@@ -195,180 +120,6 @@ static NSDictionary *ErrorUserInfo(RTSMediaPlayerError code, NSString *localized
 	return @{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey : returnedError };
 }
 
-- (TKStateMachine *)stateMachine
-{
-	if (_stateMachine) {
-		return _stateMachine;
-	}
-	
-	TKStateMachine *stateMachine = [TKStateMachine new];
-	
-	TKState *idle = [TKState stateWithName:@"Idle"];
-	TKState *preparing = [TKState stateWithName:@"Preparing"];
-	TKState *ready = [TKState stateWithName:@"Ready"];
-	TKState *playing = [TKState stateWithName:@"Playing"];
-	TKState *seeking = [TKState stateWithName:@"Seeking"];
-	TKState *paused = [TKState stateWithName:@"Paused"];
-	TKState *stalled = [TKState stateWithName:@"Stalled"];
-	TKState *ended = [TKState stateWithName:@"Ended"];
-	[stateMachine addStates:@[ idle, preparing, ready, playing, seeking, paused, stalled, ended ]];
-	stateMachine.initialState = idle;
-	
-	TKEvent *load = [TKEvent eventWithName:@"Load" transitioningFromStates:@[ idle ] toState:preparing];
-	TKEvent *loadSuccess = [TKEvent eventWithName:@"Load Success" transitioningFromStates:@[ preparing ] toState:ready];
-	TKEvent *play = [TKEvent eventWithName:@"Play" transitioningFromStates:@[ ready, paused, stalled, ended, seeking ] toState:playing];
-	TKEvent *seek = [TKEvent eventWithName:@"Seek" transitioningFromStates:@[ ready, paused, stalled, ended, playing ] toState:seeking]; // Including 'Stalled"?
-	TKEvent *pause = [TKEvent eventWithName:@"Pause" transitioningFromStates:@[ ready, playing, seeking ] toState:paused];
-	TKEvent *end = [TKEvent eventWithName:@"End" transitioningFromStates:@[ playing ] toState:ended];
-	TKEvent *stall = [TKEvent eventWithName:@"Stall" transitioningFromStates:@[ playing ] toState:stalled];
-    NSMutableSet *allStatesButIdle = [NSMutableSet setWithSet:stateMachine.states];
-    [allStatesButIdle removeObject:idle];
-    TKEvent *reset = [TKEvent eventWithName:@"Reset" transitioningFromStates:[allStatesButIdle allObjects] toState:idle];
-	
-	[stateMachine addEvents:@[ load, loadSuccess, play, seek, pause, end, stall, reset ]];
-	
-	NSDictionary *states = @{ idle.name:      @(RTSMediaPlaybackStateIdle),
-							  preparing.name: @(RTSMediaPlaybackStatePreparing),
-							  ready.name:     @(RTSMediaPlaybackStateReady),
-							  playing.name:   @(RTSMediaPlaybackStatePlaying),
-							  seeking.name:   @(RTSMediaPlaybackStateSeeking),
-							  paused.name:    @(RTSMediaPlaybackStatePaused),
-							  stalled.name:   @(RTSMediaPlaybackStateStalled),
-							  ended.name:     @(RTSMediaPlaybackStateEnded) };
-	
-	NSCAssert(states.allKeys.count == stateMachine.states.count, @"Must handle all states");
-	
-	@weakify(self)
-	
-	self.stateTransitionObserver = [[NSNotificationCenter defaultCenter] addObserverForName:TKStateMachineDidChangeStateNotification
-																					 object:stateMachine
-																					  queue:[NSOperationQueue mainQueue]
-																				 usingBlock:^(NSNotification *notification) {
-																					 @strongify(self)
-																					 TKTransition *t = notification.userInfo[TKStateMachineDidChangeStateTransitionUserInfoKey];
-																					 RTSMediaPlayerLogDebug(@"(%@) ---[%@]---> (%@)", t.sourceState.name, t.event.name.lowercaseString, t.destinationState.name);
-																					 NSInteger newPlaybackState = [states[t.destinationState.name] integerValue];
-																					 self.playbackState = newPlaybackState;
-																				 }];
-	
-    [idle setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-        @strongify(self)
-        
-        [self.dataSource cancelContentURLRequest:self.contentURLRequestHandle];
-        self.contentURLRequestHandle = nil;
-    }];
-    
-	[preparing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		if (!self.dataSource) {
-			@throw [NSException exceptionWithName:NSInternalInconsistencyException
-										   reason:@"RTSMediaPlayerController dataSource can not be nil."
-										 userInfo:nil];
-		}
-		
-		self.contentURLRequestHandle = [self.dataSource mediaPlayerController:self contentURLForIdentifier:self.identifier completionHandler:^(NSString *identifier, NSURL *contentURL, NSError *error) {
-            self.contentURLRequestHandle = nil;
-            
-            if (![identifier isEqualToString:self.identifier]) {
-                return;
-            }
-            else if (contentURL) {
-				[self fireEvent:self.loadSuccessEvent userInfo:@{ RTSMediaPlayerStateMachineContentURLInfoKey : contentURL }];
-			}
-            else {
-                NSError *dataSourceError = error ?: [NSError errorWithDomain:RTSMediaPlayerErrorDomain
-                                                                        code:RTSMediaPlayerErrorDataSource
-                                                                    userInfo:@{ NSLocalizedDescriptionKey : RTSMediaPlayerLocalizedString(@"Media not available", nil) }];
-                [self fireEvent:self.resetEvent userInfo:@{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey : dataSourceError }];
-			}
-		}];
-	}];
-	
-	[ready setWillEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		
-		NSURL *contentURL = transition.userInfo[RTSMediaPlayerStateMachineContentURLInfoKey];
-		RTSMediaPlayerLogInfo(@"Player URL: %@", contentURL);
-		
-		// The player observes its "currentItem.status" keyPath, see callback in `observeValueForKeyPath:ofObject:change:context:`
-		self.player = [AVPlayer playerWithURL:contentURL];
-		self.player.muted = _muted;
-		self.player.allowsExternalPlayback = _allowsExternalPlayback;
-		self.player.usesExternalPlaybackWhileExternalScreenIsActive = _usesExternalPlaybackWhileExternalScreenIsActive;
-		self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-		
-		self.playerView.player = self.player;
-	}];
-	
-	[ready setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		
-		// Preparing to play, but starting paused
-		if (self.player.rate == 0 && !self.startTimeValue) {
-			// Ugly trick. We do not want to emit pause events before the player is ready to play, so we schedule the pause
-			// to be sent when the player is really ready to play
-			self.pauseScheduled = YES;
-		}
-	}];
-	
-	[playing setDidEnterStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		[self resetIdleTimer];
-	}];
-	
-	[playing setWillExitStateBlock:^(TKState *state, TKTransition *transition) {
-		@strongify(self)
-		[self registerPlaybackStartBoundaryObserver];
-	}];
-	
-	[reset setWillFireEventBlock:^(TKEvent *event, TKTransition *transition) {
-		@strongify(self)
-		NSDictionary *errorUserInfo = transition.userInfo;
-		if (errorUserInfo) {
-			RTSMediaPlayerLogError(@"Playback did fail: %@", errorUserInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey]);
-			[self postNotificationName:RTSMediaPlayerPlaybackDidFailNotification userInfo:errorUserInfo];
-		}
-	}];
-	
-	[reset setDidFireEventBlock:^(TKEvent *event, TKTransition *transition) {
-		@strongify(self)
-		// Do not reset audio session right here, as it breaks cases where there are multiple players on the same
-		// screen, all playing, but only one with sound (e.g. multi-lives).
-		self.previousPlaybackTime = kCMTimeInvalid;
-		self.playerView.player = nil;
-		self.player = nil;
-	}];
-	
-	self.idleState = idle;
-	self.readyState = ready;
-	self.pausedState = paused;
-	self.playingState = playing;
-	self.stalledState = stalled;
-	self.seekingState = seeking;
-	self.endedState = ended;
-	
-	self.loadEvent = load;
-	self.loadSuccessEvent = loadSuccess;
-	self.playEvent = play;
-	self.pauseEvent = pause;
-	self.endEvent = end;
-	self.stallEvent = stall;
-	self.seekEvent = seek;
-	self.resetEvent = reset;
-	
-	_stateMachine = stateMachine;
-	
-	return _stateMachine;
-}
-
-- (void)fireEvent:(TKEvent *)event userInfo:(NSDictionary *)userInfo
-{
-	NSError *error;
-	BOOL success = [self.stateMachine fireEvent:event userInfo:userInfo error:&error];
-	if (!success) {
-		RTSMediaPlayerLogWarning(@"Invalid Transition: %@", error.localizedFailureReason);
-	}
-}
 
 #pragma mark - Notifications
 
@@ -454,40 +205,6 @@ static NSDictionary *ErrorUserInfo(RTSMediaPlayerError code, NSString *localized
 {
 	// The state machine state is updated to 'Paused' in the KVO implementation method
 	[self.player pause];
-}
-
-- (void)setMuted:(BOOL)muted
-{
-	_muted = muted;
-	
-	self.player.muted = muted;
-}
-
-- (BOOL)isMuted
-{
-	return _muted;
-}
-
-- (void)setAllowsExternalPlayback:(BOOL)allowsExternalPlayback
-{
-	_allowsExternalPlayback = allowsExternalPlayback;
-	self.player.allowsExternalPlayback = allowsExternalPlayback;
-}
-
-- (BOOL)allowsExternalPlayback
-{
-	return _allowsExternalPlayback;
-}
-
-- (void)setUsesExternalPlaybackWhileExternalScreenIsActive:(BOOL)usesExternalPlaybackWhileExternalScreenIsActive
-{
-	_usesExternalPlaybackWhileExternalScreenIsActive = usesExternalPlaybackWhileExternalScreenIsActive;
-	self.player.usesExternalPlaybackWhileExternalScreenIsActive = usesExternalPlaybackWhileExternalScreenIsActive;
-}
-
-- (BOOL)usesExternalPlaybackWhileExternalScreenIsActive
-{
-	return _usesExternalPlaybackWhileExternalScreenIsActive;
 }
 
 - (void)reset

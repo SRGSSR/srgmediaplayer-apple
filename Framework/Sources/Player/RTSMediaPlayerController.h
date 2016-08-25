@@ -92,12 +92,6 @@
 - (void)attachPlayerToView:(UIView *)containerView;
 
 /**
- *  --------------------------------
- *  @name Accessing Media Properties
- *  --------------------------------
- */
-
-/**
  *  -------------------
  *  @name Overlay Views
  *  -------------------
@@ -168,11 +162,6 @@
  *  early (otherwise those will be discarded when the controller itself is deallocated)
  */
 - (void)reset;
-
-/**
- *  Set to YES to mute playback. Default is NO
- */
-@property (nonatomic, getter=isMuted) BOOL muted;
 
 /**
  *  Seek to specific time of the playback. The completion handler (if any) will be called when seeking ends
@@ -281,18 +270,6 @@
  *  @param observer The time observer to remove
  */
 - (void)removePeriodicTimeObserver:(id)observer;
-
-/**
- *  -------------
- *  @name Airplay
- *  -------------
- */
-
-/**
- *  Refer to the corresponding `AVPlayer` properties for more information
- */
-@property (nonatomic) BOOL allowsExternalPlayback;									// Default is YES
-@property (nonatomic) BOOL usesExternalPlaybackWhileExternalScreenIsActive;			// Default is NO
 
 @end
 
