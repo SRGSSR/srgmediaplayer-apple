@@ -96,7 +96,6 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 {
 	AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
 	self.player = [AVPlayer playerWithPlayerItem:playerItem];
-	[self.player play];
 }
 
 - (void)togglePlayPause
@@ -118,19 +117,14 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	if (context == s_kvoContext) {
 		if ([keyPath isEqualToString:@"currentItem.status"]) {
 			if (self.player.status == AVPlayerStatusReadyToPlay) {
-				self.playbackState = RTSMediaPlaybackStateReady;
+				self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
 			}
 			else {
 				self.playbackState = RTSMediaPlaybackStateIdle;
 			}
 		}
 		else if ([keyPath isEqualToString:@"rate"]) {
-			if (self.player.rate == 0.f) {
-				self.playbackState = RTSMediaPlaybackStatePaused;
-			}
-			else {
-				self.playbackState = RTSMediaPlaybackStatePlaying;
-			}
+			self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
 		}
 	}
 	else {
