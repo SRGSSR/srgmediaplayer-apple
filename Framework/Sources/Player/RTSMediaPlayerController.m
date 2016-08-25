@@ -48,12 +48,6 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 
 #pragma mark View
 
-- (void)attachPlayerToView:(UIView *)containerView
-{
-	self.view.frame = containerView.bounds;
-	[containerView insertSubview:self.view atIndex:0];
-}
-
 - (UIView *)view
 {
 	if (!_view) {
