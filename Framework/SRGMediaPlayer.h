@@ -25,5 +25,5 @@ FOUNDATION_EXPORT NSString * SRGMediaPlayerMarketingVersion(void);
 #import "RTSPlaybackActivityIndicatorView.h"
 //#import "RTSSegmentedTimelineView.h"
 //#import "RTSTimelineSlider.h"
-//#import "RTSTimeSlider.h"
+#import "RTSTimeSlider.h"
 //#import "RTSVolumeView.h"

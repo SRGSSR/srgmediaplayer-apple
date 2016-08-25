@@ -18,6 +18,7 @@ static void *s_kvoContext = &s_kvoContext;
 
 @property (nonatomic, weak) IBOutlet RTSPlaybackActivityIndicatorView *playbackActivityIndicatorView;
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerPlaybackButton *playerButton;
+@property (nonatomic, weak) IBOutlet RTSTimeSlider *timeSlider;
 
 @end
 
@@ -42,6 +43,7 @@ static void *s_kvoContext = &s_kvoContext;
 	self.playerController = [[RTSMediaPlayerController alloc] init];
 	self.playerButton.mediaPlayerController = self.playerController;
 	self.playbackActivityIndicatorView.mediaPlayerController = self.playerController;
+	self.timeSlider.mediaPlayerController = self.playerController;
 	
 	self.playerController.view.frame = self.view.bounds;
 	self.playerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

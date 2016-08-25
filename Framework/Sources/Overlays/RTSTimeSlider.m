@@ -160,7 +160,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (void) updateTimeRangeLabels
 {
-	AVPlayerItem *playerItem = self.mediaPlayerController.playerItem;
+	AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
 	if (! playerItem || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded
 			|| playerItem.status != AVPlayerItemStatusReadyToPlay) {
 		self.valueLabel.text = @"--:--";
@@ -219,7 +219,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
 	if ([self isDraggable]) {
-		[self.mediaPlayerController playAtTime:self.time];
+		[self.mediaPlayerController seekToTime:self.time completionHandler:nil];
 	}
 	
 	[super endTrackingWithTouch:touch withEvent:event];
@@ -286,7 +286,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	CGContextSetStrokeColorWithColor(context, self.maximumTrackTintColor.CGColor);
 	CGContextStrokePath(context);
 	
-	for (NSValue *value in self.mediaPlayerController.playerItem.loadedTimeRanges) {
+	for (NSValue *value in self.mediaPlayerController.player.currentItem.loadedTimeRanges) {
 		CMTimeRange timeRange = [value CMTimeRangeValue];
 		[self drawTimeRangeProgress:timeRange context:context];
 	}
@@ -296,7 +296,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
 	CGFloat lineWidth = 1.0f;
 	
-	CGFloat duration = CMTimeGetSeconds(self.mediaPlayerController.playerItem.duration);
+	CGFloat duration = CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.duration);
 	if (isnan(duration))
 		return;
 	
@@ -378,7 +378,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				{
 					self.maximumValue = CMTimeGetSeconds(timeRange.duration);
 					
-					AVPlayerItem *playerItem = self.mediaPlayerController.playerItem;
+					AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
 					self.value = CMTimeGetSeconds(CMTimeSubtract(playerItem.currentTime, timeRange.start));
 					self.userInteractionEnabled = YES;
 				}
@@ -392,7 +392,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 				
 				RTSMediaPlayerLogTrace(@"Range min = %@ (value = %@) --- Current = %@ (value = %@) --- Range max = %@ (value = %@)",
 									   @(CMTimeGetSeconds(timeRange.start)), @(self.minimumValue),
-									   @(CMTimeGetSeconds(self.mediaPlayerController.playerItem.currentTime)), @(self.value),
+									   @(CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.currentTime)), @(self.value),
 									   @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange))), @(self.maximumValue));
 				
 				[self.slidingDelegate timeSlider:self

@@ -38,20 +38,27 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="EgY-Tf-59b" customClass="RTSPlaybackActivityIndicatorView">
                                 <rect key="frame" x="282" y="281" width="37" height="37"/>
                             </activityIndicatorView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MOK-6c-0hK" customClass="RTSTimeSlider">
+                                <rect key="frame" x="18" y="550" width="564" height="31"/>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Pgw-K7-jgO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ABk-LG-YKk"/>
                             <constraint firstItem="EgY-Tf-59b" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ay3-RW-w3N"/>
                             <constraint firstItem="Ymv-yM-tfZ" firstAttribute="leading" secondItem="Pgw-K7-jgO" secondAttribute="trailing" constant="56.5" id="LB2-S6-BQq"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="MOK-6c-0hK" secondAttribute="bottom" constant="20" id="NWn-0e-ygq"/>
+                            <constraint firstItem="MOK-6c-0hK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="R7O-MS-NJc"/>
                             <constraint firstItem="Ymv-yM-tfZ" firstAttribute="centerY" secondItem="Pgw-K7-jgO" secondAttribute="centerY" id="SPe-jk-ztA"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Pgw-K7-jgO" secondAttribute="bottom" constant="76" id="Tqj-N0-rNa"/>
+                            <constraint firstAttribute="trailing" secondItem="MOK-6c-0hK" secondAttribute="trailing" constant="20" id="bDF-ol-jhE"/>
                             <constraint firstItem="EgY-Tf-59b" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="jp9-xh-QCL"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="playbackActivityIndicatorView" destination="EgY-Tf-59b" id="uJZ-XX-0e7"/>
                         <outlet property="playerButton" destination="9hQ-O6-hDQ" id="CTP-sS-ujC"/>
+                        <outlet property="timeSlider" destination="MOK-6c-0hK" id="jbH-vv-mek"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

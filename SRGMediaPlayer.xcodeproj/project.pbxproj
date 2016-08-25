@@ -79,6 +79,8 @@
 		E6C9860B1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F4C1D62072400A55085 /* RTSMediaPlayerPlaybackButton.m */; };
 		E6C9860C1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4F1D62072400A55085 /* RTSPlaybackActivityIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6C9860D1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F501D62072400A55085 /* RTSPlaybackActivityIndicatorView.m */; };
+		E6C9860E1D6F458900C45C7A /* RTSTimeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F531D62072400A55085 /* RTSTimeSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6C9860F1D6F458900C45C7A /* RTSTimeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F541D62072400A55085 /* RTSTimeSlider.m */; };
 		E6FC7F6B1D62072400A55085 /* RTSActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F301D62072400A55085 /* RTSActivityGestureRecognizer.h */; };
 		E6FC7F6C1D62072400A55085 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F311D62072400A55085 /* RTSActivityGestureRecognizer.m */; };
 		E6FC7F6D1D62072400A55085 /* RTSMediaPlayerConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F321D62072400A55085 /* RTSMediaPlayerConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -664,6 +666,7 @@
 				E6FC7F6B1D62072400A55085 /* RTSActivityGestureRecognizer.h in Headers */,
 				E6FC7F951D62072400A55085 /* RTSMediaSegment.h in Headers */,
 				E6FC7F911D62072400A55085 /* RTSMediaPlayerViewController.h in Headers */,
+				E6C9860E1D6F458900C45C7A /* RTSTimeSlider.h in Headers */,
 				E6FC7F961D62072400A55085 /* RTSMediaSegmentsDataSource.h in Headers */,
 				E6FC7F6E1D62072400A55085 /* RTSMediaPlayerError.h in Headers */,
 				E6FC7F711D62072400A55085 /* RTSMediaPlayerLogger.h in Headers */,
@@ -966,6 +969,7 @@
 				E6FC7F721D62072400A55085 /* RTSMediaPlayerLogger.m in Sources */,
 				E6C9860D1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.m in Sources */,
 				E6FC7F701D62072400A55085 /* RTSMediaPlayerIconTemplate.m in Sources */,
+				E6C9860F1D6F458900C45C7A /* RTSTimeSlider.m in Sources */,
 				E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */,
 				E6FC7F6C1D62072400A55085 /* RTSActivityGestureRecognizer.m in Sources */,
 				E6FC7F7A1D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */,
