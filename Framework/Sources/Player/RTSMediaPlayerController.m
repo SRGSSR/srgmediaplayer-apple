@@ -24,6 +24,8 @@ NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
 NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.0;		// same tolerance as built-in iOS player
 
 NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
+NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
+NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlayerPreviousPlaybackState";
 
 @interface RTSMediaPlayerController ()
 
@@ -109,6 +111,11 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	[self willChangeValueForKey:@"playbackState"];
 	_playbackState = playbackState;
 	[self didChangeValueForKey:@"playbackState"];
+	
+	NSDictionary *userInfo = @{ RTSMediaPlayerPreviousPlaybackStateUserInfoKey: @(_playbackState) };
+	[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackStateDidChangeNotification
+														object:self
+													  userInfo:userInfo];
 }
 
 - (UIView *)view
@@ -122,6 +129,111 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 - (RTSMediaPlayerView *)playerView
 {
 	return (RTSMediaPlayerView *)self.view;
+}
+
+- (CMTimeRange)timeRange
+{
+	AVPlayerItem *playerItem = self.player.currentItem;
+	
+	NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
+	if (!firstSeekableTimeRangeValue) {
+		return kCMTimeRangeInvalid;
+	}
+	
+	NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
+	if (!lastSeekableTimeRangeValue) {
+		return kCMTimeRangeInvalid;
+	}
+	
+	CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
+	CMTimeRange lastSeekableTimeRange = [lastSeekableTimeRangeValue CMTimeRangeValue];
+	
+	if (!CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || !CMTIMERANGE_IS_VALID(lastSeekableTimeRange)) {
+		return kCMTimeRangeInvalid;
+	}
+	
+	CMTimeRange timeRange = CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
+	
+	// DVR window size too small. Check that we the stream is not an on-demand one first, of course
+	if (CMTIME_IS_INDEFINITE(playerItem.duration) && CMTimeGetSeconds(timeRange.duration) < self.minimumDVRWindowLength) {
+		return CMTimeRangeMake(timeRange.start, kCMTimeZero);
+	}
+	else {
+		return timeRange;
+	}
+}
+
+- (RTSMediaType)mediaType
+{
+	if (! self.player) {
+		return RTSMediaTypeUnknown;
+	}
+	
+	NSArray *tracks = self.player.currentItem.tracks;
+	if (tracks.count == 0) {
+		return RTSMediaTypeUnknown;
+	}
+	
+	NSString *mediaType = [[tracks.firstObject assetTrack] mediaType];
+	return [mediaType isEqualToString:AVMediaTypeVideo] ? RTSMediaTypeVideo : RTSMediaTypeAudio;
+}
+
+- (RTSMediaStreamType)streamType
+{
+	CMTimeRange timeRange = self.timeRange;
+	
+	if (CMTIMERANGE_IS_INVALID(timeRange)) {
+		return RTSMediaStreamTypeUnknown;
+	}
+	else if (CMTIMERANGE_IS_EMPTY(timeRange)) {
+		return RTSMediaStreamTypeLive;
+	}
+	else if (CMTIME_IS_INDEFINITE(self.player.currentItem.duration)) {
+		return RTSMediaStreamTypeDVR;
+	}
+	else {
+		return RTSMediaStreamTypeOnDemand;
+	}
+}
+
+- (void)setMinimumDVRWindowLength:(NSTimeInterval)minimumDVRWindowLength
+{
+	if (minimumDVRWindowLength < 0.) {
+		RTSMediaPlayerLogWarning(@"The minimum DVR window length cannot be negative. Set to 0");
+		_minimumDVRWindowLength = 0.;
+	}
+	else {
+		_minimumDVRWindowLength = minimumDVRWindowLength;
+	}
+}
+
+- (void)setLiveTolerance:(NSTimeInterval)liveTolerance
+{
+	if (liveTolerance < 0.) {
+		RTSMediaPlayerLogWarning(@"Live tolerance cannot be negative. Set to 0");
+		_liveTolerance = 0.;
+	}
+	else {
+		_liveTolerance = liveTolerance;
+	}
+}
+
+- (BOOL)isLive
+{
+	AVPlayerItem *playerItem = self.player.currentItem;
+	if (!playerItem) {
+		return NO;
+	}
+	
+	if (self.streamType == RTSMediaStreamTypeLive) {
+		return YES;
+	}
+	else if (self.streamType == RTSMediaStreamTypeDVR) {
+		return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), playerItem.currentTime)) < self.liveTolerance;
+	}
+	else {
+		return NO;
+	}
 }
 
 #pragma mark Playback
@@ -183,6 +295,7 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
 	// TODO: Warning: Might not be executed on the main thread!
+	NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes are notified on the main thread");
 	
 	if (context == s_kvoContext) {
 		NSLog(@"KVO change for %@ with change %@", keyPath, change);

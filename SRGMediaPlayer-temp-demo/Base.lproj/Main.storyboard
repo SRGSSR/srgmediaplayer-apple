@@ -31,6 +31,10 @@
                                     <action selector="seek:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Gl-nq-EUH"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9hQ-O6-hDQ" customClass="RTSMediaPlayerPlaybackButton">
+                                <rect key="frame" x="89" y="486" width="46" height="46"/>
+                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -40,6 +44,9 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Pgw-K7-jgO" secondAttribute="bottom" constant="76" id="Tqj-N0-rNa"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="playerButton" destination="9hQ-O6-hDQ" id="CTP-sS-ujC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

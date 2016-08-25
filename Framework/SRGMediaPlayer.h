@@ -16,7 +16,7 @@ FOUNDATION_EXPORT NSString * SRGMediaPlayerMarketingVersion(void);
 //#import "RTSMediaPlayerConstants.h"
 #import "RTSMediaPlayerController.h"
 //#import "RTSMediaPlayerError.h"
-//#import "RTSMediaPlayerPlaybackButton.h"
+#import "RTSMediaPlayerPlaybackButton.h"
 //#import "RTSMediaPlayerViewController.h"
 //#import "RTSMediaSegment.h"
 //#import "RTSMediaSegmentsController.h"

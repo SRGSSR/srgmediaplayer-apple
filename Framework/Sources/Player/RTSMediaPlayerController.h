@@ -92,4 +92,45 @@
 
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
 
+/**
+ *  The current media time range (might be empty or indefinite). Use `CMTimeRange` macros for checking time ranges
+ */
+@property (nonatomic, readonly) CMTimeRange timeRange;
+
+/**
+ *  The media type (audio / video). See `RTSMediaType` for possible values
+ *
+ *  Warning: Is currently unreliable when Airplay playback has been started before the media is played
+ *           Related to https://openradar.appspot.com/27079167
+ */
+@property (nonatomic, readonly) RTSMediaType mediaType;
+
+/**
+ *  The stream type (live / DVR / VOD). See `RTSMediaStreamType` for possible values
+ *
+ *  Warning: Is currently unreliable when Airplay playback has been started before the media is played
+ *           Related to https://openradar.appspot.com/27079167
+ */
+@property (nonatomic, readonly) RTSMediaStreamType streamType;
+
+/**
+ *  Return YES iff the stream is currently played in live conditions
+ */
+@property (nonatomic, readonly, getter=isLive) BOOL live;
+
+/**
+ *  The minimum window length which must be available for a stream to be considered to be a DVR stream, in seconds. The
+ *  default value is 0. This setting can be used so that streams detected as DVR ones because their window is small can
+ *  behave as live streams. This is useful to avoid usual related seeking issues, or slider hiccups during playback, most
+ *  notably
+ */
+@property (nonatomic) NSTimeInterval minimumDVRWindowLength;
+
+/**
+ *  Return the tolerance (in seconds) for a DVR stream to be considered being played in live conditions. If the stream
+ *  playhead is located within the last liveTolerance conditions of the stream, it is considered to be live, not live
+ *  otherwise. The default value is 30 seconds and matches the standard iOS behavior
+ */
+@property (nonatomic) NSTimeInterval liveTolerance;
+
 @end

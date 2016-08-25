@@ -40,48 +40,24 @@
 	[self refreshButton];
 }
 
-- (BOOL)hasStopButton
+- (void)togglePlayPause:(id)sender
 {
-    return (self.behavior == RTSMediaPlayerPlaybackButtonBehaviorStopForLiveOnly && self.mediaPlayerController.streamType == RTSMediaStreamTypeLive)
-        || self.behavior == RTSMediaPlayerPlaybackButtonBehaviorStopForAll;
-}
-
-- (void)play
-{
-	[self.mediaPlayerController play];
-	[self refreshButton];
-}
-
-- (void)pause
-{
-	if ([self hasStopButton]) {
-		[self.mediaPlayerController reset];
-	}
-	else {
-		[self.mediaPlayerController pause];
-	}
+	[self.mediaPlayerController togglePlayPause];
 	[self refreshButton];
 }
 
 - (void)refreshButton
 {
 	BOOL isPlaying = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
-	SEL action = isPlaying ? @selector(pause) : @selector(play);
 
 	[self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
-	[self addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+	[self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
 
 	UIImage *normalImage = nil;
 	UIImage *highlightedImage = nil;
 	if (isPlaying) {
-		if ([self hasStopButton]) {
-            normalImage = self.stopImage ?: [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.normalColor];
-            highlightedImage = self.stopImage ?: [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.hightlightColor];
-		}
-		else {
-            normalImage = self.pauseImage ?: [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
-            highlightedImage = self.pauseImage ?: [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
-		}
+		normalImage = self.pauseImage ?: [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
+		highlightedImage = self.pauseImage ?: [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
 	}
 	else {
         normalImage = self.playImage ?: [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.normalColor];
