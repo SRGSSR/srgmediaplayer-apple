@@ -68,15 +68,13 @@
  */
 @property (nonatomic, readonly) UIView *view;
 
+@property (nonatomic, readonly) RTSMediaPlaybackState playbackState;
+
 /**
  *  -------------------
  *  @name Overlay Views
  *  -------------------
  */
-
-@property (nonatomic, readonly) AVPlayerItem *playerItem;
-
-@property (nonatomic, readonly) RTSMediaPlaybackState playbackState;
 
 /**
  *  -------------------------

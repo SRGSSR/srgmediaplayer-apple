@@ -51,12 +51,6 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
 	 *  when the `stop` method is called.
 	 */
 	RTSMediaPlaybackStateIdle,
-	
-	/**
-	 *  The player is preparing to play the media. It will load everything needed to play the media. This can typically
-	 *  take some time under bad network conditions.
-	 */
-	RTSMediaPlaybackStatePreparing,
 		
 	/**
 	 *  The media is playing, i.e. you can hear sound and/or see a video playing.

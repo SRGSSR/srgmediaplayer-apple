@@ -77,6 +77,17 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	return self.playerView.playerLayer.player;
 }
 
+- (void)setPlaybackState:(RTSMediaPlaybackState)playbackState
+{
+	if (_playbackState == playbackState) {
+		return;
+	}
+	
+	[self willChangeValueForKey:@"playbackState"];
+	_playbackState = playbackState;
+	[self didChangeValueForKey:@"playbackState"];
+}
+
 - (UIView *)view
 {
 	if (!_view) {
@@ -110,21 +121,29 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 
 #pragma mark KVO
 
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
+{
+	if ([key isEqualToString:@"playbackState"]) {
+		return NO;
+	}
+	else {
+		return [super automaticallyNotifiesObserversForKey:key];
+	}
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
 	// TODO: Warning: Might not be executed on the main thread!
 	
 	if (context == s_kvoContext) {
-		if ([keyPath isEqualToString:@"currentItem.status"]) {
-			if (self.player.status == AVPlayerStatusReadyToPlay) {
+		// If the rate or the item status changes, calculate the new playback status
+		if ([keyPath isEqualToString:@"currentItem.status"] || [keyPath isEqualToString:@"rate"]) {
+			if (self.player.currentItem && self.player.currentItem.status == AVPlayerStatusReadyToPlay) {
 				self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
 			}
 			else {
 				self.playbackState = RTSMediaPlaybackStateIdle;
 			}
-		}
-		else if ([keyPath isEqualToString:@"rate"]) {
-			self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
 		}
 	}
 	else {
