@@ -175,7 +175,11 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 		
 		// If the rate or the item status changes, calculate the new playback status
 		if ([keyPath isEqualToString:@"currentItem.status"] || [keyPath isEqualToString:@"rate"]) {
-			if (self.player.currentItem && self.player.currentItem.status == AVPlayerStatusReadyToPlay) {
+			// Do not let playback pause when the player stalls, attempt to play again
+			if (self.player.rate == 0.f && self.playbackState == RTSMediaPlaybackStateStalled) {
+				[self.player play];
+			}
+			else if (self.player.currentItem && self.player.currentItem.status == AVPlayerStatusReadyToPlay) {
 				self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
 			}
 			else {
