@@ -50,6 +50,13 @@ static void *s_kvoContext = &s_kvoContext;
 	[self.playerController togglePlayPause];
 }
 
+- (IBAction)seek:(id)sender
+{
+	[self.playerController seekToTime:CMTimeAdd(self.playerController.player.currentTime, CMTimeMakeWithSeconds(10, 1)) completionHandler:^(BOOL finished) {
+		NSLog(@"Finished: %@", finished ? @"YES" : @"NO");
+	}];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
 	if (context == s_kvoContext) {

@@ -142,6 +142,20 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	}
 }
 
+- (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL))completionHandler
+{
+	if (CMTIME_IS_INVALID(time)) {
+		return;
+	}
+	
+	if (self.player.status != AVPlayerItemStatusReadyToPlay) {
+		return;
+	}
+	
+	self.playbackState = RTSMediaPlaybackStateSeeking;
+	[self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:completionHandler];
+}
+
 #pragma mark Notifications
 
 - (void)rts_playerItemPlaybackStalled:(NSNotification *)notification

@@ -90,4 +90,6 @@
 
 - (void)togglePlayPause;
 
+- (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
+
 @end

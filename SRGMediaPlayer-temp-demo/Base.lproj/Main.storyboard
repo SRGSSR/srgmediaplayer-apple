@@ -24,10 +24,19 @@
                                     <action selector="togglePlayPause:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fbQ-V4-tdU"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ymv-yM-tfZ">
+                                <rect key="frame" x="398" y="494" width="34" height="30"/>
+                                <state key="normal" title="Seek"/>
+                                <connections>
+                                    <action selector="seek:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Gl-nq-EUH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Pgw-K7-jgO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ABk-LG-YKk"/>
+                            <constraint firstItem="Ymv-yM-tfZ" firstAttribute="leading" secondItem="Pgw-K7-jgO" secondAttribute="trailing" constant="56.5" id="LB2-S6-BQq"/>
+                            <constraint firstItem="Ymv-yM-tfZ" firstAttribute="centerY" secondItem="Pgw-K7-jgO" secondAttribute="centerY" id="SPe-jk-ztA"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Pgw-K7-jgO" secondAttribute="bottom" constant="76" id="Tqj-N0-rNa"/>
                         </constraints>
                     </view>
