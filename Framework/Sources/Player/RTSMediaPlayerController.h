@@ -125,61 +125,10 @@
 @property (nonatomic, readonly) RTSMediaPlaybackState playbackState;
 
 /**
- *  Prepare the player to play, but does not start playback
- */
-- (void)prepareToPlay;
-
-/**
- *  Play (prepare the player if not ready yet)
- */
-- (void)play;
-
-/**
- *  Prepare the player to play the specified identifier, but does not start playback
- */
-- (void)prepareToPlayURL:(NSURL *)URL;
-
-/**
  *  Start playing a media specified using its identifier. Retrieving the media URL requires a data source to be bound
  *  to the player controller
  */
 - (void)playURL:(NSURL *)URL;
-
-/**
- *  Pause
- */
-- (void)pause;
-
-/**
- *  Releases resources associated with the player. Can be called manually if player resources need to be released
- *  early (otherwise those will be discarded when the controller itself is deallocated)
- */
-- (void)reset;
-
-/**
- *  Seek to specific time of the playback. The completion handler (if any) will be called when seeking ends
- */
-- (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
-
-/**
- *  Play the current media, starting at a specific time (the player seeks if it was already playing)
- */
-- (void)playAtTime:(CMTime)time;
-
-/**
- *  Play the current media, starting at a specific time, and calling the completion handler when playback resumes
- *  at the specified time (the player seeks if it was already playing)
- */
-- (void)playAtTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
-
-/**
- *  Start playing a media specified using its identifier, starting at a specific time. Retrieving the media URL requires
- *  a data source to be bound to the player controller
- *
- *  @discussion If time is kCMTimeZero, playback will beging at the default position (start of a VOD, or live for a DVR).
- *              If you need to start at the beginning of a DVR stream, use a small time (e.g. CMTimeMakeWithSeconds(1., 4.))
- */
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
 
 /**
  *  ------------------------------------
@@ -227,36 +176,6 @@
  *  otherwise. The default value is 30 seconds and matches the standard iOS behavior
  */
 @property (nonatomic) NSTimeInterval liveTolerance;
-
-/**
- *  --------------------
- *  @name Time observers
- *  --------------------
- */
-
-/**
- *  Register a block for periodical execution. Unlike usual `AVPlayer` time observers, such observers not only run during playback, but
- *  also when paused. This makes such observers very helpful when UI must be updated continously, even when playback is paused, e.g.
- *  in the case of DVR streams
- *
- *  @param interval Time interval between block executions
- *  @param queue    The serial queue onto which block should be enqueued (main queue if NULL)
- *  @param block	The block to be periodically executed
- *
- *  @discussion There is no need to KVO-observe the presence or not of the `AVPlayer` instance before registration. You can register
- *              time observers earlier if needed
- *
- *  @return The time observer. The observer is retained by the media player controller, you can store a weak reference
- *          to it and remove it at a later time if needed
- */
-- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
-
-/**
- *  Remove a time observer (does nothing if the observer is not registered)
- *
- *  @param observer The time observer to remove
- */
-- (void)removePeriodicTimeObserver:(id)observer;
 
 @end
 
