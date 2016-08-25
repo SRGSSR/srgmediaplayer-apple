@@ -77,6 +77,8 @@
 		E6C986041D6EF6C400C45C7A /* SRGMediaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6C9860A1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4B1D62072400A55085 /* RTSMediaPlayerPlaybackButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6C9860B1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F4C1D62072400A55085 /* RTSMediaPlayerPlaybackButton.m */; };
+		E6C9860C1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4F1D62072400A55085 /* RTSPlaybackActivityIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6C9860D1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F501D62072400A55085 /* RTSPlaybackActivityIndicatorView.m */; };
 		E6FC7F6B1D62072400A55085 /* RTSActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F301D62072400A55085 /* RTSActivityGestureRecognizer.h */; };
 		E6FC7F6C1D62072400A55085 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F311D62072400A55085 /* RTSActivityGestureRecognizer.m */; };
 		E6FC7F6D1D62072400A55085 /* RTSMediaPlayerConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F321D62072400A55085 /* RTSMediaPlayerConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -655,6 +657,7 @@
 				E6FC7F6F1D62072400A55085 /* RTSMediaPlayerIconTemplate.h in Headers */,
 				E6FC7F731D62072400A55085 /* RTSMediaPlayerView.h in Headers */,
 				E6FC7F791D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.h in Headers */,
+				E6C9860C1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.h in Headers */,
 				E6FC7F6D1D62072400A55085 /* RTSMediaPlayerConstants.h in Headers */,
 				E6FC7F8D1D62072400A55085 /* RTSMediaPlayerController.h in Headers */,
 				E69A1E621D61BAFD0064E6C1 /* SRGMediaPlayer.h in Headers */,
@@ -961,6 +964,7 @@
 				E6C9860B1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.m in Sources */,
 				E6FC7F8E1D62072400A55085 /* RTSMediaPlayerController.m in Sources */,
 				E6FC7F721D62072400A55085 /* RTSMediaPlayerLogger.m in Sources */,
+				E6C9860D1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.m in Sources */,
 				E6FC7F701D62072400A55085 /* RTSMediaPlayerIconTemplate.m in Sources */,
 				E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */,
 				E6FC7F6C1D62072400A55085 /* RTSActivityGestureRecognizer.m in Sources */,

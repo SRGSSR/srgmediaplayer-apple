@@ -22,7 +22,7 @@ FOUNDATION_EXPORT NSString * SRGMediaPlayerMarketingVersion(void);
 //#import "RTSMediaSegmentsController.h"
 //#import "RTSMediaSegmentsDataSource.h"
 //#import "RTSPictureInPictureButton.h"
-//#import "RTSPlaybackActivityIndicatorView.h"
+#import "RTSPlaybackActivityIndicatorView.h"
 //#import "RTSSegmentedTimelineView.h"
 //#import "RTSTimelineSlider.h"
 //#import "RTSTimeSlider.h"
