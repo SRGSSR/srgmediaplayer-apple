@@ -76,6 +76,8 @@
 
 @property (nonatomic, readonly) AVPlayerItem *playerItem;
 
+@property (nonatomic, readonly) RTSMediaPlaybackState playbackState;
+
 /**
  *  -------------------------
  *  @name Controling Playback

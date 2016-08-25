@@ -28,14 +28,26 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 @interface RTSMediaPlayerController ()
 
 @property (readonly) RTSMediaPlayerView *playerView;
+@property (nonatomic) RTSMediaPlaybackState playbackState;
 
 @end
 
-@implementation RTSMediaPlayerController
+@implementation RTSMediaPlayerController {
+@private
+	BOOL _seeking;
+}
 
 @synthesize view = _view;
 
 #pragma mark Object lifecycle
+
+- (instancetype)init
+{
+	if (self = [super init]) {
+		self.playbackState = RTSMediaPlaybackStateIdle;
+	}
+	return self;
+}
 
 - (void)dealloc
 {
@@ -49,12 +61,14 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	AVPlayer *previousPlayer = self.playerView.playerLayer.player;
 	if (previousPlayer) {
 		[player removeObserver:self forKeyPath:@"currentItem.status" context:s_kvoContext];
+		[player removeObserver:self forKeyPath:@"rate" context:s_kvoContext];
 	}
 	
 	self.playerView.playerLayer.player = player;
 	
 	if (player) {
 		[player addObserver:self forKeyPath:@"currentItem.status" options:0 context:s_kvoContext];
+		[player addObserver:self forKeyPath:@"rate" options:0 context:s_kvoContext];
 	}
 }
 
@@ -66,9 +80,7 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 - (UIView *)view
 {
 	if (!_view) {
-		RTSMediaPlayerView *mediaPlayerView = [RTSMediaPlayerView new];
-		mediaPlayerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_view = mediaPlayerView;
+		_view = [[RTSMediaPlayerView alloc] init];
 	}
 	return _view;
 }
@@ -91,11 +103,24 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
-	// TODO: Warning: Might not be executed on the main thread
+	// TODO: Warning: Might not be executed on the main thread!
 	
 	if (context == s_kvoContext) {
 		if ([keyPath isEqualToString:@"currentItem.status"]) {
-			
+			if (self.player.status == AVPlayerStatusReadyToPlay) {
+				self.playbackState = RTSMediaPlaybackStateReady;
+			}
+			else {
+				self.playbackState = RTSMediaPlaybackStateIdle;
+			}
+		}
+		else if ([keyPath isEqualToString:@"rate"]) {
+			if (self.player.rate == 0.f) {
+				self.playbackState = RTSMediaPlaybackStatePaused;
+			}
+			else {
+				self.playbackState = RTSMediaPlaybackStatePlaying;
+			}
 		}
 	}
 	else {
