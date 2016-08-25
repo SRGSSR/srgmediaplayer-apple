@@ -771,6 +771,11 @@
 					};
 					E6C985EB1D6EF6BB00C45C7A = {
 						CreatedOnToolsVersion = 7.3.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1388,6 +1393,7 @@
 				E6C986011D6EF6BC00C45C7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
