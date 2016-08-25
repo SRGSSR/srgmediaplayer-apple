@@ -9,7 +9,6 @@
 #import <libextobjc/EXTScope.h>
 
 #import "RTSMediaPlayerController.h"
-#import "RTSMediaPlayerControllerDataSource.h"
 
 #import "RTSMediaPlayerError.h"
 #import "RTSMediaPlayerView.h"
@@ -76,11 +75,6 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 
 - (instancetype)init
 {
-	return [self initWithContentURL:[NSURL URLWithString:@""]];
-}
-
-- (instancetype)initWithContentURL:(NSURL *)contentURL
-{
 	if (self = [super init]) {
 		_overlaysVisible = YES;
 		
@@ -131,160 +125,6 @@ static NSDictionary *ErrorUserInfo(RTSMediaPlayerError code, NSString *localized
 	}
 	else {
 		[[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
-	}
-}
-
-#pragma mark - Playback
-
-- (void)loadPlayerAndAutoStartAtTime:(NSValue *)startTimeValue
-{
-	if ([self.stateMachine.currentState isEqual:self.idleState]) {
-		self.startTimeValue = startTimeValue;
-		[self fireEvent:self.loadEvent userInfo:nil];
-	}
-}
-
-- (void)prepareToPlay
-{
-	[self loadPlayerAndAutoStartAtTime:nil];
-}
-
-- (void)play
-{
-	self.playScheduled = NO;
-	
-	if(!self.identifier) {
-		return;
-	}
-	
-	if ([self.stateMachine.currentState isEqual:self.endedState]) {
-		[self reset];
-	}
-	
-	if ([self.stateMachine.currentState isEqual:self.idleState]) {
-		[self loadPlayerAndAutoStartAtTime:[NSValue valueWithCMTime:kCMTimeZero]];
-	}
-	else {
-		[self.player play];
-	}
-}
-
-- (void)prepareToPlayIdentifier:(NSString *)identifier
-{
-	if (![self.identifier isEqualToString:identifier]) {
-		[self reset];
-		self.identifier = identifier;
-	}
-	
-	[self prepareToPlay];
-}
-
-- (void)playIdentifier:(NSString *)identifier
-{
-	if (![self.identifier isEqualToString:identifier]) {
-		[self reset];
-		self.identifier = identifier;
-	}
-	
-	[self play];
-}
-
-- (void)playIdentifier:(NSString *)identifier atTime:(CMTime)time
-{
-	if ([self.identifier isEqualToString:identifier]) {
-		[self playAtTime:time];
-	}
-	else {
-		[self reset];
-		self.identifier = identifier;
-		[self loadPlayerAndAutoStartAtTime:[NSValue valueWithCMTime:time]];
-	}
-}
-
-- (void)pause
-{
-	// The state machine state is updated to 'Paused' in the KVO implementation method
-	[self.player pause];
-}
-
-- (void)reset
-{
-	// Reset the PIP controller so that it gets lazily attached again. This forces a new player layer relationship,
-	// preventing black screen issues when playing another media identifier while already in picture in picture mode
-	if (_pictureInPictureController) {
-		[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:(void *)RTSMediaPlayerPictureInPicturePossibleContext];
-		[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:(void *)RTSMediaPlayerPictureInPictureActiveContext];
-		_pictureInPictureController = nil;
-	}
-	
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(prepareToPlay) object:nil];
-	if (![self.stateMachine.currentState isEqual:self.idleState]) {
-		[self fireEvent:self.resetEvent userInfo:nil];
-	}
-}
-
-- (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler
-{
-	if (CMTIME_IS_INVALID(time)) {
-		return;
-	}
-	
-	// Avoid exception: "AVPlayerItem cannot service a seek request with a completion handler until its status is AVPlayerItemStatusReadyToPlay"
-	if (!self.player || self.player.status != AVPlayerItemStatusReadyToPlay) {
-		return;
-	}
-	
-	if (self.stateMachine.currentState != self.seekingState) {
-		[self fireEvent:self.seekEvent userInfo:nil];
-	}
-	
-	RTSMediaPlayerLogDebug(@"Seeking to %.2f sec.", CMTimeGetSeconds(time));
-	
-	[self.player seekToTime:time
-			toleranceBefore:kCMTimeZero
-			 toleranceAfter:kCMTimeZero
-		  completionHandler:completionHandler];
-}
-
-- (void)playAtTime:(CMTime)time
-{
-	[self playAtTime:time completionHandler:nil];
-}
-
-- (void)playAtTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
-{
-	if ([self.stateMachine.currentState isEqual:self.idleState]) {
-		[self loadPlayerAndAutoStartAtTime:[NSValue valueWithCMTime:time]];
-	}
-	else {
-		[self seekToTime:time completionHandler:completionHandler];
-	}
-}
-
-- (AVPlayerItem *)playerItem
-{
-	return self.player.currentItem;
-}
-
-- (RTSMediaPlaybackState)playbackState
-{
-	@synchronized(self) {
-		return _playbackState;
-	}
-}
-
-- (void)setPlaybackState:(RTSMediaPlaybackState)playbackState
-{
-	@synchronized(self) {
-		if (_playbackState == playbackState) {
-			return;
-		}
-		
-		NSDictionary *userInfo = @{ RTSMediaPlayerPreviousPlaybackStateUserInfoKey: @(_playbackState) };
-		
-		_playbackState = playbackState;
-		
-		[self postNotificationName:RTSMediaPlayerPlaybackStateDidChangeNotification userInfo:userInfo];
 	}
 }
 
@@ -396,26 +236,6 @@ static NSDictionary *ErrorUserInfo(RTSMediaPlayerError code, NSString *localized
 
 
 #pragma mark - AVPlayer
-
-static const void * const AVPlayerItemStatusContext = &AVPlayerItemStatusContext;
-static const void * const AVPlayerRateContext = &AVPlayerRateContext;
-
-static const void * const AVPlayerItemPlaybackLikelyToKeepUpContext = &AVPlayerItemPlaybackLikelyToKeepUpContext;
-static const void * const AVPlayerItemLoadedTimeRangesContext = &AVPlayerItemLoadedTimeRangesContext;
-
-static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEmptyContext;
-
-- (AVPlayer *)player
-{
-	@synchronized(self)
-	{
-		// Commented out for now (2015-07-28), as it triggers too many messages to be useful.
-		//		if ([self.stateMachine.currentState isEqual:self.idleState] && !_player) {
-		//			RTSMediaPlayerLogWarning(@"Media player controller is not ready");
-		//		}
-		return _player;
-	}
-}
 
 - (void)setPlayer:(AVPlayer *)player
 {

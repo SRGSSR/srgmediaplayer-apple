@@ -32,21 +32,6 @@
 @interface RTSMediaPlayerController : NSObject
 
 /**
- *  --------------------------------------------
- *  @name Initializing a Media Player Controller
- *  --------------------------------------------
- */
-
-/**
- *  Returns a `RTSMediaPlayerController` object initialized with the media at the specified URL.
- *
- *  @param contentURL The location of the media file. This file must be located either in your app directory or on a remote server.
- *
- *  @return A media player controller
- */
-- (instancetype)initWithContentURL:(NSURL *)contentURL NS_DESIGNATED_INITIALIZER;
-
-/**
  *  -------------------
  *  @name Player Object
  *  -------------------
@@ -144,13 +129,13 @@
 /**
  *  Prepare the player to play the specified identifier, but does not start playback
  */
-- (void)prepareToPlayIdentifier:(NSString *)identifier;
+- (void)prepareToPlayURL:(NSURL *)URL;
 
 /**
  *  Start playing a media specified using its identifier. Retrieving the media URL requires a data source to be bound
  *  to the player controller
  */
-- (void)playIdentifier:(NSString *)identifier;
+- (void)playURL:(NSURL *)URL;
 
 /**
  *  Pause
@@ -186,19 +171,13 @@
  *  @discussion If time is kCMTimeZero, playback will beging at the default position (start of a VOD, or live for a DVR).
  *              If you need to start at the beginning of a DVR stream, use a small time (e.g. CMTimeMakeWithSeconds(1., 4.))
  */
-- (void)playIdentifier:(NSString *)identifier atTime:(CMTime)time;
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
 
 /**
  *  ------------------------------------
  *  @name Accessing playback information
  *  ------------------------------------
  */
-
-/**
- *  Low-level player item information. You can access this item properties if you need more information about the
- *  currently played item
- */
-@property (nonatomic, readonly) AVPlayerItem *playerItem;
 
 /**
  *  The current media time range (might be empty or indefinite). Use `CMTimeRange` macros for checking time ranges
