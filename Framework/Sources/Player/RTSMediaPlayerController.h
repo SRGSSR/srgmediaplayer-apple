@@ -133,4 +133,34 @@
  */
 @property (nonatomic) NSTimeInterval liveTolerance;
 
+/**
+ *  --------------------
+ *  @name Time observers
+ *  --------------------
+ */
+
+/**
+ *  Register a block for periodical execution. Unlike usual `AVPlayer` time observers, such observers not only run during playback, but
+ *  also when paused. This makes such observers very helpful when UI must be updated continously, even when playback is paused, e.g.
+ *  in the case of DVR streams
+ *
+ *  @param interval Time interval between block executions
+ *  @param queue    The serial queue onto which block should be enqueued (main queue if NULL)
+ *  @param block	The block to be periodically executed
+ *
+ *  @discussion There is no need to KVO-observe the presence or not of the `AVPlayer` instance before registration. You can register
+ *              time observers earlier if needed
+ *
+ *  @return The time observer. The observer is retained by the media player controller, you can store a weak reference
+ *          to it and remove it at a later time if needed
+ */
+- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
+
+/**
+ *  Remove a time observer (does nothing if the observer is not registered)
+ *
+ *  @param observer The time observer to remove
+ */
+- (void)removePeriodicTimeObserver:(id)observer;
+
 @end

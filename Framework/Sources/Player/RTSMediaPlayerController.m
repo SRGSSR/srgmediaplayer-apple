@@ -29,8 +29,9 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 
 @interface RTSMediaPlayerController ()
 
-@property (readonly) RTSMediaPlayerView *playerView;
+@property (nonatomic, readonly) RTSMediaPlayerView *playerView;
 @property (nonatomic) RTSMediaPlaybackState playbackState;
+@property (nonatomic) NSMutableDictionary<NSString *, RTSPeriodicTimeObserver *> *periodicTimeObservers;
 
 @end
 
@@ -47,6 +48,7 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 {
 	if (self = [super init]) {
 		self.playbackState = RTSMediaPlaybackStateIdle;
+		self.periodicTimeObservers = [NSMutableDictionary dictionary];
 	}
 	return self;
 }
@@ -62,6 +64,8 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 {
 	AVPlayer *previousPlayer = self.playerView.playerLayer.player;
 	if (previousPlayer) {
+		[self unregisterCustomPeriodicTimeObservers];
+		
 		[previousPlayer removeObserver:self forKeyPath:@"currentItem.status" context:s_kvoContext];
 		[previousPlayer removeObserver:self forKeyPath:@"rate" context:s_kvoContext];
 		
@@ -71,12 +75,13 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 		[[NSNotificationCenter defaultCenter] removeObserver:self
 														name:AVPlayerItemDidPlayToEndTimeNotification
 													  object:previousPlayer.currentItem];
-		
 	}
 	
 	self.playerView.playerLayer.player = player;
 	
 	if (player) {
+		[self registerCustomPeriodicTimeObserversForPlayer:player];
+		
 		[player addObserver:self
 				 forKeyPath:@"currentItem.status"
 					options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
@@ -272,6 +277,62 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 			self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
 		}
 	}];
+}
+
+#pragma mark Time observers
+
+- (void)registerCustomPeriodicTimeObserversForPlayer:(AVPlayer *)player
+{
+	[self unregisterCustomPeriodicTimeObservers];
+	
+	for (RTSPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
+		[playbackBlockRegistration attachToMediaPlayer:player];
+	}
+}
+
+- (void)unregisterCustomPeriodicTimeObservers
+{
+	for (RTSPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
+		[playbackBlockRegistration detachFromMediaPlayer];
+	}
+}
+
+- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block
+{
+	if (!block) {
+		return nil;
+	}
+	
+	NSString *identifier = [[NSUUID UUID] UUIDString];
+	RTSPeriodicTimeObserver *periodicTimeObserver = [self periodicTimeObserverForInterval:interval queue:queue];
+	[periodicTimeObserver setBlock:block forIdentifier:identifier];
+	
+	if (self.player) {
+		[periodicTimeObserver attachToMediaPlayer:self.player];
+	}
+	
+	// Return the opaque identifier
+	return identifier;
+}
+
+- (void)removePeriodicTimeObserver:(id)observer
+{
+	for (RTSPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
+		[periodicTimeObserver removeBlockWithIdentifier:observer];
+	}
+}
+
+- (RTSPeriodicTimeObserver *)periodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue
+{
+	NSString *key = [NSString stringWithFormat:@"%@-%@-%@-%@-%p", @(interval.value), @(interval.timescale), @(interval.flags), @(interval.epoch), queue];
+	RTSPeriodicTimeObserver *periodicTimeObserver = self.periodicTimeObservers[key];
+	
+	if (!periodicTimeObserver) {
+		periodicTimeObserver = [[RTSPeriodicTimeObserver alloc] initWithInterval:interval queue:queue];
+		self.periodicTimeObservers[key] = periodicTimeObserver;
+	}
+	
+	return periodicTimeObserver;
 }
 
 #pragma mark Notifications
