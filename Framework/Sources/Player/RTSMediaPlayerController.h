@@ -29,7 +29,7 @@
  *
  *  Methods related to playback can be found in the `RTSMediaPlayback` protocol
  */
-@interface RTSMediaPlayerController : NSObject
+@interface RTSMediaPlayerController : NSObject <UIGestureRecognizerDelegate>
 
 /**
  *  -------------------

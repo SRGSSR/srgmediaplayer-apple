@@ -12,7 +12,6 @@
  */
 @interface RTSMediaPlayerView : UIView
 
-@property (nonatomic) AVPlayer *player;
 @property (readonly) AVPlayerLayer *playerLayer;
 
 @end

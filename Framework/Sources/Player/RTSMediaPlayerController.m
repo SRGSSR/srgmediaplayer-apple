@@ -25,9 +25,8 @@ NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.0;		// same tolerance as 
 
 NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 
-@interface RTSMediaPlayerController () <UIGestureRecognizerDelegate>
+@interface RTSMediaPlayerController ()
 
-@property (readwrite) AVPlayer *player;
 @property (readonly) RTSMediaPlayerView *playerView;
 
 @end
@@ -39,14 +38,19 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 #pragma mark Playback
 
 - (void)playURL:(NSURL *)URL
-{}
+{
+	AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
+	AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
+	
+	self.playerView.playerLayer.player = player;
+	[player play];
+}
 
-#pragma mark - View
+#pragma mark View
 
 - (void)attachPlayerToView:(UIView *)containerView
 {
-	[self.view removeFromSuperview];
-	self.view.frame = CGRectMake(0, 0, CGRectGetWidth(containerView.bounds), CGRectGetHeight(containerView.bounds));
+	self.view.frame = containerView.bounds;
 	[containerView insertSubview:self.view atIndex:0];
 }
 
@@ -57,13 +61,17 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 		mediaPlayerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_view = mediaPlayerView;
 	}
-	
 	return _view;
 }
 
 - (RTSMediaPlayerView *)playerView
 {
 	return (RTSMediaPlayerView *)self.view;
+}
+
+- (AVPlayer *)player
+{
+	return self.playerView.playerLayer.player;
 }
 
 @end
