@@ -90,4 +90,6 @@
  */
 - (void)playURL:(NSURL *)URL;
 
+- (void)togglePlayPause;
+
 @end

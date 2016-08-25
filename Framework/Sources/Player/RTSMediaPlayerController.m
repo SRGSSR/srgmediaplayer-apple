@@ -99,6 +99,16 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	[self.player play];
 }
 
+- (void)togglePlayPause
+{
+	if (self.player.rate == 0.f) {
+		[self.player play];
+	}
+	else {
+		[self.player pause];
+	}
+}
+
 #pragma mark KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
