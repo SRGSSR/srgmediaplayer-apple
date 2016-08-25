@@ -75,8 +75,14 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	self.playerView.playerLayer.player = player;
 	
 	if (player) {
-		[player addObserver:self forKeyPath:@"currentItem.status" options:0 context:s_kvoContext];
-		[player addObserver:self forKeyPath:@"rate" options:0 context:s_kvoContext];
+		[player addObserver:self
+				 forKeyPath:@"currentItem.status"
+					options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+					context:s_kvoContext];
+		[player addObserver:self
+				 forKeyPath:@"rate"
+					options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+					context:s_kvoContext];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(rts_playerItemPlaybackStalled:)
@@ -165,6 +171,8 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	// TODO: Warning: Might not be executed on the main thread!
 	
 	if (context == s_kvoContext) {
+		NSLog(@"KVO change for %@ with change %@", keyPath, change);
+		
 		// If the rate or the item status changes, calculate the new playback status
 		if ([keyPath isEqualToString:@"currentItem.status"] || [keyPath isEqualToString:@"rate"]) {
 			if (self.player.currentItem && self.player.currentItem.status == AVPlayerStatusReadyToPlay) {
