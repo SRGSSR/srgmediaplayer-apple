@@ -51,7 +51,7 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 
 - (void)dealloc
 {
-	self.player = nil;			// Unregister KVO
+	self.player = nil;			// Unregister KVO and notifications
 }
 
 #pragma mark Getters and setters
@@ -60,8 +60,16 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 {
 	AVPlayer *previousPlayer = self.playerView.playerLayer.player;
 	if (previousPlayer) {
-		[player removeObserver:self forKeyPath:@"currentItem.status" context:s_kvoContext];
-		[player removeObserver:self forKeyPath:@"rate" context:s_kvoContext];
+		[previousPlayer removeObserver:self forKeyPath:@"currentItem.status" context:s_kvoContext];
+		[previousPlayer removeObserver:self forKeyPath:@"rate" context:s_kvoContext];
+		
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:AVPlayerItemPlaybackStalledNotification
+													  object:previousPlayer.currentItem];
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:AVPlayerItemDidPlayToEndTimeNotification
+													  object:previousPlayer.currentItem];
+		
 	}
 	
 	self.playerView.playerLayer.player = player;
@@ -69,6 +77,15 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	if (player) {
 		[player addObserver:self forKeyPath:@"currentItem.status" options:0 context:s_kvoContext];
 		[player addObserver:self forKeyPath:@"rate" options:0 context:s_kvoContext];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(rts_playerItemPlaybackStalled:)
+													 name:AVPlayerItemPlaybackStalledNotification
+												   object:player.currentItem];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(rts_playerItemDidPlayToEnd:)
+													 name:AVPlayerItemDidPlayToEndTimeNotification
+												   object:player.currentItem];
 	}
 }
 
@@ -117,6 +134,18 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	else {
 		[self.player pause];
 	}
+}
+
+#pragma mark Notifications
+
+- (void)rts_playerItemPlaybackStalled:(NSNotification *)notification
+{
+	self.playbackState = RTSMediaPlaybackStateStalled;
+}
+
+- (void)rts_playerItemDidPlayToEnd:(NSNotification *)notification
+{
+	self.playbackState = RTSMediaPlaybackStateEnded;
 }
 
 #pragma mark KVO
