@@ -35,18 +35,33 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 
 @synthesize view = _view;
 
-#pragma mark Playback
+#pragma mark Object lifecycle
 
-- (void)playURL:(NSURL *)URL
+- (void)dealloc
 {
-	AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
-	AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
-	
-	self.playerView.playerLayer.player = player;
-	[player play];
+	self.player = nil;			// Unregister KVO
 }
 
-#pragma mark View
+#pragma mark Getters and setters
+
+- (void)setPlayer:(AVPlayer *)player
+{
+	AVPlayer *previousPlayer = self.playerView.playerLayer.player;
+	if (previousPlayer) {
+		[player removeObserver:self forKeyPath:@"currentItem.status" context:s_kvoContext];
+	}
+	
+	self.playerView.playerLayer.player = player;
+	
+	if (player) {
+		[player addObserver:self forKeyPath:@"currentItem.status" options:0 context:s_kvoContext];
+	}
+}
+
+- (AVPlayer *)player
+{
+	return self.playerView.playerLayer.player;
+}
 
 - (UIView *)view
 {
@@ -63,9 +78,29 @@ NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 	return (RTSMediaPlayerView *)self.view;
 }
 
-- (AVPlayer *)player
+#pragma mark Playback
+
+- (void)playURL:(NSURL *)URL
 {
-	return self.playerView.playerLayer.player;
+	AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
+	self.player = [AVPlayer playerWithPlayerItem:playerItem];
+	[self.player play];
+}
+
+#pragma mark KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+	// TODO: Warning: Might not be executed on the main thread
+	
+	if (context == s_kvoContext) {
+		if ([keyPath isEqualToString:@"currentItem.status"]) {
+			
+		}
+	}
+	else {
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
 }
 
 @end
