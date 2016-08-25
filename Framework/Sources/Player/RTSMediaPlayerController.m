@@ -21,7 +21,7 @@
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
 NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.0;		// same tolerance as built-in iOS player
 
-NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
+NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
 NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFail";
@@ -236,6 +236,11 @@ static NSDictionary *ErrorUserInfo(RTSMediaPlayerError code, NSString *localized
 
 
 #pragma mark - AVPlayer
+
+- (AVPlayerItem *)playerItem
+{
+	return self.player.currentItem;
+}
 
 - (void)setPlayer:(AVPlayer *)player
 {

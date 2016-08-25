@@ -82,6 +82,14 @@
  *  -------------------
  */
 
+@property (nonatomic, readonly) AVPlayerItem *playerItem;
+
+/**
+ *  -------------------
+ *  @name Overlay Views
+ *  -------------------
+ */
+
 /**
  *  View on which user activity is detected (to prevent the UI overlays from being automatically hidden, see 'overlayViews' and
  *  'overlayViewsHidingDelay')
