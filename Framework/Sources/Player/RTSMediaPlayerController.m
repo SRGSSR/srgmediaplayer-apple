@@ -40,10 +40,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 @end
 
-@implementation RTSMediaPlayerController {
-@private
-	BOOL _seeking;
-}
+@implementation RTSMediaPlayerController
 
 @synthesize view = _view;
 @synthesize activityView = _activityView;
