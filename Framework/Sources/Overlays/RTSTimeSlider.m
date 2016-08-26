@@ -132,8 +132,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
             
             if (! self.isTracking && self.mediaPlayerController.playbackState != RTSPlaybackStateSeeking) {
                 CMTimeRange timeRange = [self.mediaPlayerController timeRange];
-                if (self.mediaPlayerController.streamType == RTSMediaStreamTypeOnDemand
-                    && (self.mediaPlayerController.playbackState == RTSPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSPlaybackStateEnded)) {
+                if (self.mediaPlayerController.streamType == RTSMediaStreamTypeOnDemand && self.mediaPlayerController.playbackState == RTSPlaybackStateIdle) {
                     self.maximumValue = 0.f;
                     self.value = 0.f;
                     self.userInteractionEnabled = YES;
@@ -403,8 +402,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (void)timesliderPlaybackStateDidChange:(NSNotification *)notification
 {
-    if (self.mediaPlayerController.playbackState == RTSPlaybackStateIdle
-        || self.mediaPlayerController.playbackState == RTSPlaybackStateEnded) {
+    if (self.mediaPlayerController.playbackState == RTSPlaybackStateIdle) {
         float value = [self resetValue];
         self.value = value;
         self.maximumValue = value;

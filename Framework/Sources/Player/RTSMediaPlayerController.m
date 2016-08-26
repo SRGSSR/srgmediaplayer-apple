@@ -64,7 +64,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)dealloc
 {
-    self.player = nil;                                                          // Unregister KVO and notifications
+    self.player = nil;                                  // Unregister KVO and notifications
     self.pictureInPictureController = nil;              // Unregister KVO
 }
 
