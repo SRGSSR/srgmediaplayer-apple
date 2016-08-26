@@ -331,8 +331,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
     CGContextSetLineWidth(context, lineWidth);
     CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, CGRectGetMinX(trackFrame), CGRectGetMidY(self.frame));
-    CGContextAddLineToPoint(context, CGRectGetWidth(trackFrame), CGRectGetMidY(self.frame));
+    CGContextMoveToPoint(context, CGRectGetMinX(trackFrame), CGRectGetMidY(self.bounds));
+    CGContextAddLineToPoint(context, CGRectGetWidth(trackFrame), CGRectGetMidY(self.bounds));
     CGContextSetStrokeColorWithColor(context, self.borderColor.CGColor);
     CGContextStrokePath(context);
 }
@@ -345,8 +345,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
     CGContextSetLineWidth(context, lineWidth);
     CGContextSetLineCap(context, kCGLineCapButt);
-    CGContextMoveToPoint(context, CGRectGetMinX(trackFrame) + 2, CGRectGetMidY(self.frame));
-    CGContextAddLineToPoint(context, CGRectGetMaxX(trackFrame) - 2, CGRectGetMidY(self.frame));
+    CGContextMoveToPoint(context, CGRectGetMinX(trackFrame) + 2, CGRectGetMidY(self.bounds));
+    CGContextAddLineToPoint(context, CGRectGetMaxX(trackFrame) - 2, CGRectGetMidY(self.bounds));
     CGContextSetStrokeColorWithColor(context, self.maximumTrackTintColor.CGColor);
     CGContextStrokePath(context);
 
@@ -372,8 +372,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
     CGContextSetLineWidth(context, lineWidth);
     CGContextSetLineCap(context, kCGLineCapButt);
-    CGContextMoveToPoint(context, minX, CGRectGetMidY(self.frame));
-    CGContextAddLineToPoint(context, maxX, CGRectGetMidY(self.frame));
+    CGContextMoveToPoint(context, minX, CGRectGetMidY(self.bounds));
+    CGContextAddLineToPoint(context, maxX, CGRectGetMidY(self.bounds));
     CGContextSetStrokeColorWithColor(context, self.borderColor.CGColor);
     CGContextStrokePath(context);
 }
@@ -386,8 +386,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
     CGContextSetLineWidth(context, lineWidth);
     CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, CGRectGetMinX(barFrame) - 0.5, CGRectGetMidY(self.frame));
-    CGContextAddLineToPoint(context, CGRectGetWidth(barFrame), CGRectGetMidY(self.frame));
+    CGContextMoveToPoint(context, CGRectGetMinX(barFrame) - 0.5, CGRectGetMidY(self.bounds));
+    CGContextAddLineToPoint(context, CGRectGetWidth(barFrame), CGRectGetMidY(self.bounds));
     CGContextSetStrokeColorWithColor(context, self.minimumTrackTintColor.CGColor);
     CGContextStrokePath(context);
 }
