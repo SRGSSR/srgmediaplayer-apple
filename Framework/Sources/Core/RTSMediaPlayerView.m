@@ -9,14 +9,14 @@
 
 @implementation RTSMediaPlayerView
 
-+ (Class) layerClass
++ (Class)layerClass
 {
-	return [AVPlayerLayer class];
+    return [AVPlayerLayer class];
 }
 
-- (AVPlayerLayer *) playerLayer
+- (AVPlayerLayer *)playerLayer
 {
-	return (AVPlayerLayer *)self.layer;
+    return (AVPlayerLayer *)self.layer;
 }
 
 @end

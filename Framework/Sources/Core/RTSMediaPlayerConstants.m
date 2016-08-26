@@ -6,7 +6,7 @@
 
 #import "RTSMediaPlayerConstants.h"
 
-NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.;		// same tolerance as built-in iOS player
+NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.;                // same tolerance as built-in iOS player
 
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChangeNotification";
 NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlayerPreviousPlaybackState";

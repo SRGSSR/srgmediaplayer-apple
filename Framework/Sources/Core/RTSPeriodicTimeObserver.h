@@ -7,6 +7,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  A periodic time observer calls one or several blocks during playback of an associated player. Unlike usual time
  *  observers associated with an `AVPlayer`, an `RTSPeriodicTimeObserver` executes during the lifetime of the player,
@@ -21,14 +23,14 @@
  *  @param interval    The interval at which the block must be executed
  *  @param queue	   The serial queue onto which block should be enqueued (main queue if NULL)
  */
-- (instancetype)initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Register a block for a given identifier. If a block with the same identifier has already been registered, it
  *  is simply replaced
  *
  *  @param block      The block to register (mandatory)
- *  @param identifier The identifier to which the block must be associated (g)
+ *  @param identifier The identifier to which the block must be associated
  */
 - (void)setBlock:(void (^)(CMTime time))block forIdentifier:(NSString *)identifier;
 
@@ -42,12 +44,12 @@
 /**
  *  The time interval at which the observer executes all associated blocks
  */
-@property(nonatomic, readonly) CMTime interval;
+@property (nonatomic, readonly) CMTime interval;
 
 /**
  *  The player to which the time observer has been attached, nil if none
  */
-@property(nonatomic, readonly, weak) AVPlayer *player;
+@property (nonatomic, readonly, weak, nullable) AVPlayer *player;
 
 /**
  *  Attach to a player. If a previous association existed, it will be removed first
@@ -60,3 +62,5 @@
 - (void)detachFromMediaPlayer;
 
 @end
+
+NS_ASSUME_NONNULL_END

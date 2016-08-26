@@ -7,6 +7,8 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Internal view class for displaying the player
  */
@@ -15,3 +17,5 @@
 @property (readonly) AVPlayerLayer *playerLayer;
 
 @end
+
+NS_ASSUME_NONNULL_END
