@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pgw-K7-jgO">
-                                <rect key="frame" x="258.5" y="494" width="83" height="30"/>
+                                <rect key="frame" x="258" y="494" width="83" height="30"/>
                                 <state key="normal" title="Play / pause"/>
                                 <connections>
                                     <action selector="togglePlayPause:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fbQ-V4-tdU"/>
@@ -41,6 +41,13 @@
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MOK-6c-0hK" customClass="RTSTimeSlider">
                                 <rect key="frame" x="18" y="550" width="564" height="31"/>
                             </slider>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ess-Wt-837">
+                                <rect key="frame" x="515" y="28" width="30" height="30"/>
+                                <state key="normal" title="VC"/>
+                                <connections>
+                                    <action selector="openPlayerViewController:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Jom-s5-UQ9"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -51,8 +58,10 @@
                             <constraint firstItem="MOK-6c-0hK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="R7O-MS-NJc"/>
                             <constraint firstItem="Ymv-yM-tfZ" firstAttribute="centerY" secondItem="Pgw-K7-jgO" secondAttribute="centerY" id="SPe-jk-ztA"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Pgw-K7-jgO" secondAttribute="bottom" constant="76" id="Tqj-N0-rNa"/>
+                            <constraint firstItem="ess-Wt-837" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="azs-eC-aOS"/>
                             <constraint firstAttribute="trailing" secondItem="MOK-6c-0hK" secondAttribute="trailing" constant="20" id="bDF-ol-jhE"/>
                             <constraint firstItem="EgY-Tf-59b" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="jp9-xh-QCL"/>
+                            <constraint firstAttribute="trailing" secondItem="ess-Wt-837" secondAttribute="trailing" constant="55" id="nCh-wE-MHf"/>
                         </constraints>
                     </view>
                     <connections>

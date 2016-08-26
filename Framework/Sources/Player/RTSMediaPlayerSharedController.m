@@ -23,7 +23,7 @@
     
 	// If no RTSMediaPlayerViewController instance is currently displayed (always modally)
 	if (![rootViewController.presentedViewController isKindOfClass:[RTSMediaPlayerViewController class]]) {
-		RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewController alloc] initWithContentIdentifier:self.identifier dataSource:self.dataSource];
+		RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewController alloc] initWithContentURL:self.contentURL];
 		
 		
 		// Dismiss any modal currently displayed if needed

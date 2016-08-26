@@ -6,8 +6,6 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol RTSMediaPlayerControllerDataSource;
-
 /**
  *  `RTSMediaPlayerViewController` is inspired by the `MPMoviePlayerViewController` class, and intends to provide a full-screen
  *  standard media player looking like the default iOS media player.
@@ -20,15 +18,8 @@
 /**
  *  Returns an `RTSMediaPlayerViewController` object initialized with the media at the specified URL
  */
-- (instancetype) initWithContentURL:(NSURL *)contentURL OS_NONNULL_ALL;
+- (instancetype) initWithContentURL:(NSURL *)contentURL NS_DESIGNATED_INITIALIZER;
 
-/**
- *  Returns a RTSMediaPlayerViewController object initialized with a datasource and a media identifier. The media URL will be
- *  retrieved from the data source based on its identifier
- *
- *  @param identifier The identifier of the media to be played
- *  @param dataSource The data source from which the media URL will be retrieved
- */
-- (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource OS_NONNULL_ALL;
+@property (nonatomic, readonly) NSURL *contentURL;
 
 @end

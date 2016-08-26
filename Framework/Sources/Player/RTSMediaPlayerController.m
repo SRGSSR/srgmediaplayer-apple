@@ -39,6 +39,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 @interface RTSMediaPlayerController ()
 
+@property (nonatomic) NSURL *contentURL;
 @property (nonatomic, readonly) RTSMediaPlayerView *playerView;
 @property (nonatomic) RTSMediaPlaybackState playbackState;
 @property (nonatomic) NSMutableDictionary<NSString *, RTSPeriodicTimeObserver *> *periodicTimeObservers;
@@ -297,12 +298,11 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (AVPictureInPictureController *)pictureInPictureController
 {
-	if (!self.pictureInPictureController) {
+	if (!_pictureInPictureController) {
 		// Ensure proper KVO registration
 		self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerView.playerLayer];
-		
 	}
-	return self.pictureInPictureController;
+	return _pictureInPictureController;
 }
 
 - (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
@@ -324,6 +324,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)playURL:(NSURL *)URL
 {
+	self.contentURL = URL;
+	
 	AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
 	self.player = [AVPlayer playerWithPlayerItem:playerItem];
 }
@@ -351,6 +353,11 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 			self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
 		}
 	}];
+}
+
+- (void)reset
+{
+
 }
 
 #pragma mark Time observers

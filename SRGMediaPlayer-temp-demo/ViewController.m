@@ -60,7 +60,8 @@ static void *s_kvoContext = &s_kvoContext;
 	self.playerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view insertSubview:self.playerController.view atIndex:0];
 	
-	[self.playerController playURL:[NSURL URLWithString:@"http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4"]];
+	NSURL *URL = [NSURL URLWithString:@"http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4"];
+	[self.playerController playURL:URL];
 }
 
 - (IBAction)togglePlayPause:(id)sender
@@ -73,6 +74,13 @@ static void *s_kvoContext = &s_kvoContext;
 	[self.playerController seekToTime:CMTimeAdd(self.playerController.player.currentTime, CMTimeMakeWithSeconds(10, 1)) completionHandler:^(BOOL finished) {
 		NSLog(@"Finished: %@", finished ? @"YES" : @"NO");
 	}];
+}
+
+- (IBAction)openPlayerViewController:(id)sender
+{
+	NSURL *URL = [NSURL URLWithString:@"http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4"];
+	RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewController alloc] initWithContentURL:URL];
+	[self presentViewController:mediaPlayerViewController animated:YES completion:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context

@@ -70,6 +70,8 @@
 
 @property (nonatomic, readonly) RTSMediaPlaybackState playbackState;
 
+@property (nonatomic, readonly) NSURL *contentURL;
+
 /**
  *  -------------------
  *  @name Overlay Views
@@ -113,6 +115,8 @@
 - (void)togglePlayPause;
 
 - (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
+
+- (void)reset;
 
 /**
  *  The current media time range (might be empty or indefinite). Use `CMTimeRange` macros for checking time ranges

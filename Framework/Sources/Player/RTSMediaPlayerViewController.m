@@ -12,7 +12,6 @@
 #import "RTSPictureInPictureButton.h"
 #import "RTSPlaybackActivityIndicatorView.h"
 #import "RTSMediaPlayerSharedController.h"
-#import "RTSMediaPlayerControllerDataSource.h"
 #import "RTSTimeSlider.h"
 #import "RTSVolumeView.h"
 
@@ -21,10 +20,9 @@
 // Shared instance to manage picture in picture playback
 static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
-@interface RTSMediaPlayerViewController () <RTSMediaPlayerControllerDataSource>
+@interface RTSMediaPlayerViewController ()
 
-@property (nonatomic, weak) id<RTSMediaPlayerControllerDataSource> dataSource;
-@property (nonatomic, strong) NSString *identifier;
+@property (nonatomic) NSURL *contentURL;
 
 @property (nonatomic, weak) IBOutlet UIView *navigationBarView;
 @property (nonatomic, weak) IBOutlet UIView *bottomBarView;
@@ -58,18 +56,22 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (instancetype)initWithContentURL:(NSURL *)contentURL
 {
-	return [self initWithContentIdentifier:contentURL.absoluteString dataSource:self];
+	if (self = [super initWithNibName:@"RTSMediaPlayerViewController" bundle:[NSBundle RTSMediaPlayerBundle]]) {
+		self.contentURL = contentURL;
+	}
+	return self;
 }
 
-- (instancetype)initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-	if (!(self = [super initWithNibName:@"RTSMediaPlayerViewController" bundle:[NSBundle RTSMediaPlayerBundle]]))
-		return nil;
-	
-	_dataSource = dataSource;
-	_identifier = identifier;
-	
-	return self;
+	[self doesNotRecognizeSelector:_cmd];
+	return [self initWithContentURL:nil];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+	[self doesNotRecognizeSelector:_cmd];
+	return [self initWithContentURL:nil];
 }
 
 - (void)dealloc
@@ -91,6 +93,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 												 name:RTSMediaPlayerPlaybackStateDidChangeNotification
 											   object:s_mediaPlayerController];
 	
+#if 0
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(mediaPlayerDidShowControlOverlays:)
 												 name:RTSMediaPlayerDidShowControlOverlaysNotification
@@ -100,17 +103,19 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 											 selector:@selector(mediaPlayerDidHideControlOverlays:)
 												 name:RTSMediaPlayerDidHideControlOverlaysNotification
 											   object:s_mediaPlayerController];
-    
+#endif
+	
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
 	
-	[s_mediaPlayerController setDataSource:self.dataSource];
+	s_mediaPlayerController.view.frame = self.view.bounds;
+	s_mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[self.view insertSubview:s_mediaPlayerController.view atIndex:0];
 	
-	[s_mediaPlayerController attachPlayerToView:self.view];
-	[s_mediaPlayerController playIdentifier:self.identifier];
-    
+	[s_mediaPlayerController playURL:self.contentURL];
+	
     s_mediaPlayerController.activityView = self.view;
     s_mediaPlayerController.overlayViews = @[self.navigationBarView, self.bottomBarView, self.volumeView, self.liveButton];
     
@@ -193,21 +198,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 	}
 }
 
-#pragma mark - RTSMediaPlayerControllerDataSource
-
-- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-	  contentURLForIdentifier:(NSString *)identifier
-			completionHandler:(void (^)(NSString *identifier, NSURL *contentURL, NSError *error))completionHandler
-{
-	completionHandler(identifier, [NSURL URLWithString:self.identifier], nil);
-	
-	// No need for a connection handle, completion handlers are called immediately
-	return nil;
-}
-
-- (void)cancelContentURLRequest:(id)request
-{}
-
 #pragma mark - Notifications
 
 - (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
@@ -259,7 +249,11 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 		return;
 	}
 	
-	[s_mediaPlayerController playAtTime:CMTimeRangeGetEnd(timeRange)];
+	[s_mediaPlayerController seekToTime:CMTimeRangeGetEnd(timeRange) completionHandler:^(BOOL finished) {
+		if (finished) {
+			[s_mediaPlayerController togglePlayPause];
+		}
+	}];
 }
 
 - (IBAction)seek:(id)sender
