@@ -58,7 +58,7 @@
 
 - (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
-    if (self.mediaPlayerController.playbackState != RTSMediaPlaybackStateIdle) {
+    if (self.mediaPlayerController.playbackState != RTSPlaybackStateIdle) {
         self.hidden = YES;
     }
 }

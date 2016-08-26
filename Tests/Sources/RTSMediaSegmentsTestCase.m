@@ -55,7 +55,7 @@
 - (void) testSegmentPlaythrough
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment" completionHandler:nil];
@@ -94,7 +94,7 @@
 - (void) testBlockedSegmentPlaythrough
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment" completionHandler:nil];
@@ -123,7 +123,7 @@
 		return YES;
 	}];
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePaused;
 	}];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
@@ -132,7 +132,7 @@
 - (void) testHiddenSegmentPlaythrough
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_segment" completionHandler:nil];
@@ -172,7 +172,7 @@
 - (void) testHiddenBlockedSegment
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_blocked_segment" completionHandler:nil];
@@ -201,7 +201,7 @@
 		return YES;
 	}];
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePaused;
 	}];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 
@@ -211,7 +211,7 @@
 - (void) testSegmentAtStartPlaythrough
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment_at_start" completionHandler:nil];
@@ -250,7 +250,7 @@
 - (void) testBlockedSegmentAtStartPlaythrough
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment_at_start" completionHandler:nil];
@@ -279,7 +279,7 @@
 		return YES;
 	}];
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePaused;
 	}];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
@@ -288,7 +288,7 @@
 - (void) testHiddenSegmentAtStartPlaythrough
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_segment_at_start" completionHandler:nil];
@@ -327,7 +327,7 @@
 - (void) testHiddenBlockedSegmentAtStart
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_blocked_segment_at_start" completionHandler:nil];
@@ -362,7 +362,7 @@
 - (void) testConsecutiveSegments
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_segments" completionHandler:nil];
@@ -402,7 +402,7 @@
 - (void) testContiguousBlockedSegments
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_blocked_segments" completionHandler:nil];
@@ -431,7 +431,7 @@
 		return YES;
 	}];
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePaused;
 	}];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
@@ -441,7 +441,7 @@
 - (void) testContiguousBlockedSegmentsAtStart
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_blocked_segments_at_start" completionHandler:nil];
@@ -470,7 +470,7 @@
 		return YES;
 	}];
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePaused;
 	}];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
@@ -480,7 +480,7 @@
 - (void) testSegmentTransitionIntoBlockedSegment
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment_transition_into_blocked_segment" completionHandler:nil];
@@ -535,7 +535,7 @@
 		return YES;
 	}];
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePaused;
 	}];
 	[self waitForExpectationsWithTimeout:60. handler:nil];
 }
@@ -544,7 +544,7 @@
 - (void) testUserTriggeredSegmentPlay
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment" completionHandler:nil];
@@ -573,7 +573,7 @@
 - (void) testSeekIntoSegment
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment" completionHandler:nil];
@@ -601,7 +601,7 @@
 - (void) testUserTriggeredBlockedSegmentPlay
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment" completionHandler:nil];
@@ -639,7 +639,7 @@
 - (void) testSeekIntoBlockedSegment
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment" completionHandler:nil];
@@ -677,7 +677,7 @@
 - (void) testUserTriggeredSegmentPlayAfterUserTriggeredSegmentPlay
 {
 	[self expectationForNotification:RTSMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification *notification) {
-		return self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+		return self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
 	}];
 	[self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
 	[self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_segments" completionHandler:nil];

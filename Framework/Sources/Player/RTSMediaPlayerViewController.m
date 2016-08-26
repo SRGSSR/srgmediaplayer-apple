@@ -142,7 +142,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 			self.valueLabelWidthConstraint.constant = labelWidth;
 			self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
 			
-			if (s_mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
+			if (s_mediaPlayerController.playbackState != RTSPlaybackStateSeeking) {
 				[self updateLiveButton];
 			}
 			
@@ -203,7 +203,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
 	RTSMediaPlayerController *mediaPlayerController = notification.object;
-	if (mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded) {
+	if (mediaPlayerController.playbackState == RTSPlaybackStateEnded) {
 		[self dismiss:nil];
 	}
 }

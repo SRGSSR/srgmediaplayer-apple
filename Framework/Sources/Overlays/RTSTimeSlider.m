@@ -130,10 +130,10 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
         self.periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
             @strongify(self)
             
-            if (! self.isTracking && self.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
+            if (! self.isTracking && self.mediaPlayerController.playbackState != RTSPlaybackStateSeeking) {
                 CMTimeRange timeRange = [self.mediaPlayerController timeRange];
                 if (self.mediaPlayerController.streamType == RTSMediaStreamTypeOnDemand
-                    && (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded)) {
+                    && (self.mediaPlayerController.playbackState == RTSPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSPlaybackStateEnded)) {
                     self.maximumValue = 0.f;
                     self.value = 0.f;
                     self.userInteractionEnabled = YES;
@@ -229,7 +229,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void)updateTimeRangeLabels
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    if (! playerItem || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded
+    if (! playerItem || self.mediaPlayerController.playbackState == RTSPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSPlaybackStateEnded
         || playerItem.status != AVPlayerItemStatusReadyToPlay) {
         self.valueLabel.text = @"--:--";
         self.timeLeftValueLabel.text = @"--:--";
@@ -403,8 +403,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (void)timesliderPlaybackStateDidChange:(NSNotification *)notification
 {
-    if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle
-        || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded) {
+    if (self.mediaPlayerController.playbackState == RTSPlaybackStateIdle
+        || self.mediaPlayerController.playbackState == RTSPlaybackStateEnded) {
         float value = [self resetValue];
         self.value = value;
         self.maximumValue = value;

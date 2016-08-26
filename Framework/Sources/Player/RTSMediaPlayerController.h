@@ -68,7 +68,7 @@
  */
 @property (nonatomic, readonly) UIView *view;
 
-@property (nonatomic, readonly) RTSMediaPlaybackState playbackState;
+@property (nonatomic, readonly) RTSPlaybackState playbackState;
 
 @property (nonatomic, readonly) NSURL *contentURL;
 

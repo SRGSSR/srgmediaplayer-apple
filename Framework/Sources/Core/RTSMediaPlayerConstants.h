@@ -9,7 +9,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 // Amount of seconds at the end of a DVR stream, assumed to correspond to live conditions
-OBJC_EXTERN NSTimeInterval const RTSMediaLiveDefaultTolerance;
+OBJC_EXTERN NSTimeInterval const RTSLiveDefaultTolerance;
 
 /**
  *  Media types
@@ -54,33 +54,33 @@ typedef NS_ENUM(NSInteger, RTSMediaStreamType) {
 /**
  *  Playback states
  */
-typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
+typedef NS_ENUM(NSInteger, RTSPlaybackState) {
     /**
      *  The player is idle. This state occurs after the player has been initialized, reset, or when an error has been
      *  encountered
      */
-    RTSMediaPlaybackStateIdle,
+    RTSPlaybackStateIdle,
     /**
      *  A media is being played
      */
-    RTSMediaPlaybackStatePlaying,
+    RTSPlaybackStatePlaying,
     /**
      *  The player is seeking to another position
      */
-    RTSMediaPlaybackStateSeeking,
+    RTSPlaybackStateSeeking,
     /**
      *  The player is paused
      */
-    RTSMediaPlaybackStatePaused,
+    RTSPlaybackStatePaused,
     /**
      *  The player is stalled, i.e. waiting for media playback to restart (most probably because of poor networking
      *  conditions)
      */
-    RTSMediaPlaybackStateStalled,
+    RTSPlaybackStateStalled,
     /**
      *  The player has reached the end of the media and has automatically stopped playback
      */
-    RTSMediaPlaybackStateEnded,
+    RTSPlaybackStateEnded,
 };
 
 // TODO: START
@@ -118,7 +118,7 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackSegmentChange) {
  *  previous state information from the notification `userInfo` dictionary)
  */
 OBJC_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;           // Notification name
-OBJC_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey;             // Key to access the previous playback state as an `NSNumber` (wrapping an `RTSMediaPlaybackState` value)
+OBJC_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey;             // Key to access the previous playback state as an `NSNumber` (wrapping an `RTSPlaybackState` value)
 
 /**
  *  Notification sent when playback failed. Use the `RTSMediaPlayerPlaybackDidFailErrorUserInfoKey` to retrieve an `NSError` 

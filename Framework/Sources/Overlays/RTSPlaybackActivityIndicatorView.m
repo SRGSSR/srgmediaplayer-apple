@@ -70,10 +70,10 @@ static void commonInit(RTSPlaybackActivityIndicatorView *self);
 
 - (void)updateWithMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
 {
-    if (mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying
-            || mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused
-            || mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded
-            || mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle) {
+    if (mediaPlayerController.playbackState == RTSPlaybackStatePlaying
+            || mediaPlayerController.playbackState == RTSPlaybackStatePaused
+            || mediaPlayerController.playbackState == RTSPlaybackStateEnded
+            || mediaPlayerController.playbackState == RTSPlaybackStateIdle) {
         [self stopAnimating];
     }
     else {

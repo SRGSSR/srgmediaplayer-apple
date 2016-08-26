@@ -10,19 +10,19 @@
 #import "PseudoILDataProvider.h"
 #import "SegmentCollectionViewCell.h"
 
-static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
+static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
 {
 	static dispatch_once_t s_onceToken;
 	static NSDictionary *s_names;
 	dispatch_once(&s_onceToken, ^{
-		s_names = @{ @(RTSMediaPlaybackStateIdle) : @"IDLE",
-					 @(RTSMediaPlaybackStatePreparing) : @"PREPARING",
-					 @(RTSMediaPlaybackStateReady) : @"READY",
-					 @(RTSMediaPlaybackStatePlaying) : @"PLAYING",
-					 @(RTSMediaPlaybackStateSeeking) : @"SEEKING",
-					 @(RTSMediaPlaybackStatePaused) : @"PAUSED",
-					 @(RTSMediaPlaybackStateStalled) : @"STALLED",
-					 @(RTSMediaPlaybackStateEnded) : @"ENDED",};
+		s_names = @{ @(RTSPlaybackStateIdle) : @"IDLE",
+					 @(RTSPlaybackStatePreparing) : @"PREPARING",
+					 @(RTSPlaybackStateReady) : @"READY",
+					 @(RTSPlaybackStatePlaying) : @"PLAYING",
+					 @(RTSPlaybackStateSeeking) : @"SEEKING",
+					 @(RTSPlaybackStatePaused) : @"PAUSED",
+					 @(RTSPlaybackStateStalled) : @"STALLED",
+					 @(RTSPlaybackStateEnded) : @"ENDED",};
 	});
 	return s_names[@(playbackState)] ?: @"UNKNOWN";
 }
@@ -63,7 +63,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 
 	__weak __typeof(self) weakSelf = self;
 	[self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
-		if (weakSelf.mediaPlayerController.playbackState != RTSMediaPlaybackStateSeeking) {
+		if (weakSelf.mediaPlayerController.playbackState != RTSPlaybackStateSeeking) {
 			[weakSelf updateLiveButton];
 		}
 	}];

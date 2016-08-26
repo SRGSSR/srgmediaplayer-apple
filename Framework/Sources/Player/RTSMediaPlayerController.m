@@ -33,7 +33,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic, readonly) RTSMediaPlayerView *playerView;
-@property (nonatomic) RTSMediaPlaybackState playbackState;
+@property (nonatomic) RTSPlaybackState playbackState;
 @property (nonatomic) NSMutableDictionary<NSString *, RTSPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) RTSActivityGestureRecognizer *activityGestureRecognizer;
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
@@ -51,7 +51,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (instancetype)init
 {
 	if (self = [super init]) {
-		self.playbackState = RTSMediaPlaybackStateIdle;
+		self.playbackState = RTSPlaybackStateIdle;
 		self.periodicTimeObservers = [NSMutableDictionary dictionary];
 		self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	}
@@ -120,7 +120,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 	return self.playerView.playerLayer.player;
 }
 
-- (void)setPlaybackState:(RTSMediaPlaybackState)playbackState
+- (void)setPlaybackState:(RTSPlaybackState)playbackState
 {
 	NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes must be notified on the main thread. Fix");
 	
@@ -337,10 +337,10 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 		return;
 	}
 	
-	self.playbackState = RTSMediaPlaybackStateSeeking;
+	self.playbackState = RTSPlaybackStateSeeking;
 	[self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
 		if (finished) {
-			self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
+			self.playbackState = (self.player.rate == 0.f) ? RTSPlaybackStatePaused : RTSPlaybackStatePlaying;
 		}
 	}];
 }
@@ -417,17 +417,17 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)rts_playerItemPlaybackStalled:(NSNotification *)notification
 {
-	self.playbackState = RTSMediaPlaybackStateStalled;
+	self.playbackState = RTSPlaybackStateStalled;
 }
 
 - (void)rts_playerItemDidPlayToEndTime:(NSNotification *)notification
 {
-	self.playbackState = RTSMediaPlaybackStateEnded;
+	self.playbackState = RTSPlaybackStateEnded;
 }
 
 - (void)rts_playerItemFailedToPlayToEndTime:(NSNotification *)notification
 {
-	self.playbackState = RTSMediaPlaybackStateIdle;
+	self.playbackState = RTSPlaybackStateIdle;
 	
 	NSError *error = RTSMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
 	[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackDidFailNotification
@@ -488,14 +488,14 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 			AVPlayerItem *playerItem = self.player.currentItem;
 			
 			// Do not let playback pause when the player stalls, attempt to play again
-			if (self.player.rate == 0.f && self.playbackState == RTSMediaPlaybackStateStalled) {
+			if (self.player.rate == 0.f && self.playbackState == RTSPlaybackStateStalled) {
 				[self.player play];
 			}
 			else if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
-				self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
+				self.playbackState = (self.player.rate == 0.f) ? RTSPlaybackStatePaused : RTSPlaybackStatePlaying;
 			}
 			else {
-				self.playbackState = RTSMediaPlaybackStateIdle;
+				self.playbackState = RTSPlaybackStateIdle;
 				
 				if (playerItem.status == AVPlayerItemStatusFailed) {
 					NSError *error = RTSMediaPlayerControllerError(playerItem.error);

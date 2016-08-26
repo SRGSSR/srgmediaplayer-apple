@@ -87,7 +87,7 @@
 
 - (void)refreshButton
 {
-    BOOL isPlaying = self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePlaying;
+    BOOL isPlaying = self.mediaPlayerController.playbackState == RTSPlaybackStatePlaying;
     
     [self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
