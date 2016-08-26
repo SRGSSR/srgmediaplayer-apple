@@ -13,8 +13,8 @@
 
 @property (nonatomic, readonly, copy) NSString *name;
 
-@property (nonatomic, getter=isLogical) BOOL logical;				// Default is NO
-@property (nonatomic, getter=isBlocked) BOOL blocked;				// Default is NO
-@property (nonatomic, getter=isVisible) BOOL visible;				// Default is YES
+@property (nonatomic, getter = isLogical) BOOL logical;                           // Default is NO
+@property (nonatomic, getter = isBlocked) BOOL blocked;                           // Default is NO
+@property (nonatomic, getter = isVisible) BOOL visible;                           // Default is YES
 
 @end

@@ -7,7 +7,7 @@
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <UIKit/UIKit.h>
 
-@interface VideoTimeshiftPlayerViewController : UIViewController 
+@interface VideoTimeshiftPlayerViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, assign) BOOL tokenizeMediaURL;

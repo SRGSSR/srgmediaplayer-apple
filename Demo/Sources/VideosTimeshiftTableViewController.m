@@ -10,19 +10,19 @@
 
 - (NSString *)mediaURLPath
 {
-	return @"TimeshiftURLs";
+    return @"TimeshiftURLs";
 }
 
 - (NSString *)mediaURLKey
 {
-	return @"Movies";
+    return @"Movies";
 }
 
 - (NSArray *)actionCellIdentifiers
 {
-	return @[ @"CellDefaultIOS",
-			  @"CellDefaultRTS",
-			  @"CellTimeshift" ];
+    return @[ @"CellDefaultIOS",
+              @"CellDefaultRTS",
+              @"CellTimeshift" ];
 }
 
 @end

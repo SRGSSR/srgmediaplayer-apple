@@ -17,13 +17,13 @@
  *  it retrieves from a data source. Segments can either be blocked or visible, and the segments controller is responsible
  *  of skipping blocked segments or blocking access to them when seeking.
  *
- *  When a data source is requested for segments, it might return segments with other identifiers as well. Segments with the 
- *  same identifiers are treated as logical segments (part of a single media, and sharing its identifier), whereas segments 
+ *  When a data source is requested for segments, it might return segments with other identifiers as well. Segments with the
+ *  same identifiers are treated as logical segments (part of a single media, and sharing its identifier), whereas segments
  *  with different identifiers are treated as physical segments (separate medias with different identifiers). Segments which
  *  are incorrect (e.g. outside a full-length) are ignored.
  *
- *  For logical segments, the segment controller locates the largest segment and considers it as being the full-length media, 
- *  to which other segments must belong to (segments which would incorrectly not belong to it will be discarded with a warning). 
+ *  For logical segments, the segment controller locates the largest segment and considers it as being the full-length media,
+ *  to which other segments must belong to (segments which would incorrectly not belong to it will be discarded with a warning).
  *  It them manages playback between them transparently.
  *
  *  For physical segments, switching to another segment changes the media actually played (the previous one is stopped, and
@@ -42,12 +42,12 @@
 /**
  *  The player controller associated with the segments controller.
  */
-@property(nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;
+@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;
 
 /**
  *  The data source of the segments controller.
  */
-@property(nonatomic, weak) IBOutlet id<RTSMediaSegmentsDataSource> dataSource;
+@property (nonatomic, weak) IBOutlet id<RTSMediaSegmentsDataSource> dataSource;
 
 /**
  *  Reload segments data for given media identifier. The completion handler block (optional) will be called when reloading
@@ -58,12 +58,12 @@
 /**
  *  The segment list currently managed by the segments controller
  */
-- (NSArray<id<RTSMediaSegment>> *)segments;
+- (NSArray<id<RTSMediaSegment> > *)segments;
 
 /**
  *  The visible segments
  */
-- (NSArray<id<RTSMediaSegment>> *)visibleSegments;
+- (NSArray<id<RTSMediaSegment> > *)visibleSegments;
 
 /**
  *  The current segment in which the playback head is located.

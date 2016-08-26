@@ -8,20 +8,20 @@
 
 @implementation AudiosTableViewController
 
-- (NSString *) mediaURLPath
+- (NSString *)mediaURLPath
 {
-	return @"AudioURLs";
+    return @"AudioURLs";
 }
 
-- (NSString *) mediaURLKey
+- (NSString *)mediaURLKey
 {
-	return @"Audios";
+    return @"Audios";
 }
 
-- (NSArray *) actionCellIdentifiers
+- (NSArray *)actionCellIdentifiers
 {
-	return @[ @"CellDefaultIOS",
-			  @"CellDefaultRTS" ];
+    return @[ @"CellDefaultIOS",
+              @"CellDefaultRTS" ];
 }
 
 @end

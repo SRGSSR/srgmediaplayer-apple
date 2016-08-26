@@ -18,14 +18,13 @@
 
 - (instancetype)initWithIdentifier:(NSString *)identifier name:(NSString *)name timeRange:(CMTimeRange)timeRange
 {
-	if (self = [super init])
-	{
-		self.name = name;
-		self.segmentIdentifier = identifier;
-		self.timeRange = timeRange;
-		self.visible = YES;
-	}
-	return self;
+    if (self = [super init]) {
+        self.name = name;
+        self.segmentIdentifier = identifier;
+        self.timeRange = timeRange;
+        self.visible = YES;
+    }
+    return self;
 }
 
 @end

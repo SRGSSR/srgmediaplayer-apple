@@ -8,21 +8,21 @@
 
 @implementation VideosTableViewController
 
-- (NSString *) mediaURLPath
+- (NSString *)mediaURLPath
 {
-	return @"MediaURLs";
+    return @"MediaURLs";
 }
 
-- (NSString *) mediaURLKey
+- (NSString *)mediaURLKey
 {
-	return @"Movies";
+    return @"Movies";
 }
 
-- (NSArray *) actionCellIdentifiers
+- (NSArray *)actionCellIdentifiers
 {
-	return @[ @"CellDefaultIOS",
-			  @"CellDefaultRTS",
-			  @"CellInline"];
+    return @[ @"CellDefaultIOS",
+              @"CellDefaultRTS",
+              @"CellInline"];
 }
 
 @end

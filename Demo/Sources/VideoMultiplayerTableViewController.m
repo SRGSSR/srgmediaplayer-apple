@@ -10,17 +10,17 @@
 
 - (NSString *)mediaURLPath
 {
-	return @"MultiplayerURLs";
+    return @"MultiplayerURLs";
 }
 
 - (NSString *)mediaURLKey
 {
-	return @"Movies";
+    return @"Movies";
 }
 
 - (NSArray *)actionCellIdentifiers
 {
-	return @[ @"CellMultiPlayers" ];
+    return @[ @"CellMultiPlayers" ];
 }
 
 @end

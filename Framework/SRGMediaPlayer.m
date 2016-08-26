@@ -8,7 +8,7 @@
 
 #import "NSBundle+RTSMediaPlayer.h"
 
-NSString * SRGMediaPlayerMarketingVersion(void)
+NSString *SRGMediaPlayerMarketingVersion(void)
 {
-	return [NSBundle rts_mediaPlayerBundle].infoDictionary[@"CFBundleVersion"];
+    return [NSBundle rts_mediaPlayerBundle].infoDictionary[@"CFBundleVersion"];
 }

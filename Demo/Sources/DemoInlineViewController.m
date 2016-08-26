@@ -10,20 +10,20 @@
 
 - (void)viewDidLoad
 {
-	[super viewDidLoad];
-	[self.mediaPlayerController attachPlayerToView:self.videoContainerView];
+    [super viewDidLoad];
+    [self.mediaPlayerController attachPlayerToView:self.videoContainerView];
 }
 
 #pragma mark - RTSMediaPlayerControllerDataSource
 
 - (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-	contentURLForIdentifier:(NSString *)identifier
-		  completionHandler:(void (^)(NSString *, NSURL *, NSError *))completionHandler
+    contentURLForIdentifier:(NSString *)identifier
+          completionHandler:(void (^)(NSString *, NSURL *, NSError *))completionHandler
 {
-	completionHandler(identifier, self.mediaURL, nil);
-	
-	// No need for a connection handle, completion handlers are called immediately
-	return nil;
+    completionHandler(identifier, self.mediaURL, nil);
+    
+    // No need for a connection handle, completion handlers are called immediately
+    return nil;
 }
 
 - (void)cancelContentURLRequest:(id)request
@@ -33,33 +33,33 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[super viewWillDisappear:animated];
-	
-	if ([self isMovingFromParentViewController]) {
-		[self.mediaPlayerController reset];
-	}
+    [super viewWillDisappear:animated];
+    
+    if ([self isMovingFromParentViewController]) {
+        [self.mediaPlayerController reset];
+    }
 }
 
 #pragma mark - Actions
 
 - (IBAction)prepareToPlay:(id)sender
 {
-	[self.mediaPlayerController prepareToPlay];
+    [self.mediaPlayerController prepareToPlay];
 }
 
 - (IBAction)play:(id)sender
 {
-	[self.mediaPlayerController play];
+    [self.mediaPlayerController play];
 }
 
 - (IBAction)pause:(id)sender
 {
-	[self.mediaPlayerController pause];
+    [self.mediaPlayerController pause];
 }
 
 - (IBAction)reset:(id)sender
 {
-	[self.mediaPlayerController reset];
+    [self.mediaPlayerController reset];
 }
 
 @end
