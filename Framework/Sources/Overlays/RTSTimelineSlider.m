@@ -6,10 +6,10 @@
 
 #import "RTSTimelineSlider.h"
 
-#import "RTSMediaPlayerController.h"
+#import "SRGMediaPlayerController.h"
 #import "RTSMediaSegment.h"
 #import "RTSMediaSegmentsController.h"
-#import "NSBundle+RTSMediaPlayer.h"
+#import "NSBundle+SRGMediaPlayer.h"
 
 @implementation RTSTimelineSlider
 

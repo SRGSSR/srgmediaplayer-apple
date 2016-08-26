@@ -35,7 +35,7 @@
     self.mediaPlayerControllers = [NSMutableArray array];
     
     for (NSURL *mediaURL in mediaURLs) {
-        RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:mediaURL];
+        SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] initWithContentURL:mediaURL];
         
         UITapGestureRecognizer *switchTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchMainPlayer:)];
         [mediaPlayerController.view addGestureRecognizer:switchTapGestureRecognizer];
@@ -104,7 +104,7 @@
 {
     _selectedIndex = selectedIndex;
     
-    RTSMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[selectedIndex];
+    SRGMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[selectedIndex];
     mainMediaPlayerController.allowsExternalPlayback = YES;
     [self attachPlayer:mainMediaPlayerController toView:self.mainPlayerView];
     
@@ -122,7 +122,7 @@
         playerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         [self.playerViewsContainer addSubview:playerView];
         
-        RTSMediaPlayerController *thumbnailMediaPlayerController = self.mediaPlayerControllers[index];
+        SRGMediaPlayerController *thumbnailMediaPlayerController = self.mediaPlayerControllers[index];
         thumbnailMediaPlayerController.allowsExternalPlayback = NO;
         [self attachPlayer:thumbnailMediaPlayerController toView:playerView];
     }
@@ -139,7 +139,7 @@
     return CGRectMake(x + 5, y, playerWidth - 10, playerHeight);
 }
 
-- (void)attachPlayer:(RTSMediaPlayerController *)mediaPlayerController toView:(UIView *)playerView
+- (void)attachPlayer:(SRGMediaPlayerController *)mediaPlayerController toView:(UIView *)playerView
 {
     BOOL isMainPlayer = playerView == self.mainPlayerView;
     if (isMainPlayer) {
@@ -155,9 +155,9 @@
     switchTapGestureRecognizer.enabled = ! isMainPlayer;
 }
 
-- (RTSMediaPlayerController *)mediaPlayerControllerForPlayerView:(UIView *)playerView
+- (SRGMediaPlayerController *)mediaPlayerControllerForPlayerView:(UIView *)playerView
 {
-    for (RTSMediaPlayerController *mediaPlayerController in self.mediaPlayerControllers) {
+    for (SRGMediaPlayerController *mediaPlayerController in self.mediaPlayerControllers) {
         if ([mediaPlayerController.view isEqual:playerView]) {
             return mediaPlayerController;
         }
@@ -169,7 +169,7 @@
 - (NSArray *)thumbnailPlayerControllers
 {
     NSMutableArray *thumbnailPlayerControllers = [NSMutableArray array];
-    for (RTSMediaPlayerController *mediaPlayerController in self.mediaPlayerControllers) {
+    for (SRGMediaPlayerController *mediaPlayerController in self.mediaPlayerControllers) {
         if (! [mediaPlayerController.view.superview isEqual:self.mainPlayerView]) {
             [thumbnailPlayerControllers addObject:mediaPlayerController];
         }
@@ -182,7 +182,7 @@
 
 - (void)switchMainPlayer:(UITapGestureRecognizer *)gestureRecognizer
 {
-    RTSMediaPlayerController *mediaPlayerController = [self mediaPlayerControllerForPlayerView:gestureRecognizer.view];
+    SRGMediaPlayerController *mediaPlayerController = [self mediaPlayerControllerForPlayerView:gestureRecognizer.view];
     self.selectedIndex = [self.mediaPlayerControllers indexOfObject:mediaPlayerController];
 }
 

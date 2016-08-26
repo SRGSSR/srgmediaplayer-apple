@@ -1,0 +1,15 @@
+//
+//  Copyright (c) SRG. All rights reserved.
+//
+//  License information is available from the LICENSE file.
+//
+
+#import "SRGMediaPlayerController.h"
+
+/**
+ *  Lightweight internal `SRGMediaPlayerController` subclass. An instance is shared among all `SRGMediaPlayerViewController`
+ *  instances to manage picture in picture background play
+ */
+@interface SRGMediaPlayerSharedController : SRGMediaPlayerController <AVPictureInPictureControllerDelegate>
+
+@end

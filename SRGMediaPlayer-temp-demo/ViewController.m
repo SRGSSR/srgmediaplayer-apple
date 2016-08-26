@@ -14,11 +14,11 @@ static void *s_kvoContext = &s_kvoContext;
 
 @interface ViewController ()
 
-@property (nonatomic) RTSMediaPlayerController *playerController;
+@property (nonatomic) SRGMediaPlayerController *playerController;
 
-@property (nonatomic, weak) IBOutlet RTSPlaybackActivityIndicatorView *playbackActivityIndicatorView;
-@property (nonatomic, weak) IBOutlet RTSPlaybackButton *playerButton;
-@property (nonatomic, weak) IBOutlet RTSTimeSlider *timeSlider;
+@property (nonatomic, weak) IBOutlet SRGPlaybackActivityIndicatorView *playbackActivityIndicatorView;
+@property (nonatomic, weak) IBOutlet SRGPlaybackButton *playerButton;
+@property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
 
 @end
 
@@ -29,11 +29,11 @@ static void *s_kvoContext = &s_kvoContext;
 	self.playerController = nil;
 }
 
-- (void)setPlayerController:(RTSMediaPlayerController *)playerController
+- (void)setPlayerController:(SRGMediaPlayerController *)playerController
 {
 	if (_playerController) {
 		[_playerController removeObserver:self forKeyPath:@"playbackState"];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackDidFailNotification object:_playerController];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:SRGMediaPlayerPlaybackDidFailNotification object:_playerController];
 	}
 	
 	_playerController = playerController;
@@ -42,7 +42,7 @@ static void *s_kvoContext = &s_kvoContext;
 		[playerController addObserver:self forKeyPath:@"playbackState" options:0 context:s_kvoContext];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(playbackDidFail:)
-													 name:RTSMediaPlayerPlaybackDidFailNotification
+													 name:SRGMediaPlayerPlaybackDidFailNotification
 												   object:playerController];
 	}
 }
@@ -51,7 +51,7 @@ static void *s_kvoContext = &s_kvoContext;
 {
     [super viewDidLoad];
 	
-	self.playerController = [[RTSMediaPlayerController alloc] init];
+	self.playerController = [[SRGMediaPlayerController alloc] init];
 	self.playerButton.mediaPlayerController = self.playerController;
 	self.playbackActivityIndicatorView.mediaPlayerController = self.playerController;
 	self.timeSlider.mediaPlayerController = self.playerController;
@@ -81,7 +81,7 @@ static void *s_kvoContext = &s_kvoContext;
 - (IBAction)openPlayerViewController:(id)sender
 {
 	NSURL *URL = [NSURL URLWithString:@"http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4"];
-	RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewController alloc] initWithContentURL:URL];
+	SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:URL];
 	[self presentViewController:mediaPlayerViewController animated:YES completion:nil];
 }
 
@@ -97,7 +97,7 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)playbackDidFail:(NSNotification *)notification
 {
-	NSError *error = notification.userInfo[RTSMediaPlayerErrorKey];
+	NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
 	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
 	[alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
 	[self presentViewController:alertController animated:YES completion:nil];

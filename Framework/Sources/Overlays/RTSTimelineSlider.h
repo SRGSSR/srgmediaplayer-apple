@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSTimeSlider.h"
+#import "SRGTimeSlider.h"
 
 @class RTSMediaSegmentsController;
 @protocol RTSMediaSegment;
@@ -19,7 +19,7 @@
  *  programmatically. Then call `reloadSegmentsWithIdentifier:completionHandler:` when you need to retrieve segments
  *  from the controller
  */
-@interface RTSTimelineSlider : RTSTimeSlider
+@interface RTSTimelineSlider : SRGTimeSlider
 
 /**
  *  The controller which provides segments to the timeline

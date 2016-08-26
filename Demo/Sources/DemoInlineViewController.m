@@ -16,7 +16,7 @@
 
 #pragma mark - RTSMediaPlayerControllerDataSource
 
-- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+- (id)mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
     contentURLForIdentifier:(NSString *)identifier
           completionHandler:(void (^)(NSString *, NSURL *, NSError *))completionHandler
 {

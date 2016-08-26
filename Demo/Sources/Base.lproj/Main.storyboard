@@ -140,7 +140,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XuL-Cc-bGM">
                                         <rect key="frame" x="0.0" y="209" width="450" height="44"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40p-mn-vlm" customClass="RTSPlaybackButton">
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40p-mn-vlm" customClass="SRGPlaybackButton">
                                                 <rect key="frame" x="8" y="9" width="25" height="25"/>
                                                 <state key="normal">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -234,7 +234,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oNS-kv-k4L" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="o6Z-DB-FCH" customClass="RTSMediaPlayerController">
+                <customObject id="o6Z-DB-FCH" customClass="SRGMediaPlayerController">
                     <connections>
                         <outlet property="dataSource" destination="u4g-ie-3Oi" id="dce-W1-QAn"/>
                     </connections>
@@ -303,7 +303,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bOM-dV-sbr" userLabel="Bottom Bar View">
                                 <rect key="frame" x="0.0" y="536" width="600" height="64"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Qju-s5-kdB" customClass="RTSTimeSlider">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Qju-s5-kdB" customClass="SRGTimeSlider">
                                         <rect key="frame" x="6" y="0.0" width="588" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="IN1-wR-XZA"/>
@@ -338,7 +338,7 @@
                                             </mask>
                                         </variation>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vO1-Gg-OEX" customClass="RTSPlaybackButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vO1-Gg-OEX" customClass="SRGPlaybackButton">
                                         <rect key="frame" x="289" y="31" width="22" height="22"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -388,7 +388,7 @@
                                     <action selector="dismiss:" destination="2iI-c6-veX" eventType="touchUpInside" id="ocA-Kq-jyX"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ksY-8n-34g" customClass="RTSPlaybackActivityIndicatorView">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="ksY-8n-34g" customClass="SRGPlaybackActivityIndicatorView">
                                 <rect key="frame" x="282" y="281" width="37" height="37"/>
                                 <color key="color" red="0.032045689229461938" green="0.64991066383653529" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
@@ -457,7 +457,7 @@
                         <action selector="seekBackward:" destination="2iI-c6-veX" id="8wX-nT-1h6"/>
                     </connections>
                 </swipeGestureRecognizer>
-                <customObject id="n7D-r2-MGc" customClass="RTSMediaPlayerController">
+                <customObject id="n7D-r2-MGc" customClass="SRGMediaPlayerController">
                     <connections>
                         <outlet property="activityView" destination="KYY-9n-s9D" id="YwZ-hJ-5wF"/>
                         <outlet property="dataSource" destination="Hce-s0-iDE" id="t4j-N4-p7V"/>
@@ -511,7 +511,7 @@
                                             <action selector="goToLive:" destination="Rig-pS-R3F" eventType="touchUpInside" id="5xA-jU-BT6"/>
                                         </connections>
                                     </button>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="IOf-Fg-OYX" customClass="RTSTimeSlider">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="IOf-Fg-OYX" customClass="SRGTimeSlider">
                                         <rect key="frame" x="6" y="0.0" width="588" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="N1l-FW-EzW"/>
@@ -556,7 +556,7 @@
                                             <rect key="frame" x="557" y="34" width="35" height="16"/>
                                         </variation>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zg8-jf-hRa" customClass="RTSPlaybackButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zg8-jf-hRa" customClass="SRGPlaybackButton">
                                         <rect key="frame" x="289" y="31" width="22" height="22"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -618,7 +618,7 @@
                                     <action selector="dismiss:" destination="Rig-pS-R3F" eventType="touchUpInside" id="ABP-Ay-T1V"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="J72-PW-IrE" customClass="RTSPlaybackActivityIndicatorView">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="J72-PW-IrE" customClass="SRGPlaybackActivityIndicatorView">
                                 <rect key="frame" x="282" y="281" width="37" height="37"/>
                                 <color key="color" red="0.03204568923" green="0.64991066379999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
@@ -689,7 +689,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eiB-qQ-D3u" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <swipeGestureRecognizer direction="left" id="eeQ-Jn-5Tq"/>
                 <swipeGestureRecognizer direction="right" id="hMb-cS-sVs"/>
-                <customObject id="3Zc-fG-clj" customClass="RTSMediaPlayerController">
+                <customObject id="3Zc-fG-clj" customClass="SRGMediaPlayerController">
                     <connections>
                         <outlet property="activityView" destination="ZDm-Cr-kIN" id="Rv0-nx-ezI"/>
                         <outlet property="dataSource" destination="Rig-pS-R3F" id="gzz-if-eXZ"/>
@@ -1026,7 +1026,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LM9-hO-deN">
                                 <rect key="frame" x="0.0" y="540" width="600" height="60"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dqa-KC-9ej" customClass="RTSPlaybackButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dqa-KC-9ej" customClass="SRGPlaybackButton">
                                         <rect key="frame" x="285" y="15" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="ewz-EK-v94"/>

@@ -10,7 +10,7 @@
 #import "PseudoILDataProvider.h"
 #import "SegmentCollectionViewCell.h"
 
-static NSString *StringForSegmentChange(RTSMediaPlaybackSegmentChange segmentChange)
+static NSString *StringForSegmentChange(SRGMediaPlaybackSegmentChange segmentChange)
 {
     static dispatch_once_t s_onceToken;
     static NSDictionary *s_names;
@@ -24,30 +24,30 @@ static NSString *StringForSegmentChange(RTSMediaPlaybackSegmentChange segmentCha
     return s_names[@(segmentChange)] ? : @"UNKNOWN";
 }
 
-static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
+static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 {
     static dispatch_once_t s_onceToken;
     static NSDictionary *s_names;
     dispatch_once(&s_onceToken, ^{
-        s_names = @{ @(RTSPlaybackStateIdle): @"IDLE",
-                     @(RTSPlaybackStatePreparing): @"PREPARING",
-                     @(RTSPlaybackStateReady): @"READY",
-                     @(RTSPlaybackStatePlaying): @"PLAYING",
-                     @(RTSPlaybackStateSeeking): @"SEEKING",
-                     @(RTSPlaybackStatePaused): @"PAUSED",
-                     @(RTSPlaybackStateStalled): @"STALLED",
-                     @(RTSPlaybackStateEnded): @"ENDED", };
+        s_names = @{ @(SRGPlaybackStateIdle): @"IDLE",
+                     @(SRGPlaybackStatePreparing): @"PREPARING",
+                     @(SRGPlaybackStateReady): @"READY",
+                     @(SRGPlaybackStatePlaying): @"PLAYING",
+                     @(SRGPlaybackStateSeeking): @"SEEKING",
+                     @(SRGPlaybackStatePaused): @"PAUSED",
+                     @(SRGPlaybackStateStalled): @"STALLED",
+                     @(SRGPlaybackStateEnded): @"ENDED", };
     });
     return s_names[@(playbackState)] ? : @"UNKNOWN";
 }
 
-@interface VideoSegmentsPlayerViewController () <RTSTimeSliderDelegate>
+@interface VideoSegmentsPlayerViewController () <SRGTimeSliderDelegate>
 
-@property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+@property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, weak) IBOutlet UIView *videoView;
 @property (nonatomic, weak) IBOutlet RTSSegmentedTimelineView *timelineView;
-@property (nonatomic, weak) IBOutlet RTSTimeSlider *timelineSlider;
+@property (nonatomic, weak) IBOutlet SRGTimeSlider *timelineSlider;
 
 @property (nonatomic, weak) IBOutlet UIView *blockingOverlayView;
 @property (nonatomic, weak) IBOutlet UILabel *blockingOverlayViewLabel;
@@ -92,15 +92,15 @@ static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(considerDisplayBlockingMessage:)
-                                                 name:RTSMediaPlaybackSegmentDidChangeNotification
+                                                 name:SRGMediaPlaybackSegmentDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(segmentDidChange:)
-                                                 name:RTSMediaPlaybackSegmentDidChangeNotification
+                                                 name:SRGMediaPlaybackSegmentDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playbackStateDidChange:)
-                                                 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+                                                 name:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                object:nil];
 }
 
@@ -145,7 +145,7 @@ static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
         return;
     }
     
-    NSNumber *value = notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey];
+    NSNumber *value = notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey];
     if (! value) {
         return;
     }
@@ -161,7 +161,7 @@ static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, blockingMessageDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self.blockingOverlayView setHidden:YES];
-            if (self.mediaPlayerController.playbackState == RTSPlaybackStatePaused) {
+            if (self.mediaPlayerController.playbackState == SRGPlaybackStatePaused) {
                 [self.mediaPlayerController play];
             }
         });
@@ -175,10 +175,10 @@ static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
 
 - (void)segmentDidChange:(NSNotification *)notification
 {
-    RTSMediaPlaybackSegmentChange segmentChange = [notification.userInfo[RTSMediaPlaybackSegmentChangeValueInfoKey] integerValue];
-    Segment *previousSegment = notification.userInfo[RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey];
-    Segment *segment = notification.userInfo[RTSMediaPlaybackSegmentChangeSegmentInfoKey];
-    BOOL wasSelected = [notification.userInfo[RTSMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue];
+    SRGMediaPlaybackSegmentChange segmentChange = [notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue];
+    Segment *previousSegment = notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey];
+    Segment *segment = notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey];
+    BOOL wasSelected = [notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue];
     
     NSLog(@"Segment [%@]: previous = %@, current = %@, user selected: %@", StringForSegmentChange(segmentChange), previousSegment.name, segment.name, wasSelected ? @"YES" : @"NO");
 }
@@ -188,9 +188,9 @@ static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
     NSLog(@"Playback state [%@]", StringForPlaybackState(self.mediaPlayerController.playbackState));
 }
 
-#pragma ark - RTSTimeSliderDelegate protocol
+#pragma ark - SRGTimeSliderDelegate protocol
 
-- (void)timeSlider:(RTSTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(CGFloat)value interactive:(BOOL)interactive
+- (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(CGFloat)value interactive:(BOOL)interactive
 {
     [self updateAppearanceWithTime:time];
     

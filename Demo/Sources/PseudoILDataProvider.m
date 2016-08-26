@@ -15,7 +15,7 @@ static NSString *const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/to
 
 #pragma mark - RTSMediaPlayerControllerDataSource protocol
 
-- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+- (id)mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
     contentURLForIdentifier:(NSString *)identifier
           completionHandler:(void (^)(NSString *, NSURL *, NSError *))completionHandler
 {

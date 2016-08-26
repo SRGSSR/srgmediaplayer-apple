@@ -10,29 +10,29 @@
 #import "PseudoILDataProvider.h"
 #import "SegmentCollectionViewCell.h"
 
-static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
+static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 {
     static dispatch_once_t s_onceToken;
     static NSDictionary *s_names;
     dispatch_once(&s_onceToken, ^{
-        s_names = @{ @(RTSPlaybackStateIdle): @"IDLE",
-                     @(RTSPlaybackStatePreparing): @"PREPARING",
-                     @(RTSPlaybackStateReady): @"READY",
-                     @(RTSPlaybackStatePlaying): @"PLAYING",
-                     @(RTSPlaybackStateSeeking): @"SEEKING",
-                     @(RTSPlaybackStatePaused): @"PAUSED",
-                     @(RTSPlaybackStateStalled): @"STALLED",
-                     @(RTSPlaybackStateEnded): @"ENDED", };
+        s_names = @{ @(SRGPlaybackStateIdle): @"IDLE",
+                     @(SRGPlaybackStatePreparing): @"PREPARING",
+                     @(SRGPlaybackStateReady): @"READY",
+                     @(SRGPlaybackStatePlaying): @"PLAYING",
+                     @(SRGPlaybackStateSeeking): @"SEEKING",
+                     @(SRGPlaybackStatePaused): @"PAUSED",
+                     @(SRGPlaybackStateStalled): @"STALLED",
+                     @(SRGPlaybackStateEnded): @"ENDED", };
     });
     return s_names[@(playbackState)] ? : @"UNKNOWN";
 }
 
 @interface VideoTimeshiftPlayerViewController ()
 
-@property (nonatomic) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+@property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, weak) IBOutlet UIView *videoView;
-@property (nonatomic, weak) IBOutlet RTSTimeSlider *timelineSlider;
+@property (nonatomic, weak) IBOutlet SRGTimeSlider *timelineSlider;
 @property (nonatomic, weak) IBOutlet UIButton *liveButton;
 
 @property (nonatomic, weak) IBOutlet UIView *blockingOverlayView;
@@ -63,14 +63,14 @@ static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
     
     __weak __typeof(self) weakSelf = self;
     [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
-        if (weakSelf.mediaPlayerController.playbackState != RTSPlaybackStateSeeking) {
+        if (weakSelf.mediaPlayerController.playbackState != SRGPlaybackStateSeeking) {
             [weakSelf updateLiveButton];
         }
     }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playbackStateDidChange:)
-                                                 name:RTSMediaPlayerPlaybackStateDidChangeNotification
+                                                 name:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                object:nil];
 }
 
@@ -96,7 +96,7 @@ static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
 
 - (void)updateLiveButton
 {
-    if (self.mediaPlayerController.streamType == RTSMediaStreamTypeDVR) {
+    if (self.mediaPlayerController.streamType == SRGMediaStreamTypeDVR) {
         [UIView animateWithDuration:0.2 animations:^{
             self.liveButton.alpha = self.timelineSlider.live ? 0.f : 1.f;
         }];
@@ -108,7 +108,7 @@ static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
 
 #pragma mark - RTSMediaPlayerControllerDataSource
 
-- (void)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+- (void)mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
       contentURLForIdentifier:(NSString *)identifier
             completionHandler:(void (^)(NSURL *, NSError *))completionHandler
 {
