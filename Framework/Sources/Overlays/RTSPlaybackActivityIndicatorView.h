@@ -6,8 +6,7 @@
 
 #import <UIKit/UIKit.h>
 
-// Forward declarations
-@class RTSMediaPlayerController;
+#import "RTSMediaPlayerController.h"
 
 /**
  *  An activity indicator displaying the current status of the associated media player controller.
@@ -15,7 +14,7 @@
  *  Simply install an instance somewhere onto your custom player interface and bind to a media player
  *  controller.
  *
- *  Besides setting the mediaPlayerController outlet and appearance properties (color, size, alpha), 
+ *  Besides setting the mediaPlayerController outlet and appearance properties (color, size, alpha),
  *  you should never:
  *    - call `startAnimating` or `stopAnimating`
  *    - change the values of the hidden or `hidesWhenStopped` properties

@@ -6,27 +6,21 @@
 
 #import <Foundation/Foundation.h>
 
-/**
- *  Domain for media player errors
- */
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerErrorDomain;
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Media player error codes
  */
-typedef NS_ENUM(NSInteger, RTSMediaPlayerError){
-	/**
-	 *  Unknown error
-	 */
-	RTSMediaPlayerErrorUnknown,
-    
-    /**
-     *  Data source error (e.g. did not return any valid URL)
-     */
-    RTSMediaPlayerErrorDataSource,
-    
+typedef NS_ENUM(NSInteger, RTSMediaPlayerError) {
     /**
      *  Playback error (e.g. playlist could not be read)
      */
     RTSMediaPlayerErrorPlayback,
 };
+
+/**
+ *  Domain for media player errors
+ */
+OBJC_EXTERN NSString * const RTSMediaPlayerErrorDomain;
+
+NS_ASSUME_NONNULL_END

@@ -24,19 +24,19 @@ static NSString *StringForSegmentChange(RTSMediaPlaybackSegmentChange segmentCha
 	return s_names[@(segmentChange)] ?: @"UNKNOWN";
 }
 
-static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
+static NSString *StringForPlaybackState(RTSPlaybackState playbackState)
 {
 	static dispatch_once_t s_onceToken;
 	static NSDictionary *s_names;
 	dispatch_once(&s_onceToken, ^{
-		s_names = @{ @(RTSMediaPlaybackStateIdle) : @"IDLE",
-					 @(RTSMediaPlaybackStatePreparing) : @"PREPARING",
-					 @(RTSMediaPlaybackStateReady) : @"READY",
-					 @(RTSMediaPlaybackStatePlaying) : @"PLAYING",
-					 @(RTSMediaPlaybackStateSeeking) : @"SEEKING",
-					 @(RTSMediaPlaybackStatePaused) : @"PAUSED",
-					 @(RTSMediaPlaybackStateStalled) : @"STALLED",
-					 @(RTSMediaPlaybackStateEnded) : @"ENDED",};
+		s_names = @{ @(RTSPlaybackStateIdle) : @"IDLE",
+					 @(RTSPlaybackStatePreparing) : @"PREPARING",
+					 @(RTSPlaybackStateReady) : @"READY",
+					 @(RTSPlaybackStatePlaying) : @"PLAYING",
+					 @(RTSPlaybackStateSeeking) : @"SEEKING",
+					 @(RTSPlaybackStatePaused) : @"PAUSED",
+					 @(RTSPlaybackStateStalled) : @"STALLED",
+					 @(RTSPlaybackStateEnded) : @"ENDED",};
 	});
 	return s_names[@(playbackState)] ?: @"UNKNOWN";
 }
@@ -161,7 +161,7 @@ static NSString *StringForPlaybackState(RTSMediaPlaybackState playbackState)
 		
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, blockingMessageDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 			[self.blockingOverlayView setHidden:YES];
-			if (self.mediaPlayerController.playbackState == RTSMediaPlaybackStatePaused) {
+			if (self.mediaPlayerController.playbackState == RTSPlaybackStatePaused) {
 				[self.mediaPlayerController play];
 			}
 		});

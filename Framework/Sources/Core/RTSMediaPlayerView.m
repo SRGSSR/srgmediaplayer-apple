@@ -5,28 +5,19 @@
 //
 
 #import "RTSMediaPlayerView.h"
+
 #import <AVFoundation/AVFoundation.h>
 
 @implementation RTSMediaPlayerView
 
-+ (Class) layerClass
++ (Class)layerClass
 {
-	return [AVPlayerLayer class];
+    return [AVPlayerLayer class];
 }
 
-- (AVPlayer *) player
+- (AVPlayerLayer *)playerLayer
 {
-	return self.playerLayer.player;
-}
-
-- (void) setPlayer:(AVPlayer *)player
-{
-	self.playerLayer.player = player;
-}
-
-- (AVPlayerLayer *) playerLayer
-{
-	return (AVPlayerLayer *)self.layer;
+    return (AVPlayerLayer *)self.layer;
 }
 
 @end

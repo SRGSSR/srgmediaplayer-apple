@@ -101,7 +101,7 @@ NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey = @"RTSMediaPlay
     void (^checkBlock)(CMTime) = ^(CMTime time) {
         @strongify(self);
         
-        if (self.playerController.playbackState != RTSMediaPlaybackStatePlaying) {
+        if (self.playerController.playbackState != RTSPlaybackStatePlaying) {
             return;
         }
 		

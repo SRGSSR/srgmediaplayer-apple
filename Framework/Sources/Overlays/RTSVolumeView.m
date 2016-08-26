@@ -5,26 +5,34 @@
 //
 
 #import "RTSVolumeView.h"
+
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface RTSVolumeView ()
-@property MPVolumeView *mpVolumeView;
+
+@property (nonatomic, weak) MPVolumeView *volumeView;
+
 @end
 
 @implementation RTSVolumeView
 
-- (void) awakeFromNib
+#pragma mark Overrides
+
+- (void)awakeFromNib
 {
-	self.mpVolumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
-	self.mpVolumeView.showsRouteButton = NO;
-	self.mpVolumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	[self addSubview:self.mpVolumeView];
+    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
+    volumeView.showsRouteButton = NO;
+    volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:volumeView];
+    self.volumeView = volumeView;
 }
 
-- (void) setHidden:(BOOL)hidden
+#pragma mark Getters and setters
+
+- (void)setHidden:(BOOL)hidden
 {
-	[super setHidden:hidden];
-	[self.mpVolumeView setHidden:hidden];
+    [super setHidden:hidden];
+    [self.volumeView setHidden:hidden];
 }
 
 @end

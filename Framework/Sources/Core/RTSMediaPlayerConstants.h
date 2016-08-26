@@ -6,197 +6,159 @@
 
 #import <Foundation/Foundation.h>
 
-/**
- *  ---------------
- *  @name Constants
- *  ---------------
- */
+NS_ASSUME_NONNULL_BEGIN
 
-FOUNDATION_EXTERN NSTimeInterval const RTSMediaLiveDefaultTolerance; // in seconds.
+// Amount of seconds at the end of a DVR stream, assumed to correspond to live conditions
+OBJC_EXTERN NSTimeInterval const RTSLiveDefaultTolerance;
 
 /**
- *  -------------------
- *  @name Enumerations
- *  -------------------
- */
-
-/**
- *  @enum RTSMediaType
- *
- *  Enumeration of the possible media types.
+ *  Media types
  */
 typedef NS_ENUM(NSInteger, RTSMediaType) {
-	/**
-	 *  Unknown type, or type yet unknown
-	 */
-	RTSMediaTypeUnknown,
-	/**
-	 *  Video
-	 */
-	RTSMediaTypeVideo,
-	/**
-	 *  Audio
-	 */
-	RTSMediaTypeAudio
+    /**
+     *  Unknown type
+     */
+    RTSMediaTypeUnknown,
+    /**
+     *  Video
+     */
+    RTSMediaTypeVideo,
+    /**
+     *  Audio
+     */
+    RTSMediaTypeAudio,
 };
 
 /**
- *  @enum RTSMediaPlaybackState
- *
- *  Enumeration of the possible playback states.
- */
-typedef NS_ENUM(NSInteger, RTSMediaPlaybackState) {
-	/**
-	 *  Default state when controller is initialized. The player also returns to the idle state when an error occurs or
-	 *  when the `stop` method is called.
-	 */
-	RTSMediaPlaybackStateIdle,
-	
-	/**
-	 *  The player is preparing to play the media. It will load everything needed to play the media. This can typically
-	 *  take some time under bad network conditions.
-	 */
-	RTSMediaPlaybackStatePreparing,
-	
-	/**
-	 *  The player is ready to play the media. The `player` property becomes available (i.e. is non-nil) upon entering this state.
-	 */
-	RTSMediaPlaybackStateReady,
-	
-	/**
-	 *  The media is playing, i.e. you can hear sound and/or see a video playing.
-	 */
-	RTSMediaPlaybackStatePlaying,
-	
-	/**
-	 *  The media is seeking (i.e. the playback is paused while looking for another time tick). This can be the result of the
-	 *  user moving a slider, or the player itself jumping above a blocked segment.
-	 */
-	RTSMediaPlaybackStateSeeking,
-	
-	/**
-	 *  The player is paused at the user request.
-	 */
-	RTSMediaPlaybackStatePaused,
-	
-	/**
-	 *  The player is stalled, i.e. it is waiting for the media to resume playing.
-	 */
-	RTSMediaPlaybackStateStalled,
-	
-	/**
-	 *  The player has reached the end of the media and has automatically stopped playback.
-	 */
-	RTSMediaPlaybackStateEnded,
-};
-
-/**
- *  @enum RTSMediaPlaybackSegmentChange
- *
- *  Enumeration of the possible changes occuring during playback related to segments.
- */
-typedef NS_ENUM(NSInteger, RTSMediaPlaybackSegmentChange) {
-	/**
-	 *  An identified segment (visible or not) is being started, while not being inside a segment before.
-	 */
-	RTSMediaPlaybackSegmentStart,
-	/**
-	 *  An identified segment (visible or not) is being ended, without another one to start.
-	 */
-	RTSMediaPlaybackSegmentEnd,
-	/**
-	 *  An identified segment (visible or not) is being started, while being inside another segment before.
-	 */
-	RTSMediaPlaybackSegmentSwitch,
-	/**
-	 *  The playback is being seek to a later value, because it reached a blocked segment.
-	 */
-	RTSMediaPlaybackSegmentSeekUponBlockingStart,
-	/**
-	 *  The seek has finished.
-	 */
-	RTSMediaPlaybackSegmentSeekUponBlockingEnd,
-};
-
-/**
- *  @enum RTSMediaStreamType
- *
- *  Enumeration of the possible stream types.
+ *  Stream types
  */
 typedef NS_ENUM(NSInteger, RTSMediaStreamType) {
-	/**
-	 *  Unknown type, or type yet unknown
-	 */
-	RTSMediaStreamTypeUnknown,
-	/**
-	 *  On-demand stream
-	 */
-	RTSMediaStreamTypeOnDemand,
-	/**
-	 *  Live stream
-	 */
-	RTSMediaStreamTypeLive,
-	/**
-	 *  DVR stream
-	 */
-	RTSMediaStreamTypeDVR,
+    /**
+     *  Unknown type
+     */
+    RTSMediaStreamTypeUnknown,
+    /**
+     *  On-demand stream
+     */
+    RTSMediaStreamTypeOnDemand,
+    /**
+     *  Live stream
+     */
+    RTSMediaStreamTypeLive,
+    /**
+     *  DVR stream
+     */
+    RTSMediaStreamTypeDVR,
 };
 
 /**
- *  -------------------------------------------
- *  @name Media player controller notifications
- *  -------------------------------------------
+ *  Playback states
  */
+typedef NS_ENUM(NSInteger, RTSPlaybackState) {
+    /**
+     *  The player is idle. This state occurs after the player has been initialized, reset, or when an error has been
+     *  encountered
+     */
+    RTSPlaybackStateIdle,
+    /**
+     *  A media is being played
+     */
+    RTSPlaybackStatePlaying,
+    /**
+     *  The player is seeking to another position
+     */
+    RTSPlaybackStateSeeking,
+    /**
+     *  The player is paused
+     */
+    RTSPlaybackStatePaused,
+    /**
+     *  The player is stalled, i.e. waiting for media playback to restart (most probably because of poor networking
+     *  conditions)
+     */
+    RTSPlaybackStateStalled,
+    /**
+     *  The player has reached the end of the media and has automatically stopped playback
+     */
+    RTSPlaybackStateEnded,
+};
+
+// TODO: START
 
 /**
- *  Posted when the playback state changes, either programatically or by the user (use `RTSMediaPlayerPreviousPlaybackStateUserInfoKey`
- *  to retrieve state information from the notification `userInfo` dictionary)
+ *  Segment change reasons
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;		// Notification name
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey;			// Key to access the previous playback state as an `NSNumber` (wrapping an `RTSMediaPlaybackState` value)
+typedef NS_ENUM(NSInteger, RTSMediaPlaybackSegmentChange) {
+    /**
+     *  An identified segment (visible or not) is being started, while not being inside a segment before.
+     */
+    RTSMediaPlaybackSegmentStart,
+    /**
+     *  An identified segment (visible or not) is being ended, without another one to start.
+     */
+    RTSMediaPlaybackSegmentEnd,
+    /**
+     *  An identified segment (visible or not) is being started, while being inside another segment before.
+     */
+    RTSMediaPlaybackSegmentSwitch,
+    /**
+     *  The playback is being seek to a later value, because it reached a blocked segment.
+     */
+    RTSMediaPlaybackSegmentSeekUponBlockingStart,
+    /**
+     *  The seek has finished.
+     */
+    RTSMediaPlaybackSegmentSeekUponBlockingEnd,
+};
+
+// TODO: END
 
 /**
- *  Posted when playback failed (use `RTSMediaPlayerPlaybackDidFailErrorUserInfoKey` to retrieve an `NSError` information
- *  from the notification `userInfo` dictionary)
+ *  Notification sent when the player state changes. Use the `RTSMediaPlayerPreviousPlaybackStateUserInfoKey` to retrieve
+ *  previous state information from the notification `userInfo` dictionary)
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailNotification;				// Notification name
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey;			// Key to access the error information as an `NSError`
+OBJC_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;           // Notification name
+OBJC_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey;             // Key to access the previous playback state as an `NSNumber` (wrapping an `RTSPlaybackState` value)
 
 /**
- *  Posted when the overlay is shown or hidden
+ *  Notification sent when playback failed. Use the `RTSMediaPlayerPlaybackDidFailErrorUserInfoKey` to retrieve an `NSError` 
+ *  information from the notification `userInfo` dictionary)
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerWillShowControlOverlaysNotification;
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerDidShowControlOverlaysNotification;
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerWillHideControlOverlaysNotification;
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerDidHideControlOverlaysNotification;
+OBJC_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailNotification;                  // Notification name
+OBJC_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey;              // Key to access error information
 
 /**
- *  ---------------------------
- *  @name Segment notifications
- *  ---------------------------
+ *  Notification sent when the picture in picture state changes
  */
+OBJC_EXTERN NSString * const RTSMediaPlayerPictureInPictureStateChangeNotification;
+
+// TODO: START
 
 /**
  *  Posted when a segment event occurs.
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentDidChangeNotification;
+OBJC_EXTERN NSString * const RTSMediaPlaybackSegmentDidChangeNotification;
 
 /**
  *  The key to access the current segment instance as an `id<RTSMediaSegment>`, if any.
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeSegmentInfoKey;
+OBJC_EXTERN NSString * const RTSMediaPlaybackSegmentChangeSegmentInfoKey;
 
 /**
  *  The key to access the previously played segment instance as an `id<RTSMediaSegment>`, if any.
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey;
+OBJC_EXTERN NSString * const RTSMediaPlaybackSegmentChangePreviousSegmentInfoKey;
 
 /**
  *  The key to access the segment change value as an `NSNumber` (wrapping an `RTSMediaPlaybackSegmentChange` value).
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey;
+OBJC_EXTERN NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey;
 
 /**
  *  The key to access an `NSNumber` (wrapping a boolean) indicating whether the change is requested by the user or not.
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey;
+OBJC_EXTERN NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey;
+
+// TODO: END
+
+NS_ASSUME_NONNULL_END

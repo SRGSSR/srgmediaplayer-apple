@@ -4,19 +4,19 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
+#import <UIKit/UIKit.h>
 
 #import "RTSMediaPlayerConstants.h"
 
-@protocol RTSMediaPlayerControllerDataSource;
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  `RTSMediaPlayerController` is inspired by the `MPMoviePlayerController` class.
  *
  *  A media player (of type `RTSMediaPlayerController`) manages the playback of a media from a file or a network stream.
- *  For maximum flexibility, you can incorporate a media player’s view into a view hierarchy owned by your app and have 
+ *  For maximum flexibility, you can incorporate a media player’s view into a view hierarchy owned by your app and have
  *  it managed by an `RTSMediaPlayerController` instance. If you just need a standard player with a view looking just
  *  like the standard iOS media player, you should simply instantiate an `RTSMediaPlayerViewController` which will manage
  *  the view for you.
@@ -34,31 +34,6 @@
 @interface RTSMediaPlayerController : NSObject
 
 /**
- *  --------------------------------------------
- *  @name Initializing a Media Player Controller
- *  --------------------------------------------
- */
-
-/**
- *  Returns a `RTSMediaPlayerController` object initialized with the media at the specified URL.
- *
- *  @param contentURL The location of the media file. This file must be located either in your app directory or on a remote server.
- *
- *  @return A media player controller
- */
-- (instancetype) initWithContentURL:(NSURL *)contentURL OS_NONNULL_ALL;
-
-/**
- *  Returns a `RTSMediaPlayerController` object initialized with a datasource and a media identifier.
- *
- *  @param identifier The identifier of the media to be played
- *  @param dataSource The data source from which the media URL will be retrieved
- *
- *  @return A media player controller
- */
-- (instancetype) initWithContentIdentifier:(NSString *)identifier dataSource:(id<RTSMediaPlayerControllerDataSource>)dataSource NS_DESIGNATED_INITIALIZER OS_NONNULL2;
-
-/**
  *  -------------------
  *  @name Player Object
  *  -------------------
@@ -71,7 +46,9 @@
  *              but merely for KVO registration or information extraction. Altering player properties in any way results in
  *              undefined behavior
  */
-@property (readonly) AVPlayer *player;
+@property (nonatomic, readonly) AVPlayer *player;
+
+@property (nonatomic, readonly) AVPlayerLayer *playerLayer;
 
 /**
  *  ------------------------
@@ -86,70 +63,18 @@
  *  view hierarchy, use the `attachPlayerToView:` method.
  *
  *  This view has two gesture recognziers: a single tap gesture recognizer and a double tap gesture recognizer which
- *  toggle overlays visibility, respectively the video aspect between `AVLayerVideoGravityResizeAspectFill` and 
+ *  toggle overlays visibility, respectively the video aspect between `AVLayerVideoGravityResizeAspectFill` and
  *  `AVLayerVideoGravityResizeAspect`.
  *
  *  If you want to handle taps yourself, you can disable these gesture recognizers and add your own gesture recognizers.
  *
  *  @see `attachPlayerToView:`
  */
-@property(readonly) UIView *view;
+@property (nonatomic, readonly) UIView *view;
 
-/**
- *  Attach the player view into specified container view with default autoresizing mask. The player view will have the
- *  same frame as its `containerView`
- *
- *  @param `containerView` The parent view in hierarchy what will contains the player layer
- */
-- (void) attachPlayerToView:(UIView *)containerView;
+@property (nonatomic, readonly) RTSPlaybackState playbackState;
 
-/**
- *  --------------------------------
- *  @name Accessing Media Properties
- *  --------------------------------
- */
-
-/**
- *  The data source from which media information is retrieved
- */
-@property (weak) IBOutlet id<RTSMediaPlayerControllerDataSource> dataSource;
-
-/**
- *  The identifier of the media currently attached to the player. You can use this identifier to identify the media through
- *  notifications
- *
- *  @see `initWithContentIdentifier:dataSource:`
- */
-@property (readonly, copy, readonly) NSString *identifier;
-
-/**
- *  -------------------
- *  @name Overlay Views
- *  -------------------
- */
-
-/**
- *  View on which user activity is detected (to prevent the UI overlays from being automatically hidden, see 'overlayViews' and
- *  'overlayViewsHidingDelay')
- */
-@property (weak) IBOutlet UIView *activityView;
-
-/**
- *  A collection of views that will be shown / hidden automatically or manually when user interacts with the view.
- */
-@property (copy) IBOutletCollection(UIView) NSArray *overlayViews;
-
-/**
- *  The delay after which the overlay views are hidden. Default to `RTSMediaPlayerOverlayHidingDelay` (5 sec).
- *  Ignored if <= 0.0;
- */
-@property (assign) NSTimeInterval overlayViewsHidingDelay;
-
-/**
- *  Return YES iff overlays are currently visible
- */
-@property (readonly, getter=areOverlaysVisible) BOOL overlaysVisible;
-
+@property (nonatomic, readonly, nullable) NSURL *contentURL;
 
 /**
  *  -------------------------
@@ -158,83 +83,18 @@
  */
 
 /**
- *  Returns the current playback state of the media player. See `RTSMediaPlaybackState` for possible values
- */
-@property (readonly) RTSMediaPlaybackState playbackState;
-
-/**
- *  Prepare the player to play, but does not start playback
- */
-- (void)prepareToPlay;
-
-/**
- *  Play (prepare the player if not ready yet)
- */
-- (void)play;
-
-/**
- *  Prepare the player to play the specified identifier, but does not start playback
- */
-- (void)prepareToPlayIdentifier:(NSString *)identifier;
-
-/**
  *  Start playing a media specified using its identifier. Retrieving the media URL requires a data source to be bound
  *  to the player controller
  */
-- (void)playIdentifier:(NSString *)identifier;
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
-/**
- *  Pause
- */
-- (void)pause;
+- (void)togglePlayPause;
+- (void)seekToTime:(CMTime)time completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
-/**
- *  Releases resources associated with the player. Can be called manually if player resources need to be released
- *  early (otherwise those will be discarded when the controller itself is deallocated)
- */
 - (void)reset;
 
-/**
- *  Set to YES to mute playback. Default is NO
- */
-@property (nonatomic, getter=isMuted) BOOL muted;
-
-/**
- *  Seek to specific time of the playback. The completion handler (if any) will be called when seeking ends
- */
-- (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
-
-/**
- *  Play the current media, starting at a specific time (the player seeks if it was already playing)
- */
-- (void)playAtTime:(CMTime)time;
-
-/**
- *  Play the current media, starting at a specific time, and calling the completion handler when playback resumes
- *  at the specified time (the player seeks if it was already playing)
- */
-- (void)playAtTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
-
-/**
- *  Start playing a media specified using its identifier, starting at a specific time. Retrieving the media URL requires
- *  a data source to be bound to the player controller
- *
- *  @discussion If time is kCMTimeZero, playback will beging at the default position (start of a VOD, or live for a DVR).
- *              If you need to start at the beginning of a DVR stream, use a small time (e.g. CMTimeMakeWithSeconds(1., 4.))
- */
-- (void)playIdentifier:(NSString *)identifier atTime:(CMTime)time;
-
-/**
- *  ------------------------------------
- *  @name Accessing playback information
- *  ------------------------------------
- */
-
-/**
- *  Low-level player item information. You can access this item properties if you need more information about the
- *  currently played item
- */
-@property (nonatomic, readonly) AVPlayerItem *playerItem;
+- (void)playURL:(NSURL *)URL;
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
 
 /**
  *  The current media time range (might be empty or indefinite). Use `CMTimeRange` macros for checking time ranges
@@ -263,7 +123,7 @@
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 
 /**
- *  The minimum window length which must be available for a stream to be considered to be a DVR stream, in seconds. The 
+ *  The minimum window length which must be available for a stream to be considered to be a DVR stream, in seconds. The
  *  default value is 0. This setting can be used so that streams detected as DVR ones because their window is small can
  *  behave as live streams. This is useful to avoid usual related seeking issues, or slider hiccups during playback, most
  *  notably
@@ -298,7 +158,7 @@
  *  @return The time observer. The observer is retained by the media player controller, you can store a weak reference
  *          to it and remove it at a later time if needed
  */
-- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
+- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
 
 /**
  *  Remove a time observer (does nothing if the observer is not registered)
@@ -306,18 +166,6 @@
  *  @param observer The time observer to remove
  */
 - (void)removePeriodicTimeObserver:(id)observer;
-
-/**
- *  -------------
- *  @name Airplay
- *  -------------
- */
-
-/**
- *  Refer to the corresponding `AVPlayer` properties for more information
- */
-@property (nonatomic) BOOL allowsExternalPlayback;									// Default is YES
-@property (nonatomic) BOOL usesExternalPlaybackWhileExternalScreenIsActive;			// Default is NO
 
 @end
 
@@ -336,6 +184,8 @@
 /**
  *  Return the picture in picture controller if available, nil otherwise
  */
-@property (nonatomic, readonly) AVPictureInPictureController *pictureInPictureController;
+@property (nonatomic, readonly, nullable) AVPictureInPictureController *pictureInPictureController;
 
 @end
+
+NS_ASSUME_NONNULL_END

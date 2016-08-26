@@ -4,9 +4,11 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <UIKit/UIKit.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 // Forward declarations
 @class RTSAirplayOverlayView;
@@ -33,7 +35,7 @@
  *  Attributes for the route subtitle. If not implemented, a default style will be applied (system font, light gray,
  *  centered, 12 pts)
  */
-- (NSDictionary *)airplayOverlayViewSubitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView;
+- (NSDictionary *)airplayOverlayViewSubtitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView;
 
 @end
 
@@ -57,7 +59,7 @@
  *  View automatically displaying whether Airplay playback is being made. Simply install somewhere onto your custom player
  *  interface, the view will automatically appear when Airplay playback begins and disappear when it ends
  */
-@interface RTSAirplayOverlayView : UIView
+@interface RTSAirplayOverlayView : UIView <RTSAirplayOverlayViewDataSource>
 
 /**
  * A filling factor for the overlay contents, > 0 and <= 1 (full frame). Defaults to 0.6
@@ -67,11 +69,13 @@
 /**
  *  An optional data source for customization
  */
-@property (nonatomic, weak) IBOutlet id<RTSAirplayOverlayViewDataSource> dataSource;
+@property (nonatomic, weak, nullable) IBOutlet id<RTSAirplayOverlayViewDataSource> dataSource;
 
 /**
  *  An optional delegate for customization
  */
-@property (nonatomic, weak) IBOutlet id<RTSAirplayOverlayViewDelegate> delegate;
+@property (nonatomic, weak, nullable) IBOutlet id<RTSAirplayOverlayViewDelegate> delegate;
 
 @end
+
+NS_ASSUME_NONNULL_END

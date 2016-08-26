@@ -13,6 +13,6 @@
  *
  *  @param color The tint color
  */
-- (UIImage *)imageWithColor:(UIColor*)color;
+- (UIImage *)rts_imageWithColor:(UIColor *)color;
 
 @end
