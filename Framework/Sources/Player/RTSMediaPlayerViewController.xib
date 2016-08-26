@@ -20,8 +20,8 @@
                 <outlet property="view" destination="iN0-l3-epB" id="ERh-xZ-n9v"/>
                 <outlet property="volumeView" destination="14B-nw-cM3" id="a1D-qx-5ke"/>
                 <outletCollection property="overlayViews" destination="kqK-gI-E5v" id="zcl-3I-Kcp"/>
-                <outletCollection property="overlayViews" destination="9bq-Le-IXI" id="VDY-hw-tBO"/>
                 <outletCollection property="overlayViews" destination="f2J-Sq-TNH" id="c53-wA-Pwd"/>
+                <outletCollection property="overlayViews" destination="m4e-aB-8GY" id="DIQ-kn-ynt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

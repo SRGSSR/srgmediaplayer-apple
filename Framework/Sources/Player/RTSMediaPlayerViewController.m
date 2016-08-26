@@ -41,11 +41,16 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (weak) IBOutlet NSLayoutConstraint *valueLabelWidthConstraint;
 @property (weak) IBOutlet NSLayoutConstraint *timeLeftValueLabelWidthConstraint;
 
-@property (nonatomic, weak) IBOutletCollection(UIView) NSArray *overlayViews;
+@property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
+
+@property (nonatomic) NSTimer *inactivityTimer;
 
 @end
 
-@implementation RTSMediaPlayerViewController
+@implementation RTSMediaPlayerViewController {
+@private
+    BOOL _userInterfaceHidden;
+}
 
 #pragma mark Class methods
 
@@ -82,10 +87,19 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)dealloc
 {
+    self.inactivityTimer = nil;                 // Invalidate timer
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     // FIXME: Should trigger a status bar update instead
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
+
+#pragma mark Getters and setters
+
+- (void)setInactivityTimer:(NSTimer *)inactivityTimer
+{
+    [_inactivityTimer invalidate];
+    _inactivityTimer = inactivityTimer;
 }
 
 #pragma mark View lifecycle
@@ -116,7 +130,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     [singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
     [self.playerView addGestureRecognizer:singleTapGestureRecognizer];
     
-    RTSActivityGestureRecognizer *activityGestureRecognizer = [[RTSActivityGestureRecognizer alloc] initWithTarget:self action:@selector(resetIdleTimer:)];
+    RTSActivityGestureRecognizer *activityGestureRecognizer = [[RTSActivityGestureRecognizer alloc] initWithTarget:self action:@selector(resetInactivityTimer:)];
     activityGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:activityGestureRecognizer];
     
@@ -128,7 +142,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
     
     [self.liveButton setTitle:RTSMediaPlayerLocalizedString(@"Back to live", nil) forState:UIControlStateNormal];
-    self.liveButton.alpha = 0.f;
+    self.liveButton.hidden = YES;
     
     self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.liveButton.layer.borderWidth = 1.f;
@@ -155,7 +169,11 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
             [self setTimeSliderHidden:YES];
         }
     }];
+    
+    [self resetInactivityTimer];
 }
+
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -195,11 +213,41 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     if (s_mediaPlayerController.streamType == RTSMediaStreamTypeDVR) {
         [UIView animateWithDuration:0.2 animations:^{
-            self.liveButton.alpha = self.timeSlider.live ? 0.f : 1.f;
+            self.liveButton.hidden = self.timeSlider.live;
         }];
     }
     else {
-        self.liveButton.alpha = 0.f;
+        self.liveButton.hidden = YES;
+    }
+}
+
+- (void)resetInactivityTimer
+{
+    self.inactivityTimer = [NSTimer scheduledTimerWithTimeInterval:5.
+                                                            target:self
+                                                          selector:@selector(updateForInactivity:)
+                                                          userInfo:nil
+                                                           repeats:YES];
+}
+
+- (void)setUserInterfaceHidden:(BOOL)hidden animated:(BOOL)animated
+{
+    void (^animations)(void) = ^{
+        for (UIView *view in self.overlayViews) {
+            view.alpha = hidden ? 0.f : 1.f;
+        }
+    };
+    
+    if (animated) {
+        [UIView animateWithDuration:0.2 animations:animations completion:^(BOOL finished) {
+            if (finished) {
+                _userInterfaceHidden = hidden;
+            }
+        }];
+    }
+    else {
+        animations();
+        _userInterfaceHidden = hidden;
     }
 }
 
@@ -254,9 +302,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (IBAction)goToLive:(id)sender
 {
-    [UIView animateWithDuration:0.2 animations:^{
-        self.liveButton.alpha = 0.f;
-    }];
+    self.liveButton.hidden = YES;
     
     CMTimeRange timeRange = s_mediaPlayerController.timeRange;
     if (CMTIMERANGE_IS_INDEFINITE(timeRange) || CMTIMERANGE_IS_EMPTY(timeRange)) {
@@ -279,7 +325,8 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)handleSingleTap:(UIGestureRecognizer *)gestureRecognizer
 {
-    NSLog(@"--> Single tap");
+    [self resetInactivityTimer];
+    [self setUserInterfaceHidden:! _userInterfaceHidden animated:YES];
 }
 
 - (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer
@@ -294,9 +341,16 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
-- (void)resetIdleTimer:(UIGestureRecognizer *)gestureRecognizer
+- (void)resetInactivityTimer:(UIGestureRecognizer *)gestureRecognizer
 {
-    
+    [self resetInactivityTimer];
+}
+
+#pragma mark Timers
+
+- (void)updateForInactivity:(NSTimer *)timer
+{
+    [self setUserInterfaceHidden:YES animated:YES];
 }
 
 @end
