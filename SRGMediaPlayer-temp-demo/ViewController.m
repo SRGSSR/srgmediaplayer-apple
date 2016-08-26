@@ -60,8 +60,10 @@ static void *s_kvoContext = &s_kvoContext;
 	self.playerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view insertSubview:self.playerController.view atIndex:0];
 	
-	NSURL *URL = [NSURL URLWithString:@"http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4"];
-	[self.playerController playURL:URL];
+	NSURL *URL = [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"];
+	[self.playerController prepareToPlayURL:URL atTime:CMTimeMakeWithSeconds(30, 1) withCompletionHandler:^(BOOL finished) {
+        [self.playerController togglePlayPause];
+    }];
 }
 
 - (IBAction)togglePlayPause:(id)sender

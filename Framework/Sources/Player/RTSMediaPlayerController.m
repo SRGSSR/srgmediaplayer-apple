@@ -37,6 +37,10 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic) NSMutableDictionary<NSString *, RTSPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) RTSActivityGestureRecognizer *activityGestureRecognizer;
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
+@property (nonatomic, getter=areOverlaysVisible) BOOL overlaysVisible;
+
+@property (nonatomic) NSValue *startTimeValue;
+@property (nonatomic, copy) void (^startCompletionHandler)(BOOL finished);
 
 @end
 
@@ -311,13 +315,18 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 #pragma mark Playback
 
-- (void)playURL:(NSURL *)URL
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler
 {
-	self.contentURL = URL;
-	
-	AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
-	self.player = [AVPlayer playerWithPlayerItem:playerItem];
-    [self.player play];
+    if (! CMTIME_IS_VALID(startTime)) {
+        startTime = kCMTimeZero;
+    }
+    
+    self.contentURL = URL;
+    self.startTimeValue = [NSValue valueWithCMTime:startTime];
+    self.startCompletionHandler = completionHandler;
+    
+    AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
+    self.player = [AVPlayer playerWithPlayerItem:playerItem];
 }
 
 - (void)togglePlayPause
@@ -348,6 +357,20 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (void)reset
 {
 
+}
+
+- (void)playURL:(NSURL *)URL
+{
+    [self playURL:URL atTime:kCMTimeZero];
+}
+
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time
+{
+    [self prepareToPlayURL:URL atTime:time withCompletionHandler:^(BOOL finished) {
+        if (finished) {
+            [self togglePlayPause];
+        }
+    }];
 }
 
 #pragma mark Time observers
@@ -493,6 +516,28 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 			}
 			else if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
 				self.playbackState = (self.player.rate == 0.f) ? RTSPlaybackStatePaused : RTSPlaybackStatePlaying;
+                
+                // Playback start. Use received start parameters
+                if (self.startTimeValue) {
+                    void (^completionBlock)(BOOL) = ^(BOOL finished) {
+                        self.startTimeValue = nil;
+                        
+                        self.startCompletionHandler ? self.startCompletionHandler(finished) : nil;
+                        self.startCompletionHandler = nil;
+                    };
+                    
+                    CMTime startTime = self.startTimeValue.CMTimeValue;
+                    
+                    if (CMTIME_COMPARE_INLINE(startTime, ==, kCMTimeZero)) {
+                        completionBlock(YES);
+                    }
+                    else {
+                        // Call system method to avoid unwanted seek state in this special case
+                        [self.player seekToTime:startTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+                            completionBlock(finished);
+                        }];
+                    }
+                }
 			}
 			else {
 				self.playbackState = RTSPlaybackStateIdle;
@@ -505,6 +550,14 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 				}
 			}
 		}
+        else if ([keyPath isEqualToString:@"pictureInPictureActive"] || [keyPath isEqualToString:@"pictureInPicturePossible"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPictureInPictureStateChangeNotification object:self];
+            
+            // Always show overlays again when picture in picture is disabled
+            if ([keyPath isEqualToString:@"pictureInPictureActive"] && !self.pictureInPictureController.isPictureInPictureActive) {
+                self.overlaysVisible = YES;
+            }
+        }
 	}
 	else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];

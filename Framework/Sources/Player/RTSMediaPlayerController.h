@@ -112,13 +112,15 @@ NS_ASSUME_NONNULL_BEGIN
  *  Start playing a media specified using its identifier. Retrieving the media URL requires a data source to be bound
  *  to the player controller
  */
-- (void)playURL:(NSURL *)URL;
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 - (void)togglePlayPause;
-
 - (void)seekToTime:(CMTime)time completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 - (void)reset;
+
+- (void)playURL:(NSURL *)URL;
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
 
 /**
  *  The current media time range (might be empty or indefinite). Use `CMTimeRange` macros for checking time ranges
