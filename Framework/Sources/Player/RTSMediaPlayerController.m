@@ -4,19 +4,17 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <objc/runtime.h>
-
-#import <libextobjc/EXTScope.h>
-
 #import "RTSMediaPlayerController.h"
 
+#import "NSBundle+RTSMediaPlayer.h"
 #import "RTSMediaPlayerError.h"
 #import "RTSMediaPlayerView.h"
 #import "RTSPeriodicTimeObserver.h"
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSMediaPlayerLogger.h"
 
-#import "NSBundle+RTSMediaPlayer.h"
+#import <libextobjc/EXTScope.h>
+#import <objc/runtime.h>
 
 static void *s_kvoContext = &s_kvoContext;
 
@@ -140,14 +138,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 {
     if (! _view) {
         _view = [[RTSMediaPlayerView alloc] init];
-        
-        UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rts_handleDoubleTap:)];
-        doubleTapGestureRecognizer.numberOfTapsRequired = 2;
-        [_view addGestureRecognizer:doubleTapGestureRecognizer];
-        
-        UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rts_handleSingleTap:)];
-        [singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
-        [_view addGestureRecognizer:singleTapGestureRecognizer];
     }
     return _view;
 }
@@ -265,7 +255,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (AVPictureInPictureController *)pictureInPictureController
 {
     if (! _pictureInPictureController) {
-        // Ensure proper KVO registration
+        // Call the setter for KVO registration
         self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerView.playerLayer];
     }
     return _pictureInPictureController;
@@ -403,13 +393,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     return periodicTimeObserver;
 }
 
-#pragma mark UIGestureRecognizerDelegate protocols
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return [gestureRecognizer isKindOfClass:[RTSActivityGestureRecognizer class]];
-}
-
 #pragma mark Notifications
 
 - (void)rts_playerItemPlaybackStalled:(NSNotification *)notification
@@ -430,34 +413,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackDidFailNotification
                                                         object:self
                                                       userInfo:@{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey: error }];
-}
-
-#pragma mark Gesture recognizers
-
-- (void)rts_handleSingleTap:(UIGestureRecognizer *)gestureRecognizer
-{
-    NSLog(@"Single tap");
-}
-
-- (void)rts_handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer
-{
-    AVPlayerLayer *playerLayer = self.playerView.playerLayer;
-    
-    if (! playerLayer.isReadyForDisplay) {
-        return;
-    }
-    
-    if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
-        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    }
-    else {
-        playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    }
-}
-
-- (void)rts_resetIdleTimer:(UIGestureRecognizer *)gestureRecognizer
-{
-    NSLog(@"Reset timer");
 }
 
 #pragma mark KVO

@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Methods related to playback can be found in the `RTSMediaPlayback` protocol
  */
-@interface RTSMediaPlayerController : NSObject <UIGestureRecognizerDelegate>
+@interface RTSMediaPlayerController : NSObject
 
 /**
  *  -------------------
