@@ -89,9 +89,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     self.inactivityTimer = nil;                 // Invalidate timer
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    // FIXME: Should trigger a status bar update instead
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
 #pragma mark Getters and setters
@@ -173,8 +170,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self resetInactivityTimer];
 }
 
-
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -185,6 +180,11 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 }
 
 #pragma mark Status bar
+
+- (BOOL)prefersStatusBarHidden
+{
+    return _userInterfaceHidden;
+}
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -233,21 +233,20 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (void)setUserInterfaceHidden:(BOOL)hidden animated:(BOOL)animated
 {
     void (^animations)(void) = ^{
+        [self setNeedsStatusBarAppearanceUpdate];
+        
         for (UIView *view in self.overlayViews) {
             view.alpha = hidden ? 0.f : 1.f;
         }
     };
     
+    _userInterfaceHidden = hidden;
+    
     if (animated) {
-        [UIView animateWithDuration:0.2 animations:animations completion:^(BOOL finished) {
-            if (finished) {
-                _userInterfaceHidden = hidden;
-            }
-        }];
+        [UIView animateWithDuration:0.2 animations:animations completion:nil];
     }
     else {
         animations();
-        _userInterfaceHidden = hidden;
     }
 }
 
@@ -266,18 +265,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     if (mediaPlayerController.playbackState == RTSPlaybackStateEnded) {
         [self dismiss:nil];
     }
-}
-
-- (void)mediaPlayerDidShowControlOverlays:(NSNotification *)notification
-{
-    // FIXME: Should trigger a status bar update instead
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
-}
-
-- (void)mediaPlayerDidHideControlOverlays:(NSNotification *)notificaiton
-{
-    // FIXME: Should trigger a status bar update instead
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification
