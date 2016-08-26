@@ -4,11 +4,11 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSMediaPlayerPlaybackButton.h"
+#import "RTSPlaybackButton.h"
 
 #import "RTSMediaPlayerIconTemplate.h"
 
-@implementation RTSMediaPlayerPlaybackButton
+@implementation RTSPlaybackButton
 
 #pragma mark Object lifecycle
 

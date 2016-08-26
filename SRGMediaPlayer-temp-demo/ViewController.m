@@ -17,7 +17,7 @@ static void *s_kvoContext = &s_kvoContext;
 @property (nonatomic) RTSMediaPlayerController *playerController;
 
 @property (nonatomic, weak) IBOutlet RTSPlaybackActivityIndicatorView *playbackActivityIndicatorView;
-@property (nonatomic, weak) IBOutlet RTSMediaPlayerPlaybackButton *playerButton;
+@property (nonatomic, weak) IBOutlet RTSPlaybackButton *playerButton;
 @property (nonatomic, weak) IBOutlet RTSTimeSlider *timeSlider;
 
 @end
@@ -97,7 +97,7 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)playbackDidFail:(NSNotification *)notification
 {
-	NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
+	NSError *error = notification.userInfo[RTSMediaPlayerErrorKey];
 	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
 	[alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
 	[self presentViewController:alertController animated:YES completion:nil];

@@ -45,7 +45,7 @@ static void commonInit(RTSPictureInPictureButton *self);
 {
     if (_mediaPlayerController) {
         [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:RTSMediaPlayerPictureInPictureStateChangeNotification
+                                                        name:RTSMediaPlayerPictureInPictureStateDidChangeNotification
                                                       object:_mediaPlayerController];
     }
     
@@ -55,7 +55,7 @@ static void commonInit(RTSPictureInPictureButton *self);
     if (mediaPlayerController) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(pictureInPictureStateDidChange:)
-                                                     name:RTSMediaPlayerPictureInPictureStateChangeNotification
+                                                     name:RTSMediaPlayerPictureInPictureStateDidChangeNotification
                                                    object:mediaPlayerController];
     }
 }

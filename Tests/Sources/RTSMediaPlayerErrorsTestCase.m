@@ -52,7 +52,7 @@
     id<RTSMediaPlayerControllerDataSource> dataSource = [DataSourceReturningError new];
     RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"" dataSource:dataSource];
     [self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
+        NSError *error = notification.userInfo[RTSMediaPlayerErrorKey];
         XCTAssertEqualObjects(error.domain, @"AppDomain");
         XCTAssertEqual(error.code, -1);
         return YES;
@@ -66,7 +66,7 @@
     id<RTSMediaPlayerControllerDataSource> dataSource = [InvalidDataSource new];
     RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"" dataSource:dataSource];
     [self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
+        NSError *error = notification.userInfo[RTSMediaPlayerErrorKey];
         XCTAssertEqualObjects(error.domain, RTSMediaPlayerErrorDomain);
         XCTAssertEqual(error.code, RTSMediaPlayerErrorDataSource);
         return YES;
@@ -80,7 +80,7 @@
     NSURL *url = [NSURL URLWithString:@"http://httpbin.org/status/403"];
     RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:url];
     [self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
+        NSError *error = notification.userInfo[RTSMediaPlayerErrorKey];
         XCTAssertEqualObjects(error.domain, RTSMediaPlayerErrorDomain);
         XCTAssertEqual(error.code, RTSMediaPlayerErrorPlayback);
         return YES;

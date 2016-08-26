@@ -75,8 +75,8 @@
 		E6C985FE1D6EF6BC00C45C7A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C985FC1D6EF6BC00C45C7A /* LaunchScreen.storyboard */; };
 		E6C986031D6EF6C400C45C7A /* SRGMediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; };
 		E6C986041D6EF6C400C45C7A /* SRGMediaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E6C9860A1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4B1D62072400A55085 /* RTSMediaPlayerPlaybackButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E6C9860B1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F4C1D62072400A55085 /* RTSMediaPlayerPlaybackButton.m */; };
+		E6C9860A1D6F36C900C45C7A /* RTSPlaybackButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4B1D62072400A55085 /* RTSPlaybackButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6C9860B1D6F36C900C45C7A /* RTSPlaybackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F4C1D62072400A55085 /* RTSPlaybackButton.m */; };
 		E6C9860C1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4F1D62072400A55085 /* RTSPlaybackActivityIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6C9860D1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F501D62072400A55085 /* RTSPlaybackActivityIndicatorView.m */; };
 		E6C9860E1D6F458900C45C7A /* RTSTimeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F531D62072400A55085 /* RTSTimeSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -108,8 +108,8 @@
 		E6FC7F761D62072400A55085 /* RTSPeriodicTimeObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F3B1D62072400A55085 /* RTSPeriodicTimeObserver.m */; };
 		E6FC7F771D62072400A55085 /* NSBundle+RTSMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F421D62072400A55085 /* NSBundle+RTSMediaPlayer.h */; };
 		E6FC7F781D62072400A55085 /* NSBundle+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F431D62072400A55085 /* NSBundle+RTSMediaPlayer.m */; };
-		E6FC7F791D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F441D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.h */; };
-		E6FC7F7A1D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F451D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.m */; };
+		E6FC7F791D62072400A55085 /* UIBezierPath+RTSMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F441D62072400A55085 /* UIBezierPath+RTSMediaPlayer.h */; };
+		E6FC7F7A1D62072400A55085 /* UIBezierPath+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F451D62072400A55085 /* UIBezierPath+RTSMediaPlayer.m */; };
 		E6FC7F8D1D62072400A55085 /* RTSMediaPlayerController.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F5A1D62072400A55085 /* RTSMediaPlayerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F8E1D62072400A55085 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F5B1D62072400A55085 /* RTSMediaPlayerController.m */; };
 		E6FC7F951D62072400A55085 /* RTSMediaSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F631D62072400A55085 /* RTSMediaSegment.h */; };
@@ -281,12 +281,12 @@
 		E6FC7F3B1D62072400A55085 /* RTSPeriodicTimeObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSPeriodicTimeObserver.m; sourceTree = "<group>"; };
 		E6FC7F421D62072400A55085 /* NSBundle+RTSMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+RTSMediaPlayer.h"; sourceTree = "<group>"; };
 		E6FC7F431D62072400A55085 /* NSBundle+RTSMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+RTSMediaPlayer.m"; sourceTree = "<group>"; };
-		E6FC7F441D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+RTSMediaPlayerUtils.h"; sourceTree = "<group>"; };
-		E6FC7F451D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+RTSMediaPlayerUtils.m"; sourceTree = "<group>"; };
+		E6FC7F441D62072400A55085 /* UIBezierPath+RTSMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+RTSMediaPlayer.h"; sourceTree = "<group>"; };
+		E6FC7F451D62072400A55085 /* UIBezierPath+RTSMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+RTSMediaPlayer.m"; sourceTree = "<group>"; };
 		E6FC7F471D62072400A55085 /* RTSAirplayOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSAirplayOverlayView.h; sourceTree = "<group>"; };
 		E6FC7F481D62072400A55085 /* RTSAirplayOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSAirplayOverlayView.m; sourceTree = "<group>"; };
-		E6FC7F4B1D62072400A55085 /* RTSMediaPlayerPlaybackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerPlaybackButton.h; sourceTree = "<group>"; };
-		E6FC7F4C1D62072400A55085 /* RTSMediaPlayerPlaybackButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerPlaybackButton.m; sourceTree = "<group>"; };
+		E6FC7F4B1D62072400A55085 /* RTSPlaybackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPlaybackButton.h; sourceTree = "<group>"; };
+		E6FC7F4C1D62072400A55085 /* RTSPlaybackButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSPlaybackButton.m; sourceTree = "<group>"; };
 		E6FC7F4D1D62072400A55085 /* RTSPictureInPictureButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPictureInPictureButton.h; sourceTree = "<group>"; };
 		E6FC7F4E1D62072400A55085 /* RTSPictureInPictureButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSPictureInPictureButton.m; sourceTree = "<group>"; };
 		E6FC7F4F1D62072400A55085 /* RTSPlaybackActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPlaybackActivityIndicatorView.h; sourceTree = "<group>"; };
@@ -592,8 +592,8 @@
 			children = (
 				E6FC7F421D62072400A55085 /* NSBundle+RTSMediaPlayer.h */,
 				E6FC7F431D62072400A55085 /* NSBundle+RTSMediaPlayer.m */,
-				E6FC7F441D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.h */,
-				E6FC7F451D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.m */,
+				E6FC7F441D62072400A55085 /* UIBezierPath+RTSMediaPlayer.h */,
+				E6FC7F451D62072400A55085 /* UIBezierPath+RTSMediaPlayer.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -603,8 +603,8 @@
 			children = (
 				E6FC7F471D62072400A55085 /* RTSAirplayOverlayView.h */,
 				E6FC7F481D62072400A55085 /* RTSAirplayOverlayView.m */,
-				E6FC7F4B1D62072400A55085 /* RTSMediaPlayerPlaybackButton.h */,
-				E6FC7F4C1D62072400A55085 /* RTSMediaPlayerPlaybackButton.m */,
+				E6FC7F4B1D62072400A55085 /* RTSPlaybackButton.h */,
+				E6FC7F4C1D62072400A55085 /* RTSPlaybackButton.m */,
 				E6FC7F4D1D62072400A55085 /* RTSPictureInPictureButton.h */,
 				E6FC7F4E1D62072400A55085 /* RTSPictureInPictureButton.m */,
 				E6FC7F4F1D62072400A55085 /* RTSPlaybackActivityIndicatorView.h */,
@@ -663,7 +663,7 @@
 			files = (
 				E6FC7F6F1D62072400A55085 /* RTSMediaPlayerIconTemplate.h in Headers */,
 				E6FC7F731D62072400A55085 /* RTSMediaPlayerView.h in Headers */,
-				E6FC7F791D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.h in Headers */,
+				E6FC7F791D62072400A55085 /* UIBezierPath+RTSMediaPlayer.h in Headers */,
 				E6C9860C1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.h in Headers */,
 				E6FC7F6D1D62072400A55085 /* RTSMediaPlayerConstants.h in Headers */,
 				E6C9861B1D701BA700C45C7A /* RTSMediaPlayerViewController.h in Headers */,
@@ -680,7 +680,7 @@
 				E6FC7F6E1D62072400A55085 /* RTSMediaPlayerError.h in Headers */,
 				E6FC7F711D62072400A55085 /* RTSMediaPlayerLogger.h in Headers */,
 				E6FC7F771D62072400A55085 /* NSBundle+RTSMediaPlayer.h in Headers */,
-				E6C9860A1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.h in Headers */,
+				E6C9860A1D6F36C900C45C7A /* RTSPlaybackButton.h in Headers */,
 				E6FC7F751D62072400A55085 /* RTSPeriodicTimeObserver.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -972,7 +972,7 @@
 				E6C986191D70182300C45C7A /* RTSPictureInPictureButton.m in Sources */,
 				E6FC7F781D62072400A55085 /* NSBundle+RTSMediaPlayer.m in Sources */,
 				E6FC7F741D62072400A55085 /* RTSMediaPlayerView.m in Sources */,
-				E6C9860B1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.m in Sources */,
+				E6C9860B1D6F36C900C45C7A /* RTSPlaybackButton.m in Sources */,
 				E6C9861F1D701D3800C45C7A /* RTSMediaPlayerSharedController.m in Sources */,
 				E6FC7F8E1D62072400A55085 /* RTSMediaPlayerController.m in Sources */,
 				E6FC7F721D62072400A55085 /* RTSMediaPlayerLogger.m in Sources */,
@@ -986,7 +986,7 @@
 				E6E49F631D7029F9006CB883 /* RTSMediaPlayerConstants.m in Sources */,
 				E6C986121D70149E00C45C7A /* RTSAirplayOverlayView.m in Sources */,
 				E6FC7F6C1D62072400A55085 /* RTSActivityGestureRecognizer.m in Sources */,
-				E6FC7F7A1D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */,
+				E6FC7F7A1D62072400A55085 /* UIBezierPath+RTSMediaPlayer.m in Sources */,
 				E6FC7F761D62072400A55085 /* RTSPeriodicTimeObserver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -124,7 +124,7 @@
 - (void)testPlayingMissingMovieSendsPlaybackDidFailNotificationWithError
 {
     [self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        XCTAssertNotNil(notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey]);
+        XCTAssertNotNil(notification.userInfo[RTSMediaPlayerErrorKey]);
         return YES;
     }];
     [self.mediaPlayerController playIdentifier:@"https://xxx.xxx.xxx/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];

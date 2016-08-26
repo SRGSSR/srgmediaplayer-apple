@@ -4,9 +4,9 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "UIBezierPath+RTSMediaPlayerUtils.h"
+#import "UIBezierPath+RTSMediaPlayer.h"
 
-@implementation UIBezierPath (RTSMediaPlayerUtils)
+@implementation UIBezierPath (RTSMediaPlayer)
 
 - (UIImage *)rts_imageWithColor:(UIColor *)color
 {

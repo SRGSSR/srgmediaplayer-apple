@@ -6,7 +6,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIBezierPath (RTSMediaPlayerUtils)
+@interface UIBezierPath (RTSMediaPlayer)
 
 /**
  *  Return the receiver as an image with the given tint color

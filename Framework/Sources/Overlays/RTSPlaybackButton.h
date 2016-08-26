@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Simply install an instance somewhere onto your custom player interface and bind to the media player controller which
  *  needs to be controlled
  */
-@interface RTSMediaPlayerPlaybackButton : UIButton
+@interface RTSPlaybackButton : UIButton
 
 /**
  *  The media player to which the playback button must be associated with.

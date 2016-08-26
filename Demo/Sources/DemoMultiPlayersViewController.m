@@ -17,7 +17,7 @@
 @property (nonatomic, weak) IBOutlet UIView *mainPlayerView;
 @property (nonatomic, weak) IBOutlet UIView *playerViewsContainer;
 
-@property (nonatomic, weak) IBOutlet RTSMediaPlayerPlaybackButton *playPauseButton;
+@property (nonatomic, weak) IBOutlet RTSPlaybackButton *playPauseButton;
 @property (nonatomic, weak) IBOutlet UISwitch *thumbnailSwitch;
 
 @property (nonatomic, strong)IBOutletCollection(UIView) NSArray * overlayViews;

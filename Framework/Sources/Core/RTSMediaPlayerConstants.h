@@ -114,23 +114,23 @@ typedef NS_ENUM(NSInteger, RTSMediaPlaybackSegmentChange) {
 // TODO: END
 
 /**
- *  Notification sent when the player state changes. Use the `RTSMediaPlayerPreviousPlaybackStateUserInfoKey` to retrieve
+ *  Notification sent when the player state changes. Use the `RTSMediaPlayerPreviousPlaybackStateKey` to retrieve
  *  previous state information from the notification `userInfo` dictionary)
  */
-OBJC_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;           // Notification name
-OBJC_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey;             // Key to access the previous playback state as an `NSNumber` (wrapping an `RTSPlaybackState` value)
+OBJC_EXTERN NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification;             // Notification name
+OBJC_EXTERN NSString * const RTSMediaPlayerPreviousPlaybackStateKey;                       // Key to access the previous playback state as an `NSNumber` (wrapping an `RTSPlaybackState` value)
 
 /**
- *  Notification sent when playback failed. Use the `RTSMediaPlayerPlaybackDidFailErrorUserInfoKey` to retrieve an `NSError` 
+ *  Notification sent when playback failed. Use the `RTSMediaPlayerErrorKey` to retrieve an `NSError` 
  *  information from the notification `userInfo` dictionary)
  */
 OBJC_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailNotification;                  // Notification name
-OBJC_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey;              // Key to access error information
+OBJC_EXTERN NSString * const RTSMediaPlayerErrorKey;                                     // Key to access error information
 
 /**
  *  Notification sent when the picture in picture state changes
  */
-OBJC_EXTERN NSString * const RTSMediaPlayerPictureInPictureStateChangeNotification;
+OBJC_EXTERN NSString * const RTSMediaPlayerPictureInPictureStateDidChangeNotification;
 
 // TODO: START
 

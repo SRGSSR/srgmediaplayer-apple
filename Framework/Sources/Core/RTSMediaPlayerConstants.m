@@ -9,9 +9,9 @@
 NSTimeInterval const RTSLiveDefaultTolerance = 30.;                // same tolerance as built-in iOS player
 
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChangeNotification";
-NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlayerPreviousPlaybackState";
+NSString * const RTSMediaPlayerPreviousPlaybackStateKey = @"RTSMediaPlayerPreviousPlaybackStateKey";
 
 NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFailNotification";
-NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey = @"RTSMediaPlayerPlaybackDidFailError";
+NSString * const RTSMediaPlayerErrorKey = @"RTSMediaPlayerErrorKey";
 
-NSString * const RTSMediaPlayerPictureInPictureStateChangeNotification = @"RTSMediaPlayerPictureInPictureStateChangeNotification";
+NSString * const RTSMediaPlayerPictureInPictureStateDidChangeNotification = @"RTSMediaPlayerPictureInPictureStateDidChangeNotification";

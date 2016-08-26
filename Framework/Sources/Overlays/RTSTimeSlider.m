@@ -8,7 +8,7 @@
 
 #import "NSBundle+RTSMediaPlayer.h"
 #import "RTSMediaPlayerLogger.h"
-#import "UIBezierPath+RTSMediaPlayerUtils.h"
+#import "UIBezierPath+RTSMediaPlayer.h"
 
 #import <libextobjc/EXTScope.h>
 

@@ -9,7 +9,7 @@
 #import "NSBundle+RTSMediaPlayer.h"
 #import "RTSActivityGestureRecognizer.h"
 #import "RTSMediaPlayerController.h"
-#import "RTSMediaPlayerPlaybackButton.h"
+#import "RTSPlaybackButton.h"
 #import "RTSPictureInPictureButton.h"
 #import "RTSPlaybackActivityIndicatorView.h"
 #import "RTSMediaPlayerSharedController.h"
@@ -30,7 +30,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (nonatomic, weak) IBOutlet RTSPictureInPictureButton *pictureInPictureButton;
 @property (nonatomic, weak) IBOutlet RTSPlaybackActivityIndicatorView *playbackActivityIndicatorView;
 
-@property (weak) IBOutlet RTSMediaPlayerPlaybackButton *playPauseButton;
+@property (weak) IBOutlet RTSPlaybackButton *playPauseButton;
 @property (weak) IBOutlet RTSTimeSlider *timeSlider;
 @property (weak) IBOutlet RTSVolumeView *volumeView;
 @property (weak) IBOutlet UIButton *liveButton;

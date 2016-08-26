@@ -133,7 +133,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     _playbackState = playbackState;
     [self didChangeValueForKey:@"playbackState"];
     
-    NSDictionary *userInfo = @{ RTSMediaPlayerPreviousPlaybackStateUserInfoKey: @(_playbackState) };
+    NSDictionary *userInfo = @{ RTSMediaPlayerPreviousPlaybackStateKey: @(_playbackState) };
     [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackStateDidChangeNotification
                                                         object:self
                                                       userInfo:userInfo];
@@ -417,7 +417,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     NSError *error = RTSMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
     [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackDidFailNotification
                                                         object:self
-                                                      userInfo:@{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey: error }];
+                                                      userInfo:@{ RTSMediaPlayerErrorKey: error }];
 }
 
 #pragma mark KVO
@@ -479,12 +479,12 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                     NSError *error = RTSMediaPlayerControllerError(playerItem.error);
                     [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackDidFailNotification
                                                                         object:self
-                                                                      userInfo:@{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey: error }];
+                                                                      userInfo:@{ RTSMediaPlayerErrorKey: error }];
                 }
             }
         }
         else if ([keyPath isEqualToString:@"pictureInPictureActive"] || [keyPath isEqualToString:@"pictureInPicturePossible"]) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPictureInPictureStateChangeNotification object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPictureInPictureStateDidChangeNotification object:self];
         }
     }
     else {
