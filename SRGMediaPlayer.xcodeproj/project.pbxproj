@@ -381,7 +381,7 @@
 			indentWidth = 4;
 			sourceTree = "<group>";
 			tabWidth = 4;
-			usesTabs = 1;
+			usesTabs = 0;
 		};
 		C201D8F61A9DC1A40016C629 /* Products */ = {
 			isa = PBXGroup;
