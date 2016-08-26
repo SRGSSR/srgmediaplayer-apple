@@ -242,7 +242,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (UIImage *)thumbImage
 {
 	UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 15, 15)];
-	return [path imageWithColor:self.thumbTintColor];
+	return [path rts_imageWithColor:self.thumbTintColor];
 }
 
 

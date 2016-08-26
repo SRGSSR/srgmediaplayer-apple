@@ -9,57 +9,59 @@
 
 @implementation RTSMediaFailureOverlayView
 
-- (void) dealloc
+#pragma mark Object lifecycle
+
+- (void)dealloc
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void) setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
-{
-	if (_mediaPlayerController) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self
-														name:RTSMediaPlayerPlaybackDidFailNotification
-													  object:_mediaPlayerController];
+#pragma mark Getters and setters
 
-		[[NSNotificationCenter defaultCenter] removeObserver:self
-														name:RTSMediaPlayerPlaybackStateDidChangeNotification
-													  object:_mediaPlayerController];
-	}
-	
-	self.hidden = YES;
-	
-	_mediaPlayerController = mediaPlayerController;
-	
-	if (mediaPlayerController) {
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(mediaPlayerPlaybackDidFailNotification:)
-													 name:RTSMediaPlayerPlaybackDidFailNotification
-												   object:mediaPlayerController];
-		
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(mediaPlayerPlaybackStateDidChange:)
-													 name:RTSMediaPlayerPlaybackStateDidChangeNotification
-												   object:mediaPlayerController];
-	}
+- (void)setMediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController
+{
+    if (_mediaPlayerController) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:RTSMediaPlayerPlaybackDidFailNotification
+                                                      object:_mediaPlayerController];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:RTSMediaPlayerPlaybackStateDidChangeNotification
+                                                      object:_mediaPlayerController];
+    }
+    
+    self.hidden = YES;
+    
+    _mediaPlayerController = mediaPlayerController;
+    
+    if (mediaPlayerController) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(mediaPlayerPlaybackDidFailNotification:)
+                                                     name:RTSMediaPlayerPlaybackDidFailNotification
+                                                   object:mediaPlayerController];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(mediaPlayerPlaybackStateDidChange:)
+                                                     name:RTSMediaPlayerPlaybackStateDidChangeNotification
+                                                   object:mediaPlayerController];
+    }
 }
 
+#pragma mark Notifications
 
-
-#pragma mark - Notifications
-
-- (void) mediaPlayerPlaybackDidFailNotification:(NSNotification *)notification
+- (void)mediaPlayerPlaybackDidFailNotification:(NSNotification *)notification
 {
-	self.hidden = NO;
-	
-	NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
-	self.textLabel.text = [error localizedDescription];
+    self.hidden = NO;
+
+    NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
+    self.textLabel.text = [error localizedDescription];
 }
 
-- (void) mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
+- (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
-	if (self.mediaPlayerController.playbackState != RTSMediaPlaybackStateIdle) {
-		self.hidden = YES;
-	}
+    if (self.mediaPlayerController.playbackState != RTSMediaPlaybackStateIdle) {
+        self.hidden = YES;
+    }
 }
 
 @end

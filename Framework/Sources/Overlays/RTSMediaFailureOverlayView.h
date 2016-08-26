@@ -6,13 +6,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class RTSMediaPlayerController;
+#import "RTSMediaPlayerController.h"
 
 /**
- *  View displaying playback errors. Simply install an instance somewhere onto your custom player interface and bind to 
- *  the media player controller for which errors must be reported. Add a label and bind it to the text label property to 
+ *  View displaying playback errors. Simply install an instance somewhere onto your custom player interface and bind to
+ *  the media player controller for which errors must be reported. Add a label and bind it to the text label property to
  *  display the error message.
- * 
+ *
  *  The view will be automatically shown when an error occurs, and hidden otherwise.
  */
 @interface RTSMediaFailureOverlayView : UIView

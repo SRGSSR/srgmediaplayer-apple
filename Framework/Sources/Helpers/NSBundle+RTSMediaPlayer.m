@@ -10,14 +10,14 @@
 
 @implementation NSBundle (RTSMediaPlayer)
 
-+ (instancetype) RTSMediaPlayerBundle
++ (instancetype)rts_mediaPlayerBundle
 {
-	static NSBundle *bundle;
-	static dispatch_once_t once;
-	dispatch_once(&once, ^{
-		bundle = [NSBundle bundleForClass:[RTSMediaPlayerController class]];
-	});
-	return bundle;
+    static NSBundle *bundle;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        bundle = [NSBundle bundleForClass:[RTSMediaPlayerController class]];
+    });
+    return bundle;
 }
 
 @end

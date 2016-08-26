@@ -56,7 +56,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (instancetype)initWithContentURL:(NSURL *)contentURL
 {
-	if (self = [super initWithNibName:@"RTSMediaPlayerViewController" bundle:[NSBundle RTSMediaPlayerBundle]]) {
+	if (self = [super initWithNibName:@"RTSMediaPlayerViewController" bundle:[NSBundle rts_mediaPlayerBundle]]) {
 		self.contentURL = contentURL;
 	}
 	return self;

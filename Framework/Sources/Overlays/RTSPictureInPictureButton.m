@@ -117,7 +117,7 @@ UIImage *RTSPictureInPictureButtonStartImage(void)
 	static UIImage *image;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		NSString *imagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"picture_in_picture_start_button" ofType:@"png"];
+		NSString *imagePath = [[NSBundle rts_mediaPlayerBundle] pathForResource:@"picture_in_picture_start_button" ofType:@"png"];
 		image = [UIImage imageWithContentsOfFile:imagePath];
 	});
 	return image;
@@ -128,7 +128,7 @@ UIImage *RTSPictureInPictureButtonStopImage(void)
 	static UIImage *image;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		NSString *imagePath = [[NSBundle RTSMediaPlayerBundle] pathForResource:@"picture_in_picture_stop_button" ofType:@"png"];
+		NSString *imagePath = [[NSBundle rts_mediaPlayerBundle] pathForResource:@"picture_in_picture_stop_button" ofType:@"png"];
 		image = [UIImage imageWithContentsOfFile:imagePath];
 	});
 	return image;
