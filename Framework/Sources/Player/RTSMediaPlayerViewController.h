@@ -18,7 +18,7 @@
 /**
  *  Returns an `RTSMediaPlayerViewController` object initialized with the media at the specified URL
  */
-- (instancetype) initWithContentURL:(NSURL *)contentURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithContentURL:(NSURL *)contentURL NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly) NSURL *contentURL;
 
