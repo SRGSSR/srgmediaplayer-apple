@@ -25,6 +25,7 @@ NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.;		// same tolerance as b
 
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChangeNotification";
 NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFailNotification";
+NSString * const RTSMediaPlayerPictureInPictureStateChangeNotification = @"RTSMediaPlayerPictureInPictureStateChangeNotification";
 
 NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlayerPreviousPlaybackState";
 NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey = @"RTSMediaPlayerPlaybackError";
@@ -42,6 +43,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic) RTSMediaPlaybackState playbackState;
 @property (nonatomic) NSMutableDictionary<NSString *, RTSPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) RTSActivityGestureRecognizer *activityGestureRecognizer;
+@property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
 @end
 
@@ -52,6 +54,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 @synthesize view = _view;
 @synthesize activityView = _activityView;
+@synthesize pictureInPictureController = _pictureInPictureController;
 
 #pragma mark Object lifecycle
 
@@ -67,7 +70,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)dealloc
 {
-	self.player = nil;			// Unregister KVO and notifications
+	self.player = nil;							// Unregister KVO and notifications
+	self.pictureInPictureController = nil;		// Unregister KVO
 }
 
 #pragma mark Getters and setters
@@ -288,6 +292,31 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 	}
 	else {
 		return NO;
+	}
+}
+
+- (AVPictureInPictureController *)pictureInPictureController
+{
+	if (!self.pictureInPictureController) {
+		// Ensure proper KVO registration
+		self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerView.playerLayer];
+		
+	}
+	return self.pictureInPictureController;
+}
+
+- (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
+{
+	if (_pictureInPictureController) {
+		[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:s_kvoContext];
+		[_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:s_kvoContext];
+	}
+	
+	_pictureInPictureController = pictureInPictureController;
+	
+	if (pictureInPictureController) {
+		[pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:s_kvoContext];
+		[pictureInPictureController addObserver:self forKeyPath:@"pictureInPictureActive" options:NSKeyValueObservingOptionNew context:s_kvoContext];
 	}
 }
 

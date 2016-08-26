@@ -60,7 +60,7 @@ static void *s_kvoContext = &s_kvoContext;
 	self.playerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view insertSubview:self.playerController.view atIndex:0];
 	
-	[self.playerController playURL:[NSURL URLWithString:@"http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp6"]];
+	[self.playerController playURL:[NSURL URLWithString:@"http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4"]];
 }
 
 - (IBAction)togglePlayPause:(id)sender

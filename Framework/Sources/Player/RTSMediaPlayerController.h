@@ -186,3 +186,22 @@
 - (void)removePeriodicTimeObserver:(id)observer;
 
 @end
+
+/**
+ *  Picture in picture functionality (not available on all devices)
+ *
+ *  Remark: When the application is sent to the background, the behavior is the same as the vanilla picture in picture
+ *          controller: If the managed player layer is the one of a view controller's root view ('full screen'), picture
+ *          in picture is automatically enabled when switching to the background (provided the corresponding flag has been
+ *          enabled in the system settings). This is the only case where switching to picture in picture can be made
+ *          automatically. Picture in picture must otherwise always be user-triggered, otherwise you application might
+ *          get rejected by Apple (see `AVPictureInPictureController` documentation)
+ */
+@interface RTSMediaPlayerController (PictureInPicture)
+
+/**
+ *  Return the picture in picture controller if available, nil otherwise
+ */
+@property (nonatomic, readonly) AVPictureInPictureController *pictureInPictureController;
+
+@end

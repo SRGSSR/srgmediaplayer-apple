@@ -88,6 +88,8 @@
 		E6C986151D7014DF00C45C7A /* RTSMediaFailureOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F4A1D62072400A55085 /* RTSMediaFailureOverlayView.m */; };
 		E6C986161D7015F600C45C7A /* RTSVolumeView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F551D62072400A55085 /* RTSVolumeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6C986171D7015F600C45C7A /* RTSVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F561D62072400A55085 /* RTSVolumeView.m */; };
+		E6C986181D70182300C45C7A /* RTSPictureInPictureButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4D1D62072400A55085 /* RTSPictureInPictureButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6C986191D70182300C45C7A /* RTSPictureInPictureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F4E1D62072400A55085 /* RTSPictureInPictureButton.m */; };
 		E6FC7F6B1D62072400A55085 /* RTSActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F301D62072400A55085 /* RTSActivityGestureRecognizer.h */; };
 		E6FC7F6C1D62072400A55085 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F311D62072400A55085 /* RTSActivityGestureRecognizer.m */; };
 		E6FC7F6D1D62072400A55085 /* RTSMediaPlayerConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F321D62072400A55085 /* RTSMediaPlayerConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -667,6 +669,7 @@
 				E6FC7F8D1D62072400A55085 /* RTSMediaPlayerController.h in Headers */,
 				E69A1E621D61BAFD0064E6C1 /* SRGMediaPlayer.h in Headers */,
 				E6FC7F6B1D62072400A55085 /* RTSActivityGestureRecognizer.h in Headers */,
+				E6C986181D70182300C45C7A /* RTSPictureInPictureButton.h in Headers */,
 				E6FC7F951D62072400A55085 /* RTSMediaSegment.h in Headers */,
 				E6C986131D7014A000C45C7A /* RTSAirplayOverlayView.h in Headers */,
 				E6FC7F911D62072400A55085 /* RTSMediaPlayerViewController.h in Headers */,
@@ -966,6 +969,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6C986191D70182300C45C7A /* RTSPictureInPictureButton.m in Sources */,
 				E6FC7F781D62072400A55085 /* NSBundle+RTSMediaPlayer.m in Sources */,
 				E6FC7F741D62072400A55085 /* RTSMediaPlayerView.m in Sources */,
 				E6C9860B1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.m in Sources */,
