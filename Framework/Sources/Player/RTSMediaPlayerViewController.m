@@ -79,6 +79,8 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     s_mediaPlayerController.overlayViews = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    // FIXME: Should trigger a status bar update instead
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
@@ -210,11 +212,13 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)mediaPlayerDidShowControlOverlays:(NSNotification *)notification
 {
+    // FIXME: Should trigger a status bar update instead
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
 - (void)mediaPlayerDidHideControlOverlays:(NSNotification *)notificaiton
 {
+    // FIXME: Should trigger a status bar update instead
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
