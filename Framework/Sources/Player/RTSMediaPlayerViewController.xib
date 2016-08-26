@@ -13,6 +13,7 @@
                 <outlet property="pictureInPictureButton" destination="NH0-ev-1HR" id="EeD-Yd-LjN"/>
                 <outlet property="playPauseButton" destination="orZ-GR-Obh" id="has-wO-PCl"/>
                 <outlet property="playbackActivityIndicatorView" destination="d2t-q1-HOm" id="LVj-ZY-2bs"/>
+                <outlet property="playerView" destination="IdI-XO-hxC" id="Ahp-wO-alW"/>
                 <outlet property="timeLeftValueLabelWidthConstraint" destination="G8R-4I-uxy" id="wwA-Fb-CRF"/>
                 <outlet property="timeSlider" destination="dbP-gV-yjr" id="ICa-MM-Kcj"/>
                 <outlet property="valueLabelWidthConstraint" destination="LD7-6d-ZRT" id="ItF-8i-kPA"/>
@@ -28,6 +29,10 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IdI-XO-hxC">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="d2t-q1-HOm" customClass="RTSPlaybackActivityIndicatorView">
                     <rect key="frame" x="290" y="290" width="20" height="20"/>
                 </activityIndicatorView>
@@ -206,6 +211,9 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="kqK-gI-E5v" secondAttribute="trailing" id="13J-fR-tYI"/>
                 <constraint firstAttribute="trailing" secondItem="f2J-Sq-TNH" secondAttribute="trailing" constant="14" id="5l4-9y-EDf"/>
+                <constraint firstItem="IdI-XO-hxC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Bas-QI-URR"/>
+                <constraint firstAttribute="bottom" secondItem="IdI-XO-hxC" secondAttribute="bottom" id="DDa-N4-jAi"/>
+                <constraint firstAttribute="trailing" secondItem="IdI-XO-hxC" secondAttribute="trailing" id="DWJ-YZ-OjL"/>
                 <constraint firstItem="m4e-aB-8GY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EjJ-Y6-i5x"/>
                 <constraint firstAttribute="trailing" secondItem="m4e-aB-8GY" secondAttribute="trailing" id="Ek5-aN-GFQ"/>
                 <constraint firstAttribute="trailing" secondItem="9bq-Le-IXI" secondAttribute="trailing" id="Hbk-eC-357"/>
@@ -215,6 +223,7 @@
                 <constraint firstItem="f2J-Sq-TNH" firstAttribute="top" secondItem="kqK-gI-E5v" secondAttribute="bottom" id="d7a-A9-gqQ"/>
                 <constraint firstItem="9bq-Le-IXI" firstAttribute="top" secondItem="kqK-gI-E5v" secondAttribute="bottom" id="fnV-xm-WWN"/>
                 <constraint firstAttribute="centerX" secondItem="d2t-q1-HOm" secondAttribute="centerX" id="ghL-wx-Tv8"/>
+                <constraint firstItem="IdI-XO-hxC" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="jmi-yZ-bLK"/>
                 <constraint firstAttribute="bottom" secondItem="m4e-aB-8GY" secondAttribute="bottom" id="mxb-hA-Ktf"/>
                 <constraint firstAttribute="centerY" secondItem="d2t-q1-HOm" secondAttribute="centerY" id="qRh-aH-gf7"/>
                 <constraint firstItem="kqK-gI-E5v" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="t4d-IC-SHd"/>

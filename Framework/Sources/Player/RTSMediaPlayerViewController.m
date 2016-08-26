@@ -24,6 +24,8 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @property (nonatomic) NSURL *contentURL;
 
+@property (nonatomic, weak) IBOutlet UIView *playerView;
+
 @property (nonatomic, weak) IBOutlet RTSPictureInPictureButton *pictureInPictureButton;
 @property (nonatomic, weak) IBOutlet RTSPlaybackActivityIndicatorView *playbackActivityIndicatorView;
 
@@ -96,9 +98,10 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
-    s_mediaPlayerController.view.frame = self.view.bounds;
+    // Use a wrapper to avoid setting gesture recognizers widely on the shared player instance view
+    s_mediaPlayerController.view.frame = self.playerView.bounds;
     s_mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view insertSubview:s_mediaPlayerController.view atIndex:0];
+    [self.playerView addSubview:s_mediaPlayerController.view];
     
     [s_mediaPlayerController playURL:self.contentURL];
     
