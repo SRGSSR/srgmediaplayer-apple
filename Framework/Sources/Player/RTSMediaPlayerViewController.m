@@ -92,19 +92,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
                                              selector:@selector(mediaPlayerPlaybackStateDidChange:)
                                                  name:RTSMediaPlayerPlaybackStateDidChangeNotification
                                                object:s_mediaPlayerController];
-    
-#if 0
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(mediaPlayerDidShowControlOverlays:)
-                                                 name:RTSMediaPlayerDidShowControlOverlaysNotification
-                                               object:s_mediaPlayerController];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(mediaPlayerDidHideControlOverlays:)
-                                                 name:RTSMediaPlayerDidHideControlOverlaysNotification
-                                               object:s_mediaPlayerController];
-#endif
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
