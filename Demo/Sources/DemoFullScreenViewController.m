@@ -12,7 +12,7 @@
 @property (nonatomic, weak) id<RTSMediaPlayerControllerDataSource> dataSource;
 @property (nonatomic, strong) NSString *identifier;
 
-@property (nonatomic, strong) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+@property (nonatomic, strong) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 @end
 

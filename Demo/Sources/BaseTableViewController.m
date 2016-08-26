@@ -180,7 +180,7 @@
             [self presentMoviePlayerViewControllerAnimated:moviePlayerViewController];
         }
         else if ([identifier isEqualToString:@"CellDefaultRTS"]) {
-            RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewController alloc] initWithContentURL:contentURL];
+            SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:contentURL];
             [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
         }
     }

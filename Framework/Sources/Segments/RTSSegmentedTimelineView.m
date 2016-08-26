@@ -7,7 +7,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 #import "RTSSegmentedTimelineView.h"
-#import "RTSMediaPlayerController.h"
+#import "SRGMediaPlayerController.h"
 #import "RTSMediaSegment.h"
 #import "RTSMediaSegmentsController.h"
 #import "RTSMediaSegmentsDataSource.h"

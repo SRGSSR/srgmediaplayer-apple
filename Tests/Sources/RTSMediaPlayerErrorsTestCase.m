@@ -12,7 +12,7 @@
 @interface DataSourceReturningError : NSObject <RTSMediaPlayerControllerDataSource> @end
 @implementation DataSourceReturningError
 
-- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSString *identifier, NSURL *, NSError *))completionHandler
+- (id)mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSString *identifier, NSURL *, NSError *))completionHandler
 {
     completionHandler(identifier, nil, [NSError errorWithDomain:@"AppDomain" code:-1 userInfo:nil]);
     
@@ -29,7 +29,7 @@
 
 @implementation InvalidDataSource
 
-- (id)mediaPlayerController:(RTSMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSString *identifier, NSURL *, NSError *))completionHandler
+- (id)mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSString *identifier, NSURL *, NSError *))completionHandler
 {
     completionHandler(identifier, nil, nil);
     
@@ -42,17 +42,17 @@
 
 @end
 
-@interface RTSMediaPlayerErrorsTestCase : XCTestCase
+@interface SRGMediaPlayerErrorsTestCase : XCTestCase
 @end
 
-@implementation RTSMediaPlayerErrorsTestCase
+@implementation SRGMediaPlayerErrorsTestCase
 
 - (void)testDataSourceError
 {
     id<RTSMediaPlayerControllerDataSource> dataSource = [DataSourceReturningError new];
-    RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"" dataSource:dataSource];
-    [self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] initWithContentIdentifier:@"" dataSource:dataSource];
+    [self expectationForNotification:SRGMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
+        NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
         XCTAssertEqualObjects(error.domain, @"AppDomain");
         XCTAssertEqual(error.code, -1);
         return YES;
@@ -64,11 +64,11 @@
 - (void)testInvalidDataSourceImplementation
 {
     id<RTSMediaPlayerControllerDataSource> dataSource = [InvalidDataSource new];
-    RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentIdentifier:@"" dataSource:dataSource];
-    [self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
-        XCTAssertEqualObjects(error.domain, RTSMediaPlayerErrorDomain);
-        XCTAssertEqual(error.code, RTSMediaPlayerErrorDataSource);
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] initWithContentIdentifier:@"" dataSource:dataSource];
+    [self expectationForNotification:SRGMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
+        NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
+        XCTAssertEqualObjects(error.domain, SRGMediaPlayerErrorDomain);
+        XCTAssertEqual(error.code, SRGMediaPlayerErrorDataSource);
         return YES;
     }];
     [mediaPlayerController play];
@@ -78,11 +78,11 @@
 - (void)testHTTP403Error
 {
     NSURL *url = [NSURL URLWithString:@"http://httpbin.org/status/403"];
-    RTSMediaPlayerController *mediaPlayerController = [[RTSMediaPlayerController alloc] initWithContentURL:url];
-    [self expectationForNotification:RTSMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
-        XCTAssertEqualObjects(error.domain, RTSMediaPlayerErrorDomain);
-        XCTAssertEqual(error.code, RTSMediaPlayerErrorPlayback);
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] initWithContentURL:url];
+    [self expectationForNotification:SRGMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
+        NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
+        XCTAssertEqualObjects(error.domain, SRGMediaPlayerErrorDomain);
+        XCTAssertEqual(error.code, SRGMediaPlayerErrorPlayback);
         return YES;
     }];
     [mediaPlayerController play];

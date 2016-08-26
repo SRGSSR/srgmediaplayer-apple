@@ -11,7 +11,7 @@
 @interface DemoInlineViewController : UIViewController <RTSMediaPlayerControllerDataSource>
 
 @property (nonatomic, weak) IBOutlet UIView *videoContainerView;
-@property (nonatomic, strong) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+@property (nonatomic, strong) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, strong) NSURL *mediaURL;
 

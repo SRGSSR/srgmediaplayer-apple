@@ -5,8 +5,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RTSMediaPlayerConstants.h"
-#import "RTSMediaPlayerController.h"
+#import "SRGMediaPlayerConstants.h"
+#import "SRGMediaPlayerController.h"
 
 // Forward declarations
 @protocol RTSMediaSegment;
@@ -42,7 +42,7 @@
 /**
  *  The player controller associated with the segments controller.
  */
-@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *playerController;
+@property (nonatomic, weak) IBOutlet SRGMediaPlayerController *playerController;
 
 /**
  *  The data source of the segments controller.
@@ -79,7 +79,7 @@
 
 @end
 
-@interface RTSMediaPlayerController (RTSMediaSegmentsController)
+@interface SRGMediaPlayerController (RTSMediaSegmentsController)
 
 /**
  *  Return the segments controller mediating playback for the receiver, nil if none
