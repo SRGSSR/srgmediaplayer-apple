@@ -76,8 +76,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)dealloc
 {
-    s_mediaPlayerController.overlayViews = nil;
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     // FIXME: Should trigger a status bar update instead
@@ -117,9 +115,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self.view insertSubview:s_mediaPlayerController.view atIndex:0];
     
     [s_mediaPlayerController playURL:self.contentURL];
-    
-    s_mediaPlayerController.activityView = self.view;
-    s_mediaPlayerController.overlayViews = @[self.navigationBarView, self.bottomBarView, self.volumeView, self.liveButton];
     
     self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
     self.playbackActivityIndicatorView.mediaPlayerController = s_mediaPlayerController;

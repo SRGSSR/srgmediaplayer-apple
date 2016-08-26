@@ -132,14 +132,6 @@ OBJC_EXTERN NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey;     
  */
 OBJC_EXTERN NSString * const RTSMediaPlayerPictureInPictureStateChangeNotification;
 
-/**
- *  Notifications sent when overlays are shown or hidden
- */
-OBJC_EXTERN NSString * const RTSMediaPlayerWillShowControlOverlaysNotification;
-OBJC_EXTERN NSString * const RTSMediaPlayerDidShowControlOverlaysNotification;
-OBJC_EXTERN NSString * const RTSMediaPlayerWillHideControlOverlaysNotification;
-OBJC_EXTERN NSString * const RTSMediaPlayerDidHideControlOverlaysNotification;
-
 // TODO: START
 
 /**

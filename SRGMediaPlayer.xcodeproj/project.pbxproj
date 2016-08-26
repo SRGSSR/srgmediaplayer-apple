@@ -96,7 +96,7 @@
 		E6C9861E1D701D3800C45C7A /* RTSMediaPlayerSharedController.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F5C1D62072400A55085 /* RTSMediaPlayerSharedController.h */; };
 		E6C9861F1D701D3800C45C7A /* RTSMediaPlayerSharedController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F5D1D62072400A55085 /* RTSMediaPlayerSharedController.m */; };
 		E6E49F631D7029F9006CB883 /* RTSMediaPlayerConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E49F621D7029F9006CB883 /* RTSMediaPlayerConstants.m */; };
-		E6FC7F6B1D62072400A55085 /* RTSActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F301D62072400A55085 /* RTSActivityGestureRecognizer.h */; };
+		E6FC7F6B1D62072400A55085 /* RTSActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F301D62072400A55085 /* RTSActivityGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F6C1D62072400A55085 /* RTSActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F311D62072400A55085 /* RTSActivityGestureRecognizer.m */; };
 		E6FC7F6D1D62072400A55085 /* RTSMediaPlayerConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F321D62072400A55085 /* RTSMediaPlayerConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F6E1D62072400A55085 /* RTSMediaPlayerError.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F331D62072400A55085 /* RTSMediaPlayerError.h */; settings = {ATTRIBUTES = (Public, ); }; };

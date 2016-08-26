@@ -75,34 +75,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
 
 /**
- *  -------------------
- *  @name Overlay Views
- *  -------------------
- */
-
-/**
- *  View on which user activity is detected (to prevent the UI overlays from being automatically hidden, see 'overlayViews' and
- *  'overlayViewsHidingDelay')
- */
-@property (nonatomic, weak, nullable) IBOutlet UIView *activityView;
-
-/**
- *  A collection of views that will be shown / hidden automatically or manually when user interacts with the view.
- */
-@property (nonatomic, nullable)IBOutletCollection(UIView) NSArray * overlayViews;
-
-/**
- *  The delay after which the overlay views are hidden. Default to `RTSMediaPlayerOverlayHidingDelay` (5 sec).
- *  Ignored if <= 0.0;
- */
-@property (nonatomic) NSTimeInterval overlayViewsHidingDelay;
-
-/**
- *  Return YES iff overlays are currently visible
- */
-@property (nonatomic, readonly, getter=areOverlaysVisible) BOOL overlaysVisible;
-
-/**
  *  -------------------------
  *  @name Controling Playback
  *  -------------------------

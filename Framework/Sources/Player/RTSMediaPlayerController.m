@@ -20,8 +20,6 @@
 
 static void *s_kvoContext = &s_kvoContext;
 
-static NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.;
-
 static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 {
     NSCParameterAssert(underlyingError);
@@ -35,9 +33,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic, readonly) RTSMediaPlayerView *playerView;
 @property (nonatomic) RTSPlaybackState playbackState;
 @property (nonatomic) NSMutableDictionary<NSString *, RTSPeriodicTimeObserver *> *periodicTimeObservers;
-@property (nonatomic) RTSActivityGestureRecognizer *activityGestureRecognizer;
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
-@property (nonatomic, getter=areOverlaysVisible) BOOL overlaysVisible;
 
 @property (nonatomic) NSValue *startTimeValue;
 @property (nonatomic, copy) void (^startCompletionHandler)(BOOL finished);
@@ -47,7 +43,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @implementation RTSMediaPlayerController
 
 @synthesize view = _view;
-@synthesize activityView = _activityView;
 @synthesize pictureInPictureController = _pictureInPictureController;
 
 #pragma mark Object lifecycle
@@ -57,7 +52,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     if (self = [super init]) {
         self.playbackState = RTSPlaybackStateIdle;
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
-        self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
     }
     return self;
 }
@@ -154,10 +148,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rts_handleSingleTap:)];
         [singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
         [_view addGestureRecognizer:singleTapGestureRecognizer];
-        
-        if (! self.activityView) {
-            self.activityView = _view;
-        }
     }
     return _view;
 }
@@ -165,23 +155,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (RTSMediaPlayerView *)playerView
 {
     return (RTSMediaPlayerView *)self.view;
-}
-
-- (void)setActivityView:(UIView *)activityView
-{
-    [_activityView removeGestureRecognizer:self.activityGestureRecognizer];
-    _activityView = activityView;
-    [activityView addGestureRecognizer:self.activityGestureRecognizer];
-}
-
-- (RTSActivityGestureRecognizer *)activityGestureRecognizer
-{
-    if (! _activityGestureRecognizer) {
-        _activityGestureRecognizer = [[RTSActivityGestureRecognizer alloc] initWithTarget:self action:@selector(rts_resetIdleTimer:)];
-        _activityGestureRecognizer.delegate = self;
-    }
-    
-    return _activityGestureRecognizer;
 }
 
 - (CMTimeRange)timeRange
@@ -552,11 +525,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         }
         else if ([keyPath isEqualToString:@"pictureInPictureActive"] || [keyPath isEqualToString:@"pictureInPicturePossible"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPictureInPictureStateChangeNotification object:self];
-            
-            // Always show overlays again when picture in picture is disabled
-            if ([keyPath isEqualToString:@"pictureInPictureActive"] && ! self.pictureInPictureController.isPictureInPictureActive) {
-                self.overlaysVisible = YES;
-            }
         }
     }
     else {
