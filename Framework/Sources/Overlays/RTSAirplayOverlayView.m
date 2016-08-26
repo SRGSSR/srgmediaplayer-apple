@@ -189,9 +189,9 @@ static const CGFloat RTSAirplayOverlayViewDefaultFillFactor = 0.6f;
 	}
 	
 	if (subtitle.length > 0) {
-		NSDictionary* attributes = [self airplayOverlayViewSubitleAttributedDictionary:self];
-		if ([self.dataSource respondsToSelector:@selector(airplayOverlayViewSubitleAttributedDictionary:)]) {
-			attributes = [self.dataSource airplayOverlayViewSubitleAttributedDictionary:self];
+		NSDictionary* attributes = [self airplayOverlayViewSubtitleAttributedDictionary:self];
+		if ([self.dataSource respondsToSelector:@selector(airplayOverlayViewSubtitleAttributedDictionary:)]) {
+			attributes = [self.dataSource airplayOverlayViewSubtitleAttributedDictionary:self];
 		}
 		
 		NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
@@ -220,7 +220,7 @@ static const CGFloat RTSAirplayOverlayViewDefaultFillFactor = 0.6f;
 	return [NSString stringWithFormat:RTSMediaPlayerLocalizedString(@"This media is playing on «%@»", nil), routeName];
 }
 
-- (NSDictionary *)airplayOverlayViewSubitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView
+- (NSDictionary *)airplayOverlayViewSubtitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView
 {
 	NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
 	style.alignment = NSTextAlignmentCenter;

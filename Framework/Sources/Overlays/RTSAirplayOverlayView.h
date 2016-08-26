@@ -33,7 +33,7 @@
  *  Attributes for the route subtitle. If not implemented, a default style will be applied (system font, light gray,
  *  centered, 12 pts)
  */
-- (NSDictionary *)airplayOverlayViewSubitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView;
+- (NSDictionary *)airplayOverlayViewSubtitleAttributedDictionary:(RTSAirplayOverlayView *)airplayOverlayView;
 
 @end
 
