@@ -12,8 +12,8 @@
 /**
  *  Standard button images for starting and stopping picture in picture
  */
-FOUNDATION_EXTERN UIImage *RTSPictureInPictureButtonStartImage(void);
-FOUNDATION_EXTERN UIImage *RTSPictureInPictureButtonStopImage(void);
+OBJC_EXTERN UIImage *RTSPictureInPictureButtonStartImage(void);
+OBJC_EXTERN UIImage *RTSPictureInPictureButtonStopImage(void);
 
 /**
  *  A button to toggle picture in picture (if available) for the associated player. This class is not meant to be

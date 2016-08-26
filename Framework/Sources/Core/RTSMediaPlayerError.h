@@ -9,7 +9,7 @@
 /**
  *  Domain for media player errors
  */
-FOUNDATION_EXTERN NSString * const RTSMediaPlayerErrorDomain;
+OBJC_EXTERN NSString * const RTSMediaPlayerErrorDomain;
 
 /**
  *  Media player error codes
