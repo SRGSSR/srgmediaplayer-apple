@@ -48,6 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) AVPlayer *player;
 
+@property (nonatomic, readonly) AVPlayerLayer *playerLayer;
+
 /**
  *  ------------------------
  *  @name Accessing the View

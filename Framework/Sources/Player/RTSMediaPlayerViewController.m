@@ -7,6 +7,7 @@
 #import "RTSMediaPlayerViewController.h"
 
 #import "NSBundle+RTSMediaPlayer.h"
+#import "RTSActivityGestureRecognizer.h"
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerPlaybackButton.h"
 #import "RTSPictureInPictureButton.h"
@@ -46,6 +47,8 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @implementation RTSMediaPlayerViewController
 
+#pragma mark Class methods
+
 + (void)initialize
 {
     if (self != [RTSMediaPlayerViewController class]) {
@@ -54,6 +57,8 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     
     s_mediaPlayerController = [[RTSMediaPlayerSharedController alloc] init];
 }
+
+#pragma mark Object lifecycle
 
 - (instancetype)initWithContentURL:(NSURL *)contentURL
 {
@@ -83,7 +88,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
-#pragma mark - View lifecycle
+#pragma mark View lifecycle
 
 - (void)viewDidLoad
 {
@@ -102,6 +107,18 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     s_mediaPlayerController.view.frame = self.playerView.bounds;
     s_mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.playerView addSubview:s_mediaPlayerController.view];
+    
+    UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+    doubleTapGestureRecognizer.numberOfTapsRequired = 2;
+    [self.playerView addGestureRecognizer:doubleTapGestureRecognizer];
+    
+    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+    [singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
+    [self.playerView addGestureRecognizer:singleTapGestureRecognizer];
+    
+    RTSActivityGestureRecognizer *activityGestureRecognizer = [[RTSActivityGestureRecognizer alloc] initWithTarget:self action:@selector(resetIdleTimer:)];
+    activityGestureRecognizer.delegate = self;
+    [self.view addGestureRecognizer:activityGestureRecognizer];
     
     [s_mediaPlayerController playURL:self.contentURL];
     
@@ -149,6 +166,15 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
+#pragma mark Status bar
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+
+#pragma mark UI
+
 - (void)setTimeSliderHidden:(BOOL)hidden
 {
     self.timeSlider.timeLeftValueLabel.hidden = hidden;
@@ -165,13 +191,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.loadingLabel.hidden = ! hidden;
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleDefault;
-}
-
-#pragma mark - UI
-
 - (void)updateLiveButton
 {
     if (s_mediaPlayerController.streamType == RTSMediaStreamTypeDVR) {
@@ -184,7 +203,14 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
-#pragma mark - Notifications
+#pragma mark UIGestureRecognizerDelegate protocol
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return [gestureRecognizer isKindOfClass:[RTSActivityGestureRecognizer class]];
+}
+
+#pragma mark Notifications
 
 - (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
 {
@@ -215,7 +241,7 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
-#pragma mark - Actions
+#pragma mark Actions
 
 - (IBAction)dismiss:(id)sender
 {
@@ -247,6 +273,30 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (IBAction)seek:(id)sender
 {
     [self updateLiveButton];
+}
+
+#pragma mark Gesture recognizers
+
+- (void)handleSingleTap:(UIGestureRecognizer *)gestureRecognizer
+{
+    NSLog(@"--> Single tap");
+}
+
+- (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer
+{
+    AVPlayerLayer *playerLayer = s_mediaPlayerController.playerLayer;
+    
+    if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
+        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    }
+    else {
+        playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    }
+}
+
+- (void)resetIdleTimer:(UIGestureRecognizer *)gestureRecognizer
+{
+    
 }
 
 @end

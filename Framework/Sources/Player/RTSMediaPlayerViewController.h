@@ -13,7 +13,7 @@
  *  The RTSMediaPlayerViewController has to be presented modally using `-presentViewController:animated:completion:`. If you
  *  need a customized layout, create your own view controller and implement media playback using `RTSMediaPlayerController`
  */
-@interface RTSMediaPlayerViewController : UIViewController
+@interface RTSMediaPlayerViewController : UIViewController <UIGestureRecognizerDelegate>
 
 /**
  *  Returns an `RTSMediaPlayerViewController` object initialized with the media at the specified URL

@@ -113,7 +113,12 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (AVPlayer *)player
 {
-    return self.playerView.playerLayer.player;
+    return self.playerLayer.player;
+}
+
+- (AVPlayerLayer *)playerLayer
+{
+    return self.playerView.playerLayer;
 }
 
 - (void)setPlaybackState:(RTSPlaybackState)playbackState
