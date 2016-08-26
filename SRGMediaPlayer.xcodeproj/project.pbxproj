@@ -84,8 +84,6 @@
 		E6C986111D70142D00C45C7A /* RTSMediaPlayerError.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C986101D70142D00C45C7A /* RTSMediaPlayerError.m */; };
 		E6C986121D70149E00C45C7A /* RTSAirplayOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F481D62072400A55085 /* RTSAirplayOverlayView.m */; };
 		E6C986131D7014A000C45C7A /* RTSAirplayOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F471D62072400A55085 /* RTSAirplayOverlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E6C986141D7014DF00C45C7A /* RTSMediaFailureOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F491D62072400A55085 /* RTSMediaFailureOverlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E6C986151D7014DF00C45C7A /* RTSMediaFailureOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F4A1D62072400A55085 /* RTSMediaFailureOverlayView.m */; };
 		E6C986161D7015F600C45C7A /* RTSVolumeView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F551D62072400A55085 /* RTSVolumeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6C986171D7015F600C45C7A /* RTSVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F561D62072400A55085 /* RTSVolumeView.m */; };
 		E6C986181D70182300C45C7A /* RTSPictureInPictureButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4D1D62072400A55085 /* RTSPictureInPictureButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -287,8 +285,6 @@
 		E6FC7F451D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+RTSMediaPlayerUtils.m"; sourceTree = "<group>"; };
 		E6FC7F471D62072400A55085 /* RTSAirplayOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSAirplayOverlayView.h; sourceTree = "<group>"; };
 		E6FC7F481D62072400A55085 /* RTSAirplayOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSAirplayOverlayView.m; sourceTree = "<group>"; };
-		E6FC7F491D62072400A55085 /* RTSMediaFailureOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaFailureOverlayView.h; sourceTree = "<group>"; };
-		E6FC7F4A1D62072400A55085 /* RTSMediaFailureOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaFailureOverlayView.m; sourceTree = "<group>"; };
 		E6FC7F4B1D62072400A55085 /* RTSMediaPlayerPlaybackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerPlaybackButton.h; sourceTree = "<group>"; };
 		E6FC7F4C1D62072400A55085 /* RTSMediaPlayerPlaybackButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerPlaybackButton.m; sourceTree = "<group>"; };
 		E6FC7F4D1D62072400A55085 /* RTSPictureInPictureButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSPictureInPictureButton.h; sourceTree = "<group>"; };
@@ -607,8 +603,6 @@
 			children = (
 				E6FC7F471D62072400A55085 /* RTSAirplayOverlayView.h */,
 				E6FC7F481D62072400A55085 /* RTSAirplayOverlayView.m */,
-				E6FC7F491D62072400A55085 /* RTSMediaFailureOverlayView.h */,
-				E6FC7F4A1D62072400A55085 /* RTSMediaFailureOverlayView.m */,
 				E6FC7F4B1D62072400A55085 /* RTSMediaPlayerPlaybackButton.h */,
 				E6FC7F4C1D62072400A55085 /* RTSMediaPlayerPlaybackButton.m */,
 				E6FC7F4D1D62072400A55085 /* RTSPictureInPictureButton.h */,
@@ -684,7 +678,6 @@
 				E6C9861E1D701D3800C45C7A /* RTSMediaPlayerSharedController.h in Headers */,
 				E6C986161D7015F600C45C7A /* RTSVolumeView.h in Headers */,
 				E6FC7F6E1D62072400A55085 /* RTSMediaPlayerError.h in Headers */,
-				E6C986141D7014DF00C45C7A /* RTSMediaFailureOverlayView.h in Headers */,
 				E6FC7F711D62072400A55085 /* RTSMediaPlayerLogger.h in Headers */,
 				E6FC7F771D62072400A55085 /* NSBundle+RTSMediaPlayer.h in Headers */,
 				E6C9860A1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.h in Headers */,
@@ -987,7 +980,6 @@
 				E6C986171D7015F600C45C7A /* RTSVolumeView.m in Sources */,
 				E6C9860D1D6F42CB00C45C7A /* RTSPlaybackActivityIndicatorView.m in Sources */,
 				E6FC7F701D62072400A55085 /* RTSMediaPlayerIconTemplate.m in Sources */,
-				E6C986151D7014DF00C45C7A /* RTSMediaFailureOverlayView.m in Sources */,
 				E6C9860F1D6F458900C45C7A /* RTSTimeSlider.m in Sources */,
 				E6C9861C1D701BA700C45C7A /* RTSMediaPlayerViewController.m in Sources */,
 				E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */,
