@@ -6,6 +6,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  A view to control the volume. Simply install somewhere onto your custom player interface
  *
@@ -14,3 +16,5 @@
 @interface RTSVolumeView : UIView
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The media player to which the picture in picture button must be associated with.
  */
-@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+@property (nonatomic, weak, nullable) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @end
 

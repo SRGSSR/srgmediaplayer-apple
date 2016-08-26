@@ -4,22 +4,25 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "RTSMediaPlayerController.h"
+
 #import <CoreMedia/CoreMedia.h>
 #import <UIKit/UIKit.h>
+
+// Forward declarations
+@protocol RTSTimeSliderDelegate;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The slider knob position when a live stream is played (the knob itself cannot be moved). The default value is left,
  *  as for the standard iOS playback controller
  */
 typedef NS_ENUM(NSInteger, RTSTimeSliderLiveKnobPosition) {
-	RTSTimeSliderLiveKnobPositionDefault = 0,
-	RTSTimeSliderLiveKnobPositionLeft = RTSTimeSliderLiveKnobPositionDefault,
-	RTSTimeSliderLiveKnobPositionRight
+    RTSTimeSliderLiveKnobPositionDefault = 0,
+    RTSTimeSliderLiveKnobPositionLeft = RTSTimeSliderLiveKnobPositionDefault,
+    RTSTimeSliderLiveKnobPositionRight
 };
-
-// Forward declarations
-@class RTSMediaPlayerController;
-@protocol RTSTimeSliderDelegate;
 
 /**
  *  A slider displaying the playback position of the associated playback controller (with optional time and remaining
@@ -41,27 +44,27 @@ typedef NS_ENUM(NSInteger, RTSTimeSliderLiveKnobPosition) {
 /**
  *  The playback controller attached to the slider
  */
-@property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
+@property (nonatomic, weak, nullable) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 /**
  *  The delegate receiving slider events
  */
-@property (nonatomic, weak) IBOutlet id<RTSTimeSliderDelegate> slidingDelegate;
+@property (nonatomic, weak, nullable) IBOutlet id<RTSTimeSliderDelegate> slidingDelegate;
 
 /**
  *  Outlet which must be bound to the label displaying the remaining time
  */
-@property (nonatomic, weak) IBOutlet UILabel *timeLeftValueLabel;
+@property (nonatomic, weak, nullable) IBOutlet UILabel *timeLeftValueLabel;
 
 /**
  *  Outlet which must be bound to the label displaying the current time
  */
-@property (nonatomic, weak) IBOutlet UILabel *valueLabel;
+@property (nonatomic, weak, nullable) IBOutlet UILabel *valueLabel;
 
 /**
  *  Bar border color (defaults to black)
  */
-@property (nonatomic, strong) IBInspectable UIColor *borderColor;
+@property (nonatomic, null_resettable) IBInspectable UIColor *borderColor;
 
 /**
  *  The time corresponding to the current slider position
@@ -85,13 +88,13 @@ typedef NS_ENUM(NSInteger, RTSTimeSliderLiveKnobPosition) {
  *
  *  Defaults to YES
  */
-@property (nonatomic, assign, getter=isSeekingDuringTracking) BOOL seekingDuringTracking;
+@property (nonatomic, getter=isSeekingDuringTracking) BOOL seekingDuringTracking;
 
 /**
  *  The position of the slider knob when playing a live stream. Defaults to RTSTimeSliderLiveKnobPositionDefault (left
  *  position)
  */
-@property (nonatomic, assign) RTSTimeSliderLiveKnobPosition knobLivePosition;
+@property (nonatomic) RTSTimeSliderLiveKnobPosition knobLivePosition;
 
 @end
 
@@ -111,3 +114,5 @@ typedef NS_ENUM(NSInteger, RTSTimeSliderLiveKnobPosition) {
 - (void)timeSlider:(RTSTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(CGFloat)value interactive:(BOOL)interactive;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -6,8 +6,6 @@
 
 #import "RTSPlaybackActivityIndicatorView.h"
 
-#import "RTSMediaPlayerController.h"
-
 static void commonInit(RTSPlaybackActivityIndicatorView *self);
 
 @implementation RTSPlaybackActivityIndicatorView
