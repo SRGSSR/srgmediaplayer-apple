@@ -23,8 +23,6 @@ static void *s_kvoContext = &s_kvoContext;
 NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.;
 NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.;		// same tolerance as built-in iOS player
 
-NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
-
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChangeNotification";
 NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFailNotification";
 
