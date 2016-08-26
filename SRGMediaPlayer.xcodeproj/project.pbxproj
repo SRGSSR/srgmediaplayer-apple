@@ -97,8 +97,6 @@
 		E6FC7F781D62072400A55085 /* NSBundle+RTSMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F431D62072400A55085 /* NSBundle+RTSMediaPlayer.m */; };
 		E6FC7F791D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F441D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.h */; };
 		E6FC7F7A1D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F451D62072400A55085 /* UIBezierPath+RTSMediaPlayerUtils.m */; };
-		E6FC7F8B1D62072400A55085 /* RTSMediaPlayerController+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F581D62072400A55085 /* RTSMediaPlayerController+Private.h */; };
-		E6FC7F8C1D62072400A55085 /* RTSMediaPlayerController+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F591D62072400A55085 /* RTSMediaPlayerController+Private.m */; };
 		E6FC7F8D1D62072400A55085 /* RTSMediaPlayerController.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F5A1D62072400A55085 /* RTSMediaPlayerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F8E1D62072400A55085 /* RTSMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F5B1D62072400A55085 /* RTSMediaPlayerController.m */; };
 		E6FC7F911D62072400A55085 /* RTSMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F5E1D62072400A55085 /* RTSMediaPlayerViewController.h */; };
@@ -288,8 +286,6 @@
 		E6FC7F541D62072400A55085 /* RTSTimeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSTimeSlider.m; sourceTree = "<group>"; };
 		E6FC7F551D62072400A55085 /* RTSVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSVolumeView.h; sourceTree = "<group>"; };
 		E6FC7F561D62072400A55085 /* RTSVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSVolumeView.m; sourceTree = "<group>"; };
-		E6FC7F581D62072400A55085 /* RTSMediaPlayerController+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTSMediaPlayerController+Private.h"; sourceTree = "<group>"; };
-		E6FC7F591D62072400A55085 /* RTSMediaPlayerController+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTSMediaPlayerController+Private.m"; sourceTree = "<group>"; };
 		E6FC7F5A1D62072400A55085 /* RTSMediaPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerController.h; sourceTree = "<group>"; };
 		E6FC7F5B1D62072400A55085 /* RTSMediaPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaPlayerController.m; sourceTree = "<group>"; };
 		E6FC7F5C1D62072400A55085 /* RTSMediaPlayerSharedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaPlayerSharedController.h; sourceTree = "<group>"; };
@@ -615,8 +611,6 @@
 		E6FC7F571D62072400A55085 /* Player */ = {
 			isa = PBXGroup;
 			children = (
-				E6FC7F581D62072400A55085 /* RTSMediaPlayerController+Private.h */,
-				E6FC7F591D62072400A55085 /* RTSMediaPlayerController+Private.m */,
 				E6FC7F5A1D62072400A55085 /* RTSMediaPlayerController.h */,
 				E6FC7F5B1D62072400A55085 /* RTSMediaPlayerController.m */,
 				E6FC7F5C1D62072400A55085 /* RTSMediaPlayerSharedController.h */,
@@ -673,7 +667,6 @@
 				E6FC7F771D62072400A55085 /* NSBundle+RTSMediaPlayer.h in Headers */,
 				E6C9860A1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.h in Headers */,
 				E6FC7F751D62072400A55085 /* RTSPeriodicTimeObserver.h in Headers */,
-				E6FC7F8B1D62072400A55085 /* RTSMediaPlayerController+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -962,7 +955,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6FC7F781D62072400A55085 /* NSBundle+RTSMediaPlayer.m in Sources */,
-				E6FC7F8C1D62072400A55085 /* RTSMediaPlayerController+Private.m in Sources */,
 				E6FC7F741D62072400A55085 /* RTSMediaPlayerView.m in Sources */,
 				E6C9860B1D6F36C900C45C7A /* RTSMediaPlayerPlaybackButton.m in Sources */,
 				E6FC7F8E1D62072400A55085 /* RTSMediaPlayerController.m in Sources */,
@@ -1094,6 +1086,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1109,12 +1102,14 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MARKETING_VERSION = 2.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1127,6 +1122,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1142,11 +1138,13 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MARKETING_VERSION = 2.0;
 				SDKROOT = iphoneos;
