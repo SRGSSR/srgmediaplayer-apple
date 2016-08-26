@@ -20,8 +20,8 @@
 
 static void *s_kvoContext = &s_kvoContext;
 
-NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
-NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.0;		// same tolerance as built-in iOS player
+NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.;
+NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.;		// same tolerance as built-in iOS player
 
 NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
 NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
@@ -32,6 +32,7 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 @property (nonatomic, readonly) RTSMediaPlayerView *playerView;
 @property (nonatomic) RTSMediaPlaybackState playbackState;
 @property (nonatomic) NSMutableDictionary<NSString *, RTSPeriodicTimeObserver *> *periodicTimeObservers;
+@property (nonatomic) RTSActivityGestureRecognizer *activityGestureRecognizer;
 
 @end
 
@@ -41,6 +42,7 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 }
 
 @synthesize view = _view;
+@synthesize activityView = _activityView;
 
 #pragma mark Object lifecycle
 
@@ -49,6 +51,7 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 	if (self = [super init]) {
 		self.playbackState = RTSMediaPlaybackStateIdle;
 		self.periodicTimeObservers = [NSMutableDictionary dictionary];
+		self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
 	}
 	return self;
 }
@@ -129,6 +132,18 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 {
 	if (!_view) {
 		_view = [[RTSMediaPlayerView alloc] init];
+		
+		UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rts_handleDoubleTap:)];
+		doubleTapGestureRecognizer.numberOfTapsRequired = 2;
+		[_view addGestureRecognizer:doubleTapGestureRecognizer];
+		
+		UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rts_handleSingleTap:)];
+		[singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
+		[_view addGestureRecognizer:singleTapGestureRecognizer];
+		
+		if (!self.activityView) {
+			self.activityView = _view;
+		}
 	}
 	return _view;
 }
@@ -136,6 +151,23 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 - (RTSMediaPlayerView *)playerView
 {
 	return (RTSMediaPlayerView *)self.view;
+}
+
+- (void)setActivityView:(UIView *)activityView
+{
+	[_activityView removeGestureRecognizer:self.activityGestureRecognizer];
+	_activityView = activityView;
+	[activityView addGestureRecognizer:self.activityGestureRecognizer];
+}
+
+- (RTSActivityGestureRecognizer *)activityGestureRecognizer
+{
+	if (!_activityGestureRecognizer) {
+		_activityGestureRecognizer = [[RTSActivityGestureRecognizer alloc] initWithTarget:self action:@selector(rts_resetIdleTimer:)];
+		_activityGestureRecognizer.delegate = self;
+	}
+	
+	return _activityGestureRecognizer;
 }
 
 - (CMTimeRange)timeRange
@@ -335,6 +367,13 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 	return periodicTimeObserver;
 }
 
+#pragma mark UIGestureRecognizerDelegate protocols
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer;
+{
+	return [gestureRecognizer isKindOfClass:[RTSActivityGestureRecognizer class]];
+}
+
 #pragma mark Notifications
 
 - (void)rts_playerItemPlaybackStalled:(NSNotification *)notification
@@ -345,6 +384,34 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 - (void)rts_playerItemDidPlayToEnd:(NSNotification *)notification
 {
 	self.playbackState = RTSMediaPlaybackStateEnded;
+}
+
+#pragma mark Gesture recognizers
+
+- (void)rts_handleSingleTap:(UIGestureRecognizer *)gestureRecognizer
+{
+	NSLog(@"Single tap");
+}
+
+- (void)rts_handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer
+{
+	AVPlayerLayer *playerLayer = self.playerView.playerLayer;
+	
+	if (!playerLayer.isReadyForDisplay) {
+		return;
+	}
+	
+	if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
+		playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+	}
+	else {
+		playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+	}
+}
+
+- (void)rts_resetIdleTimer:(UIGestureRecognizer *)gestureRecognizer
+{
+	NSLog(@"Reset timer");
 }
 
 #pragma mark KVO

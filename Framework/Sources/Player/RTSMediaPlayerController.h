@@ -14,7 +14,7 @@
  *  `RTSMediaPlayerController` is inspired by the `MPMoviePlayerController` class.
  *
  *  A media player (of type `RTSMediaPlayerController`) manages the playback of a media from a file or a network stream.
- *  For maximum flexibility, you can incorporate a media player’s view into a view hierarchy owned by your app and have 
+ *  For maximum flexibility, you can incorporate a media player’s view into a view hierarchy owned by your app and have
  *  it managed by an `RTSMediaPlayerController` instance. If you just need a standard player with a view looking just
  *  like the standard iOS media player, you should simply instantiate an `RTSMediaPlayerViewController` which will manage
  *  the view for you.
@@ -59,7 +59,7 @@
  *  view hierarchy, use the `attachPlayerToView:` method.
  *
  *  This view has two gesture recognziers: a single tap gesture recognizer and a double tap gesture recognizer which
- *  toggle overlays visibility, respectively the video aspect between `AVLayerVideoGravityResizeAspectFill` and 
+ *  toggle overlays visibility, respectively the video aspect between `AVLayerVideoGravityResizeAspectFill` and
  *  `AVLayerVideoGravityResizeAspect`.
  *
  *  If you want to handle taps yourself, you can disable these gesture recognizers and add your own gesture recognizers.
@@ -75,6 +75,28 @@
  *  @name Overlay Views
  *  -------------------
  */
+
+/**
+ *  View on which user activity is detected (to prevent the UI overlays from being automatically hidden, see 'overlayViews' and
+ *  'overlayViewsHidingDelay')
+ */
+@property (nonatomic, weak) IBOutlet UIView *activityView;
+
+/**
+ *  A collection of views that will be shown / hidden automatically or manually when user interacts with the view.
+ */
+@property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
+
+/**
+ *  The delay after which the overlay views are hidden. Default to `RTSMediaPlayerOverlayHidingDelay` (5 sec).
+ *  Ignored if <= 0.0;
+ */
+@property (nonatomic) NSTimeInterval overlayViewsHidingDelay;
+
+/**
+ *  Return YES iff overlays are currently visible
+ */
+@property (nonatomic, readonly, getter=areOverlaysVisible) BOOL overlaysVisible;
 
 /**
  *  -------------------------
