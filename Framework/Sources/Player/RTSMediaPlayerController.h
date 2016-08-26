@@ -10,6 +10,8 @@
 
 #import "RTSMediaPlayerConstants.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  `RTSMediaPlayerController` is inspired by the `MPMoviePlayerController` class.
  *
@@ -70,7 +72,7 @@
 
 @property (nonatomic, readonly) RTSPlaybackState playbackState;
 
-@property (nonatomic, readonly) NSURL *contentURL;
+@property (nonatomic, readonly, nullable) NSURL *contentURL;
 
 /**
  *  -------------------
@@ -82,12 +84,12 @@
  *  View on which user activity is detected (to prevent the UI overlays from being automatically hidden, see 'overlayViews' and
  *  'overlayViewsHidingDelay')
  */
-@property (nonatomic, weak) IBOutlet UIView *activityView;
+@property (nonatomic, weak, nullable) IBOutlet UIView *activityView;
 
 /**
  *  A collection of views that will be shown / hidden automatically or manually when user interacts with the view.
  */
-@property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
+@property (nonatomic, nullable) IBOutletCollection(UIView) NSArray *overlayViews;
 
 /**
  *  The delay after which the overlay views are hidden. Default to `RTSMediaPlayerOverlayHidingDelay` (5 sec).
@@ -114,7 +116,7 @@
 
 - (void)togglePlayPause;
 
-- (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL finished))completionHandler;
+- (void)seekToTime:(CMTime)time completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 - (void)reset;
 
@@ -180,7 +182,7 @@
  *  @return The time observer. The observer is retained by the media player controller, you can store a weak reference
  *          to it and remove it at a later time if needed
  */
-- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
+- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
 
 /**
  *  Remove a time observer (does nothing if the observer is not registered)
@@ -206,6 +208,8 @@
 /**
  *  Return the picture in picture controller if available, nil otherwise
  */
-@property (nonatomic, readonly) AVPictureInPictureController *pictureInPictureController;
+@property (nonatomic, readonly, nullable) AVPictureInPictureController *pictureInPictureController;
 
 @end
+
+NS_ASSUME_NONNULL_END

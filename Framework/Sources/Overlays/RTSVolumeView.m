@@ -10,7 +10,7 @@
 
 @interface RTSVolumeView ()
 
-@property MPVolumeView *mpVolumeView;
+@property (nonatomic, weak) MPVolumeView *volumeView;
 
 @end
 
@@ -20,10 +20,11 @@
 
 - (void)awakeFromNib
 {
-    self.mpVolumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
-    self.mpVolumeView.showsRouteButton = NO;
-    self.mpVolumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self addSubview:self.mpVolumeView];
+    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
+    volumeView.showsRouteButton = NO;
+    volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:volumeView];
+    self.volumeView = volumeView;
 }
 
 #pragma mark Getters and setters
@@ -31,7 +32,7 @@
 - (void)setHidden:(BOOL)hidden
 {
     [super setHidden:hidden];
-    [self.mpVolumeView setHidden:hidden];
+    [self.volumeView setHidden:hidden];
 }
 
 @end

@@ -11,8 +11,8 @@
 - (UIImage *)rts_imageWithColor:(UIColor *)color
 {
     // Adjust bounds to account for extra space needed for lineWidth
-    CGFloat width = self.bounds.size.width + self.lineWidth * 2;
-    CGFloat height = self.bounds.size.height + self.lineWidth * 2;
+    CGFloat width = self.bounds.size.width + self.lineWidth * 2.f;
+    CGFloat height = self.bounds.size.height + self.lineWidth * 2.f;
     CGRect bounds = CGRectMake(self.bounds.origin.x, self.bounds.origin.y, width, height);
 
     UIView *view = [[UIView alloc] initWithFrame:bounds];

@@ -31,7 +31,7 @@ static void *s_kvoContext  = &s_kvoContext;
 {
     if (self = [super init]) {
         self.interval = interval;
-        self.queue = queue ? : dispatch_get_main_queue();
+        self.queue = queue ?: dispatch_get_main_queue();
         self.blocks = [NSMutableDictionary dictionary];
     }
     return self;

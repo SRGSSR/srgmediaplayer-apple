@@ -95,12 +95,12 @@
     UIImage *normalImage = nil;
     UIImage *highlightedImage = nil;
     if (isPlaying) {
-        normalImage = self.pauseImage ? : [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
-        highlightedImage = self.pauseImage ? : [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
+        normalImage = self.pauseImage ?: [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
+        highlightedImage = self.pauseImage ?: [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
     }
     else {
-        normalImage = self.playImage ? : [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.normalColor];
-        highlightedImage = self.playImage ? : [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.hightlightColor];
+        normalImage = self.playImage ?: [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.normalColor];
+        highlightedImage = self.playImage ?: [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.hightlightColor];
     }
     [self setImage:normalImage forState:UIControlStateNormal];
     [self setImage:highlightedImage forState:UIControlStateHighlighted];
