@@ -4,9 +4,9 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <UIKit/UIKit.h>
-
 #import "RTSMediaPlayerController.h"
+
+#import <UIKit/UIKit.h>
 
 /**
  *  View displaying playback errors. Simply install an instance somewhere onto your custom player interface and bind to

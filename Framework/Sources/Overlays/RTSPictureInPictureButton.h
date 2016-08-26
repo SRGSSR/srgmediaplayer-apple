@@ -4,16 +4,11 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "RTSMediaPlayerController.h"
+
 #import <UIKit/UIKit.h>
 
-// Forward declarations
-@class RTSMediaPlayerController;
-
-/**
- *  Standard button images for starting and stopping picture in picture
- */
-OBJC_EXTERN UIImage *RTSPictureInPictureButtonStartImage(void);
-OBJC_EXTERN UIImage *RTSPictureInPictureButtonStopImage(void);
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  A button to toggle picture in picture (if available) for the associated player. This class is not meant to be
@@ -23,7 +18,7 @@ OBJC_EXTERN UIImage *RTSPictureInPictureButtonStopImage(void);
  *  the button must be associated with. The button will be hidden automatically if picture in picture is not possible.
  *
  *  It is important that picture in picture is never enabled without user intervention, except when the system does
- *  it automatically from full-screen playback (this is controlled by a system setting). Apple might reject your 
+ *  it automatically from full-screen playback (this is controlled by a system setting). Apple might reject your
  *  application otherwise.
  */
 @interface RTSPictureInPictureButton : UIButton
@@ -34,3 +29,5 @@ OBJC_EXTERN UIImage *RTSPictureInPictureButtonStopImage(void);
 @property (nonatomic, weak) IBOutlet RTSMediaPlayerController *mediaPlayerController;
 
 @end
+
+NS_ASSUME_NONNULL_END

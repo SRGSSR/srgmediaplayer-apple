@@ -4,7 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "RTSMediaPlayerController.h"
 #import "RTSMediaFailureOverlayView.h"
 
 @implementation RTSMediaFailureOverlayView
