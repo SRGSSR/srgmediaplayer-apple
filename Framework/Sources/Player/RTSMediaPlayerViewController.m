@@ -24,9 +24,6 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @property (nonatomic) NSURL *contentURL;
 
-@property (nonatomic, weak) IBOutlet UIView *navigationBarView;
-@property (nonatomic, weak) IBOutlet UIView *bottomBarView;
-
 @property (nonatomic, weak) IBOutlet RTSPictureInPictureButton *pictureInPictureButton;
 @property (nonatomic, weak) IBOutlet RTSPlaybackActivityIndicatorView *playbackActivityIndicatorView;
 
@@ -40,6 +37,8 @@ static RTSMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @property (weak) IBOutlet NSLayoutConstraint *valueLabelWidthConstraint;
 @property (weak) IBOutlet NSLayoutConstraint *timeLeftValueLabelWidthConstraint;
+
+@property (nonatomic, weak) IBOutletCollection(UIView) NSArray *overlayViews;
 
 @end
 
