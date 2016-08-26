@@ -24,8 +24,19 @@ NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.;
 NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.;		// same tolerance as built-in iOS player
 
 NSString * const RTSMediaPlayerErrorDomain = @"ch.srgssr.SRGMediaPlayer";
-NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChange";
+
+NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChangeNotification";
+NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFailNotification";
+
 NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlayerPreviousPlaybackState";
+NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey = @"RTSMediaPlayerPlaybackError";
+
+static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
+{
+	NSCParameterAssert(underlyingError);
+	return [NSError errorWithDomain:RTSMediaPlayerErrorDomain code:RTSMediaPlayerErrorPlayback userInfo:@{ NSLocalizedDescriptionKey : RTSMediaPlayerLocalizedString(@"The media cannot be played", nil),
+																										   NSUnderlyingErrorKey : underlyingError }];
+}
 
 @interface RTSMediaPlayerController ()
 
@@ -78,6 +89,9 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 		[[NSNotificationCenter defaultCenter] removeObserver:self
 														name:AVPlayerItemDidPlayToEndTimeNotification
 													  object:previousPlayer.currentItem];
+		[[NSNotificationCenter defaultCenter] removeObserver:self
+														name:AVPlayerItemFailedToPlayToEndTimeNotification
+													  object:previousPlayer.currentItem];
 	}
 	
 	self.playerView.playerLayer.player = player;
@@ -99,8 +113,12 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 													 name:AVPlayerItemPlaybackStalledNotification
 												   object:player.currentItem];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(rts_playerItemDidPlayToEnd:)
+												 selector:@selector(rts_playerItemDidPlayToEndTime:)
 													 name:AVPlayerItemDidPlayToEndTimeNotification
+												   object:player.currentItem];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(rts_playerItemFailedToPlayToEndTime:)
+													 name:AVPlayerItemFailedToPlayToEndTimeNotification
 												   object:player.currentItem];
 	}
 }
@@ -112,7 +130,7 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 
 - (void)setPlaybackState:(RTSMediaPlaybackState)playbackState
 {
-	NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes are notified on the main thread");
+	NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes must be notified on the main thread. Fix");
 	
 	if (_playbackState == playbackState) {
 		return;
@@ -369,7 +387,7 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 
 #pragma mark UIGestureRecognizerDelegate protocols
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer;
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
 	return [gestureRecognizer isKindOfClass:[RTSActivityGestureRecognizer class]];
 }
@@ -381,9 +399,19 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 	self.playbackState = RTSMediaPlaybackStateStalled;
 }
 
-- (void)rts_playerItemDidPlayToEnd:(NSNotification *)notification
+- (void)rts_playerItemDidPlayToEndTime:(NSNotification *)notification
 {
 	self.playbackState = RTSMediaPlaybackStateEnded;
+}
+
+- (void)rts_playerItemFailedToPlayToEndTime:(NSNotification *)notification
+{
+	self.playbackState = RTSMediaPlaybackStateIdle;
+	
+	NSError *error = RTSMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
+	[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackDidFailNotification
+														object:self
+													  userInfo:@{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey : error }];
 }
 
 #pragma mark Gesture recognizers
@@ -428,21 +456,32 @@ NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlay
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
+	NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes must be notified on the main thread. Fix");
+	
 	// TODO: Warning: Might not be executed on the main thread!
 	if (context == s_kvoContext) {
 		NSLog(@"KVO change for %@ with change %@", keyPath, change);
 		
 		// If the rate or the item status changes, calculate the new playback status
 		if ([keyPath isEqualToString:@"currentItem.status"] || [keyPath isEqualToString:@"rate"]) {
+			AVPlayerItem *playerItem = self.player.currentItem;
+			
 			// Do not let playback pause when the player stalls, attempt to play again
 			if (self.player.rate == 0.f && self.playbackState == RTSMediaPlaybackStateStalled) {
 				[self.player play];
 			}
-			else if (self.player.currentItem && self.player.currentItem.status == AVPlayerStatusReadyToPlay) {
+			else if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
 				self.playbackState = (self.player.rate == 0.f) ? RTSMediaPlaybackStatePaused : RTSMediaPlaybackStatePlaying;
 			}
 			else {
 				self.playbackState = RTSMediaPlaybackStateIdle;
+				
+				if (playerItem.status == AVPlayerItemStatusFailed) {
+					NSError *error = RTSMediaPlayerControllerError(playerItem.error);
+					[[NSNotificationCenter defaultCenter] postNotificationName:RTSMediaPlayerPlaybackDidFailNotification
+																		object:self
+																	  userInfo:@{ RTSMediaPlayerPlaybackDidFailErrorUserInfoKey : error }];
+				}
 			}
 		}
 	}

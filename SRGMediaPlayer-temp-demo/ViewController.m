@@ -31,9 +31,20 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)setPlayerController:(RTSMediaPlayerController *)playerController
 {
-	[_playerController removeObserver:self forKeyPath:@"playbackState"];
+	if (_playerController) {
+		[_playerController removeObserver:self forKeyPath:@"playbackState"];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:RTSMediaPlayerPlaybackDidFailNotification object:_playerController];
+	}
+	
 	_playerController = playerController;
-	[playerController addObserver:self forKeyPath:@"playbackState" options:0 context:s_kvoContext];
+	
+	if (playerController) {
+		[playerController addObserver:self forKeyPath:@"playbackState" options:0 context:s_kvoContext];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(playbackDidFail:)
+													 name:RTSMediaPlayerPlaybackDidFailNotification
+												   object:playerController];
+	}
 }
 
 - (void)viewDidLoad
@@ -49,7 +60,7 @@ static void *s_kvoContext = &s_kvoContext;
 	self.playerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view insertSubview:self.playerController.view atIndex:0];
 	
-	[self.playerController playURL:[NSURL URLWithString:@"http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4"]];
+	[self.playerController playURL:[NSURL URLWithString:@"http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp6"]];
 }
 
 - (IBAction)togglePlayPause:(id)sender
@@ -72,6 +83,14 @@ static void *s_kvoContext = &s_kvoContext;
 	else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
+}
+
+- (void)playbackDidFail:(NSNotification *)notification
+{
+	NSError *error = notification.userInfo[RTSMediaPlayerPlaybackDidFailErrorUserInfoKey];
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+	[alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+	[self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end
