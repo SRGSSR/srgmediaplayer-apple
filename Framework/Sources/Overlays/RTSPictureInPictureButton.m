@@ -9,8 +9,6 @@
 #import "NSBundle+RTSMediaPlayer.h"
 #import "RTSMediaPlayerController.h"
 
-extern NSString * const RTSMediaPlayerPictureInPictureStateChangeNotification;
-
 static void commonInit(RTSPictureInPictureButton *self);
 
 @implementation RTSPictureInPictureButton

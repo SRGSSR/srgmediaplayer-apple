@@ -20,15 +20,7 @@
 
 static void *s_kvoContext = &s_kvoContext;
 
-NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.;
-NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.;		// same tolerance as built-in iOS player
-
-NSString * const RTSMediaPlayerPlaybackStateDidChangeNotification = @"RTSMediaPlayerPlaybackStateDidChangeNotification";
-NSString * const RTSMediaPlayerPlaybackDidFailNotification = @"RTSMediaPlayerPlaybackDidFailNotification";
-NSString * const RTSMediaPlayerPictureInPictureStateChangeNotification = @"RTSMediaPlayerPictureInPictureStateChangeNotification";
-
-NSString * const RTSMediaPlayerPreviousPlaybackStateUserInfoKey = @"RTSMediaPlayerPreviousPlaybackState";
-NSString * const RTSMediaPlayerPlaybackDidFailErrorUserInfoKey = @"RTSMediaPlayerPlaybackError";
+static NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.;
 
 static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 {
