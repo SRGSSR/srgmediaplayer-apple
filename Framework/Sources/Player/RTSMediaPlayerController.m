@@ -320,6 +320,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 	
 	AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
 	self.player = [AVPlayer playerWithPlayerItem:playerItem];
+    [self.player play];
 }
 
 - (void)togglePlayPause
