@@ -37,7 +37,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic) NSMutableDictionary<NSString *, RTSPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) RTSActivityGestureRecognizer *activityGestureRecognizer;
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
-@property (nonatomic, getter = areOverlaysVisible) BOOL overlaysVisible;
+@property (nonatomic, getter=areOverlaysVisible) BOOL overlaysVisible;
 
 @property (nonatomic) NSValue *startTimeValue;
 @property (nonatomic, copy) void (^startCompletionHandler)(BOOL finished);

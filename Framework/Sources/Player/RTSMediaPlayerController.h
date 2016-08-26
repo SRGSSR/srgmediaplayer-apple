@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return YES iff overlays are currently visible
  */
-@property (nonatomic, readonly, getter = areOverlaysVisible) BOOL overlaysVisible;
+@property (nonatomic, readonly, getter=areOverlaysVisible) BOOL overlaysVisible;
 
 /**
  *  -------------------------
@@ -146,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return YES iff the stream is currently played in live conditions
  */
-@property (nonatomic, readonly, getter = isLive) BOOL live;
+@property (nonatomic, readonly, getter=isLive) BOOL live;
 
 /**
  *  The minimum window length which must be available for a stream to be considered to be a DVR stream, in seconds. The
