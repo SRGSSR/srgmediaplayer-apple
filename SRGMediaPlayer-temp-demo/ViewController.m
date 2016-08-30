@@ -109,7 +109,7 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (IBAction)seek:(id)sender
 {
-	[self.playerController seekToTime:CMTimeAdd(self.playerController.player.currentTime, CMTimeMakeWithSeconds(10, 1)) completionHandler:^(BOOL finished) {
+	[self.playerController seekToTime:CMTimeAdd(self.playerController.player.currentTime, CMTimeMakeWithSeconds(10, 1)) withCompletionHandler:^(BOOL finished) {
 		NSLog(@"Finished: %@", finished ? @"YES" : @"NO");
 	}];
 }

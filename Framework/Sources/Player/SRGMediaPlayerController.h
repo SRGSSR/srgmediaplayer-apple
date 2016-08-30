@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)togglePlayPause;
 
-- (void)seekToTime:(CMTime)time completionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)seekToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;;
 
 - (void)reset;

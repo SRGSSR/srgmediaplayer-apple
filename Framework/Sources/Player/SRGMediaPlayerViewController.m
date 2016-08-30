@@ -296,7 +296,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         return;
     }
     
-    [s_mediaPlayerController seekToTime:CMTimeRangeGetEnd(timeRange) completionHandler:^(BOOL finished) {
+    [s_mediaPlayerController seekToTime:CMTimeRangeGetEnd(timeRange) withCompletionHandler:^(BOOL finished) {
         if (finished) {
             [s_mediaPlayerController togglePlayPause];
         }

@@ -344,7 +344,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     }
 }
 
-- (void)seekToTime:(CMTime)time completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToTime:(CMTime)time withCompletionHandler:(void (^)(BOOL))completionHandler
 {
     if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
         completionHandler ? completionHandler(NO) : nil;
@@ -362,7 +362,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
 {
     CMTime time = [segment timeRange].start;
-    [self seekToTime:time completionHandler:completionHandler];
+    [self seekToTime:time withCompletionHandler:completionHandler];
 }
 
 - (void)reset

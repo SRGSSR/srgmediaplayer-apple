@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SRGSegment <NSObject>
 
 @property (nonatomic, readonly) CMTimeRange timeRange;
-@property (nonatomic, readonly, getter=isBlocked) BOOL blocked;
+@property (nonatomic, readonly, getter = isBlocked) BOOL blocked;
 
 @end
 
