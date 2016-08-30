@@ -7,6 +7,8 @@
 #import "SRGMediaPlayerController.h"
 #import "SRGTimeSlider.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 // Forward declarations
 @protocol SRGTimelineSliderDelegate;
 
@@ -24,7 +26,7 @@
 /**
  *  The slider delegate
  */
-@property (nonatomic, weak) IBOutlet id<SRGTimelineSliderDelegate> delegate;
+@property (nonatomic, weak, nullable) IBOutlet id<SRGTimelineSliderDelegate> delegate;
 
 - (void)reloadData;
 
@@ -44,3 +46,5 @@
 - (UIImage *)timelineSlider:(SRGTimelineSlider *)timelineSlider iconImageForSegment:(id<SRGSegment>)segment;
 
 @end
+
+NS_ASSUME_NONNULL_END

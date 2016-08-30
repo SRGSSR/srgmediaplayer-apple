@@ -10,6 +10,8 @@
 
 @implementation SRGMediaPlayerSharedController
 
+#pragma mark AVPictureInPictureControllerDelegate protocol
+
 - (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
     // SRGMediaPlayerViewController is always displayed modally, the following therefore always works
@@ -56,7 +58,7 @@
 
 - (AVPictureInPictureController *)pictureInPictureController
 {
-    // Lazily installs itself as delegate, in case the pictue in picture controller gets recreated
+    // Lazily installs itself as delegate, in case the picture in picture controller gets recreated
     AVPictureInPictureController *pictureInPictureController = super.pictureInPictureController;
     if (! pictureInPictureController.delegate) {
         pictureInPictureController.delegate = self;

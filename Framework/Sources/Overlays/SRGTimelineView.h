@@ -31,12 +31,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The controller to which the timeline is attached
  */
-@property (nonatomic, weak) IBOutlet SRGMediaPlayerController *mediaPlayerController;
+@property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
  *  The timeline delegate
  */
-@property (nonatomic, weak) IBOutlet id<SRGTimelineViewDelegate> delegate;
+@property (nonatomic, weak, nullable) IBOutlet id<SRGTimelineViewDelegate> delegate;
 
 /**
  *  The width of cells within the timeline. Defaults to 60
@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Return the list of currently visible cells
  */
-- (NSArray *)visibleCells;
+- (NSArray<__kindof UICollectionViewCell *> *)visibleCells;
 
 /**
  *  Scroll to make the specified segment visible (does nothing if the segment does not belong to the visible segments

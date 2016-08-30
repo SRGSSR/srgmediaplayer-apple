@@ -6,6 +6,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  `SRGMediaPlayerViewController` is inspired by the `MPMoviePlayerViewController` class, and intends to provide a full-screen
  *  standard media player looking like the default iOS media player.
@@ -23,3 +25,5 @@
 @property (nonatomic, readonly) NSURL *contentURL;
 
 @end
+
+NS_ASSUME_NONNULL_END

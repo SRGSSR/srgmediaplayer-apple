@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  target if any activity is detected
  */
 @interface SRGActivityGestureRecognizer : UIGestureRecognizer
+
 @end
 
 NS_ASSUME_NONNULL_END

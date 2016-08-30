@@ -6,6 +6,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIBezierPath (SRGMediaPlayer)
 
 /**
@@ -16,3 +18,5 @@
 - (UIImage *)srg_imageWithColor:(UIColor *)color;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -152,7 +152,7 @@ static void commonInit(SRGTimelineView *self);
     }];
 }
 
-- (NSArray *)visibleCells
+- (NSArray<UICollectionViewCell *> *)visibleCells
 {
     return self.collectionView.visibleCells;
 }

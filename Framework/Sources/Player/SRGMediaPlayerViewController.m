@@ -76,13 +76,13 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithContentURL:nil];
+    return [self initWithContentURL:[NSURL URLWithString:@""]];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithContentURL:nil];
+    return [self initWithContentURL:[NSURL URLWithString:@""]];
 }
 
 - (void)dealloc
