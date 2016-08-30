@@ -132,26 +132,6 @@ static void commonInit(SRGTimelineView *self);
 
 #pragma mark Visible cells
 
-// The -[UICollectionView indexPathsForVisibleCells] method is not reliable enough. Ask the layout instead
-- (NSArray *)indexPathsForVisibleCells
-{
-    CGRect contentFrame = CGRectMake(self.collectionView.contentOffset.x,
-                                     self.collectionView.contentOffset.y,
-                                     CGRectGetWidth(self.collectionView.frame),
-                                     CGRectGetHeight(self.collectionView.frame));
-    
-    NSArray *layoutAttributesArray = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:contentFrame];
-    
-    NSMutableArray *indexPaths = [NSMutableArray array];
-    for (UICollectionViewLayoutAttributes *layoutAttributes in layoutAttributesArray) {
-        [indexPaths addObject:layoutAttributes.indexPath];
-    }
-    
-    return [indexPaths sortedArrayUsingComparator:^(NSIndexPath *indexPath1, NSIndexPath *indexPath2) {
-        return [indexPath1 compare:indexPath2];
-    }];
-}
-
 - (NSArray<UICollectionViewCell *> *)visibleCells
 {
     return self.collectionView.visibleCells;
@@ -175,7 +155,7 @@ static void commonInit(SRGTimelineView *self);
 
 @end
 
-#pragma mark - Functions
+#pragma mark Static functions
 
 static void commonInit(SRGTimelineView *self)
 {

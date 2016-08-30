@@ -102,7 +102,7 @@ static void commonInit(SRGTimelineSlider *self);
     [self setNeedsDisplay];
 }
 
-#pragma mark - Gestures
+#pragma mark Gestures
 
 - (void)seekOnTap:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -119,6 +119,8 @@ static void commonInit(SRGTimelineSlider *self);
 }
 
 @end
+
+#pragma mark Static functions
 
 static void commonInit(SRGTimelineSlider *self)
 {

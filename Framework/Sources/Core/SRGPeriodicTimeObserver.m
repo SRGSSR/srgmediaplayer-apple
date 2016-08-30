@@ -22,6 +22,8 @@ static void *s_kvoContext  = &s_kvoContext;
 
 @implementation SRGPeriodicTimeObserver
 
+#pragma mark Object lifecycle
+
 - (instancetype)init
 {
     return [self initWithInterval:CMTimeMakeWithSeconds(1, NSEC_PER_SEC) queue:NULL];
@@ -42,7 +44,7 @@ static void *s_kvoContext  = &s_kvoContext;
     [self removeObserver];
 }
 
-#pragma mark - Associating with a player
+#pragma mark Associating with a player
 
 - (void)attachToMediaPlayer:(AVPlayer *)player
 {
@@ -61,7 +63,7 @@ static void *s_kvoContext  = &s_kvoContext;
     self.player = nil;
 }
 
-#pragma mark - Managing blocks
+#pragma mark Managing blocks
 
 - (void)setBlock:(void (^)(CMTime time))block forIdentifier:(NSString *)identifier
 {
@@ -81,7 +83,7 @@ static void *s_kvoContext  = &s_kvoContext;
     }
 }
 
-#pragma mark - Observers
+#pragma mark Observers
 
 - (void)startObserver
 {
@@ -96,6 +98,14 @@ static void *s_kvoContext  = &s_kvoContext;
                                                  repeats:YES];
 }
 
+- (void)removeObserver
+{
+    [self.timer invalidate];
+    self.timer = nil;
+}
+
+#pragma mark Timers
+
 - (void)timerTick:(NSTimer *)timer
 {
     if (! self.player) {    // It may have disappeared, as it is a weak property
@@ -108,12 +118,6 @@ static void *s_kvoContext  = &s_kvoContext;
             block(self.player.currentTime);
         });
     }
-}
-
-- (void)removeObserver
-{
-    [self.timer invalidate];
-    self.timer = nil;
 }
 
 @end

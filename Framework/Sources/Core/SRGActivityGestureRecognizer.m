@@ -24,25 +24,25 @@
 
 #pragma mark UIGestureRecognizer subclassing hooks
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self stopReportingOngoingActivity];
     [self reportOngoingActivity];
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     self.state = UIGestureRecognizerStateChanged;
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     // The MPActivityGestureRecognizer does it a bit differently, see -[MPActivityGestureRecognizer _touchesTerminated:withEvent:]
     [self stopReportingOngoingActivity];
     self.state = UIGestureRecognizerStateEnded;
 }
 
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self stopReportingOngoingActivity];
     self.state = UIGestureRecognizerStateCancelled;

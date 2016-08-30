@@ -416,6 +416,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 @end
 
+#pragma mark Static functions
+
 static void commonInit(SRGTimeSlider *self)
 {
     self.borderColor = nil;                     // Default color

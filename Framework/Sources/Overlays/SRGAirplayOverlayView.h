@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Attributes for the 'Airplay' title. If not implemented, a default style will be applied (bold system font, white,
  *  centered, 14 pts)
  */
-- (nullable NSDictionary *)airplayOverlayViewTitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView;
+- (nullable NSDictionary<NSString *, id> *)airplayOverlayViewTitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView;
 
 /**
  *  Lets you customize how the subtitle displaying the route name is displayed. If not implemented, a default message
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Attributes for the route subtitle. If not implemented, a default style will be applied (system font, light gray,
  *  centered, 12 pts)
  */
-- (nullable NSDictionary *)airplayOverlayViewSubtitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView;
+- (nullable NSDictionary<NSString *, id> *)airplayOverlayViewSubtitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView;
 
 @end
 
