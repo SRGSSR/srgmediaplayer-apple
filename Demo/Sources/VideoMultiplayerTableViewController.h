@@ -6,6 +6,10 @@
 
 #import "BaseTableViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VideoMultiplayerTableViewController : BaseTableViewController
 
 @end
+
+NS_ASSUME_NONNULL_END

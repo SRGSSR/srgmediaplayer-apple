@@ -7,8 +7,10 @@
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <UIKit/UIKit.h>
 
-@interface VideoSegmentsPlayerViewController : UIViewController <SRGTimelineSliderDelegate, RTSSegmentedTimelineViewDelegate>
+NS_ASSUME_NONNULL_BEGIN
 
-@property (nonatomic, copy) NSString *videoIdentifier;
+@interface VideoSegmentsPlayerViewController : UIViewController <SRGTimelineSliderDelegate, SRGTimelineViewDelegate, SRGTimeSliderDelegate>
 
 @end
+
+NS_ASSUME_NONNULL_END

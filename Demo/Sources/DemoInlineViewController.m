@@ -11,7 +11,7 @@
 @interface DemoInlineViewController ()
 
 @property (nonatomic, weak) IBOutlet UIView *videoContainerView;
-@property (nonatomic, weak) IBOutlet SRGMediaPlayerController *mediaPlayerController;
+@property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
 
 @end
 

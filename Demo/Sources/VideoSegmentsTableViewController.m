@@ -6,7 +6,6 @@
 
 #import "VideoSegmentsTableViewController.h"
 #import "VideoSegmentsPlayerViewController.h"
-#import "PseudoILDataProvider.h"
 
 @implementation VideoSegmentsTableViewController
 

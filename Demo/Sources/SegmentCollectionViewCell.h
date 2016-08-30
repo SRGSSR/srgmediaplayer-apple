@@ -4,14 +4,19 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "Segment.h"
+
 #import <CoreMedia/CoreMedia.h>
 #import <UIKit/UIKit.h>
-#import "Segment.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface SegmentCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, strong) Segment *segment;
+@property (nonatomic, nullable) Segment *segment;
 
-- (void)updateAppearanceWithTime:(CMTime)time identifier:(NSString *)identifier;
+- (void)updateAppearanceWithTime:(CMTime)time;
 
 @end
+
+NS_ASSUME_NONNULL_END

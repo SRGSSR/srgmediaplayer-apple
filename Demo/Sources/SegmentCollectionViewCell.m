@@ -4,7 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <WebImage/WebImage.h>
 #import "SegmentCollectionViewCell.h"
 
 @interface SegmentCollectionViewCell ()
@@ -19,7 +18,7 @@
 
 @implementation SegmentCollectionViewCell
 
-#pragma mark - Getters and setters
+#pragma mark Getters and setters
 
 - (void)setSegment:(Segment *)segment
 {
@@ -36,12 +35,11 @@
     }
 
     self.timestampLabel.text = segment.timestampString;
-    [self.imageView sd_setImageWithURL:segment.thumbnailURL];
 
-    self.alpha = (segment.isBlocked) ? 0.5 : 1.0;
+    self.alpha = (segment.isBlocked) ? 0.5f : 1.f;
 }
 
-#pragma mark - Overrides
+#pragma mark Overrides
 
 - (void)prepareForReuse
 {
@@ -49,10 +47,12 @@
     self.progressView.progress = 0.f;
 }
 
-#pragma mark - UI
+#pragma mark UI
 
-- (void)updateAppearanceWithTime:(CMTime)time identifier:(NSString *)identifier
+- (void)updateAppearanceWithTime:(CMTime)time
 {
+    // TODO: FIXME
+#if 0
     if ([self.segment.segmentIdentifier isEqualToString:identifier]) {
         CMTimeRange r = self.segment.timeRange;
         float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(r.start)) / (CMTimeGetSeconds(CMTimeAdd(r.start, r.duration)) - CMTimeGetSeconds(r.start));
@@ -65,6 +65,7 @@
         self.progressView.progress = 0.;
         self.backgroundColor = [UIColor blackColor];
     }
+#endif
 }
 
 @end
