@@ -374,8 +374,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
 {
-    [self unregisterTimeObservers];
-    
     for (SRGPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
         [playbackBlockRegistration attachToMediaPlayer:player];
     }
@@ -413,6 +411,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (void)unregisterTimeObservers
 {
     [self.player removeTimeObserver:self.segmentPeriodicTimeObserver];
+    self.segmentPeriodicTimeObserver = nil;
     
     for (SRGPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
         [playbackBlockRegistration detachFromMediaPlayer];
