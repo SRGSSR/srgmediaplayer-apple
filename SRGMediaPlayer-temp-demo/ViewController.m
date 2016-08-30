@@ -12,6 +12,7 @@
 
 @interface Segment : NSObject <SRGSegment>
 
+@property (nonatomic, copy) NSString *name;
 @property (nonatomic) CMTimeRange timeRange;
 @property (nonatomic, getter=isBlocked) BOOL blocked;
 
@@ -77,8 +78,14 @@ static void *s_kvoContext = &s_kvoContext;
     NSMutableArray<Segment *> *segments = [NSMutableArray array];
     
     Segment *segment1 = [[Segment alloc] init];
+    segment1.name = @"Segment 1";
     segment1.timeRange = CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
     [segments addObject:segment1];
+    
+    Segment *segment2 = [[Segment alloc] init];
+    segment2.name = @"Segment 2";
+    segment2.timeRange = CMTimeRangeMake(CMTimeMakeWithSeconds(15., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC));
+    [segments addObject:segment2];
 	
 	self.playerController = [[SRGMediaPlayerController alloc] init];
 	self.playerButton.mediaPlayerController = self.playerController;
@@ -134,12 +141,12 @@ static void *s_kvoContext = &s_kvoContext;
 
 - (void)segmentDidStart:(NSNotification *)notification
 {
-    NSLog(@"Segment did start");
+    NSLog(@"Segment did start: %@", [notification.userInfo[SRGMediaPlayerSegmentKey] name]);
 }
 
 - (void)segmentDidEnd:(NSNotification *)notification
 {
-    NSLog(@"Segment did stop");
+    NSLog(@"Segment did stop: %@", [notification.userInfo[SRGMediaPlayerSegmentKey] name]);
 }
 
 @end
