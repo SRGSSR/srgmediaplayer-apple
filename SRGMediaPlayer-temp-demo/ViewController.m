@@ -121,6 +121,14 @@ static void *s_kvoContext = &s_kvoContext;
 	[self presentViewController:mediaPlayerViewController animated:YES completion:nil];
 }
 
+- (IBAction)firstSegment:(id)sender
+{
+    id<SRGSegment> segment = self.playerController.segments.firstObject;
+    [self.playerController seekToSegment:segment withCompletionHandler:^(BOOL finished) {
+        NSLog(@"Did seek");
+    }];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
 	if (context == s_kvoContext) {

@@ -361,7 +361,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
 {
-
+    CMTime time = [segment timeRange].start;
+    [self seekToTime:time completionHandler:completionHandler];
 }
 
 - (void)reset
