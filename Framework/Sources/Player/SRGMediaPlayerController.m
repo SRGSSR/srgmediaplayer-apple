@@ -36,6 +36,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) id segmentPeriodicTimeObserver;
 
+@property (nonatomic) id<SRGSegment> previousSegment;
+
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
 @property (nonatomic) NSValue *startTimeValue;
@@ -382,7 +384,29 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     self.segmentPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         
+        __block id<SRGSegment> segment = nil;
+        [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (CMTimeRangeContainsTime(segment.timeRange, time)) {
+                segment = segment;
+                *stop = YES;
+            }
+        }];
         
+        if (self.previousSegment != segment) {
+            if (self.previousSegment) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
+                                                                    object:self
+                                                                  userInfo:@{ SRGMediaPlayerSegmentKey : self.previousSegment }];
+            }
+            
+            if (segment) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
+                                                                    object:self
+                                                                  userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
+            }
+            
+            self.previousSegment = segment;
+        }
     }];
 }
 
