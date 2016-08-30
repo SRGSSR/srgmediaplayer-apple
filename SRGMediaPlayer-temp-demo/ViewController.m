@@ -33,17 +33,29 @@ static void *s_kvoContext = &s_kvoContext;
 {
 	if (_playerController) {
 		[_playerController removeObserver:self forKeyPath:@"playbackState"];
+        
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:SRGMediaPlayerPlaybackDidFailNotification object:_playerController];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:SRGMediaPlayerSegmentDidStartNotification object:_playerController];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:SRGMediaPlayerSegmentDidEndNotification object:_playerController];
 	}
 	
 	_playerController = playerController;
 	
 	if (playerController) {
 		[playerController addObserver:self forKeyPath:@"playbackState" options:0 context:s_kvoContext];
+        
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(playbackDidFail:)
 													 name:SRGMediaPlayerPlaybackDidFailNotification
 												   object:playerController];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(segmentDidStart:)
+                                                     name:SRGMediaPlayerSegmentDidStartNotification
+                                                   object:playerController];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(segmentDidEnd:)
+                                                     name:SRGMediaPlayerSegmentDidEndNotification
+                                                   object:playerController];
 	}
 }
 
@@ -101,6 +113,16 @@ static void *s_kvoContext = &s_kvoContext;
 	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
 	[alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
 	[self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)segmentDidStart:(NSNotification *)notification
+{
+    NSLog(@"Segment did start");
+}
+
+- (void)segmentDidEnd:(NSNotification *)notification
+{
+    NSLog(@"Segment did stop");
 }
 
 @end
