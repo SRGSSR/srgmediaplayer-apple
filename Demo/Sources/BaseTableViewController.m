@@ -13,22 +13,25 @@
 #import "DemoMultiPlayersViewController.h"
 #import "VideoTimeshiftPlayerViewController.h"
 
-@interface BaseTableViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface BaseTableViewController ()
 
-@property (nonatomic, strong) NSArray *media;
-@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+@property (nonatomic) NSArray *medias;
+@property (nonatomic) NSIndexPath *selectedIndexPath;
 
 @end
 
 @implementation BaseTableViewController
 
+#pragma mark View lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 }
 
-#pragma mark - Data
+#pragma mark Data
 
 - (NSString *)mediaURLPath
 {
@@ -47,12 +50,12 @@
 
 - (NSArray *)media
 {
-    if (! _media) {
+    if (! _medias) {
         NSDictionary *mediaURLs = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle bundleForClass:self.class] pathForResource:[self mediaURLPath] ofType:@"plist"]];
-        _media = mediaURLs[[self mediaURLKey]];
+        _medias = mediaURLs[[self mediaURLKey]];
     }
 
-    return _media;
+    return _medias;
 }
 
 - (NSURL *)URLForSelectedMedia
@@ -61,7 +64,7 @@
         return nil;
     }
 
-    NSDictionary *media = [self.media objectAtIndex:self.selectedIndexPath.row];
+    NSDictionary *media = [self.medias objectAtIndex:self.selectedIndexPath.row];
     return [NSURL URLWithString:media[@"url"]];
 }
 
@@ -72,7 +75,7 @@
     }
 
     NSMutableArray *urls = [NSMutableArray new];
-    NSDictionary *media = [self.media objectAtIndex:self.selectedIndexPath.row];
+    NSDictionary *media = [self.medias objectAtIndex:self.selectedIndexPath.row];
     for (NSString *urlString in media[@"urls"]) {
         NSURL *url = [NSURL URLWithString:urlString];
         if (url) {
@@ -83,7 +86,7 @@
     return [urls copy];
 }
 
-#pragma mark - Navigation
+#pragma mark Navigation
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
@@ -107,7 +110,7 @@
     }
 }
 
-#pragma mark - UITableViewDataSource
+#pragma mark UITableViewDataSource protocol
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -121,7 +124,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? self.media.count : self.actionCellIdentifiers.count;
+    return section == 0 ? self.medias.count : self.actionCellIdentifiers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -134,12 +137,41 @@
     }
 }
 
+#pragma mark UITableViewDelegate protocoél
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.section == 0) {
+        self.selectedIndexPath = indexPath;
+        [tableView reloadData];
+    }
+    else {
+        NSString *identifier = self.actionCellIdentifiers[indexPath.row];
+        NSURL *contentURL = [self URLForSelectedMedia];
+        
+        if (! contentURL) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please select a media" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        else if ([identifier isEqualToString:@"CellDefaultIOS"]) {
+            MPMoviePlayerViewController *moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:contentURL];
+            [self presentMoviePlayerViewControllerAnimated:moviePlayerViewController];
+        }
+        else if ([identifier isEqualToString:@"CellDefaultRTS"]) {
+            SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:contentURL];
+            [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
+        }
+    }
+}
+
 #pragma mark Cells
 
 - (UITableViewCell *)configureMediaCellAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    NSDictionary *media = [self.media objectAtIndex:indexPath.row];
+    NSDictionary *media = [self.medias objectAtIndex:indexPath.row];
     cell.textLabel.text = media[@"name"];
     cell.accessoryType = [indexPath isEqual:self.selectedIndexPath] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     return cell;
@@ -155,35 +187,6 @@
         cell.textLabel.textColor = [UIColor colorWithRed:0.700 green:0.408 blue:0.015 alpha:1.000];
     }
     return cell;
-}
-
-#pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    if (indexPath.section == 0) {
-        self.selectedIndexPath = indexPath;
-        [tableView reloadData];
-    }
-    else {
-        NSString *identifier = self.actionCellIdentifiers[indexPath.row];
-        NSURL *contentURL = [self URLForSelectedMedia];
-
-        if (! contentURL) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please select a media" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
-        else if ([identifier isEqualToString:@"CellDefaultIOS"]) {
-            MPMoviePlayerViewController *moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:contentURL];
-            [self presentMoviePlayerViewControllerAnimated:moviePlayerViewController];
-        }
-        else if ([identifier isEqualToString:@"CellDefaultRTS"]) {
-            SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:contentURL];
-            [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
-        }
-    }
 }
 
 @end

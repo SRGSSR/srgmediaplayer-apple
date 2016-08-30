@@ -6,6 +6,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BaseTableViewController : UITableViewController
+NS_ASSUME_NONNULL_BEGIN
+
+@interface BaseTableViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
 
 @end
+
+NS_ASSUME_NONNULL_END

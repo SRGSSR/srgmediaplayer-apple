@@ -10,7 +10,9 @@
 #import <CocoaLumberjack/CocoaLumberjack.h>
 
 @interface UIImage (Tinting)
+
 - (UIImage *)tintedImageWithColor:(UIColor *)color;
+
 @end
 
 @implementation UIImage (Tinting)
@@ -26,7 +28,7 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
 
     CGContextTranslateCTM(context, 0.f, self.size.height);
-    CGContextScaleCTM(context, 1.0f, -1.0f);
+    CGContextScaleCTM(context, 1.0f, -1.f);
 
     CGContextDrawImage(context, rect, self.CGImage);
     CGContextSetBlendMode(context, kCGBlendModeSourceIn);
@@ -79,10 +81,9 @@
     UIImage *multiplayerIcon = [UIImage imageNamed:@"screen"];
     UIImage *audiosIcon = [UIImage imageNamed:@"audios"];
 
-    NSArray *images = @[moviesIcon, segmentsIcon, multiplayerIcon, moviesIcon, audiosIcon];
+    NSArray<UIImage *> *images = @[moviesIcon, segmentsIcon, multiplayerIcon, moviesIcon, audiosIcon];
 
-    [tabBarController.tabBar.items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        UITabBarItem *item = (UITabBarItem *)obj;
+    [tabBarController.tabBar.items enumerateObjectsUsingBlock:^(UITabBarItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
         item.image = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         item.selectedImage = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }];
