@@ -108,7 +108,7 @@ OBJC_EXTERN NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotific
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidStartNotification;                     // Notification when a segment starts
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidEndNotification;                       // Notification when a segment ends
-OBJC_EXTERN NSString * const SRGMediaPlayerSegmentKey;                                      // The involved segment as an id<RTSMediaSegment> object
+OBJC_EXTERN NSString * const SRGMediaPlayerSegmentKey;                                      // The involved segment as an id<SRGSegment> object
 OBJC_EXTERN NSString * const SRGMediaPlayerProgrammaticKey;                                 // Key to an `NSNumber` wrapping a boolean, set to YES if the change was induced programmatically
 
 NS_ASSUME_NONNULL_END

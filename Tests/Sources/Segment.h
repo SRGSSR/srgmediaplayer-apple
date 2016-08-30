@@ -7,7 +7,7 @@
 #import <Foundation/Foundation.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface Segment : NSObject <RTSMediaSegment>
+@interface Segment : NSObject <SRGSegment>
 
 - (instancetype)initWithIdentifier:(NSString *)identifier name:(NSString *)name timeRange:(CMTimeRange)timeRange;
 

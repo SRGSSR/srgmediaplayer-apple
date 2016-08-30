@@ -7,7 +7,7 @@
 #import "RTSTimelineSlider.h"
 
 #import "SRGMediaPlayerController.h"
-#import "RTSMediaSegment.h"
+#import "SRGSegment.h"
 #import "RTSMediaSegmentsController.h"
 #import "NSBundle+SRGMediaPlayer.h"
 
@@ -68,7 +68,7 @@
 	CGFloat thumbStartXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.minimumValue]);
 	CGFloat thumbEndXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.maximumValue]);
 	
-	for (id<RTSMediaSegment> segment in self.segmentsController.visibleSegments) {	
+	for (id<SRGSegment> segment in self.segmentsController.visibleSegments) {	
 		// Skip events not in the timeline
 		if (CMTIME_COMPARE_INLINE(segment.timeRange.start, < , timeRange.start)
 			|| CMTIME_COMPARE_INLINE(segment.timeRange.start, >, CMTimeRangeGetEnd(timeRange)))

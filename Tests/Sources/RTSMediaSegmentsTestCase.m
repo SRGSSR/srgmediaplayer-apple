@@ -536,7 +536,7 @@
         return YES;
     }];
     
-    id<RTSMediaSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
+    id<SRGSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
     [self.mediaSegmentsController playSegment:firstSegment];
     [self waitForExpectationsWithTimeout:60. handler:nil];
 }
@@ -600,7 +600,7 @@
         return YES;
     }];
     
-    id<RTSMediaSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
+    id<SRGSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
     [self.mediaSegmentsController playSegment:firstSegment];
     [self waitForExpectationsWithTimeout:60. handler:nil];
 }
@@ -663,7 +663,7 @@
         return YES;
     }];
     
-    id<RTSMediaSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
+    id<SRGSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
     [self.mediaSegmentsController playSegment:firstSegment];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
@@ -680,7 +680,7 @@
         return YES;
     }];
     
-    id<RTSMediaSegment> secondSegment = [self.mediaSegmentsController.visibleSegments objectAtIndex:1];
+    id<SRGSegment> secondSegment = [self.mediaSegmentsController.visibleSegments objectAtIndex:1];
     [self.mediaSegmentsController playSegment:secondSegment];
     [self waitForExpectationsWithTimeout:60. handler:nil];
 }
