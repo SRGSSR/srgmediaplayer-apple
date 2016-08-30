@@ -8,61 +8,54 @@
 
 #pragma mark - Functions
 
-static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
+static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 {
-    NSInteger hours = duration / 3600;
-    NSInteger minutes = (duration % 3600) / 60;
-    NSInteger seconds = (duration % 3600) % 60;
-
-    NSString *minutesAndSeconds = [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
-
-    return (hours > 0) ? [[NSString stringWithFormat:@"%01ld:", (long)hours] stringByAppendingString:minutesAndSeconds] : minutesAndSeconds;
+    static NSDateComponentsFormatter *s_dateComponentsFormatter;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        s_dateComponentsFormatter = [[NSDateComponentsFormatter alloc] init];
+        s_dateComponentsFormatter.allowedUnits = NSCalendarUnitSecond | NSCalendarUnitMinute;
+        s_dateComponentsFormatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorPad;
+    });
+    return s_dateComponentsFormatter;
 }
 
 @interface Segment ()
 
 @property (nonatomic) CMTimeRange timeRange;
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *segmentIdentifier;
 
 @end
 
 @implementation Segment
 
-@synthesize logical = _logical;
-
 #pragma mark - Object lifecycle
 
-- (instancetype)initWithIdentifier:(NSString *)identifier name:(NSString *)name timeRange:(CMTimeRange)timeRange;
+- (instancetype)initWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
 {
     self = [super init];
     if (self) {
         self.timeRange = timeRange;
-        self.fullLength = NO;
         self.blocked = NO;
-        self.visible = YES;
-        self.logical = NO;
-
-        self.segmentIdentifier = identifier;
         self.name = name;
     }
     return self;
 }
 
-- (instancetype)initWithIdentifier:(NSString *)identifier name:(NSString *)name time:(CMTime)time;
+- (instancetype)initWithName:(NSString *)name time:(CMTime)time
 {
-    return [self initWithIdentifier:identifier name:name timeRange:CMTimeRangeMake(time, kCMTimeZero)];
+    return [self initWithName:name timeRange:CMTimeRangeMake(time, kCMTimeZero)];
 }
 
-- (instancetype)initWithIdentifier:(NSString *)identifier name:(NSString *)name start:(NSTimeInterval)start duration:(NSTimeInterval)duration;
+- (instancetype)initWithName:(NSString *)name start:(NSTimeInterval)start duration:(NSTimeInterval)duration
 {
-    return [self initWithIdentifier:identifier name:name timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(start, 1.), CMTimeMakeWithSeconds(duration, 1.))];
+    return [self initWithName:name timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(start, NSEC_PER_SEC), CMTimeMakeWithSeconds(duration, NSEC_PER_SEC))];
 }
 
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithIdentifier:nil name:nil timeRange:kCMTimeRangeZero];
+    return [self initWithName:@"" timeRange:kCMTimeRangeZero];
 }
 
 #pragma mark - Getters and setters
@@ -75,12 +68,12 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 
 - (NSString *)durationString
 {
-    return sexagesimalDurationStringFromValue(CMTimeGetSeconds(self.timeRange.duration));
+    return [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(self.timeRange.duration)];
 }
 
 - (NSString *)timestampString
 {
-    NSString *startString = sexagesimalDurationStringFromValue(CMTimeGetSeconds(self.timeRange.start));
+    NSString *startString = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(self.timeRange.start)];
     return [NSString stringWithFormat:@"%@ (%.0fs)", startString, CMTimeGetSeconds(self.timeRange.duration)];
 }
 
@@ -88,16 +81,13 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@: %p; start: %@; duration: %@; identifier: %@; name: %@; fullLength: %@; blocked: %@; visible: %@>",
+    return [NSString stringWithFormat:@"<%@: %p; start: %@; duration: %@; name: %@; blocked: %@>",
             [self class],
             self,
             @(CMTimeGetSeconds(self.timeRange.start)),
             @(CMTimeGetSeconds(self.timeRange.duration)),
-            self.segmentIdentifier,
             self.name,
-            self.fullLength ? @"YES" : @"NO",
-            self.blocked ? @"YES" : @"NO",
-            self.visible ? @"YES" : @"NO"];
+            self.blocked ? @"YES" : @"NO"];
 }
 
 @end

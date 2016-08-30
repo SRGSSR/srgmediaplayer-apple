@@ -181,10 +181,10 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:self.actionCellIdentifiers[indexPath.row] forIndexPath:indexPath];
     if (indexPath.row < 3) {
-        cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:0.5 blue:0.0 alpha:1.0];
+        cell.textLabel.textColor = [UIColor colorWithRed:0.f green:0.5f blue:0.0f alpha:1.f];
     }
     else {
-        cell.textLabel.textColor = [UIColor colorWithRed:0.700 green:0.408 blue:0.015 alpha:1.000];
+        cell.textLabel.textColor = [UIColor colorWithRed:0.7f green:0.48f blue:0.015f alpha:1.f];
     }
     return cell;
 }

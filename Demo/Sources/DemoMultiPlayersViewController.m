@@ -5,28 +5,29 @@
 //
 
 #import "DemoMultiPlayersViewController.h"
+
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface DemoMultiPlayersViewController ()
 
-@property (nonatomic, strong) NSMutableArray *playerViews;
-@property (nonatomic, strong) NSMutableArray *mediaPlayerControllers;
+@property (nonatomic) NSMutableArray<UIView *> *playerViews;
+@property (nonatomic) NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers;
 
-@property (nonatomic, assign) NSInteger selectedIndex;
+@property (nonatomic) NSInteger selectedIndex;
 
 @property (nonatomic, weak) IBOutlet UIView *mainPlayerView;
 @property (nonatomic, weak) IBOutlet UIView *playerViewsContainer;
 
-@property (nonatomic, weak) IBOutlet RTSPlaybackButton *playPauseButton;
+@property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
 @property (nonatomic, weak) IBOutlet UISwitch *thumbnailSwitch;
 
-@property (nonatomic, strong)IBOutletCollection(UIView) NSArray * overlayViews;
+@property (nonatomic) IBOutletCollection(UIView) NSArray * overlayViews;
 
 @end
 
 @implementation DemoMultiPlayersViewController
 
-#pragma mark - Accessors
+#pragma mark Getters and setters
 
 - (void)setMediaURLs:(NSArray *)mediaURLs
 {
@@ -34,8 +35,8 @@
 
     self.mediaPlayerControllers = [NSMutableArray array];
 
-    for (NSURL *mediaURL in mediaURLs) {
-        SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] initWithContentURL:mediaURL];
+    for (NSInteger i = 0; i < mediaURLs.count; ++i) {
+        SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
 
         UITapGestureRecognizer *switchTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchMainPlayer:)];
         [mediaPlayerController.view addGestureRecognizer:switchTapGestureRecognizer];
@@ -43,44 +44,70 @@
     }
 }
 
-#pragma mark - Lifecycle
+- (void)setSelectedIndex:(NSInteger)selectedIndex
+{
+    _selectedIndex = selectedIndex;
+    
+    SRGMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[selectedIndex];
+    // FIXME: mainMediaPlayerController.allowsExternalPlayback = YES;
+    [self attachPlayer:mainMediaPlayerController toView:self.mainPlayerView];
+    
+    [self.playerViewsContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.playerViewsContainer layoutIfNeeded];
+    
+    for (NSInteger index = 0; index < self.mediaPlayerControllers.count; index++) {
+        if (index == selectedIndex) {
+            continue;
+        }
+        
+        CGRect playerViewFrame = [self rectForPlayerViewAtIndex:self.playerViewsContainer.subviews.count];
+        UIView *playerView = [[UIView alloc] initWithFrame:playerViewFrame];
+        playerView.backgroundColor = [UIColor blackColor];
+        playerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
+        [self.playerViewsContainer addSubview:playerView];
+        
+        SRGMediaPlayerController *thumbnailMediaPlayerController = self.mediaPlayerControllers[index];
+        // FIXME: thumbnailMediaPlayerController.allowsExternalPlayback = NO;
+        [self attachPlayer:thumbnailMediaPlayerController toView:playerView];
+    }
+}
+
+#pragma mark View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self setSelectedIndex:0];
-    [self play];
+    [self togglePlayPause];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
     [self.mediaPlayerControllers makeObjectsPerformSelector:@selector(reset)];
 }
+
+#pragma mark Rotation
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    [coordinator animateAlongsideTransition:^(id < UIViewControllerTransitionCoordinatorContext > context)
-    {
+    
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         NSInteger index = 0;
         for (UIView *playerView in self.playerViewsContainer.subviews) {
             playerView.frame = [self rectForPlayerViewAtIndex:index++];
         }
-    }
-     completion:NULL];
+    } completion:nil];
 }
 
-#pragma mark - Action
+#pragma mark Actions
 
-- (void)play
+- (void)togglePlayPause
 {
-    [self.mediaPlayerControllers makeObjectsPerformSelector:@selector(play)];
-}
-
-- (void)pause
-{
-    [self.mediaPlayerControllers makeObjectsPerformSelector:@selector(pause)];
+    [self.mediaPlayerControllers makeObjectsPerformSelector:@selector(togglePlayPause)];
 }
 
 - (IBAction)dismiss:(id)sender
@@ -91,42 +118,10 @@
 - (IBAction)thumbnailSwitchDidChange:(UISwitch *)sender
 {
     self.playerViewsContainer.hidden = ! sender.isOn;
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        SEL action = sender.isOn ? @selector(play) : @selector(pause);
-        [self.thumbnailPlayerControllers makeObjectsPerformSelector:action];
-    });
+    [self togglePlayPause];
 }
 
 #pragma mark - Media Players
-
-- (void)setSelectedIndex:(NSInteger)selectedIndex
-{
-    _selectedIndex = selectedIndex;
-
-    SRGMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[selectedIndex];
-    mainMediaPlayerController.allowsExternalPlayback = YES;
-    [self attachPlayer:mainMediaPlayerController toView:self.mainPlayerView];
-
-    [self.playerViewsContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [self.playerViewsContainer layoutIfNeeded];
-
-    for (NSInteger index = 0; index < self.mediaPlayerControllers.count; index++) {
-        if (index == selectedIndex) {
-            continue;
-        }
-
-        CGRect playerViewFrame = [self rectForPlayerViewAtIndex:self.playerViewsContainer.subviews.count];
-        UIView *playerView = [[UIView alloc] initWithFrame:playerViewFrame];
-        playerView.backgroundColor = [UIColor blackColor];
-        playerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
-        [self.playerViewsContainer addSubview:playerView];
-
-        SRGMediaPlayerController *thumbnailMediaPlayerController = self.mediaPlayerControllers[index];
-        thumbnailMediaPlayerController.allowsExternalPlayback = NO;
-        [self attachPlayer:thumbnailMediaPlayerController toView:playerView];
-    }
-}
 
 - (CGRect)rectForPlayerViewAtIndex:(NSInteger)index
 {

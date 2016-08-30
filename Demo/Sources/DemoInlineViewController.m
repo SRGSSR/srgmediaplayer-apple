@@ -6,30 +6,27 @@
 
 #import "DemoInlineViewController.h"
 
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
+
+@interface DemoInlineViewController ()
+
+@property (nonatomic, weak) IBOutlet UIView *videoContainerView;
+@property (nonatomic, weak) IBOutlet SRGMediaPlayerController *mediaPlayerController;
+
+@end
+
 @implementation DemoInlineViewController
+
+#pragma mark View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.mediaPlayerController attachPlayerToView:self.videoContainerView];
+    
+    self.mediaPlayerController.view.frame = self.videoContainerView.bounds;
+    self.mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.videoContainerView insertSubview:self.mediaPlayerController.view atIndex:0];
 }
-
-#pragma mark - RTSMediaPlayerControllerDataSource
-
-- (id)mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
-    contentURLForIdentifier:(NSString *)identifier
-          completionHandler:(void (^)(NSString *, NSURL *, NSError *))completionHandler
-{
-    completionHandler(identifier, self.mediaURL, nil);
-
-    // No need for a connection handle, completion handlers are called immediately
-    return nil;
-}
-
-- (void)cancelContentURLRequest:(id)request
-{}
-
-#pragma mark - UIViewController
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -44,17 +41,12 @@
 
 - (IBAction)prepareToPlay:(id)sender
 {
-    [self.mediaPlayerController prepareToPlay];
+    [self.mediaPlayerController prepareToPlayURL:self.mediaURL atTime:kCMTimeZero withCompletionHandler:nil];
 }
 
-- (IBAction)play:(id)sender
+- (IBAction)togglePlayPause:(id)sender
 {
-    [self.mediaPlayerController play];
-}
-
-- (IBAction)pause:(id)sender
-{
-    [self.mediaPlayerController pause];
+    [self.mediaPlayerController togglePlayPause];
 }
 
 - (IBAction)reset:(id)sender

@@ -48,7 +48,6 @@
 		E69A1FB11D61BFAE0064E6C1 /* BaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F7B1D61BFAE0064E6C1 /* BaseTableViewController.m */; };
 		E69A1FB31D61BFAE0064E6C1 /* DemoInlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F7F1D61BFAE0064E6C1 /* DemoInlineViewController.m */; };
 		E69A1FB41D61BFAE0064E6C1 /* DemoMultiPlayersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F811D61BFAE0064E6C1 /* DemoMultiPlayersViewController.m */; };
-		E69A1FB51D61BFAE0064E6C1 /* PseudoILDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F831D61BFAE0064E6C1 /* PseudoILDataProvider.m */; };
 		E69A1FB61D61BFAE0064E6C1 /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F851D61BFAE0064E6C1 /* Segment.m */; };
 		E69A1FB71D61BFAE0064E6C1 /* SegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F871D61BFAE0064E6C1 /* SegmentCollectionViewCell.m */; };
 		E69A1FB81D61BFAE0064E6C1 /* SegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F881D61BFAE0064E6C1 /* SegmentCollectionViewCell.xib */; };
@@ -68,8 +67,6 @@
 		E69A1FE71D61C6D20064E6C1 /* SRGMediaPlayer_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FE21D61C6D20064E6C1 /* SRGMediaPlayer_tests.m */; };
 		E69A1FEA1D61DD870064E6C1 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */; };
 		E69A1FEB1D61DD870064E6C1 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E69A1FEC1D61DD870064E6C1 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE91D61DD870064E6C1 /* WebImage.framework */; };
-		E69A1FED1D61DD870064E6C1 /* WebImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE91D61DD870064E6C1 /* WebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6C985F01D6EF6BC00C45C7A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985EF1D6EF6BC00C45C7A /* main.m */; };
 		E6C985F31D6EF6BC00C45C7A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985F21D6EF6BC00C45C7A /* AppDelegate.m */; };
 		E6C985F61D6EF6BC00C45C7A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985F51D6EF6BC00C45C7A /* ViewController.m */; };
@@ -151,7 +148,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E69A1FED1D61DD870064E6C1 /* WebImage.framework in Embed Frameworks */,
 				E69A1FEB1D61DD870064E6C1 /* CocoaLumberjack.framework in Embed Frameworks */,
 				E69A1FC51D61C06B0064E6C1 /* SRGMediaPlayer.framework in Embed Frameworks */,
 			);
@@ -228,8 +224,6 @@
 		E69A1F7F1D61BFAE0064E6C1 /* DemoInlineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoInlineViewController.m; sourceTree = "<group>"; };
 		E69A1F801D61BFAE0064E6C1 /* DemoMultiPlayersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoMultiPlayersViewController.h; sourceTree = "<group>"; };
 		E69A1F811D61BFAE0064E6C1 /* DemoMultiPlayersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoMultiPlayersViewController.m; sourceTree = "<group>"; };
-		E69A1F821D61BFAE0064E6C1 /* PseudoILDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PseudoILDataProvider.h; sourceTree = "<group>"; };
-		E69A1F831D61BFAE0064E6C1 /* PseudoILDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PseudoILDataProvider.m; sourceTree = "<group>"; };
 		E69A1F841D61BFAE0064E6C1 /* Segment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Segment.h; sourceTree = "<group>"; };
 		E69A1F851D61BFAE0064E6C1 /* Segment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Segment.m; sourceTree = "<group>"; };
 		E69A1F861D61BFAE0064E6C1 /* SegmentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentCollectionViewCell.h; sourceTree = "<group>"; };
@@ -324,7 +318,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E69A1FEC1D61DD870064E6C1 /* WebImage.framework in Frameworks */,
 				E69A1FEA1D61DD870064E6C1 /* CocoaLumberjack.framework in Frameworks */,
 				E69A1FC41D61C06B0064E6C1 /* SRGMediaPlayer.framework in Frameworks */,
 			);
@@ -467,8 +460,6 @@
 				E69A1F7F1D61BFAE0064E6C1 /* DemoInlineViewController.m */,
 				E69A1F801D61BFAE0064E6C1 /* DemoMultiPlayersViewController.h */,
 				E69A1F811D61BFAE0064E6C1 /* DemoMultiPlayersViewController.m */,
-				E69A1F821D61BFAE0064E6C1 /* PseudoILDataProvider.h */,
-				E69A1F831D61BFAE0064E6C1 /* PseudoILDataProvider.m */,
 				E69A1F841D61BFAE0064E6C1 /* Segment.h */,
 				E69A1F851D61BFAE0064E6C1 /* Segment.m */,
 				E69A1F861D61BFAE0064E6C1 /* SegmentCollectionViewCell.h */,
@@ -984,7 +975,6 @@
 				E69A1FAE1D61BFAE0064E6C1 /* AudiosTableViewController.m in Sources */,
 				E69A1FAD1D61BFAE0064E6C1 /* AppDelegate.m in Sources */,
 				E69A1FB11D61BFAE0064E6C1 /* BaseTableViewController.m in Sources */,
-				E69A1FB51D61BFAE0064E6C1 /* PseudoILDataProvider.m in Sources */,
 				E69A1FB31D61BFAE0064E6C1 /* DemoInlineViewController.m in Sources */,
 				E69A1FBC1D61BFAE0064E6C1 /* VideosTableViewController.m in Sources */,
 				E69A1FBB1D61BFAE0064E6C1 /* VideoSegmentsTableViewController.m in Sources */,

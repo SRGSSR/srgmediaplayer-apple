@@ -123,16 +123,10 @@
             </objects>
             <point key="canvasLocation" x="-3151" y="2796"/>
         </scene>
-        <!--Data Source-->
+        <!--Demo Inline-->
         <scene sceneID="alA-mL-MQl">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oNS-kv-k4L" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="o6Z-DB-FCH" customClass="SRGMediaPlayerController">
-                    <connections>
-                        <outlet property="dataSource" destination="u4g-ie-3Oi" id="dce-W1-QAn"/>
-                    </connections>
-                </customObject>
-                <viewController id="u4g-ie-3Oi" customClass="DemoInlineViewController" sceneMemberID="viewController">
+                <viewController id="u4g-ie-3Oi" userLabel="Demo Inline" customClass="DemoInlineViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UoE-Cq-25M"/>
                         <viewControllerLayoutGuide type="bottom" id="szv-pg-w7E"/>
@@ -191,26 +185,17 @@
                                     <action selector="prepareToPlay:" destination="u4g-ie-3Oi" eventType="touchUpInside" id="OfQ-X7-noW"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sCS-US-bh9">
-                                <rect key="frame" x="285" y="319" width="30" height="30"/>
-                                <state key="normal" title="Play">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="play:" destination="u4g-ie-3Oi" eventType="touchUpInside" id="UTl-Qd-uOK"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3q-bV-APh">
-                                <rect key="frame" x="279.5" y="357" width="42" height="30"/>
-                                <state key="normal" title="Pause">
+                                <rect key="frame" x="258.5" y="319" width="83" height="30"/>
+                                <state key="normal" title="Play / Pause">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pause:" destination="u4g-ie-3Oi" eventType="touchUpInside" id="6Hy-h1-oid"/>
+                                    <action selector="togglePlayPause:" destination="u4g-ie-3Oi" eventType="touchUpInside" id="lan-7R-apb"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ov7-PK-OBt">
-                                <rect key="frame" x="280.5" y="395" width="39" height="30"/>
+                                <rect key="frame" x="280" y="357" width="39" height="30"/>
                                 <state key="normal" title="Reset">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -224,15 +209,13 @@
                             <constraint firstAttribute="centerX" secondItem="ofL-MW-ZaL" secondAttribute="centerX" id="5Sn-aO-5ho"/>
                             <constraint firstItem="ofL-MW-ZaL" firstAttribute="width" secondItem="eZU-lX-We1" secondAttribute="width" multiplier="3/4" id="G6G-GP-Yh6"/>
                             <constraint firstAttribute="centerX" secondItem="ov7-PK-OBt" secondAttribute="centerX" id="HQr-ED-bay"/>
-                            <constraint firstItem="a3q-bV-APh" firstAttribute="top" secondItem="sCS-US-bh9" secondAttribute="bottom" constant="8" id="Rm3-gB-iVO"/>
+                            <constraint firstItem="a3q-bV-APh" firstAttribute="top" secondItem="Kv7-sn-h1l" secondAttribute="bottom" constant="8" id="Yvm-Jf-9Sl"/>
                             <constraint firstAttribute="centerX" secondItem="Kv7-sn-h1l" secondAttribute="centerX" id="Zop-Xf-xqf"/>
                             <constraint firstItem="ov7-PK-OBt" firstAttribute="top" secondItem="a3q-bV-APh" secondAttribute="bottom" constant="8" id="m0s-eG-q3A"/>
                             <constraint firstAttribute="centerX" secondItem="ov7-PK-OBt" secondAttribute="centerX" id="mUv-Jm-GFu"/>
                             <constraint firstAttribute="centerX" secondItem="a3q-bV-APh" secondAttribute="centerX" id="oID-9x-sIL"/>
                             <constraint firstItem="Kv7-sn-h1l" firstAttribute="top" secondItem="ofL-MW-ZaL" secondAttribute="bottom" constant="8" id="rzM-G1-ucH"/>
-                            <constraint firstAttribute="centerX" secondItem="sCS-US-bh9" secondAttribute="centerX" id="ucN-jm-GMr"/>
                             <constraint firstItem="ofL-MW-ZaL" firstAttribute="top" secondItem="UoE-Cq-25M" secondAttribute="bottom" constant="20" id="wre-Fc-cEx"/>
-                            <constraint firstItem="sCS-US-bh9" firstAttribute="top" secondItem="Kv7-sn-h1l" secondAttribute="bottom" constant="8" id="zm9-QB-foX"/>
                         </constraints>
                     </view>
                     <connections>
@@ -240,6 +223,8 @@
                         <outlet property="videoContainerView" destination="ofL-MW-ZaL" id="hta-ty-FOR"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oNS-kv-k4L" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="o6Z-DB-FCH" customClass="SRGMediaPlayerController"/>
             </objects>
             <point key="canvasLocation" x="-3151" y="3550"/>
         </scene>
