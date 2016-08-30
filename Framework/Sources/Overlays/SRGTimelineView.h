@@ -4,13 +4,16 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "SRGMediaPlayerController.h"
+#import "SRGSegment.h"
+
 #import <CoreMedia/CoreMedia.h>
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 // Forward declarations
-@class RTSMediaSegmentsController;
-@protocol RTSSegmentedTimelineViewDelegate;
-@protocol RTSMediaSegment;
+@protocol SRGTimelineViewDelegate;
 
 /**
  *  A view displaying segments associated with a stream as a linear collection of cells
@@ -23,17 +26,17 @@
  *  Customisation of timeline cells is achieved through subclassing of `UICollectionViewCell`, exactly like a usual
  *  `UICollectionView`
  */
-@interface RTSSegmentedTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SRGTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
 /**
- *  The controller which provides segments to the timeline
+ *  The controller to which the timeline is attached
  */
-@property (nonatomic, weak) IBOutlet RTSMediaSegmentsController *segmentsController;
+@property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
  *  The timeline delegate
  */
-@property (nonatomic, weak) IBOutlet id<RTSSegmentedTimelineViewDelegate> delegate;
+@property (nonatomic, weak, nullable) IBOutlet id<SRGTimelineViewDelegate> delegate;
 
 /**
  *  The width of cells within the timeline. Defaults to 60
@@ -53,11 +56,7 @@
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 - (void)registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
 
-/**
- *  Call this method to trigger a reload of the segments from the data source, for the specified identifier. An optional
- *  completion handler block can be provided
- */
-- (void)reloadSegmentsForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSError *error))completionHandler;
+- (void)reloadData;
 
 /**
  *  Dequeue a reusable cell for a given segment
@@ -65,25 +64,25 @@
  *  @param identifier The cell identifier (must be appropriately set for the cell)
  *  @param segment    The segment for which a cell must be dequeued
  */
-- (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<RTSMediaSegment>)segment;
+- (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<SRGSegment>)segment;
 
 /**
  * Return the list of currently visible cells
  */
-- (NSArray *)visibleCells;
+- (NSArray<__kindof UICollectionViewCell *> *)visibleCells;
 
 /**
  *  Scroll to make the specified segment visible (does nothing if the segment does not belong to the visible segments
  *  of the segmentsController.
  */
-- (void)scrollToSegment:(id<RTSMediaSegment>)segment animated:(BOOL)animated;
+- (void)scrollToSegment:(id<SRGSegment>)segment animated:(BOOL)animated;
 
 @end
 
 /**
  *  Timeline delegate protocol
  */
-@protocol RTSSegmentedTimelineViewDelegate <NSObject>
+@protocol SRGTimelineViewDelegate <NSObject>
 
 /**
  *  Return the cell to be displayed for a segment. You should call `-dequeueReusableCellWithReuseIdentifier:forSegment:`
@@ -94,18 +93,20 @@
  *
  *  @return The cell to use
  */
-- (UICollectionViewCell *)timelineView:(RTSSegmentedTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment;
+- (UICollectionViewCell *)timelineView:(SRGTimelineView *)timelineView cellForSegment:(id<SRGSegment>)segment;
 
 @optional
 
 /**
  * Called when the timeline sees one of its visible segment selected by the user.
  */
-- (void)timelineView:(RTSSegmentedTimelineView *)timelineView didSelectSegmentAtIndexPath:(NSIndexPath *)indexPath;
+- (void)timelineView:(SRGTimelineView *)timelineView didSelectSegmentAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
  * Called when the timeline has been scrolled interactively
  */
-- (void)timelineViewDidScroll:(RTSSegmentedTimelineView *)timelineView;
+- (void)timelineViewDidScroll:(SRGTimelineView *)timelineView;
 
 @end
+
+NS_ASSUME_NONNULL_END

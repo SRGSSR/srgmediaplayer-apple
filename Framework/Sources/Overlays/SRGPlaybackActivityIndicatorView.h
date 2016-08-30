@@ -8,6 +8,8 @@
 
 #import "SRGMediaPlayerController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  An activity indicator displaying the current status of the associated media player controller.
  *
@@ -25,6 +27,8 @@
 /**
  *  The media player to which the playback button must be associated with.
  */
-@property (nonatomic, weak) IBOutlet SRGMediaPlayerController *mediaPlayerController;
+@property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 @end
+
+NS_ASSUME_NONNULL_END

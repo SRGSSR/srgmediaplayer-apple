@@ -15,3 +15,8 @@ NSString * const SRGMediaPlayerPlaybackDidFailNotification = @"SRGMediaPlayerPla
 NSString * const SRGMediaPlayerErrorKey = @"SRGMediaPlayerErrorKey";
 
 NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotification = @"SRGMediaPlayerPictureInPictureStateDidChangeNotification";
+
+NSString * const SRGMediaPlayerSegmentDidStartNotification = @"SRGMediaPlayerSegmentDidStartNotification";
+NSString * const SRGMediaPlayerSegmentDidEndNotification = @"SRGMediaPlayerSegmentDidEndNotification";
+NSString * const SRGMediaPlayerSegmentKey = @"SRGMediaPlayerSegmentKey";
+NSString * const SRGMediaPlayerProgrammaticKey = @"SRGMediaPlayerProgrammaticKey";

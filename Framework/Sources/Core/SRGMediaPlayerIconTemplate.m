@@ -8,6 +8,8 @@
 
 @implementation SRGMediaPlayerIconTemplate
 
+#pragma mark Bezier Paths
+
 + (UIImage *)imageWithBezierPath:(UIBezierPath *)bezierPath size:(CGSize)size color:(UIColor *)color
 {
     CGFloat scale = [UIScreen mainScreen].scale;
@@ -27,8 +29,6 @@
 
     return image;
 }
-
-#pragma mark - Bezier Paths
 
 + (UIBezierPath *)playBezierPathWithSize:(CGSize)size
 {
@@ -85,7 +85,7 @@
     return stopBezierPath;
 }
 
-#pragma mark - Images
+#pragma mark Images
 
 + (UIImage *)playImageWithSize:(CGSize)size color:(UIColor *)color
 {

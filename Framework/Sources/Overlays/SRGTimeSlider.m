@@ -222,14 +222,14 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
     //  - We have a timeshift feed, which is characterized by an indefinite player item duration, and whose slider knob is
     //    dragged close to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance
     return self.mediaPlayerController.streamType == SRGMediaStreamTypeLive
-    || (self.mediaPlayerController.streamType == SRGMediaStreamTypeDVR && (self.maximumValue - self.value < self.mediaPlayerController.liveTolerance));
+        || (self.mediaPlayerController.streamType == SRGMediaStreamTypeDVR && (self.maximumValue - self.value < self.mediaPlayerController.liveTolerance));
 }
 
 - (void)updateTimeRangeLabels
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
     if (! playerItem || self.mediaPlayerController.playbackState == SRGPlaybackStateIdle || self.mediaPlayerController.playbackState == SRGPlaybackStateEnded
-        || playerItem.status != AVPlayerItemStatusReadyToPlay) {
+            || playerItem.status != AVPlayerItemStatusReadyToPlay) {
         self.valueLabel.text = @"--:--";
         self.timeLeftValueLabel.text = @"--:--";
         return;
@@ -269,7 +269,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
     CMTime time = self.time;
     
     if (self.seekingDuringTracking) {
-        [self.mediaPlayerController seekToTime:time completionHandler:nil];
+        [self.mediaPlayerController seekToTime:time withCompletionHandler:nil];
     }
     
     // Next, inform that we are sliding to other views.
@@ -284,7 +284,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if ([self isDraggable]) {
-        [self.mediaPlayerController seekToTime:self.time completionHandler:nil];
+        [self.mediaPlayerController seekToTime:self.time withCompletionHandler:nil];
     }
     
     [super endTrackingWithTouch:touch withEvent:event];
@@ -415,6 +415,8 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 }
 
 @end
+
+#pragma mark Static functions
 
 static void commonInit(SRGTimeSlider *self)
 {

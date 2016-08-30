@@ -83,39 +83,9 @@ typedef NS_ENUM(NSInteger, SRGPlaybackState) {
     SRGPlaybackStateEnded,
 };
 
-// TODO: START
-
-/**
- *  Segment change reasons
- */
-typedef NS_ENUM(NSInteger, SRGMediaPlaybackSegmentChange) {
-    /**
-     *  An identified segment (visible or not) is being started, while not being inside a segment before.
-     */
-    RTSMediaPlaybackSegmentStart,
-    /**
-     *  An identified segment (visible or not) is being ended, without another one to start.
-     */
-    RTSMediaPlaybackSegmentEnd,
-    /**
-     *  An identified segment (visible or not) is being started, while being inside another segment before.
-     */
-    RTSMediaPlaybackSegmentSwitch,
-    /**
-     *  The playback is being seek to a later value, because it reached a blocked segment.
-     */
-    RTSMediaPlaybackSegmentSeekUponBlockingStart,
-    /**
-     *  The seek has finished.
-     */
-    RTSMediaPlaybackSegmentSeekUponBlockingEnd,
-};
-
-// TODO: END
-
 /**
  *  Notification sent when the player state changes. Use the `SRGMediaPlayerPreviousPlaybackStateKey` to retrieve
- *  previous state information from the notification `userInfo` dictionary)
+ *  previous state information from the notification `userInfo` dictionary
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerPlaybackStateDidChangeNotification;              // Notification name
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousPlaybackStateKey;                        // Key to access the previous playback state as an `NSNumber` (wrapping an `SRGPlaybackState` value)
@@ -132,33 +102,13 @@ OBJC_EXTERN NSString * const SRGMediaPlayerErrorKey;                            
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotification;
 
-// TODO: START
-
 /**
- *  Posted when a segment event occurs.
+ *  Notification sent when the current segment changes. Use the keys available below to retrieve information from
+ *  the notification `userInfo`dictionary
  */
-OBJC_EXTERN NSString * const SRGMediaPlaybackSegmentDidChangeNotification;
-
-/**
- *  The key to access the current segment instance as an `id<RTSMediaSegment>`, if any.
- */
-OBJC_EXTERN NSString * const SRGMediaPlaybackSegmentChangeSegmentInfoKey;
-
-/**
- *  The key to access the previously played segment instance as an `id<RTSMediaSegment>`, if any.
- */
-OBJC_EXTERN NSString * const SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey;
-
-/**
- *  The key to access the segment change value as an `NSNumber` (wrapping an `SRGMediaPlaybackSegmentChange` value).
- */
-OBJC_EXTERN NSString * const SRGMediaPlaybackSegmentChangeValueInfoKey;
-
-/**
- *  The key to access an `NSNumber` (wrapping a boolean) indicating whether the change is requested by the user or not.
- */
-OBJC_EXTERN NSString * const SRGMediaPlaybackSegmentChangeUserSelectInfoKey;
-
-// TODO: END
+OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidStartNotification;                     // Notification when a segment starts
+OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidEndNotification;                       // Notification when a segment ends
+OBJC_EXTERN NSString * const SRGMediaPlayerSegmentKey;                                      // The involved segment as an id<SRGSegment> object
+OBJC_EXTERN NSString * const SRGMediaPlayerProgrammaticKey;                                 // Key to an `NSNumber` wrapping a boolean, set to YES if the change was induced programmatically
 
 NS_ASSUME_NONNULL_END

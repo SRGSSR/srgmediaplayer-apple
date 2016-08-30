@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "SRGMediaPlayerConstants.h"
+#import "SRGSegment.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -75,6 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) SRGPlaybackState playbackState;
 
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
+@property (nonatomic, readonly) NSArray<id<SRGSegment>> *segments;
 
 /**
  *  -------------------------
@@ -86,15 +88,21 @@ NS_ASSUME_NONNULL_BEGIN
  *  Start playing a media specified using its identifier. Retrieving the media URL requires a data source to be bound
  *  to the player controller
  */
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
+
+- (void)playURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
+- (void)playURL:(NSURL *)URL;
+
 - (void)togglePlayPause;
-- (void)seekToTime:(CMTime)time completionHandler:(nullable void (^)(BOOL finished))completionHandler;
+
+- (void)seekToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;;
 
 - (void)reset;
-
-- (void)playURL:(NSURL *)URL;
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
 
 /**
  *  The current media time range (might be empty or indefinite). Use `CMTimeRange` macros for checking time ranges
@@ -121,6 +129,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Return YES iff the stream is currently played in live conditions
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
+
+/**
+ *  Return the segment currently being played, nil if none
+ */
+@property (nonatomic, readonly, nullable) id<SRGSegment> currentSegment;
 
 /**
  *  The minimum window length which must be available for a stream to be considered to be a DVR stream, in seconds. The

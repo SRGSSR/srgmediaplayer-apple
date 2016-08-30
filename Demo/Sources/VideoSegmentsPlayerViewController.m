@@ -46,7 +46,7 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, weak) IBOutlet UIView *videoView;
-@property (nonatomic, weak) IBOutlet RTSSegmentedTimelineView *timelineView;
+@property (nonatomic, weak) IBOutlet SRGTimelineView *timelineView;
 @property (nonatomic, weak) IBOutlet SRGTimeSlider *timelineSlider;
 
 @property (nonatomic, weak) IBOutlet UIView *blockingOverlayView;
@@ -92,11 +92,11 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(considerDisplayBlockingMessage:)
-                                                 name:SRGMediaPlaybackSegmentDidChangeNotification
+                                                 name:SRGMediaPlayerSegmentDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(segmentDidChange:)
-                                                 name:SRGMediaPlaybackSegmentDidChangeNotification
+                                                 name:SRGMediaPlayerSegmentDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playbackStateDidChange:)
@@ -195,11 +195,11 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
     [self updateAppearanceWithTime:time];
     
     if (interactive) {
-        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL (id < RTSMediaSegment >  _Nonnull segment, NSDictionary < NSString *, id > *_Nullable bindings) {
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL (id < SRGSegment >  _Nonnull segment, NSDictionary < NSString *, id > *_Nullable bindings) {
             return [[segment segmentIdentifier] isEqualToString:self.mediaPlayerController.identifier]
             && CMTimeRangeContainsTime(segment.timeRange, time);
         }];
-        id<RTSMediaSegment> segment = [[self.timelineView.segmentsController.visibleSegments filteredArrayUsingPredicate:predicate] firstObject];
+        id<SRGSegment> segment = [[self.timelineView.segmentsController.visibleSegments filteredArrayUsingPredicate:predicate] firstObject];
         if (segment) {
             [self.timelineView scrollToSegment:segment animated:YES];
         }
@@ -208,14 +208,14 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 
 #pragma mark - RTSSegmentedTimelineViewDelegate protocol
 
-- (UICollectionViewCell *)timelineView:(RTSSegmentedTimelineView *)timelineView cellForSegment:(id<RTSMediaSegment>)segment
+- (UICollectionViewCell *)timelineView:(SRGTimelineView *)timelineView cellForSegment:(id<SRGSegment>)segment
 {
     SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SegmentCollectionViewCell class]) forSegment:segment];
     segmentCell.segment = (Segment *)segment;
     return segmentCell;
 }
 
-- (void)timelineViewDidScroll:(RTSSegmentedTimelineView *)timelineView
+- (void)timelineViewDidScroll:(SRGTimelineView *)timelineView
 {
     [self updateAppearanceWithTime:self.timelineSlider.time];
 }

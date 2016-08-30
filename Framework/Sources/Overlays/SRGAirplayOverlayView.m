@@ -128,7 +128,7 @@ static void commonInit(SRGAirplayOverlayView *self);
 
 - (void)drawTitleInRect:(CGRect)rect
 {
-    NSDictionary *attributes = [self airplayOverlayViewTitleAttributedDictionary:self];
+    NSDictionary<NSString *, id> *attributes = [self airplayOverlayViewTitleAttributedDictionary:self];
     if ([self.dataSource respondsToSelector:@selector(airplayOverlayViewTitleAttributedDictionary:)]) {
         attributes = [self.dataSource airplayOverlayViewTitleAttributedDictionary:self];
     }
@@ -149,7 +149,7 @@ static void commonInit(SRGAirplayOverlayView *self);
     }
 
     if (subtitle.length > 0) {
-        NSDictionary *attributes = [self airplayOverlayViewSubtitleAttributedDictionary:self];
+        NSDictionary<NSString *, id> *attributes = [self airplayOverlayViewSubtitleAttributedDictionary:self];
         if ([self.dataSource respondsToSelector:@selector(airplayOverlayViewSubtitleAttributedDictionary:)]) {
             attributes = [self.dataSource airplayOverlayViewSubtitleAttributedDictionary:self];
         }
@@ -163,7 +163,7 @@ static void commonInit(SRGAirplayOverlayView *self);
 
 #pragma mark RTSAirplayOverlayViewDataSource protocol
 
-- (NSDictionary *)airplayOverlayViewTitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView
+- (NSDictionary<NSString *, id> *)airplayOverlayViewTitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.alignment = NSTextAlignmentCenter;
@@ -178,7 +178,7 @@ static void commonInit(SRGAirplayOverlayView *self);
     return [NSString stringWithFormat:RTSMediaPlayerLocalizedString(@"This media is playing on «%@»", nil), routeName];
 }
 
-- (NSDictionary *)airplayOverlayViewSubtitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView
+- (NSDictionary<NSString *, id> *)airplayOverlayViewSubtitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.alignment = NSTextAlignmentCenter;
@@ -215,6 +215,8 @@ static void commonInit(SRGAirplayOverlayView *self);
 }
 
 @end
+
+#pragma mark Static functions
 
 static void commonInit(SRGAirplayOverlayView *self)
 {

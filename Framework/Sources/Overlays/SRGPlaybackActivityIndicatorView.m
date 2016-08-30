@@ -90,6 +90,8 @@ static void commonInit(SRGPlaybackActivityIndicatorView *self);
 
 @end
 
+#pragma mark Static functions
+
 static void commonInit(SRGPlaybackActivityIndicatorView *self)
 {
     self.hidesWhenStopped = YES;
