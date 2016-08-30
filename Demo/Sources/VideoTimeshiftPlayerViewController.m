@@ -50,34 +50,34 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.mediaPlayerController.overlayViewsHidingDelay = 1000;
     self.blockingOverlayView.hidden = YES;
     [self.mediaPlayerController attachPlayerToView:self.videoView];
-    
+
     [self.liveButton setTitle:@"Back to live" forState:UIControlStateNormal];
     self.liveButton.alpha = 0.f;
-    
+
     self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.liveButton.layer.borderWidth = 1.f;
-    
+
     __weak __typeof(self) weakSelf = self;
     [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
         if (weakSelf.mediaPlayerController.playbackState != SRGPlaybackStateSeeking) {
             [weakSelf updateLiveButton];
         }
     }];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(playbackStateDidChange:)
-                                                 name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                               object:nil];
+     selector:@selector(playbackStateDidChange:)
+     name:SRGMediaPlayerPlaybackStateDidChangeNotification
+     object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         [self.mediaPlayerController play];
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
@@ -87,7 +87,7 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
         [self.mediaPlayerController reset];
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
@@ -114,25 +114,25 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 {
     if (self.tokenizeMediaURL) {
         NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-        
+
         NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithURL:self.mediaURL
-                                                       completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                           if (error) {
-                                                               completionHandler(nil, error);
-                                                           }
-                                                           else {
-                                                               NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                                               if ([text hasPrefix:@"\""]) {
-                                                                   text = [text substringFromIndex:1];
-                                                               }
-                                                               if ([text hasSuffix:@"\""]) {
-                                                                   text = [text substringToIndex:text.length - 1];
-                                                               }
-                                                               NSParameterAssert([NSURL URLWithString:text]);
-                                                               completionHandler([NSURL URLWithString:text], nil);
-                                                           }
-                                                       }];
-        
+                                          completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error) {
+                completionHandler(nil, error);
+            }
+            else {
+                NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                if ([text hasPrefix:@"\""]) {
+                    text = [text substringFromIndex:1];
+                }
+                if ([text hasSuffix:@"\""]) {
+                    text = [text substringToIndex:text.length - 1];
+                }
+                NSParameterAssert([NSURL URLWithString:text]);
+                completionHandler([NSURL URLWithString:text], nil);
+            }
+        }];
+
         [dataTask resume];
     }
     else {
@@ -159,12 +159,12 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
     [UIView animateWithDuration:0.2 animations:^{
         self.liveButton.alpha = 0.f;
     }];
-    
+
     CMTimeRange timeRange = self.mediaPlayerController.timeRange;
     if (CMTIMERANGE_IS_INDEFINITE(timeRange) || CMTIMERANGE_IS_EMPTY(timeRange)) {
         return;
     }
-    
+
     [self.mediaPlayerController playAtTime:CMTimeRangeGetEnd(timeRange)];
 }
 

@@ -29,10 +29,10 @@
 - (void)setUp
 {
     self.dataSource = [[SegmentsTestDataSource alloc] init];
-    
+
     self.mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     self.mediaPlayerController.dataSource = self.dataSource;
-    
+
     self.mediaSegmentsController = [[RTSMediaSegmentsController alloc] init];
     self.mediaSegmentsController.dataSource = self.dataSource;
     self.mediaSegmentsController.playerController = self.mediaPlayerController;
@@ -60,29 +60,29 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self waitForExpectationsWithTimeout:60. handler:nil];
@@ -97,25 +97,25 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
@@ -132,31 +132,31 @@
     }];
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_segment" completionHandler:nil];
-    
+
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self waitForExpectationsWithTimeout:60. handler:nil];
@@ -171,25 +171,25 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_blocked_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
@@ -207,29 +207,29 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment_at_start" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self waitForExpectationsWithTimeout:60. handler:nil];
@@ -244,25 +244,25 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment_at_start" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
@@ -280,29 +280,29 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_segment_at_start" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self waitForExpectationsWithTimeout:60. handler:nil];
@@ -317,25 +317,25 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_blocked_segment_at_start" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
-        
+
         return YES;
     }];
     [self waitForExpectationsWithTimeout:60. handler:nil];
@@ -350,29 +350,29 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_segments" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment1");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSwitch) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment1");
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment2");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self waitForExpectationsWithTimeout:60. handler:nil];
@@ -388,25 +388,25 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_blocked_segments" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment1");
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment1");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
@@ -425,25 +425,25 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_blocked_segments_at_start" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment1");
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment1");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
@@ -462,49 +462,49 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment_transition_into_blocked_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment1");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment1");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment2");
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment2");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
-        
+
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
@@ -522,20 +522,20 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertTrue([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
-    
+
     id<SRGSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
     [self.mediaSegmentsController playSegment:firstSegment];
     [self waitForExpectationsWithTimeout:60. handler:nil];
@@ -550,20 +550,20 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
-    
+
     [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
     [self waitForExpectationsWithTimeout:60. handler:nil];
 }
@@ -577,29 +577,29 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
-        
+
         return YES;
     }];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
-        
+
         return YES;
     }];
-    
+
     id<SRGSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
     [self.mediaSegmentsController playSegment:firstSegment];
     [self waitForExpectationsWithTimeout:60. handler:nil];
@@ -613,29 +613,29 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment");
-        
+
         return YES;
     }];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment");
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey]);
-        
+
         return YES;
     }];
-    
+
     [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
     [self waitForExpectationsWithTimeout:60. handler:nil];
 }
@@ -649,37 +649,37 @@
     [self.mediaPlayerController playIdentifier:@"VIDEO-full1"];
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_segments" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
-        
+
         XCTAssertNil(notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey]);
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment1");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertTrue([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
-    
+
     id<SRGSegment> firstSegment = [self.mediaSegmentsController.visibleSegments firstObject];
     [self.mediaSegmentsController playSegment:firstSegment];
     [self waitForExpectationsWithTimeout:60. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSwitch) {
             return NO;
         }
-        
+
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey] name], @"segment1");
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey] name], @"segment2");
         XCTAssertNotNil(notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey]);
         XCTAssertTrue([notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue]);
-        
+
         return YES;
     }];
-    
+
     id<SRGSegment> secondSegment = [self.mediaSegmentsController.visibleSegments objectAtIndex:1];
     [self.mediaSegmentsController playSegment:secondSegment];
     [self waitForExpectationsWithTimeout:60. handler:nil];
@@ -702,7 +702,7 @@
     else {
         completionHandler(identifier, nil, [NSError errorWithDomain:@"ch.rts.RTSMediaPlayer-tests" code:1 userInfo:@{ NSLocalizedDescriptionKey: @"Unknown media identifier" }]);
     }
-    
+
     // No need for a connection handle, completion handlers are called immediately
     return nil;
 }
@@ -717,7 +717,7 @@
     if ([identifier isEqualToString:@"SEGMENTS-full_length_with_segment"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
         segment.logical = YES;
         completionHandler(identifier, @[fullLength, segment], nil);
@@ -725,7 +725,7 @@
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_blocked_segment"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
         segment.logical = YES;
         segment.blocked = YES;
@@ -734,7 +734,7 @@
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_segment"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
         segment.logical = YES;
         segment.visible = NO;
@@ -743,7 +743,7 @@
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_blocked_segment"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
         segment.logical = YES;
         segment.blocked = YES;
@@ -753,7 +753,7 @@
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_segment_at_start"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
         segment.logical = YES;
         completionHandler(identifier, @[fullLength, segment], nil);
@@ -761,7 +761,7 @@
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_blocked_segment_at_start"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
         segment.logical = YES;
         segment.blocked = YES;
@@ -770,7 +770,7 @@
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_segment_at_start"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
         segment.logical = YES;
         segment.visible = NO;
@@ -779,7 +779,7 @@
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_blocked_segment_at_start"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
         segment.logical = YES;
         segment.blocked = YES;
@@ -789,61 +789,61 @@
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_consecutive_segments"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
         segment1.logical = YES;
-        
+
         Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
         segment2.logical = YES;
-        
+
         completionHandler(identifier, @[fullLength, segment1, segment2], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_consecutive_blocked_segments"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
         segment1.logical = YES;
         segment1.blocked = YES;
-        
+
         Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
         segment2.logical = YES;
         segment2.blocked = YES;
-        
+
         completionHandler(identifier, @[fullLength, segment1, segment2], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_consecutive_blocked_segments_at_start"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., 1.), CMTimeMakeWithSeconds(3., 1.))];
         segment1.logical = YES;
         segment1.blocked = YES;
-        
+
         Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(3., 1.), CMTimeMakeWithSeconds(4., 1.))];
         segment2.logical = YES;
         segment2.blocked = YES;
-        
+
         completionHandler(identifier, @[fullLength, segment1, segment2], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_segment_transition_into_blocked_segment"]) {
         Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
         fullLength.visible = NO;
-        
+
         Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
         segment1.logical = YES;
-        
+
         Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
         segment2.logical = YES;
         segment2.blocked = YES;
-        
+
         completionHandler(identifier, @[fullLength, segment1, segment2], nil);
     }
     else {
         NSError *error = [NSError errorWithDomain:@"ch.rts.RTSMediaPlayer-tests" code:1 userInfo:@{ NSLocalizedDescriptionKey: @"No segment are available" }];
         completionHandler(identifier, nil, error);
     }
-    
+
     return nil;
 }
 

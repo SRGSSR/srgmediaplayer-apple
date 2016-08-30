@@ -14,7 +14,7 @@
 {
     NSAssert([segue.destinationViewController isKindOfClass:[VideoSegmentsPlayerViewController class]],
              @"Expect VideoSegmentsPlayerViewController");
-    
+
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     VideoSegmentsPlayerViewController *demoViewController = segue.destinationViewController;
     demoViewController.videoIdentifier = [NSString stringWithFormat:@"%@", @(indexPath.row)];

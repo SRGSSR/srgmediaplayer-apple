@@ -51,7 +51,7 @@
         NSDictionary *mediaURLs = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle bundleForClass:self.class] pathForResource:[self mediaURLPath] ofType:@"plist"]];
         _media = mediaURLs[[self mediaURLKey]];
     }
-    
+
     return _media;
 }
 
@@ -60,7 +60,7 @@
     if (! self.selectedIndexPath) {
         return nil;
     }
-    
+
     NSDictionary *media = [self.media objectAtIndex:self.selectedIndexPath.row];
     return [NSURL URLWithString:media[@"url"]];
 }
@@ -70,7 +70,7 @@
     if (! self.selectedIndexPath) {
         return nil;
     }
-    
+
     NSMutableArray *urls = [NSMutableArray new];
     NSDictionary *media = [self.media objectAtIndex:self.selectedIndexPath.row];
     for (NSString *urlString in media[@"urls"]) {
@@ -79,7 +79,7 @@
             [urls addObject:url];
         }
     }
-    
+
     return [urls copy];
 }
 
@@ -162,7 +162,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     if (indexPath.section == 0) {
         self.selectedIndexPath = indexPath;
         [tableView reloadData];
@@ -170,7 +170,7 @@
     else {
         NSString *identifier = self.actionCellIdentifiers[indexPath.row];
         NSURL *contentURL = [self URLForSelectedMedia];
-        
+
         if (! contentURL) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please select a media" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];

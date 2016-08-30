@@ -15,7 +15,7 @@
 - (id)mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSString *identifier, NSURL *, NSError *))completionHandler
 {
     completionHandler(identifier, nil, [NSError errorWithDomain:@"AppDomain" code:-1 userInfo:nil]);
-    
+
     // No need for a connection identifier, completion handlers are called immediately
     return nil;
 }
@@ -32,7 +32,7 @@
 - (id)mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController contentURLForIdentifier:(NSString *)identifier completionHandler:(void (^)(NSString *identifier, NSURL *, NSError *))completionHandler
 {
     completionHandler(identifier, nil, nil);
-    
+
     // No need for a connection identifier, completion handlers are called immediately
     return nil;
 }

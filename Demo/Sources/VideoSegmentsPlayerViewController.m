@@ -79,29 +79,29 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.timelineSlider.slidingDelegate = self;
     self.mediaPlayerController.overlayViewsHidingDelay = 1000;
     self.blockingOverlayView.hidden = YES;
-    
+
     NSString *className = NSStringFromClass([SegmentCollectionViewCell class]);
     UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
     [self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
-    
+
     [self.mediaPlayerController attachPlayerToView:self.videoView];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(considerDisplayBlockingMessage:)
-                                                 name:SRGMediaPlayerSegmentDidChangeNotification
-                                               object:nil];
+     selector:@selector(considerDisplayBlockingMessage:)
+     name:SRGMediaPlayerSegmentDidChangeNotification
+     object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(segmentDidChange:)
-                                                 name:SRGMediaPlayerSegmentDidChangeNotification
-                                               object:nil];
+     selector:@selector(segmentDidChange:)
+     name:SRGMediaPlayerSegmentDidChangeNotification
+     object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(playbackStateDidChange:)
-                                                 name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                               object:nil];
+     selector:@selector(playbackStateDidChange:)
+     name:SRGMediaPlayerPlaybackStateDidChangeNotification
+     object:nil];
 }
 
 - (void)updateAppearanceWithTime:(CMTime)time
@@ -114,7 +114,7 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         [self.mediaPlayerController playIdentifier:self.videoIdentifier];
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
@@ -125,7 +125,7 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
         [self.mediaPlayerController reset];
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
@@ -144,21 +144,21 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
     if (sender.playerController != self.mediaPlayerController) {
         return;
     }
-    
+
     NSNumber *value = notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey];
     if (! value) {
         return;
     }
-    
+
     if ([value integerValue] == RTSMediaPlaybackSegmentSeekUponBlockingStart) {
         NSTimeInterval blockingMessageDuration = 10.0;
-        
+
         self.blockingOverlayViewLabel.text = [NSString stringWithFormat:
                                               @"Blocked Segment. Seeking to next authorized one... \nMessage shown during %.0f seconds (customizable).",
                                               blockingMessageDuration];
-        
+
         [self.blockingOverlayView setHidden:NO];
-        
+
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, blockingMessageDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self.blockingOverlayView setHidden:YES];
             if (self.mediaPlayerController.playbackState == SRGPlaybackStatePaused) {
@@ -179,7 +179,7 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
     Segment *previousSegment = notification.userInfo[SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey];
     Segment *segment = notification.userInfo[SRGMediaPlaybackSegmentChangeSegmentInfoKey];
     BOOL wasSelected = [notification.userInfo[SRGMediaPlaybackSegmentChangeUserSelectInfoKey] boolValue];
-    
+
     NSLog(@"Segment [%@]: previous = %@, current = %@, user selected: %@", StringForSegmentChange(segmentChange), previousSegment.name, segment.name, wasSelected ? @"YES" : @"NO");
 }
 
@@ -193,7 +193,7 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 - (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(CGFloat)value interactive:(BOOL)interactive
 {
     [self updateAppearanceWithTime:time];
-    
+
     if (interactive) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL (id < SRGSegment >  _Nonnull segment, NSDictionary < NSString *, id > *_Nullable bindings) {
             return [[segment segmentIdentifier] isEqualToString:self.mediaPlayerController.identifier]

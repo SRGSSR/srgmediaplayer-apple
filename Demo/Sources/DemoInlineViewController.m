@@ -21,7 +21,7 @@
           completionHandler:(void (^)(NSString *, NSURL *, NSError *))completionHandler
 {
     completionHandler(identifier, self.mediaURL, nil);
-    
+
     // No need for a connection handle, completion handlers are called immediately
     return nil;
 }
@@ -34,7 +34,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     if ([self isMovingFromParentViewController]) {
         [self.mediaPlayerController reset];
     }

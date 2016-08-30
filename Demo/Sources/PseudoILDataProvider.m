@@ -29,7 +29,7 @@ static NSString *const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/to
         // Length is 30 minutes
         completionHandler(identifier, [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"], nil);
     }
-    
+
     // No need for a connection handle, completion handlers are called immediately
     return nil;
 }
@@ -40,13 +40,13 @@ static NSString *const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/to
 - (NSURL *)tokenRequestURLForURL:(NSURL *)url
 {
     NSAssert(url, @"One needs an URL here.");
-    
+
     NSMutableArray *urlPaths = [NSMutableArray arrayWithArray:[url pathComponents]];
-    
+
     [urlPaths removeObjectAtIndex:0];
     [urlPaths removeLastObject];
     [urlPaths addObject:@"*"];
-    
+
     return [NSURL URLWithString:[SRGILTokenHandlerBaseURLString stringByAppendingString:[urlPaths componentsJoinedByString:@"/"]]];
 }
 
@@ -64,11 +64,11 @@ static NSString *const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/to
         Segment *fullLength = [[Segment alloc] initWithIdentifier:identifier name:@"Full length" start:0 duration:duration];
         fullLength.fullLength = YES;
         fullLength.visible = NO;
-        
+
         NSMutableArray *segments = [NSMutableArray arrayWithObject:fullLength];
         NSInteger row = [identifier integerValue];
         NSError *error = nil;
-        
+
         if (row == 0) {
             // 3 visible segments
             for (NSUInteger i = 0; i < 3; i++) {
@@ -125,7 +125,7 @@ static NSString *const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/to
             Segment *segment1 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #0" start:2. duration:3.];
             segment1.logical = YES;
             [segments addObject:segment1];
-            
+
             Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #1" start:5. duration:4.];
             segment2.logical = YES;
             [segments addObject:segment2];
@@ -136,7 +136,7 @@ static NSString *const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/to
             segment1.logical = YES;
             segment1.blocked = YES;
             [segments addObject:segment1];
-            
+
             Segment *segment2 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #1" start:5. duration:4.];
             segment2.logical = YES;
             segment2.blocked = YES;
@@ -148,35 +148,35 @@ static NSString *const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/to
             Segment *episodeSegment1 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #0" start:2. duration:30.];
             episodeSegment1.logical = YES;
             [segments addObject:episodeSegment1];
-            
+
             Segment *episodeSegment2 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #1" start:32. duration:20.];
             episodeSegment2.logical = YES;
             [segments addObject:episodeSegment2];
-            
+
             Segment *episodeSegment3 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #2" start:52. duration:20.];
             episodeSegment3.logical = YES;
             [segments addObject:episodeSegment3];
-            
+
             Segment *episodeSegment4 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #3" start:72. duration:30.];
             episodeSegment4.logical = YES;
             [segments addObject:episodeSegment4];
-            
+
             Segment *episodeSegment5 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #4" start:110. duration:10.];
             episodeSegment5.logical = YES;
             [segments addObject:episodeSegment5];
-            
+
             Segment *episodeSegment6 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #5" start:120. duration:500.];
             episodeSegment6.logical = YES;
             [segments addObject:episodeSegment6];
-            
+
             Segment *episodeSegment7 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #6" start:650. duration:30.];
             episodeSegment7.logical = YES;
             [segments addObject:episodeSegment7];
-            
+
             Segment *episodeSegment8 = [[Segment alloc] initWithIdentifier:identifier name:@"Segment #7" start:680. duration:40.];
             episodeSegment8.logical = YES;
             [segments addObject:episodeSegment8];
-            
+
             Segment *bonusSegment = [[Segment alloc] initWithIdentifier:@"bonus" name:@"Bonus" start:0. duration:10. * 60.];
             [segments addObject:bonusSegment];
         }
@@ -184,10 +184,10 @@ static NSString *const SRGILTokenHandlerBaseURLString = @"http://tp.srgssr.ch/to
             // Error
             error = [NSError errorWithDomain:@"Demo" code:999 userInfo:@{ NSLocalizedDescriptionKey: @"Segments Demo Error" }];
         }
-        
+
         completionHandler(identifier, segments, error);
     }
-    
+
     return nil;
 }
 

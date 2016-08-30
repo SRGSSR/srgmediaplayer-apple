@@ -31,12 +31,12 @@
 - (void)setMediaURLs:(NSArray *)mediaURLs
 {
     _mediaURLs = mediaURLs;
-    
+
     self.mediaPlayerControllers = [NSMutableArray array];
-    
+
     for (NSURL *mediaURL in mediaURLs) {
         SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] initWithContentURL:mediaURL];
-        
+
         UITapGestureRecognizer *switchTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchMainPlayer:)];
         [mediaPlayerController.view addGestureRecognizer:switchTapGestureRecognizer];
         [self.mediaPlayerControllers addObject:mediaPlayerController];
@@ -62,13 +62,13 @@
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [coordinator animateAlongsideTransition:^(id < UIViewControllerTransitionCoordinatorContext > context)
-     {
-         NSInteger index = 0;
-         for (UIView *playerView in self.playerViewsContainer.subviews) {
-             playerView.frame = [self rectForPlayerViewAtIndex:index++];
-         }
-     }
-                                 completion:NULL];
+    {
+        NSInteger index = 0;
+        for (UIView *playerView in self.playerViewsContainer.subviews) {
+            playerView.frame = [self rectForPlayerViewAtIndex:index++];
+        }
+    }
+     completion:NULL];
 }
 
 #pragma mark - Action
@@ -91,7 +91,7 @@
 - (IBAction)thumbnailSwitchDidChange:(UISwitch *)sender
 {
     self.playerViewsContainer.hidden = ! sender.isOn;
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         SEL action = sender.isOn ? @selector(play) : @selector(pause);
         [self.thumbnailPlayerControllers makeObjectsPerformSelector:action];
@@ -103,25 +103,25 @@
 - (void)setSelectedIndex:(NSInteger)selectedIndex
 {
     _selectedIndex = selectedIndex;
-    
+
     SRGMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[selectedIndex];
     mainMediaPlayerController.allowsExternalPlayback = YES;
     [self attachPlayer:mainMediaPlayerController toView:self.mainPlayerView];
-    
+
     [self.playerViewsContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.playerViewsContainer layoutIfNeeded];
-    
+
     for (NSInteger index = 0; index < self.mediaPlayerControllers.count; index++) {
         if (index == selectedIndex) {
             continue;
         }
-        
+
         CGRect playerViewFrame = [self rectForPlayerViewAtIndex:self.playerViewsContainer.subviews.count];
         UIView *playerView = [[UIView alloc] initWithFrame:playerViewFrame];
         playerView.backgroundColor = [UIColor blackColor];
         playerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         [self.playerViewsContainer addSubview:playerView];
-        
+
         SRGMediaPlayerController *thumbnailMediaPlayerController = self.mediaPlayerControllers[index];
         thumbnailMediaPlayerController.allowsExternalPlayback = NO;
         [self attachPlayer:thumbnailMediaPlayerController toView:playerView];
@@ -132,10 +132,10 @@
 {
     CGFloat playerWidth = MAX(100, MIN(200, CGRectGetWidth(self.playerViewsContainer.frame) / (self.mediaURLs.count - 1)));
     CGFloat playerHeight = (playerWidth - 10) * 10 / 16;
-    
+
     CGFloat x = self.mediaURLs.count > 2 ? index * playerWidth : (CGRectGetWidth(self.playerViewsContainer.frame) - playerWidth) / 2;
     CGFloat y = CGRectGetHeight(self.playerViewsContainer.frame) / 2 - playerHeight / 2;
-    
+
     return CGRectMake(x + 5, y, playerWidth - 10, playerHeight);
 }
 
@@ -148,7 +148,7 @@
     mediaPlayerController.overlayViews = isMainPlayer ? self.overlayViews : nil;
     [mediaPlayerController attachPlayerToView:playerView];
     mediaPlayerController.muted = ! isMainPlayer;
-    
+
     UITapGestureRecognizer *defaultTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.firstObject;
     UITapGestureRecognizer *switchTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.lastObject;
     defaultTapGestureRecognizer.enabled = isMainPlayer;
@@ -162,7 +162,7 @@
             return mediaPlayerController;
         }
     }
-    
+
     return nil;
 }
 
@@ -174,7 +174,7 @@
             [thumbnailPlayerControllers addObject:mediaPlayerController];
         }
     }
-    
+
     return [thumbnailPlayerControllers copy];
 }
 

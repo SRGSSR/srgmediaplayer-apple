@@ -13,9 +13,9 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
     NSInteger hours = duration / 3600;
     NSInteger minutes = (duration % 3600) / 60;
     NSInteger seconds = (duration % 3600) % 60;
-    
+
     NSString *minutesAndSeconds = [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
-    
+
     return (hours > 0) ? [[NSString stringWithFormat:@"%01ld:", (long)hours] stringByAppendingString:minutesAndSeconds] : minutesAndSeconds;
 }
 
@@ -42,7 +42,7 @@ static NSString *sexagesimalDurationStringFromValue(NSInteger duration)
         self.blocked = NO;
         self.visible = YES;
         self.logical = NO;
-        
+
         self.segmentIdentifier = identifier;
         self.name = name;
     }

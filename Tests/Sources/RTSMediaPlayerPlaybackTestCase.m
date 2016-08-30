@@ -37,31 +37,31 @@
     }];
     [self.mediaPlayerController play];
     [self waitForExpectationsWithTimeout:30. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
         return self.mediaPlayerController.playbackState == SRGPlaybackStatePaused;
     }];
     [self.mediaPlayerController pause];
     [self waitForExpectationsWithTimeout:30. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
         return self.mediaPlayerController.playbackState == SRGPlaybackStateIdle;
     }];
     [self.mediaPlayerController reset];
     [self waitForExpectationsWithTimeout:30. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
         return self.mediaPlayerController.playbackState == SRGPlaybackStatePlaying;
     }];
     [self.mediaPlayerController play];
     [self waitForExpectationsWithTimeout:30. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
         return self.mediaPlayerController.playbackState == SRGPlaybackStateSeeking;
     }];
     [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(5., 1.)];
     [self waitForExpectationsWithTimeout:30. handler:nil];
-    
+
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
         return self.mediaPlayerController.playbackState == SRGPlaybackStateEnded;
     }];
@@ -78,7 +78,7 @@
             playbackStateKVOChangeCount++;
         }
     }];
-    
+
     [self.mediaPlayerController play];
     [self.mediaPlayerController reset];
     [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
@@ -94,16 +94,16 @@
             playbackStateKVOChangeCount++;
         }
     }];
-    
+
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
         return self.mediaPlayerController.playbackState == SRGPlaybackStatePlaying;
     }];
     [self.mediaPlayerController play];
     [self waitForExpectationsWithTimeout:30. handler:nil];
-    
+
     [self.mediaPlayerController play];
     [self.mediaPlayerController play];
-    
+
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
         XCTAssertEqual(playbackStateKVOChangeCount, 1);
         return self.mediaPlayerController.playbackState == SRGPlaybackStateIdle;
