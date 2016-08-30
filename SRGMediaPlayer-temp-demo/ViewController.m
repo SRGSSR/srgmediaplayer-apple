@@ -10,6 +10,17 @@
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
+@interface Segment : NSObject <SRGSegment>
+
+@property (nonatomic) CMTimeRange timeRange;
+@property (nonatomic, getter=isBlocked) BOOL blocked;
+
+@end
+
+@implementation Segment
+
+@end
+
 static void *s_kvoContext = &s_kvoContext;
 
 @interface ViewController ()
@@ -62,6 +73,12 @@ static void *s_kvoContext = &s_kvoContext;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSMutableArray<Segment *> *segments = [NSMutableArray array];
+    
+    Segment *segment1 = [[Segment alloc] init];
+    segment1.timeRange = CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
+    [segments addObject:segment1];
 	
 	self.playerController = [[SRGMediaPlayerController alloc] init];
 	self.playerButton.mediaPlayerController = self.playerController;
@@ -73,7 +90,7 @@ static void *s_kvoContext = &s_kvoContext;
 	[self.view insertSubview:self.playerController.view atIndex:0];
 	
 	NSURL *URL = [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"];
-	[self.playerController prepareToPlayURL:URL atTime:CMTimeMakeWithSeconds(30, 1) withCompletionHandler:^(BOOL finished) {
+    [self.playerController prepareToPlayURL:URL atTime:kCMTimeZero withSegments:[segments copy] completionHandler:^(BOOL finished) {
         [self.playerController togglePlayPause];
     }];
 }

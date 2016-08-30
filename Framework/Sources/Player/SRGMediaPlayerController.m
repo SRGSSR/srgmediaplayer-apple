@@ -382,28 +382,28 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     self.segmentPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         
-        __block id<SRGSegment> segment = nil;
-        [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        __block id<SRGSegment> currentSegment = nil;
+        [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
             if (CMTimeRangeContainsTime(segment.timeRange, time)) {
-                segment = segment;
+                currentSegment = segment;
                 *stop = YES;
             }
         }];
         
-        if (self.previousSegment != segment) {
+        if (self.previousSegment != currentSegment) {
             if (self.previousSegment) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
                                                                     object:self
                                                                   userInfo:@{ SRGMediaPlayerSegmentKey : self.previousSegment }];
             }
             
-            if (segment) {
+            if (currentSegment) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
                                                                     object:self
-                                                                  userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
+                                                                  userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
             }
             
-            self.previousSegment = segment;
+            self.previousSegment = currentSegment;
         }
     }];
 }
