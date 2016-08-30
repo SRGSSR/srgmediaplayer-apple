@@ -112,7 +112,7 @@
 		E6FC7F7A1D62072400A55085 /* UIBezierPath+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F451D62072400A55085 /* UIBezierPath+SRGMediaPlayer.m */; };
 		E6FC7F8D1D62072400A55085 /* SRGMediaPlayerController.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F5A1D62072400A55085 /* SRGMediaPlayerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F8E1D62072400A55085 /* SRGMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F5B1D62072400A55085 /* SRGMediaPlayerController.m */; };
-		E6FC7F951D62072400A55085 /* SRGMediaSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F631D62072400A55085 /* SRGMediaSegment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6FC7F951D62072400A55085 /* SRGSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F631D62072400A55085 /* SRGSegment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F9C1D62097E00A55085 /* SRGMediaPlayer.m */; };
 		F90EE7B27DDA4C504ED93629 /* libPods-SRGMediaPlayer-tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05E918D1654F8CC2553EED74 /* libPods-SRGMediaPlayer-tests.a */; };
 /* End PBXBuildFile section */
@@ -303,7 +303,7 @@
 		E6FC7F5E1D62072400A55085 /* SRGMediaPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerViewController.h; sourceTree = "<group>"; };
 		E6FC7F5F1D62072400A55085 /* SRGMediaPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerViewController.m; sourceTree = "<group>"; };
 		E6FC7F601D62072400A55085 /* SRGMediaPlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SRGMediaPlayerViewController.xib; sourceTree = "<group>"; };
-		E6FC7F631D62072400A55085 /* SRGMediaSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaSegment.h; sourceTree = "<group>"; };
+		E6FC7F631D62072400A55085 /* SRGSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGSegment.h; sourceTree = "<group>"; };
 		E6FC7F661D62072400A55085 /* RTSMediaSegmentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSMediaSegmentsController.h; sourceTree = "<group>"; };
 		E6FC7F671D62072400A55085 /* RTSMediaSegmentsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSMediaSegmentsController.m; sourceTree = "<group>"; };
 		E6FC7F681D62072400A55085 /* RTSSegmentedTimelineView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTSSegmentedTimelineView+Private.h"; sourceTree = "<group>"; };
@@ -634,7 +634,7 @@
 		E6FC7F611D62072400A55085 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				E6FC7F631D62072400A55085 /* SRGMediaSegment.h */,
+				E6FC7F631D62072400A55085 /* SRGSegment.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -668,7 +668,7 @@
 				E69A1E621D61BAFD0064E6C1 /* SRGMediaPlayer.h in Headers */,
 				E6FC7F6B1D62072400A55085 /* SRGActivityGestureRecognizer.h in Headers */,
 				E6C986181D70182300C45C7A /* SRGPictureInPictureButton.h in Headers */,
-				E6FC7F951D62072400A55085 /* SRGMediaSegment.h in Headers */,
+				E6FC7F951D62072400A55085 /* SRGSegment.h in Headers */,
 				E6C986131D7014A000C45C7A /* SRGAirplayOverlayView.h in Headers */,
 				E6C9860E1D6F458900C45C7A /* SRGTimeSlider.h in Headers */,
 				E6C9861E1D701D3800C45C7A /* SRGMediaPlayerSharedController.h in Headers */,

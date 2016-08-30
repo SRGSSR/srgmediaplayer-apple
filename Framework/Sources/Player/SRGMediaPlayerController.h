@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "SRGMediaPlayerConstants.h"
-#import "SRGMediaSegment.h"
+#import "SRGSegment.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -102,11 +102,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  @name Segments
  *  --------------
  */
-@property (nonatomic, nullable) NSArray<id<SRGMediaSegment> > *segments;
+@property (nonatomic, nullable) NSArray<id<SRGSegment> > *segments;
 
-@property (nonatomic, readonly, nullable) id<SRGMediaSegment> currentSegment;
+@property (nonatomic, readonly, nullable) id<SRGSegment> currentSegment;
 
-- (void)playSegment:(id<SRGMediaSegment>)segment;
+- (void)playSegment:(id<SRGSegment>)segment;
 
 /**
  *  The current media time range (might be empty or indefinite). Use `CMTimeRange` macros for checking time ranges

@@ -16,11 +16,6 @@
 #import "RTSMediaSegmentsDataSource.h"
 
 NSTimeInterval const RTSMediaPlaybackTickInterval = 0.1;
-NSString *const SRGMediaPlaybackSegmentDidChangeNotification = @"SRGMediaPlaybackSegmentDidChangeNotification";
-NSString *const SRGMediaPlaybackSegmentChangeSegmentInfoKey = @"SRGMediaPlaybackSegmentChangeSegmentInfoKey";
-NSString *const SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey = @"SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey";
-NSString *const SRGMediaPlaybackSegmentChangeValueInfoKey = @"SRGMediaPlaybackSegmentChangeValueInfoKey";
-NSString *const SRGMediaPlaybackSegmentChangeUserSelectInfoKey = @"SRGMediaPlaybackSegmentChangeUserSelectInfoKey";
 
 @interface RTSMediaSegmentsController ()
 @property (nonatomic, strong) NSString *identifier;
@@ -137,7 +132,7 @@ NSString *const SRGMediaPlaybackSegmentChangeUserSelectInfoKey = @"SRGMediaPlayb
             }
             
             if (userInfo) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlaybackSegmentDidChangeNotification
+                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidChangeNotification
                                                                     object:self
                                                                   userInfo:userInfo];
             }
@@ -150,14 +145,14 @@ NSString *const SRGMediaPlaybackSegmentChangeUserSelectInfoKey = @"SRGMediaPlayb
             NSDictionary *userInfo = userInfo = @{ SRGMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingStart),
                                                    SRGMediaPlaybackSegmentChangeSegmentInfoKey: currentSegment };
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlaybackSegmentDidChangeNotification
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidChangeNotification
                                                                 object:self
                                                               userInfo:userInfo];
             
             [self.playerController seekToTime:CMTimeRangeGetEnd(currentSegment.timeRange) completionHandler:^(BOOL finished) {
                 NSDictionary *userInfo = @{ SRGMediaPlaybackSegmentChangeValueInfoKey: @(RTSMediaPlaybackSegmentSeekUponBlockingEnd),
                                             SRGMediaPlaybackSegmentChangePreviousSegmentInfoKey: currentSegment };
-                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlaybackSegmentDidChangeNotification
+                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidChangeNotification
                                                                     object:self
                                                                   userInfo:userInfo];
                 
@@ -206,7 +201,7 @@ NSString *const SRGMediaPlaybackSegmentChangeUserSelectInfoKey = @"SRGMediaPlayb
         // Immediately send the event. We thus also update the current segment information right here
         self.lastPlaybackPositionLogicalSegment = segment;
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlaybackSegmentDidChangeNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidChangeNotification
                                                             object:self
                                                           userInfo:userInfo];
     }

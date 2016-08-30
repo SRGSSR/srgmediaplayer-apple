@@ -61,7 +61,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
@@ -73,7 +73,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentEnd) {
             return NO;
         }
@@ -98,7 +98,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
@@ -108,7 +108,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
@@ -135,7 +135,7 @@
     
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
@@ -147,7 +147,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentEnd) {
             return NO;
         }
@@ -172,7 +172,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_blocked_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
@@ -182,7 +182,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
@@ -208,7 +208,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment_at_start" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
@@ -220,7 +220,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentEnd) {
             return NO;
         }
@@ -245,7 +245,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment_at_start" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
@@ -255,7 +255,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
@@ -281,7 +281,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_segment_at_start" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
@@ -293,7 +293,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentEnd) {
             return NO;
         }
@@ -318,7 +318,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_hidden_blocked_segment_at_start" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
@@ -328,7 +328,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
@@ -351,7 +351,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_segments" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
@@ -363,7 +363,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSwitch) {
             return NO;
         }
@@ -389,7 +389,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_blocked_segments" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
@@ -399,7 +399,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
@@ -426,7 +426,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_blocked_segments_at_start" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
@@ -436,7 +436,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
@@ -463,7 +463,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment_transition_into_blocked_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
@@ -475,7 +475,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentEnd) {
             return NO;
         }
@@ -487,7 +487,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
@@ -497,7 +497,7 @@
         
         return YES;
     }];
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
@@ -523,7 +523,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
@@ -551,7 +551,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
@@ -578,7 +578,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
@@ -589,7 +589,7 @@
         return YES;
     }];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
@@ -614,7 +614,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_blocked_segment" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingStart) {
             return NO;
         }
@@ -625,7 +625,7 @@
         return YES;
     }];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSeekUponBlockingEnd) {
             return NO;
         }
@@ -650,7 +650,7 @@
     [self.mediaSegmentsController reloadSegmentsForIdentifier:@"SEGMENTS-full_length_with_consecutive_segments" completionHandler:nil];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentStart) {
             return NO;
         }
@@ -667,7 +667,7 @@
     [self.mediaSegmentsController playSegment:firstSegment];
     [self waitForExpectationsWithTimeout:60. handler:nil];
     
-    [self expectationForNotification:SRGMediaPlaybackSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
+    [self expectationForNotification:SRGMediaPlayerSegmentDidChangeNotification object:self.mediaSegmentsController handler:^BOOL (NSNotification *notification) {
         if ([notification.userInfo[SRGMediaPlaybackSegmentChangeValueInfoKey] integerValue] != RTSMediaPlaybackSegmentSwitch) {
             return NO;
         }

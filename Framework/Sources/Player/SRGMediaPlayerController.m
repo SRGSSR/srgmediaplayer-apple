@@ -347,7 +347,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 #pragma mark Segments
 
-- (void)playSegment:(id<SRGMediaSegment>)segment
+- (void)playSegment:(id<SRGSegment>)segment
 {
 
 }

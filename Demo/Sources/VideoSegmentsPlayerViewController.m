@@ -92,11 +92,11 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(considerDisplayBlockingMessage:)
-                                                 name:SRGMediaPlaybackSegmentDidChangeNotification
+                                                 name:SRGMediaPlayerSegmentDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(segmentDidChange:)
-                                                 name:SRGMediaPlaybackSegmentDidChangeNotification
+                                                 name:SRGMediaPlayerSegmentDidChangeNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playbackStateDidChange:)

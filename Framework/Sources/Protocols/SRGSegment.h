@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol SRGMediaSegment <NSObject>
+@protocol SRGSegment <NSObject>
 
 @property (nonatomic, readonly) CMTimeRange timeRange;
 @property (nonatomic, readonly, getter=isBlocked) BOOL blocked;
