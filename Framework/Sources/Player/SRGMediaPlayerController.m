@@ -28,6 +28,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @interface SRGMediaPlayerController ()
 
 @property (nonatomic) NSURL *contentURL;
+@property (nonatomic) NSArray<id<SRGSegment>> *segments;
+
 @property (nonatomic, readonly) SRGMediaPlayerView *playerView;
 @property (nonatomic) SRGPlaybackState playbackState;
 
@@ -286,18 +288,48 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 #pragma mark Playback
 
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(NSArray<id<SRGSegment>> *)segments completionHandler:(void (^)(BOOL))completionHandler
 {
     if (! CMTIME_IS_VALID(startTime)) {
         startTime = kCMTimeZero;
     }
     
     self.contentURL = URL;
+    self.segments = segments;
     self.startTimeValue = [NSValue valueWithCMTime:startTime];
     self.startCompletionHandler = completionHandler;
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
+}
+
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler
+{
+    [self prepareToPlayURL:URL atTime:startTime withSegments:nil completionHandler:completionHandler];
+}
+
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+{
+    [self prepareToPlayURL:URL atTime:time withSegments:segments completionHandler:^(BOOL finished) {
+        if (finished) {
+            [self togglePlayPause];
+        }
+    }];
+}
+
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time
+{
+    [self playURL:URL atTime:time withSegments:nil];
+}
+
+- (void)playURL:(NSURL *)URL withSegments:(NSArray<id<SRGSegment>> *)segments
+{
+    [self playURL:URL atTime:kCMTimeZero withSegments:segments];
+}
+
+- (void)playURL:(NSURL *)URL
+{
+    [self playURL:URL atTime:kCMTimeZero];
 }
 
 - (void)togglePlayPause
@@ -325,31 +357,15 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     }];
 }
 
+- (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
+{
+
+}
+
 - (void)reset
 {
     [self.player pause];
     self.player = nil;
-}
-
-- (void)playURL:(NSURL *)URL
-{
-    [self playURL:URL atTime:kCMTimeZero];
-}
-
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time
-{
-    [self prepareToPlayURL:URL atTime:time withCompletionHandler:^(BOOL finished) {
-        if (finished) {
-            [self togglePlayPause];
-        }
-    }];
-}
-
-#pragma mark Segments
-
-- (void)playSegment:(id<SRGSegment>)segment
-{
-
 }
 
 #pragma mark Time observers
@@ -362,7 +378,10 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         [playbackBlockRegistration attachToMediaPlayer:player];
     }
     
+    @weakify(self)
     self.segmentPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        @strongify(self)
+        
         
     }];
 }
