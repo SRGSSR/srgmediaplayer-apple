@@ -30,7 +30,10 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic, readonly) SRGMediaPlayerView *playerView;
 @property (nonatomic) SRGPlaybackState playbackState;
+
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
+@property (nonatomic) id segmentPeriodicTimeObserver;
+
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
 @property (nonatomic) NSValue *startTimeValue;
@@ -66,7 +69,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 {
     AVPlayer *previousPlayer = self.playerView.playerLayer.player;
     if (previousPlayer) {
-        [self unregisterCustomPeriodicTimeObservers];
+        [self unregisterTimeObservers];
         
         [previousPlayer removeObserver:self forKeyPath:@"currentItem.status" context:s_kvoContext];
         [previousPlayer removeObserver:self forKeyPath:@"rate" context:s_kvoContext];
@@ -85,7 +88,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     self.playerView.playerLayer.player = player;
     
     if (player) {
-        [self registerCustomPeriodicTimeObserversForPlayer:player];
+        [self registerTimeObserversForPlayer:player];
         
         [player addObserver:self
                  forKeyPath:@"currentItem.status"
@@ -342,19 +345,32 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     }];
 }
 
+#pragma mark Segments
+
+- (void)playSegment:(id<SRGMediaSegment>)segment
+{
+
+}
+
 #pragma mark Time observers
 
-- (void)registerCustomPeriodicTimeObserversForPlayer:(AVPlayer *)player
+- (void)registerTimeObserversForPlayer:(AVPlayer *)player
 {
-    [self unregisterCustomPeriodicTimeObservers];
+    [self unregisterTimeObservers];
     
     for (SRGPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
         [playbackBlockRegistration attachToMediaPlayer:player];
     }
+    
+    self.segmentPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        
+    }];
 }
 
-- (void)unregisterCustomPeriodicTimeObservers
+- (void)unregisterTimeObservers
 {
+    [self.player removeTimeObserver:self.segmentPeriodicTimeObserver];
+    
     for (SRGPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
         [playbackBlockRegistration detachFromMediaPlayer];
     }
