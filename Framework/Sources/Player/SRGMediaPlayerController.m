@@ -408,6 +408,12 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     self.segmentPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         
+        // Ignore when seeking (if we are skipping a segment)
+        if (self.playbackState == SRGPlaybackStateSeeking) {
+            return;
+        }
+        
+        // Find the segment matching the current time
         __block id<SRGSegment> currentSegment = nil;
         [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
             if (CMTimeRangeContainsTime(segment.timeRange, time)) {
@@ -416,20 +422,36 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
             }
         }];
         
+        // Segment transition notifications
         if (self.previousSegment != currentSegment) {
-            if (self.previousSegment) {
+            if (self.previousSegment && ! [self.previousSegment isBlocked]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
                                                                     object:self
                                                                   userInfo:@{ SRGMediaPlayerSegmentKey : self.previousSegment }];
             }
             
-            if (currentSegment) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
-                                                                    object:self
-                                                                  userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
-            }
-            
             self.previousSegment = currentSegment;
+            
+            if (currentSegment) {
+                if (! [currentSegment isBlocked]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
+                                                                        object:self
+                                                                      userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
+                }
+                else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipSegmentNotification
+                                                                        object:self
+                                                                      userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
+                    
+                    [self seekToTime:CMTimeRangeGetEnd([currentSegment timeRange]) withCompletionHandler:^(BOOL finished) {
+                        if (finished) {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipSegmentNotification
+                                                                                object:self
+                                                                              userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
+                        }
+                    }];
+                }
+            }
         }
     }];
 }
