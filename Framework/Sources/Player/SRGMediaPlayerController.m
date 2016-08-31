@@ -368,6 +368,10 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)reset
 {
+    if (self.pictureInPictureController.isPictureInPictureActive) {
+        [self.pictureInPictureController stopPictureInPicture];
+    }
+    
     [self.player pause];
     self.player = nil;
 }
