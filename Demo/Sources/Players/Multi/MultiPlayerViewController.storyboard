@@ -67,20 +67,12 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pxP-mh-cnj">
-                                        <rect key="frame" x="8" y="14" width="51" height="31"/>
-                                        <connections>
-                                            <action selector="thumbnailSwitchDidChange:" destination="b7b-kf-zbq" eventType="valueChanged" id="DAY-6B-s0c"/>
-                                        </connections>
-                                    </switch>
                                 </subviews>
                                 <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="Wmk-XY-ASk" secondAttribute="centerX" id="6dw-00-Ymf"/>
-                                    <constraint firstAttribute="centerY" secondItem="pxP-mh-cnj" secondAttribute="centerY" id="Ds9-mC-8bi"/>
                                     <constraint firstAttribute="centerY" secondItem="Wmk-XY-ASk" secondAttribute="centerY" id="JhT-7G-oW6"/>
                                     <constraint firstAttribute="height" constant="60" id="Yr3-LN-6JC"/>
-                                    <constraint firstItem="pxP-mh-cnj" firstAttribute="leading" secondItem="o0R-Vs-Z8P" secondAttribute="leading" constant="8" id="xsB-dV-XI1"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -105,7 +97,6 @@
                         <outlet property="mainPlayerView" destination="3hO-rE-By8" id="rqT-7R-Flj"/>
                         <outlet property="playPauseButton" destination="Wmk-XY-ASk" id="f65-ae-dhC"/>
                         <outlet property="playerViewsContainer" destination="tmY-iv-N0L" id="BIV-Zb-rdh"/>
-                        <outlet property="thumbnailSwitch" destination="pxP-mh-cnj" id="asU-J0-Trd"/>
                         <outletCollection property="overlayViews" destination="VDg-y2-TPv" id="n0G-72-RgW"/>
                         <outletCollection property="overlayViews" destination="o0R-Vs-Z8P" id="eNE-gU-ZVs"/>
                     </connections>

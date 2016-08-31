@@ -21,7 +21,6 @@
 @property (nonatomic, weak) IBOutlet UIView *playerViewsContainer;
 
 @property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
-@property (nonatomic, weak) IBOutlet UISwitch *thumbnailSwitch;
 
 @property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
 
@@ -41,20 +40,24 @@
 
 #pragma mark Getters and setters
 
-- (void)setMediaURLs:(NSArray *)mediaURLs
+- (void)setMediaURLs:(NSArray<NSURL *> *)mediaURLs
 {
     _mediaURLs = mediaURLs;
-
-    self.mediaPlayerControllers = [NSMutableArray array];
-
-    for (NSURL *URL in mediaURLs) {
+    
+    NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers = [NSMutableArray array];
+    for (NSInteger i = 0; i < mediaURLs.count; ++i) {
         SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
-        [mediaPlayerController playURL:URL];
+        mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
+            BOOL isMainPlayer = (i == _selectedIndex);
+            player.allowsExternalPlayback = isMainPlayer;
+            player.muted = ! isMainPlayer;
+        };
         
         UITapGestureRecognizer *switchTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchMainPlayer:)];
         [mediaPlayerController.view addGestureRecognizer:switchTapGestureRecognizer];
-        [self.mediaPlayerControllers addObject:mediaPlayerController];
+        [mediaPlayerControllers addObject:mediaPlayerController];
     }
+    self.mediaPlayerControllers = [mediaPlayerControllers copy];
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex
@@ -62,7 +65,7 @@
     _selectedIndex = selectedIndex;
     
     SRGMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[selectedIndex];
-    // FIXME: mainMediaPlayerController.allowsExternalPlayback = YES;
+    [mainMediaPlayerController reloadPlayerConfiguration];
     [self attachPlayer:mainMediaPlayerController toView:self.mainPlayerView];
     
     [self.playerViewsContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -80,7 +83,7 @@
         [self.playerViewsContainer addSubview:playerView];
         
         SRGMediaPlayerController *thumbnailMediaPlayerController = self.mediaPlayerControllers[index];
-        // FIXME: thumbnailMediaPlayerController.allowsExternalPlayback = NO;
+        [thumbnailMediaPlayerController reloadPlayerConfiguration];
         [self attachPlayer:thumbnailMediaPlayerController toView:playerView];
     }
 }
@@ -92,14 +95,28 @@
     [super viewDidLoad];
     
     [self setSelectedIndex:0];
-    [self togglePlayPause];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+        for (NSInteger i = 0; i < self.mediaURLs.count; ++i) {
+            NSURL *URL = self.mediaURLs[i];
+            SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerControllers[i];
+            [mediaPlayerController playURL:URL];
+        }
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [self.mediaPlayerControllers makeObjectsPerformSelector:@selector(reset)];
+    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+        [self.mediaPlayerControllers makeObjectsPerformSelector:@selector(reset)];
+    }
 }
 
 #pragma mark Rotation
@@ -118,23 +135,12 @@
 
 #pragma mark Actions
 
-- (void)togglePlayPause
-{
-    [self.mediaPlayerControllers makeObjectsPerformSelector:@selector(togglePlayPause)];
-}
-
 - (IBAction)dismiss:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (IBAction)thumbnailSwitchDidChange:(UISwitch *)sender
-{
-    self.playerViewsContainer.hidden = ! sender.isOn;
-    [self togglePlayPause];
-}
-
-#pragma mark Media Players
+#pragma mark Media players
 
 - (CGRect)rectForPlayerViewAtIndex:(NSInteger)index
 {
@@ -149,7 +155,7 @@
 
 - (void)attachPlayer:(SRGMediaPlayerController *)mediaPlayerController toView:(UIView *)playerView
 {
-    BOOL isMainPlayer = playerView == self.mainPlayerView;
+    BOOL isMainPlayer = (playerView == self.mainPlayerView);
     if (isMainPlayer) {
         [self.playPauseButton setMediaPlayerController:mediaPlayerController];
     }
@@ -157,8 +163,6 @@
     mediaPlayerController.view.frame = playerView.bounds;
     mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [playerView insertSubview:mediaPlayerController.view atIndex:0];
-    
-    // FIXME: Muted, overlays
     
     UITapGestureRecognizer *defaultTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.firstObject;
     UITapGestureRecognizer *switchTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.lastObject;
@@ -173,7 +177,6 @@
             return mediaPlayerController;
         }
     }
-
     return nil;
 }
 
@@ -185,7 +188,6 @@
             [thumbnailPlayerControllers addObject:mediaPlayerController];
         }
     }
-
     return [thumbnailPlayerControllers copy];
 }
 

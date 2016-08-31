@@ -120,6 +120,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                                                    object:player.currentItem];
         
         self.playerCreationBlock ? self.playerCreationBlock(player) : nil;
+        self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
     }
 }
 
@@ -383,6 +384,15 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     
     [self.player pause];
     self.player = nil;
+}
+
+#pragma mark Configuration
+
+- (void)reloadPlayerConfiguration
+{
+    if (self.player) {
+        self.playerConfigurationBlock ? self.playerConfigurationBlock(self.player) : nil;
+    }
 }
 
 #pragma mark Time observers
