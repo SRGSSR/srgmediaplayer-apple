@@ -23,7 +23,7 @@
 @property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
 @property (nonatomic, weak) IBOutlet UISwitch *thumbnailSwitch;
 
-@property (nonatomic) IBOutletCollection(UIView) NSArray * overlayViews;
+@property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
 
 @end
 

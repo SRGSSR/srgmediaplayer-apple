@@ -88,6 +88,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemFailedToPlayToEndTimeNotification
                                                       object:previousPlayer.currentItem];
+        
+        self.playerDestructionBlock ? self.playerDestructionBlock(previousPlayer) : nil;
     }
     
     self.playerView.playerLayer.player = player;
@@ -116,6 +118,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                                                  selector:@selector(srg_mediaPlayerController_playerItemFailedToPlayToEndTime:)
                                                      name:AVPlayerItemFailedToPlayToEndTimeNotification
                                                    object:player.currentItem];
+        
+        self.playerCreationBlock ? self.playerCreationBlock(player) : nil;
     }
 }
 
