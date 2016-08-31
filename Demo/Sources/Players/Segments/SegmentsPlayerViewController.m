@@ -125,14 +125,14 @@
 - (IBAction)seekBackward:(id)sender
 {
     CMTime currentTime = self.mediaPlayerController.player.currentTime;
-    CMTime increment = CMTimeMakeWithSeconds(30., 1.);
+    CMTime increment = CMTimeMakeWithSeconds(30., NSEC_PER_SEC);
     [self.mediaPlayerController seekToTime:CMTimeSubtract(currentTime, increment) withCompletionHandler:nil];
 }
 
 - (IBAction)seekForward:(id)sender
 {
     CMTime currentTime = self.mediaPlayerController.player.currentTime;
-    CMTime increment = CMTimeMakeWithSeconds(30., 1.);
+    CMTime increment = CMTimeMakeWithSeconds(30., NSEC_PER_SEC);
     [self.mediaPlayerController seekToTime:CMTimeAdd(currentTime, increment) withCompletionHandler:nil];
 }
 

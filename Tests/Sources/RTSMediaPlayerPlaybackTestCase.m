@@ -59,13 +59,13 @@
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
         return self.mediaPlayerController.playbackState == SRGPlaybackStateSeeking;
     }];
-    [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(5., 1.)];
+    [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(5., NSEC_PER_SEC)];
     [self waitForExpectationsWithTimeout:30. handler:nil];
 
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
         return self.mediaPlayerController.playbackState == SRGPlaybackStateEnded;
     }];
-    [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(30. * 60. - 5., 1.)];
+    [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(30. * 60. - 5., NSEC_PER_SEC)];
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 

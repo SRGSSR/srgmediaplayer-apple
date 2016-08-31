@@ -564,7 +564,7 @@
         return YES;
     }];
 
-    [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
+    [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(4., NSEC_PER_SEC)];
     [self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
@@ -636,7 +636,7 @@
         return YES;
     }];
 
-    [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(4., 1.)];
+    [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(4., NSEC_PER_SEC)];
     [self waitForExpectationsWithTimeout:60. handler:nil];
 }
 
@@ -715,125 +715,125 @@
 - (id)segmentsController:(RTSMediaSegmentsController *)controller segmentsForIdentifier:(NSString *)identifier withCompletionHandler:(RTSMediaSegmentsCompletionHandler)completionHandler
 {
     if ([identifier isEqualToString:@"SEGMENTS-full_length_with_segment"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment.logical = YES;
         completionHandler(identifier, @[fullLength, segment], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_blocked_segment"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment.logical = YES;
         segment.blocked = YES;
         completionHandler(identifier, @[fullLength, segment], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_segment"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment.logical = YES;
         segment.visible = NO;
         completionHandler(identifier, @[fullLength, segment], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_blocked_segment"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment.logical = YES;
         segment.blocked = YES;
         segment.visible = NO;
         completionHandler(identifier, @[fullLength, segment], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_segment_at_start"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment.logical = YES;
         completionHandler(identifier, @[fullLength, segment], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_blocked_segment_at_start"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment.logical = YES;
         segment.blocked = YES;
         completionHandler(identifier, @[fullLength, segment], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_segment_at_start"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment.logical = YES;
         segment.visible = NO;
         completionHandler(identifier, @[fullLength, segment], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_hidden_blocked_segment_at_start"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment.logical = YES;
         segment.blocked = YES;
         segment.visible = NO;
         completionHandler(identifier, @[fullLength, segment], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_consecutive_segments"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment1.logical = YES;
 
-        Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
+        Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
         segment2.logical = YES;
 
         completionHandler(identifier, @[fullLength, segment1, segment2], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_consecutive_blocked_segments"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment1.logical = YES;
         segment1.blocked = YES;
 
-        Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
+        Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
         segment2.logical = YES;
         segment2.blocked = YES;
 
         completionHandler(identifier, @[fullLength, segment1, segment2], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_consecutive_blocked_segments_at_start"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., 1.), CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment1.logical = YES;
         segment1.blocked = YES;
 
-        Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(3., 1.), CMTimeMakeWithSeconds(4., 1.))];
+        Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(3., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
         segment2.logical = YES;
         segment2.blocked = YES;
 
         completionHandler(identifier, @[fullLength, segment1, segment2], nil);
     }
     else if ([identifier isEqualToString:@"SEGMENTS-full_length_with_segment_transition_into_blocked_segment"]) {
-        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., 1.))];
+        Segment *fullLength = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"VIDEO-full1" timeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(30. * 60., NSEC_PER_SEC))];
         fullLength.visible = NO;
 
-        Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., 1.), CMTimeMakeWithSeconds(3., 1.))];
+        Segment *segment1 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
         segment1.logical = YES;
 
-        Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., 1.), CMTimeMakeWithSeconds(4., 1.))];
+        Segment *segment2 = [[Segment alloc] initWithIdentifier:@"VIDEO-full1" name:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
         segment2.logical = YES;
         segment2.blocked = YES;
 

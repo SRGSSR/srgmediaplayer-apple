@@ -163,7 +163,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self setTimeSliderHidden:YES];
     
     @weakify(self)
-    [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., 5.) queue: NULL usingBlock:^(CMTime time) {
+    [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
         @strongify(self)
         
         if (s_mediaPlayerController.streamType != SRGMediaStreamTypeUnknown) {
