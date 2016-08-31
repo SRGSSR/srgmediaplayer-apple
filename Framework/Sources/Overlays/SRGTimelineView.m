@@ -79,10 +79,7 @@ static void commonInit(SRGTimelineView *self);
 - (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<SRGSegment>)segment
 {
     NSInteger index = [self.mediaPlayerController.segments indexOfObject:segment];
-    if (index == NSNotFound) {
-        return nil;
-    }
-    
+    NSAssert(index != NSNotFound, @"The segment must be found");
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 }
