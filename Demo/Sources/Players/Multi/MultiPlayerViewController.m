@@ -47,9 +47,11 @@
     NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers = [NSMutableArray array];
     for (NSInteger i = 0; i < mediaURLs.count; ++i) {
         SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+        
         mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
             BOOL isMainPlayer = (i == _selectedIndex);
             player.allowsExternalPlayback = isMainPlayer;
+            player.usesExternalPlaybackWhileExternalScreenIsActive = isMainPlayer;
             player.muted = ! isMainPlayer;
         };
         

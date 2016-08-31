@@ -11,6 +11,19 @@
 
 @implementation SRGMediaPlayerSharedController
 
+#pragma mark Object lifecycle
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.playerConfigurationBlock = ^(AVPlayer *player) {
+            player.allowsExternalPlayback = YES;
+            player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
+        };
+    }
+    return self;
+}
+
 #pragma mark AVPictureInPictureControllerDelegate protocol
 
 - (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
