@@ -63,7 +63,6 @@
 		E6C3156D1D76AB93001FC93A /* DemoInlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C3156A1D76AB93001FC93A /* DemoInlineViewController.m */; };
 		E6C3156E1D76AB93001FC93A /* DemoMultiPlayersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C3156C1D76AB93001FC93A /* DemoMultiPlayersViewController.m */; };
 		E6C315701D76AE9F001FC93A /* DemoInlineViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C3156F1D76AE9F001FC93A /* DemoInlineViewController.storyboard */; };
-		E6C315741D76B22D001FC93A /* AudiosTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C315731D76B22D001FC93A /* AudiosTableViewController.m */; };
 		E6C315761D76B2AA001FC93A /* MediasViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C315751D76B2AA001FC93A /* MediasViewController.storyboard */; };
 		E6C985F01D6EF6BC00C45C7A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985EF1D6EF6BC00C45C7A /* main.m */; };
 		E6C985F31D6EF6BC00C45C7A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985F21D6EF6BC00C45C7A /* AppDelegate.m */; };
@@ -244,8 +243,6 @@
 		E6C3156B1D76AB93001FC93A /* DemoMultiPlayersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoMultiPlayersViewController.h; sourceTree = "<group>"; };
 		E6C3156C1D76AB93001FC93A /* DemoMultiPlayersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoMultiPlayersViewController.m; sourceTree = "<group>"; };
 		E6C3156F1D76AE9F001FC93A /* DemoInlineViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DemoInlineViewController.storyboard; sourceTree = "<group>"; };
-		E6C315721D76B22D001FC93A /* AudiosTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudiosTableViewController.h; sourceTree = "<group>"; };
-		E6C315731D76B22D001FC93A /* AudiosTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudiosTableViewController.m; sourceTree = "<group>"; };
 		E6C315751D76B2AA001FC93A /* MediasViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MediasViewController.storyboard; sourceTree = "<group>"; };
 		E6C985EC1D6EF6BB00C45C7A /* SRGMediaPlayer-temp-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGMediaPlayer-temp-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6C985EF1D6EF6BC00C45C7A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -450,7 +447,6 @@
 			isa = PBXGroup;
 			children = (
 				E6D21D181D76A3F500B477F3 /* Application */,
-				E6C315711D76B22D001FC93A /* Audios */,
 				E6D21D1C1D76A3F500B477F3 /* Medias */,
 				E6C315681D76AB93001FC93A /* Player */,
 				E69A1F841D61BFAE0064E6C1 /* Segment.h */,
@@ -515,15 +511,6 @@
 				E6C3156C1D76AB93001FC93A /* DemoMultiPlayersViewController.m */,
 			);
 			path = Player;
-			sourceTree = "<group>";
-		};
-		E6C315711D76B22D001FC93A /* Audios */ = {
-			isa = PBXGroup;
-			children = (
-				E6C315721D76B22D001FC93A /* AudiosTableViewController.h */,
-				E6C315731D76B22D001FC93A /* AudiosTableViewController.m */,
-			);
-			path = Audios;
 			sourceTree = "<group>";
 		};
 		E6C985ED1D6EF6BC00C45C7A /* SRGMediaPlayer-temp-demo */ = {
@@ -1006,7 +993,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6C315741D76B22D001FC93A /* AudiosTableViewController.m in Sources */,
 				E6D21D221D76A3F500B477F3 /* AppDelegate.m in Sources */,
 				E69A1FB71D61BFAE0064E6C1 /* SegmentCollectionViewCell.m in Sources */,
 				E6C3156E1D76AB93001FC93A /* DemoMultiPlayersViewController.m in Sources */,

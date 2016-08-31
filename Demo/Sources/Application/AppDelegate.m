@@ -85,7 +85,12 @@
     videosViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
     UINavigationController *videosNavigationController = [[UINavigationController alloc] initWithRootViewController:videosViewController];
     
-    tabBarController.viewControllers = @[videosNavigationController];
+    MediasViewController *audiosViewController = [[MediasViewController alloc] initWithMediaFileName:@"AudioURLs"];
+    audiosViewController.title = @"Audios";
+    audiosViewController.tabBarItem.image = [UIImage imageNamed:@"audios"];
+    UINavigationController *audiosNavigationController = [[UINavigationController alloc] initWithRootViewController:audiosViewController];
+    
+    tabBarController.viewControllers = @[videosNavigationController, audiosNavigationController];
     self.window.rootViewController = tabBarController;
     
     // Avoid applying tint color to tab bar images
