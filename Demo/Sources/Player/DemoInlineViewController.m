@@ -10,12 +10,26 @@
 
 @interface DemoInlineViewController ()
 
+@property (nonatomic) NSURL *contentURL;
 @property (nonatomic, weak) IBOutlet UIView *videoContainerView;
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
 
 @end
 
-@implementation DemoInlineViewController
+@implementation DemoInlineViewController {
+@private
+    BOOL _ready;
+}
+
+#pragma mark Object lifecycle
+
+- (instancetype)initWithContentURL:(NSURL *)contentURL
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    DemoInlineViewController *viewController = [storyboard instantiateInitialViewController];
+    viewController.contentURL = contentURL;
+    return viewController;
+}
 
 #pragma mark View lifecycle
 
@@ -41,16 +55,26 @@
 
 - (IBAction)prepareToPlay:(id)sender
 {
-    [self.mediaPlayerController prepareToPlayURL:self.mediaURL atTime:kCMTimeZero withCompletionHandler:nil];
+    [self.mediaPlayerController prepareToPlayURL:self.contentURL atTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
+        if (finished) {
+            _ready = YES;
+        }
+    }];
 }
 
 - (IBAction)togglePlayPause:(id)sender
 {
-    [self.mediaPlayerController togglePlayPause];
+    if (_ready) {
+        [self.mediaPlayerController togglePlayPause];
+    }
+    else {
+        [self.mediaPlayerController playURL:self.contentURL];
+    }
 }
 
 - (IBAction)reset:(id)sender
 {
+    _ready = NO;
     [self.mediaPlayerController reset];
 }
 

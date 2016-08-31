@@ -153,6 +153,10 @@
             SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:contentURL];
             [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
         }
+        else if ([identifier isEqualToString:@"InlineSRGMediaPlayerCell"]) {
+            DemoInlineViewController *inlineViewController = [[DemoInlineViewController alloc] initWithContentURL:contentURL];
+            [self.navigationController pushViewController:inlineViewController animated:YES];
+        }
     }
 }
 

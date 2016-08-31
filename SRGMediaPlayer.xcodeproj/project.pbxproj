@@ -41,10 +41,6 @@
 		E69A1FAB1D61BFAE0064E6C1 /* yellow_card.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6F1D61BFAE0064E6C1 /* yellow_card.png */; };
 		E69A1FAC1D61BFAE0064E6C1 /* yellow_card@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F701D61BFAE0064E6C1 /* yellow_card@2x.png */; };
 		E69A1FAE1D61BFAE0064E6C1 /* AudiosTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F751D61BFAE0064E6C1 /* AudiosTableViewController.m */; };
-		E69A1FAF1D61BFAE0064E6C1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F761D61BFAE0064E6C1 /* LaunchScreen.xib */; };
-		E69A1FB01D61BFAE0064E6C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F781D61BFAE0064E6C1 /* Main.storyboard */; };
-		E69A1FB31D61BFAE0064E6C1 /* DemoInlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F7F1D61BFAE0064E6C1 /* DemoInlineViewController.m */; };
-		E69A1FB41D61BFAE0064E6C1 /* DemoMultiPlayersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F811D61BFAE0064E6C1 /* DemoMultiPlayersViewController.m */; };
 		E69A1FB61D61BFAE0064E6C1 /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F851D61BFAE0064E6C1 /* Segment.m */; };
 		E69A1FB71D61BFAE0064E6C1 /* SegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F871D61BFAE0064E6C1 /* SegmentCollectionViewCell.m */; };
 		E69A1FB81D61BFAE0064E6C1 /* SegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F881D61BFAE0064E6C1 /* SegmentCollectionViewCell.xib */; };
@@ -64,6 +60,11 @@
 		E69A1FEA1D61DD870064E6C1 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */; };
 		E69A1FEB1D61DD870064E6C1 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6C315531D76A4B4001FC93A /* VideosTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C315521D76A4B4001FC93A /* VideosTableViewController.storyboard */; };
+		E6C315651D76AB5A001FC93A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C315641D76AB5A001FC93A /* Main.storyboard */; };
+		E6C315671D76AB62001FC93A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6C315661D76AB62001FC93A /* LaunchScreen.xib */; };
+		E6C3156D1D76AB93001FC93A /* DemoInlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C3156A1D76AB93001FC93A /* DemoInlineViewController.m */; };
+		E6C3156E1D76AB93001FC93A /* DemoMultiPlayersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C3156C1D76AB93001FC93A /* DemoMultiPlayersViewController.m */; };
+		E6C315701D76AE9F001FC93A /* DemoInlineViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C3156F1D76AE9F001FC93A /* DemoInlineViewController.storyboard */; };
 		E6C985F01D6EF6BC00C45C7A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985EF1D6EF6BC00C45C7A /* main.m */; };
 		E6C985F31D6EF6BC00C45C7A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985F21D6EF6BC00C45C7A /* AppDelegate.m */; };
 		E6C985F61D6EF6BC00C45C7A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985F51D6EF6BC00C45C7A /* ViewController.m */; };
@@ -214,12 +215,6 @@
 		E69A1F701D61BFAE0064E6C1 /* yellow_card@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow_card@2x.png"; sourceTree = "<group>"; };
 		E69A1F741D61BFAE0064E6C1 /* AudiosTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudiosTableViewController.h; sourceTree = "<group>"; };
 		E69A1F751D61BFAE0064E6C1 /* AudiosTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudiosTableViewController.m; sourceTree = "<group>"; };
-		E69A1F771D61BFAE0064E6C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		E69A1F791D61BFAE0064E6C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E69A1F7E1D61BFAE0064E6C1 /* DemoInlineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoInlineViewController.h; sourceTree = "<group>"; };
-		E69A1F7F1D61BFAE0064E6C1 /* DemoInlineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoInlineViewController.m; sourceTree = "<group>"; };
-		E69A1F801D61BFAE0064E6C1 /* DemoMultiPlayersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoMultiPlayersViewController.h; sourceTree = "<group>"; };
-		E69A1F811D61BFAE0064E6C1 /* DemoMultiPlayersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoMultiPlayersViewController.m; sourceTree = "<group>"; };
 		E69A1F841D61BFAE0064E6C1 /* Segment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Segment.h; sourceTree = "<group>"; };
 		E69A1F851D61BFAE0064E6C1 /* Segment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Segment.m; sourceTree = "<group>"; };
 		E69A1F861D61BFAE0064E6C1 /* SegmentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentCollectionViewCell.h; sourceTree = "<group>"; };
@@ -246,6 +241,13 @@
 		E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Demo/Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		E69A1FE91D61DD870064E6C1 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Demo/Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
 		E6C315521D76A4B4001FC93A /* VideosTableViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VideosTableViewController.storyboard; sourceTree = "<group>"; };
+		E6C315641D76AB5A001FC93A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		E6C315661D76AB62001FC93A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		E6C315691D76AB93001FC93A /* DemoInlineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoInlineViewController.h; sourceTree = "<group>"; };
+		E6C3156A1D76AB93001FC93A /* DemoInlineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoInlineViewController.m; sourceTree = "<group>"; };
+		E6C3156B1D76AB93001FC93A /* DemoMultiPlayersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoMultiPlayersViewController.h; sourceTree = "<group>"; };
+		E6C3156C1D76AB93001FC93A /* DemoMultiPlayersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoMultiPlayersViewController.m; sourceTree = "<group>"; };
+		E6C3156F1D76AE9F001FC93A /* DemoInlineViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DemoInlineViewController.storyboard; sourceTree = "<group>"; };
 		E6C985EC1D6EF6BB00C45C7A /* SRGMediaPlayer-temp-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGMediaPlayer-temp-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6C985EF1D6EF6BC00C45C7A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E6C985F11D6EF6BC00C45C7A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 				E69A1F601D61BFAE0064E6C1 /* goal@2x.png */,
 				E69A1F611D61BFAE0064E6C1 /* Images.xcassets */,
 				E69A1F641D61BFAE0064E6C1 /* LaunchImage.png */,
+				E6C315661D76AB62001FC93A /* LaunchScreen.xib */,
 				E69A1F651D61BFAE0064E6C1 /* MediaURLs.plist */,
 				E69A1F661D61BFAE0064E6C1 /* MultiplayerURLs.plist */,
 				E69A1F671D61BFAE0064E6C1 /* red_card.png */,
@@ -450,16 +453,10 @@
 			isa = PBXGroup;
 			children = (
 				E6D21D181D76A3F500B477F3 /* Application */,
-				E6D21D1C1D76A3F500B477F3 /* Common */,
-				E6D21D1F1D76A3F500B477F3 /* Videos */,
 				E69A1F741D61BFAE0064E6C1 /* AudiosTableViewController.h */,
 				E69A1F751D61BFAE0064E6C1 /* AudiosTableViewController.m */,
-				E69A1F761D61BFAE0064E6C1 /* LaunchScreen.xib */,
-				E69A1F781D61BFAE0064E6C1 /* Main.storyboard */,
-				E69A1F7E1D61BFAE0064E6C1 /* DemoInlineViewController.h */,
-				E69A1F7F1D61BFAE0064E6C1 /* DemoInlineViewController.m */,
-				E69A1F801D61BFAE0064E6C1 /* DemoMultiPlayersViewController.h */,
-				E69A1F811D61BFAE0064E6C1 /* DemoMultiPlayersViewController.m */,
+				E6D21D1C1D76A3F500B477F3 /* Common */,
+				E6C315681D76AB93001FC93A /* Player */,
 				E69A1F841D61BFAE0064E6C1 /* Segment.h */,
 				E69A1F851D61BFAE0064E6C1 /* Segment.m */,
 				E69A1F861D61BFAE0064E6C1 /* SegmentCollectionViewCell.h */,
@@ -467,6 +464,7 @@
 				E69A1F881D61BFAE0064E6C1 /* SegmentCollectionViewCell.xib */,
 				E69A1F891D61BFAE0064E6C1 /* VideoMultiplayerTableViewController.h */,
 				E69A1F8A1D61BFAE0064E6C1 /* VideoMultiplayerTableViewController.m */,
+				E6D21D1F1D76A3F500B477F3 /* Videos */,
 				E69A1F8B1D61BFAE0064E6C1 /* VideoSegmentsPlayerViewController.h */,
 				E69A1F8C1D61BFAE0064E6C1 /* VideoSegmentsPlayerViewController.m */,
 				E69A1F8D1D61BFAE0064E6C1 /* VideoSegmentsTableViewController.h */,
@@ -512,6 +510,18 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		E6C315681D76AB93001FC93A /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				E6C315691D76AB93001FC93A /* DemoInlineViewController.h */,
+				E6C3156A1D76AB93001FC93A /* DemoInlineViewController.m */,
+				E6C3156F1D76AE9F001FC93A /* DemoInlineViewController.storyboard */,
+				E6C3156B1D76AB93001FC93A /* DemoMultiPlayersViewController.h */,
+				E6C3156C1D76AB93001FC93A /* DemoMultiPlayersViewController.m */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
 		E6C985ED1D6EF6BC00C45C7A /* SRGMediaPlayer-temp-demo */ = {
 			isa = PBXGroup;
 			children = (
@@ -539,6 +549,7 @@
 		E6D21D181D76A3F500B477F3 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				E6C315641D76AB5A001FC93A /* Main.storyboard */,
 				E6D21D191D76A3F500B477F3 /* AppDelegate.h */,
 				E6D21D1A1D76A3F500B477F3 /* AppDelegate.m */,
 				E6D21D1B1D76A3F500B477F3 /* main.m */,
@@ -827,12 +838,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6C315671D76AB62001FC93A /* LaunchScreen.xib in Resources */,
 				E69A1E581D61BAFD0064E6C1 /* picture_in_picture_start_button@2x.png in Resources */,
 				E69A1E5C1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png in Resources */,
 				E69A1E5B1D61BAFD0064E6C1 /* thumb_timeline_slider.png in Resources */,
 				E69A1E561D61BAFD0064E6C1 /* Localizable.strings in Resources */,
 				E6C9861D1D701BA700C45C7A /* SRGMediaPlayerViewController.xib in Resources */,
 				E69A1E591D61BAFD0064E6C1 /* picture_in_picture_stop_button.png in Resources */,
+				E6C315651D76AB5A001FC93A /* Main.storyboard in Resources */,
 				E69A1E571D61BAFD0064E6C1 /* picture_in_picture_start_button.png in Resources */,
 				E69A1E5A1D61BAFD0064E6C1 /* picture_in_picture_stop_button@2x.png in Resources */,
 			);
@@ -843,16 +856,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				E69A1FA41D61BFAE0064E6C1 /* red_card@2x.png in Resources */,
-				E69A1FB01D61BFAE0064E6C1 /* Main.storyboard in Resources */,
 				E69A1F9A1D61BFAE0064E6C1 /* close_button@2x.png in Resources */,
 				E69A1F9D1D61BFAE0064E6C1 /* Images.xcassets in Resources */,
-				E69A1FAF1D61BFAE0064E6C1 /* LaunchScreen.xib in Resources */,
 				E69A1FA71D61BFAE0064E6C1 /* thumbnail-placeholder.png in Resources */,
 				E69A1F991D61BFAE0064E6C1 /* close_button.png in Resources */,
 				E69A1F9B1D61BFAE0064E6C1 /* goal.png in Resources */,
 				E69A1FA31D61BFAE0064E6C1 /* red_card.png in Resources */,
 				E69A1FA81D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png in Resources */,
 				E69A1FA21D61BFAE0064E6C1 /* MultiplayerURLs.plist in Resources */,
+				E6C315701D76AE9F001FC93A /* DemoInlineViewController.storyboard in Resources */,
 				E69A1FAC1D61BFAE0064E6C1 /* yellow_card@2x.png in Resources */,
 				E69A1FA91D61BFAE0064E6C1 /* TimeshiftURLs.plist in Resources */,
 				E69A1FA51D61BFAE0064E6C1 /* screen@2x.png in Resources */,
@@ -1002,16 +1014,16 @@
 				E6D21D221D76A3F500B477F3 /* AppDelegate.m in Sources */,
 				E69A1FB71D61BFAE0064E6C1 /* SegmentCollectionViewCell.m in Sources */,
 				E69A1FAE1D61BFAE0064E6C1 /* AudiosTableViewController.m in Sources */,
-				E69A1FB31D61BFAE0064E6C1 /* DemoInlineViewController.m in Sources */,
+				E6C3156E1D76AB93001FC93A /* DemoMultiPlayersViewController.m in Sources */,
 				E69A1FBB1D61BFAE0064E6C1 /* VideoSegmentsTableViewController.m in Sources */,
 				E69A1FB91D61BFAE0064E6C1 /* VideoMultiplayerTableViewController.m in Sources */,
 				E69A1FBD1D61BFAE0064E6C1 /* VideosTimeshiftTableViewController.m in Sources */,
 				E6D21D251D76A3F500B477F3 /* VideosTableViewController.m in Sources */,
-				E69A1FB41D61BFAE0064E6C1 /* DemoMultiPlayersViewController.m in Sources */,
 				E6D21D241D76A3F500B477F3 /* BaseTableViewController.m in Sources */,
 				E69A1FB61D61BFAE0064E6C1 /* Segment.m in Sources */,
 				E69A1FBA1D61BFAE0064E6C1 /* VideoSegmentsPlayerViewController.m in Sources */,
 				E6D21D231D76A3F500B477F3 /* main.m in Sources */,
+				E6C3156D1D76AB93001FC93A /* DemoInlineViewController.m in Sources */,
 				E69A1FBE1D61BFAE0064E6C1 /* VideoTimeshiftPlayerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1069,22 +1081,6 @@
 				E69A1E091D61BAFD0064E6C1 /* rm */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		E69A1F761D61BFAE0064E6C1 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E69A1F771D61BFAE0064E6C1 /* Base */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-		E69A1F781D61BFAE0064E6C1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E69A1F791D61BFAE0064E6C1 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		E6C985F71D6EF6BC00C45C7A /* Main.storyboard */ = {
