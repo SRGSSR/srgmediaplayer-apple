@@ -8,6 +8,11 @@
 
 @implementation VideosTableViewController
 
+- (NSString *)title
+{
+    return @"Videos";
+}
+
 - (NSString *)mediaURLPath
 {
     return @"MediaURLs";
@@ -20,9 +25,9 @@
 
 - (NSArray *)actionCellIdentifiers
 {
-    return @[ @"CellDefaultIOS",
-              @"CellDefaultRTS",
-              @"CellInline"];
+    return @[ @"iOSMediaPlayerCell",
+              @"SRGMediaPlayerCell",
+              @"InlineSRGMediaPlayerCell"];
 }
 
 @end

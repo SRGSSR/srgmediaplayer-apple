@@ -22,6 +22,14 @@
 
 @implementation BaseTableViewController
 
+#pragma mark Object lifecycle
+
+- (instancetype)init
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    return [storyboard instantiateInitialViewController];
+}
+
 #pragma mark View lifecycle
 
 - (void)viewDidLoad
@@ -31,24 +39,29 @@
     self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 }
 
-#pragma mark Data
+#pragma mark Stubs
 
 - (NSString *)mediaURLPath
 {
+    NSAssert(NO, @"Must be implemented by subclassers");
     return nil;
 }
 
 - (NSString *)mediaURLKey
 {
+    NSAssert(NO, @"Must be implemented by subclassers");
     return nil;
 }
 
 - (NSArray *)actionCellIdentifiers
 {
+    NSAssert(NO, @"Must be implemented by subclassers");
     return nil;
 }
 
-- (NSArray *)media
+#pragma mark Getters and setters
+
+- (NSArray *)medias
 {
     if (! _medias) {
         NSDictionary *mediaURLs = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle bundleForClass:self.class] pathForResource:[self mediaURLPath] ofType:@"plist"]];
@@ -84,29 +97,6 @@
     }
 
     return [urls copy];
-}
-
-#pragma mark Navigation
-
-- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
-{
-    return (self.selectedIndexPath != nil);
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"DemoInline"]) {
-        DemoInlineViewController *playerViewController = segue.destinationViewController;
-        playerViewController.mediaURL = [self URLForSelectedMedia];
-    }
-    else if ([segue.identifier isEqualToString:@"DemoTimeshift"]) {
-        VideoTimeshiftPlayerViewController *playerViewController = segue.destinationViewController;
-        playerViewController.mediaURL = [self URLForSelectedMedia];
-    }
-    else if ([segue.identifier isEqualToString:@"DemoMultiPlayers"]) {
-        DemoMultiPlayersViewController *playerViewController = segue.destinationViewController;
-        playerViewController.mediaURLs = [self URLsForSelectedMedia];
-    }
 }
 
 #pragma mark UITableViewDataSource protocol
@@ -151,14 +141,15 @@
         NSURL *contentURL = [self URLForSelectedMedia];
         
         if (! contentURL) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Please select a media" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Please select a media first" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+            [self presentViewController:alertController animated:YES completion:nil];
         }
-        else if ([identifier isEqualToString:@"CellDefaultIOS"]) {
+        else if ([identifier isEqualToString:@"iOSMediaPlayerCell"]) {
             MPMoviePlayerViewController *moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:contentURL];
             [self presentMoviePlayerViewControllerAnimated:moviePlayerViewController];
         }
-        else if ([identifier isEqualToString:@"CellDefaultRTS"]) {
+        else if ([identifier isEqualToString:@"SRGMediaPlayerCell"]) {
             SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:contentURL];
             [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
         }
@@ -169,7 +160,7 @@
 
 - (UITableViewCell *)configureMediaCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"MediaCell" forIndexPath:indexPath];
     NSDictionary *media = [self.medias objectAtIndex:indexPath.row];
     cell.textLabel.text = media[@"name"];
     cell.accessoryType = [indexPath isEqual:self.selectedIndexPath] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
@@ -180,7 +171,7 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:self.actionCellIdentifiers[indexPath.row] forIndexPath:indexPath];
     if (indexPath.row < 3) {
-        cell.textLabel.textColor = [UIColor colorWithRed:0.f green:0.5f blue:0.0f alpha:1.f];
+        cell.textLabel.textColor = [UIColor colorWithRed:0.f green:0.5f blue:0.f alpha:1.f];
     }
     else {
         cell.textLabel.textColor = [UIColor colorWithRed:0.7f green:0.48f blue:0.015f alpha:1.f];

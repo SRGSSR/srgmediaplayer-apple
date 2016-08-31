@@ -6,6 +6,8 @@
 
 #import "AppDelegate.h"
 
+#import "VideosTableViewController.h"
+
 #import <AVFoundation/AVFoundation.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
 
@@ -63,19 +65,41 @@
 
 @implementation AppDelegate
 
-@synthesize window = _window;
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor blackColor];
+    [self.window makeKeyAndVisible];
+    
     DDTTYLogger *ttyLogger = [DDTTYLogger sharedInstance];
     ttyLogger.colorsEnabled = YES;
     ttyLogger.logFormatter = [LogFormatter new];
     [DDLog addLogger:ttyLogger withLevel:DDLogLevelInfo];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-
-    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
-
+    
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    
+    VideosTableViewController *videosTableViewController = [[VideosTableViewController alloc] init];
+    videosTableViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
+    UINavigationController *videosNavigationController = [[UINavigationController alloc] initWithRootViewController:videosTableViewController];
+    
+    tabBarController.viewControllers = @[videosNavigationController];
+    self.window.rootViewController = tabBarController;
+    
+    // Avoid applying tint color to tab bar images
+    [tabBarController.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull viewController, NSUInteger idx, BOOL * _Nonnull stop) {
+        UITabBarItem *tabBarItem = viewController.tabBarItem;
+        tabBarItem.image = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        tabBarItem.selectedImage = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    }];
+    
+    
+    
+    
+    
+    
+#if 0
     UIImage *moviesIcon = [UIImage imageNamed:@"videos"];
     UIImage *segmentsIcon = [UIImage imageNamed:@"segments"];
     UIImage *multiplayerIcon = [UIImage imageNamed:@"screen"];
@@ -87,6 +111,7 @@
         item.image = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         item.selectedImage = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }];
+#endif
 
     return YES;
 }
