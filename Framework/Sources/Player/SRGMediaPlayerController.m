@@ -365,6 +365,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         if (finished) {
             self.playbackState = (self.player.rate == 0.f) ? SRGPlaybackStatePaused : SRGPlaybackStatePlaying;
         }
+        completionHandler ? completionHandler(finished) : nil;
     }];
 }
 
