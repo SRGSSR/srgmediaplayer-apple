@@ -70,7 +70,7 @@
     [super viewWillAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self.mediaPlayerController playURL:self.contentURL];
+        [self.mediaPlayerController playURL:self.contentURL withSegments:self.segments];
     }
 }
 

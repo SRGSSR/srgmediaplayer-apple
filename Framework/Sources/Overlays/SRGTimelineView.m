@@ -54,6 +54,15 @@ static void commonInit(SRGTimelineView *self);
 
 #pragma mark Overrides
 
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    
+    if (newWindow) {
+        [self reloadData];
+    }
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];

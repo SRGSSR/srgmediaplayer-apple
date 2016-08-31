@@ -34,6 +34,7 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="delegate" destination="bsm-y7-rxx" id="JxR-W3-f22"/>
+                                            <outlet property="mediaPlayerController" destination="RYc-NM-LNU" id="aSA-JS-Dol"/>
                                         </connections>
                                     </view>
                                 </subviews>
@@ -55,6 +56,7 @@
                                             <constraint firstAttribute="height" constant="30" id="zHc-uR-OLX"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="mediaPlayerController" destination="RYc-NM-LNU" id="mD3-Qe-A8p"/>
                                             <outlet property="timeLeftValueLabel" destination="mzj-2M-1eE" id="kZc-2Z-jFy"/>
                                             <outlet property="valueLabel" destination="uUQ-uG-UXL" id="XRF-9X-8P2"/>
                                         </connections>
@@ -101,6 +103,9 @@
                                                 <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="mediaPlayerController" destination="RYc-NM-LNU" id="oil-hr-nJL"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.85369551809999999" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
@@ -133,6 +138,9 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="GpG-Za-HQt" customClass="SRGPlaybackActivityIndicatorView">
                                 <rect key="frame" x="282" y="281" width="37" height="37"/>
                                 <color key="color" red="0.03204568923" green="0.64991066379999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="mediaPlayerController" destination="RYc-NM-LNU" id="gd0-nf-RF8"/>
+                                </connections>
                             </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0zP-N8-ggT">
                                 <rect key="frame" x="34" y="215" width="532" height="171"/>
