@@ -59,6 +59,7 @@
 		E69A1FEB1D61DD870064E6C1 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6BCE9191D76BCE90021973D /* TimeshiftPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E6BCE9171D76BCE90021973D /* TimeshiftPlayerViewController.h */; };
 		E6BCE91A1D76BCE90021973D /* TimeshiftPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BCE9181D76BCE90021973D /* TimeshiftPlayerViewController.m */; };
+		E6BCE91C1D76BED70021973D /* TimeshiftPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE91B1D76BED70021973D /* TimeshiftPlayerViewController.storyboard */; };
 		E6C315651D76AB5A001FC93A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C315641D76AB5A001FC93A /* Main.storyboard */; };
 		E6C315671D76AB62001FC93A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6C315661D76AB62001FC93A /* LaunchScreen.xib */; };
 		E6C3156D1D76AB93001FC93A /* InlinePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C3156A1D76AB93001FC93A /* InlinePlayerViewController.m */; };
@@ -237,6 +238,7 @@
 		E69A1FE91D61DD870064E6C1 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Demo/Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
 		E6BCE9171D76BCE90021973D /* TimeshiftPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeshiftPlayerViewController.h; sourceTree = "<group>"; };
 		E6BCE9181D76BCE90021973D /* TimeshiftPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeshiftPlayerViewController.m; sourceTree = "<group>"; };
+		E6BCE91B1D76BED70021973D /* TimeshiftPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TimeshiftPlayerViewController.storyboard; sourceTree = "<group>"; };
 		E6C315641D76AB5A001FC93A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E6C315661D76AB62001FC93A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		E6C315691D76AB93001FC93A /* InlinePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InlinePlayerViewController.h; sourceTree = "<group>"; };
@@ -510,6 +512,7 @@
 				E6C3156C1D76AB93001FC93A /* MultiPlayerViewController.m */,
 				E6BCE9171D76BCE90021973D /* TimeshiftPlayerViewController.h */,
 				E6BCE9181D76BCE90021973D /* TimeshiftPlayerViewController.m */,
+				E6BCE91B1D76BED70021973D /* TimeshiftPlayerViewController.storyboard */,
 			);
 			path = Players;
 			sourceTree = "<group>";
@@ -847,6 +850,7 @@
 				E69A1F991D61BFAE0064E6C1 /* close_button.png in Resources */,
 				E69A1F9B1D61BFAE0064E6C1 /* goal.png in Resources */,
 				E69A1FA31D61BFAE0064E6C1 /* red_card.png in Resources */,
+				E6BCE91C1D76BED70021973D /* TimeshiftPlayerViewController.storyboard in Resources */,
 				E69A1FA81D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png in Resources */,
 				E69A1FA21D61BFAE0064E6C1 /* MultiplayerURLs.plist in Resources */,
 				E6C315701D76AE9F001FC93A /* InlinePlayerViewController.storyboard in Resources */,

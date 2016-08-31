@@ -14,6 +14,8 @@
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
+@property (nonatomic) NSURL *contentURL;
+
 @property (nonatomic, weak) IBOutlet UIView *videoView;
 @property (nonatomic, weak) IBOutlet SRGTimeSlider *timelineSlider;
 @property (nonatomic, weak) IBOutlet UIButton *liveButton;
@@ -27,6 +29,16 @@
 @end
 
 @implementation TimeshiftPlayerViewController
+
+#pragma mark Object lifecycle
+
+- (instancetype)initWithContentURL:(NSURL *)contentURL
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    TimeshiftPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    viewController.contentURL = contentURL;
+    return viewController;
+}
 
 #pragma mark View lifecycle
 
@@ -45,7 +57,7 @@
     self.liveButton.layer.borderWidth = 1.f;
 
     __weak __typeof(self) weakSelf = self;
-    [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+    [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         if (weakSelf.mediaPlayerController.playbackState != SRGPlaybackStateSeeking) {
             [weakSelf updateLiveButton];
         }
@@ -57,8 +69,7 @@
     [super viewWillAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        // FIXME: Play
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
+        [self.mediaPlayerController playURL:self.contentURL];
     }
 }
 
@@ -68,7 +79,6 @@
 
     if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
         [self.mediaPlayerController reset];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
     }
 }
 

@@ -90,7 +90,12 @@
     audiosViewController.tabBarItem.image = [UIImage imageNamed:@"audios"];
     UINavigationController *audiosNavigationController = [[UINavigationController alloc] initWithRootViewController:audiosViewController];
     
-    tabBarController.viewControllers = @[videosNavigationController, audiosNavigationController];
+    MediasViewController *timeshiftViewController = [[MediasViewController alloc] initWithMediaFileName:@"TimeshiftURLs"];
+    timeshiftViewController.title = @"Timeshift";
+    timeshiftViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
+    UINavigationController *timeshiftNavigationController = [[UINavigationController alloc] initWithRootViewController:timeshiftViewController];
+    
+    tabBarController.viewControllers = @[videosNavigationController, audiosNavigationController, timeshiftNavigationController];
     self.window.rootViewController = tabBarController;
     
     // Avoid applying tint color to tab bar images
