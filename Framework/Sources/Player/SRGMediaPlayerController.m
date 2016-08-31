@@ -56,6 +56,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 {
     if (self = [super init]) {
         self.playbackState = SRGPlaybackStateIdle;
+        self.liveTolerance = SRGLiveDefaultTolerance;
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
     }
     return self;
@@ -104,15 +105,15 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                     context:s_kvoContext];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(rts_playerItemPlaybackStalled:)
+                                                 selector:@selector(srg_mediaPlayerController_playerItemPlaybackStalled:)
                                                      name:AVPlayerItemPlaybackStalledNotification
                                                    object:player.currentItem];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(rts_playerItemDidPlayToEndTime:)
+                                                 selector:@selector(srg_mediaPlayerController_playerItemDidPlayToEndTime:)
                                                      name:AVPlayerItemDidPlayToEndTimeNotification
                                                    object:player.currentItem];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(rts_playerItemFailedToPlayToEndTime:)
+                                                 selector:@selector(srg_mediaPlayerController_playerItemFailedToPlayToEndTime:)
                                                      name:AVPlayerItemFailedToPlayToEndTimeNotification
                                                    object:player.currentItem];
     }
@@ -459,17 +460,17 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 #pragma mark Notifications
 
-- (void)rts_playerItemPlaybackStalled:(NSNotification *)notification
+- (void)srg_mediaPlayerController_playerItemPlaybackStalled:(NSNotification *)notification
 {
     self.playbackState = SRGPlaybackStateStalled;
 }
 
-- (void)rts_playerItemDidPlayToEndTime:(NSNotification *)notification
+- (void)srg_mediaPlayerController_playerItemDidPlayToEndTime:(NSNotification *)notification
 {
     self.playbackState = SRGPlaybackStateEnded;
 }
 
-- (void)rts_playerItemFailedToPlayToEndTime:(NSNotification *)notification
+- (void)srg_mediaPlayerController_playerItemFailedToPlayToEndTime:(NSNotification *)notification
 {
     self.playbackState = SRGPlaybackStateIdle;
     

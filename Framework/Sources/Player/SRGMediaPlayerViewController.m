@@ -106,11 +106,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(mediaPlayerPlaybackStateDidChange:)
+                                             selector:@selector(srg_mediaPlayerViewController_playbackStateDidChange:)
                                                  name:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                object:s_mediaPlayerController];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidBecomeActive:)
+                                             selector:@selector(srg_mediaPlayerViewController_applicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
@@ -259,7 +259,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 #pragma mark Notifications
 
-- (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
+- (void)srg_mediaPlayerViewController_playbackStateDidChange:(NSNotification *)notification
 {
     SRGMediaPlayerController *mediaPlayerController = notification.object;
     if (mediaPlayerController.playbackState == SRGPlaybackStateEnded) {
@@ -267,7 +267,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
-- (void)applicationDidBecomeActive:(NSNotification *)notification
+- (void)srg_mediaPlayerViewController_applicationDidBecomeActive:(NSNotification *)notification
 {
     AVPictureInPictureController *pictureInPictureController = s_mediaPlayerController.pictureInPictureController;
     
