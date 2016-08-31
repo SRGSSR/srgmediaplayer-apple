@@ -63,21 +63,12 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 - (void)updateAppearanceWithTime:(CMTime)time
 {
-    // TODO: FIXME
-#if 0
-    if ([self.segment.segmentIdentifier isEqualToString:identifier]) {
-        CMTimeRange r = self.segment.timeRange;
-        float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(r.start)) / (CMTimeGetSeconds(CMTimeAdd(r.start, r.duration)) - CMTimeGetSeconds(r.start));
-        progress = fminf(1.f, fmaxf(0.f, progress));
-
-        self.progressView.progress = progress;
-        self.backgroundColor = (progress != 0.f && progress != 1.f) ? [UIColor colorWithRed:128.0 / 256.0 green:0.0 / 256.0 blue:0.0 / 256.0 alpha:1.0] : [UIColor blackColor];
-    }
-    else {
-        self.progressView.progress = 0.;
-        self.backgroundColor = [UIColor blackColor];
-    }
-#endif
+    CMTimeRange r = self.segment.timeRange;
+    float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(r.start)) / (CMTimeGetSeconds(CMTimeAdd(r.start, r.duration)) - CMTimeGetSeconds(r.start));
+    progress = fminf(1.f, fmaxf(0.f, progress));
+    
+    self.progressView.progress = progress;
+    self.backgroundColor = (progress != 0.f && progress != 1.f) ? [UIColor colorWithRed:128.0 / 256.0 green:0.0 / 256.0 blue:0.0 / 256.0 alpha:1.0] : [UIColor blackColor];
 }
 
 @end
