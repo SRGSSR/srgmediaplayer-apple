@@ -137,11 +137,12 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         return;
     }
     
+    NSDictionary *userInfo = @{ SRGMediaPlayerPreviousPlaybackStateKey: @(_playbackState) };
+    
     [self willChangeValueForKey:@"playbackState"];
     _playbackState = playbackState;
     [self didChangeValueForKey:@"playbackState"];
     
-    NSDictionary *userInfo = @{ SRGMediaPlayerPreviousPlaybackStateKey: @(_playbackState) };
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                         object:self
                                                       userInfo:userInfo];
@@ -297,6 +298,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         startTime = kCMTimeZero;
     }
     
+    [self reset];
+    
     self.contentURL = URL;
     self.segments = segments;
     self.startTimeValue = [NSValue valueWithCMTime:startTime];
@@ -371,6 +374,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     if (self.pictureInPictureController.isPictureInPictureActive) {
         [self.pictureInPictureController stopPictureInPicture];
     }
+    
+    self.playbackState = SRGPlaybackStateIdle;
     
     [self.player pause];
     self.player = nil;
@@ -501,8 +506,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes must be notified on the main thread. Fix");
     
     if (context == s_kvoContext) {
-        NSLog(@"KVO change for %@ with change %@", keyPath, change);
-        
         // If the rate or the item status changes, calculate the new playback status
         if ([keyPath isEqualToString:@"currentItem.status"] || [keyPath isEqualToString:@"rate"]) {
             AVPlayerItem *playerItem = self.player.currentItem;
