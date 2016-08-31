@@ -4,11 +4,14 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "VideoSegmentsPlayerViewController.h"
+#import "SegmentsPlayerViewController.h"
 
 #import "SegmentCollectionViewCell.h"
 
-@interface VideoSegmentsPlayerViewController ()
+@interface SegmentsPlayerViewController ()
+
+@property (nonatomic) NSURL *contentURL;
+@property (nonatomic) NSArray<Segment *> *segments;
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
 
@@ -24,13 +27,17 @@
 
 @end
 
-@implementation VideoSegmentsPlayerViewController
+@implementation SegmentsPlayerViewController
 
 #pragma mark Object lifecycle
 
-- (void)dealloc
+- (instancetype)initWithContentURL:(NSURL *)contentURL segments:(NSArray<Segment *> *)segments
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    SegmentsPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    viewController.contentURL = contentURL;
+    viewController.segments = segments;
+    return viewController;
 }
 
 #pragma mark View lifecycle
@@ -63,9 +70,7 @@
     [super viewWillAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
-        
-        // FIXME: Play, load segments, handle blocked segments
+        [self.mediaPlayerController playURL:self.contentURL];
     }
 }
 
@@ -75,7 +80,6 @@
 
     if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
         [self.mediaPlayerController reset];
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
     }
 }
 

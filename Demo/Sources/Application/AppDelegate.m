@@ -85,6 +85,11 @@
     videosViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
     UINavigationController *videosNavigationController = [[UINavigationController alloc] initWithRootViewController:videosViewController];
     
+    MediasViewController *segmentsViewController = [[MediasViewController alloc] initWithMediaFileName:@"SegmentURLs"];
+    segmentsViewController.title = @"Segments";
+    segmentsViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
+    UINavigationController *segmentsNavigationController = [[UINavigationController alloc] initWithRootViewController:segmentsViewController];
+    
     MediasViewController *multiVideosViewController = [[MediasViewController alloc] initWithMediaFileName:@"MultiplayerURLs"];
     multiVideosViewController.title = @"Multi-stream";
     multiVideosViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
@@ -100,7 +105,7 @@
     audiosViewController.tabBarItem.image = [UIImage imageNamed:@"audios"];
     UINavigationController *audiosNavigationController = [[UINavigationController alloc] initWithRootViewController:audiosViewController];
     
-    tabBarController.viewControllers = @[videosNavigationController, multiVideosNavigationController, timeshiftNavigationController, audiosNavigationController];
+    tabBarController.viewControllers = @[videosNavigationController, segmentsNavigationController, multiVideosNavigationController, timeshiftNavigationController, audiosNavigationController];
     self.window.rootViewController = tabBarController;
     
     // Avoid applying tint color to tab bar images
@@ -109,20 +114,6 @@
         tabBarItem.image = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         tabBarItem.selectedImage = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }];
-    
-#if 0
-    UIImage *moviesIcon = [UIImage imageNamed:@"videos"];
-    UIImage *segmentsIcon = [UIImage imageNamed:@"segments"];
-    UIImage *multiplayerIcon = [UIImage imageNamed:@"screen"];
-    UIImage *audiosIcon = [UIImage imageNamed:@"audios"];
-
-    NSArray<UIImage *> *images = @[moviesIcon, segmentsIcon, multiplayerIcon, moviesIcon, audiosIcon];
-
-    [tabBarController.tabBar.items enumerateObjectsUsingBlock:^(UITabBarItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
-        item.image = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        item.selectedImage = [images[idx] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    }];
-#endif
 
     return YES;
 }

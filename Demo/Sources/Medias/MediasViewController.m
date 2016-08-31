@@ -11,6 +11,7 @@
 
 #import "InlinePlayerViewController.h"
 #import "MultiPlayerViewController.h"
+#import "SegmentsPlayerViewController.h"
 #import "TimeshiftPlayerViewController.h"
 
 @interface MediasViewController ()
@@ -131,16 +132,21 @@
             }
                 
             case 2: {
-                cell.textLabel.text = @"Inline SRG media player";
+                cell.textLabel.text = @"Inline SRG player";
                 break;
             }
                 
             case 3: {
-                cell.textLabel.text = @"Custom timeshift SRG media player";
+                cell.textLabel.text = @"Custom SRG player with timeshift support";
                 break;
             }
                 
             case 4: {
+                cell.textLabel.text = @"Custom SRG player with segment support";
+                break;
+            }
+                
+            case 5: {
                 cell.textLabel.text = @"Multi player";
                 break;
             }
@@ -196,6 +202,12 @@
             }
                 
             case 4: {
+                SegmentsPlayerViewController *segmentsPlayerViewController = [[SegmentsPlayerViewController alloc] initWithContentURL:contentURL segments:nil];
+                [self presentViewController:segmentsPlayerViewController animated:YES completion:nil];
+                break;
+            }
+                
+            case 5: {
                 NSMutableArray<NSURL *> *contentURLs = [NSMutableArray arrayWithObject:contentURL];
                 NSArray<NSURL *> *secondaryURLs = [self secondaryURLsForSelectedMedia];
                 if (secondaryURLs) {

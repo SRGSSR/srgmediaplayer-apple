@@ -29,7 +29,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 @implementation Segment
 
-#pragma mark - Object lifecycle
+#pragma mark Object lifecycle
 
 - (instancetype)initWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
 {
@@ -58,7 +58,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
     return [self initWithName:@"" timeRange:kCMTimeRangeZero];
 }
 
-#pragma mark - Getters and setters
+#pragma mark Getters and setters
 
 - (NSURL *)thumbnailURL
 {
@@ -77,7 +77,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
     return [NSString stringWithFormat:@"%@ (%.0fs)", startString, CMTimeGetSeconds(self.timeRange.duration)];
 }
 
-#pragma mark - Description
+#pragma mark Description
 
 - (NSString *)description
 {
