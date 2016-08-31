@@ -20,9 +20,7 @@
 @property (nonatomic, weak) IBOutlet SRGTimeSlider *timelineSlider;
 
 @property (nonatomic, weak) IBOutlet UIView *blockingOverlayView;
-@property (nonatomic, weak) IBOutlet UILabel *blockingOverlayViewLabel;
 
-@property (nonatomic, weak) NSTimer *blockingOverlayTimer;
 @property (nonatomic, weak) id periodicTimeObserver;
 
 @end
@@ -38,6 +36,11 @@
     viewController.contentURL = contentURL;
     viewController.segments = segments;
     return viewController;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark View lifecycle
@@ -56,6 +59,11 @@
     self.mediaPlayerController.view.frame = self.view.bounds;
     self.mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view insertSubview:self.mediaPlayerController.view atIndex:0];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didSkipSegment:)
+                                                 name:SRGMediaPlayerDidSkipSegmentNotification
+                                               object:self.mediaPlayerController];
 }
 
 - (void)updateAppearanceWithTime:(CMTime)time
@@ -115,7 +123,7 @@
     [self updateAppearanceWithTime:self.timelineSlider.time];
 }
 
-#pragma mark - Actions
+#pragma mark Actions
 
 - (IBAction)dismiss:(id)sender
 {
@@ -139,6 +147,19 @@
 - (IBAction)goToLive:(id)sender
 {
     [self.mediaPlayerController seekToTime:self.mediaPlayerController.player.currentItem.duration withCompletionHandler:nil];
+}
+
+#pragma mark Notifications
+
+- (void)didSkipSegment:(NSNotification *)notification
+{
+    self.blockingOverlayView.hidden = NO;
+    [self.mediaPlayerController togglePlayPause];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.blockingOverlayView.hidden = YES;
+        [self.mediaPlayerController togglePlayPause];
+    });
 }
 
 @end

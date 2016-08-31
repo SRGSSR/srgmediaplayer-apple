@@ -145,7 +145,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0zP-N8-ggT">
                                 <rect key="frame" x="34" y="215" width="532" height="171"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="aVA-YE-hND" userLabel="Text Label">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This segment cannot be watched. Playback will resume shortly" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="aVA-YE-hND" userLabel="Text Label">
                                         <rect key="frame" x="8" y="8" width="516" height="155"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
@@ -182,7 +182,6 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="blockingOverlayView" destination="0zP-N8-ggT" id="o45-0a-uPE"/>
-                        <outlet property="blockingOverlayViewLabel" destination="aVA-YE-hND" id="6gW-34-Bf1"/>
                         <outlet property="mediaPlayerController" destination="RYc-NM-LNU" id="Onz-HF-oNR"/>
                         <outlet property="timelineSlider" destination="tOW-5e-Udh" id="TuR-y6-4oL"/>
                         <outlet property="timelineView" destination="Qie-bq-O4t" id="oFB-KC-QEw"/>
