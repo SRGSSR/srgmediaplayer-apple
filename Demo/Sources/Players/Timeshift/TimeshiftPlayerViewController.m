@@ -20,10 +20,6 @@
 @property (nonatomic, weak) IBOutlet SRGTimeSlider *timelineSlider;
 @property (nonatomic, weak) IBOutlet UIButton *liveButton;
 
-@property (nonatomic, weak) IBOutlet UIView *blockingOverlayView;
-@property (nonatomic, weak) IBOutlet UILabel *blockingOverlayViewLabel;
-
-@property (nonatomic, weak) NSTimer *blockingOverlayTimer;
 @property (nonatomic, weak) id periodicTimeObserver;
 
 @end

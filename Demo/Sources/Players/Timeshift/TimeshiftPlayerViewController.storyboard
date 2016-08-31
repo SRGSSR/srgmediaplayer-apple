@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Timeshift Player View Controller-->
@@ -154,57 +153,21 @@
                                     <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="6VD-Uo-jhM"/>
                                 </connections>
                             </activityIndicatorView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U95-jw-fHR">
-                                <rect key="frame" x="34" y="215" width="532" height="171"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;text&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="4gY-RE-jP5" userLabel="Text Label">
-                                        <rect key="frame" x="8" y="8" width="516" height="155"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="171" id="0Bm-ax-gyE"/>
-                                    <constraint firstAttribute="bottom" secondItem="4gY-RE-jP5" secondAttribute="bottom" constant="8" id="1gF-CO-EzC"/>
-                                    <constraint firstItem="4gY-RE-jP5" firstAttribute="leading" secondItem="U95-jw-fHR" secondAttribute="leading" constant="8" id="209-YP-bDP"/>
-                                    <constraint firstAttribute="trailing" secondItem="4gY-RE-jP5" secondAttribute="trailing" constant="8" id="3lE-ky-zYm"/>
-                                    <constraint firstItem="4gY-RE-jP5" firstAttribute="top" secondItem="U95-jw-fHR" secondAttribute="top" constant="8" id="lYN-Xa-Woi"/>
-                                </constraints>
-                                <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="30" y="186" width="540" height="0.0"/>
-                                </variation>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="K0I-7M-Ixt" secondAttribute="trailing" id="1hn-vV-M0w"/>
                             <constraint firstAttribute="centerX" secondItem="C5v-lq-cYV" secondAttribute="centerX" id="50X-FM-qFd"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="U95-jw-fHR" secondAttribute="trailing" constant="14" id="6xy-H2-cKj"/>
                             <constraint firstItem="G2B-1h-zvk" firstAttribute="top" secondItem="R5C-zU-djv" secondAttribute="bottom" constant="10" id="AYC-XD-5ic"/>
-                            <constraint firstItem="U95-jw-fHR" firstAttribute="leading" secondItem="xTs-IJ-3tq" secondAttribute="leadingMargin" constant="14" id="AwI-Pz-RFj"/>
                             <constraint firstAttribute="trailing" secondItem="G2B-1h-zvk" secondAttribute="trailing" id="Ree-lc-Qo2"/>
-                            <constraint firstItem="b0K-LD-In2" firstAttribute="top" secondItem="U95-jw-fHR" secondAttribute="bottom" constant="214" id="SML-oA-Gul"/>
-                            <constraint firstItem="U95-jw-fHR" firstAttribute="top" secondItem="G2B-1h-zvk" secondAttribute="bottom" constant="161" id="ZIA-sf-V9O"/>
                             <constraint firstItem="b0K-LD-In2" firstAttribute="top" secondItem="K0I-7M-Ixt" secondAttribute="bottom" id="eGs-Z9-xrV"/>
                             <constraint firstAttribute="centerY" secondItem="C5v-lq-cYV" secondAttribute="centerY" id="o3C-Et-mjD"/>
                             <constraint firstItem="K0I-7M-Ixt" firstAttribute="leading" secondItem="xTs-IJ-3tq" secondAttribute="leading" id="qRg-d3-naG"/>
-                            <constraint firstAttribute="centerY" secondItem="U95-jw-fHR" secondAttribute="centerY" constant="-0.5" id="uoL-M1-QRV"/>
-                            <constraint firstItem="K0I-7M-Ixt" firstAttribute="top" secondItem="U95-jw-fHR" secondAttribute="bottom" constant="150" id="vYe-qs-hPZ"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="ZIA-sf-V9O"/>
-                                <exclude reference="vYe-qs-hPZ"/>
-                                <exclude reference="SML-oA-Gul"/>
-                            </mask>
-                        </variation>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="blockingOverlayView" destination="U95-jw-fHR" id="gJX-n1-65A"/>
-                        <outlet property="blockingOverlayViewLabel" destination="4gY-RE-jP5" id="nPv-FN-JDf"/>
                         <outlet property="liveButton" destination="DRr-Ir-Edl" id="oJN-tK-KoW"/>
                         <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="f95-cZ-5LN"/>
                         <outlet property="timelineSlider" destination="Tml-pK-mQ9" id="BTe-mi-dX1"/>
