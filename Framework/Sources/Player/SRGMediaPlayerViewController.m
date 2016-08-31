@@ -13,6 +13,7 @@
 #import "SRGPictureInPictureButton.h"
 #import "SRGPlaybackActivityIndicatorView.h"
 #import "SRGMediaPlayerSharedController.h"
+#import "SRGMediaPlayerViewController+Private.h"
 #import "SRGTimeSlider.h"
 #import "SRGVolumeView.h"
 
@@ -24,6 +25,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @interface SRGMediaPlayerViewController ()
 
 @property (nonatomic) NSURL *contentURL;
+@property (nonatomic) BOOL autoplay;
 
 @property (nonatomic, weak) IBOutlet UIView *playerView;
 
@@ -69,6 +71,17 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     if (self = [super initWithNibName:@"SRGMediaPlayerViewController" bundle:[NSBundle srg_mediaPlayerBundle]]) {
         self.contentURL = contentURL;
+        self.autoplay = YES;
+    }
+    return self;
+}
+
+- (instancetype)initWithCurrentURL
+{
+    NSAssert(s_mediaPlayerController.contentURL, @"This method can only be called when a valid URL is being attached to the shared player");
+    
+    if (self = [self initWithContentURL:s_mediaPlayerController.contentURL]) {
+        self.autoplay = NO;
     }
     return self;
 }
@@ -131,7 +144,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     activityGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:activityGestureRecognizer];
     
-    [s_mediaPlayerController playURL:self.contentURL];
+    if (self.autoplay) {
+        [s_mediaPlayerController playURL:self.contentURL];
+    }
     
     self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
     self.playbackActivityIndicatorView.mediaPlayerController = s_mediaPlayerController;
