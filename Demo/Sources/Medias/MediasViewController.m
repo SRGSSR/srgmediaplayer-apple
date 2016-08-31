@@ -11,6 +11,7 @@
 
 #import "InlinePlayerViewController.h"
 #import "MultiPlayerViewController.h"
+#import "Segment.h"
 #import "SegmentsPlayerViewController.h"
 #import "TimeshiftPlayerViewController.h"
 
@@ -43,7 +44,7 @@
     self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 }
 
-#pragma mark Getters and setters
+#pragma mark Plist configuration extraction
 
 - (NSArray *)medias
 {
@@ -55,25 +56,15 @@
     return _medias;
 }
 
-- (NSURL *)URLForSelectedMedia
+- (NSURL *)URLForMediaAtIndex:(NSInteger)index
 {
-    if (! self.selectedIndexPath) {
-        return nil;
-    }
-
-    NSDictionary *media = [self.medias objectAtIndex:self.selectedIndexPath.row];
-    return [NSURL URLWithString:media[@"url"]];
+    return [NSURL URLWithString:self.medias[index][@"url"]];
 }
 
-- (NSArray<NSURL *> *)secondaryURLsForSelectedMedia
+- (NSArray<NSURL *> *)secondaryURLsForMediaAtIndex:(NSInteger)index
 {
-    if (! self.selectedIndexPath) {
-        return nil;
-    }
-
     NSMutableArray<NSURL *> *urls = [NSMutableArray new];
-    NSDictionary *media = [self.medias objectAtIndex:self.selectedIndexPath.row];
-    for (NSString *urlString in media[@"secondaryUrls"]) {
+    for (NSString *urlString in self.medias[index][@"secondaryUrls"]) {
         NSURL *url = [NSURL URLWithString:urlString];
         if (url) {
             [urls addObject:url];
@@ -81,6 +72,16 @@
     }
 
     return [urls copy];
+}
+
+- (NSArray<Segment *> *)segmentsForMediaAtIndex:(NSInteger)index
+{
+    NSMutableArray<Segment *> *segments = [NSMutableArray array];
+    for (NSDictionary *segmentDictionary in self.medias[index][@"segments"]) {
+        Segment *segment = [[Segment alloc] initWithDictionary:segmentDictionary];
+        [segments addObject:segment];
+    }
+    return [segments copy];
 }
 
 #pragma mark UITableViewDataSource protocol
@@ -167,7 +168,7 @@
         [tableView reloadData];
     }
     else {
-        NSURL *contentURL = [self URLForSelectedMedia];
+        NSURL *contentURL = [self URLForMediaAtIndex:self.selectedIndexPath.row];
         
         if (! contentURL) {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Please select a media first" message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -202,14 +203,15 @@
             }
                 
             case 4: {
-                SegmentsPlayerViewController *segmentsPlayerViewController = [[SegmentsPlayerViewController alloc] initWithContentURL:contentURL segments:nil];
+                NSArray<Segment *> *segments = [self segmentsForMediaAtIndex:self.selectedIndexPath.row];
+                SegmentsPlayerViewController *segmentsPlayerViewController = [[SegmentsPlayerViewController alloc] initWithContentURL:contentURL segments:segments];
                 [self presentViewController:segmentsPlayerViewController animated:YES completion:nil];
                 break;
             }
                 
             case 5: {
                 NSMutableArray<NSURL *> *contentURLs = [NSMutableArray arrayWithObject:contentURL];
-                NSArray<NSURL *> *secondaryURLs = [self secondaryURLsForSelectedMedia];
+                NSArray<NSURL *> *secondaryURLs = [self secondaryURLsForMediaAtIndex:self.selectedIndexPath.row];
                 if (secondaryURLs) {
                     [contentURLs addObjectsFromArray:secondaryURLs];
                 }

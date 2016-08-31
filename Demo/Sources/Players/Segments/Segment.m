@@ -8,22 +8,11 @@
 
 #pragma mark - Functions
 
-static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
-{
-    static NSDateComponentsFormatter *s_dateComponentsFormatter;
-    static dispatch_once_t s_onceToken;
-    dispatch_once(&s_onceToken, ^{
-        s_dateComponentsFormatter = [[NSDateComponentsFormatter alloc] init];
-        s_dateComponentsFormatter.allowedUnits = NSCalendarUnitSecond | NSCalendarUnitMinute;
-        s_dateComponentsFormatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorPad;
-    });
-    return s_dateComponentsFormatter;
-}
-
 @interface Segment ()
 
 @property (nonatomic) CMTimeRange timeRange;
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, getter=isBlocked) BOOL blocked;
 
 @end
 
@@ -31,31 +20,25 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
-    self = [super init];
-    if (self) {
-        self.timeRange = timeRange;
-        self.blocked = NO;
-        self.name = name;
+    if (self = [super init]) {
+        self.name = dictionary[@"name"];
+        self.blocked = [dictionary[@"blocked"] boolValue];
+        
+        NSTimeInterval startTime = [dictionary[@"startTime"] doubleValue];
+        NSTimeInterval duration = [dictionary[@"duration"] doubleValue];
+        
+        self.timeRange = CMTimeRangeMake(CMTimeMakeWithSeconds(startTime, NSEC_PER_SEC),
+                                         CMTimeMakeWithSeconds(duration, NSEC_PER_SEC));
     }
     return self;
-}
-
-- (instancetype)initWithName:(NSString *)name time:(CMTime)time
-{
-    return [self initWithName:name timeRange:CMTimeRangeMake(time, kCMTimeZero)];
-}
-
-- (instancetype)initWithName:(NSString *)name start:(NSTimeInterval)start duration:(NSTimeInterval)duration
-{
-    return [self initWithName:name timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(start, NSEC_PER_SEC), CMTimeMakeWithSeconds(duration, NSEC_PER_SEC))];
 }
 
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithName:@"" timeRange:kCMTimeRangeZero];
+    return [self initWithDictionary:@{}];
 }
 
 #pragma mark Getters and setters
@@ -64,17 +47,6 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 {
     NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"thumbnail-placeholder" ofType:@"png"];
     return [NSURL fileURLWithPath:imageFilePath];
-}
-
-- (NSString *)durationString
-{
-    return [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(self.timeRange.duration)];
-}
-
-- (NSString *)timestampString
-{
-    NSString *startString = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(self.timeRange.start)];
-    return [NSString stringWithFormat:@"%@ (%.0fs)", startString, CMTimeGetSeconds(self.timeRange.duration)];
 }
 
 #pragma mark Description

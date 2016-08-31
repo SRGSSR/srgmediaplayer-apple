@@ -6,39 +6,42 @@
 	<array>
 		<dict>
 			<key>name</key>
-			<string>Eurosport FR</string>
-			<key>url</key>
-			<string>http://esioslive6-i.akamaihd.net/hls/live/202892/AL_P_ESP1_FR_FRA/playlist.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>Apple Basic Stream</string>
+			<string>3 non-consecutive segments</string>
 			<key>url</key>
 			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>Apple Advanced Stream</string>
-			<key>url</key>
-			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>Big Buck Bunny (640×360 m4v)</string>
-			<key>url</key>
-			<string>http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>Big Buck Bunny (1920x1080 mp4 30 fps)</string>
-			<key>url</key>
-			<string>http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>Bidoum</string>
-			<key>url</key>
-			<string>http://stream-i.rts.ch/i/bidbi/2007/bidbi_01082007-,450,k.mp4.csmil/master.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>5</integer>
+					<key>duration</key>
+					<integer>10</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #1</string>
+					<key>startTime</key>
+					<integer>30</integer>
+					<key>duration</key>
+					<integer>10</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #2</string>
+					<key>startTime</key>
+					<integer>55</integer>
+					<key>duration</key>
+					<integer>10</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+			</array>
 		</dict>
 	</array>
 </dict>

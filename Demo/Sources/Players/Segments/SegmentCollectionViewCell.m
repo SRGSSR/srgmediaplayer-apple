@@ -6,6 +6,18 @@
 
 #import "SegmentCollectionViewCell.h"
 
+static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
+{
+    static NSDateComponentsFormatter *s_dateComponentsFormatter;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        s_dateComponentsFormatter = [[NSDateComponentsFormatter alloc] init];
+        s_dateComponentsFormatter.allowedUnits = NSCalendarUnitSecond | NSCalendarUnitMinute;
+        s_dateComponentsFormatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorPad;
+    });
+    return s_dateComponentsFormatter;
+}
+
 @interface SegmentCollectionViewCell ()
 
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
@@ -28,13 +40,13 @@
 
     if (! CMTIMERANGE_IS_EMPTY(segment.timeRange)) {
         self.durationLabel.hidden = NO;
-        self.durationLabel.text = segment.durationString;
+        self.durationLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.timeRange.duration)];
     }
     else {
         self.durationLabel.hidden = YES;
     }
 
-    self.timestampLabel.text = segment.timestampString;
+    self.timestampLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.timeRange.start)];
 
     self.alpha = (segment.isBlocked) ? 0.5f : 1.f;
 }
