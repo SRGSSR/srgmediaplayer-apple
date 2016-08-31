@@ -54,6 +54,15 @@ static void commonInit(SRGTimelineView *self);
 
 #pragma mark Overrides
 
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    
+    if (newWindow) {
+        [self reloadData];
+    }
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -79,10 +88,7 @@ static void commonInit(SRGTimelineView *self);
 - (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<SRGSegment>)segment
 {
     NSInteger index = [self.mediaPlayerController.segments indexOfObject:segment];
-    if (index == NSNotFound) {
-        return nil;
-    }
-    
+    NSAssert(index != NSNotFound, @"The segment must be found");
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 }

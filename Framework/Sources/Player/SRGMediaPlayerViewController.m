@@ -13,6 +13,7 @@
 #import "SRGPictureInPictureButton.h"
 #import "SRGPlaybackActivityIndicatorView.h"
 #import "SRGMediaPlayerSharedController.h"
+#import "SRGMediaPlayerViewController+Private.h"
 #import "SRGTimeSlider.h"
 #import "SRGVolumeView.h"
 
@@ -24,6 +25,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @interface SRGMediaPlayerViewController ()
 
 @property (nonatomic) NSURL *contentURL;
+@property (nonatomic) BOOL autoplay;
 
 @property (nonatomic, weak) IBOutlet UIView *playerView;
 
@@ -69,6 +71,17 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     if (self = [super initWithNibName:@"SRGMediaPlayerViewController" bundle:[NSBundle srg_mediaPlayerBundle]]) {
         self.contentURL = contentURL;
+        self.autoplay = YES;
+    }
+    return self;
+}
+
+- (instancetype)initWithCurrentURL
+{
+    NSAssert(s_mediaPlayerController.contentURL, @"This method can only be called when a valid URL is being attached to the shared player");
+    
+    if (self = [self initWithContentURL:s_mediaPlayerController.contentURL]) {
+        self.autoplay = NO;
     }
     return self;
 }
@@ -106,11 +119,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(mediaPlayerPlaybackStateDidChange:)
+                                             selector:@selector(srg_mediaPlayerViewController_playbackStateDidChange:)
                                                  name:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                object:s_mediaPlayerController];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidBecomeActive:)
+                                             selector:@selector(srg_mediaPlayerViewController_applicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
     
@@ -131,7 +144,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     activityGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:activityGestureRecognizer];
     
-    [s_mediaPlayerController playURL:self.contentURL];
+    if (self.autoplay) {
+        [s_mediaPlayerController playURL:self.contentURL];
+    }
     
     self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
     self.playbackActivityIndicatorView.mediaPlayerController = s_mediaPlayerController;
@@ -148,7 +163,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self setTimeSliderHidden:YES];
     
     @weakify(self)
-    [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., 5.) queue: NULL usingBlock:^(CMTime time) {
+    [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
         @strongify(self)
         
         if (s_mediaPlayerController.streamType != SRGMediaStreamTypeUnknown) {
@@ -174,8 +189,19 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     [super viewDidAppear:animated];
     
-    if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
-        [s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
+    if ([self isBeingPresented]) {
+        if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
+            [s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
+        }
+        // We might restore the view controller at the end of playback in picture in picture mode (see
+        // srg_mediaPlayerViewController_playbackStateDidChange:). In this case, we close the view controller
+        // automatically, as is done when playing in full screen. We just wait one second to let restoration
+        // finish (visually)
+        else if (s_mediaPlayerController.playbackState == SRGPlaybackStateEnded) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self dismiss:nil];
+            });
+        }
     }
 }
 
@@ -259,15 +285,22 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 #pragma mark Notifications
 
-- (void)mediaPlayerPlaybackStateDidChange:(NSNotification *)notification
+- (void)srg_mediaPlayerViewController_playbackStateDidChange:(NSNotification *)notification
 {
     SRGMediaPlayerController *mediaPlayerController = notification.object;
+    
+    // Dismiss any video overlay (full screen or picture in picture) when playback normally ends
     if (mediaPlayerController.playbackState == SRGPlaybackStateEnded) {
-        [self dismiss:nil];
+        if (s_mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
+            [s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
+        }
+        else {
+            [self dismiss:nil];
+        }
     }
 }
 
-- (void)applicationDidBecomeActive:(NSNotification *)notification
+- (void)srg_mediaPlayerViewController_applicationDidBecomeActive:(NSNotification *)notification
 {
     AVPictureInPictureController *pictureInPictureController = s_mediaPlayerController.pictureInPictureController;
     

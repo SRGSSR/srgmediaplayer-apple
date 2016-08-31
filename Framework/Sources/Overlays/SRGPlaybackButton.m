@@ -110,8 +110,21 @@
 
 - (void)togglePlayPause:(id)sender
 {
-    [self.mediaPlayerController togglePlayPause];
-    [self refreshButton];
+    void (^togglePlayPause)(void) = ^{
+        [self.mediaPlayerController togglePlayPause];
+        [self refreshButton];
+    };
+    
+    if (self.mediaPlayerController.playbackState == SRGPlaybackStateEnded) {
+        [self.mediaPlayerController seekToTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
+            if (finished) {
+                togglePlayPause();
+            }
+        }];
+    }
+    else {
+        togglePlayPause();
+    }
 }
 
 #pragma mark Notifications

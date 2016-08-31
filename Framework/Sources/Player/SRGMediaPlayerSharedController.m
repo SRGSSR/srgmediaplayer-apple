@@ -7,8 +7,22 @@
 #import "SRGMediaPlayerSharedController.h"
 
 #import "SRGMediaPlayerViewController.h"
+#import "SRGMediaPlayerViewController+Private.h"
 
 @implementation SRGMediaPlayerSharedController
+
+#pragma mark Object lifecycle
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.playerConfigurationBlock = ^(AVPlayer *player) {
+            player.allowsExternalPlayback = YES;
+            player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
+        };
+    }
+    return self;
+}
 
 #pragma mark AVPictureInPictureControllerDelegate protocol
 
@@ -25,7 +39,7 @@
     
     // If no SRGMediaPlayerViewController instance is currently displayed (always modally)
     if (! [rootViewController.presentedViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
-        SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:self.contentURL];
+        SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithCurrentURL];
         
         // Dismiss any modal currently displayed if needed
         if (rootViewController.presentedViewController) {

@@ -2,16 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Movies</key>
+	<key>Medias</key>
 	<array>
 		<dict>
 			<key>name</key>
 			<string>Live</string>
 			<key>url</key>
 			<string>http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch1/appleman.m3u8</string>
-			<key>urls</key>
+			<key>secondaryUrls</key>
 			<array>
-				<string>http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch1/appleman.m3u8</string>
 				<string>http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch2/appleman.m3u8</string>
 				<string>http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch3/appleman.m3u8</string>
 				<string>http://esioslive6-i.akamaihd.net/hls/live/202892/AL_P_ESP1_FR_FRA/playlist.m3u8</string>

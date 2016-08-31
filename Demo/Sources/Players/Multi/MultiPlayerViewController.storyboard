@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="b7b-kf-zbq">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Multi Player View Controller-->
+        <scene sceneID="LQb-nG-j9e">
+            <objects>
+                <viewController id="b7b-kf-zbq" customClass="MultiPlayerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Vkl-xR-3dF"/>
+                        <viewControllerLayoutGuide type="bottom" id="KtA-59-MqK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="GoB-al-BCg">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VDg-y2-TPv">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D0u-3S-ptb">
+                                        <rect key="frame" x="8" y="20" width="50" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="RXX-b8-GjZ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" title="Close">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismiss:" destination="b7b-kf-zbq" eventType="touchUpInside" id="VwC-Uw-Lag"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="D0u-3S-ptb" secondAttribute="bottom" id="Kwg-ss-UVD"/>
+                                    <constraint firstItem="D0u-3S-ptb" firstAttribute="top" secondItem="VDg-y2-TPv" secondAttribute="top" constant="20" id="kk7-56-WkJ"/>
+                                    <constraint firstItem="D0u-3S-ptb" firstAttribute="leading" secondItem="VDg-y2-TPv" secondAttribute="leading" constant="8" id="nIm-8e-daH"/>
+                                    <constraint firstAttribute="height" constant="64" id="y6c-vr-vMk"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hO-rE-By8" userLabel="Main Player Vew">
+                                <rect key="frame" x="0.0" y="64" width="600" height="476"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tmY-iv-N0L" userLabel="Player view container">
+                                <rect key="frame" x="0.0" y="390" width="600" height="150"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="ob8-Bu-fXy"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o0R-Vs-Z8P">
+                                <rect key="frame" x="0.0" y="540" width="600" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wmk-XY-ASk" customClass="SRGPlaybackButton">
+                                        <rect key="frame" x="285" y="15" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="6cv-yY-T34"/>
+                                            <constraint firstAttribute="height" constant="30" id="Nh1-0u-TRg"/>
+                                        </constraints>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="Wmk-XY-ASk" secondAttribute="centerX" id="6dw-00-Ymf"/>
+                                    <constraint firstAttribute="centerY" secondItem="Wmk-XY-ASk" secondAttribute="centerY" id="JhT-7G-oW6"/>
+                                    <constraint firstAttribute="height" constant="60" id="Yr3-LN-6JC"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="3hO-rE-By8" secondAttribute="trailing" id="5ER-6h-Ya1"/>
+                            <constraint firstItem="o0R-Vs-Z8P" firstAttribute="leading" secondItem="GoB-al-BCg" secondAttribute="leading" id="9Ar-gZ-Ren"/>
+                            <constraint firstItem="tmY-iv-N0L" firstAttribute="leading" secondItem="GoB-al-BCg" secondAttribute="leading" id="BNB-G6-rb9"/>
+                            <constraint firstItem="VDg-y2-TPv" firstAttribute="top" secondItem="GoB-al-BCg" secondAttribute="top" id="DCZ-4l-sqO"/>
+                            <constraint firstItem="3hO-rE-By8" firstAttribute="leading" secondItem="GoB-al-BCg" secondAttribute="leading" id="VSF-wZ-ZJu"/>
+                            <constraint firstItem="VDg-y2-TPv" firstAttribute="leading" secondItem="GoB-al-BCg" secondAttribute="leading" id="X5j-zU-KYw"/>
+                            <constraint firstAttribute="trailing" secondItem="VDg-y2-TPv" secondAttribute="trailing" id="gBo-D2-Fe8"/>
+                            <constraint firstItem="KtA-59-MqK" firstAttribute="top" secondItem="o0R-Vs-Z8P" secondAttribute="bottom" id="kPc-TH-np1"/>
+                            <constraint firstItem="o0R-Vs-Z8P" firstAttribute="top" secondItem="3hO-rE-By8" secondAttribute="bottom" id="kQk-6N-VVR"/>
+                            <constraint firstAttribute="trailing" secondItem="tmY-iv-N0L" secondAttribute="trailing" id="nWs-XI-s1B"/>
+                            <constraint firstItem="3hO-rE-By8" firstAttribute="top" secondItem="VDg-y2-TPv" secondAttribute="bottom" id="o15-Qo-lwe"/>
+                            <constraint firstAttribute="trailing" secondItem="o0R-Vs-Z8P" secondAttribute="trailing" id="oY4-mk-3iD"/>
+                            <constraint firstItem="o0R-Vs-Z8P" firstAttribute="top" secondItem="tmY-iv-N0L" secondAttribute="bottom" id="pcl-7L-Ft4"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mainPlayerView" destination="3hO-rE-By8" id="rqT-7R-Flj"/>
+                        <outlet property="playPauseButton" destination="Wmk-XY-ASk" id="f65-ae-dhC"/>
+                        <outlet property="playerViewsContainer" destination="tmY-iv-N0L" id="BIV-Zb-rdh"/>
+                        <outletCollection property="overlayViews" destination="VDg-y2-TPv" id="n0G-72-RgW"/>
+                        <outletCollection property="overlayViews" destination="o0R-Vs-Z8P" id="eNE-gU-ZVs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UBk-af-4ne" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1363" y="3962"/>
+        </scene>
+    </scenes>
+</document>

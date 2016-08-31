@@ -73,6 +73,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) UIView *view;
 
+@property (nonatomic, copy) void (^playerCreationBlock)(AVPlayer *player);
+@property (nonatomic, copy) void (^playerConfigurationBlock)(AVPlayer *player);
+@property (nonatomic, copy) void (^playerDestructionBlock)(AVPlayer *player);
+
+- (void)reloadPlayerConfiguration;
+
 @property (nonatomic, readonly) SRGPlaybackState playbackState;
 
 @property (nonatomic, readonly, nullable) NSURL *contentURL;

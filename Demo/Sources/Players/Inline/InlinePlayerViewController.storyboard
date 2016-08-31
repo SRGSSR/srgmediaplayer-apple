@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="IH9-dj-2W7">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Inline Player View Controller-->
+        <scene sceneID="Oe1-BV-6Nh">
+            <objects>
+                <viewController id="IH9-dj-2W7" customClass="InlinePlayerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tBA-s6-BzM"/>
+                        <viewControllerLayoutGuide type="bottom" id="Kav-KH-kPV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="VxK-5u-5wr">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mz4-3g-dMP">
+                                <rect key="frame" x="75" y="40" width="450" height="253"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qKr-hy-Qhj">
+                                        <rect key="frame" x="0.0" y="209" width="450" height="44"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ppv-Ye-ua0" customClass="SRGPlaybackButton">
+                                                <rect key="frame" x="5" y="5" width="30" height="34"/>
+                                                <state key="normal">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="hightlightColor">
+                                                        <color key="value" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outlet property="mediaPlayerController" destination="VI1-qS-HQF" id="4zd-rB-6TQ"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="Ppv-Ye-ua0" firstAttribute="leading" secondItem="qKr-hy-Qhj" secondAttribute="leading" constant="5" id="DLn-s5-8G5"/>
+                                            <constraint firstAttribute="height" constant="44" id="FTp-wK-jrR"/>
+                                            <constraint firstItem="Ppv-Ye-ua0" firstAttribute="centerY" secondItem="qKr-hy-Qhj" secondAttribute="centerY" id="vjA-S9-3z2"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="qKr-hy-Qhj" firstAttribute="leading" secondItem="mz4-3g-dMP" secondAttribute="leading" id="YgA-Df-mZh"/>
+                                    <constraint firstAttribute="bottom" secondItem="qKr-hy-Qhj" secondAttribute="bottom" id="YrK-ix-ncs"/>
+                                    <constraint firstAttribute="trailing" secondItem="qKr-hy-Qhj" secondAttribute="trailing" id="kMA-oN-XwZ"/>
+                                    <constraint firstAttribute="width" secondItem="mz4-3g-dMP" secondAttribute="height" multiplier="16:9" id="oX6-gR-bMd"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vPP-hu-p6g">
+                                <rect key="frame" x="248" y="301" width="105" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="qmW-F0-70e"/>
+                                </constraints>
+                                <state key="normal" title="Prepare to Play">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="prepareToPlay:" destination="IH9-dj-2W7" eventType="touchUpInside" id="L72-uv-CBQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="utS-HI-UsH">
+                                <rect key="frame" x="285" y="339" width="30" height="30"/>
+                                <state key="normal" title="Play">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="togglePlayPause:" destination="IH9-dj-2W7" eventType="touchUpInside" id="cHM-i2-Iq7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5GK-5L-sQL">
+                                <rect key="frame" x="280" y="377" width="39" height="30"/>
+                                <state key="normal" title="Reset">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="reset:" destination="IH9-dj-2W7" eventType="touchUpInside" id="moS-LU-NLu"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="5GK-5L-sQL" secondAttribute="centerX" id="5wg-hP-RyW"/>
+                            <constraint firstItem="mz4-3g-dMP" firstAttribute="width" secondItem="VxK-5u-5wr" secondAttribute="width" multiplier="3/4" id="FBl-Le-WAa"/>
+                            <constraint firstAttribute="centerX" secondItem="utS-HI-UsH" secondAttribute="centerX" id="JGy-KD-6Lf"/>
+                            <constraint firstAttribute="centerX" secondItem="5GK-5L-sQL" secondAttribute="centerX" id="LW3-Jk-aRf"/>
+                            <constraint firstItem="5GK-5L-sQL" firstAttribute="top" secondItem="utS-HI-UsH" secondAttribute="bottom" constant="8" id="PVD-kX-F5l"/>
+                            <constraint firstItem="utS-HI-UsH" firstAttribute="top" secondItem="vPP-hu-p6g" secondAttribute="bottom" constant="8" id="dRF-Bf-DZ5"/>
+                            <constraint firstAttribute="centerX" secondItem="mz4-3g-dMP" secondAttribute="centerX" id="iDI-ui-5nQ"/>
+                            <constraint firstItem="vPP-hu-p6g" firstAttribute="top" secondItem="mz4-3g-dMP" secondAttribute="bottom" constant="8" id="lxR-8i-Awv"/>
+                            <constraint firstItem="mz4-3g-dMP" firstAttribute="top" secondItem="tBA-s6-BzM" secondAttribute="bottom" constant="20" id="s6e-fV-Bta"/>
+                            <constraint firstAttribute="centerX" secondItem="vPP-hu-p6g" secondAttribute="centerX" id="ve0-5v-MSh"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mediaPlayerController" destination="VI1-qS-HQF" id="c0t-Es-Esg"/>
+                        <outlet property="videoContainerView" destination="mz4-3g-dMP" id="JUq-bP-y2b"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7rr-Sg-vdo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="VI1-qS-HQF" customClass="SRGMediaPlayerController"/>
+            </objects>
+            <point key="canvasLocation" x="-3151" y="3550"/>
+        </scene>
+    </scenes>
+</document>
