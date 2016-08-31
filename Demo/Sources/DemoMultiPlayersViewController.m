@@ -140,10 +140,13 @@
     if (isMainPlayer) {
         [self.playPauseButton setMediaPlayerController:mediaPlayerController];
     }
-    mediaPlayerController.overlayViews = isMainPlayer ? self.overlayViews : nil;
-    [mediaPlayerController attachPlayerToView:playerView];
-    mediaPlayerController.muted = ! isMainPlayer;
-
+    
+    mediaPlayerController.view.frame = playerView.bounds;
+    mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [playerView insertSubview:mediaPlayerController.view atIndex:0];
+    
+    // FIXME: Muted, overlays
+    
     UITapGestureRecognizer *defaultTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.firstObject;
     UITapGestureRecognizer *switchTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.lastObject;
     defaultTapGestureRecognizer.enabled = isMainPlayer;

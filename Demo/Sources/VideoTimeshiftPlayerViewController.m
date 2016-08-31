@@ -4,28 +4,11 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
-
 #import "VideoTimeshiftPlayerViewController.h"
-#import "PseudoILDataProvider.h"
+
 #import "SegmentCollectionViewCell.h"
 
-static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
-{
-    static dispatch_once_t s_onceToken;
-    static NSDictionary *s_names;
-    dispatch_once(&s_onceToken, ^{
-        s_names = @{ @(SRGPlaybackStateIdle): @"IDLE",
-                     @(SRGPlaybackStatePreparing): @"PREPARING",
-                     @(SRGPlaybackStateReady): @"READY",
-                     @(SRGPlaybackStatePlaying): @"PLAYING",
-                     @(SRGPlaybackStateSeeking): @"SEEKING",
-                     @(SRGPlaybackStatePaused): @"PAUSED",
-                     @(SRGPlaybackStateStalled): @"STALLED",
-                     @(SRGPlaybackStateEnded): @"ENDED", };
-    });
-    return s_names[@(playbackState)] ? : @"UNKNOWN";
-}
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface VideoTimeshiftPlayerViewController ()
 
@@ -45,16 +28,16 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
 
 @implementation VideoTimeshiftPlayerViewController
 
-#pragma mark - View lifecycle
+#pragma mark View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.mediaPlayerController.overlayViewsHidingDelay = 1000;
-    self.blockingOverlayView.hidden = YES;
-    [self.mediaPlayerController attachPlayerToView:self.videoView];
-
+    self.mediaPlayerController.view.frame = self.view.bounds;
+    self.mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view insertSubview:self.mediaPlayerController.view atIndex:0];
+    
     [self.liveButton setTitle:@"Back to live" forState:UIControlStateNormal];
     self.liveButton.alpha = 0.f;
 
@@ -67,11 +50,6 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
             [weakSelf updateLiveButton];
         }
     }];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-     selector:@selector(playbackStateDidChange:)
-     name:SRGMediaPlayerPlaybackStateDidChangeNotification
-     object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -79,7 +57,7 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
     [super viewWillAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self.mediaPlayerController play];
+        // FIXME: Play
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:animated ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone];
     }
 }
@@ -94,6 +72,8 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
     }
 }
 
+#pragma mark UI
+
 - (void)updateLiveButton
 {
     if (self.mediaPlayerController.streamType == SRGMediaStreamTypeDVR) {
@@ -106,48 +86,7 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
     }
 }
 
-#pragma mark - RTSMediaPlayerControllerDataSource
-
-- (void)mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
-      contentURLForIdentifier:(NSString *)identifier
-            completionHandler:(void (^)(NSURL *, NSError *))completionHandler
-{
-    if (self.tokenizeMediaURL) {
-        NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-
-        NSURLSessionDataTask *dataTask = [defaultSession dataTaskWithURL:self.mediaURL
-                                          completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (error) {
-                completionHandler(nil, error);
-            }
-            else {
-                NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                if ([text hasPrefix:@"\""]) {
-                    text = [text substringFromIndex:1];
-                }
-                if ([text hasSuffix:@"\""]) {
-                    text = [text substringToIndex:text.length - 1];
-                }
-                NSParameterAssert([NSURL URLWithString:text]);
-                completionHandler([NSURL URLWithString:text], nil);
-            }
-        }];
-
-        [dataTask resume];
-    }
-    else {
-        completionHandler(self.mediaURL, nil);
-    }
-}
-
-#pragma mark - Notifications
-
-- (void)playbackStateDidChange:(NSNotification *)notification
-{
-    NSLog(@"Playback state [%@]", StringForPlaybackState(self.mediaPlayerController.playbackState));
-}
-
-#pragma mark - Actions
+#pragma mark Actions
 
 - (IBAction)dismiss:(id)sender
 {
@@ -165,7 +104,7 @@ static NSString *StringForPlaybackState(SRGPlaybackState playbackState)
         return;
     }
 
-    [self.mediaPlayerController playAtTime:CMTimeRangeGetEnd(timeRange)];
+    [self.mediaPlayerController seekToTime:CMTimeRangeGetEnd(timeRange) withCompletionHandler:nil];
 }
 
 - (IBAction)seek:(id)sender

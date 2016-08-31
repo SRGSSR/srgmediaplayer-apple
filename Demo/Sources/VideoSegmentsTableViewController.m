@@ -5,6 +5,7 @@
 //
 
 #import "VideoSegmentsTableViewController.h"
+
 #import "VideoSegmentsPlayerViewController.h"
 
 @implementation VideoSegmentsTableViewController
@@ -16,7 +17,7 @@
 
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     VideoSegmentsPlayerViewController *demoViewController = segue.destinationViewController;
-    demoViewController.videoIdentifier = [NSString stringWithFormat:@"%@", @(indexPath.row)];
+    // FIXME: Play correct example
 }
 
 @end

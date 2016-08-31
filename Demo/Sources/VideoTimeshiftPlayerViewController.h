@@ -4,12 +4,14 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <UIKit/UIKit.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface VideoTimeshiftPlayerViewController : UIViewController
 
-@property (nonatomic, strong) NSURL *mediaURL;
-@property (nonatomic, assign) BOOL tokenizeMediaURL;
+@property (nonatomic) NSURL *mediaURL;
 
 @end
+
+NS_ASSUME_NONNULL_END

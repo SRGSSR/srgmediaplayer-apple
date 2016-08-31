@@ -102,7 +102,6 @@
     else if ([segue.identifier isEqualToString:@"DemoTimeshift"]) {
         VideoTimeshiftPlayerViewController *playerViewController = segue.destinationViewController;
         playerViewController.mediaURL = [self URLForSelectedMedia];
-        playerViewController.tokenizeMediaURL = (self.selectedIndexPath.row == 2);
     }
     else if ([segue.identifier isEqualToString:@"DemoMultiPlayers"]) {
         DemoMultiPlayersViewController *playerViewController = segue.destinationViewController;
