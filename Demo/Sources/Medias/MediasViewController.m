@@ -64,15 +64,15 @@
     return [NSURL URLWithString:media[@"url"]];
 }
 
-- (NSArray *)URLsForSelectedMedia
+- (NSArray<NSURL *> *)secondaryURLsForSelectedMedia
 {
     if (! self.selectedIndexPath) {
         return nil;
     }
 
-    NSMutableArray *urls = [NSMutableArray new];
+    NSMutableArray<NSURL *> *urls = [NSMutableArray new];
     NSDictionary *media = [self.medias objectAtIndex:self.selectedIndexPath.row];
-    for (NSString *urlString in media[@"urls"]) {
+    for (NSString *urlString in media[@"secondaryUrls"]) {
         NSURL *url = [NSURL URLWithString:urlString];
         if (url) {
             [urls addObject:url];
@@ -96,7 +96,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? self.medias.count : 4;
+    return section == 0 ? self.medias.count : 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -137,6 +137,11 @@
                 
             case 3: {
                 cell.textLabel.text = @"Custom timeshift SRG media player";
+                break;
+            }
+                
+            case 4: {
+                cell.textLabel.text = @"Multi player";
                 break;
             }
                 
@@ -187,6 +192,18 @@
             case 3: {
                 TimeshiftPlayerViewController *timeshiftPlayerViewController = [[TimeshiftPlayerViewController alloc] initWithContentURL:contentURL];
                 [self presentViewController:timeshiftPlayerViewController animated:YES completion:nil];
+                break;
+            }
+                
+            case 4: {
+                NSMutableArray<NSURL *> *contentURLs = [NSMutableArray arrayWithObject:contentURL];
+                NSArray<NSURL *> *secondaryURLs = [self secondaryURLsForSelectedMedia];
+                if (secondaryURLs) {
+                    [contentURLs addObjectsFromArray:secondaryURLs];
+                }
+                
+                MultiPlayerViewController *multiPlayerViewController = [[MultiPlayerViewController alloc] initWithMediaURLs:[contentURLs copy]];
+                [self presentViewController:multiPlayerViewController animated:YES completion:nil];
                 break;
             }
                 

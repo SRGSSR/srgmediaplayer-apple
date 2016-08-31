@@ -47,9 +47,10 @@
 
     self.mediaPlayerControllers = [NSMutableArray array];
 
-    for (NSInteger i = 0; i < mediaURLs.count; ++i) {
+    for (NSURL *URL in mediaURLs) {
         SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
-
+        [mediaPlayerController playURL:URL];
+        
         UITapGestureRecognizer *switchTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchMainPlayer:)];
         [mediaPlayerController.view addGestureRecognizer:switchTapGestureRecognizer];
         [self.mediaPlayerControllers addObject:mediaPlayerController];

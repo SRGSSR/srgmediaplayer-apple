@@ -85,17 +85,22 @@
     videosViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
     UINavigationController *videosNavigationController = [[UINavigationController alloc] initWithRootViewController:videosViewController];
     
-    MediasViewController *audiosViewController = [[MediasViewController alloc] initWithMediaFileName:@"AudioURLs"];
-    audiosViewController.title = @"Audios";
-    audiosViewController.tabBarItem.image = [UIImage imageNamed:@"audios"];
-    UINavigationController *audiosNavigationController = [[UINavigationController alloc] initWithRootViewController:audiosViewController];
+    MediasViewController *multiVideosViewController = [[MediasViewController alloc] initWithMediaFileName:@"MultiplayerURLs"];
+    multiVideosViewController.title = @"Multi-stream";
+    multiVideosViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
+    UINavigationController *multiVideosNavigationController = [[UINavigationController alloc] initWithRootViewController:multiVideosViewController];
     
     MediasViewController *timeshiftViewController = [[MediasViewController alloc] initWithMediaFileName:@"TimeshiftURLs"];
     timeshiftViewController.title = @"Timeshift";
     timeshiftViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
     UINavigationController *timeshiftNavigationController = [[UINavigationController alloc] initWithRootViewController:timeshiftViewController];
     
-    tabBarController.viewControllers = @[videosNavigationController, audiosNavigationController, timeshiftNavigationController];
+    MediasViewController *audiosViewController = [[MediasViewController alloc] initWithMediaFileName:@"AudioURLs"];
+    audiosViewController.title = @"Audios";
+    audiosViewController.tabBarItem.image = [UIImage imageNamed:@"audios"];
+    UINavigationController *audiosNavigationController = [[UINavigationController alloc] initWithRootViewController:audiosViewController];
+    
+    tabBarController.viewControllers = @[videosNavigationController, multiVideosNavigationController, timeshiftNavigationController, audiosNavigationController];
     self.window.rootViewController = tabBarController;
     
     // Avoid applying tint color to tab bar images
@@ -104,11 +109,6 @@
         tabBarItem.image = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         tabBarItem.selectedImage = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }];
-    
-    
-    
-    
-    
     
 #if 0
     UIImage *moviesIcon = [UIImage imageNamed:@"videos"];
