@@ -47,9 +47,10 @@
                                         </constraints>
                                         <color key="minimumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="thumbTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="seek:" destination="Zk8-W1-piv" eventType="valueChanged" id="uEP-FQ-ZVM"/>
+                                            <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="0On-eq-acQ"/>
                                             <outlet property="timeLeftValueLabel" destination="szg-q5-gCR" id="S7R-dC-xO7"/>
                                             <outlet property="valueLabel" destination="mq0-n2-ZD3" id="BXc-fi-WTd"/>
                                         </connections>
@@ -105,6 +106,9 @@
                                         <variation key="heightClass=compact" misplaced="YES">
                                             <rect key="frame" x="289" y="31" width="22" height="22"/>
                                         </variation>
+                                        <connections>
+                                            <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="lr6-tC-yXm"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.85369551809999999" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
@@ -146,6 +150,9 @@
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="C5v-lq-cYV" customClass="SRGPlaybackActivityIndicatorView">
                                 <rect key="frame" x="282" y="281" width="37" height="37"/>
                                 <color key="color" red="0.03204568923" green="0.64991066379999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="6VD-Uo-jhM"/>
+                                </connections>
                             </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U95-jw-fHR">
                                 <rect key="frame" x="34" y="215" width="532" height="171"/>
