@@ -9,9 +9,9 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-#import "DemoInlineViewController.h"
-#import "DemoMultiPlayersViewController.h"
-#import "VideoTimeshiftPlayerViewController.h"
+#import "InlinePlayerViewController.h"
+#import "MultiPlayerViewController.h"
+#import "TimeshiftPlayerViewController.h"
 
 @interface MediasViewController ()
 
@@ -174,8 +174,8 @@
             }
                 
             case 2: {
-                DemoInlineViewController *inlineViewController = [[DemoInlineViewController alloc] initWithContentURL:contentURL];
-                [self.navigationController pushViewController:inlineViewController animated:YES];
+                InlinePlayerViewController *inlinePlayerViewController = [[InlinePlayerViewController alloc] initWithContentURL:contentURL];
+                [self.navigationController pushViewController:inlinePlayerViewController animated:YES];
                 break;
             }
                 

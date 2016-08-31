@@ -7,10 +7,10 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Demo Inline-->
+        <!--Inline Player View Controller-->
         <scene sceneID="Oe1-BV-6Nh">
             <objects>
-                <viewController id="IH9-dj-2W7" userLabel="Demo Inline" customClass="DemoInlineViewController" sceneMemberID="viewController">
+                <viewController id="IH9-dj-2W7" customClass="InlinePlayerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tBA-s6-BzM"/>
                         <viewControllerLayoutGuide type="bottom" id="Kav-KH-kPV"/>

@@ -8,9 +8,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface VideoTimeshiftPlayerViewController : UIViewController
+@interface InlinePlayerViewController : UIViewController
 
-@property (nonatomic) NSURL *mediaURL;
+- (instancetype)initWithContentURL:(NSURL *)contentURL;
 
 @end
 

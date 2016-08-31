@@ -4,13 +4,13 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "VideoTimeshiftPlayerViewController.h"
+#import "TimeshiftPlayerViewController.h"
 
 #import "SegmentCollectionViewCell.h"
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface VideoTimeshiftPlayerViewController ()
+@interface TimeshiftPlayerViewController ()
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
@@ -26,7 +26,7 @@
 
 @end
 
-@implementation VideoTimeshiftPlayerViewController
+@implementation TimeshiftPlayerViewController
 
 #pragma mark View lifecycle
 

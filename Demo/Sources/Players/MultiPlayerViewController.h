@@ -6,8 +6,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DemoMultiPlayersViewController : UIViewController
+NS_ASSUME_NONNULL_BEGIN
+
+@interface MultiPlayerViewController : UIViewController
 
 @property (nonatomic) NSArray<NSURL *> *mediaURLs;
 
 @end
+
+NS_ASSUME_NONNULL_END

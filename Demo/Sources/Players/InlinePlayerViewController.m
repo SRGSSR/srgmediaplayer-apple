@@ -4,11 +4,11 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "DemoInlineViewController.h"
+#import "InlinePlayerViewController.h"
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface DemoInlineViewController ()
+@interface InlinePlayerViewController ()
 
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic, weak) IBOutlet UIView *videoContainerView;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation DemoInlineViewController {
+@implementation InlinePlayerViewController {
 @private
     BOOL _ready;
 }
@@ -26,7 +26,7 @@
 - (instancetype)initWithContentURL:(NSURL *)contentURL
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    DemoInlineViewController *viewController = [storyboard instantiateInitialViewController];
+    InlinePlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.contentURL = contentURL;
     return viewController;
 }

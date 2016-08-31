@@ -4,11 +4,11 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "DemoMultiPlayersViewController.h"
+#import "MultiPlayerViewController.h"
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface DemoMultiPlayersViewController ()
+@interface MultiPlayerViewController ()
 
 @property (nonatomic) NSMutableArray<UIView *> *playerViews;
 @property (nonatomic) NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers;
@@ -25,7 +25,7 @@
 
 @end
 
-@implementation DemoMultiPlayersViewController
+@implementation MultiPlayerViewController
 
 #pragma mark Getters and setters
 

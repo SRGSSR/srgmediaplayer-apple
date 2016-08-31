@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Irc-Aq-OD6">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -356,7 +355,7 @@
         <!--Video Timeshift Player-->
         <scene sceneID="cQs-92-Grl">
             <objects>
-                <viewController id="Rig-pS-R3F" userLabel="Video Timeshift Player" customClass="VideoTimeshiftPlayerViewController" sceneMemberID="viewController">
+                <viewController id="Rig-pS-R3F" userLabel="Video Timeshift Player" customClass="TimeshiftPlayerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JXF-tT-evh"/>
                         <viewControllerLayoutGuide type="bottom" id="Up7-v8-Thl"/>
@@ -853,7 +852,7 @@
         <!--Demo Multi Players-->
         <scene sceneID="ogi-Ec-l22">
             <objects>
-                <viewController id="oc1-Fz-lVe" userLabel="Demo Multi Players" customClass="DemoMultiPlayersViewController" sceneMemberID="viewController">
+                <viewController id="oc1-Fz-lVe" userLabel="Demo Multi Players" customClass="MultiPlayerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5My-Pc-OR9"/>
                         <viewControllerLayoutGuide type="bottom" id="A2m-Yg-tCN"/>
