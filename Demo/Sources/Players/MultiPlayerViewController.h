@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MultiPlayerViewController : UIViewController
 
-@property (nonatomic) NSArray<NSURL *> *mediaURLs;
+- (instancetype)initWithMediaURLs:(NSArray<NSURL *> *)mediaURLs;
 
 @end
 

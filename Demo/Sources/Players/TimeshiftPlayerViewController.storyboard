@@ -199,11 +199,13 @@
                         <outlet property="blockingOverlayView" destination="U95-jw-fHR" id="gJX-n1-65A"/>
                         <outlet property="blockingOverlayViewLabel" destination="4gY-RE-jP5" id="nPv-FN-JDf"/>
                         <outlet property="liveButton" destination="DRr-Ir-Edl" id="oJN-tK-KoW"/>
+                        <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="f95-cZ-5LN"/>
                         <outlet property="timelineSlider" destination="Tml-pK-mQ9" id="BTe-mi-dX1"/>
                         <outlet property="videoView" destination="xTs-IJ-3tq" id="atl-ce-PXh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pNA-WI-9Vu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="UUZ-ax-3wC" customClass="SRGMediaPlayerController"/>
             </objects>
             <point key="canvasLocation" x="-432" y="3580"/>
         </scene>

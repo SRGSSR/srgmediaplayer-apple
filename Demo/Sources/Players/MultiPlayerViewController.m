@@ -10,6 +10,8 @@
 
 @interface MultiPlayerViewController ()
 
+@property (nonatomic) NSArray<NSURL *> *mediaURLs;
+
 @property (nonatomic) NSMutableArray<UIView *> *playerViews;
 @property (nonatomic) NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers;
 
@@ -26,6 +28,16 @@
 @end
 
 @implementation MultiPlayerViewController
+
+#pragma mark Object lifecycle
+
+- (instancetype)initWithMediaURLs:(NSArray<NSURL *> *)mediaURLs
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    MultiPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    viewController.mediaURLs = mediaURLs;
+    return viewController;
+}
 
 #pragma mark Getters and setters
 
@@ -121,7 +133,7 @@
     [self togglePlayPause];
 }
 
-#pragma mark - Media Players
+#pragma mark Media Players
 
 - (CGRect)rectForPlayerViewAtIndex:(NSInteger)index
 {

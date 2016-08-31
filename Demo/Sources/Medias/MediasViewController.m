@@ -96,7 +96,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return section == 0 ? self.medias.count : 3;
+    return section == 0 ? self.medias.count : 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -132,6 +132,11 @@
                 
             case 2: {
                 cell.textLabel.text = @"Inline SRG media player";
+                break;
+            }
+                
+            case 3: {
+                cell.textLabel.text = @"Custom timeshift SRG media player";
                 break;
             }
                 
@@ -176,6 +181,12 @@
             case 2: {
                 InlinePlayerViewController *inlinePlayerViewController = [[InlinePlayerViewController alloc] initWithContentURL:contentURL];
                 [self.navigationController pushViewController:inlinePlayerViewController animated:YES];
+                break;
+            }
+                
+            case 3: {
+                TimeshiftPlayerViewController *timeshiftPlayerViewController = [[TimeshiftPlayerViewController alloc] initWithContentURL:contentURL];
+                [self presentViewController:timeshiftPlayerViewController animated:YES completion:nil];
                 break;
             }
                 
