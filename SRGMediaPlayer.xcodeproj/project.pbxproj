@@ -40,7 +40,6 @@
 		E69A1FAA1D61BFAE0064E6C1 /* videos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6E1D61BFAE0064E6C1 /* videos@2x.png */; };
 		E69A1FAB1D61BFAE0064E6C1 /* yellow_card.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6F1D61BFAE0064E6C1 /* yellow_card.png */; };
 		E69A1FAC1D61BFAE0064E6C1 /* yellow_card@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F701D61BFAE0064E6C1 /* yellow_card@2x.png */; };
-		E69A1FAE1D61BFAE0064E6C1 /* AudiosTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F751D61BFAE0064E6C1 /* AudiosTableViewController.m */; };
 		E69A1FB61D61BFAE0064E6C1 /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F851D61BFAE0064E6C1 /* Segment.m */; };
 		E69A1FB71D61BFAE0064E6C1 /* SegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1F871D61BFAE0064E6C1 /* SegmentCollectionViewCell.m */; };
 		E69A1FB81D61BFAE0064E6C1 /* SegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F881D61BFAE0064E6C1 /* SegmentCollectionViewCell.xib */; };
@@ -59,12 +58,13 @@
 		E69A1FE71D61C6D20064E6C1 /* SRGMediaPlayer_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FE21D61C6D20064E6C1 /* SRGMediaPlayer_tests.m */; };
 		E69A1FEA1D61DD870064E6C1 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */; };
 		E69A1FEB1D61DD870064E6C1 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E6C315531D76A4B4001FC93A /* VideosTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C315521D76A4B4001FC93A /* VideosTableViewController.storyboard */; };
 		E6C315651D76AB5A001FC93A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C315641D76AB5A001FC93A /* Main.storyboard */; };
 		E6C315671D76AB62001FC93A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6C315661D76AB62001FC93A /* LaunchScreen.xib */; };
 		E6C3156D1D76AB93001FC93A /* DemoInlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C3156A1D76AB93001FC93A /* DemoInlineViewController.m */; };
 		E6C3156E1D76AB93001FC93A /* DemoMultiPlayersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C3156C1D76AB93001FC93A /* DemoMultiPlayersViewController.m */; };
 		E6C315701D76AE9F001FC93A /* DemoInlineViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C3156F1D76AE9F001FC93A /* DemoInlineViewController.storyboard */; };
+		E6C315741D76B22D001FC93A /* AudiosTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C315731D76B22D001FC93A /* AudiosTableViewController.m */; };
+		E6C315761D76B2AA001FC93A /* MediasViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C315751D76B2AA001FC93A /* MediasViewController.storyboard */; };
 		E6C985F01D6EF6BC00C45C7A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985EF1D6EF6BC00C45C7A /* main.m */; };
 		E6C985F31D6EF6BC00C45C7A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985F21D6EF6BC00C45C7A /* AppDelegate.m */; };
 		E6C985F61D6EF6BC00C45C7A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C985F51D6EF6BC00C45C7A /* ViewController.m */; };
@@ -93,8 +93,7 @@
 		E6C9861F1D701D3800C45C7A /* SRGMediaPlayerSharedController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F5D1D62072400A55085 /* SRGMediaPlayerSharedController.m */; };
 		E6D21D221D76A3F500B477F3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D21D1A1D76A3F500B477F3 /* AppDelegate.m */; };
 		E6D21D231D76A3F500B477F3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D21D1B1D76A3F500B477F3 /* main.m */; };
-		E6D21D241D76A3F500B477F3 /* BaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D21D1E1D76A3F500B477F3 /* BaseTableViewController.m */; };
-		E6D21D251D76A3F500B477F3 /* VideosTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D21D211D76A3F500B477F3 /* VideosTableViewController.m */; };
+		E6D21D241D76A3F500B477F3 /* MediasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D21D1E1D76A3F500B477F3 /* MediasViewController.m */; };
 		E6E49F631D7029F9006CB883 /* SRGMediaPlayerConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E49F621D7029F9006CB883 /* SRGMediaPlayerConstants.m */; };
 		E6FC7F6B1D62072400A55085 /* SRGActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F301D62072400A55085 /* SRGActivityGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F6C1D62072400A55085 /* SRGActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F311D62072400A55085 /* SRGActivityGestureRecognizer.m */; };
@@ -213,8 +212,6 @@
 		E69A1F6E1D61BFAE0064E6C1 /* videos@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "videos@2x.png"; sourceTree = "<group>"; };
 		E69A1F6F1D61BFAE0064E6C1 /* yellow_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow_card.png; sourceTree = "<group>"; };
 		E69A1F701D61BFAE0064E6C1 /* yellow_card@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow_card@2x.png"; sourceTree = "<group>"; };
-		E69A1F741D61BFAE0064E6C1 /* AudiosTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudiosTableViewController.h; sourceTree = "<group>"; };
-		E69A1F751D61BFAE0064E6C1 /* AudiosTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudiosTableViewController.m; sourceTree = "<group>"; };
 		E69A1F841D61BFAE0064E6C1 /* Segment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Segment.h; sourceTree = "<group>"; };
 		E69A1F851D61BFAE0064E6C1 /* Segment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Segment.m; sourceTree = "<group>"; };
 		E69A1F861D61BFAE0064E6C1 /* SegmentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentCollectionViewCell.h; sourceTree = "<group>"; };
@@ -240,7 +237,6 @@
 		E69A1FE21D61C6D20064E6C1 /* SRGMediaPlayer_tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayer_tests.m; sourceTree = "<group>"; };
 		E69A1FE81D61DD870064E6C1 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Demo/Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		E69A1FE91D61DD870064E6C1 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Demo/Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
-		E6C315521D76A4B4001FC93A /* VideosTableViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VideosTableViewController.storyboard; sourceTree = "<group>"; };
 		E6C315641D76AB5A001FC93A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E6C315661D76AB62001FC93A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		E6C315691D76AB93001FC93A /* DemoInlineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoInlineViewController.h; sourceTree = "<group>"; };
@@ -248,6 +244,9 @@
 		E6C3156B1D76AB93001FC93A /* DemoMultiPlayersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoMultiPlayersViewController.h; sourceTree = "<group>"; };
 		E6C3156C1D76AB93001FC93A /* DemoMultiPlayersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoMultiPlayersViewController.m; sourceTree = "<group>"; };
 		E6C3156F1D76AE9F001FC93A /* DemoInlineViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DemoInlineViewController.storyboard; sourceTree = "<group>"; };
+		E6C315721D76B22D001FC93A /* AudiosTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudiosTableViewController.h; sourceTree = "<group>"; };
+		E6C315731D76B22D001FC93A /* AudiosTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudiosTableViewController.m; sourceTree = "<group>"; };
+		E6C315751D76B2AA001FC93A /* MediasViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MediasViewController.storyboard; sourceTree = "<group>"; };
 		E6C985EC1D6EF6BB00C45C7A /* SRGMediaPlayer-temp-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGMediaPlayer-temp-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6C985EF1D6EF6BC00C45C7A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E6C985F11D6EF6BC00C45C7A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -262,10 +261,8 @@
 		E6D21D191D76A3F500B477F3 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E6D21D1A1D76A3F500B477F3 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		E6D21D1B1D76A3F500B477F3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		E6D21D1D1D76A3F500B477F3 /* BaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewController.h; sourceTree = "<group>"; };
-		E6D21D1E1D76A3F500B477F3 /* BaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableViewController.m; sourceTree = "<group>"; };
-		E6D21D201D76A3F500B477F3 /* VideosTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideosTableViewController.h; sourceTree = "<group>"; };
-		E6D21D211D76A3F500B477F3 /* VideosTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideosTableViewController.m; sourceTree = "<group>"; };
+		E6D21D1D1D76A3F500B477F3 /* MediasViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediasViewController.h; sourceTree = "<group>"; };
+		E6D21D1E1D76A3F500B477F3 /* MediasViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediasViewController.m; sourceTree = "<group>"; };
 		E6E49F621D7029F9006CB883 /* SRGMediaPlayerConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerConstants.m; sourceTree = "<group>"; };
 		E6FC7F301D62072400A55085 /* SRGActivityGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGActivityGestureRecognizer.h; sourceTree = "<group>"; };
 		E6FC7F311D62072400A55085 /* SRGActivityGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGActivityGestureRecognizer.m; sourceTree = "<group>"; };
@@ -453,9 +450,8 @@
 			isa = PBXGroup;
 			children = (
 				E6D21D181D76A3F500B477F3 /* Application */,
-				E69A1F741D61BFAE0064E6C1 /* AudiosTableViewController.h */,
-				E69A1F751D61BFAE0064E6C1 /* AudiosTableViewController.m */,
-				E6D21D1C1D76A3F500B477F3 /* Common */,
+				E6C315711D76B22D001FC93A /* Audios */,
+				E6D21D1C1D76A3F500B477F3 /* Medias */,
 				E6C315681D76AB93001FC93A /* Player */,
 				E69A1F841D61BFAE0064E6C1 /* Segment.h */,
 				E69A1F851D61BFAE0064E6C1 /* Segment.m */,
@@ -464,7 +460,6 @@
 				E69A1F881D61BFAE0064E6C1 /* SegmentCollectionViewCell.xib */,
 				E69A1F891D61BFAE0064E6C1 /* VideoMultiplayerTableViewController.h */,
 				E69A1F8A1D61BFAE0064E6C1 /* VideoMultiplayerTableViewController.m */,
-				E6D21D1F1D76A3F500B477F3 /* Videos */,
 				E69A1F8B1D61BFAE0064E6C1 /* VideoSegmentsPlayerViewController.h */,
 				E69A1F8C1D61BFAE0064E6C1 /* VideoSegmentsPlayerViewController.m */,
 				E69A1F8D1D61BFAE0064E6C1 /* VideoSegmentsTableViewController.h */,
@@ -522,6 +517,15 @@
 			path = Player;
 			sourceTree = "<group>";
 		};
+		E6C315711D76B22D001FC93A /* Audios */ = {
+			isa = PBXGroup;
+			children = (
+				E6C315721D76B22D001FC93A /* AudiosTableViewController.h */,
+				E6C315731D76B22D001FC93A /* AudiosTableViewController.m */,
+			);
+			path = Audios;
+			sourceTree = "<group>";
+		};
 		E6C985ED1D6EF6BC00C45C7A /* SRGMediaPlayer-temp-demo */ = {
 			isa = PBXGroup;
 			children = (
@@ -557,23 +561,14 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
-		E6D21D1C1D76A3F500B477F3 /* Common */ = {
+		E6D21D1C1D76A3F500B477F3 /* Medias */ = {
 			isa = PBXGroup;
 			children = (
-				E6D21D1D1D76A3F500B477F3 /* BaseTableViewController.h */,
-				E6D21D1E1D76A3F500B477F3 /* BaseTableViewController.m */,
+				E6C315751D76B2AA001FC93A /* MediasViewController.storyboard */,
+				E6D21D1D1D76A3F500B477F3 /* MediasViewController.h */,
+				E6D21D1E1D76A3F500B477F3 /* MediasViewController.m */,
 			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		E6D21D1F1D76A3F500B477F3 /* Videos */ = {
-			isa = PBXGroup;
-			children = (
-				E6D21D201D76A3F500B477F3 /* VideosTableViewController.h */,
-				E6D21D211D76A3F500B477F3 /* VideosTableViewController.m */,
-				E6C315521D76A4B4001FC93A /* VideosTableViewController.storyboard */,
-			);
-			path = Videos;
+			path = Medias;
 			sourceTree = "<group>";
 		};
 		E6FC7F2E1D62072400A55085 /* Sources */ = {
@@ -858,6 +853,7 @@
 				E69A1FA41D61BFAE0064E6C1 /* red_card@2x.png in Resources */,
 				E69A1F9A1D61BFAE0064E6C1 /* close_button@2x.png in Resources */,
 				E69A1F9D1D61BFAE0064E6C1 /* Images.xcassets in Resources */,
+				E6C315761D76B2AA001FC93A /* MediasViewController.storyboard in Resources */,
 				E69A1FA71D61BFAE0064E6C1 /* thumbnail-placeholder.png in Resources */,
 				E69A1F991D61BFAE0064E6C1 /* close_button.png in Resources */,
 				E69A1F9B1D61BFAE0064E6C1 /* goal.png in Resources */,
@@ -874,7 +870,6 @@
 				E69A1FAA1D61BFAE0064E6C1 /* videos@2x.png in Resources */,
 				E69A1F9C1D61BFAE0064E6C1 /* goal@2x.png in Resources */,
 				E69A1F971D61BFAE0064E6C1 /* audios@2x.png in Resources */,
-				E6C315531D76A4B4001FC93A /* VideosTableViewController.storyboard in Resources */,
 				E69A1FA01D61BFAE0064E6C1 /* LaunchImage.png in Resources */,
 				E69A1FA11D61BFAE0064E6C1 /* MediaURLs.plist in Resources */,
 				E69A1FAB1D61BFAE0064E6C1 /* yellow_card.png in Resources */,
@@ -1011,15 +1006,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6C315741D76B22D001FC93A /* AudiosTableViewController.m in Sources */,
 				E6D21D221D76A3F500B477F3 /* AppDelegate.m in Sources */,
 				E69A1FB71D61BFAE0064E6C1 /* SegmentCollectionViewCell.m in Sources */,
-				E69A1FAE1D61BFAE0064E6C1 /* AudiosTableViewController.m in Sources */,
 				E6C3156E1D76AB93001FC93A /* DemoMultiPlayersViewController.m in Sources */,
 				E69A1FBB1D61BFAE0064E6C1 /* VideoSegmentsTableViewController.m in Sources */,
 				E69A1FB91D61BFAE0064E6C1 /* VideoMultiplayerTableViewController.m in Sources */,
 				E69A1FBD1D61BFAE0064E6C1 /* VideosTimeshiftTableViewController.m in Sources */,
-				E6D21D251D76A3F500B477F3 /* VideosTableViewController.m in Sources */,
-				E6D21D241D76A3F500B477F3 /* BaseTableViewController.m in Sources */,
+				E6D21D241D76A3F500B477F3 /* MediasViewController.m in Sources */,
 				E69A1FB61D61BFAE0064E6C1 /* Segment.m in Sources */,
 				E69A1FBA1D61BFAE0064E6C1 /* VideoSegmentsPlayerViewController.m in Sources */,
 				E6D21D231D76A3F500B477F3 /* main.m in Sources */,

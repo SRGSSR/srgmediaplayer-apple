@@ -3,9 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Tab Bar-->
@@ -119,111 +117,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eAi-Nf-6JW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3151" y="2796"/>
-        </scene>
-        <!--Demo Inline-->
-        <scene sceneID="alA-mL-MQl">
-            <objects>
-                <viewController id="u4g-ie-3Oi" userLabel="Demo Inline" customClass="DemoInlineViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="UoE-Cq-25M"/>
-                        <viewControllerLayoutGuide type="bottom" id="szv-pg-w7E"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="eZU-lX-We1">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ofL-MW-ZaL">
-                                <rect key="frame" x="75" y="20" width="450" height="253"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XuL-Cc-bGM">
-                                        <rect key="frame" x="0.0" y="209" width="450" height="44"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40p-mn-vlm" customClass="SRGPlaybackButton">
-                                                <rect key="frame" x="-75" y="-229" width="30" height="34"/>
-                                                <state key="normal">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
-                                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="hightlightColor">
-                                                        <color key="value" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <outlet property="mediaPlayerController" destination="o6Z-DB-FCH" id="ANg-r9-KeN"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="MfH-i0-Ddn"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="XuL-Cc-bGM" firstAttribute="leading" secondItem="ofL-MW-ZaL" secondAttribute="leading" id="e8g-H7-ufY"/>
-                                    <constraint firstAttribute="bottom" secondItem="XuL-Cc-bGM" secondAttribute="bottom" id="mgY-eT-zSx"/>
-                                    <constraint firstAttribute="width" secondItem="ofL-MW-ZaL" secondAttribute="height" multiplier="16:9" id="z42-Wy-Sjn"/>
-                                    <constraint firstAttribute="trailing" secondItem="XuL-Cc-bGM" secondAttribute="trailing" id="zKL-Mh-GpG"/>
-                                </constraints>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kv7-sn-h1l">
-                                <rect key="frame" x="248" y="281" width="105" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="105" id="R6b-mi-NOA"/>
-                                </constraints>
-                                <state key="normal" title="Prepare to Play">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="prepareToPlay:" destination="u4g-ie-3Oi" eventType="touchUpInside" id="OfQ-X7-noW"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3q-bV-APh">
-                                <rect key="frame" x="258" y="319" width="83" height="30"/>
-                                <state key="normal" title="Play / Pause">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="togglePlayPause:" destination="u4g-ie-3Oi" eventType="touchUpInside" id="lan-7R-apb"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ov7-PK-OBt">
-                                <rect key="frame" x="280" y="357" width="39" height="30"/>
-                                <state key="normal" title="Reset">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="reset:" destination="u4g-ie-3Oi" eventType="touchUpInside" id="2TI-Ov-NKH"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="centerX" secondItem="ofL-MW-ZaL" secondAttribute="centerX" id="5Sn-aO-5ho"/>
-                            <constraint firstItem="ofL-MW-ZaL" firstAttribute="width" secondItem="eZU-lX-We1" secondAttribute="width" multiplier="3/4" id="G6G-GP-Yh6"/>
-                            <constraint firstAttribute="centerX" secondItem="ov7-PK-OBt" secondAttribute="centerX" id="HQr-ED-bay"/>
-                            <constraint firstItem="a3q-bV-APh" firstAttribute="top" secondItem="Kv7-sn-h1l" secondAttribute="bottom" constant="8" id="Yvm-Jf-9Sl"/>
-                            <constraint firstAttribute="centerX" secondItem="Kv7-sn-h1l" secondAttribute="centerX" id="Zop-Xf-xqf"/>
-                            <constraint firstItem="ov7-PK-OBt" firstAttribute="top" secondItem="a3q-bV-APh" secondAttribute="bottom" constant="8" id="m0s-eG-q3A"/>
-                            <constraint firstAttribute="centerX" secondItem="ov7-PK-OBt" secondAttribute="centerX" id="mUv-Jm-GFu"/>
-                            <constraint firstAttribute="centerX" secondItem="a3q-bV-APh" secondAttribute="centerX" id="oID-9x-sIL"/>
-                            <constraint firstItem="Kv7-sn-h1l" firstAttribute="top" secondItem="ofL-MW-ZaL" secondAttribute="bottom" constant="8" id="rzM-G1-ucH"/>
-                            <constraint firstItem="ofL-MW-ZaL" firstAttribute="top" secondItem="UoE-Cq-25M" secondAttribute="bottom" constant="20" id="wre-Fc-cEx"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="mediaPlayerController" destination="o6Z-DB-FCH" id="K9U-cY-drr"/>
-                        <outlet property="videoContainerView" destination="ofL-MW-ZaL" id="hta-ty-FOR"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oNS-kv-k4L" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="o6Z-DB-FCH" customClass="SRGMediaPlayerController"/>
-            </objects>
-            <point key="canvasLocation" x="-3151" y="3550"/>
         </scene>
         <!--Navigation-->
         <scene sceneID="i2A-95-Y3q">

@@ -6,7 +6,7 @@
 
 #import "AppDelegate.h"
 
-#import "VideosTableViewController.h"
+#import "MediasViewController.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
@@ -80,9 +80,10 @@
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     
-    VideosTableViewController *videosTableViewController = [[VideosTableViewController alloc] init];
-    videosTableViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
-    UINavigationController *videosNavigationController = [[UINavigationController alloc] initWithRootViewController:videosTableViewController];
+    MediasViewController *videosViewController = [[MediasViewController alloc] initWithMediaFileName:@"MediaURLs"];
+    videosViewController.title = @"Videos";
+    videosViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
+    UINavigationController *videosNavigationController = [[UINavigationController alloc] initWithRootViewController:videosViewController];
     
     tabBarController.viewControllers = @[videosNavigationController];
     self.window.rootViewController = tabBarController;

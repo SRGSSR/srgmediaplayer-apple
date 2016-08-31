@@ -4,11 +4,11 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "BaseTableViewController.h"
+#import "MediasViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface VideosTimeshiftTableViewController : BaseTableViewController
+@interface VideosTimeshiftTableViewController : MediasViewController
 
 @end
 

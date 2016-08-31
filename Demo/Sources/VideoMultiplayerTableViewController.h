@@ -4,11 +4,11 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "BaseTableViewController.h"
+#import "MediasViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface VideoMultiplayerTableViewController : BaseTableViewController
+@interface VideoMultiplayerTableViewController : MediasViewController
 
 @end
 
