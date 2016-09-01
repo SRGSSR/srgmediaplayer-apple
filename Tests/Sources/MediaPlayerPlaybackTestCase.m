@@ -377,11 +377,11 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         }];
         
         XCTestExpectation *creationExpectation = [self expectationWithDescription:@"Player created"];
-        XCTestExpectation *configurationReloadExpectation = [self expectationWithDescription:@"Configuration reloaded"];
-        
         mediaPlayerController.playerCreationBlock = ^(AVPlayer *player) {
             [creationExpectation fulfill];
         };
+        
+        XCTestExpectation *configurationReloadExpectation = [self expectationWithDescription:@"Configuration reloaded"];
         mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
             [configurationReloadExpectation fulfill];
         };
@@ -398,7 +398,6 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         }];
         
         XCTestExpectation *destructionExpectation = [self expectationWithDescription:@"Player destroyed"];
-        
         mediaPlayerController.playerDestructionBlock = ^(AVPlayer *player) {
             [destructionExpectation fulfill];
         };
@@ -407,6 +406,55 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
     }
+}
+
+- (void)testConfigurationReload
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    // Wait until playing
+    {
+        [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+        }];
+        
+        XCTestExpectation *creationExpectation = [self expectationWithDescription:@"Player created"];
+        mediaPlayerController.playerCreationBlock = ^(AVPlayer *player) {
+            [creationExpectation fulfill];
+        };
+        
+        XCTestExpectation *configurationReloadExpectation = [self expectationWithDescription:@"Configuration reloaded"];
+        mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
+            [configurationReloadExpectation fulfill];
+        };
+        
+        [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:nil];
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
+    }
+    
+    // Reload the configuration
+    {
+        XCTestExpectation *configurationReloadExpectation = [self expectationWithDescription:@"Configuration reloaded"];
+        mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
+            [configurationReloadExpectation fulfill];
+        };
+        
+        [mediaPlayerController reloadPlayerConfiguration];
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
+    }
+}
+
+- (void)testConfigurationReloadBeforePlayerIsAvailable
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
+        XCTFail(@"Player configuration must not be called if no player is available");
+    };
+    
+    [mediaPlayerController reloadPlayerConfiguration];
 }
 
 - (void)testPlaybackStateKeyValueObserving

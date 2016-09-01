@@ -217,7 +217,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) void (^playerDestructionBlock)(AVPlayer *player);
 
 /**
- *  Ask the player to reload its configuration
+ *  Ask the player to reload its configuration by calling the associated configuration block, if any. Does nothing if
+ *  the player has not been created yet
  */
 - (void)reloadPlayerConfiguration;
 
