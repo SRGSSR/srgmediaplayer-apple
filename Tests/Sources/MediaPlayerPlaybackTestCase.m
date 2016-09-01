@@ -368,7 +368,45 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
 
 - (void)testPlayerLifecycle
 {
-
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    // Wait until playing
+    {
+        [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+        }];
+        
+        XCTestExpectation *creationExpectation = [self expectationWithDescription:@"Player created"];
+        XCTestExpectation *configurationReloadExpectation = [self expectationWithDescription:@"Configuration reloaded"];
+        
+        mediaPlayerController.playerCreationBlock = ^(AVPlayer *player) {
+            [creationExpectation fulfill];
+        };
+        mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
+            [configurationReloadExpectation fulfill];
+        };
+        
+        [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:nil];
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
+    }
+    
+    // Reset the player
+    {
+        [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle;
+        }];
+        
+        XCTestExpectation *destructionExpectation = [self expectationWithDescription:@"Player destroyed"];
+        
+        mediaPlayerController.playerDestructionBlock = ^(AVPlayer *player) {
+            [destructionExpectation fulfill];
+        };
+        
+        [mediaPlayerController reset];
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
+    }
 }
 
 - (void)testPlaybackStateKeyValueObserving
