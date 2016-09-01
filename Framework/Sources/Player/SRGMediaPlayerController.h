@@ -180,7 +180,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The view where the player displays its content. Either install in your own view hierarchy, or bind a corresponding view
  *  with the `SRGMediaPlayerView` class in Interface Builder
  */
-@property (nonatomic, readonly) IBOutlet SRGMediaPlayerView *view;
+@property (nonatomic, readonly, nullable) IBOutlet SRGMediaPlayerView *view;
 
 /**
  *  @name Player lifecycle
@@ -211,17 +211,81 @@ NS_ASSUME_NONNULL_BEGIN
  *  @name Playback
  */
 
+/**
+ *  Prepare to play the media, starting from the specified time, but with the player paused. If you want playback to start
+ *  when it is ready, call `-play` from the completion handler. Segments can be optionally provided
+ *
+ *  @param URL               The URL to play
+ *  @param startTime         The time to start at. Use kCMTimeZero to start at the default location:
+ *                             - For on-demand streams: At the beginning
+ *                             - For live and DVR streams: In live conditions, i.e. at the end of the stream
+ *                           If the time is invalid it will be set to kCMTimeZero. Setting a start time outside the
+ *                           actual media time range will seek to the nearest location (either zero or the end time)
+ *  @param segments          A segment list
+ *  @param completionHandler The completion block to be called after the player has finished preparing the media. This
+ *                           block will only be called if the media could be loaded. If finished is set to YES, the media
+ *                           could seek to its start location (@see `startTime` discussion above)
+ */
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(BOOL finished))completionHandler;
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
+/**
+ *  Attempt to make the player play
+ *
+ *  @discussion Calling this method does not guarantee that the player will be playing right afterwards. If the media
+ *              is ready, it should, but otherwise nothing will happen. Always rely on real `playbackState` changes
+ *              to adjust your interface appropriately
+ */
+- (void)play;
 
-- (void)playURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
-- (void)playURL:(NSURL *)URL;
+/**
+ *  Attempt to pause the player. The media should be playing first, otherwise nothing will happen
+ *
+ *  @discussion See `-play`
+ */
+- (void)pause;
 
+/**
+ * Attempt to toggle the state of the player
+ *
+ *  @discussion See `-play`
+ */
 - (void)togglePlayPause;
 
+/**
+ *  Prepare to play the media, starting from the specified time, but with the player paused. If you want playback to start
+ *  when it is ready, call `-play` from the completion handler.
+ *  
+ *  For a discussion of the available parameters, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ */
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+
+/**
+ *  Play a media, starting from the specified time. Segments can be optionally provided
+ *
+ *  For a discussion of the available parameters, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ */
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
+
+/**
+ *  Play a media, starting from the specified time
+ *
+ *  For a discussion of the available parameters, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ */
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
+
+/**
+ *  Play a media. Segments can be optionally provided
+ *
+ *  For a discussion of the available parameters, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ */
+- (void)playURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
+
+/**
+ *  Play a media
+ */
+- (void)playURL:(NSURL *)URL;
+
+// TODO: Describe behavior when paused / playing, and write associated tests
 - (void)seekToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;;
 
@@ -231,6 +295,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @name Playback information
  */
 
+// KVO observable
 @property (nonatomic, readonly) SRGPlaybackState playbackState;
 
 @property (nonatomic, readonly, nullable) NSURL *contentURL;

@@ -301,11 +301,32 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     
     self.contentURL = URL;
     self.segments = segments;
+    
     self.startTimeValue = [NSValue valueWithCMTime:startTime];
     self.startCompletionHandler = completionHandler;
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
+}
+
+- (void)play
+{
+    [self.player play];
+}
+
+- (void)pause
+{
+    [self.player pause];
+}
+
+- (void)togglePlayPause
+{
+    if (self.player.rate == 0.f) {
+        [self.player play];
+    }
+    else {
+        [self.player pause];
+    }
 }
 
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler
@@ -317,7 +338,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 {
     [self prepareToPlayURL:URL atTime:time withSegments:segments completionHandler:^(BOOL finished) {
         if (finished) {
-            [self togglePlayPause];
+            [self play];
         }
     }];
 }
@@ -335,16 +356,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (void)playURL:(NSURL *)URL
 {
     [self playURL:URL atTime:kCMTimeZero];
-}
-
-- (void)togglePlayPause
-{
-    if (self.player.rate == 0.f) {
-        [self.player play];
-    }
-    else {
-        [self.player pause];
-    }
 }
 
 - (void)seekToTime:(CMTime)time withCompletionHandler:(void (^)(BOOL))completionHandler
@@ -374,6 +385,9 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     if (self.pictureInPictureController.isPictureInPictureActive) {
         [self.pictureInPictureController stopPictureInPicture];
     }
+    
+    self.startTimeValue = nil;
+    self.startCompletionHandler = nil;
     
     self.playbackState = SRGPlaybackStateIdle;
     
@@ -512,6 +526,9 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)srg_mediaPlayerController_playerItemFailedToPlayToEndTime:(NSNotification *)notification
 {
+    self.startTimeValue = nil;
+    self.startCompletionHandler = nil;
+    
     self.playbackState = SRGPlaybackStateIdle;
     
     NSError *error = RTSMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
@@ -551,6 +568,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                 // Playback start. Use received start parameters
                 if (self.startTimeValue) {
                     void (^completionBlock)(BOOL) = ^(BOOL finished) {
+                        // Reset start time first so that playback state induced change made in the completion handler
+                        // does not loop back here
                         self.startTimeValue = nil;
                         
                         self.startCompletionHandler ? self.startCompletionHandler(finished) : nil;
@@ -574,6 +593,9 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                 self.playbackState = SRGPlaybackStateIdle;
                 
                 if (playerItem.status == AVPlayerItemStatusFailed) {
+                    self.startTimeValue = nil;
+                    self.startCompletionHandler = nil;
+                    
                     NSError *error = RTSMediaPlayerControllerError(playerItem.error);
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
                                                                         object:self

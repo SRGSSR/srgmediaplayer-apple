@@ -8,7 +8,10 @@
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <XCTest/XCTest.h>
 
-static NSString * const MediaPlayerPlaybackTestURL = @"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8";
+static NSURL *MediaPlayerPlaybackTestURL(void)
+{
+    return [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
+}
 
 @interface MediaPlayerPlaybackTestCase : XCTestCase
 @end
@@ -19,6 +22,98 @@ static NSString * const MediaPlayerPlaybackTestURL = @"https://devimages.apple.c
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStateIdle);
+}
+
+- (void)testPlayerPreparation
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Preparation"];
+    
+    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
+        XCTAssertTrue(finished);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStatePaused);
+        [preparationExpectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+}
+
+- (void)testPlayerPreparationToInvalidTime
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Preparation"];
+    
+    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:CMTimeMakeWithSeconds(24. * 60. * 60., NSEC_PER_SEC) withCompletionHandler:^(BOOL finished) {
+        XCTAssertTrue(finished);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStatePaused);
+        [preparationExpectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+}
+
+- (void)testHTTP403PlayError
+{
+    NSURL *URL = [NSURL URLWithString:@"http://httpbin.org/status/403"];
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
+        NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
+        XCTAssertEqualObjects(error.domain, SRGMediaPlayerErrorDomain);
+        XCTAssertEqual(error.code, SRGMediaPlayerErrorPlayback);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStateIdle);
+        return YES;
+    }];
+    
+    [mediaPlayerController playURL:URL];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+}
+
+- (void)testHTTP404PlayError
+{
+    NSURL *URL = [NSURL URLWithString:@"http://httpbin.org/status/404"];
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
+        NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
+        XCTAssertEqualObjects(error.domain, SRGMediaPlayerErrorDomain);
+        XCTAssertEqual(error.code, SRGMediaPlayerErrorPlayback);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStateIdle);
+        return YES;
+    }];
+    
+    [mediaPlayerController playURL:URL];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+}
+
+- (void)testHTTP404PreparationError
+{
+    NSURL *URL = [NSURL URLWithString:@"http://httpbin.org/status/404"];
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
+        NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
+        XCTAssertEqualObjects(error.domain, SRGMediaPlayerErrorDomain);
+        XCTAssertEqual(error.code, SRGMediaPlayerErrorPlayback);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStateIdle);
+        return YES;
+    }];
+    
+    [mediaPlayerController prepareToPlayURL:URL atTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
+        XCTFail(@"The completion handler must not be called when the media could not be loaded");
+    }];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+}
+
+
+- (void)testSeveralMedias
+{
+
 }
 
 #if 0

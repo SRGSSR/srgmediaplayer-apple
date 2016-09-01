@@ -150,11 +150,11 @@
 - (void)didSkipSegment:(NSNotification *)notification
 {
     self.blockingOverlayView.hidden = NO;
-    [self.mediaPlayerController togglePlayPause];
+    [self.mediaPlayerController pause];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.blockingOverlayView.hidden = YES;
-        [self.mediaPlayerController togglePlayPause];
+        [self.mediaPlayerController play];
     });
 }
 
