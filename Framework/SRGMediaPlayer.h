@@ -12,7 +12,7 @@ FOUNDATION_EXPORT const unsigned char SRGMediaPlayerVersionString[];
 FOUNDATION_EXPORT NSString *SRGMediaPlayerMarketingVersion(void);
 
 #import "SRGActivityGestureRecognizer.h"
-#import "SRGAirplayOverlayView.h"
+#import "SRGAirplayView.h"
 #import "SRGMediaPlayerConstants.h"
 #import "SRGMediaPlayerController.h"
 #import "SRGMediaPlayerError.h"

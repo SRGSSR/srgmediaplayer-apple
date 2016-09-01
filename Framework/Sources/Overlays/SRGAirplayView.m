@@ -4,21 +4,21 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGAirplayOverlayView.h"
+#import "SRGAirplayView.h"
 
 #import "NSBundle+SRGMediaPlayer.h"
 
-@interface SRGAirplayOverlayView ()
+@interface SRGAirplayView ()
 
 @property (nonatomic) MPVolumeView *volumeView;
 
 @end
 
-static const CGFloat RTSAirplayOverlayViewDefaultFillFactor = 0.6f;
+static const CGFloat RTSAirplayViewDefaultFillFactor = 0.6f;
 
-static void commonInit(SRGAirplayOverlayView *self);
+static void commonInit(SRGAirplayView *self);
 
-@implementation SRGAirplayOverlayView
+@implementation SRGAirplayView
 
 #pragma mark Object lifecycle
 
@@ -51,7 +51,7 @@ static void commonInit(SRGAirplayOverlayView *self);
 - (void)setFillFactor:(CGFloat)fillFactor
 {
     if (fillFactor <= 0.f) {
-        _fillFactor = RTSAirplayOverlayViewDefaultFillFactor;
+        _fillFactor = RTSAirplayViewDefaultFillFactor;
     }
     else if (fillFactor > 1.f) {
         _fillFactor = 1.f;
@@ -128,9 +128,9 @@ static void commonInit(SRGAirplayOverlayView *self);
 
 - (void)drawTitleInRect:(CGRect)rect
 {
-    NSDictionary<NSString *, id> *attributes = [self airplayOverlayViewTitleAttributedDictionary:self];
-    if ([self.dataSource respondsToSelector:@selector(airplayOverlayViewTitleAttributedDictionary:)]) {
-        attributes = [self.dataSource airplayOverlayViewTitleAttributedDictionary:self];
+    NSDictionary<NSString *, id> *attributes = [self airplayViewTitleAttributedDictionary:self];
+    if ([self.dataSource respondsToSelector:@selector(airplayViewTitleAttributedDictionary:)]) {
+        attributes = [self.dataSource airplayViewTitleAttributedDictionary:self];
     }
 
     NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
@@ -143,15 +143,15 @@ static void commonInit(SRGAirplayOverlayView *self);
 {
     NSString *routeName = [self activeAirplayOutputRouteName];
 
-    NSString *subtitle = [self airplayOverlayView:self subtitleForAirplayRouteName:routeName];
-    if ([self.dataSource respondsToSelector:@selector(airplayOverlayView:subtitleForAirplayRouteName:)]) {
-        subtitle = [self.dataSource airplayOverlayView:self subtitleForAirplayRouteName:routeName];
+    NSString *subtitle = [self airplayView:self subtitleForAirplayRouteName:routeName];
+    if ([self.dataSource respondsToSelector:@selector(airplayView:subtitleForAirplayRouteName:)]) {
+        subtitle = [self.dataSource airplayView:self subtitleForAirplayRouteName:routeName];
     }
 
     if (subtitle.length > 0) {
-        NSDictionary<NSString *, id> *attributes = [self airplayOverlayViewSubtitleAttributedDictionary:self];
-        if ([self.dataSource respondsToSelector:@selector(airplayOverlayViewSubtitleAttributedDictionary:)]) {
-            attributes = [self.dataSource airplayOverlayViewSubtitleAttributedDictionary:self];
+        NSDictionary<NSString *, id> *attributes = [self airplayViewSubtitleAttributedDictionary:self];
+        if ([self.dataSource respondsToSelector:@selector(airplayViewSubtitleAttributedDictionary:)]) {
+            attributes = [self.dataSource airplayViewSubtitleAttributedDictionary:self];
         }
 
         NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
@@ -161,9 +161,9 @@ static void commonInit(SRGAirplayOverlayView *self);
     }
 }
 
-#pragma mark RTSAirplayOverlayViewDataSource protocol
+#pragma mark RTSAirplayViewDataSource protocol
 
-- (NSDictionary<NSString *, id> *)airplayOverlayViewTitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView
+- (NSDictionary<NSString *, id> *)airplayViewTitleAttributedDictionary:(SRGAirplayView *)airplayView
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.alignment = NSTextAlignmentCenter;
@@ -173,12 +173,12 @@ static void commonInit(SRGAirplayOverlayView *self);
               NSParagraphStyleAttributeName: style };
 }
 
-- (NSString *)airplayOverlayView:(SRGAirplayOverlayView *)airplayOverlayView subtitleForAirplayRouteName:(NSString *)routeName
+- (NSString *)airplayView:(SRGAirplayView *)airplayView subtitleForAirplayRouteName:(NSString *)routeName
 {
     return [NSString stringWithFormat:RTSMediaPlayerLocalizedString(@"This media is playing on «%@»", nil), routeName];
 }
 
-- (NSDictionary<NSString *, id> *)airplayOverlayViewSubtitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView
+- (NSDictionary<NSString *, id> *)airplayViewSubtitleAttributedDictionary:(SRGAirplayView *)airplayView
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.alignment = NSTextAlignmentCenter;
@@ -202,8 +202,8 @@ static void commonInit(SRGAirplayOverlayView *self);
     for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
         if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
             hidden = NO;
-            if (self.delegate && [self.delegate respondsToSelector:@selector(airplayOverlayViewCouldBeDisplayed:)]) {
-                if (! [self.delegate airplayOverlayViewCouldBeDisplayed:self]) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(airplayViewCouldBeDisplayed:)]) {
+                if (! [self.delegate airplayViewCouldBeDisplayed:self]) {
                     hidden = YES;
                 }
             }
@@ -218,12 +218,12 @@ static void commonInit(SRGAirplayOverlayView *self);
 
 #pragma mark Static functions
 
-static void commonInit(SRGAirplayOverlayView *self)
+static void commonInit(SRGAirplayView *self)
 {
     self.contentMode = UIViewContentModeRedraw;
     self.userInteractionEnabled = NO;
     self.hidden = YES;
-    self.fillFactor = RTSAirplayOverlayViewDefaultFillFactor;
+    self.fillFactor = RTSAirplayViewDefaultFillFactor;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(wirelessRouteActiveDidChange:)

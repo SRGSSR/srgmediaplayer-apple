@@ -69,8 +69,8 @@
 		E6C9860E1D6F458900C45C7A /* SRGTimeSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F531D62072400A55085 /* SRGTimeSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6C9860F1D6F458900C45C7A /* SRGTimeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F541D62072400A55085 /* SRGTimeSlider.m */; };
 		E6C986111D70142D00C45C7A /* SRGMediaPlayerError.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C986101D70142D00C45C7A /* SRGMediaPlayerError.m */; };
-		E6C986121D70149E00C45C7A /* SRGAirplayOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F481D62072400A55085 /* SRGAirplayOverlayView.m */; };
-		E6C986131D7014A000C45C7A /* SRGAirplayOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F471D62072400A55085 /* SRGAirplayOverlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6C986121D70149E00C45C7A /* SRGAirplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F481D62072400A55085 /* SRGAirplayView.m */; };
+		E6C986131D7014A000C45C7A /* SRGAirplayView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F471D62072400A55085 /* SRGAirplayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6C986161D7015F600C45C7A /* SRGVolumeView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F551D62072400A55085 /* SRGVolumeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6C986171D7015F600C45C7A /* SRGVolumeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F561D62072400A55085 /* SRGVolumeView.m */; };
 		E6C986181D70182300C45C7A /* SRGPictureInPictureButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4D1D62072400A55085 /* SRGPictureInPictureButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -236,8 +236,8 @@
 		E6FC7F431D62072400A55085 /* NSBundle+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		E6FC7F441D62072400A55085 /* UIBezierPath+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		E6FC7F451D62072400A55085 /* UIBezierPath+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+SRGMediaPlayer.m"; sourceTree = "<group>"; };
-		E6FC7F471D62072400A55085 /* SRGAirplayOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAirplayOverlayView.h; sourceTree = "<group>"; };
-		E6FC7F481D62072400A55085 /* SRGAirplayOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAirplayOverlayView.m; sourceTree = "<group>"; };
+		E6FC7F471D62072400A55085 /* SRGAirplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAirplayView.h; sourceTree = "<group>"; };
+		E6FC7F481D62072400A55085 /* SRGAirplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAirplayView.m; sourceTree = "<group>"; };
 		E6FC7F4B1D62072400A55085 /* SRGPlaybackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGPlaybackButton.h; sourceTree = "<group>"; };
 		E6FC7F4C1D62072400A55085 /* SRGPlaybackButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGPlaybackButton.m; sourceTree = "<group>"; };
 		E6FC7F4D1D62072400A55085 /* SRGPictureInPictureButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGPictureInPictureButton.h; sourceTree = "<group>"; };
@@ -558,8 +558,8 @@
 		E6FC7F461D62072400A55085 /* Overlays */ = {
 			isa = PBXGroup;
 			children = (
-				E6FC7F471D62072400A55085 /* SRGAirplayOverlayView.h */,
-				E6FC7F481D62072400A55085 /* SRGAirplayOverlayView.m */,
+				E6FC7F471D62072400A55085 /* SRGAirplayView.h */,
+				E6FC7F481D62072400A55085 /* SRGAirplayView.m */,
 				E6FC7F4D1D62072400A55085 /* SRGPictureInPictureButton.h */,
 				E6FC7F4E1D62072400A55085 /* SRGPictureInPictureButton.m */,
 				E6FC7F4F1D62072400A55085 /* SRGPlaybackActivityIndicatorView.h */,
@@ -621,7 +621,7 @@
 				E6FC7F6B1D62072400A55085 /* SRGActivityGestureRecognizer.h in Headers */,
 				E6C986181D70182300C45C7A /* SRGPictureInPictureButton.h in Headers */,
 				E6FC7F951D62072400A55085 /* SRGSegment.h in Headers */,
-				E6C986131D7014A000C45C7A /* SRGAirplayOverlayView.h in Headers */,
+				E6C986131D7014A000C45C7A /* SRGAirplayView.h in Headers */,
 				E6C9860E1D6F458900C45C7A /* SRGTimeSlider.h in Headers */,
 				E6C9861E1D701D3800C45C7A /* SRGMediaPlayerSharedController.h in Headers */,
 				E6C986161D7015F600C45C7A /* SRGVolumeView.h in Headers */,
@@ -901,7 +901,7 @@
 				E6C9861C1D701BA700C45C7A /* SRGMediaPlayerViewController.m in Sources */,
 				E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */,
 				E6E49F631D7029F9006CB883 /* SRGMediaPlayerConstants.m in Sources */,
-				E6C986121D70149E00C45C7A /* SRGAirplayOverlayView.m in Sources */,
+				E6C986121D70149E00C45C7A /* SRGAirplayView.m in Sources */,
 				E6FC7F6C1D62072400A55085 /* SRGActivityGestureRecognizer.m in Sources */,
 				E6FC7F7A1D62072400A55085 /* UIBezierPath+SRGMediaPlayer.m in Sources */,
 				E6FC7F761D62072400A55085 /* SRGPeriodicTimeObserver.m in Sources */,

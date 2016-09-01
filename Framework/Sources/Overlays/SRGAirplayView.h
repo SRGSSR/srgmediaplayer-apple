@@ -11,38 +11,38 @@
 NS_ASSUME_NONNULL_BEGIN
 
 // Forward declarations
-@class SRGAirplayOverlayView;
+@class SRGAirplayView;
 
 /**
- *  Airplay view data source protocol, providing optional customization mechanism to `RTSAirplayOverlayView`
+ *  Airplay view data source protocol, providing optional customization mechanism to `RTSAirplayView`
  */
-@protocol RTSAirplayOverlayViewDataSource <NSObject>
+@protocol RTSAirplayViewDataSource <NSObject>
 @optional
 
 /**
  *  Attributes for the 'Airplay' title. If not implemented, a default style will be applied (bold system font, white,
  *  centered, 14 pts)
  */
-- (nullable NSDictionary<NSString *, id> *)airplayOverlayViewTitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView;
+- (nullable NSDictionary<NSString *, id> *)airplayViewTitleAttributedDictionary:(SRGAirplayView *)airplayView;
 
 /**
  *  Lets you customize how the subtitle displaying the route name is displayed. If not implemented, a default message
  *  will be used
  */
-- (nullable NSString *)airplayOverlayView:(SRGAirplayOverlayView *)airplayOverlayView subtitleForAirplayRouteName:(NSString *)routeName;
+- (nullable NSString *)airplayView:(SRGAirplayView *)airplayView subtitleForAirplayRouteName:(NSString *)routeName;
 
 /**
  *  Attributes for the route subtitle. If not implemented, a default style will be applied (system font, light gray,
  *  centered, 12 pts)
  */
-- (nullable NSDictionary<NSString *, id> *)airplayOverlayViewSubtitleAttributedDictionary:(SRGAirplayOverlayView *)airplayOverlayView;
+- (nullable NSDictionary<NSString *, id> *)airplayViewSubtitleAttributedDictionary:(SRGAirplayView *)airplayView;
 
 @end
 
 /**
- *  Airplay view delegate protocol, providing optional customization behaviour to `RTSAirplayOverlayView`
+ *  Airplay view delegate protocol, providing optional customization behaviour to `RTSAirplayView`
  */
-@protocol SRGAirplayOverlayViewDelegate <NSObject>
+@protocol SRGAirplayViewDelegate <NSObject>
 @optional
 
 /**
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Example: Use it with isExternalPlaybackActive on the AVPlayer you want.
  *  By defaut, returning YES.
  */
-- (BOOL)airplayOverlayViewCouldBeDisplayed:(SRGAirplayOverlayView *)airplayOverlayView;
+- (BOOL)airplayViewCouldBeDisplayed:(SRGAirplayView *)airplayView;
 
 @end
 
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  View automatically displaying whether Airplay playback is being made. Simply install somewhere onto your custom player
  *  interface, the view will automatically appear when Airplay playback begins and disappear when it ends
  */
-@interface SRGAirplayOverlayView : UIView <RTSAirplayOverlayViewDataSource>
+@interface SRGAirplayView : UIView <RTSAirplayViewDataSource>
 
 /**
  * A filling factor for the overlay contents, > 0 and <= 1 (full frame). Defaults to 0.6
@@ -69,12 +69,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  An optional data source for customization
  */
-@property (nonatomic, weak, nullable) IBOutlet id<RTSAirplayOverlayViewDataSource> dataSource;
+@property (nonatomic, weak, nullable) IBOutlet id<RTSAirplayViewDataSource> dataSource;
 
 /**
  *  An optional delegate for customization
  */
-@property (nonatomic, weak, nullable) IBOutlet id<SRGAirplayOverlayViewDelegate> delegate;
+@property (nonatomic, weak, nullable) IBOutlet id<SRGAirplayViewDelegate> delegate;
 
 @end
 
