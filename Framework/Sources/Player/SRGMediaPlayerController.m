@@ -321,19 +321,21 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     [self.player pause];
 }
 
-- (void)togglePlayPause
+#pragma mark Playback (convenience methods)
+
+- (void)prepareToPlayURL:(NSURL *)URL withSegments:(NSArray<id<SRGSegment>> *)segments completionHandler:(void (^)(void))completionHandler
 {
-    if (self.player.rate == 0.f) {
-        [self.player play];
-    }
-    else {
-        [self.player pause];
-    }
+    [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:segments completionHandler:completionHandler];
 }
 
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(void))completionHandler
 {
     [self prepareToPlayURL:URL atTime:startTime withSegments:nil completionHandler:completionHandler];
+}
+
+- (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(void (^)(void))completionHandler
+{
+    [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:nil completionHandler:completionHandler];
 }
 
 - (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments
@@ -356,6 +358,16 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (void)playURL:(NSURL *)URL
 {
     [self playURL:URL atTime:kCMTimeZero];
+}
+
+- (void)togglePlayPause
+{
+    if (self.player.rate == 0.f) {
+        [self.player play];
+    }
+    else {
+        [self.player pause];
+    }
 }
 
 - (void)seekToTime:(CMTime)time withCompletionHandler:(void (^)(BOOL))completionHandler

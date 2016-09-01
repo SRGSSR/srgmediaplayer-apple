@@ -46,14 +46,14 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
     }];
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testPrepareAndPlay
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
-    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepare and play"];
+    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Playing"];
     
     [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
         // Upon completion handler entry, the state is always preparing
@@ -66,7 +66,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         [preparationExpectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testMultiplePrepare
@@ -76,14 +76,14 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         XCTFail(@"The completion handler must not be called since a second prepare must cancel the first");
     }];
     
-    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepare and play"];
+    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepared"];
     
     [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
         [preparationExpectation fulfill];
     }];
     
-   [self waitForExpectationsWithTimeout:5. handler:nil];
+   [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testWithoutPrepare
@@ -114,7 +114,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     
     [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:CMTimeMakeWithSeconds(24. * 60. * 60., NSEC_PER_SEC) withCompletionHandler:nil];
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testPlay
@@ -134,14 +134,14 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     
     [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testMediaInformationAvailabilityAfterPrepare
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
-    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepare"];
+    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepared"];
     
     [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
         XCTAssertEqual(mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeVideo);
@@ -149,7 +149,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         [preparationExpectation fulfill];
     }];
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testMediaInformationAvailabilityBeforePrepare
@@ -174,7 +174,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     
     [mediaPlayerController playURL:URL];
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testPrepareWithHTTP404Error
@@ -194,12 +194,67 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         XCTFail(@"The completion handler must not be called when the media could not be loaded");
     }];
     
-    [self waitForExpectationsWithTimeout:5. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-- (void)testSeek
+- (void)testSeekWhilePaused
 {
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
+    XCTestExpectation *seekFinishedExpectation = [self expectationWithDescription:@"Seek finished"];
+    
+    // Wait until the player is in the paused state to seek
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        if (mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStatePaused) {
+            return NO;
+        }
+        
+        [mediaPlayerController seekToTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withCompletionHandler:^(BOOL finished) {
+            // No seek could have interrupted this one
+            XCTAssertTrue(finished);
+            
+            // The player must still be paused after the seek
+            XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePaused);
+            
+            [seekFinishedExpectation fulfill];
+        }];
+        
+        return YES;
+    }];
+    
+    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testSeekWhilePlaying
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    XCTestExpectation *seekFinishedExpectation = [self expectationWithDescription:@"Seek finished"];
+    
+    // Wait until the player is in the playing state to seek
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        if (mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStatePlaying) {
+            return NO;
+        }
+        
+        [mediaPlayerController seekToTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withCompletionHandler:^(BOOL finished) {
+            // No seek could have interrupted this one
+            XCTAssertTrue(finished);
+            
+            // The player must still be playing after the seek
+            XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
+            
+            [seekFinishedExpectation fulfill];
+        }];
+        
+        return YES;
+    }];
+    
+    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testMultipleSeeks

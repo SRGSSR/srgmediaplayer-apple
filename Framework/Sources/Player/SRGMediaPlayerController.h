@@ -266,6 +266,61 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)pause;
 
 /**
+ *  @name Playback (convenience methods)
+ */
+
+/**
+ *  Prepare to play the media, starting from the specified time. Segments can be optionally provided
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ */
+- (void)prepareToPlayURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Prepare to play the media, starting from the specified time
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ */
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Prepare to play the media, starting at its default location
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ */
+- (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Play a media, starting from the specified time. Segments can be optionally provided
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ *
+ *  @discussion The player immediately reaches the playing state
+ */
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
+
+/**
+ *  Play a media, starting from the specified time
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:`
+ */
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
+
+/**
+ *  Play a media, starting at its default location. Segments can be optionally provided
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:`
+ */
+- (void)playURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
+
+/**
+ *  Play a media, starting at its default location
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:`
+ */
+- (void)playURL:(NSURL *)URL;
+
+/**
  *  Ask the player to change its status from pause to play or conversely, depending on the state it is in
  *
  *  @discussion See `-play`
@@ -273,40 +328,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)togglePlayPause;
 
 /**
- *  Prepare to play the media, starting from the specified time, but with the player paused
- *
- *  For a discussion of the available parameters, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
- */
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(void))completionHandler;
-
-/**
- *  Play a media, starting from the specified time. Segments can be optionally provided
- *
- *  For a discussion of the available parameters, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
- */
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
-
-/**
- *  Play a media, starting from the specified time
- *
- *  For a discussion of the available parameters, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
- */
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
-
-/**
- *  Play a media. Segments can be optionally provided
- *
- *  For a discussion of the available parameters, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
- */
-- (void)playURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
-
-/**
- *  Play a media
- */
-- (void)playURL:(NSURL *)URL;
-
-/**
- *  Ask the player to seek to a given location
+ *  Ask the player to seek to a given location. A paused player remains paused, while a playing player remains
+ *  playing. You can use the completion handler to change the player state if needed, e.g. to automatically
+ *  resume playback after a seek has been performed on a paused player
  *
  *  @param startTime         The time to start at. Use kCMTimeZero to start at the default location:
  *                             - For on-demand streams: At the beginning
@@ -316,6 +340,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param completionHandler The completion block is called when the seek ends. If the seek has been interrupted by
  *                           another seek, the completion handler will be called with finished = NO, otherwise with
  *                           finished = YES
+ *
+ *  @discussion Upon completion handler entry, the playback state will be up-to-date if the seek finished, otherwise
+ *              the player will still be in the seeking state
  */
 - (void)seekToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;;
