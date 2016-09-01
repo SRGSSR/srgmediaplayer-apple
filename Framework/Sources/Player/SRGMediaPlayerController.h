@@ -212,8 +212,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 /**
- *  Prepare to play the media, starting from the specified time, but with the player paused. If you want playback to start
- *  when it is ready, call `-play` from the completion handler. Segments can be optionally provided
+ *  Prepare to play the media, starting from the specified time, but with the player paused. Segments can be optionally
+ *  provided. If you want playback to start right after preparation, call `-play` from the completion handler (in which 
+ *  case the player will immediately reach the playing state).
  *
  *  @param URL               The URL to play
  *  @param startTime         The time to start at. Use kCMTimeZero to start at the default location:
@@ -232,32 +233,32 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
- *  Attempt to make the player play
+ *  Ask the player to play
  *
- *  @discussion Calling this method does not guarantee that the player will be playing right afterwards. If the media
- *              is ready, it should, but otherwise nothing will happen. Always rely on real `playbackState` changes
- *              to adjust your interface appropriately
+ *  @discussion Calling this method does not guarantee that the player will be playing right afterwards. If the player
+ *              has been prepared it will be the case (see above), but otherwise nothing will happen. For user interface
+ *              related changes, you should in general check the value of the `playbackState` property and observe when
+ *              it changes.
  */
 - (void)play;
 
 /**
- *  Attempt to pause the player. The media should be playing first, otherwise nothing will happen
+ *  Ask the player to pause playback
  *
  *  @discussion See `-play`
  */
 - (void)pause;
 
 /**
- * Attempt to toggle the state of the player
+ *  Ask the player to change its status from pause to play or conversely, depending on the state it is in
  *
  *  @discussion See `-play`
  */
 - (void)togglePlayPause;
 
 /**
- *  Prepare to play the media, starting from the specified time, but with the player paused. If you want playback to start
- *  when it is ready, call `-play` from the completion handler.
- *  
+ *  Prepare to play the media, starting from the specified time, but with the player paused
+ *
  *  For a discussion of the available parameters, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
  */
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
