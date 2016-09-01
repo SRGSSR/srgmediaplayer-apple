@@ -41,10 +41,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.mediaPlayerController.view.frame = self.view.bounds;
-    self.mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view insertSubview:self.mediaPlayerController.view atIndex:0];
     
     [self.liveButton setTitle:@"Back to live" forState:UIControlStateNormal];
     self.liveButton.alpha = 0.f;

@@ -56,10 +56,6 @@
     UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
     [self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
     
-    self.mediaPlayerController.view.frame = self.view.bounds;
-    self.mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view insertSubview:self.mediaPlayerController.view atIndex:0];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSkipSegment:)
                                                  name:SRGMediaPlayerDidSkipSegmentNotification
