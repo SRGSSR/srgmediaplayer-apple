@@ -373,7 +373,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (void)seekToTime:(CMTime)time withCompletionHandler:(void (^)(BOOL))completionHandler
 {
     if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
-        completionHandler ? completionHandler(NO) : nil;
         return;
     }
     

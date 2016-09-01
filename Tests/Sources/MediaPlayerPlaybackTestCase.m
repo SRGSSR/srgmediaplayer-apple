@@ -257,9 +257,45 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-- (void)testMultipleSeeks
+- (void)testSeekWithoutPrepare
 {
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    [mediaPlayerController seekToTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withCompletionHandler:^(BOOL finished) {
+        XCTFail(@"The completion handler must not be called since a seek must do nothing if the media was not prepared");
+    }];
+    XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
+}
 
+- (void)testSeekInterruption
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    XCTestExpectation *seekFinishedExpectation = [self expectationWithDescription:@"Seek finished"];
+    
+    // Wait until the player is in the playing state to seek
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        if (mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStatePlaying) {
+            return NO;
+        }
+        
+        [mediaPlayerController seekToTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withCompletionHandler:^(BOOL finished) {
+            // This seek must have been interrupted by the second one
+            XCTAssertFalse(finished);
+            XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateSeeking);
+        }];
+        [mediaPlayerController seekToTime:CMTimeMakeWithSeconds(50., NSEC_PER_SEC) withCompletionHandler:^(BOOL finished) {
+            XCTAssertTrue(finished);
+            XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
+            
+            [seekFinishedExpectation fulfill];
+        }];
+        
+        return YES;
+    }];
+    
+    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testSeveralMedias

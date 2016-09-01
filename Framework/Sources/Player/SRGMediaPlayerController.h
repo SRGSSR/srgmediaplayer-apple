@@ -342,9 +342,11 @@ NS_ASSUME_NONNULL_BEGIN
  *                           finished = YES
  *
  *  @discussion Upon completion handler entry, the playback state will be up-to-date if the seek finished, otherwise
- *              the player will still be in the seeking state
+ *              the player will still be in the seeking state. Note that if the media was not ready to play, seeking
+ *              won't take place, and the completion handler won't be called
  */
 - (void)seekToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;;
 
 - (void)reset;
