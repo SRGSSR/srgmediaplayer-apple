@@ -109,8 +109,8 @@ OBJC_EXTERN NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotific
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidStartNotification;                     // Notification sent when a segment starts
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidEndNotification;                       // Notification sent when a segment ends
 
-OBJC_EXTERN NSString * const SRGMediaPlayerWillSkipSegmentNotification;                     // Notification sent when the player starts skipping a segment
-OBJC_EXTERN NSString * const SRGMediaPlayerDidSkipSegmentNotification;                      // Notification sent when the player finishes skipping a segment
+OBJC_EXTERN NSString * const SRGMediaPlayerWillSkipBlockedSegmentNotification;              // Notification sent when the player starts skipping a blocked segment
+OBJC_EXTERN NSString * const SRGMediaPlayerDidSkipBlockedSegmentNotification;               // Notification sent when the player finishes skipping a blocked segment
 
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentKey;                                      // The involved segment as an id<SRGSegment> object
 OBJC_EXTERN NSString * const SRGMediaPlayerProgrammaticKey;                                 // Key to an `NSNumber` wrapping a boolean, set to YES if the change was induced programmatically

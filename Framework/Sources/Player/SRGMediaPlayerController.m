@@ -433,13 +433,13 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                                                                       userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
                 }
                 else {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipSegmentNotification
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
                                                                         object:self
                                                                       userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
                     
                     [self seekToTime:CMTimeRangeGetEnd([currentSegment timeRange]) withCompletionHandler:^(BOOL finished) {
                         if (finished) {
-                            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipSegmentNotification
+                            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                                                 object:self
                                                                               userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
                         }

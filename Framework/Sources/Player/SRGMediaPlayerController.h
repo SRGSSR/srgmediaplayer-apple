@@ -23,9 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  ## Functionalities
  *
  * `SRGMediaPlayerController` provides standard player features:
- *    - Media playback (audios and videos)
+ *    - Audio and video playback for all kinds of streams (on-demand, live, DVR)
  *    - Playback status information (mostly through notifications or KVO)
- *    - Media information (stream and media type)
+ *    - Media information extraction
  *
  *  In addition, `SRGMediaPlayerController` optionally supports segments. A segment is part of a media, defined by a
  *  start time and a duration. Segments make it possible to add a logical structure on top of a media, e.g. topics
@@ -62,84 +62,155 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  ## Controls and overlays
  *
+ *  The `SRGMediaPlayer` library provides the following set of controls which can be easily connected to a media player
+ *  controller instance to report its status or manage playback.
  *
- *  For maximum flexibility, you can incorporate a media player’s view into a view hierarchy owned by your app and have
- *  it managed by an `SRGMediaPlayerController` instance. If you just need a standard player with a view looking just
- *  like the standard iOS media player, you should simply instantiate an `SRGMediaPlayerViewController` which will manage
- *  the view for you.
+ *  - Buttons:
+ *    - `SRGPlaybackButton`: A button to pause or resume playback
+ *    - `SRGPictureInPictureButton`: A button to enter or leave picture in picture playback
+ *  - Sliders:
+ *    - `SRGTimeSlider`: A slide to see the current playback progress, seek, and display the elapsed and remaining times
+ *    - `SRGTimelineSlider`: Similar to the time slider, but with the ability to display specific points of interests
+ *                           along its track
+ *    - `SRGVolumeView`: A slider to adjust the volume
+ *  - Miscellaneous:
+ *    - `SRGPlaybackActivityIndicatorView`: An activity indicator displayed when the playing is buffering or seeking
+ *    - `SRGAirplayView`: An overlay which is visible when external Airplay playback is active, and which displays the
+ *                        current route
+ *    - `SRGTimelineView`: A linear collection to display the segments associated with a media
  *
- *  The media player controller posts several notifications, see SRGMediaPlayerConstants.h
+ *  Customizing your player layout using these overlays is straightforward:
+ *    - Drop instances of the views onto your player layout you need (or instantiate them in code) and tweak their
+ *      appearance
+ *    - Set their `mediaPlayerController` property to point at the underlying controller. If your controller was
+ *      instantiated in a storyboard or a xib file, this can be entirely done in Interface Builder via ctrl-dragging
  *
- *  Errors are handled through the `SRGMediaPlayerPlaybackDidFailNotification` notification. There are two possible
- *  source of errors: either the error comes from the dataSource (see `RTSMediaPlayerControllerDataSource`) or from
- *  the network (playback error).
+ *  Usually, you want to hide overlays after some user inactivity delay. While showing or hiding overlays is something
+ *  your implementation is responsible of, the `SRGMediaPlayer` library provides the `SRGActivityGestureRecognizer`
+ *  class to easily detect any kind of user activity. Just add this gesture recognizer on the view where you want
+ *  to track its activity, and associate a corresponding action to show or hide the interface, as you need.
  *
- *  The media player controller manages its overlays visibility. See the `overlayViews` property.
+ *  ## Player lifecycle
  *
- *  Methods related to playback can be found in the `RTSMediaPlayback` protocol
+ *  `SRGMediaPlayerController` is based around `AVPlayer`, which is publicly exposed as a `player` property. You should
+ *  avoid controlling playback by acting on this `AVPlayer` instance directly, but you can still use it for any other
+ *  purpose:
+ *    - Information extraction (e.g. current `AVPlayerItem`, subtitle and audio channels)
+ *    - Key-value observation of some other changes you might be interested in (e.g. IceCast / SHOUTcast information)
+ *    - Airplay setup
+ *    - Muting the player
+ *    - etc.
+ *
+ *  Since the lifecycle of the `AVPlayer` instance is managed by `SRGMediaPlayerController`, specific customization
+ *  points have been exposed. Those take the form of optional blocks to which the player is provided as parameter:
+ *    - `playerCreationBlock`: This block is called right after player creation
+ *    - `playerDestructionBlock`: This block is called right before player destruction
+ *    - `playerConfigurationBlock`: This block is called right after player creation, and each time you call the
+ *                                  `-reloadPlayerConfiguration` method
+ *
+ *  ## Player events
+ *
+ *  The player emits notifications when important changes are detected:
+ *    - Playback state changes and errors. Errors are defined in the `SRGMediaPlayerError.h` header file
+ *    - Segment changes and blocked segment skipping
+ *  For more information about the available notifications, have a look at the `SRGMediaPlayerConstants.h` header file.
+ *
+ *  Some controller properties (e.g. the `playbackState` property) are key-value observable. If not stated explicitly,
+ *  KVO might be possible but is not guaranteed.
+ *
+ *  ## Segments
+ *
+ *  When playing a media, an optional `segments` parameter can be provided. This parameter must be an array of objects
+ *  conforming to the `SRGSegment` protocol. When segments have been supplied to the player, corresponding notifications
+ *  will be emitted when segment transitions occur (see above). If you want to display segments, you can use the supplied
+ *  `SRGTimelineView` or create your own view, as required by your application.
+ *
+ *  ## Boundary time and periodic time observers
+ *
+ *  Three kinds of observers can be set on a player to observe its playback:
+ *    - Usual boundary time and periodic time observers, which you define on the `AVPlayer` instance directly by accessing
+ *      the `player` property directly. You should use the player creation and destruction blocks to install and remove
+ *      them reliably.
+ *    - `AVPlayer` periodic time observers only trigger when the player actually plays. In some cases, you still want to
+ *      perform periodic updates even when playback is paused (e.g. updating the user interface while a DVR stream is paused).
+ *      For such use cases, `SRGMediaPlayerController` provides the `-addPeriodicTimeObserverForInterval:queue:usingBlock:`
+ *      method, with which such observers can be defined. Since such observers are bound to the controller, you can set
+ *      them up right after controller creation, if you like
+ *  For more information about `AVPlayer` observers, please refer to the official Apple documentation.
  */
 @interface SRGMediaPlayerController : NSObject
 
 /**
- *  -------------------
- *  @name Player Object
- *  -------------------
+ *  @name Settings
  */
 
 /**
- *  The player that provides the media content.
- *
- *  @discussion This can be used to implement advanced behaviors. This property should not be used to alter player properties,
- *              but merely for KVO registration or information extraction. Altering player properties in any way results in
- *              undefined behavior
+ *  The minimum window length which must be available for a stream to be considered to be a DVR stream, in seconds. The
+ *  default value is 0. This setting can be used so that streams detected as DVR ones because their window is small can
+ *  properly behave as live streams. This is useful to avoid usual related seeking issues, or slider hiccups during 
+ *  playback, most notably
  */
-@property (nonatomic, readonly) AVPlayer *player;
+@property (nonatomic) NSTimeInterval minimumDVRWindowLength;
 
+/**
+ *  Return the tolerance (in seconds) for a DVR stream to be considered being played in live conditions. If the stream
+ *  playhead is located within the last `liveTolerance` seconds of the stream, it is considered to be live. The default 
+ *  value is 30 seconds and matches the standard iOS player controller behavior
+ */
+@property (nonatomic) NSTimeInterval liveTolerance;
+
+/**
+ *  @name Player
+ */
+
+/**
+ *  The instance of the player. You should not control playback directly on this instance, otherwise the behavior is undefined.
+ *  You can still use if for any other purposes, e.g. getting information about the player, setting observers, etc. If you need
+ *  to alter properties of the player, you should use the lifecycle blocks hooks instead (see below)
+ */
+@property (nonatomic, readonly, nullable) AVPlayer *player;
+
+/**
+ *  The layer used by the player. Use it if you need to change the content gravity or to detect when the player is ready
+ *  for display
+ */
 @property (nonatomic, readonly) AVPlayerLayer *playerLayer;
 
 /**
- *  ------------------------
- *  @name Accessing the View
- *  ------------------------
- */
-
-/**
- *  The view containing the media content.
- *
- *  @discussion This property contains the view used for presenting the media content. To display the view into your own
- *  view hierarchy, use the `attachPlayerToView:` method.
- *
- *  This view has two gesture recognziers: a single tap gesture recognizer and a double tap gesture recognizer which
- *  toggle overlays visibility, respectively the video aspect between `AVLayerVideoGravityResizeAspectFill` and
- *  `AVLayerVideoGravityResizeAspect`.
- *
- *  If you want to handle taps yourself, you can disable these gesture recognizers and add your own gesture recognizers.
- *
- *  @see `attachPlayerToView:`
+ *  The view where the player displays its content. Either install in your own view hierarchy, or bind a corresponding view
+ *  with the `SRGMediaPlayerView` class in Interface Builder
  */
 @property (nonatomic, readonly) IBOutlet SRGMediaPlayerView *view;
 
-@property (nonatomic, copy) void (^playerCreationBlock)(AVPlayer *player);
-@property (nonatomic, copy) void (^playerConfigurationBlock)(AVPlayer *player);
-@property (nonatomic, copy) void (^playerDestructionBlock)(AVPlayer *player);
+/**
+ *  @name Player lifecycle
+ */
 
+/**
+ *  Optional block which gets called right after player creation
+ */
+@property (nonatomic, copy, nullable) void (^playerCreationBlock)(AVPlayer *player);
+
+/**
+ *  Optional block which gets called right after player creation and when the configuration is reloaded by calling
+ *  `-reloadPlayerConfiguration`
+ */
+@property (nonatomic, copy, nullable) void (^playerConfigurationBlock)(AVPlayer *player);
+
+/**
+ *  Optional block which gets called right before player destruction
+ */
+@property (nonatomic, copy, nullable) void (^playerDestructionBlock)(AVPlayer *player);
+
+/**
+ *  Ask the player to reload its configuration
+ */
 - (void)reloadPlayerConfiguration;
 
-@property (nonatomic, readonly) SRGPlaybackState playbackState;
-
-@property (nonatomic, readonly, nullable) NSURL *contentURL;
-@property (nonatomic, readonly) NSArray<id<SRGSegment>> *segments;
-
 /**
- *  -------------------------
- *  @name Controling Playback
- *  -------------------------
+ *  @name Playback
  */
 
-/**
- *  Start playing a media specified using its identifier. Retrieving the media URL requires a data source to be bound
- *  to the player controller
- */
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
@@ -155,6 +226,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;;
 
 - (void)reset;
+
+/**
+ *  @name Playback information
+ */
+
+@property (nonatomic, readonly) SRGPlaybackState playbackState;
+
+@property (nonatomic, readonly, nullable) NSURL *contentURL;
+@property (nonatomic, readonly) NSArray<id<SRGSegment>> *segments;
 
 /**
  *  The current media time range (might be empty or indefinite). Use `CMTimeRange` macros for checking time ranges
@@ -186,21 +266,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Return the segment currently being played, nil if none
  */
 @property (nonatomic, readonly, nullable) id<SRGSegment> currentSegment;
-
-/**
- *  The minimum window length which must be available for a stream to be considered to be a DVR stream, in seconds. The
- *  default value is 0. This setting can be used so that streams detected as DVR ones because their window is small can
- *  behave as live streams. This is useful to avoid usual related seeking issues, or slider hiccups during playback, most
- *  notably
- */
-@property (nonatomic) NSTimeInterval minimumDVRWindowLength;
-
-/**
- *  Return the tolerance (in seconds) for a DVR stream to be considered being played in live conditions. If the stream
- *  playhead is located within the last liveTolerance conditions of the stream, it is considered to be live, not live
- *  otherwise. The default value is 30 seconds and matches the standard iOS behavior
- */
-@property (nonatomic) NSTimeInterval liveTolerance;
 
 /**
  *  --------------------

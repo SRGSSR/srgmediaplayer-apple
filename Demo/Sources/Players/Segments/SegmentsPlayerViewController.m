@@ -58,7 +58,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSkipSegment:)
-                                                 name:SRGMediaPlayerDidSkipSegmentNotification
+                                                 name:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                object:self.mediaPlayerController];
 }
 

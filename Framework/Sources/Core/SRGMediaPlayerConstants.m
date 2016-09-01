@@ -19,8 +19,8 @@ NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotification = @"SR
 NSString * const SRGMediaPlayerSegmentDidStartNotification = @"SRGMediaPlayerSegmentDidStartNotification";
 NSString * const SRGMediaPlayerSegmentDidEndNotification = @"SRGMediaPlayerSegmentDidEndNotification";
 
-NSString * const SRGMediaPlayerWillSkipSegmentNotification = @"SRGMediaPlayerWillSkipSegmentNotification";
-NSString * const SRGMediaPlayerDidSkipSegmentNotification = @"SRGMediaPlayerDidSkipSegmentNotification";
+NSString * const SRGMediaPlayerWillSkipBlockedSegmentNotification = @"SRGMediaPlayerWillSkipBlockedSegmentNotification";
+NSString * const SRGMediaPlayerDidSkipBlockedSegmentNotification = @"SRGMediaPlayerDidSkipBlockedSegmentNotification";
 
 NSString * const SRGMediaPlayerSegmentKey = @"SRGMediaPlayerSegmentKey";
 NSString * const SRGMediaPlayerProgrammaticKey = @"SRGMediaPlayerProgrammaticKey";
