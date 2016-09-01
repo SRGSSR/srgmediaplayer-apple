@@ -87,7 +87,7 @@
 
 - (void)refreshButton
 {
-    BOOL isPlaying = self.mediaPlayerController.playbackState == SRGPlaybackStatePlaying;
+    BOOL isPlaying = self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
     
     [self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
@@ -115,7 +115,7 @@
         [self refreshButton];
     };
     
-    if (self.mediaPlayerController.playbackState == SRGPlaybackStateEnded) {
+    if (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
         [self.mediaPlayerController seekToTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
             if (finished) {
                 togglePlayPause();

@@ -50,7 +50,7 @@
 
     __weak __typeof(self) weakSelf = self;
     [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
-        if (weakSelf.mediaPlayerController.playbackState != SRGPlaybackStateSeeking) {
+        if (weakSelf.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
             [weakSelf updateLiveButton];
         }
     }];
@@ -78,7 +78,7 @@
 
 - (void)updateLiveButton
 {
-    if (self.mediaPlayerController.streamType == SRGMediaStreamTypeDVR) {
+    if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
         [UIView animateWithDuration:0.2 animations:^{
             self.liveButton.alpha = self.timelineSlider.live ? 0.f : 1.f;
         }];

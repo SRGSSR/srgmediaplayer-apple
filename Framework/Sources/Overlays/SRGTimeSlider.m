@@ -130,9 +130,9 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
         self.periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
             @strongify(self)
             
-            if (! self.isTracking && self.mediaPlayerController.playbackState != SRGPlaybackStateSeeking) {
+            if (! self.isTracking && self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
                 CMTimeRange timeRange = [self.mediaPlayerController timeRange];
-                if (self.mediaPlayerController.streamType == SRGMediaStreamTypeOnDemand && self.mediaPlayerController.playbackState == SRGPlaybackStateIdle) {
+                if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeOnDemand && self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
                     self.maximumValue = 0.f;
                     self.value = 0.f;
                     self.userInteractionEnabled = YES;
@@ -221,14 +221,14 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
     //  - We have a pure live feed, which is characterized by an empty range
     //  - We have a timeshift feed, which is characterized by an indefinite player item duration, and whose slider knob is
     //    dragged close to now. We consider a timeshift 'close to now' when the slider is at the end, up to a tolerance
-    return self.mediaPlayerController.streamType == SRGMediaStreamTypeLive
-        || (self.mediaPlayerController.streamType == SRGMediaStreamTypeDVR && (self.maximumValue - self.value < self.mediaPlayerController.liveTolerance));
+    return self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeLive
+        || (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR && (self.maximumValue - self.value < self.mediaPlayerController.liveTolerance));
 }
 
 - (void)updateTimeRangeLabels
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    if (! playerItem || self.mediaPlayerController.playbackState == SRGPlaybackStateIdle || self.mediaPlayerController.playbackState == SRGPlaybackStateEnded
+    if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
             || playerItem.status != AVPlayerItemStatusReadyToPlay) {
         self.valueLabel.text = @"--:--";
         self.timeLeftValueLabel.text = @"--:--";
@@ -402,7 +402,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (void)timesliderPlaybackStateDidChange:(NSNotification *)notification
 {
-    if (self.mediaPlayerController.playbackState == SRGPlaybackStateIdle) {
+    if (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
         float value = [self resetValue];
         self.value = value;
         self.maximumValue = value;

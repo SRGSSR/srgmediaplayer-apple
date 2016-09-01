@@ -166,12 +166,12 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
         @strongify(self)
         
-        if (s_mediaPlayerController.streamType != SRGMediaStreamTypeUnknown) {
+        if (s_mediaPlayerController.streamType != SRGMediaPlayerStreamTypeUnknown) {
             CGFloat labelWidth = (CMTimeGetSeconds(s_mediaPlayerController.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
             self.valueLabelWidthConstraint.constant = labelWidth;
             self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
             
-            if (s_mediaPlayerController.playbackState != SRGPlaybackStateSeeking) {
+            if (s_mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
                 [self updateLiveButton];
             }
             
@@ -197,7 +197,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         // srg_mediaPlayerViewController_playbackStateDidChange:). In this case, we close the view controller
         // automatically, as is done when playing in full screen. We just wait one second to let restoration
         // finish (visually)
-        else if (s_mediaPlayerController.playbackState == SRGPlaybackStateEnded) {
+        else if (s_mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self dismiss:nil];
             });
@@ -237,7 +237,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)updateLiveButton
 {
-    if (s_mediaPlayerController.streamType == SRGMediaStreamTypeDVR) {
+    if (s_mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
         [UIView animateWithDuration:0.2 animations:^{
             self.liveButton.hidden = self.timeSlider.live;
         }];
@@ -290,7 +290,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     SRGMediaPlayerController *mediaPlayerController = notification.object;
     
     // Dismiss any video overlay (full screen or picture in picture) when playback normally ends
-    if (mediaPlayerController.playbackState == SRGPlaybackStateEnded) {
+    if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
         if (s_mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
             [s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
         }

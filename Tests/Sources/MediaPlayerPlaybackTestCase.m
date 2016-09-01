@@ -21,40 +21,77 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
 - (void)testInitialPlayerStateIsIdle
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
-    XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStateIdle);
+    XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
 }
 
-- (void)testPlayerPreparation
+- (void)testPrepareAndPlay
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
-    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Preparation"];
+    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepare and play"];
     
     [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
         XCTAssertTrue(finished);
-        XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStatePaused);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePaused);
+        
+        // If we now play, the player just be immediately in the playing state
+        [mediaPlayerController play];
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
+        
         [preparationExpectation fulfill];
     }];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
 }
 
-- (void)testPlayerPreparationToInvalidTime
+- (void)testWithoutPrepare
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
-    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Preparation"];
+    // Playing does not alter the state of the player since it has not been prepared
+    [mediaPlayerController play];
+    XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
+}
+
+- (void)testPrepareToTimeOutsideMedia
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepare"];
     
     [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:CMTimeMakeWithSeconds(24. * 60. * 60., NSEC_PER_SEC) withCompletionHandler:^(BOOL finished) {
+        // Seeks must succeed (media end)
         XCTAssertTrue(finished);
-        XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStatePaused);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePaused);
         [preparationExpectation fulfill];
     }];
     
     [self waitForExpectationsWithTimeout:5. handler:nil];
 }
 
-- (void)testHTTP403PlayError
+- (void)testMediaInformationAvailabilityAfterPrepare
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepare"];
+    
+    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
+        XCTAssertEqual(mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeVideo);
+        XCTAssertEqual(mediaPlayerController.streamType, SRGMediaPlayerStreamTypeOnDemand);
+        [preparationExpectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5. handler:nil];
+}
+
+- (void)testMediaInformationAvailabilityBeforePrepare
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    XCTAssertEqual(mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeUnknown);
+    XCTAssertEqual(mediaPlayerController.streamType, SRGMediaPlayerStreamTypeUnknown);
+}
+
+- (void)testPlayWithHTTP403Error
 {
     NSURL *URL = [NSURL URLWithString:@"http://httpbin.org/status/403"];
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
@@ -63,7 +100,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
         XCTAssertEqualObjects(error.domain, SRGMediaPlayerErrorDomain);
         XCTAssertEqual(error.code, SRGMediaPlayerErrorPlayback);
-        XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStateIdle);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
         return YES;
     }];
     
@@ -72,7 +109,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     [self waitForExpectationsWithTimeout:5. handler:nil];
 }
 
-- (void)testHTTP404PlayError
+- (void)testPrepareWithHTTP404Error
 {
     NSURL *URL = [NSURL URLWithString:@"http://httpbin.org/status/404"];
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
@@ -81,25 +118,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
         XCTAssertEqualObjects(error.domain, SRGMediaPlayerErrorDomain);
         XCTAssertEqual(error.code, SRGMediaPlayerErrorPlayback);
-        XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStateIdle);
-        return YES;
-    }];
-    
-    [mediaPlayerController playURL:URL];
-    
-    [self waitForExpectationsWithTimeout:5. handler:nil];
-}
-
-- (void)testHTTP404PreparationError
-{
-    NSURL *URL = [NSURL URLWithString:@"http://httpbin.org/status/404"];
-    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
-    
-    [self expectationForNotification:SRGMediaPlayerPlaybackDidFailNotification object:mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
-        XCTAssertEqualObjects(error.domain, SRGMediaPlayerErrorDomain);
-        XCTAssertEqual(error.code, SRGMediaPlayerErrorPlayback);
-        XCTAssertEqual(mediaPlayerController.playbackState, SRGPlaybackStateIdle);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
         return YES;
     }];
     
@@ -121,37 +140,37 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
 - (void)testPlayAndCheckPlayerState
 {
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGPlaybackStatePlaying;
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
     }];
     [self.mediaPlayerController play];
     [self waitForExpectationsWithTimeout:30. handler:nil];
 
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGPlaybackStatePaused;
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePaused;
     }];
     [self.mediaPlayerController pause];
     [self waitForExpectationsWithTimeout:30. handler:nil];
 
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGPlaybackStateIdle;
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle;
     }];
     [self.mediaPlayerController reset];
     [self waitForExpectationsWithTimeout:30. handler:nil];
 
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGPlaybackStatePlaying;
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
     }];
     [self.mediaPlayerController play];
     [self waitForExpectationsWithTimeout:30. handler:nil];
 
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGPlaybackStateSeeking;
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking;
     }];
     [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(5., NSEC_PER_SEC)];
     [self waitForExpectationsWithTimeout:30. handler:nil];
 
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGPlaybackStateEnded;
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded;
     }];
     [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(30. * 60. - 5., NSEC_PER_SEC)];
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -162,7 +181,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     __block NSInteger playbackStateKVOChangeCount = 0;
     [self.mediaPlayerController addObservationKeyPath:@"playbackState" options:(NSKeyValueObservingOptions)0 block:^(MAKVONotification *notification) {
         SRGMediaPlayerController *mediaPlayerController = notification.target;
-        if (mediaPlayerController.playbackState == SRGPlaybackStatePlaying) {
+        if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
             playbackStateKVOChangeCount++;
         }
     }];
@@ -178,13 +197,13 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     __block NSInteger playbackStateKVOChangeCount = 0;
     [self.mediaPlayerController addObservationKeyPath:@"playbackState" options:(NSKeyValueObservingOptions)0 block:^(MAKVONotification *notification) {
         SRGMediaPlayerController *mediaPlayerController = notification.target;
-        if (mediaPlayerController.playbackState == SRGPlaybackStatePlaying) {
+        if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
             playbackStateKVOChangeCount++;
         }
     }];
 
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGPlaybackStatePlaying;
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
     }];
     [self.mediaPlayerController play];
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -194,7 +213,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
 
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
         XCTAssertEqual(playbackStateKVOChangeCount, 1);
-        return self.mediaPlayerController.playbackState == SRGPlaybackStateIdle;
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle;
     }];
     [self.mediaPlayerController reset];
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -203,7 +222,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
 - (void)testPlayingMovieWithIdentifier
 {
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGPlaybackStatePlaying;
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
     }];
     [self.mediaPlayerController playIdentifier:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
     [self waitForExpectationsWithTimeout:30. handler:nil];

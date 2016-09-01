@@ -225,6 +225,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param completionHandler The completion block to be called after the player has finished preparing the media. This
  *                           block will only be called if the media could be loaded. If finished is set to YES, the media
  *                           could seek to its start location (@see `startTime` discussion above)
+ *
+ *  @discussion When the controller has been prepared, i.e. starting with the completion handler execution, calling `-play`
+ *              on the controller will immediately bring it into the playing state
  */
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
@@ -296,7 +299,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 // KVO observable
-@property (nonatomic, readonly) SRGPlaybackState playbackState;
+@property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
 
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
 @property (nonatomic, readonly) NSArray<id<SRGSegment>> *segments;
@@ -307,20 +310,20 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
- *  The media type (audio / video). See `SRGMediaType` for possible values
+ *  The media type (audio / video). See `SRGMediaPlayerMediaType` for possible values
  *
  *  Warning: Is currently unreliable when Airplay playback has been started before the media is played
  *           Related to https://openradar.appspot.com/27079167
  */
-@property (nonatomic, readonly) SRGMediaType mediaType;
+@property (nonatomic, readonly) SRGMediaPlayerMediaType mediaType;
 
 /**
- *  The stream type (live / DVR / VOD). See `SRGMediaStreamType` for possible values
+ *  The stream type (live / DVR / VOD). See `SRGMediaPlayerStreamType` for possible values
  *
  *  Warning: Is currently unreliable when Airplay playback has been started before the media is played
  *           Related to https://openradar.appspot.com/27079167
  */
-@property (nonatomic, readonly) SRGMediaStreamType streamType;
+@property (nonatomic, readonly) SRGMediaPlayerStreamType streamType;
 
 /**
  *  Return YES iff the stream is currently played in live conditions
