@@ -368,35 +368,48 @@ NS_ASSUME_NONNULL_BEGIN
  *  @name Playback information
  */
 
-// KVO observable
+/**
+ *  The current state of the media player controller
+ *
+ *  @discussion This property is key-value observable
+ */
 @property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
 
+/**
+ *  The URL of the content currently being loaded into the player
+ */
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
+
+/**
+ *  The segments which have been loaded into the player
+ */
 @property (nonatomic, readonly) NSArray<id<SRGSegment>> *segments;
 
 /**
- *  The current media time range (might be empty or indefinite). Use `CMTimeRange` macros for checking time ranges
+ *  The current media time range (might be empty or indefinite)
+ *
+ *  @discussion Use `CMTimeRange` macros for checking time ranges
  */
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
- *  The media type (audio / video). See `SRGMediaPlayerMediaType` for possible values
+ *  The media type (audio / video)
  *
- *  Warning: Is currently unreliable when Airplay playback has been started before the media is played
+ *  Warning: This information is currently unreliable when Airplay playback has been started before the media is played
  *           Related to https://openradar.appspot.com/27079167
  */
 @property (nonatomic, readonly) SRGMediaPlayerMediaType mediaType;
 
 /**
- *  The stream type (live / DVR / VOD). See `SRGMediaPlayerStreamType` for possible values
+ *  The stream type (live / DVR / VOD)
  *
- *  Warning: Is currently unreliable when Airplay playback has been started before the media is played
+ *  Warning: This information is currently unreliable when Airplay playback has been started before the media is played
  *           Related to https://openradar.appspot.com/27079167
  */
 @property (nonatomic, readonly) SRGMediaPlayerStreamType streamType;
 
 /**
- *  Return YES iff the stream is currently played in live conditions
+ *  Return YES iff the stream is currently played in live conditions (@see `liveTolerance`)
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 
