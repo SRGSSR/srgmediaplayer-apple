@@ -40,7 +40,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
 @property (nonatomic) NSValue *startTimeValue;
-@property (nonatomic, copy) void (^startCompletionHandler)(BOOL finished);
+@property (nonatomic, copy) void (^startCompletionHandler)(void);
 
 @end
 
@@ -291,7 +291,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 #pragma mark Playback
 
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(NSArray<id<SRGSegment>> *)segments completionHandler:(void (^)(BOOL))completionHandler
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(NSArray<id<SRGSegment>> *)segments completionHandler:(void (^)(void))completionHandler
 {
     if (! CMTIME_IS_VALID(startTime)) {
         startTime = kCMTimeZero;
@@ -329,17 +329,15 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     }
 }
 
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(void))completionHandler
 {
     [self prepareToPlayURL:URL atTime:startTime withSegments:nil completionHandler:completionHandler];
 }
 
 - (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments
 {
-    [self prepareToPlayURL:URL atTime:time withSegments:segments completionHandler:^(BOOL finished) {
-        if (finished) {
-            [self play];
-        }
+    [self prepareToPlayURL:URL atTime:time withSegments:segments completionHandler:^{
+        [self play];
     }];
 }
 
@@ -568,11 +566,13 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                 // Playback start. Use received start parameters
                 if (self.startTimeValue) {
                     void (^completionBlock)(BOOL) = ^(BOOL finished) {
+                        NSAssert(finished, @"Finished must be YES, as no seek should be able to cancel the initial seek");
+                        
                         // Reset start time first so that playback state induced change made in the completion handler
                         // does not loop back here
                         self.startTimeValue = nil;
                         
-                        self.startCompletionHandler ? self.startCompletionHandler(finished) : nil;
+                        self.startCompletionHandler ? self.startCompletionHandler() : nil;
                         self.startCompletionHandler = nil;
                     };
                     

@@ -118,6 +118,20 @@ NS_ASSUME_NONNULL_BEGIN
  *  Some controller properties (e.g. the `playbackState` property) are key-value observable. If not stated explicitly,
  *  KVO might be possible but is not guaranteed.
  *
+ *  ## Playback management
+ *
+ *  Several methods have been provided to start playback and pause it, or to seek to a specific time. You can also prepare
+ *  the player in a paused state before actually starting playback when you want. As a general rule, play, pause and seek
+ *  methods are player instructions to perform those operations: Depending on the state of the player, these operations
+ *  are not guaranteed to succeed. In general, you should therefore observe player events, as describe above, for example
+ *  when updating your user interface. You cannot namely assume the player will be playing right after `-play` has been
+ *  called, for example (but you can still update your interface right after `-play` has been called, by checking the
+ *  `playbackState` property). 
+ *
+ *  In some situations some behaviors can be guaranteed (e.g. when the player has successfully been prepared, calling
+ *  `-play` will put it in the playing state immediately) but, in general, you should rely on the playback state property
+ *  and respond to its changes.
+ *
  *  ## Segments
  *
  *  When playing a media, an optional `segments` parameter can be provided. This parameter must be an array of objects
@@ -224,13 +238,12 @@ NS_ASSUME_NONNULL_BEGIN
  *                           actual media time range will seek to the nearest location (either zero or the end time)
  *  @param segments          A segment list
  *  @param completionHandler The completion block to be called after the player has finished preparing the media. This
- *                           block will only be called if the media could be loaded. If finished is set to YES, the media
- *                           could seek to its start location (@see `startTime` discussion above)
+ *                           block will only be called if the media could be loaded.
  *
  *  @discussion When the controller has been prepared, i.e. starting with the completion handler execution, calling `-play`
  *              on the controller will immediately bring it into the playing state
  */
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Ask the player to play
@@ -261,7 +274,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  For a discussion of the available parameters, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
  */
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Play a media, starting from the specified time. Segments can be optionally provided
@@ -289,7 +302,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)playURL:(NSURL *)URL;
 
-// TODO: Describe behavior when paused / playing, and write associated tests
+/**
+ *  Ask the player to seek to a given location
+ *
+ *  @param startTime         The time to start at. Use kCMTimeZero to start at the default location:
+ *                             - For on-demand streams: At the beginning
+ *                             - For live and DVR streams: In live conditions, i.e. at the end of the stream
+ *                           If the time is invalid it will be set to kCMTimeZero. Setting a start time outside the
+ *                           actual media time range will seek to the nearest location (either zero or the end time)
+ *  @param completionHandler The completion block is called when the seek ends. If the seek has been interrupted by
+ *                           another seek, the completion handler will be called with finished = NO, otherwise with
+ *                           finished = YES
+ */
 - (void)seekToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;;
 

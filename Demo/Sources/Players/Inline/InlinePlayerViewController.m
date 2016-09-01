@@ -45,10 +45,8 @@
 
 - (IBAction)prepareToPlay:(id)sender
 {
-    [self.mediaPlayerController prepareToPlayURL:self.contentURL atTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
-        if (finished) {
-            _ready = YES;
-        }
+    [self.mediaPlayerController prepareToPlayURL:self.contentURL atTime:kCMTimeZero withCompletionHandler:^{
+        _ready = YES;
     }];
 }
 
