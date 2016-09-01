@@ -266,6 +266,33 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)pause;
 
 /**
+ *  Ask the player to seek to a given location. A paused player remains paused, while a playing player remains
+ *  playing. You can use the completion handler to change the player state if needed, e.g. to automatically
+ *  resume playback after a seek has been performed on a paused player
+ *
+ *  @param startTime         The time to start at. Use kCMTimeZero to start at the default location:
+ *                             - For on-demand streams: At the beginning
+ *                             - For live and DVR streams: In live conditions, i.e. at the end of the stream
+ *                           If the time is invalid it will be set to kCMTimeZero. Setting a start time outside the
+ *                           actual media time range will seek to the nearest location (either zero or the end time)
+ *  @param completionHandler The completion block is called when the seek ends. If the seek has been interrupted by
+ *                           another seek, the completion handler will be called with finished = NO, otherwise with
+ *                           finished = YES
+ *
+ *  @discussion Upon completion handler entry, the playback state will be up-to-date if the seek finished, otherwise
+ *              the player will still be in the seeking state. Note that if the media was not ready to play, seeking
+ *              won't take place, and the completion handler won't be called
+ */
+- (void)seekToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+
+/**
+ *  Reset the player to its original idle state with neither a media URL to play, nor segments
+ *
+ *  @discussion Periodic time observers registered with the controller are not unregistered
+ */
+- (void)reset;
+
+/**
  *  @name Playback (convenience methods)
  */
 
@@ -328,28 +355,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)togglePlayPause;
 
 /**
- *  Ask the player to seek to a given location. A paused player remains paused, while a playing player remains
- *  playing. You can use the completion handler to change the player state if needed, e.g. to automatically
- *  resume playback after a seek has been performed on a paused player
+ *  Seek to the beginning of the specified segment
  *
- *  @param startTime         The time to start at. Use kCMTimeZero to start at the default location:
- *                             - For on-demand streams: At the beginning
- *                             - For live and DVR streams: In live conditions, i.e. at the end of the stream
- *                           If the time is invalid it will be set to kCMTimeZero. Setting a start time outside the
- *                           actual media time range will seek to the nearest location (either zero or the end time)
- *  @param completionHandler The completion block is called when the seek ends. If the seek has been interrupted by
- *                           another seek, the completion handler will be called with finished = NO, otherwise with
- *                           finished = YES
+ *  @param segment The segment to seek to
  *
- *  @discussion Upon completion handler entry, the playback state will be up-to-date if the seek finished, otherwise
- *              the player will still be in the seeking state. Note that if the media was not ready to play, seeking
- *              won't take place, and the completion handler won't be called
+ * For more information, @see `-seekToTime:withCompletionHandler:`
  */
-- (void)seekToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
-
-- (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;;
-
-- (void)reset;
+- (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
  *  @name Playback information

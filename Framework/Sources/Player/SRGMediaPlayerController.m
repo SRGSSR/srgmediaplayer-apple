@@ -321,6 +321,40 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     [self.player pause];
 }
 
+- (void)seekToTime:(CMTime)time withCompletionHandler:(void (^)(BOOL))completionHandler
+{
+    if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
+        return;
+    }
+    
+    self.playbackState = SRGMediaPlayerPlaybackStateSeeking;
+    [self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+        if (finished) {
+            self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
+        }
+        completionHandler ? completionHandler(finished) : nil;
+    }];
+}
+
+- (void)reset
+{
+    if (self.pictureInPictureController.isPictureInPictureActive) {
+        [self.pictureInPictureController stopPictureInPicture];
+    }
+    
+    self.contentURL = nil;
+    self.segments = nil;
+    
+    self.playbackState = SRGMediaPlayerPlaybackStateIdle;
+    self.previousSegment = nil;
+    
+    self.startTimeValue = nil;
+    self.startCompletionHandler = nil;
+    
+    [self.player pause];
+    self.player = nil;
+}
+
 #pragma mark Playback (convenience methods)
 
 - (void)prepareToPlayURL:(NSURL *)URL withSegments:(NSArray<id<SRGSegment>> *)segments completionHandler:(void (^)(void))completionHandler
@@ -370,40 +404,10 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     }
 }
 
-- (void)seekToTime:(CMTime)time withCompletionHandler:(void (^)(BOOL))completionHandler
-{
-    if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
-        return;
-    }
-    
-    self.playbackState = SRGMediaPlayerPlaybackStateSeeking;
-    [self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
-        if (finished) {
-            self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
-        }
-        completionHandler ? completionHandler(finished) : nil;
-    }];
-}
-
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
 {
     CMTime time = [segment timeRange].start;
     [self seekToTime:time withCompletionHandler:completionHandler];
-}
-
-- (void)reset
-{
-    if (self.pictureInPictureController.isPictureInPictureActive) {
-        [self.pictureInPictureController stopPictureInPicture];
-    }
-    
-    self.startTimeValue = nil;
-    self.startCompletionHandler = nil;
-    
-    self.playbackState = SRGMediaPlayerPlaybackStateIdle;
-    
-    [self.player pause];
-    self.player = nil;
 }
 
 #pragma mark Configuration

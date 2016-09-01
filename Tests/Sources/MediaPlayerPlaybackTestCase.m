@@ -298,9 +298,72 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-- (void)testSeveralMedias
+- (void)testReset
 {
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    // Wait until playing
+    {
+        [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+        }];
+        
+        // Pass an empty array for segments
+        [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:@[]];
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
+    }
+    
+    // Reset the player and check its status
+    {
+        [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            if (mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateIdle) {
+                return NO;
+            }
+            
+            XCTAssertNil(mediaPlayerController.contentURL);
+            XCTAssertNil(mediaPlayerController.segments);
+            
+            return YES;
+        }];
+        
+        XCTAssertNotNil(mediaPlayerController.contentURL);
+        XCTAssertNotNil(mediaPlayerController.segments);
+        
+        [mediaPlayerController reset];
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
+    }
+}
 
+- (void)testConsecutiveMediaPlaybackInSamePlayer
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    // Wait until playing
+    {
+        [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+        }];
+        
+        [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:nil];
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
+    }
+    
+    // Wait until playing again. Expect a playback state change to idle, then to play
+    {
+        [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle);
+        }];
+        [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying);
+        }];
+        
+        [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:nil];
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
+    }
 }
 
 - (void)testPlayerLifecycle
@@ -308,46 +371,18 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
 
 }
 
-#if 0
-
-- (void)testPlayAndCheckPlayerState
+- (void)testPlaybackStateKeyValueObserving
 {
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    [self.mediaPlayerController play];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
 
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePaused;
-    }];
-    [self.mediaPlayerController pause];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle;
-    }];
-    [self.mediaPlayerController reset];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    [self.mediaPlayerController play];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking;
-    }];
-    [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(5., NSEC_PER_SEC)];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded;
-    }];
-    [self.mediaPlayerController playAtTime:CMTimeMakeWithSeconds(30. * 60. - 5., NSEC_PER_SEC)];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
+
+- (void)testStalled
+{
+    // Idea (might take some time to implement, later): Implement custom URL protocol forwarding to the system protocol, but adding
+    // some sleeps before returning the data
+}
+
+#if 0
 
 - (void)testPlayThenResetDoesNotPlayTheMedia
 {
@@ -363,52 +398,6 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     [self.mediaPlayerController reset];
     [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
     XCTAssertEqual(playbackStateKVOChangeCount, 0);
-}
-
-- (void)testMultiplePlayDoesNotUpdatePlaybackState
-{
-    __block NSInteger playbackStateKVOChangeCount = 0;
-    [self.mediaPlayerController addObservationKeyPath:@"playbackState" options:(NSKeyValueObservingOptions)0 block:^(MAKVONotification *notification) {
-        SRGMediaPlayerController *mediaPlayerController = notification.target;
-        if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
-            playbackStateKVOChangeCount++;
-        }
-    }];
-
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    [self.mediaPlayerController play];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-
-    [self.mediaPlayerController play];
-    [self.mediaPlayerController play];
-
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        XCTAssertEqual(playbackStateKVOChangeCount, 1);
-        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle;
-    }];
-    [self.mediaPlayerController reset];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-}
-
-- (void)testPlayingMovieWithIdentifier
-{
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    [self.mediaPlayerController playIdentifier:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-}
-
-- (void)testPlayingMissingMovieSendsPlaybackDidFailNotificationWithError
-{
-    [self expectationForNotification:SRGMediaPlayerPlaybackDidFailNotification object:self.mediaPlayerController handler:^BOOL (NSNotification *notification) {
-        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerErrorKey]);
-        return YES;
-    }];
-    [self.mediaPlayerController playIdentifier:@"https://xxx.xxx.xxx/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 #endif
