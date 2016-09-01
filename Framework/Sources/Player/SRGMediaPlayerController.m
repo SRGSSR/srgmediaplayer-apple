@@ -30,7 +30,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic) NSArray<id<SRGSegment>> *segments;
 
-@property (nonatomic, readonly) SRGMediaPlayerView *playerView;
 @property (nonatomic) SRGPlaybackState playbackState;
 
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
@@ -72,7 +71,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)setPlayer:(AVPlayer *)player
 {
-    AVPlayer *previousPlayer = self.playerView.playerLayer.player;
+    AVPlayer *previousPlayer = self.playerLayer.player;
     if (previousPlayer) {
         [self unregisterTimeObservers];
         
@@ -92,7 +91,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         self.playerDestructionBlock ? self.playerDestructionBlock(previousPlayer) : nil;
     }
     
-    self.playerView.playerLayer.player = player;
+    self.playerLayer.player = player;
     
     if (player) {
         [self registerTimeObserversForPlayer:player];
@@ -131,7 +130,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (AVPlayerLayer *)playerLayer
 {
-    return self.playerView.playerLayer;
+    return (AVPlayerLayer *)self.view.layer;
 }
 
 - (void)setPlaybackState:(SRGPlaybackState)playbackState
@@ -159,11 +158,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         _view = [[SRGMediaPlayerView alloc] init];
     }
     return _view;
-}
-
-- (SRGMediaPlayerView *)playerView
-{
-    return (SRGMediaPlayerView *)self.view;
 }
 
 - (CMTimeRange)timeRange
@@ -275,7 +269,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 {
     if (! _pictureInPictureController) {
         // Call the setter for KVO registration
-        self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerView.playerLayer];
+        self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
     }
     return _pictureInPictureController;
 }

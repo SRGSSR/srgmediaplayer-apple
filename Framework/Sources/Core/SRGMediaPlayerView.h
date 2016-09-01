@@ -10,11 +10,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Internal view class for displaying the player
+ *  The view used by the player to display its media
  */
 @interface SRGMediaPlayerView : UIView
-
-@property (readonly) AVPlayerLayer *playerLayer;
 
 @end
 

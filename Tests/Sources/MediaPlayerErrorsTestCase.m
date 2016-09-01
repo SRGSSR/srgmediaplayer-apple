@@ -4,15 +4,14 @@
 //  License information is available from the LICENSE file.
 //
 
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
-
-@interface SRGMediaPlayerErrorsTestCase : XCTestCase
+@interface MediaPlayerErrorsTestCase : XCTestCase
 @end
 
-@implementation SRGMediaPlayerErrorsTestCase
+@implementation MediaPlayerErrorsTestCase
 
 - (void)testHTTP403Error
 {

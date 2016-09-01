@@ -9,14 +9,60 @@
 #import <UIKit/UIKit.h>
 
 #import "SRGMediaPlayerConstants.h"
+#import "SRGMediaPlayerView.h"
 #import "SRGSegment.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  `SRGMediaPlayerController` is inspired by the `MPMoviePlayerController` class.
+ *  `SRGMediaPlayerController` is inspired by the `MPMoviePlayerController` class. It manages the playback of a media 
+ *  from a file or a network stream, but provides only core player functionality. As such, it is intended for custom
+ *  media player implementation. If you need a player with limited customization abilities but which you can readily 
+ *  use, you should have a look at `SRGMediaPlayerViewController` instead.
  *
- *  A media player (of type `SRGMediaPlayerController`) manages the playback of a media from a file or a network stream.
+ *  ## Functionalities
+ *
+ * `SRGMediaPlayerController` provides standard player features:
+ *    - Media playback (audios and videos)
+ *    - Playback status information (mostly through notifications or KVO)
+ *    - Media information (stream and media type)
+ *
+ *  In addition, `SRGMediaPlayerController` optionally supports segments. A segment is part of a media, defined by a
+ *  start time and a duration. Segments make it possible to add a logical structure on top of a media, e.g. topics
+ *  in a news show, chapters in a movie, and so on. If segments are associated with the media being played, 
+ *  `SRGMediaPlayerController` will:
+ *    - Report transitions between segments when they occur (through notifications)
+ *    - Skip segments which must must not be played (blocked segments)
+ *
+ *  ## Basic usage
+ *
+ *  `SRGMediaPlayerController` is a raw media player and is usually not used as is (though it could, for example
+ *  when you only need to play audio files).
+ *
+ *  To implement your own custom media player, you need create your own player class (most probably a view controller),
+ *  and to delegate playback to an `SRGMediaPlayerController` instance:
+ *    - Instantiate `SRGMediaPlayerController` in your player implementation file. If you are using a storyboard or 
+ *      a xib to define your player layout, you can also drop a plain object with Interface Builder and assign it the
+ *      `SRGMediaPlayerController` class. Be sure to connect an outlet to it if you need to later refer to it from
+ *      witin your code
+ *    - When creating a video player, you must add the `view` property somewhere within your view hierarchy so that
+ *      the content can be properly displayed:
+ *        - If you are instantiating the controller in a storyboard or a nib, this is easily achieved by adding a view 
+ *          with the `SRGMediaPlayerView` to your layout, and binding it to the `view` property right from Interface 
+ *          Builder.
+ *        - If you have instantiated `SRGMediaPlayerController` in code, then you must add the `view` property manually
+ *          to your view hierarchy by calling `-[UIView addSubview:]` or one of the similar `UIView` methods. Be sure 
+ *          to set constraints or autoresizing masks properly so that the view behaves as expected.
+ *      If you only need to implement an audio player, you can skip this step.
+ *    - Call one of the play methods to start playing your media
+ *
+ *  You should now have a working implementation able to play audios or videos. There is no way to pause playback or to 
+ *  seek within the media, though. The `SRGMediaPlayer` library provides a few standard controls and overlays with which 
+ *  you can easily add such functionalities to your custom player.
+ *
+ *  ## Controls and overlays
+ *
+ *
  *  For maximum flexibility, you can incorporate a media player’s view into a view hierarchy owned by your app and have
  *  it managed by an `SRGMediaPlayerController` instance. If you just need a standard player with a view looking just
  *  like the standard iOS media player, you should simply instantiate an `SRGMediaPlayerViewController` which will manage
@@ -71,7 +117,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @see `attachPlayerToView:`
  */
-@property (nonatomic, readonly) UIView *view;
+@property (nonatomic, readonly) IBOutlet SRGMediaPlayerView *view;
 
 @property (nonatomic, copy) void (^playerCreationBlock)(AVPlayer *player);
 @property (nonatomic, copy) void (^playerConfigurationBlock)(AVPlayer *player);
