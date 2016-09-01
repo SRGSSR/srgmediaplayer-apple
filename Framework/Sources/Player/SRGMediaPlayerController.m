@@ -302,6 +302,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     self.contentURL = URL;
     self.segments = segments;
     
+    self.playbackState = SRGMediaPlayerPlaybackStatePreparing;
+    
     self.startTimeValue = [NSValue valueWithCMTime:startTime];
     self.startCompletionHandler = completionHandler;
     
@@ -561,9 +563,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                 [self.player play];
             }
             else if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
-                self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
-                
-                // Playback start. Use received start parameters
+                // Playback start. Use received start parameters, do not update the playback state yet, wait until the
+                // completion handler has been executed (since it might immediately start playback)
                 if (self.startTimeValue) {
                     void (^completionBlock)(BOOL) = ^(BOOL finished) {
                         NSAssert(finished, @"Finished must be YES, as no seek should be able to cancel the initial seek");
@@ -574,6 +575,12 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                         
                         self.startCompletionHandler ? self.startCompletionHandler() : nil;
                         self.startCompletionHandler = nil;
+                        
+                        // If the state of the player was not changed in the completion handler (still preparing), update
+                        // it
+                        if (self.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+                            self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
+                        }
                     };
                     
                     CMTime startTime = self.startTimeValue.CMTimeValue;
@@ -588,11 +595,15 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                         }];
                     }
                 }
+                // Update the playback state immediately
+                else {
+                    self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
+                }
             }
             else {
-                self.playbackState = SRGMediaPlayerPlaybackStateIdle;
-                
                 if (playerItem.status == AVPlayerItemStatusFailed) {
+                    self.playbackState = SRGMediaPlayerPlaybackStateIdle;
+                    
                     self.startTimeValue = nil;
                     self.startCompletionHandler = nil;
                     

@@ -226,9 +226,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 /**
- *  Prepare to play the media, starting from the specified time, but with the player paused. Segments can be optionally
- *  provided. If you want playback to start right after preparation, call `-play` from the completion handler (in which 
- *  case the player will immediately reach the playing state).
+ *  Prepare to play the media, starting from the specified time, but with the player paused (if playback is not started
+ *  in the completion handler). Segments can be optionally provided. If you want playback to start right after preparation, 
+ *  call `-play` from the completion handler (in which case the player will immediately reach the playing state).
  *
  *  @param URL               The URL to play
  *  @param startTime         The time to start at. Use kCMTimeZero to start at the default location:
@@ -240,8 +240,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param completionHandler The completion block to be called after the player has finished preparing the media. This
  *                           block will only be called if the media could be loaded.
  *
- *  @discussion When the controller has been prepared, i.e. starting with the completion handler execution, calling `-play`
- *              on the controller will immediately bring it into the playing state
+ *  @discussion The player state is set to preparing during all the preparation phase (this is also the state on completion
+ *              handler entry). The player state is not updated to paused until the completion handler has been executed.
+ *              This way, any change to the player state in the block (e.g. because of a `-play` request) will only be
+ *              reflected after the completion handler has been executed, so that the player transitions from preparing
+ *              to this state without transitioning through the paused state.
  */
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(void))completionHandler;
 

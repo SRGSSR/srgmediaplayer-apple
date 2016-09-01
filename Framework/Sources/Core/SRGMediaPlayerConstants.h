@@ -61,6 +61,10 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerPlaybackState) {
      */
     SRGMediaPlayerPlaybackStateIdle,
     /**
+     *  The player is preparing to play a media
+     */
+    SRGMediaPlayerPlaybackStatePreparing,
+    /**
      *  A media is being played
      */
     SRGMediaPlayerPlaybackStatePlaying,
