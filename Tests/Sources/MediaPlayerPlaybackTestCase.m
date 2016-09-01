@@ -129,6 +129,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         
         // The player must have transitioned directly to the playing state without going through the paused state
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
+        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
         return YES;
     }];
     
@@ -168,7 +169,6 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
         XCTAssertEqualObjects(error.domain, SRGMediaPlayerErrorDomain);
         XCTAssertEqual(error.code, SRGMediaPlayerErrorPlayback);
-        XCTAssertNotNil(error.userInfo[SRGMediaPlayerErrorKey]);
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
         return YES;
     }];
@@ -460,7 +460,17 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
 
 - (void)testStateChangeNotificationContent
 {
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
+        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateIdle);
+        return YES;
+    }];
+    
+    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testPlaybackStateKeyValueObserving
@@ -473,6 +483,9 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     [mediaPlayerController addObservationKeyPath:@"playbackState" options:0 block:^(MAKVONotification *notification) {
         XCTAssertEqual(weakMediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
         [kvoExpectation fulfill];
+        
+        // Avoid catching other notifications. The expectation has been filled once
+        [weakMediaPlayerController removeAllObservers];
     }];
     
     [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
