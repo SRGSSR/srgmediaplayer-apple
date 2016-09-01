@@ -168,6 +168,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         NSError *error = notification.userInfo[SRGMediaPlayerErrorKey];
         XCTAssertEqualObjects(error.domain, SRGMediaPlayerErrorDomain);
         XCTAssertEqual(error.code, SRGMediaPlayerErrorPlayback);
+        XCTAssertNotNil(error.userInfo[SRGMediaPlayerErrorKey]);
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
         return YES;
     }];
@@ -457,9 +458,26 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     [mediaPlayerController reloadPlayerConfiguration];
 }
 
+- (void)testStateChangeNotificationContent
+{
+    
+}
+
 - (void)testPlaybackStateKeyValueObserving
 {
-
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    XCTestExpectation *kvoExpectation = [self expectationWithDescription:@"Playback state change observed (preparing)"];
+    
+    __weak __typeof(mediaPlayerController) weakMediaPlayerController = mediaPlayerController;
+    [mediaPlayerController addObservationKeyPath:@"playbackState" options:0 block:^(MAKVONotification *notification) {
+        XCTAssertEqual(weakMediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
+        [kvoExpectation fulfill];
+    }];
+    
+    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testStalled
@@ -467,25 +485,5 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     // Idea (might take some time to implement, later): Implement custom URL protocol forwarding to the system protocol, but adding
     // some sleeps before returning the data
 }
-
-#if 0
-
-- (void)testPlayThenResetDoesNotPlayTheMedia
-{
-    __block NSInteger playbackStateKVOChangeCount = 0;
-    [self.mediaPlayerController addObservationKeyPath:@"playbackState" options:(NSKeyValueObservingOptions)0 block:^(MAKVONotification *notification) {
-        SRGMediaPlayerController *mediaPlayerController = notification.target;
-        if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
-            playbackStateKVOChangeCount++;
-        }
-    }];
-
-    [self.mediaPlayerController play];
-    [self.mediaPlayerController reset];
-    [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
-    XCTAssertEqual(playbackStateKVOChangeCount, 0);
-}
-
-#endif
 
 @end
