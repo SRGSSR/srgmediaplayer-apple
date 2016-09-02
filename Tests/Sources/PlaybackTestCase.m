@@ -8,15 +8,15 @@
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <XCTest/XCTest.h>
 
-static NSURL *MediaPlayerPlaybackTestURL(void)
+static NSURL *PlaybackTestURL(void)
 {
     return [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
 }
 
-@interface MediaPlayerPlaybackTestCase : XCTestCase
+@interface PlaybackTestCase : XCTestCase
 @end
 
-@implementation MediaPlayerPlaybackTestCase
+@implementation PlaybackTestCase
 
 - (void)testInitialPlayerStateIsIdle
 {
@@ -41,7 +41,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         return YES;
     }];
     
-    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
+    [mediaPlayerController prepareToPlayURL:PlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
         // Upon completion handler entry, the state is always preparing
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
     }];
@@ -55,7 +55,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     
     XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Playing"];
     
-    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
+    [mediaPlayerController prepareToPlayURL:PlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
         // Upon completion handler entry, the state is always preparing
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
         
@@ -72,13 +72,13 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
 - (void)testMultiplePrepare
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
-    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
+    [mediaPlayerController prepareToPlayURL:PlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
         XCTFail(@"The completion handler must not be called since a second prepare must cancel the first");
     }];
     
     XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepared"];
     
-    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
+    [mediaPlayerController prepareToPlayURL:PlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
         [preparationExpectation fulfill];
     }];
@@ -112,7 +112,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         return YES;
     }];
     
-    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:CMTimeMakeWithSeconds(24. * 60. * 60., NSEC_PER_SEC) withCompletionHandler:nil];
+    [mediaPlayerController prepareToPlayURL:PlaybackTestURL() atTime:CMTimeMakeWithSeconds(24. * 60. * 60., NSEC_PER_SEC) withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -133,7 +133,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         return YES;
     }];
     
-    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
+    [mediaPlayerController playURL:PlaybackTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -144,7 +144,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     
     XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepared"];
     
-    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
+    [mediaPlayerController prepareToPlayURL:PlaybackTestURL() atTime:kCMTimeZero withCompletionHandler:^{
         XCTAssertEqual(mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeVideo);
         XCTAssertEqual(mediaPlayerController.streamType, SRGMediaPlayerStreamTypeOnDemand);
         [preparationExpectation fulfill];
@@ -223,7 +223,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         return YES;
     }];
     
-    [mediaPlayerController prepareToPlayURL:MediaPlayerPlaybackTestURL() withCompletionHandler:nil];
+    [mediaPlayerController prepareToPlayURL:PlaybackTestURL() withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -253,7 +253,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         return YES;
     }];
     
-    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
+    [mediaPlayerController playURL:PlaybackTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -294,7 +294,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         return YES;
     }];
     
-    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
+    [mediaPlayerController playURL:PlaybackTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -310,7 +310,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         }];
         
         // Pass an empty array for segments
-        [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:@[]];
+        [mediaPlayerController playURL:PlaybackTestURL() withSegments:@[]];
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
     }
@@ -347,7 +347,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
             return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
         }];
         
-        [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:nil];
+        [mediaPlayerController playURL:PlaybackTestURL() withSegments:nil];
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
     }
@@ -361,7 +361,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
             return (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying);
         }];
         
-        [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:nil];
+        [mediaPlayerController playURL:PlaybackTestURL() withSegments:nil];
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
     }
@@ -387,7 +387,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
             [configurationReloadExpectation fulfill];
         };
         
-        [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:nil];
+        [mediaPlayerController playURL:PlaybackTestURL() withSegments:nil];
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
     }
@@ -429,7 +429,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
             [configurationReloadExpectation fulfill];
         };
         
-        [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:nil];
+        [mediaPlayerController playURL:PlaybackTestURL() withSegments:nil];
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
     }
@@ -468,7 +468,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         return YES;
     }];
     
-    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL() withSegments:nil];
+    [mediaPlayerController playURL:PlaybackTestURL() withSegments:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -488,7 +488,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         [weakMediaPlayerController removeAllObservers];
     }];
     
-    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
+    [mediaPlayerController playURL:PlaybackTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -515,7 +515,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
     }];
     
     // Periodic time observers fire only when the player has been created
-    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
+    [mediaPlayerController playURL:PlaybackTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }

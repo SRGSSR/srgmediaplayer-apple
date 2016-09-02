@@ -9,17 +9,39 @@
 
 #import "Segment.h"
 
-@interface RTSMediaSegmentsTestCase : XCTestCase
+static NSURL *SegmentsTestURL(void)
+{
+    return [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
+}
+
+@interface SegmentsTestCase : XCTestCase
 @end
 
-@implementation RTSMediaSegmentsTestCase
+@implementation SegmentsTestCase
 
 #pragma mark - Tests
 
 // Expect segment start / end notifications
 - (void)testSegmentPlaythrough
 {
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
+    Segment *segment = [Segment segmentWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    [mediaPlayerController playURL:SegmentsTestURL() withSegments:@[segment]];
+    
+    [self expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment");
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerProgrammaticKey] boolValue]);
+        return YES;
+    }];
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment");
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerProgrammaticKey] boolValue]);
+        return YES;
+    }];
+    [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
 // Expect seek notifications skipping the segment
