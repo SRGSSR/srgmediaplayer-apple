@@ -495,8 +495,19 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
 
 - (void)testStalled
 {
-    // Idea (might take some time to implement, later): Implement custom URL protocol forwarding to the system protocol, but adding
-    // some sleeps before returning the data
+    // Idea (might take some time to implement, later): We could expose the resourceLoader property of the AVURLAsset we
+    // can additionally create when instantiating the AVPlayer. Using AVAssetResourceLoader, it is possible to load
+    // data in a custom way (in our case, to simulate a slow network). Custom URL protocols cannot be used with AVPlayer
+}
+
+- (void)testPeriodicTimeObserver
+{
+
+}
+
+- (void)testPeriodicTimeObserverRemoval
+{
+
 }
 
 @end
