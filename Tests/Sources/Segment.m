@@ -8,21 +8,31 @@
 
 @interface Segment ()
 
-@property (nonatomic, copy) NSString *segmentIdentifier;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic) CMTimeRange timeRange;
+@property (nonatomic, getter=isBlocked) BOOL blocked;
 
 @end
 
 @implementation Segment
 
-- (instancetype)initWithIdentifier:(NSString *)identifier name:(NSString *)name timeRange:(CMTimeRange)timeRange
++ (Segment *)segmentWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
+{
+    return [[[self class] alloc] initWithName:name timeRange:timeRange];
+}
+
++ (Segment *)blockedSegmentWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
+{
+    Segment *segment = [[[self class] alloc] initWithName:name timeRange:timeRange];
+    segment.blocked = YES;
+    return segment;
+}
+
+- (instancetype)initWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
 {
     if (self = [super init]) {
         self.name = name;
-        self.segmentIdentifier = identifier;
         self.timeRange = timeRange;
-        self.visible = YES;
     }
     return self;
 }
