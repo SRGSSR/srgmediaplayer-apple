@@ -87,7 +87,7 @@
 
 - (void)refreshButton
 {
-    BOOL isPlaying = self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+    BOOL isPlaying = (self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStatePaused);
     
     [self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
