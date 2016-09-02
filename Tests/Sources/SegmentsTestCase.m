@@ -78,7 +78,7 @@ static NSURL *SegmentsTestURL(void)
         [[NSNotificationCenter defaultCenter] removeObserver:startObserver];
     }];
     __block id endObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidStartNotification object:mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"Segment start notification must not be called");
+        XCTFail(@"Segment end notification must not be called");
         [[NSNotificationCenter defaultCenter] removeObserver:endObserver];
     }];
     
@@ -314,31 +314,84 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-// Expect a start event for the given segment, with YES for the user-driven information flag
-- (void)testProgrammaticSegmentPlay
+- (void)testSeekIntoSegment
 {
-
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    Segment *segment = [Segment segmentWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(200., NSEC_PER_SEC), CMTimeMakeWithSeconds(60., NSEC_PER_SEC))];
+    
+    // Wait until the player is playing
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+        return YES;
+    }];
+    
+    [mediaPlayerController playURL:SegmentsTestURL() withSegments:@[segment]];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Seek into the segment
+    [self expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment");
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerProgrammaticKey] boolValue]);
+        return YES;
+    }];
+    
+    [mediaPlayerController seekToTime:CMTimeMakeWithSeconds(220., NSEC_PER_SEC) withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-// Expect a seek
+- (void)testSeekIntoBlockedSegment
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    Segment *segment = [Segment blockedSegmentWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(200., NSEC_PER_SEC), CMTimeMakeWithSeconds(60., NSEC_PER_SEC))];
+    
+    // Expect no segment start notificaton
+    __block id startObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidStartNotification object:mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"Segment start notification must not be called");
+        [[NSNotificationCenter defaultCenter] removeObserver:startObserver];
+    }];
+    
+    // Wait until the player is playing
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+        return YES;
+    }];
+    
+    [mediaPlayerController playURL:SegmentsTestURL() withSegments:@[segment]];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Seek into the blocked segment
+    [self expectationForNotification:SRGMediaPlayerWillSkipBlockedSegmentNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment");
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerProgrammaticKey] boolValue]);
+        return YES;
+    }];
+    [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment");
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerProgrammaticKey] boolValue]);
+        return YES;
+    }];
+    
+    [mediaPlayerController seekToTime:CMTimeMakeWithSeconds(220., NSEC_PER_SEC) withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+}
+
+- (void)testProgrammaticSegmentPlay
+{
+    
+}
+
 - (void)testProgrammaticBlockedSegmentPlay
 {
     
 }
 
-// Expect a start event for the given segment, with NO for the user-driven information flag (set only when calling -playSegment:)
-- (void)testSeekIntoSegment
-{
-
-}
-
-- (void)testSeekIntoBlockedSegment
-{
-
-}
-
-// Expect a switch between the two segments
-- (void)testUserTriggeredSegmentPlayAfterUserTriggeredSegmentPlay
+- (void)testProgrammaticSegmentPlayAfterProgrammaticSegmentPlay
 {
 
 }
