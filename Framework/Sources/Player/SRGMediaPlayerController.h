@@ -419,25 +419,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) id<SRGSegment> currentSegment;
 
 /**
- *  --------------------
  *  @name Time observers
- *  --------------------
  */
 
 /**
  *  Register a block for periodical execution. Unlike usual `AVPlayer` time observers, such observers not only run during playback, but
- *  also when paused. This makes such observers very helpful when UI must be updated continously, even when playback is paused, e.g.
- *  in the case of DVR streams
+ *  when the player has been created. They therefore also continue to trigger when the player is paused. This makes such observers very 
+ *  helpful when UI must be updated continously when the player is up, for example in the case of DVR streams
  *
  *  @param interval Time interval between block executions
  *  @param queue    The serial queue onto which block should be enqueued (main queue if NULL)
  *  @param block	The block to be periodically executed
  *
- *  @discussion There is no need to KVO-observe the presence or not of the `AVPlayer` instance before registration. You can register
- *              time observers earlier if needed
- *
  *  @return The time observer. The observer is retained by the media player controller, you can store a weak reference
  *          to it and remove it at a later time if needed
+ *
+ *  @discussion Your can registers observers with the media player controller when you like (you do not have to wait until the player
+ *              is ready, observers will be attached to it automatically when appropriate). Not that such observers are not removed
+ *              when the player controller is reset
  */
 - (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
 
@@ -463,7 +462,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerController (PictureInPicture)
 
 /**
- *  Return the picture in picture controller if available, nil otherwise
+ *  Return the picture in picture controller if picture in picture is available for the device, nil otherwise
  */
 @property (nonatomic, readonly, nullable) AVPictureInPictureController *pictureInPictureController;
 

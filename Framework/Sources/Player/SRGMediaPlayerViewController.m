@@ -67,6 +67,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 #pragma mark Object lifecycle
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-designated-initializers"
+
 - (instancetype)initWithContentURL:(NSURL *)contentURL
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:[NSBundle srg_mediaPlayerBundle]];
@@ -75,6 +78,13 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     viewController.autoplay = YES;
     return viewController;
 }
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [super initWithCoder:aDecoder];
+}
+
+#pragma clang diagnostic pop
 
 - (instancetype)initWithCurrentURL
 {

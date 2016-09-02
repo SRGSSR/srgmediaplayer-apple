@@ -484,7 +484,7 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
         XCTAssertEqual(weakMediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
         [kvoExpectation fulfill];
         
-        // Avoid catching other notifications. The expectation has been filled once
+        // Do not fulfill the expectation more than once
         [weakMediaPlayerController removeAllObservers];
     }];
     
@@ -502,12 +502,22 @@ static NSURL *MediaPlayerPlaybackTestURL(void)
 
 - (void)testPeriodicTimeObserver
 {
-
-}
-
-- (void)testPeriodicTimeObserverRemoval
-{
-
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    XCTestExpectation *observerExpectation = [self expectationWithDescription:@"Periodic time observer fired"];
+    
+    __weak __typeof(mediaPlayerController) weakMediaPlayerController = mediaPlayerController;
+    __block id periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        [observerExpectation fulfill];
+        
+        // Do not fulfill the expectation more than once
+        [weakMediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
+    }];
+    
+    // Periodic time observers fire only when the player has been created
+    [mediaPlayerController playURL:MediaPlayerPlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 @end
