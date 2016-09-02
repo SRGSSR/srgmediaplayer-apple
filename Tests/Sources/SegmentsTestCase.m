@@ -43,7 +43,6 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-// Expect seek notifications skipping the segment
 - (void)testBlockedSegmentPlaythrough
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
@@ -66,7 +65,31 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-// Expect segment start / end notifications
+- (void)testNoStartOrEndNotificationsForBlockedSegments
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    Segment *segment = [Segment blockedSegmentWithName:@"segment" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    [mediaPlayerController playURL:SegmentsTestURL() withSegments:@[segment]];
+    
+    // Ensure that no segment transition notifications are emitted
+    __block id startObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidStartNotification object:mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"Segment start notification must not be called");
+        [[NSNotificationCenter defaultCenter] removeObserver:startObserver];
+    }];
+    __block id endObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidStartNotification object:mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"Segment start notification must not be called");
+        [[NSNotificationCenter defaultCenter] removeObserver:endObserver];
+    }];
+    
+    [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment");
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerProgrammaticKey] boolValue]);
+        return YES;
+    }];
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+}
+
 - (void)testSegmentAtStartPlaythrough
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
@@ -89,7 +112,6 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-// Expect seek notifications skipping the segment
 - (void)testBlockedSegmentAtStartPlaythrough
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
@@ -112,8 +134,7 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-// Expect segment end and start notifications
-- (void)testConsecutiveSegments
+- (void)testContiguousSegments
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
@@ -149,7 +170,6 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-// Expect two skips, one for the first segment, another one for the second one
 - (void)testContiguousBlockedSegments
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
@@ -185,10 +205,39 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-// Expect two skips, one for the first segment, another one for the second one
 - (void)testContiguousBlockedSegmentsAtStart
 {
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
+    Segment *segment1 = [Segment blockedSegmentWithName:@"segment1" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    Segment *segment2 = [Segment blockedSegmentWithName:@"segment2" timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(3., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
+    [mediaPlayerController playURL:SegmentsTestURL() withSegments:@[segment1, segment2]];
+    
+    [self expectationForNotification:SRGMediaPlayerWillSkipBlockedSegmentNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment1");
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerProgrammaticKey] boolValue]);
+        return YES;
+    }];
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment1");
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerProgrammaticKey] boolValue]);
+        return YES;
+    }];
+    [self expectationForNotification:SRGMediaPlayerWillSkipBlockedSegmentNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment2");
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerProgrammaticKey] boolValue]);
+        return YES;
+    }];
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment2");
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerProgrammaticKey] boolValue]);
+        return YES;
+    }];
+    [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
 // Expect single seek for the first segment. Playback resumes where no blocking takes place, but no events for the second
