@@ -484,8 +484,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     [self.player removeTimeObserver:self.segmentPeriodicTimeObserver];
     self.segmentPeriodicTimeObserver = nil;
     
-    for (SRGPeriodicTimeObserver *playbackBlockRegistration in [self.periodicTimeObservers allValues]) {
-        [playbackBlockRegistration detachFromMediaPlayer];
+    for (SRGPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
+        [periodicTimeObserver detachFromMediaPlayer];
     }
 }
 
@@ -509,8 +509,19 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)removePeriodicTimeObserver:(id)observer
 {
-    for (SRGPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
+    for (NSString *key in self.periodicTimeObservers.allKeys) {
+        SRGPeriodicTimeObserver *periodicTimeObserver = self.periodicTimeObservers[key];
+        if (! [periodicTimeObserver hasBlockWithIdentifier:observer]) {
+            continue;
+        }
+            
         [periodicTimeObserver removeBlockWithIdentifier:observer];
+        
+        // Remove the periodic time observer if not used anymore
+        if (periodicTimeObserver.registrationCount == 0) {
+            [self.periodicTimeObservers removeObjectForKey:key];
+            return;
+        }
     }
 }
 

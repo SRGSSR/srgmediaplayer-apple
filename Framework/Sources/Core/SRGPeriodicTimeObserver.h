@@ -35,6 +35,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setBlock:(void (^)(CMTime time))block forIdentifier:(NSString *)identifier;
 
 /**
+ *  The number of block registration
+ */
+@property (nonatomic) NSUInteger registrationCount;
+
+/**
+ *  Return YES iff the periodic time observer has a block registered for the specified identifier
+ *
+ *  @param identifier The identifier to look for
+ *  @return YES iff found
+ */
+- (BOOL)hasBlockWithIdentifier:(id)identifier;
+
+/**
  *  Unregister the block matching the provided identifier (does nothing if the identifier is not found)
  *
  *  @param identifier The identifier for which a block must be discarded (mandatory)

@@ -74,6 +74,11 @@ static void *s_kvoContext  = &s_kvoContext;
     [self.blocks setObject:[block copy] forKey:identifier];
 }
 
+- (BOOL)hasBlockWithIdentifier:(id)identifier
+{
+    return self.blocks[identifier] != nil;
+}
+
 - (void)removeBlockWithIdentifier:(id)identifier
 {
     [self.blocks removeObjectForKey:identifier];
@@ -81,6 +86,11 @@ static void *s_kvoContext  = &s_kvoContext;
     if (self.blocks.count == 0) {
         [self removeObserver];
     }
+}
+
+- (NSUInteger)registrationCount
+{
+    return self.blocks.count;
 }
 
 #pragma mark Observers
