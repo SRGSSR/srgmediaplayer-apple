@@ -1,5 +1,7 @@
 ![SRG Media Player logo](README-images/logo.png)
 
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![Platform](https://img.shields.io/cocoapods/p/CoconutKit.svg) [![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/SRGSSR/SRGMediaPlayer-iOS/master/LICENSE)
+
 ## About
 
 The SRG Media Player library for iOS provides a simple way to add a universal audio / video player to any application. It provides:
