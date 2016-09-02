@@ -22,6 +22,10 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mz4-3g-dMP">
                                 <rect key="frame" x="75" y="40" width="450" height="253"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a0j-Wy-3w4" customClass="SRGMediaPlayerView">
+                                        <rect key="frame" x="0.0" y="0.0" width="450" height="253"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qKr-hy-Qhj">
                                         <rect key="frame" x="0.0" y="209" width="450" height="44"/>
                                         <subviews>
@@ -53,6 +57,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="a0j-Wy-3w4" secondAttribute="bottom" id="2K2-bH-rN9"/>
+                                    <constraint firstItem="a0j-Wy-3w4" firstAttribute="leading" secondItem="mz4-3g-dMP" secondAttribute="leading" id="50U-Ma-sJh"/>
+                                    <constraint firstAttribute="trailing" secondItem="a0j-Wy-3w4" secondAttribute="trailing" id="DAp-NW-hTn"/>
+                                    <constraint firstItem="a0j-Wy-3w4" firstAttribute="top" secondItem="mz4-3g-dMP" secondAttribute="top" id="IRR-Su-ZdX"/>
                                     <constraint firstItem="qKr-hy-Qhj" firstAttribute="leading" secondItem="mz4-3g-dMP" secondAttribute="leading" id="YgA-Df-mZh"/>
                                     <constraint firstAttribute="bottom" secondItem="qKr-hy-Qhj" secondAttribute="bottom" id="YrK-ix-ncs"/>
                                     <constraint firstAttribute="trailing" secondItem="qKr-hy-Qhj" secondAttribute="trailing" id="kMA-oN-XwZ"/>
@@ -106,11 +114,14 @@
                     </view>
                     <connections>
                         <outlet property="mediaPlayerController" destination="VI1-qS-HQF" id="c0t-Es-Esg"/>
-                        <outlet property="videoContainerView" destination="mz4-3g-dMP" id="JUq-bP-y2b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7rr-Sg-vdo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="VI1-qS-HQF" customClass="SRGMediaPlayerController"/>
+                <customObject id="VI1-qS-HQF" customClass="SRGMediaPlayerController">
+                    <connections>
+                        <outlet property="view" destination="a0j-Wy-3w4" id="Ppj-u5-cgb"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="-3151" y="3550"/>
         </scene>

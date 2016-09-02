@@ -11,7 +11,6 @@
 @interface InlinePlayerViewController ()
 
 @property (nonatomic) NSURL *contentURL;
-@property (nonatomic, weak) IBOutlet UIView *videoContainerView;
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
 
 @end
@@ -33,15 +32,6 @@
 
 #pragma mark View lifecycle
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.mediaPlayerController.view.frame = self.videoContainerView.bounds;
-    self.mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.videoContainerView insertSubview:self.mediaPlayerController.view atIndex:0];
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -55,10 +45,8 @@
 
 - (IBAction)prepareToPlay:(id)sender
 {
-    [self.mediaPlayerController prepareToPlayURL:self.contentURL atTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
-        if (finished) {
-            _ready = YES;
-        }
+    [self.mediaPlayerController prepareToPlayURL:self.contentURL atTime:kCMTimeZero withCompletionHandler:^{
+        _ready = YES;
     }];
 }
 

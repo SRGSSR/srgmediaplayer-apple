@@ -26,7 +26,7 @@ static void *s_kvoContext  = &s_kvoContext;
 
 - (instancetype)init
 {
-    return [self initWithInterval:CMTimeMakeWithSeconds(1, NSEC_PER_SEC) queue:NULL];
+    return [self initWithInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL];
 }
 
 - (instancetype)initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue

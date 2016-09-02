@@ -17,6 +17,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oWm-cH-DH1" customClass="SRGMediaPlayerView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K0I-7M-Ixt" userLabel="Bottom Bar View">
                                 <rect key="frame" x="0.0" y="536" width="600" height="64"/>
                                 <subviews>
@@ -158,12 +162,16 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="K0I-7M-Ixt" secondAttribute="trailing" id="1hn-vV-M0w"/>
+                            <constraint firstAttribute="trailing" secondItem="oWm-cH-DH1" secondAttribute="trailing" id="2kE-oK-a3J"/>
                             <constraint firstAttribute="centerX" secondItem="C5v-lq-cYV" secondAttribute="centerX" id="50X-FM-qFd"/>
                             <constraint firstItem="G2B-1h-zvk" firstAttribute="top" secondItem="R5C-zU-djv" secondAttribute="bottom" constant="10" id="AYC-XD-5ic"/>
+                            <constraint firstItem="K0I-7M-Ixt" firstAttribute="top" secondItem="oWm-cH-DH1" secondAttribute="bottom" id="CCS-as-yID"/>
+                            <constraint firstItem="oWm-cH-DH1" firstAttribute="top" secondItem="R5C-zU-djv" secondAttribute="bottom" id="L5N-3A-b1f"/>
                             <constraint firstAttribute="trailing" secondItem="G2B-1h-zvk" secondAttribute="trailing" id="Ree-lc-Qo2"/>
                             <constraint firstItem="b0K-LD-In2" firstAttribute="top" secondItem="K0I-7M-Ixt" secondAttribute="bottom" id="eGs-Z9-xrV"/>
                             <constraint firstAttribute="centerY" secondItem="C5v-lq-cYV" secondAttribute="centerY" id="o3C-Et-mjD"/>
                             <constraint firstItem="K0I-7M-Ixt" firstAttribute="leading" secondItem="xTs-IJ-3tq" secondAttribute="leading" id="qRg-d3-naG"/>
+                            <constraint firstItem="oWm-cH-DH1" firstAttribute="leading" secondItem="xTs-IJ-3tq" secondAttribute="leading" id="whZ-DW-1lh"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -175,7 +183,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pNA-WI-9Vu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="UUZ-ax-3wC" customClass="SRGMediaPlayerController"/>
+                <customObject id="UUZ-ax-3wC" customClass="SRGMediaPlayerController">
+                    <connections>
+                        <outlet property="view" destination="oWm-cH-DH1" id="Xkt-eI-tk0"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="-432" y="3580"/>
         </scene>

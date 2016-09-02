@@ -56,13 +56,9 @@
     UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
     [self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
     
-    self.mediaPlayerController.view.frame = self.view.bounds;
-    self.mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view insertSubview:self.mediaPlayerController.view atIndex:0];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didSkipSegment:)
-                                                 name:SRGMediaPlayerDidSkipSegmentNotification
+                                                 name:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                object:self.mediaPlayerController];
 }
 
@@ -154,11 +150,11 @@
 - (void)didSkipSegment:(NSNotification *)notification
 {
     self.blockingOverlayView.hidden = NO;
-    [self.mediaPlayerController togglePlayPause];
+    [self.mediaPlayerController pause];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.blockingOverlayView.hidden = YES;
-        [self.mediaPlayerController togglePlayPause];
+        [self.mediaPlayerController play];
     });
 }
 

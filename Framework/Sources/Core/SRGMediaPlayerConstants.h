@@ -9,78 +9,82 @@
 NS_ASSUME_NONNULL_BEGIN
 
 // Amount of seconds at the end of a DVR stream, assumed to correspond to live conditions
-OBJC_EXTERN NSTimeInterval const SRGLiveDefaultTolerance;
+OBJC_EXTERN NSTimeInterval const SRGMediaPlayerLiveDefaultTolerance;
 
 /**
  *  Media types
  */
-typedef NS_ENUM(NSInteger, SRGMediaType) {
+typedef NS_ENUM(NSInteger, SRGMediaPlayerMediaType) {
     /**
      *  Unknown type
      */
-    SRGMediaTypeUnknown,
+    SRGMediaPlayerMediaTypeUnknown = 0,
     /**
      *  Video
      */
-    SRGMediaTypeVideo,
+    SRGMediaPlayerMediaTypeVideo,
     /**
      *  Audio
      */
-    SRGMediaTypeAudio,
+    SRGMediaPlayerMediaTypeAudio,
 };
 
 /**
  *  Stream types
  */
-typedef NS_ENUM(NSInteger, SRGMediaStreamType) {
+typedef NS_ENUM(NSInteger, SRGMediaPlayerStreamType) {
     /**
      *  Unknown type
      */
-    SRGMediaStreamTypeUnknown,
+    SRGMediaPlayerStreamTypeUnknown = 0,
     /**
      *  On-demand stream
      */
-    SRGMediaStreamTypeOnDemand,
+    SRGMediaPlayerStreamTypeOnDemand,
     /**
      *  Live stream
      */
-    SRGMediaStreamTypeLive,
+    SRGMediaPlayerStreamTypeLive,
     /**
      *  DVR stream
      */
-    SRGMediaStreamTypeDVR,
+    SRGMediaPlayerStreamTypeDVR,
 };
 
 /**
  *  Playback states
  */
-typedef NS_ENUM(NSInteger, SRGPlaybackState) {
+typedef NS_ENUM(NSInteger, SRGMediaPlayerPlaybackState) {
     /**
      *  The player is idle. This state occurs after the player has been initialized, reset, or when an error has been
      *  encountered
      */
-    SRGPlaybackStateIdle,
+    SRGMediaPlayerPlaybackStateIdle,
+    /**
+     *  The player is preparing to play a media
+     */
+    SRGMediaPlayerPlaybackStatePreparing,
     /**
      *  A media is being played
      */
-    SRGPlaybackStatePlaying,
+    SRGMediaPlayerPlaybackStatePlaying,
     /**
      *  The player is seeking to another position
      */
-    SRGPlaybackStateSeeking,
+    SRGMediaPlayerPlaybackStateSeeking,
     /**
      *  The player is paused
      */
-    SRGPlaybackStatePaused,
+    SRGMediaPlayerPlaybackStatePaused,
     /**
      *  The player is stalled, i.e. waiting for media playback to restart (most probably because of poor networking
      *  conditions)
      */
-    SRGPlaybackStateStalled,
+    SRGMediaPlayerPlaybackStateStalled,
     /**
      *  The player has reached the end of the media and has automatically stopped playback
      */
-    SRGPlaybackStateEnded,
+    SRGMediaPlayerPlaybackStateEnded,
 };
 
 /**
@@ -88,7 +92,7 @@ typedef NS_ENUM(NSInteger, SRGPlaybackState) {
  *  previous state information from the notification `userInfo` dictionary
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerPlaybackStateDidChangeNotification;              // Notification name
-OBJC_EXTERN NSString * const SRGMediaPlayerPreviousPlaybackStateKey;                        // Key to access the previous playback state as an `NSNumber` (wrapping an `SRGPlaybackState` value)
+OBJC_EXTERN NSString * const SRGMediaPlayerPreviousPlaybackStateKey;                        // Key to access the previous playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value)
 
 /**
  *  Notification sent when playback failed. Use the `SRGMediaPlayerErrorKey` to retrieve an `NSError` 
@@ -109,8 +113,8 @@ OBJC_EXTERN NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotific
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidStartNotification;                     // Notification sent when a segment starts
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidEndNotification;                       // Notification sent when a segment ends
 
-OBJC_EXTERN NSString * const SRGMediaPlayerWillSkipSegmentNotification;                     // Notification sent when the player starts skipping a segment
-OBJC_EXTERN NSString * const SRGMediaPlayerDidSkipSegmentNotification;                      // Notification sent when the player finishes skipping a segment
+OBJC_EXTERN NSString * const SRGMediaPlayerWillSkipBlockedSegmentNotification;              // Notification sent when the player starts skipping a blocked segment
+OBJC_EXTERN NSString * const SRGMediaPlayerDidSkipBlockedSegmentNotification;               // Notification sent when the player finishes skipping a blocked segment
 
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentKey;                                      // The involved segment as an id<SRGSegment> object
 OBJC_EXTERN NSString * const SRGMediaPlayerProgrammaticKey;                                 // Key to an `NSNumber` wrapping a boolean, set to YES if the change was induced programmatically

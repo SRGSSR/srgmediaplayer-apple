@@ -7,14 +7,17 @@
 #import <Foundation/Foundation.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface Segment : NSObject <SRGSegment>
 
-- (instancetype)initWithIdentifier:(NSString *)identifier name:(NSString *)name timeRange:(CMTimeRange)timeRange;
++ (Segment *)segmentWithName:(NSString *)name timeRange:(CMTimeRange)timeRange;
++ (Segment *)blockedSegmentWithName:(NSString *)name timeRange:(CMTimeRange)timeRange;
+
+- (instancetype)initWithName:(NSString *)name timeRange:(CMTimeRange)timeRange;
 
 @property (nonatomic, readonly, copy) NSString *name;
 
-@property (nonatomic, getter = isLogical) BOOL logical;                           // Default is NO
-@property (nonatomic, getter = isBlocked) BOOL blocked;                           // Default is NO
-@property (nonatomic, getter = isVisible) BOOL visible;                           // Default is YES
-
 @end
+
+NS_ASSUME_NONNULL_END

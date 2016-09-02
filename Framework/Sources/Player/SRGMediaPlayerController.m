@@ -30,8 +30,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic) NSArray<id<SRGSegment>> *segments;
 
-@property (nonatomic, readonly) SRGMediaPlayerView *playerView;
-@property (nonatomic) SRGPlaybackState playbackState;
+@property (nonatomic) SRGMediaPlayerPlaybackState playbackState;
 
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) id segmentPeriodicTimeObserver;
@@ -41,7 +40,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
 @property (nonatomic) NSValue *startTimeValue;
-@property (nonatomic, copy) void (^startCompletionHandler)(BOOL finished);
+@property (nonatomic, copy) void (^startCompletionHandler)(void);
 
 @end
 
@@ -55,8 +54,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (instancetype)init
 {
     if (self = [super init]) {
-        self.playbackState = SRGPlaybackStateIdle;
-        self.liveTolerance = SRGLiveDefaultTolerance;
+        self.playbackState = SRGMediaPlayerPlaybackStateIdle;
+        self.liveTolerance = SRGMediaPlayerLiveDefaultTolerance;
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
     }
     return self;
@@ -72,7 +71,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)setPlayer:(AVPlayer *)player
 {
-    AVPlayer *previousPlayer = self.playerView.playerLayer.player;
+    AVPlayer *previousPlayer = self.playerLayer.player;
     if (previousPlayer) {
         [self unregisterTimeObservers];
         
@@ -92,7 +91,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         self.playerDestructionBlock ? self.playerDestructionBlock(previousPlayer) : nil;
     }
     
-    self.playerView.playerLayer.player = player;
+    self.playerLayer.player = player;
     
     if (player) {
         [self registerTimeObserversForPlayer:player];
@@ -131,10 +130,10 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (AVPlayerLayer *)playerLayer
 {
-    return self.playerView.playerLayer;
+    return (AVPlayerLayer *)self.view.layer;
 }
 
-- (void)setPlaybackState:(SRGPlaybackState)playbackState
+- (void)setPlaybackState:(SRGMediaPlayerPlaybackState)playbackState
 {
     NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes must be notified on the main thread. Fix");
     
@@ -159,11 +158,6 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         _view = [[SRGMediaPlayerView alloc] init];
     }
     return _view;
-}
-
-- (SRGMediaPlayerView *)playerView
-{
-    return (SRGMediaPlayerView *)self.view;
 }
 
 - (CMTimeRange)timeRange
@@ -198,36 +192,36 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     }
 }
 
-- (SRGMediaType)mediaType
+- (SRGMediaPlayerMediaType)mediaType
 {
     if (! self.player) {
-        return SRGMediaTypeUnknown;
+        return SRGMediaPlayerMediaTypeUnknown;
     }
     
     NSArray *tracks = self.player.currentItem.tracks;
     if (tracks.count == 0) {
-        return SRGMediaTypeUnknown;
+        return SRGMediaPlayerMediaTypeUnknown;
     }
     
     NSString *mediaType = [[tracks.firstObject assetTrack] mediaType];
-    return [mediaType isEqualToString:AVMediaTypeVideo] ? SRGMediaTypeVideo : SRGMediaTypeAudio;
+    return [mediaType isEqualToString:AVMediaTypeVideo] ? SRGMediaPlayerMediaTypeVideo : SRGMediaPlayerMediaTypeAudio;
 }
 
-- (SRGMediaStreamType)streamType
+- (SRGMediaPlayerStreamType)streamType
 {
     CMTimeRange timeRange = self.timeRange;
     
     if (CMTIMERANGE_IS_INVALID(timeRange)) {
-        return SRGMediaStreamTypeUnknown;
+        return SRGMediaPlayerStreamTypeUnknown;
     }
     else if (CMTIMERANGE_IS_EMPTY(timeRange)) {
-        return SRGMediaStreamTypeLive;
+        return SRGMediaPlayerStreamTypeLive;
     }
     else if (CMTIME_IS_INDEFINITE(self.player.currentItem.duration)) {
-        return SRGMediaStreamTypeDVR;
+        return SRGMediaPlayerStreamTypeDVR;
     }
     else {
-        return SRGMediaStreamTypeOnDemand;
+        return SRGMediaPlayerStreamTypeOnDemand;
     }
 }
 
@@ -260,10 +254,10 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         return NO;
     }
     
-    if (self.streamType == SRGMediaStreamTypeLive) {
+    if (self.streamType == SRGMediaPlayerStreamTypeLive) {
         return YES;
     }
-    else if (self.streamType == SRGMediaStreamTypeDVR) {
+    else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
         return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), playerItem.currentTime)) < self.liveTolerance;
     }
     else {
@@ -275,7 +269,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 {
     if (! _pictureInPictureController) {
         // Call the setter for KVO registration
-        self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerView.playerLayer];
+        self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
     }
     return _pictureInPictureController;
 }
@@ -297,7 +291,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 #pragma mark Playback
 
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(NSArray<id<SRGSegment>> *)segments completionHandler:(void (^)(BOOL))completionHandler
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(NSArray<id<SRGSegment>> *)segments completionHandler:(void (^)(void))completionHandler
 {
     if (! CMTIME_IS_VALID(startTime)) {
         startTime = kCMTimeZero;
@@ -307,6 +301,9 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     
     self.contentURL = URL;
     self.segments = segments;
+    
+    self.playbackState = SRGMediaPlayerPlaybackStatePreparing;
+    
     self.startTimeValue = [NSValue valueWithCMTime:startTime];
     self.startCompletionHandler = completionHandler;
     
@@ -314,17 +311,71 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
 }
 
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler
+- (void)play
+{
+    [self.player play];
+}
+
+- (void)pause
+{
+    [self.player pause];
+}
+
+- (void)seekToTime:(CMTime)time withCompletionHandler:(void (^)(BOOL))completionHandler
+{
+    if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
+        return;
+    }
+    
+    self.playbackState = SRGMediaPlayerPlaybackStateSeeking;
+    [self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+        if (finished) {
+            self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
+        }
+        completionHandler ? completionHandler(finished) : nil;
+    }];
+}
+
+- (void)reset
+{
+    if (self.pictureInPictureController.isPictureInPictureActive) {
+        [self.pictureInPictureController stopPictureInPicture];
+    }
+    
+    self.contentURL = nil;
+    self.segments = nil;
+    
+    self.playbackState = SRGMediaPlayerPlaybackStateIdle;
+    self.previousSegment = nil;
+    
+    self.startTimeValue = nil;
+    self.startCompletionHandler = nil;
+    
+    [self.player pause];
+    self.player = nil;
+}
+
+#pragma mark Playback (convenience methods)
+
+- (void)prepareToPlayURL:(NSURL *)URL withSegments:(NSArray<id<SRGSegment>> *)segments completionHandler:(void (^)(void))completionHandler
+{
+    [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:segments completionHandler:completionHandler];
+}
+
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(void))completionHandler
 {
     [self prepareToPlayURL:URL atTime:startTime withSegments:nil completionHandler:completionHandler];
 }
 
+- (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(void (^)(void))completionHandler
+{
+    [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:nil completionHandler:completionHandler];
+}
+
 - (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments
 {
-    [self prepareToPlayURL:URL atTime:time withSegments:segments completionHandler:^(BOOL finished) {
-        if (finished) {
-            [self togglePlayPause];
-        }
+    [self prepareToPlayURL:URL atTime:time withSegments:segments completionHandler:^{
+        [self play];
     }];
 }
 
@@ -353,38 +404,10 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     }
 }
 
-- (void)seekToTime:(CMTime)time withCompletionHandler:(void (^)(BOOL))completionHandler
-{
-    if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
-        completionHandler ? completionHandler(NO) : nil;
-        return;
-    }
-    
-    self.playbackState = SRGPlaybackStateSeeking;
-    [self.player seekToTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
-        if (finished) {
-            self.playbackState = (self.player.rate == 0.f) ? SRGPlaybackStatePaused : SRGPlaybackStatePlaying;
-        }
-        completionHandler ? completionHandler(finished) : nil;
-    }];
-}
-
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
 {
     CMTime time = [segment timeRange].start;
     [self seekToTime:time withCompletionHandler:completionHandler];
-}
-
-- (void)reset
-{
-    if (self.pictureInPictureController.isPictureInPictureActive) {
-        [self.pictureInPictureController stopPictureInPicture];
-    }
-    
-    self.playbackState = SRGPlaybackStateIdle;
-    
-    [self.player pause];
-    self.player = nil;
 }
 
 #pragma mark Configuration
@@ -409,7 +432,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
         @strongify(self)
         
         // Ignore when seeking (if we are skipping a segment)
-        if (self.playbackState == SRGPlaybackStateSeeking) {
+        if (self.playbackState == SRGMediaPlayerPlaybackStateSeeking) {
             return;
         }
         
@@ -439,13 +462,13 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                                                                       userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
                 }
                 else {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipSegmentNotification
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
                                                                         object:self
                                                                       userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
                     
                     [self seekToTime:CMTimeRangeGetEnd([currentSegment timeRange]) withCompletionHandler:^(BOOL finished) {
                         if (finished) {
-                            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipSegmentNotification
+                            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                                                 object:self
                                                                               userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
                         }
@@ -508,17 +531,20 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)srg_mediaPlayerController_playerItemPlaybackStalled:(NSNotification *)notification
 {
-    self.playbackState = SRGPlaybackStateStalled;
+    self.playbackState = SRGMediaPlayerPlaybackStateStalled;
 }
 
 - (void)srg_mediaPlayerController_playerItemDidPlayToEndTime:(NSNotification *)notification
 {
-    self.playbackState = SRGPlaybackStateEnded;
+    self.playbackState = SRGMediaPlayerPlaybackStateEnded;
 }
 
 - (void)srg_mediaPlayerController_playerItemFailedToPlayToEndTime:(NSNotification *)notification
 {
-    self.playbackState = SRGPlaybackStateIdle;
+    self.startTimeValue = nil;
+    self.startCompletionHandler = nil;
+    
+    self.playbackState = SRGMediaPlayerPlaybackStateIdle;
     
     NSError *error = RTSMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
@@ -548,19 +574,28 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
             AVPlayerItem *playerItem = self.player.currentItem;
             
             // Do not let playback pause when the player stalls, attempt to play again
-            if (self.player.rate == 0.f && self.playbackState == SRGPlaybackStateStalled) {
+            if (self.player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
                 [self.player play];
             }
             else if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
-                self.playbackState = (self.player.rate == 0.f) ? SRGPlaybackStatePaused : SRGPlaybackStatePlaying;
-                
-                // Playback start. Use received start parameters
+                // Playback start. Use received start parameters, do not update the playback state yet, wait until the
+                // completion handler has been executed (since it might immediately start playback)
                 if (self.startTimeValue) {
                     void (^completionBlock)(BOOL) = ^(BOOL finished) {
+                        NSAssert(finished, @"Finished must be YES, as no seek should be able to cancel the initial seek");
+                        
+                        // Reset start time first so that playback state induced change made in the completion handler
+                        // does not loop back here
                         self.startTimeValue = nil;
                         
-                        self.startCompletionHandler ? self.startCompletionHandler(finished) : nil;
+                        self.startCompletionHandler ? self.startCompletionHandler() : nil;
                         self.startCompletionHandler = nil;
+                        
+                        // If the state of the player was not changed in the completion handler (still preparing), update
+                        // it
+                        if (self.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+                            self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
+                        }
                     };
                     
                     CMTime startTime = self.startTimeValue.CMTimeValue;
@@ -575,11 +610,18 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                         }];
                     }
                 }
+                // Update the playback state immediately
+                else {
+                    self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
+                }
             }
             else {
-                self.playbackState = SRGPlaybackStateIdle;
-                
                 if (playerItem.status == AVPlayerItemStatusFailed) {
+                    self.playbackState = SRGMediaPlayerPlaybackStateIdle;
+                    
+                    self.startTimeValue = nil;
+                    self.startCompletionHandler = nil;
+                    
                     NSError *error = RTSMediaPlayerControllerError(playerItem.error);
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
                                                                         object:self

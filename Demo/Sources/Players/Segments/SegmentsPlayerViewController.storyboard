@@ -18,6 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fdx-yQ-RWj" userLabel="Video View" customClass="SRGMediaPlayerView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="416"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpj-Ty-WAg" userLabel="Timeline Wrapper View">
                                 <rect key="frame" x="0.0" y="416" width="600" height="120"/>
                                 <subviews>
@@ -172,11 +176,15 @@
                             <constraint firstItem="0zP-N8-ggT" firstAttribute="leading" secondItem="Alr-OS-1mK" secondAttribute="leadingMargin" constant="14" id="aXt-f3-4qs"/>
                             <constraint firstItem="uLf-5H-V0Y" firstAttribute="leading" secondItem="Alr-OS-1mK" secondAttribute="leading" id="dEv-kQ-0bc"/>
                             <constraint firstAttribute="trailing" secondItem="uLf-5H-V0Y" secondAttribute="trailing" id="fwV-hf-q6d"/>
+                            <constraint firstItem="cpj-Ty-WAg" firstAttribute="top" secondItem="Fdx-yQ-RWj" secondAttribute="bottom" id="hfv-SU-NBa"/>
+                            <constraint firstAttribute="trailing" secondItem="Fdx-yQ-RWj" secondAttribute="trailing" id="kP2-Dg-AFg"/>
                             <constraint firstItem="0zP-N8-ggT" firstAttribute="centerX" secondItem="cpj-Ty-WAg" secondAttribute="centerX" id="m9Z-Mm-cr0"/>
                             <constraint firstAttribute="centerX" secondItem="GpG-Za-HQt" secondAttribute="centerX" id="n8g-1Y-ar3"/>
+                            <constraint firstItem="Fdx-yQ-RWj" firstAttribute="top" secondItem="UPa-4f-g1G" secondAttribute="bottom" id="od5-0Q-K11"/>
                             <constraint firstAttribute="centerY" secondItem="GpG-Za-HQt" secondAttribute="centerY" id="roj-gy-IkB"/>
                             <constraint firstItem="N6p-gn-RCk" firstAttribute="top" secondItem="UPa-4f-g1G" secondAttribute="bottom" constant="10" id="wQC-XE-sdd"/>
                             <constraint firstItem="cpj-Ty-WAg" firstAttribute="leading" secondItem="Alr-OS-1mK" secondAttribute="leading" id="wv0-bj-d8O"/>
+                            <constraint firstItem="Fdx-yQ-RWj" firstAttribute="leading" secondItem="Alr-OS-1mK" secondAttribute="leading" id="xjX-ao-IK1"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -189,7 +197,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a2A-qd-fMl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="RYc-NM-LNU" customClass="SRGMediaPlayerController"/>
+                <customObject id="RYc-NM-LNU" customClass="SRGMediaPlayerController">
+                    <connections>
+                        <outlet property="view" destination="Fdx-yQ-RWj" id="7A1-Tw-SZV"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="-2243" y="3974"/>
         </scene>

@@ -70,10 +70,10 @@ static void commonInit(SRGPlaybackActivityIndicatorView *self);
 
 - (void)updateWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    if (mediaPlayerController.playbackState == SRGPlaybackStatePlaying
-            || mediaPlayerController.playbackState == SRGPlaybackStatePaused
-            || mediaPlayerController.playbackState == SRGPlaybackStateEnded
-            || mediaPlayerController.playbackState == SRGPlaybackStateIdle) {
+    if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
+            || mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePaused
+            || mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
+            || mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
         [self stopAnimating];
     }
     else {
