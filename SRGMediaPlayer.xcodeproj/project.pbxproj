@@ -59,6 +59,7 @@
 		E6BCE9591D76CBCE0021973D /* SegmentsPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE9581D76CBCE0021973D /* SegmentsPlayerViewController.storyboard */; };
 		E6BCE95B1D76CF7D0021973D /* SegmentURLs.plist in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE95A1D76CF7D0021973D /* SegmentURLs.plist */; };
 		E6BCE95F1D77F1A50021973D /* MediaPlayerPlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDE1D61C6D20064E6C1 /* MediaPlayerPlaybackTestCase.m */; };
+		E6BCE9631D7943F50021973D /* SRGMediaPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE9621D7943F50021973D /* SRGMediaPlayerViewController.storyboard */; };
 		E6C315671D76AB62001FC93A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6C315661D76AB62001FC93A /* LaunchScreen.xib */; };
 		E6C315761D76B2AA001FC93A /* MediasViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C315751D76B2AA001FC93A /* MediasViewController.storyboard */; };
 		E6C9860A1D6F36C900C45C7A /* SRGPlaybackButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4B1D62072400A55085 /* SRGPlaybackButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -76,7 +77,6 @@
 		E6C986191D70182300C45C7A /* SRGPictureInPictureButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F4E1D62072400A55085 /* SRGPictureInPictureButton.m */; };
 		E6C9861B1D701BA700C45C7A /* SRGMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F5E1D62072400A55085 /* SRGMediaPlayerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6C9861C1D701BA700C45C7A /* SRGMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F5F1D62072400A55085 /* SRGMediaPlayerViewController.m */; };
-		E6C9861D1D701BA700C45C7A /* SRGMediaPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6FC7F601D62072400A55085 /* SRGMediaPlayerViewController.xib */; };
 		E6C9861E1D701D3800C45C7A /* SRGMediaPlayerSharedController.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F5C1D62072400A55085 /* SRGMediaPlayerSharedController.h */; };
 		E6C9861F1D701D3800C45C7A /* SRGMediaPlayerSharedController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F5D1D62072400A55085 /* SRGMediaPlayerSharedController.m */; };
 		E6D21D221D76A3F500B477F3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D21D1A1D76A3F500B477F3 /* AppDelegate.m */; };
@@ -209,6 +209,7 @@
 		E6BCE9581D76CBCE0021973D /* SegmentsPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SegmentsPlayerViewController.storyboard; sourceTree = "<group>"; };
 		E6BCE95A1D76CF7D0021973D /* SegmentURLs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SegmentURLs.plist; sourceTree = "<group>"; };
 		E6BCE95C1D76DE380021973D /* SRGMediaPlayerViewController+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayerViewController+Private.h"; sourceTree = "<group>"; };
+		E6BCE9621D7943F50021973D /* SRGMediaPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SRGMediaPlayerViewController.storyboard; sourceTree = "<group>"; };
 		E6C315661D76AB62001FC93A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		E6C315751D76B2AA001FC93A /* MediasViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MediasViewController.storyboard; sourceTree = "<group>"; };
 		E6C986101D70142D00C45C7A /* SRGMediaPlayerError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerError.m; sourceTree = "<group>"; };
@@ -254,7 +255,6 @@
 		E6FC7F5D1D62072400A55085 /* SRGMediaPlayerSharedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerSharedController.m; sourceTree = "<group>"; };
 		E6FC7F5E1D62072400A55085 /* SRGMediaPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerViewController.h; sourceTree = "<group>"; };
 		E6FC7F5F1D62072400A55085 /* SRGMediaPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerViewController.m; sourceTree = "<group>"; };
-		E6FC7F601D62072400A55085 /* SRGMediaPlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SRGMediaPlayerViewController.xib; sourceTree = "<group>"; };
 		E6FC7F631D62072400A55085 /* SRGSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGSegment.h; sourceTree = "<group>"; };
 		E6FC7F9C1D62097E00A55085 /* SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayer.m; sourceTree = "<group>"; };
 		F2B15CAACF7F5CD95288E68A /* Pods-SRGMediaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer/Pods-SRGMediaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
@@ -583,9 +583,9 @@
 				E6FC7F5C1D62072400A55085 /* SRGMediaPlayerSharedController.h */,
 				E6FC7F5D1D62072400A55085 /* SRGMediaPlayerSharedController.m */,
 				E6FC7F5E1D62072400A55085 /* SRGMediaPlayerViewController.h */,
-				E6BCE95C1D76DE380021973D /* SRGMediaPlayerViewController+Private.h */,
 				E6FC7F5F1D62072400A55085 /* SRGMediaPlayerViewController.m */,
-				E6FC7F601D62072400A55085 /* SRGMediaPlayerViewController.xib */,
+				E6BCE9621D7943F50021973D /* SRGMediaPlayerViewController.storyboard */,
+				E6BCE95C1D76DE380021973D /* SRGMediaPlayerViewController+Private.h */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -748,9 +748,9 @@
 				E69A1E5C1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png in Resources */,
 				E69A1E5B1D61BAFD0064E6C1 /* thumb_timeline_slider.png in Resources */,
 				E69A1E561D61BAFD0064E6C1 /* Localizable.strings in Resources */,
-				E6C9861D1D701BA700C45C7A /* SRGMediaPlayerViewController.xib in Resources */,
 				E69A1E591D61BAFD0064E6C1 /* picture_in_picture_stop_button.png in Resources */,
 				E69A1E571D61BAFD0064E6C1 /* picture_in_picture_start_button.png in Resources */,
+				E6BCE9631D7943F50021973D /* SRGMediaPlayerViewController.storyboard in Resources */,
 				E69A1E5A1D61BAFD0064E6C1 /* picture_in_picture_stop_button@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

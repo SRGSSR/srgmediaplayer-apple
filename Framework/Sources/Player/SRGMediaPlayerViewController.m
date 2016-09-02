@@ -69,11 +69,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (instancetype)initWithContentURL:(NSURL *)contentURL
 {
-    if (self = [super initWithNibName:@"SRGMediaPlayerViewController" bundle:[NSBundle srg_mediaPlayerBundle]]) {
-        self.contentURL = contentURL;
-        self.autoplay = YES;
-    }
-    return self;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:[NSBundle srg_mediaPlayerBundle]];
+    SRGMediaPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    viewController.contentURL = contentURL;
+    viewController.autoplay = YES;
+    return viewController;
 }
 
 - (instancetype)initWithCurrentURL
@@ -87,12 +87,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    [self doesNotRecognizeSelector:_cmd];
-    return [self initWithContentURL:[NSURL URLWithString:@""]];
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     [self doesNotRecognizeSelector:_cmd];
     return [self initWithContentURL:[NSURL URLWithString:@""]];
