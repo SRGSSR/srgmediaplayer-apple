@@ -48,8 +48,9 @@
     for (NSInteger i = 0; i < mediaURLs.count; ++i) {
         SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
         
+        __weak __typeof(self) weakSelf = self;
         mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
-            BOOL isMainPlayer = (i == _selectedIndex);
+            BOOL isMainPlayer = (i == weakSelf.selectedIndex);
             player.allowsExternalPlayback = isMainPlayer;
             player.usesExternalPlaybackWhileExternalScreenIsActive = isMainPlayer;
             player.muted = ! isMainPlayer;
@@ -135,23 +136,16 @@
     } completion:nil];
 }
 
-#pragma mark Actions
-
-- (IBAction)dismiss:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
-
 #pragma mark Media players
 
 - (CGRect)rectForPlayerViewAtIndex:(NSInteger)index
 {
     CGFloat playerWidth = MAX(100, MIN(200, CGRectGetWidth(self.playerViewsContainer.frame) / (self.mediaURLs.count - 1)));
     CGFloat playerHeight = (playerWidth - 10) * 10 / 16;
-
+    
     CGFloat x = self.mediaURLs.count > 2 ? index * playerWidth : (CGRectGetWidth(self.playerViewsContainer.frame) - playerWidth) / 2;
     CGFloat y = CGRectGetHeight(self.playerViewsContainer.frame) / 2 - playerHeight / 2;
-
+    
     return CGRectMake(x + 5, y, playerWidth - 10, playerHeight);
 }
 
@@ -193,7 +187,14 @@
     return [thumbnailPlayerControllers copy];
 }
 
-#pragma mark - Gestures
+#pragma mark Actions
+
+- (IBAction)dismiss:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark Gesture recognizers
 
 - (void)switchMainPlayer:(UITapGestureRecognizer *)gestureRecognizer
 {
