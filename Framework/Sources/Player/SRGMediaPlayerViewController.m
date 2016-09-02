@@ -47,6 +47,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @property (nonatomic) NSTimer *inactivityTimer;
 
+@property (nonatomic, weak) id periodicTimeObserver;
+
 @end
 
 @implementation SRGMediaPlayerViewController {
@@ -105,6 +107,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (void)dealloc
 {
     self.inactivityTimer = nil;                 // Invalidate timer
+    [s_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -167,7 +171,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self setTimeSliderHidden:YES];
     
     @weakify(self)
-    [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
+    self.periodicTimeObserver = [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
         @strongify(self)
         
         if (s_mediaPlayerController.streamType != SRGMediaPlayerStreamTypeUnknown) {
@@ -206,6 +210,15 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
                 [self dismiss:nil];
             });
         }
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if ([self isBeingDismissed]) {
+        self.inactivityTimer = nil;
     }
 }
 
@@ -257,7 +270,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
                                                             target:self
                                                           selector:@selector(updateForInactivity:)
                                                           userInfo:nil
-                                                           repeats:YES];
+                                                           repeats:NO];
 }
 
 - (void)setUserInterfaceHidden:(BOOL)hidden animated:(BOOL)animated
