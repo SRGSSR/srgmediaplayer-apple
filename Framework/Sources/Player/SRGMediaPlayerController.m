@@ -267,7 +267,11 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (AVPictureInPictureController *)pictureInPictureController
 {
-    if (! _pictureInPictureController) {
+    // It is especially important to wait until the player layer is ready for display, otherwise the player might behave
+    // incorrectly (not correctly pause when asked to) because of the picture in picture controller, even if not active.
+    // Weird, but it seems the relationship between both is tight, see
+    //   https://developer.apple.com/library/ios/documentation/WindowsViews/Conceptual/AdoptingMultitaskingOniPad/QuickStartForPictureInPicture.html)
+    if (! _pictureInPictureController && self.playerLayer.readyForDisplay) {
         // Call the setter for KVO registration
         self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
     }
