@@ -14,14 +14,15 @@
 
 static void commonInit(SRGTimeSlider *self);
 
-// TODO: Replace with shiny NSDateComponentsFormatter
+// Cannot sadly use NSDateComponentsFormatter, impossible to get compact strings with different components if hours must
+// be displayed or not
 static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 {
     if (isnan(seconds)) {
         return @"NaN";
     }
     else if (isinf(seconds)) {
-        return seconds > 0 ? @"∞" : @"-∞";
+        return seconds >= 0 ? @"∞" : @"-∞";
     }
     
     div_t qr = div((int)round(ABS(seconds)), 60);
