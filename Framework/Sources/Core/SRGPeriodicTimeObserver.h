@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGPeriodicTimeObserver : NSObject
 
 /**
- *  Create a periodic time observer. Does nothing until attached to a player (see `-attachToMediaPlayer:`)
+ *  Create a periodic time observer. Does nothing until attached to a player
  *
  *  @param interval    The interval at which the block must be executed
  *  @param queue	   The serial queue onto which block should be enqueued (main queue if NULL)
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setBlock:(void (^)(CMTime time))block forIdentifier:(NSString *)identifier;
 
 /**
- *  The number of block registration
+ *  The number of block registrations
  */
 @property (nonatomic) NSUInteger registrationCount;
 
