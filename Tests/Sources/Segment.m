@@ -37,4 +37,10 @@
     return self;
 }
 
+- (BOOL)isHidden
+{
+    // NO need to test hidden segments in unit tests, those are only for use by UI overlays
+    return NO;
+}
+
 @end
