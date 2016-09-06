@@ -1,73 +1,60 @@
 Getting started
 ===============
 
-The SRG Media Player library is made of separate building blocks. Those components can be combined together depending on your application needs.
+The SRG Media Player library is made of separate building blocks:
+
+* A core `AVPlayer`-based controller to play medias, optionally with support for a logical structure (segments)
+* A set of overlays to be readily used with it
+
+Those components can be combined together depending on your application needs. A ready-to-use player view is also available.
 
 ## Architecture
 
-At the highest level, the library intends to provide a default player view controller which can be instantiated in a few keystrokes, much like the system `MPMoviePlayerViewController`. It supports only limited features of the library and its layout, similar to the one of the system player, cannot be customized.
+At the highest level, the library intends to provide a default player view controller which can be instantiated in a few keystrokes, much like the system `MPMoviePlayerViewController`. It supports only limited features and its layout is similar to the one of the system player, but cannot be customised.
 
-This default player view controller is itself based on a set of components which you can combine to match your requirements:
+This default player view controller is itself based on a set of lower-level components which you can combine to match your requirements:
 
 * A media player controller, which can be optionally attached to a view for playing videos
-* A segments controller, which controls playback based on segment information (e.g. preventing seeking in blocked segments)
-* A set of components (slider, play / pause button, timeline, message view, Airplay view, etc.) which can be connected to an underlying media player controller
-* A few protocols which describe how controllers retrieve the data they need, and how playback can be controlled
+* A set of components (slider, play / pause button, timeline, message view, Airplay overlay, etc.) which can be connected to an underlying media player controller
 
 Let us now discuss these components further and describe how they can be glued together.
 
 ## Media player view controller
 
-If you do not need to customize the player appearance, simply instantiate `RTSMediaPlayerViewController` and install it somewhere into your view controller hierarchy, e.g. modally:
+If you do not need to customize the player appearance, simply instantiate `SRGMediaPlayerViewController` and display it modally:
 
 ```objective-c
-RTSMediaPlayerViewController *mediaPlayerViewController = [[RTSMediaPlayerViewController alloc] initWithContentURL:contentURL];
+SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:contentURL];
 [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
 ```
 
-This view controller can simply be supplied the URL to be played. Alternatively, you can provide a data source and an identifier for which the URL must be retrieved from the data source. More on this topic in _Data sources_ section.
+This view controller will immediately play the given URL as soon it is displayed.
 
-The `RTSMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams) and picture in picture for compatible devices, but does not provide support for segments. For this you need to design your own player view, see the _Designing custom players_ section below.
+The `SRGMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams) and picture in picture for compatible devices, but does not provide support for segments. For this you need to design your own player view, see the _Designing custom players_ section below.
 
-## Data sources
+## Designing custom players
 
-Each controller class has an associated protocol describing how it retrieves the data it needs. Controllers are only concerned with media identifiers (strings), for which they ask their data source about data:
-
-* `RTSMediaPlayerControllerDataSource`: Describes how a media player controller retrieves the URL to be played
-* `RTSMediaSegmentsDataSource`: Describes how a media segments controller retrieves segment information. Segments can be any kind of class conforming to the `RTSMediaSegment` protocol. For proprietary classes, you can usually achieve this by having a category conform to the protocol
-
-A data source is implicitly provided to an `RTSMediaPlayerViewController` when it is instantiated (see example in the _Media player view controller_ section). For `RTSMediaPlayerController` and `RTSMediaSegmentsController`, though, the data source is not provided at creation time, rather specified using dedicated `dataSource` properties. Those have been made available as outlets. The SRG Media Player library namely intends to provide an easy way to create custom player layouts not only in code, but also in Interface Builder for convenience. This topic is discussed in the next section.
-
-## Designing custom players without segment support
-
-Custom player layouts can be designed entirely in Interface Builder.
+Custom player layouts can be designed entirely in Interface Builder, whether you are using xibs or storyboards. You can create your custom player entirely in code if you want, but using Interface Builder is recommended.
 
 ![Connecting outlets](Getting-started-images/outlets.jpg)
 
-Start by adding a view controller to a storyboard file, and drop two custom objects from Xcode _Utilities_ panel:
+Start by adding a view controller to a storyboard file, and drop a custom object from Xcode _Utilities_ panel:
 
 ![Custom objects](Getting-started-images/custom-objects.jpg)
 
-The first object class must be set to `RTSMediaPlayerController`, while the other one must be set to a custom data source class you must create, conforming to `RTSMediaPlayerControllerDataSource`. Bind the `dataSource` outlet of the media player controller to its data source.
+Set its class to `SRGMediaPlayerController`. This controller object will manage playback of medias.
 
-Creating the player layout is then a matter of dropping more views onto the layout, setting their resizing behavior, and connecting the various outlets at hand. The media player controller itself has three main outlets:
+Creating the player layout is then a matter of dropping more views onto the layout, setting their constraints, and connecting them to the media player controller:
 
-* `dataSource`, described above
-* `activityView`, where taps are detected to toggle on or off UI overlay views
-* the `overlayViews` collection, which contains all views you want to be toggled off depending on user activity
+* To set where the player controller must display videos (if you want to play videos), add a view to your hierarchy, set its class to `SRGMediaPlayerView`, and bind it to the media player controller `view` property.
+* To control playback, you can drop one of the available overlay classes and bind their `mediaPlayerController` property directly in Interface Builder. No additional setup (except for appearance and constraints) is ususally required, as those components are automatically synchronized with the controller they have been attached to. Built-in overlay classes include most notably:
+  * `SRGPlaybackButton`: A play / pause button
+  * `SRGTimeSlider`: A time slider with elapsed and remaining time label support
+  * `SRGPlaybackActivityIndicatorView`: An activity indicator
 
-Several controls can then be dropped onto the layout and bound to the player they must be associated with, usually through a `...controller` outlet. Simply use a standard `UIView` in Interface Builder, setting its class to one of the following types:
+For a more thorough description of the player controller and the associated overlays, have a look at the documentation available from the `SRGMediaPlayerController` header file.
 
-* `RTSMediaPlayerPlaybackButton`: A play / pause button to control the underlying player
-* `RTSTimeSlider`: A time slider, describing the current playback position, and allowing to seek. Two label outlets can be optionally attached to display the elapsed and remaining times (_Live_ for live streams).
-* `RTSVolumeView`: A view to control volume. Does not need any outlet binding
-* `RTSPlaybackActivityIndicatorView`: An activity indicator automatically shown or hidden depending on the player activity
-* `RTSMediaFailureOverview`: A view displaying player error messages, and hidden when there is none
-* `RTSAirplayOverviewView`: A view displayed when Airplay output is active
-
-For more information about these classes and how they can be customized, please refer to the associated header files. If you need to implement your own custom views, the SRG Media Player library provides all the information you need. Since this is a more advanced topic, it is not further discussed in this guide.
-
-To start playback, bind your media player controller to an `mediaPlayerController` outlet of your view controller class and start playback as soon as your view controller appears:
+To start playback, bind your media player controller to a `mediaPlayerController` outlet of your view controller class and start playback as soon as your view controller appears:
 
 ```objective-c
 - (void)viewWillAppear:(BOOL)animated
@@ -75,74 +62,54 @@ To start playback, bind your media player controller to an `mediaPlayerControlle
     [super viewWillAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self.mediaPlayerController playIdentifier:@"the_media_identifier"];
+        NSURL *mediaURL = [NSURL URLWithString:@"http://..."]:
+        [self.mediaPlayerController playURL:mediaURL];
     }
 }
 ```
 
-To play videos, you must attach the controller to a view within your hierarchy first. Assuming you have such a view bound to a `videoView` outlet, just attach the view when available, usually in `-viewDidLoad`:
+This is it. If you bound a playback button or a slider to the player controller, you should readily be able to control playback as well.
+
+## Displaying segments
+
+To display segments, you must first have a class conform to the `SRGSegment` protocol, which captures the definition of a segment:
+
+* Segments correspond to a time range for the media URL being played
+* Segments can be optionally blocked to prevent users from seing them
+
+Once you have segments, simply supply them to the player controller when playing a URL:
 
 ```objective-c
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [self.mediaPlayerController attachPlayerToView:self.videoView];
-}
+[self.mediaPlayerController playURL:mediaURL withSegments:segments];
 ```
 
-Controlling playback can be made programatically using methods from the `RTSMediaPlayback` protocol, described in the next section.
+The player controller will then emit notifications when segments are being played and skip over blocked ones.
 
-#### Remark
+You can display segments using dedicated built-in overlay classes you can drop onto your view controller layout and bind to your media player controller:
 
-You can also create your layout and instantiate all or part of the controllers and data sources programatically. These cases are not described further in this guide as they should be obvious enough for Cocoa developers.
+* `SRGTimelineSlider`: A timeline displaying segment start points and providing a way to seek with a single tap. You can use a delegate protocol to display custom icons if you want
+* `SRGTimelineView`: A horizontal list of cells displaying segments, used like a collection view.
 
-## Controlling playback
-
-Playback can be controlled using the `RTSMediaPlayback` protocol, to which both controller classes `RTSMediaPlayerController` and `RTSMediaSegmentsController` conform. Most properties of this protocol should be self-explanatory.
-
-Periodic time observers need further discussion, though. Unlike standard `AVPlayer` time observers, these observers are `NSTimer`-based and do not stop when playback stops, but live as long as the player lives. This makes it possible to perform periodic updates, even when the player is paused (e.g. UI updates for DVR streams).
-
-If you need standard time observers, you can use the `player` property of `RTSMediaPlayerController`. Be careful, though, as such observers can only be added when the `player` property is actually ready (use KVO to detect it).
-
-## Designing custom players with segment support
-
-Adding support for segments to a custom player happens in the same way as described in the _Designing custom players without segment support_ section. Add two custom objects to your storyboard:
-
-* Set the class of the first one to a `RTSMediaSegmentsDataSource` you have implemented
-* Set the class of the second one to `RTSMediaSegmentsController`, bind its `playerController` outlet to the media player controller it must manage, and bind its `dataSource` outlet to the data source
-
-To retrieve segments, call `-reloadSegmentsForIdentifier:completionHandler:`. Your data source can implement segment data retrieval, e.g. through a webservice request, returing objects conforming to the `RTSMediaSegment` protocol.
-
-Segments can be easily displayed using two dedicated view classes. Drop `UIView `instances onto your player layout and set their class to either:
-
-* `RTSTimelineSlider`: A timeline displaying segment start points and providing a way to seek with a single tap. You can use a delegate protocol to display custom icons if you want
-* `RTSSegmentedTimelineView`: An horizontal list of cells displaying segments, used like a collection view.
-
-Do not forget to bind the `segmentsController` property of such views to the underyling segments controller so that they are fed properly. For more information, please refer to the header documentation of those classes.
-
-As said before, controlling playback is achieved using the `RTSMediaPlayback`. Calling the various playback methods onto the segments controller allows mediating between the user and the media player controller, preventing forbidden actions. Based on segments information, the segments controller may namely prevent scrubbing to a specific location or resume after a blocked segment.
+Both provide a `-reloadData` method to reload segments from the associated media player controller. Please refer to their respective header documentation to learn about the delegate protocols you need to implement to respond to reload requests.
 
 ### Airplay support
 
-Two properties are provided to control Airplay behavior, `allowsExternalPlayback` and `usesExternalPlaybackWhileExternalScreenIsActive`. Those properties merely mirror the ones of `AVPlayer`, but can be set at any time (since the underlying `AVPlayer` lifetime is controlled by `RTSMediaPlayerController`, setting its properties is not supported and may result in undefined behavior).
+Airplay support is entirely the responsibilty of client applications. `SRGMediaPlayerController` exposes three block hooks where you can easily configure Airplay playback settings as you see fit:
 
-To add Airplay support to your application:
+* `playerCreationBlock`: Called when the `AVPlayer` is created
+* `playerConfigurationBlock`: Called when the `AVPlayer` is created, and when a configuration reload is requested
+* `playerDestructionBlock`: Called when the `AVPlayer` is released
+
+To add basic Airplay support to your application, you can for example:
 
 * Enable the corresponding background mode for your target
-* Enable `allowsExternalPlayback` (which is the default)
-
-There are currently a few issues with Airplay playback. Bug reports have been submitted to Apple and there's hope those will be fixed in the future:
-
-* The `mediaType` information is unreliable. It is correct in most cases, but not if Airplay was enabled before playback started
-* If several instances of the player coexist at the same time, the last for which `-play` is called will steal the session. If this player has `allowsExternalPlayback` set to `NO`, the Airplay session will be dropped
-* Media metadata displayed on an Apple TV is incorrect if Airplay was enabled before playback started
-
-In all cases, when casting to an Apple TV, ensure the most recent software updates have been applied.
+* Enable `allowsExternalPlayback` (which is the default) and `usesExternalPlaybackWhileExternalScreenIsActive` (to switch to full-screen playback when mirroring is active) in the `playerConfigurationBlock`.
 
 ### Audio session management
 
-No audio session specific management is provided by the library. Managing audio sessions is entirely the responsibility of the application, which gives you complete freedom over how playback happens, especially in the background or when switching between applications. For more information, please refer to the [official documentation](https://developer.apple.com/library/ios/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/Introduction/Introduction.html). This is a somewhat tricky topic, you should therefore read the documentation well, experiment, and test the behavior of your application on a real device. 
+No audio session specific management is provided by the library. Managing audio sessions is entirely the responsibility of the application, which gives you complete freedom over how playback happens, especially in the background or when switching between applications. As for Airplay setup (see above), you can use the various block hooks to setup and restore audio session settings as required by your application.
+
+For more information, please refer to the [official documentation](https://developer.apple.com/library/ios/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/Introduction/Introduction.html). Audio sessions are a somewhat tricky topic, you should therefore read the documentation well, experiment, and test the behavior of your application on a real device. 
 
 In particular, you should ask yourself:
 
@@ -160,4 +127,4 @@ Note that control center integration does not work in the iOS simulator, you wil
 
 ## Further reading
 
-This guide only scratches the surface of what you can do with the SRG Media Player library. For more information, please have a look at the demo implementation. Do not forget to read the header documentation as well.
+This guide only scratches the surface of what you can do with the SRG Media Player library. For more information, please have a look at the demo implementations and check the header documentation (especially the `SRGMediaPlayerController` header documentation, which covers all topics extensively).
