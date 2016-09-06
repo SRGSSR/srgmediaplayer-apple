@@ -24,7 +24,12 @@ The library can be added to a project using [Carthage](https://github.com/Cartha
 github "SRGSSR/SRGMediaPlayer-iOS"
 ```
 
-Then run `carthage update` to update the dependencies. You will need to manually add the `.framework` generated in the `Carthage/Build/iOS` folder to your projet. Refer to the [official documentation](https://github.com/Carthage/Carthage) for more information.
+Then run `carthage update` to update the dependencies. You will need to manually add the following `.framework`s generated in the `Carthage/Build/iOS` folder to your projet:
+
+* `SRGMediaPlayer.framework`
+* `libextobjc.framework`
+
+For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
 
 ## Demo project
 
