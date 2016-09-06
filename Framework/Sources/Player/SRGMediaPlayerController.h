@@ -385,7 +385,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param segment The segment to seek to
  *
- * For more information, @see `-seekToTime:withCompletionHandler:`
+ * For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
  */
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
