@@ -326,19 +326,11 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     [self.player pause];
 }
 
-- (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(nullable void (^)(BOOL))completionHandler
-{
-    [self seekToTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter selectedSegment:nil completionHandler:completionHandler];
-}
-
-- (void)reset
+- (void)stop
 {
     if (self.pictureInPictureController.isPictureInPictureActive) {
         [self.pictureInPictureController stopPictureInPicture];
     }
-    
-    self.contentURL = nil;
-    self.segments = nil;
     
     self.playbackState = SRGMediaPlayerPlaybackStateIdle;
     self.previousSegment = nil;
@@ -348,6 +340,19 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     
     [self.player pause];
     self.player = nil;
+}
+
+- (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(nullable void (^)(BOOL))completionHandler
+{
+    [self seekToTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter selectedSegment:nil completionHandler:completionHandler];
+}
+
+- (void)reset
+{
+    [self stop];
+    
+    self.contentURL = nil;
+    self.segments = nil;
 }
 
 #pragma mark Playback (convenience methods)

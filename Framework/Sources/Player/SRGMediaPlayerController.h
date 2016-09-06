@@ -267,6 +267,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)pause;
 
 /**
+ *  Ask the player to stop playback. Call `-play` to restart playback with the same content URL and segments
+ *
+ *  @discussion See `-stop`
+ */
+- (void)stop;
+
+/**
  *  Ask the player to seek to a given location. A paused player remains paused, while a playing player remains
  *  playing. You can use the completion handler to change the player state if needed, e.g. to automatically
  *  resume playback after a seek has been performed on a paused player
