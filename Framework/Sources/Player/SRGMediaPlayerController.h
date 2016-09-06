@@ -305,91 +305,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reset;
 
 /**
- *  @name Playback (convenience methods)
- */
-
-/**
- *  Prepare to play the media, starting from the specified time. Segments can be optionally provided
- *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
- */
-- (void)prepareToPlayURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(void))completionHandler;
-
-/**
- *  Prepare to play the media, starting from the specified time
- *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
- */
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(void))completionHandler;
-
-/**
- *  Prepare to play the media, starting at its default location
- *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
- */
-- (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(nullable void (^)(void))completionHandler;
-
-/**
- *  Play a media, starting from the specified time. Segments can be optionally provided
- *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
- *
- *  @discussion The player immediately reaches the playing state
- */
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
-
-/**
- *  Play a media, starting from the specified time
- *
- *  For more information, @see `-playURL:atTime:withSegments:`
- */
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
-
-/**
- *  Play a media, starting at its default location. Segments can be optionally provided
- *
- *  For more information, @see `-playURL:atTime:withSegments:`
- */
-- (void)playURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
-
-/**
- *  Play a media, starting at its default location
- *
- *  For more information, @see `-playURL:atTime:withSegments:`
- */
-- (void)playURL:(NSURL *)URL;
-
-/**
- *  Ask the player to change its status from pause to play or conversely, depending on the state it is in
- *
- *  @discussion See `-play`
- */
-- (void)togglePlayPause;
-
-/**
- *  Ask the player to seek to a given location efficiently (the seek might be not perfeclty accurate but will be faster)
- *
- * For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:` 
- */
-- (void)seekEfficientlyToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
-
-/**
- * Ask the player to seek to a given location with no tolerance (this might incur some decoding overhead)
- *
- * For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
- */
-- (void)seekPreciselyToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
-
-/**
- *  Seek to the beginning of the specified segment
- *
- *  @param segment The segment to seek to
- *
- * For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
- */
-- (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
-
-/**
  *  @name Playback information
  */
 
@@ -471,6 +386,95 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param observer The time observer to remove
  */
 - (void)removePeriodicTimeObserver:(id)observer;
+
+@end
+
+/**
+ *  @name Playback (convenience methods)
+ */
+
+@interface SRGMediaPlayerController (Convenience)
+
+/**
+ *  Prepare to play the media, starting from the specified time. Segments can be optionally provided
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ */
+- (void)prepareToPlayURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Prepare to play the media, starting from the specified time
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ */
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Prepare to play the media, starting at its default location
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ */
+- (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Play a media, starting from the specified time. Segments can be optionally provided
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ *
+ *  @discussion The player immediately reaches the playing state
+ */
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
+
+/**
+ *  Play a media, starting from the specified time
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:`
+ */
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time;
+
+/**
+ *  Play a media, starting at its default location. Segments can be optionally provided
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:`
+ */
+- (void)playURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
+
+/**
+ *  Play a media, starting at its default location
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:`
+ */
+- (void)playURL:(NSURL *)URL;
+
+/**
+ *  Ask the player to change its status from pause to play or conversely, depending on the state it is in
+ *
+ *  @discussion See `-play`
+ */
+- (void)togglePlayPause;
+
+/**
+ *  Ask the player to seek to a given location efficiently (the seek might be not perfeclty accurate but will be faster)
+ *
+ * For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
+ */
+- (void)seekEfficientlyToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+
+/**
+ * Ask the player to seek to a given location with no tolerance (this might incur some decoding overhead)
+ *
+ * For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
+ */
+- (void)seekPreciselyToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+
+/**
+ *  Seek to the beginning of the specified segment
+ *
+ *  @param segment The segment to seek to
+ *
+ * For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
+ */
+- (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 @end
 
