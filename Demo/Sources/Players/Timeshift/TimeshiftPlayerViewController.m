@@ -106,7 +106,7 @@
         return;
     }
 
-    [self.mediaPlayerController seekToTime:CMTimeRangeGetEnd(timeRange) withCompletionHandler:nil];
+    [self.mediaPlayerController seekEfficientlyToTime:CMTimeRangeGetEnd(timeRange) withCompletionHandler:nil];
 }
 
 - (IBAction)seek:(id)sender

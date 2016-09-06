@@ -346,7 +346,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         return;
     }
     
-    [s_mediaPlayerController seekToTime:CMTimeRangeGetEnd(timeRange) withCompletionHandler:^(BOOL finished) {
+    [s_mediaPlayerController seekEfficientlyToTime:CMTimeRangeGetEnd(timeRange) withCompletionHandler:^(BOOL finished) {
         if (finished) {
             [s_mediaPlayerController play];
         }

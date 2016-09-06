@@ -116,7 +116,7 @@
     };
     
     if (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
-        [self.mediaPlayerController seekToTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
+        [self.mediaPlayerController seekEfficientlyToTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
             if (finished) {
                 togglePlayPause();
             }

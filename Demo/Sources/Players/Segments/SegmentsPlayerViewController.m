@@ -130,19 +130,19 @@
 {
     CMTime currentTime = self.mediaPlayerController.player.currentTime;
     CMTime increment = CMTimeMakeWithSeconds(30., NSEC_PER_SEC);
-    [self.mediaPlayerController seekToTime:CMTimeSubtract(currentTime, increment) withCompletionHandler:nil];
+    [self.mediaPlayerController seekEfficientlyToTime:CMTimeSubtract(currentTime, increment) withCompletionHandler:nil];
 }
 
 - (IBAction)seekForward:(id)sender
 {
     CMTime currentTime = self.mediaPlayerController.player.currentTime;
     CMTime increment = CMTimeMakeWithSeconds(30., NSEC_PER_SEC);
-    [self.mediaPlayerController seekToTime:CMTimeAdd(currentTime, increment) withCompletionHandler:nil];
+    [self.mediaPlayerController seekEfficientlyToTime:CMTimeAdd(currentTime, increment) withCompletionHandler:nil];
 }
 
 - (IBAction)goToLive:(id)sender
 {
-    [self.mediaPlayerController seekToTime:self.mediaPlayerController.player.currentItem.duration withCompletionHandler:nil];
+    [self.mediaPlayerController seekEfficientlyToTime:self.mediaPlayerController.player.currentItem.duration withCompletionHandler:nil];
 }
 
 #pragma mark Notifications
