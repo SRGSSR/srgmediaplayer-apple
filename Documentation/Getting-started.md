@@ -92,7 +92,7 @@ You can display segments using dedicated built-in overlay classes you can drop o
 
 Both provide a `-reloadData` method to reload segments from the associated media player controller. Please refer to their respective header documentation to learn about the delegate protocols you need to implement to respond to reload requests.
 
-### Airplay support
+## Airplay support
 
 Airplay support is entirely the responsibilty of client applications. `SRGMediaPlayerController` exposes three block hooks where you can easily configure Airplay playback settings as you see fit:
 
@@ -105,7 +105,7 @@ To add basic Airplay support to your application, you can for example:
 * Enable the corresponding background mode for your target
 * Enable `allowsExternalPlayback` (which is the default) and `usesExternalPlaybackWhileExternalScreenIsActive` (to switch to full-screen playback when mirroring is active) in the `playerConfigurationBlock`.
 
-### Audio session management
+## Audio session management
 
 No audio session specific management is provided by the library. Managing audio sessions is entirely the responsibility of the application, which gives you complete freedom over how playback happens, especially in the background or when switching between applications. As for Airplay setup (see above), you can use the various block hooks to setup and restore audio session settings as required by your application.
 
@@ -119,7 +119,7 @@ In particular, you should ask yourself:
 
 Moreover, you should check that your application behaves well when receiving phone calls (in particular, audio playback should stop).
 
-### Control center integration
+## Control center integration
 
 For proper integration into the control center and the lock screen, use the `MPRemoteCommandCenter` class. For everything to work properly on a device, `[[UIApplication sharedApplication] beginReceivingRemoteControlEvents]` must have been called first (e.g. in your application delegate) and your audio session category should be set to `AVAudioSessionCategoryPlayback`. For more information, please refer to the `MPRemoteCommandCenter` documentation.
 
