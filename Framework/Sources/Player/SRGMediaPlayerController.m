@@ -35,7 +35,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) id segmentPeriodicTimeObserver;
 
-@property (nonatomic) id<SRGSegment> previousSegment;
+@property (nonatomic, weak) id<SRGSegment> previousSegment;
+@property (nonatomic, weak) id<SRGSegment> selectedSegment;
 
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
@@ -327,17 +328,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(nullable void (^)(BOOL))completionHandler
 {
-    if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
-        return;
-    }
-    
-    self.playbackState = SRGMediaPlayerPlaybackStateSeeking;
-    [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
-        if (finished) {
-            self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
-        }
-        completionHandler ? completionHandler(finished) : nil;
-    }];
+    [self seekToTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter selectedSegment:nil completionHandler:completionHandler];
 }
 
 - (void)reset
@@ -421,7 +412,26 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
 {
     CMTime time = [segment timeRange].start;
-    [self seekPreciselyToTime:time withCompletionHandler:completionHandler];
+    [self seekToTime:time withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero selectedSegment:segment completionHandler:completionHandler];
+}
+
+#pragma mark Playback (internal)
+
+- (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter selectedSegment:(id<SRGSegment>)selectedSegment completionHandler:(nullable void (^)(BOOL))completionHandler
+{
+    if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
+        return;
+    }
+    
+    self.playbackState = SRGMediaPlayerPlaybackStateSeeking;
+    self.selectedSegment = selectedSegment;
+    
+    [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
+        if (finished) {
+            self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
+        }
+        completionHandler ? completionHandler(finished) : nil;
+    }];
 }
 
 #pragma mark Configuration
@@ -471,9 +481,11 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
             
             if (currentSegment) {
                 if (! [currentSegment isBlocked]) {
+                    BOOL selected = currentSegment && (currentSegment == self.selectedSegment);
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
                                                                         object:self
-                                                                      userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
+                                                                      userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment,
+                                                                                  SRGMediaPlayerSelectedKey : @(selected) }];
                 }
                 else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
@@ -488,6 +500,8 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                         }
                     }];
                 }
+                
+                self.selectedSegment = nil;
             }
         }
     }];
