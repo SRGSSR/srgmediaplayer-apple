@@ -12,6 +12,7 @@
 
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic) NSArray<Segment *> *segments;
+@property (nonatomic, weak) Segment *selectedSegment;
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
 
@@ -60,12 +61,20 @@
                                              selector:@selector(didSkipSegment:)
                                                  name:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                object:self.mediaPlayerController];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(segmentDidStart:)
+                                                 name:SRGMediaPlayerSegmentDidStartNotification
+                                               object:self.mediaPlayerController];
 }
 
 - (void)updateAppearanceWithTime:(CMTime)time
 {
+    if (self.selectedSegment) {
+        time = [self.selectedSegment timeRange].start;
+    }
+    
     for (SegmentCollectionViewCell *segmentCell in [self.timelineView visibleCells]) {
-        [segmentCell updateAppearanceWithTime:time];
+        [segmentCell updateAppearanceWithTime:time selectedSegment:self.selectedSegment];
     }
 }
 
@@ -102,6 +111,8 @@
         if (segment) {
             [self.timelineView scrollToSegment:segment animated:YES];
         }
+        
+        self.selectedSegment = nil;
     }
 }
 
@@ -112,6 +123,11 @@
     SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SegmentCollectionViewCell class]) forSegment:segment];
     segmentCell.segment = (Segment *)segment;
     return segmentCell;
+}
+
+- (void)timelineView:(SRGTimelineView *)timelineView didSelectSegmentAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.selectedSegment = self.segments[indexPath.row];
 }
 
 - (void)timelineViewDidScroll:(SRGTimelineView *)timelineView
@@ -126,25 +142,6 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)seekBackward:(id)sender
-{
-    CMTime currentTime = self.mediaPlayerController.player.currentTime;
-    CMTime increment = CMTimeMakeWithSeconds(30., NSEC_PER_SEC);
-    [self.mediaPlayerController seekToTime:CMTimeSubtract(currentTime, increment) withCompletionHandler:nil];
-}
-
-- (IBAction)seekForward:(id)sender
-{
-    CMTime currentTime = self.mediaPlayerController.player.currentTime;
-    CMTime increment = CMTimeMakeWithSeconds(30., NSEC_PER_SEC);
-    [self.mediaPlayerController seekToTime:CMTimeAdd(currentTime, increment) withCompletionHandler:nil];
-}
-
-- (IBAction)goToLive:(id)sender
-{
-    [self.mediaPlayerController seekToTime:self.mediaPlayerController.player.currentItem.duration withCompletionHandler:nil];
-}
-
 #pragma mark Notifications
 
 - (void)didSkipSegment:(NSNotification *)notification
@@ -156,6 +153,14 @@
         self.blockingOverlayView.hidden = YES;
         [self.mediaPlayerController play];
     });
+}
+
+- (void)segmentDidStart:(NSNotification *)notification
+{
+    Segment *segment = notification.userInfo[SRGMediaPlayerSegmentKey];
+    if (segment == self.selectedSegment) {
+        self.selectedSegment = nil;
+    }
 }
 
 @end

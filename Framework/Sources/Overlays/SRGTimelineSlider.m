@@ -115,7 +115,7 @@ static void commonInit(SRGTimelineSlider *self);
     float value = self.minimumValue + (self.maximumValue - self.minimumValue) * xPos / CGRectGetWidth(self.bounds);
     CMTime time = CMTimeMakeWithSeconds(value, NSEC_PER_SEC);
 
-    [self.mediaPlayerController seekToTime:time withCompletionHandler:nil];
+    [self.mediaPlayerController seekEfficientlyToTime:time withCompletionHandler:nil];
 }
 
 @end

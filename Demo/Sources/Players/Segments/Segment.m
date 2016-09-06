@@ -26,8 +26,8 @@
         self.name = dictionary[@"name"];
         self.blocked = [dictionary[@"blocked"] boolValue];
         
-        NSTimeInterval startTime = [dictionary[@"startTime"] doubleValue];
-        NSTimeInterval duration = [dictionary[@"duration"] doubleValue];
+        NSTimeInterval startTime = [dictionary[@"startTime"] doubleValue] / 1000.;
+        NSTimeInterval duration = [dictionary[@"duration"] doubleValue] / 1000.;
         
         self.timeRange = CMTimeRangeMake(CMTimeMakeWithSeconds(startTime, NSEC_PER_SEC),
                                          CMTimeMakeWithSeconds(duration, NSEC_PER_SEC));

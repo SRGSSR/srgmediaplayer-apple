@@ -87,14 +87,17 @@
 
 - (void)refreshButton
 {
-    BOOL isPlaying = self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+    BOOL displaysPauseButton = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing
+                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
+                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking
+                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled);
     
     [self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImage *normalImage = nil;
     UIImage *highlightedImage = nil;
-    if (isPlaying) {
+    if (displaysPauseButton) {
         normalImage = self.pauseImage ?: [SRGMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
         highlightedImage = self.pauseImage ?: [SRGMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
     }
@@ -116,7 +119,7 @@
     };
     
     if (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
-        [self.mediaPlayerController seekToTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
+        [self.mediaPlayerController seekEfficientlyToTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
             if (finished) {
                 togglePlayPause();
             }

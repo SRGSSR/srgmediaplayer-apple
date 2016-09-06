@@ -269,7 +269,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
     CMTime time = self.time;
     
     if (self.seekingDuringTracking) {
-        [self.mediaPlayerController seekToTime:time withCompletionHandler:nil];
+        [self.mediaPlayerController seekEfficientlyToTime:time withCompletionHandler:nil];
     }
     
     // Next, inform that we are sliding to other views.
@@ -284,7 +284,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if ([self isDraggable]) {
-        [self.mediaPlayerController seekToTime:self.time withCompletionHandler:nil];
+        [self.mediaPlayerController seekEfficientlyToTime:self.time withCompletionHandler:nil];
     }
     
     [super endTrackingWithTouch:touch withEvent:event];
