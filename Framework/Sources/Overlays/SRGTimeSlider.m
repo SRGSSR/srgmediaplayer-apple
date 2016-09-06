@@ -156,7 +156,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
                                        @(CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.currentTime)), @(self.value),
                                        @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange))), @(self.maximumValue));
                 
-                [self.slidingDelegate timeSlider:self
+                [self.delegate timeSlider:self
                           isMovingToPlaybackTime:self.time
                                        withValue:self.value
                                      interactive:NO];
@@ -273,7 +273,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
     }
     
     // Next, inform that we are sliding to other views.
-    [self.slidingDelegate timeSlider:self
+    [self.delegate timeSlider:self
               isMovingToPlaybackTime:time
                            withValue:self.value
                          interactive:YES];
@@ -407,7 +407,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
         self.value = value;
         self.maximumValue = value;
         
-        [self.slidingDelegate timeSlider:self isMovingToPlaybackTime:self.time withValue:self.value interactive:NO];
+        [self.delegate timeSlider:self isMovingToPlaybackTime:self.time withValue:self.value interactive:NO];
         
         [self setNeedsDisplay];
         [self updateTimeRangeLabels];

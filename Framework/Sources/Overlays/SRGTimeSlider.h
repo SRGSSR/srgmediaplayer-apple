@@ -25,15 +25,14 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
 };
 
 /**
- *  A slider displaying the playback position of the associated playback controller (with optional time and remaining
- *  time labels) and providing a way to seek at any position. The slider also displays which part of the video is
- *  already in the buffer
+ *  A slider displaying the playback position of the associated media player controller (with optional time and remaining
+ *  time labels) and providing a way to seek to any position. The slider also display which part of the media has already
+ *  been buffered.
  *
- *  Simply install an instance somewhere onto your custom player interface and bind to either a media player controller
- *  or a segments controller (if you need to support segments). You can also bind two labels for displaying the time
- *  and the remaining time.
+ *  Simply install an instance somewhere onto your custom player interface and bind to a media player controller. You
+ *  can also bind two labels for displaying the time and the remaining time.
  *
- *  The slider can be customized as follows:
+ *  Slider colors can be customized as follows:
  *    - `borderColor`: Color of the small border around the non-elapsed time track (defaults to black)
  *    - `minimumTrackTintColor`: Elapsed time track color (defaults to white)
  *    - `maximumTrackTintColor`: Preloaded track color (defaults to black)
@@ -49,7 +48,7 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
 /**
  *  The delegate receiving slider events
  */
-@property (nonatomic, weak, nullable) IBOutlet id<SRGTimeSliderDelegate> slidingDelegate;
+@property (nonatomic, weak, nullable) IBOutlet id<SRGTimeSliderDelegate> delegate;
 
 /**
  *  Outlet which must be bound to the label displaying the remaining time
@@ -70,41 +69,42 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
  *  The time corresponding to the current slider position
  *
  *  @discussion While dragging, this property may not reflect the value current time property of the asset being played.
- *              The slider live property namely reflects the current slider knob status, not the controller status
+ *              The slider `time` property namely reflects the current slider knob position, not the actual player
+ *              position
  */
 @property (nonatomic, readonly) CMTime time;
 
 /**
  *  Return YES iff the current slider position matches the conditions of a live feed
  *
- *  @discussion While dragging, this property may not reflect the value returned by the RTSMediaPlayback live property.
- *              The slider live property namely reflects the current slider knob status, not the controller status
+ *  @discussion While dragging, this property may not reflect the value returned by the media player controller `live` 
+ *              property. The slider `live` property namely reflects the current slider knob position, not the actual 
+ *              player position
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 
 /**
  *  Set to YES to have the player seek when the slider knob is moved, or to NO if seeking must be performed only
- *  after the knob was released
+ *  after the knob has been released
  *
  *  Defaults to YES
  */
 @property (nonatomic, getter=isSeekingDuringTracking) BOOL seekingDuringTracking;
 
 /**
- *  The position of the slider knob when playing a live stream. Defaults to RTSTimeSliderLiveKnobPositionDefault (left
- *  position)
+ *  The position of the slider knob when playing a live stream. Defaults to `SRGTimeSliderLiveKnobPositionDefault`
  */
 @property (nonatomic) SRGTimeSliderLiveKnobPosition knobLivePosition;
 
 @end
 
 /**
- *  Protocol describing events associated with the slider
+ *  Delegate protocol
  */
 @protocol SRGTimeSliderDelegate <NSObject>
 
 /**
- *  Called when the slider is moved, either interactively or as the result of an item being played
+ *  Called when the slider is moved, either interactively or as the result of normal playback
  *
  *  @param slider      The slider for which the event is received
  *  @param time        The time at which the slider was moved

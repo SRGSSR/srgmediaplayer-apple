@@ -50,7 +50,7 @@
 {
     [super viewDidLoad];
 
-    self.timelineSlider.slidingDelegate = self;
+    self.timelineSlider.delegate = self;
     self.blockingOverlayView.hidden = YES;
 
     NSString *className = NSStringFromClass([SegmentCollectionViewCell class]);

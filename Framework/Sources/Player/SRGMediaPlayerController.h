@@ -475,7 +475,7 @@ NS_ASSUME_NONNULL_BEGIN
  *          in picture is automatically enabled when switching to the background (provided the corresponding flag has been
  *          enabled in the system settings). This is the only case where switching to picture in picture can be made
  *          automatically. Picture in picture must otherwise always be user-triggered, otherwise you application might
- *          get rejected by Apple (see `AVPictureInPictureController` documentation)
+ *          get rejected by Apple (@see `AVPictureInPictureController` documentation)
  */
 @interface SRGMediaPlayerController (PictureInPicture)
 

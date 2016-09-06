@@ -56,15 +56,15 @@ static void commonInit(SRGTimelineSlider *self);
     for (id<SRGSegment> segment in self.mediaPlayerController.segments) {
         // Skip events not in the timeline
         if (CMTIME_COMPARE_INLINE(segment.timeRange.start, <, timeRange.start)
-            || CMTIME_COMPARE_INLINE(segment.timeRange.start, >, CMTimeRangeGetEnd(timeRange))) {
+                || CMTIME_COMPARE_INLINE(segment.timeRange.start, >, CMTimeRangeGetEnd(timeRange))) {
             continue;
         }
 
         CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(segment.timeRange.start) / CMTimeGetSeconds(timeRange.duration)) * (thumbEndXPos - thumbStartXPos);
 
         UIImage *iconImage = nil;
-        if ([self.delegate respondsToSelector:@selector(timelineSlider:iconImageForSegment:)]) {
-            iconImage = [self.delegate timelineSlider:self iconImageForSegment:segment];
+        if ([self.timelineDelegate respondsToSelector:@selector(timelineSlider:iconImageForSegment:)]) {
+            iconImage = [self.timelineDelegate timelineSlider:self iconImageForSegment:segment];
         }
 
         if (iconImage) {

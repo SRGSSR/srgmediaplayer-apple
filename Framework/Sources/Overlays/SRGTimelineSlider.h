@@ -17,23 +17,26 @@ NS_ASSUME_NONNULL_BEGIN
  *  jump at the corresponding location.
  *
  *  To add a slider to a custom player layout, simply drag and drop an `SRGTimelineSlider` instance onto the player layout,
- *  and bind its segment controller and delegate outlets. You can of course also instantiate and configure the view
- *  programmatically. Then call ` reloadSegmentsWithIdentifier:completionHandler:` when you need to retrieve segments
- *  from the controller
+ *  and bind its `mediaPlayerController` and `delegate` outlets. You can of course also instantiate and configure the view
+ *  programmatically. Call `-reloadData` when you need to trigger a reload of the timeline based on the segments
+ *  available from the media player controller.
  */
 @interface SRGTimelineSlider : SRGTimeSlider
 
 /**
  *  The slider delegate
  */
-@property (nonatomic, weak, nullable) IBOutlet id<SRGTimelineSliderDelegate> delegate;
+@property (nonatomic, weak, nullable) IBOutlet id<SRGTimelineSliderDelegate> timelineDelegate;
 
+/**
+ *  Trigger a reload of the timeline based on the segments available from the media player controller
+ */
 - (void)reloadData;
 
 @end
 
 /**
- *  Protocol describing events associated with the timeline
+ *  Delegate protocol
  */
 @protocol SRGTimelineSliderDelegate <NSObject>
 
