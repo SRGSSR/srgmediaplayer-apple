@@ -35,6 +35,10 @@ For more information about Carthage and its use, refer to the [official document
 
 To test what the library is capable of, try running the associated demo by opening the workspace and building the associated scheme.
 
+## Migration from versions 1.x
+
+For information about changes introduced with version 2 of the library, please read the [migration guide](Documentation/Migration-guide.md).
+
 ## Usage
 
 To learn about how the library can be used, have a look at the [getting started guide](Documentation/Getting-started.md).
