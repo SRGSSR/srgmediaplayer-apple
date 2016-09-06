@@ -14,10 +14,18 @@ NS_ASSUME_NONNULL_BEGIN
 @class SRGAirplayView;
 
 /**
- *  Airplay view data source protocol, providing optional customization mechanism to `RTSAirplayView`
+ *  Airplay view delegate protocol, providing optional customization behaviour to `SRGAirplayView`
  */
-@protocol RTSAirplayViewDataSource <NSObject>
+@protocol SRGAirplayViewDelegate <NSObject>
 @optional
+
+/**
+ *  By default the Airplay overlay is displayed when external playback is active. You can override this behavior
+ *  if you do not want to display the view in some cases (e.g. routing only audio)
+ *
+ *  If not implemented, the Airplay overlay behaves as if this method returns YES
+ */
+- (BOOL)airplayViewShouldBeDisplayed:(SRGAirplayView *)airplayView;
 
 /**
  *  Attributes for the 'Airplay' title. If not implemented, a default style will be applied (bold system font, white,
@@ -26,8 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSDictionary<NSString *, id> *)airplayViewTitleAttributedDictionary:(SRGAirplayView *)airplayView;
 
 /**
- *  Lets you customize how the subtitle displaying the route name is displayed. If not implemented, a default message
- *  will be used
+ *  Lets you customize the subtitle displaying the route name. If not implemented, a default message will be used
  */
 - (nullable NSString *)airplayView:(SRGAirplayView *)airplayView subtitleForAirplayRouteName:(NSString *)routeName;
 
@@ -40,36 +47,17 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- *  Airplay view delegate protocol, providing optional customization behaviour to `RTSAirplayView`
- */
-@protocol SRGAirplayViewDelegate <NSObject>
-@optional
-
-/**
- *  The view is hidden or not, depending of the AVAudioSession current route, output port.
- *  In case you want to not show it, because of routing just audio, you can force to hide it.
- *  Example: Use it with isExternalPlaybackActive on the AVPlayer you want.
- *  By defaut, returning YES.
- */
-- (BOOL)airplayViewCouldBeDisplayed:(SRGAirplayView *)airplayView;
-
-@end
-
-/**
- *  View automatically displaying whether Airplay playback is being made. Simply install somewhere onto your custom player
+ *  View automatically displaying whether Airplay playback is active. Simply install somewhere onto your custom player
  *  interface, the view will automatically appear when Airplay playback begins and disappear when it ends
+ *
+ *  Further customization is available by using the associated delegate.
  */
-@interface SRGAirplayView : UIView <RTSAirplayViewDataSource>
+@interface SRGAirplayView : UIView <SRGAirplayViewDelegate>
 
 /**
- * A filling factor for the overlay contents, > 0 and <= 1 (full frame). Defaults to 0.6
+ *  A filling factor for the overlay contents, > 0 and <= 1 (full frame). Defaults to 0.6
  */
 @property (nonatomic) IBInspectable CGFloat fillFactor;
-
-/**
- *  An optional data source for customization
- */
-@property (nonatomic, weak, nullable) IBOutlet id<RTSAirplayViewDataSource> dataSource;
 
 /**
  *  An optional delegate for customization

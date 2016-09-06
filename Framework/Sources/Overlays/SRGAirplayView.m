@@ -129,8 +129,8 @@ static void commonInit(SRGAirplayView *self);
 - (void)drawTitleInRect:(CGRect)rect
 {
     NSDictionary<NSString *, id> *attributes = [self airplayViewTitleAttributedDictionary:self];
-    if ([self.dataSource respondsToSelector:@selector(airplayViewTitleAttributedDictionary:)]) {
-        attributes = [self.dataSource airplayViewTitleAttributedDictionary:self];
+    if ([self.delegate respondsToSelector:@selector(airplayViewTitleAttributedDictionary:)]) {
+        attributes = [self.delegate airplayViewTitleAttributedDictionary:self];
     }
 
     NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
@@ -144,14 +144,14 @@ static void commonInit(SRGAirplayView *self);
     NSString *routeName = [self activeAirplayOutputRouteName];
 
     NSString *subtitle = [self airplayView:self subtitleForAirplayRouteName:routeName];
-    if ([self.dataSource respondsToSelector:@selector(airplayView:subtitleForAirplayRouteName:)]) {
-        subtitle = [self.dataSource airplayView:self subtitleForAirplayRouteName:routeName];
+    if ([self.delegate respondsToSelector:@selector(airplayView:subtitleForAirplayRouteName:)]) {
+        subtitle = [self.delegate airplayView:self subtitleForAirplayRouteName:routeName];
     }
 
     if (subtitle.length > 0) {
         NSDictionary<NSString *, id> *attributes = [self airplayViewSubtitleAttributedDictionary:self];
-        if ([self.dataSource respondsToSelector:@selector(airplayViewSubtitleAttributedDictionary:)]) {
-            attributes = [self.dataSource airplayViewSubtitleAttributedDictionary:self];
+        if ([self.delegate respondsToSelector:@selector(airplayViewSubtitleAttributedDictionary:)]) {
+            attributes = [self.delegate airplayViewSubtitleAttributedDictionary:self];
         }
 
         NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
@@ -161,7 +161,7 @@ static void commonInit(SRGAirplayView *self);
     }
 }
 
-#pragma mark RTSAirplayViewDataSource protocol
+#pragma mark SRGAirplayViewDataSource protocol
 
 - (NSDictionary<NSString *, id> *)airplayViewTitleAttributedDictionary:(SRGAirplayView *)airplayView
 {
@@ -193,8 +193,15 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)wirelessRouteActiveDidChange:(NSNotification *)notification
 {
-    [self setNeedsDisplay];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(airplayViewShouldBeDisplayed:)]) {
+        if (! [self.delegate airplayViewShouldBeDisplayed:self]) {
+            self.hidden = YES;
+            return;
+        }
+    }
     
+    [self setNeedsDisplay];
+
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
     AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
     
@@ -202,16 +209,11 @@ static void commonInit(SRGAirplayView *self);
     for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
         if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
             hidden = NO;
-            if (self.delegate && [self.delegate respondsToSelector:@selector(airplayViewCouldBeDisplayed:)]) {
-                if (! [self.delegate airplayViewCouldBeDisplayed:self]) {
-                    hidden = YES;
-                }
-            }
             break;
         }
     }
     
-    [self setHidden:hidden];
+    self.hidden = hidden;
 }
 
 @end
