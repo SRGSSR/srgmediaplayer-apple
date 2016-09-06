@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E654909A1D7F2EB8007D96E7 /* libextobjc.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = E65490991D7F2EB8007D96E7 /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E67799321D75AE2600E58331 /* SRGTimelineView.h in Headers */ = {isa = PBXBuildFile; fileRef = E67799301D75AE2500E58331 /* SRGTimelineView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E67799331D75AE2600E58331 /* SRGTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67799311D75AE2500E58331 /* SRGTimelineView.m */; };
 		E67799341D75B0E300E58331 /* SRGTimelineSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F511D62072400A55085 /* SRGTimelineSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -127,6 +128,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		E65490981D7F2E9B007D96E7 /* Copy Frameworks Into Test Bundle */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E654909A1D7F2EB8007D96E7 /* libextobjc.framework in Copy Frameworks Into Test Bundle */,
+			);
+			name = "Copy Frameworks Into Test Bundle";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E69A1FC31D61C0180064E6C1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -147,6 +159,7 @@
 		33B591AC767A97272DB49F32 /* Pods-SRGMediaPlayer-tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer-tests/Pods-SRGMediaPlayer-tests.release.xcconfig"; sourceTree = "<group>"; };
 		3C5FC1E08CA3F0C8CA810E82 /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0EA89370C6F3092C040D13 /* Pods-SRGMediaPlayer-tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer-tests/Pods-SRGMediaPlayer-tests.debug.xcconfig"; sourceTree = "<group>"; };
+		E65490991D7F2EB8007D96E7 /* libextobjc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libextobjc.framework; path = Carthage/Build/iOS/libextobjc.framework; sourceTree = "<group>"; };
 		E67799301D75AE2500E58331 /* SRGTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGTimelineView.h; sourceTree = "<group>"; };
 		E67799311D75AE2500E58331 /* SRGTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGTimelineView.m; sourceTree = "<group>"; };
 		E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGMediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -306,6 +319,7 @@
 		C201D8EC1A9DC1A40016C629 = {
 			isa = PBXGroup;
 			children = (
+				E65490991D7F2EB8007D96E7 /* libextobjc.framework */,
 				E69A1DB11D61BAFD0064E6C1 /* Framework */,
 				E69A1F571D61BFAE0064E6C1 /* Demo */,
 				E69A1FD21D61C6830064E6C1 /* Tests */,
@@ -683,6 +697,7 @@
 				E69A1FCF1D61C6830064E6C1 /* Resources */,
 				CCD7FED9F257FF7EF0B91D5D /* [CP] Embed Pods Frameworks */,
 				9960556C23D7123F0E9E5827 /* [CP] Copy Pods Resources */,
+				E65490981D7F2E9B007D96E7 /* Copy Frameworks Into Test Bundle */,
 			);
 			buildRules = (
 			);
