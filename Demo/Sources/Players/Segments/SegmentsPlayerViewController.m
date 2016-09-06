@@ -65,6 +65,10 @@
                                              selector:@selector(segmentDidStart:)
                                                  name:SRGMediaPlayerSegmentDidStartNotification
                                                object:self.mediaPlayerController];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(segmentDidEnd:)
+                                                 name:SRGMediaPlayerSegmentDidEndNotification
+                                               object:self.mediaPlayerController];
 }
 
 - (void)updateAppearanceWithTime:(CMTime)time
@@ -157,10 +161,17 @@
 
 - (void)segmentDidStart:(NSNotification *)notification
 {
+    NSLog(@"Segment did start: %@", notification.userInfo);
+    
     Segment *segment = notification.userInfo[SRGMediaPlayerSegmentKey];
     if (segment == self.selectedSegment) {
         self.selectedSegment = nil;
     }
+}
+
+- (void)segmentDidEnd:(NSNotification *)notification
+{
+    NSLog(@"Segment did end: %@", notification.userInfo);
 }
 
 @end
