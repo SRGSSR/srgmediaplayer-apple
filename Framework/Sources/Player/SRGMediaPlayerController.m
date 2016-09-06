@@ -357,7 +357,6 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     self.startTimeValue = nil;
     self.startCompletionHandler = nil;
     
-    [self.player pause];
     self.player = nil;
 }
 
