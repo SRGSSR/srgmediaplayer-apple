@@ -8,20 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		02323FCDCA0AD6974A05541643C566DF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		03C839530B2776A6D5CB0EC906CA8602 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 42D6B093D10C268C30F864690AB9BB85 /* EXTRuntimeExtensions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		04600F7CA523B6BC2D51DE20DF8F7F17 /* libextobjc-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C4BE24E8630097DAE18E8A2FFA9B97 /* libextobjc-dummy.m */; };
-		0B30A97CBDFB6EEE78DA540555D9BCE9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		42797ECF9A4F7C7459AE3C4157983D0D /* EXTRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = A585EDF6304C45154385F15593C0AE08 /* EXTRuntimeExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6378C12BCABDE751BD86ADCD0305A3DD /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 1543797CEE9BC6832E9D2ED7B9994DF0 /* EXTScope.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		7A6060188533D64E959FCD484EDFE995 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		89BC1A50FB211448E5E13EA1BF1B5124 /* MAKVONotificationCenter-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CE1C2D49E0CE1D2D17D89595B679FF /* MAKVONotificationCenter-dummy.m */; };
+		89BC1A50FB211448E5E13EA1BF1B5124 /* MAKVONotificationCenter-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F45F4DB3D696CD6B8025FC8A3CE6AD6A /* MAKVONotificationCenter-dummy.m */; };
 		8C7A778255FDB768264FB441E0EA1036 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */; };
-		A85AF6FBC80A65F729E912451447305F /* Pods-SRGMediaPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DFEF28FC3BD584DE2D52631A7BE2600B /* Pods-SRGMediaPlayer-dummy.m */; };
-		C2DF4DB4B7B8CDD9A6A2382B5358EE66 /* Pods-SRGMediaPlayer-tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8FA9E0236569C0281B9EC819044DA /* Pods-SRGMediaPlayer-tests-dummy.m */; };
-		D484F3CD5EFAEACEB0770C0789EDAED0 /* MAKVONotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = D5E2ACC0850A8C4E064B175268A81623 /* MAKVONotificationCenter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		E086BB8A9FD9CA6E4B4F7DC0EBCA2F7E /* metamacros.h in Headers */ = {isa = PBXBuildFile; fileRef = DB8945309487A7A7D68901B7A00CB3FD /* metamacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EEE4D53E692813E1DF510C41E1C84D71 /* MAKVONotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 46F5162BC091317D6D747C8302FCFEE8 /* MAKVONotificationCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FC3763B8530832877CF996F289B9D403 /* EXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = 30A373D628B0EF55FBA51D35CAE6660F /* EXTScope.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C2DF4DB4B7B8CDD9A6A2382B5358EE66 /* Pods-SRGMediaPlayer-tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D56D2F687D5BE1C072F3F01E84780327 /* Pods-SRGMediaPlayer-tests-dummy.m */; };
+		D484F3CD5EFAEACEB0770C0789EDAED0 /* MAKVONotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = F3E8052DC9B14B20EFCB253F9793D0D3 /* MAKVONotificationCenter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		EEE4D53E692813E1DF510C41E1C84D71 /* MAKVONotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C700839EAF977E132B9B14753E6B1BD /* MAKVONotificationCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,60 +23,28 @@
 			remoteGlobalIDString = 52DB1A52E5AF0D01006679A8F166D984;
 			remoteInfo = MAKVONotificationCenter;
 		};
-		F3F7812D8775D5D5394371BDA6117004 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0EE5634CAD0D778C76414552FE5B44AB;
-			remoteInfo = libextobjc;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0B2C42475925DF2AE37DC90F83A2F8E4 /* Pods-SRGMediaPlayer-tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayer-tests.release.xcconfig"; sourceTree = "<group>"; };
-		10A7F2E590E87D1E2036EBDE955B30FC /* Pods-SRGMediaPlayer-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SRGMediaPlayer-frameworks.sh"; sourceTree = "<group>"; };
-		1543797CEE9BC6832E9D2ED7B9994DF0 /* EXTScope.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = EXTScope.m; path = extobjc/EXTScope.m; sourceTree = "<group>"; };
-		1630E9FDFA225E63500FBA906F339459 /* libPods-SRGMediaPlayer-tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer-tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1EA6235CE314F14F55FBB3015270F9A3 /* Pods-SRGMediaPlayer-tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SRGMediaPlayer-tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		28C4BE24E8630097DAE18E8A2FFA9B97 /* libextobjc-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "libextobjc-dummy.m"; sourceTree = "<group>"; };
-		30A373D628B0EF55FBA51D35CAE6660F /* EXTScope.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXTScope.h; path = extobjc/EXTScope.h; sourceTree = "<group>"; };
-		3329652C4DD74E4DFA98106CDF971019 /* MAKVONotificationCenter-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MAKVONotificationCenter-prefix.pch"; sourceTree = "<group>"; };
-		33A6ED22C19F9EE93BFBA2820ABD603D /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		33C31690FF05EC323932CC78790DB418 /* Pods-SRGMediaPlayer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SRGMediaPlayer-acknowledgements.markdown"; sourceTree = "<group>"; };
-		42D6B093D10C268C30F864690AB9BB85 /* EXTRuntimeExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = EXTRuntimeExtensions.m; path = extobjc/EXTRuntimeExtensions.m; sourceTree = "<group>"; };
-		46F5162BC091317D6D747C8302FCFEE8 /* MAKVONotificationCenter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MAKVONotificationCenter.h; sourceTree = "<group>"; };
-		50CE1C2D49E0CE1D2D17D89595B679FF /* MAKVONotificationCenter-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MAKVONotificationCenter-dummy.m"; sourceTree = "<group>"; };
-		5B3803134095880B0FE71CAE53138B0A /* Pods-SRGMediaPlayer-tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SRGMediaPlayer-tests-frameworks.sh"; sourceTree = "<group>"; };
-		60FAF779A338A49C6234AD693F64D1A9 /* Pods-SRGMediaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
-		8186A66D2D25D6F3CAEF9BBB323837C3 /* Pods-SRGMediaPlayer-tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayer-tests.debug.xcconfig"; sourceTree = "<group>"; };
-		818853039E84A1A18E2B0C22AB0DB441 /* Pods-SRGMediaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayer.release.xcconfig"; sourceTree = "<group>"; };
-		92634EE4E43FFF50F2C61AC4D63F8EBD /* Pods-SRGMediaPlayer-tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SRGMediaPlayer-tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		3C700839EAF977E132B9B14753E6B1BD /* MAKVONotificationCenter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MAKVONotificationCenter.h; sourceTree = "<group>"; };
+		4031B1A6196A7736360B6FB2F7AA3F9F /* MAKVONotificationCenter.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MAKVONotificationCenter.xcconfig; sourceTree = "<group>"; };
+		638D11F61D841863C4D82D0BE48A7FB0 /* Pods-SRGMediaPlayer-tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SRGMediaPlayer-tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		73CDD1772581693E05D4DC2BE0CC6BE3 /* Pods-SRGMediaPlayer-tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SRGMediaPlayer-tests-resources.sh"; sourceTree = "<group>"; };
+		8CABE10F9D74EC19FF5A480399078A1B /* Pods-SRGMediaPlayer-tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayer-tests.debug.xcconfig"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		94A5448EFDDE6A6E862D19AB4285D612 /* Pods-SRGMediaPlayer-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SRGMediaPlayer-resources.sh"; sourceTree = "<group>"; };
-		94C317A7B8074C24C5D9C1701D96E719 /* MAKVONotificationCenter.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MAKVONotificationCenter.xcconfig; sourceTree = "<group>"; };
-		A585EDF6304C45154385F15593C0AE08 /* EXTRuntimeExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXTRuntimeExtensions.h; path = extobjc/EXTRuntimeExtensions.h; sourceTree = "<group>"; };
-		A7C8FA9E0236569C0281B9EC819044DA /* Pods-SRGMediaPlayer-tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SRGMediaPlayer-tests-dummy.m"; sourceTree = "<group>"; };
-		AD3DD5378CFBCE84CE321CE4001891C6 /* libMAKVONotificationCenter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMAKVONotificationCenter.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE938AA7FBFF91E0BD4CA266264A5E19 /* libextobjc-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "libextobjc-prefix.pch"; sourceTree = "<group>"; };
-		BD2C00F8F2FF081266D713B311A5D9AB /* liblibextobjc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibextobjc.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DA99789BBDF503C93FA5A4ECC78D2C7 /* Pods-SRGMediaPlayer-tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SRGMediaPlayer-tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		A0792115FB7FE13B99B0F09C697D316D /* libMAKVONotificationCenter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMAKVONotificationCenter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3E3FE23253EA95EAA39322209C821CF /* Pods-SRGMediaPlayer-tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SRGMediaPlayer-tests-frameworks.sh"; sourceTree = "<group>"; };
 		CEC22C73C1608DFA5D5D78BDCB218219 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		D45C2E6E505CE71B2D9D8192B569EC4A /* Pods-SRGMediaPlayer-tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SRGMediaPlayer-tests-resources.sh"; sourceTree = "<group>"; };
-		D5E2ACC0850A8C4E064B175268A81623 /* MAKVONotificationCenter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MAKVONotificationCenter.m; sourceTree = "<group>"; };
-		DB8945309487A7A7D68901B7A00CB3FD /* metamacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = metamacros.h; path = extobjc/metamacros.h; sourceTree = "<group>"; };
-		DFEF28FC3BD584DE2D52631A7BE2600B /* Pods-SRGMediaPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SRGMediaPlayer-dummy.m"; sourceTree = "<group>"; };
-		E5E6D019EB12269DA864643FD71EA706 /* libextobjc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = libextobjc.xcconfig; sourceTree = "<group>"; };
-		ED4CB3EAD950D1F9EF64FB96DD280199 /* Pods-SRGMediaPlayer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SRGMediaPlayer-acknowledgements.plist"; sourceTree = "<group>"; };
+		D56D2F687D5BE1C072F3F01E84780327 /* Pods-SRGMediaPlayer-tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SRGMediaPlayer-tests-dummy.m"; sourceTree = "<group>"; };
+		DA16507351B7042F59D0D9BD286E4A9C /* Pods-SRGMediaPlayer-tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SRGMediaPlayer-tests.release.xcconfig"; sourceTree = "<group>"; };
+		DA6DA5FB7B5CF08D4E4A78DFA3F9C0FD /* libPods-SRGMediaPlayer-tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer-tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC25384075958EF588005A455B1CF4FC /* MAKVONotificationCenter-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MAKVONotificationCenter-prefix.pch"; sourceTree = "<group>"; };
+		F3E8052DC9B14B20EFCB253F9793D0D3 /* MAKVONotificationCenter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MAKVONotificationCenter.m; sourceTree = "<group>"; };
+		F45F4DB3D696CD6B8025FC8A3CE6AD6A /* MAKVONotificationCenter-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MAKVONotificationCenter-dummy.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		36AD994E0DC09A052629EC677F7B680C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0B30A97CBDFB6EEE78DA540555D9BCE9 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5E4FC5EFCBE4FC4EC5E2F01AF2C85F5D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -102,68 +61,52 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F1B8BDABD72EE19614F421139C950F7F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7A6060188533D64E959FCD484EDFE995 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		009741CE2DECBA30FA347B5F14BAD308 /* Support Files */ = {
+		06ED6A7E50583679A3BC666983DBCBC9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E5E6D019EB12269DA864643FD71EA706 /* libextobjc.xcconfig */,
-				28C4BE24E8630097DAE18E8A2FFA9B97 /* libextobjc-dummy.m */,
-				AE938AA7FBFF91E0BD4CA266264A5E19 /* libextobjc-prefix.pch */,
+				A0792115FB7FE13B99B0F09C697D316D /* libMAKVONotificationCenter.a */,
+				DA6DA5FB7B5CF08D4E4A78DFA3F9C0FD /* libPods-SRGMediaPlayer-tests.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0A39F73214D09858D910C58E4B799EE4 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				4031B1A6196A7736360B6FB2F7AA3F9F /* MAKVONotificationCenter.xcconfig */,
+				F45F4DB3D696CD6B8025FC8A3CE6AD6A /* MAKVONotificationCenter-dummy.m */,
+				DC25384075958EF588005A455B1CF4FC /* MAKVONotificationCenter-prefix.pch */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/libextobjc";
+			path = "../Target Support Files/MAKVONotificationCenter";
 			sourceTree = "<group>";
 		};
-		027F0EB0056ED8FA3D2E203A067767FF /* Pods */ = {
+		20EEC61034B8ADDFD67BEAC19087AC11 /* MAKVONotificationCenter */ = {
 			isa = PBXGroup;
 			children = (
-				5FDA63D97CECBDF3DBDBE84BD86BCB0F /* libextobjc */,
-				6985B4EBDB98C8F8872E41EBAA0FE995 /* MAKVONotificationCenter */,
+				3C700839EAF977E132B9B14753E6B1BD /* MAKVONotificationCenter.h */,
+				F3E8052DC9B14B20EFCB253F9793D0D3 /* MAKVONotificationCenter.m */,
+				0A39F73214D09858D910C58E4B799EE4 /* Support Files */,
 			);
-			name = Pods;
+			path = MAKVONotificationCenter;
 			sourceTree = "<group>";
 		};
-		06414C4B354AF65A2738965155B66D24 /* Pods-SRGMediaPlayer */ = {
+		3B0CF4D40610AD391E17262C3FA0FC0C /* Pods-SRGMediaPlayer-tests */ = {
 			isa = PBXGroup;
 			children = (
-				33C31690FF05EC323932CC78790DB418 /* Pods-SRGMediaPlayer-acknowledgements.markdown */,
-				ED4CB3EAD950D1F9EF64FB96DD280199 /* Pods-SRGMediaPlayer-acknowledgements.plist */,
-				DFEF28FC3BD584DE2D52631A7BE2600B /* Pods-SRGMediaPlayer-dummy.m */,
-				10A7F2E590E87D1E2036EBDE955B30FC /* Pods-SRGMediaPlayer-frameworks.sh */,
-				94A5448EFDDE6A6E862D19AB4285D612 /* Pods-SRGMediaPlayer-resources.sh */,
-				60FAF779A338A49C6234AD693F64D1A9 /* Pods-SRGMediaPlayer.debug.xcconfig */,
-				818853039E84A1A18E2B0C22AB0DB441 /* Pods-SRGMediaPlayer.release.xcconfig */,
+				9DA99789BBDF503C93FA5A4ECC78D2C7 /* Pods-SRGMediaPlayer-tests-acknowledgements.markdown */,
+				638D11F61D841863C4D82D0BE48A7FB0 /* Pods-SRGMediaPlayer-tests-acknowledgements.plist */,
+				D56D2F687D5BE1C072F3F01E84780327 /* Pods-SRGMediaPlayer-tests-dummy.m */,
+				C3E3FE23253EA95EAA39322209C821CF /* Pods-SRGMediaPlayer-tests-frameworks.sh */,
+				73CDD1772581693E05D4DC2BE0CC6BE3 /* Pods-SRGMediaPlayer-tests-resources.sh */,
+				8CABE10F9D74EC19FF5A480399078A1B /* Pods-SRGMediaPlayer-tests.debug.xcconfig */,
+				DA16507351B7042F59D0D9BD286E4A9C /* Pods-SRGMediaPlayer-tests.release.xcconfig */,
 			);
-			name = "Pods-SRGMediaPlayer";
-			path = "Target Support Files/Pods-SRGMediaPlayer";
-			sourceTree = "<group>";
-		};
-		1E7D31DFB84C1E91C7DF0450F655837A /* EXTScope */ = {
-			isa = PBXGroup;
-			children = (
-				30A373D628B0EF55FBA51D35CAE6660F /* EXTScope.h */,
-				1543797CEE9BC6832E9D2ED7B9994DF0 /* EXTScope.m */,
-			);
-			name = EXTScope;
-			sourceTree = "<group>";
-		};
-		2F61499D4841289FBFACB12F44D8B9A7 /* Targets Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				06414C4B354AF65A2738965155B66D24 /* Pods-SRGMediaPlayer */,
-				D4AE256F55D953D16CCE997D597EDE69 /* Pods-SRGMediaPlayer-tests */,
-			);
-			name = "Targets Support Files";
+			name = "Pods-SRGMediaPlayer-tests";
+			path = "Target Support Files/Pods-SRGMediaPlayer-tests";
 			sourceTree = "<group>";
 		};
 		3DCAB2B7CDE207B3958B6CB957FCC758 /* iOS */ = {
@@ -174,67 +117,15 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		5FDA63D97CECBDF3DBDBE84BD86BCB0F /* libextobjc */ = {
-			isa = PBXGroup;
-			children = (
-				1E7D31DFB84C1E91C7DF0450F655837A /* EXTScope */,
-				8A614B840FADA62FE4742C03DB5EE331 /* RuntimeExtensions */,
-				009741CE2DECBA30FA347B5F14BAD308 /* Support Files */,
-			);
-			path = libextobjc;
-			sourceTree = "<group>";
-		};
-		6985B4EBDB98C8F8872E41EBAA0FE995 /* MAKVONotificationCenter */ = {
-			isa = PBXGroup;
-			children = (
-				46F5162BC091317D6D747C8302FCFEE8 /* MAKVONotificationCenter.h */,
-				D5E2ACC0850A8C4E064B175268A81623 /* MAKVONotificationCenter.m */,
-				AE1B4A3C96A568DFD31B11B95EB48D87 /* Support Files */,
-			);
-			path = MAKVONotificationCenter;
-			sourceTree = "<group>";
-		};
-		6F64391580646EF88DE59B246B8E8853 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BD2C00F8F2FF081266D713B311A5D9AB /* liblibextobjc.a */,
-				AD3DD5378CFBCE84CE321CE4001891C6 /* libMAKVONotificationCenter.a */,
-				33A6ED22C19F9EE93BFBA2820ABD603D /* libPods-SRGMediaPlayer.a */,
-				1630E9FDFA225E63500FBA906F339459 /* libPods-SRGMediaPlayer-tests.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				027F0EB0056ED8FA3D2E203A067767FF /* Pods */,
-				6F64391580646EF88DE59B246B8E8853 /* Products */,
-				2F61499D4841289FBFACB12F44D8B9A7 /* Targets Support Files */,
+				E97F64566A9B386A93C7ED25BB9AF6FA /* Pods */,
+				06ED6A7E50583679A3BC666983DBCBC9 /* Products */,
+				E560F5E9304344B2DBAC76E2D827031D /* Targets Support Files */,
 			);
-			sourceTree = "<group>";
-		};
-		8A614B840FADA62FE4742C03DB5EE331 /* RuntimeExtensions */ = {
-			isa = PBXGroup;
-			children = (
-				A585EDF6304C45154385F15593C0AE08 /* EXTRuntimeExtensions.h */,
-				42D6B093D10C268C30F864690AB9BB85 /* EXTRuntimeExtensions.m */,
-				DB8945309487A7A7D68901B7A00CB3FD /* metamacros.h */,
-			);
-			name = RuntimeExtensions;
-			sourceTree = "<group>";
-		};
-		AE1B4A3C96A568DFD31B11B95EB48D87 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				94C317A7B8074C24C5D9C1701D96E719 /* MAKVONotificationCenter.xcconfig */,
-				50CE1C2D49E0CE1D2D17D89595B679FF /* MAKVONotificationCenter-dummy.m */,
-				3329652C4DD74E4DFA98106CDF971019 /* MAKVONotificationCenter-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/MAKVONotificationCenter";
 			sourceTree = "<group>";
 		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
@@ -245,34 +136,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D4AE256F55D953D16CCE997D597EDE69 /* Pods-SRGMediaPlayer-tests */ = {
+		E560F5E9304344B2DBAC76E2D827031D /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				92634EE4E43FFF50F2C61AC4D63F8EBD /* Pods-SRGMediaPlayer-tests-acknowledgements.markdown */,
-				1EA6235CE314F14F55FBB3015270F9A3 /* Pods-SRGMediaPlayer-tests-acknowledgements.plist */,
-				A7C8FA9E0236569C0281B9EC819044DA /* Pods-SRGMediaPlayer-tests-dummy.m */,
-				5B3803134095880B0FE71CAE53138B0A /* Pods-SRGMediaPlayer-tests-frameworks.sh */,
-				D45C2E6E505CE71B2D9D8192B569EC4A /* Pods-SRGMediaPlayer-tests-resources.sh */,
-				8186A66D2D25D6F3CAEF9BBB323837C3 /* Pods-SRGMediaPlayer-tests.debug.xcconfig */,
-				0B2C42475925DF2AE37DC90F83A2F8E4 /* Pods-SRGMediaPlayer-tests.release.xcconfig */,
+				3B0CF4D40610AD391E17262C3FA0FC0C /* Pods-SRGMediaPlayer-tests */,
 			);
-			name = "Pods-SRGMediaPlayer-tests";
-			path = "Target Support Files/Pods-SRGMediaPlayer-tests";
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		E97F64566A9B386A93C7ED25BB9AF6FA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				20EEC61034B8ADDFD67BEAC19087AC11 /* MAKVONotificationCenter */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		6383822AEA8F84557A00276940CA96AA /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				42797ECF9A4F7C7459AE3C4157983D0D /* EXTRuntimeExtensions.h in Headers */,
-				FC3763B8530832877CF996F289B9D403 /* EXTScope.h in Headers */,
-				E086BB8A9FD9CA6E4B4F7DC0EBCA2F7E /* metamacros.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		AC1F8A8700617685DF2C5B77E327042A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -284,40 +166,6 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		0EE5634CAD0D778C76414552FE5B44AB /* libextobjc */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7546A81BFD4FACD2FB01C1CAC06BA09D /* Build configuration list for PBXNativeTarget "libextobjc" */;
-			buildPhases = (
-				2B4F49588EEC07AD86DAEAD52C558679 /* Sources */,
-				36AD994E0DC09A052629EC677F7B680C /* Frameworks */,
-				6383822AEA8F84557A00276940CA96AA /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = libextobjc;
-			productName = libextobjc;
-			productReference = BD2C00F8F2FF081266D713B311A5D9AB /* liblibextobjc.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		1B5448A7F37F1B68FD1F82136140400B /* Pods-SRGMediaPlayer */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 00EFCD38A6BD3CF8B52F639ACBE30841 /* Build configuration list for PBXNativeTarget "Pods-SRGMediaPlayer" */;
-			buildPhases = (
-				4580A79B94AA8B2736A95F50ADF8DEC0 /* Sources */,
-				F1B8BDABD72EE19614F421139C950F7F /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				8921E161CFCBBC1497070314FA997F5F /* PBXTargetDependency */,
-			);
-			name = "Pods-SRGMediaPlayer";
-			productName = "Pods-SRGMediaPlayer";
-			productReference = 33A6ED22C19F9EE93BFBA2820ABD603D /* libPods-SRGMediaPlayer.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		52DB1A52E5AF0D01006679A8F166D984 /* MAKVONotificationCenter */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B9F2BA9357CD09C47647B4ABCF06E16F /* Build configuration list for PBXNativeTarget "MAKVONotificationCenter" */;
@@ -332,7 +180,7 @@
 			);
 			name = MAKVONotificationCenter;
 			productName = MAKVONotificationCenter;
-			productReference = AD3DD5378CFBCE84CE321CE4001891C6 /* libMAKVONotificationCenter.a */;
+			productReference = A0792115FB7FE13B99B0F09C697D316D /* libMAKVONotificationCenter.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		FA23A02A88E4B982B74845FFF2732346 /* Pods-SRGMediaPlayer-tests */ = {
@@ -349,7 +197,7 @@
 			);
 			name = "Pods-SRGMediaPlayer-tests";
 			productName = "Pods-SRGMediaPlayer-tests";
-			productReference = 1630E9FDFA225E63500FBA906F339459 /* libPods-SRGMediaPlayer-tests.a */;
+			productReference = DA6DA5FB7B5CF08D4E4A78DFA3F9C0FD /* libPods-SRGMediaPlayer-tests.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -369,13 +217,11 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 6F64391580646EF88DE59B246B8E8853 /* Products */;
+			productRefGroup = 06ED6A7E50583679A3BC666983DBCBC9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0EE5634CAD0D778C76414552FE5B44AB /* libextobjc */,
 				52DB1A52E5AF0D01006679A8F166D984 /* MAKVONotificationCenter */,
-				1B5448A7F37F1B68FD1F82136140400B /* Pods-SRGMediaPlayer */,
 				FA23A02A88E4B982B74845FFF2732346 /* Pods-SRGMediaPlayer-tests */,
 			);
 		};
@@ -399,33 +245,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2B4F49588EEC07AD86DAEAD52C558679 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				03C839530B2776A6D5CB0EC906CA8602 /* EXTRuntimeExtensions.m in Sources */,
-				6378C12BCABDE751BD86ADCD0305A3DD /* EXTScope.m in Sources */,
-				04600F7CA523B6BC2D51DE20DF8F7F17 /* libextobjc-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4580A79B94AA8B2736A95F50ADF8DEC0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A85AF6FBC80A65F729E912451447305F /* Pods-SRGMediaPlayer-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8921E161CFCBBC1497070314FA997F5F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libextobjc;
-			target = 0EE5634CAD0D778C76414552FE5B44AB /* libextobjc */;
-			targetProxy = F3F7812D8775D5D5394371BDA6117004 /* PBXContainerItemProxy */;
-		};
 		B2BA320143E0F7B0335D426BF8CB8806 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MAKVONotificationCenter;
@@ -437,7 +259,7 @@
 /* Begin XCBuildConfiguration section */
 		1A0F7A360D9D34226AFB2426943F9A48 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8186A66D2D25D6F3CAEF9BBB323837C3 /* Pods-SRGMediaPlayer-tests.debug.xcconfig */;
+			baseConfigurationReference = 8CABE10F9D74EC19FF5A480399078A1B /* Pods-SRGMediaPlayer-tests.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -500,7 +322,7 @@
 		};
 		64651E756C61A04828560D5ACC879F05 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 94C317A7B8074C24C5D9C1701D96E719 /* MAKVONotificationCenter.xcconfig */;
+			baseConfigurationReference = 4031B1A6196A7736360B6FB2F7AA3F9F /* MAKVONotificationCenter.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -514,27 +336,6 @@
 				PRIVATE_HEADERS_FOLDER_PATH = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		821DAAF7B84000DFC870B509CE472939 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 60FAF779A338A49C6234AD693F64D1A9 /* Pods-SRGMediaPlayer.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
@@ -578,72 +379,9 @@
 			};
 			name = Release;
 		};
-		C4F93314109A719FA8EEAD864FCDD452 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E5E6D019EB12269DA864643FD71EA706 /* libextobjc.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/libextobjc/libextobjc-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		CEDC9D012A071B08666D4A073A8703A6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E5E6D019EB12269DA864643FD71EA706 /* libextobjc.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/libextobjc/libextobjc-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		D79067D4B6A9B527CBCDBEDD36510CC3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 818853039E84A1A18E2B0C22AB0DB441 /* Pods-SRGMediaPlayer.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		DBA1D34F78392B84A0772088BA7543F6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 94C317A7B8074C24C5D9C1701D96E719 /* MAKVONotificationCenter.xcconfig */;
+			baseConfigurationReference = 4031B1A6196A7736360B6FB2F7AA3F9F /* MAKVONotificationCenter.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -664,7 +402,7 @@
 		};
 		DE7CB415CC8DB8716BD981A29E653677 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0B2C42475925DF2AE37DC90F83A2F8E4 /* Pods-SRGMediaPlayer-tests.release.xcconfig */;
+			baseConfigurationReference = DA16507351B7042F59D0D9BD286E4A9C /* Pods-SRGMediaPlayer-tests.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -686,15 +424,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00EFCD38A6BD3CF8B52F639ACBE30841 /* Build configuration list for PBXNativeTarget "Pods-SRGMediaPlayer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				821DAAF7B84000DFC870B509CE472939 /* Debug */,
-				D79067D4B6A9B527CBCDBEDD36510CC3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		0F4D60E6707B9D3645E0FC33A3869239 /* Build configuration list for PBXNativeTarget "Pods-SRGMediaPlayer-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -709,15 +438,6 @@
 			buildConfigurations = (
 				47BEF9D903506B003EA5C2B249729489 /* Debug */,
 				AAF678CED40D3499169D10F63CA0719E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		7546A81BFD4FACD2FB01C1CAC06BA09D /* Build configuration list for PBXNativeTarget "libextobjc" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CEDC9D012A071B08666D4A073A8703A6 /* Debug */,
-				C4F93314109A719FA8EEAD864FCDD452 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -1,17 +1,12 @@
 PODS:
-  - libextobjc/EXTScope (0.4.1):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/RuntimeExtensions (0.4.1)
   - MAKVONotificationCenter (0.0.2)
 
 DEPENDENCIES:
-  - libextobjc/EXTScope (~> 0.4.1)
   - MAKVONotificationCenter (~> 0.0.2)
 
 SPEC CHECKSUMS:
-  libextobjc: a650fc1bf489a3d3a9bc2e621efa3e1006fc5471
   MAKVONotificationCenter: eddfb85e77040323ee43a0fddbe616926ec005a8
 
-PODFILE CHECKSUM: 4eebf7e76671778b4badb9c032bc748c4a3dfa6c
+PODFILE CHECKSUM: e9423b65e350d8e4b1208727ba5d5c602ef3c46e
 
 COCOAPODS: 1.0.1

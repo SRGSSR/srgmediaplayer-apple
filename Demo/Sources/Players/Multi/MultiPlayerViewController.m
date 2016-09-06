@@ -6,6 +6,7 @@
 
 #import "MultiPlayerViewController.h"
 
+#import <libextobjc/EXTScope.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface MultiPlayerViewController ()
@@ -48,9 +49,10 @@
     for (NSInteger i = 0; i < mediaURLs.count; ++i) {
         SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
         
-        __weak __typeof(self) weakSelf = self;
+        @weakify(self)
         mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
-            BOOL isMainPlayer = (i == weakSelf.selectedIndex);
+            @strongify(self)
+            BOOL isMainPlayer = (i == self.selectedIndex);
             player.allowsExternalPlayback = isMainPlayer;
             player.usesExternalPlaybackWhileExternalScreenIsActive = isMainPlayer;
             player.muted = ! isMainPlayer;

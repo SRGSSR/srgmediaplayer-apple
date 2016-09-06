@@ -8,6 +8,7 @@
 
 #import "SegmentCollectionViewCell.h"
 
+#import <libextobjc/EXTScope.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface TimeshiftPlayerViewController ()
@@ -48,10 +49,11 @@
     self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.liveButton.layer.borderWidth = 1.f;
 
-    __weak __typeof(self) weakSelf = self;
+    @weakify(self)
     [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
-        if (weakSelf.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
-            [weakSelf updateLiveButton];
+        @strongify(self)
+        if (self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
+            [self updateLiveButton];
         }
     }];
 }
