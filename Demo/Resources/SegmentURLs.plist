@@ -129,17 +129,17 @@
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>Segment #1</string>
+					<string>Segment #2</string>
 					<key>startTime</key>
 					<integer>30000</integer>
 					<key>duration</key>
-					<integer>5000</integer>
+					<integer>5</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>Segment #1</string>
+					<string>Segment #3</string>
 					<key>startTime</key>
 					<integer>35000</integer>
 					<key>duration</key>
@@ -149,7 +149,7 @@
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>Segment #1</string>
+					<string>Segment #4</string>
 					<key>startTime</key>
 					<integer>50000</integer>
 					<key>duration</key>
