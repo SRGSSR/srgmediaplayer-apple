@@ -19,7 +19,7 @@ static NSURL *SegmentsTestURL(void)
 
 @implementation SegmentsTestCase
 
-#pragma mark - Tests
+#pragma mark Tests
 
 - (void)testSegmentPlaythrough
 {

@@ -61,14 +61,21 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 #pragma mark UI
 
-- (void)updateAppearanceWithTime:(CMTime)time
+- (void)updateAppearanceWithTime:(CMTime)time selectedSegment:(Segment *)selectedSegment
 {
     CMTimeRange r = self.segment.timeRange;
     float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(r.start)) / (CMTimeGetSeconds(CMTimeAdd(r.start, r.duration)) - CMTimeGetSeconds(r.start));
     progress = fminf(1.f, fmaxf(0.f, progress));
     
     self.progressView.progress = progress;
-    self.backgroundColor = (progress != 0.f && progress != 1.f) ? [UIColor colorWithRed:128.0 / 256.0 green:0.0 / 256.0 blue:0.0 / 256.0 alpha:1.0] : [UIColor blackColor];
+    
+    UIColor *selectionColor = [UIColor colorWithRed:128.f / 255.f green:0.f / 255.f blue:0.f / 255.f alpha:1.f];
+    if (selectedSegment) {
+        self.backgroundColor = (self.segment == selectedSegment) ? selectionColor : [UIColor blackColor];
+    }
+    else {
+        self.backgroundColor = (progress != 0.f && progress != 1.f) ? selectionColor : [UIColor blackColor];
+    }
 }
 
 @end

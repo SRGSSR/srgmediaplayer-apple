@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, nullable) Segment *segment;
 
-- (void)updateAppearanceWithTime:(CMTime)time;
+- (void)updateAppearanceWithTime:(CMTime)time selectedSegment:(nullable Segment *)selectedSegment;
 
 @end
 
