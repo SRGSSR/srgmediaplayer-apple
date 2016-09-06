@@ -9,8 +9,8 @@
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaPlayerController.h"
 
-UIImage *RTSPictureInPictureButtonStartImage(void);
-UIImage *RTSPictureInPictureButtonStopImage(void);
+UIImage *SRGPictureInPictureButtonStartImage(void);
+UIImage *SRGPictureInPictureButtonStopImage(void);
 
 static void commonInit(SRGPictureInPictureButton *self);
 
@@ -73,7 +73,7 @@ static void commonInit(SRGPictureInPictureButton *self);
     
     self.hidden = NO;
     
-    UIImage *image = pictureInPictureController.pictureInPictureActive ? RTSPictureInPictureButtonStopImage() : RTSPictureInPictureButtonStartImage();
+    UIImage *image = pictureInPictureController.pictureInPictureActive ? SRGPictureInPictureButtonStopImage() : SRGPictureInPictureButtonStartImage();
     [self setImage:image forState:UIControlStateNormal];
 }
 
@@ -89,11 +89,11 @@ static void commonInit(SRGPictureInPictureButton *self);
 
     if (pictureInPictureController.pictureInPictureActive) {
         [pictureInPictureController stopPictureInPicture];
-        [self setImage:RTSPictureInPictureButtonStartImage() forState:UIControlStateNormal];
+        [self setImage:SRGPictureInPictureButtonStartImage() forState:UIControlStateNormal];
     }
     else {
         [pictureInPictureController startPictureInPicture];
-        [self setImage:RTSPictureInPictureButtonStopImage() forState:UIControlStateNormal];
+        [self setImage:SRGPictureInPictureButtonStopImage() forState:UIControlStateNormal];
     }
 }
 
@@ -115,7 +115,7 @@ static void commonInit(SRGPictureInPictureButton *self)
 
 #pragma mark Functions
 
-UIImage *RTSPictureInPictureButtonStartImage(void)
+UIImage *SRGPictureInPictureButtonStartImage(void)
 {
     static UIImage *image;
     static dispatch_once_t onceToken;
@@ -126,7 +126,7 @@ UIImage *RTSPictureInPictureButtonStartImage(void)
     return image;
 }
 
-UIImage *RTSPictureInPictureButtonStopImage(void)
+UIImage *SRGPictureInPictureButtonStopImage(void)
 {
     static UIImage *image;
     static dispatch_once_t onceToken;

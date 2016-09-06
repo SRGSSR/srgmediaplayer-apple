@@ -16,7 +16,7 @@ static void commonInit(SRGTimeSlider *self);
 
 // Cannot sadly use NSDateComponentsFormatter, impossible to get compact strings with different components if hours must
 // be displayed or not
-static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
+static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 {
     if (isnan(seconds)) {
         return @"NaN";
@@ -88,7 +88,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 }
 
 // Override color properties since the default superclass behavior is to remove corresponding images, which we here
-// already set in -setup_RTSTimeSlider and want to preserve
+// already set in commonInit() and want to preserve
 
 - (UIColor *)thumbTintColor
 {
@@ -180,7 +180,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
     }
 }
 
-// Take into account the non-standard smaller knob we installed in -setup_RTSTimeSlider
+// Take into account the non-standard smaller knob we installed in commonInit()
 
 - (CGRect)minimumValueImageRectForBounds:(CGRect)bounds
 {
@@ -238,11 +238,11 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
     
     if (self.live) {
         self.valueLabel.text = @"--:--";
-        self.timeLeftValueLabel.text = RTSMediaPlayerLocalizedString(@"Live", nil);
+        self.timeLeftValueLabel.text = SRGMediaPlayerLocalizedString(@"Live", nil);
     }
     else {
-        self.valueLabel.text = RTSTimeSliderFormatter(self.value);
-        self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
+        self.valueLabel.text = SRGTimeSliderFormatter(self.value);
+        self.timeLeftValueLabel.text = SRGTimeSliderFormatter(self.value - self.maximumValue);
     }
 }
 
@@ -396,7 +396,7 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 
 - (float)resetValue
 {
-    return (self.knobLivePosition == RTSTimeSliderLiveKnobPositionLeft) ? 0.f : 1.f;
+    return (self.knobLivePosition == SRGTimeSliderLiveKnobPositionLeft) ? 0.f : 1.f;
 }
 
 #pragma mark Notifications
@@ -437,5 +437,5 @@ static void commonInit(SRGTimeSlider *self)
     [self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
     
     self.seekingDuringTracking = YES;
-    self.knobLivePosition = RTSTimeSliderLiveKnobPositionLeft;
+    self.knobLivePosition = SRGTimeSliderLiveKnobPositionLeft;
 }

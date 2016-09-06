@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return a localized string from the media player resource bundle
  */
-#define RTSMediaPlayerLocalizedString(key, comment) [[NSBundle srg_mediaPlayerBundle] localizedStringForKey:(key) value:@"" table:nil]
+#define SRGMediaPlayerLocalizedString(key, comment) [[NSBundle srg_mediaPlayerBundle] localizedStringForKey:(key) value:@"" table:nil]
 
 @interface NSBundle (SRGMediaPlayer)
 

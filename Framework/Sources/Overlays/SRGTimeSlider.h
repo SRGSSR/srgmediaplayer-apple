@@ -19,9 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  as for the standard iOS playback controller
  */
 typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
-    RTSTimeSliderLiveKnobPositionDefault = 0,
-    RTSTimeSliderLiveKnobPositionLeft = RTSTimeSliderLiveKnobPositionDefault,
-    RTSTimeSliderLiveKnobPositionRight
+    SRGTimeSliderLiveKnobPositionDefault = 0,
+    SRGTimeSliderLiveKnobPositionLeft = SRGTimeSliderLiveKnobPositionDefault,
+    SRGTimeSliderLiveKnobPositionRight
 };
 
 /**

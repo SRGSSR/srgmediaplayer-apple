@@ -18,10 +18,10 @@
 
 static void *s_kvoContext = &s_kvoContext;
 
-static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
+static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 {
     NSCParameterAssert(underlyingError);
-    return [NSError errorWithDomain:SRGMediaPlayerErrorDomain code:SRGMediaPlayerErrorPlayback userInfo:@{ NSLocalizedDescriptionKey: RTSMediaPlayerLocalizedString(@"The media cannot be played", nil),
+    return [NSError errorWithDomain:SRGMediaPlayerErrorDomain code:SRGMediaPlayerErrorPlayback userInfo:@{ NSLocalizedDescriptionKey: SRGMediaPlayerLocalizedString(@"The media cannot be played", nil),
                                                                                                            NSUnderlyingErrorKey: underlyingError }];
 }
 
@@ -590,7 +590,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
     
     self.playbackState = SRGMediaPlayerPlaybackStateIdle;
     
-    NSError *error = RTSMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
+    NSError *error = SRGMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
                                                         object:self
                                                       userInfo:@{ SRGMediaPlayerErrorKey: error }];
@@ -666,7 +666,7 @@ static NSError *RTSMediaPlayerControllerError(NSError *underlyingError)
                     self.startTimeValue = nil;
                     self.startCompletionHandler = nil;
                     
-                    NSError *error = RTSMediaPlayerControllerError(playerItem.error);
+                    NSError *error = SRGMediaPlayerControllerError(playerItem.error);
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
                                                                         object:self
                                                                       userInfo:@{ SRGMediaPlayerErrorKey: error }];

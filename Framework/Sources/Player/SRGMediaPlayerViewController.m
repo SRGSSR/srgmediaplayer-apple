@@ -161,7 +161,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.timeSlider.mediaPlayerController = s_mediaPlayerController;
     self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
     
-    [self.liveButton setTitle:RTSMediaPlayerLocalizedString(@"Back to live", nil) forState:UIControlStateNormal];
+    [self.liveButton setTitle:SRGMediaPlayerLocalizedString(@"Back to live", nil) forState:UIControlStateNormal];
     self.liveButton.hidden = YES;
     
     self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;

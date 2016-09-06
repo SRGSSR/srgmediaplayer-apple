@@ -14,7 +14,7 @@
 
 @end
 
-static const CGFloat RTSAirplayViewDefaultFillFactor = 0.6f;
+static const CGFloat SRGAirplayViewDefaultFillFactor = 0.6f;
 
 static void commonInit(SRGAirplayView *self);
 
@@ -51,7 +51,7 @@ static void commonInit(SRGAirplayView *self);
 - (void)setFillFactor:(CGFloat)fillFactor
 {
     if (fillFactor <= 0.f) {
-        _fillFactor = RTSAirplayViewDefaultFillFactor;
+        _fillFactor = SRGAirplayViewDefaultFillFactor;
     }
     else if (fillFactor > 1.f) {
         _fillFactor = 1.f;
@@ -74,7 +74,7 @@ static void commonInit(SRGAirplayView *self);
         }
     }
     
-    return RTSMediaPlayerLocalizedString(@"External device", nil);
+    return SRGMediaPlayerLocalizedString(@"External device", nil);
 }
 
 #pragma mark Drawing
@@ -175,7 +175,7 @@ static void commonInit(SRGAirplayView *self);
 
 - (NSString *)airplayView:(SRGAirplayView *)airplayView subtitleForAirplayRouteName:(NSString *)routeName
 {
-    return [NSString stringWithFormat:RTSMediaPlayerLocalizedString(@"This media is playing on «%@»", nil), routeName];
+    return [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"This media is playing on «%@»", nil), routeName];
 }
 
 - (NSDictionary<NSString *, id> *)airplayViewSubtitleAttributedDictionary:(SRGAirplayView *)airplayView
@@ -225,7 +225,7 @@ static void commonInit(SRGAirplayView *self)
     self.contentMode = UIViewContentModeRedraw;
     self.userInteractionEnabled = NO;
     self.hidden = YES;
-    self.fillFactor = RTSAirplayViewDefaultFillFactor;
+    self.fillFactor = SRGAirplayViewDefaultFillFactor;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(wirelessRouteActiveDidChange:)
