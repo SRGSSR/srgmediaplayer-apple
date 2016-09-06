@@ -333,6 +333,40 @@ static NSURL *PlaybackTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testStop
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    // Wait until playing
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    // Pass an empty array for segments
+    [mediaPlayerController playURL:PlaybackTestURL() withSegments:@[]];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Stop the player and check its status
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        if (mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateIdle) {
+            return NO;
+        }
+        
+        XCTAssertNotNil(mediaPlayerController.contentURL);
+        XCTAssertNotNil(mediaPlayerController.segments);
+        
+        return YES;
+    }];
+    
+    XCTAssertNotNil(mediaPlayerController.contentURL);
+    XCTAssertNotNil(mediaPlayerController.segments);
+    
+    [mediaPlayerController stop];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
 - (void)testConsecutiveMediaPlaybackInSamePlayer
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
