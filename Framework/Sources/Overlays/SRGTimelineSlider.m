@@ -53,7 +53,7 @@ static void commonInit(SRGTimelineSlider *self);
     CGFloat thumbStartXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.minimumValue]);
     CGFloat thumbEndXPos = CGRectGetMidX([self thumbRectForBounds:rect trackRect:trackRect value:self.maximumValue]);
 
-    for (id<SRGSegment> segment in self.mediaPlayerController.segments) {
+    for (id<SRGSegment> segment in self.mediaPlayerController.visibleSegments) {
         // Skip events not in the timeline
         if (CMTIME_COMPARE_INLINE(segment.timeRange.start, <, timeRange.start)
                 || CMTIME_COMPARE_INLINE(segment.timeRange.start, >, CMTimeRangeGetEnd(timeRange))) {

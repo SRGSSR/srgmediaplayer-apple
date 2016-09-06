@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SRGTimelineSliderDelegate;
 
 /**
- *  A slider displaying segment start times along its track as small icons. The slider can be tapped at any point to
+ *  A slider displaying non-hidden segment start times along its track as small icons. The slider can be tapped at any point to
  *  jump at the corresponding location.
  *
  *  To add a slider to a custom player layout, simply drag and drop an `SRGTimelineSlider` instance onto the player layout,
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) IBOutlet id<SRGTimelineSliderDelegate> timelineDelegate;
 
 /**
- *  Trigger a reload of the timeline based on the segments available from the media player controller
+ *  Trigger a reload of the timeline based on the non-hidden segments available from the media player controller
  */
 - (void)reloadData;
 

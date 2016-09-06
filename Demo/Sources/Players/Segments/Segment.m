@@ -13,6 +13,7 @@
 @property (nonatomic) CMTimeRange timeRange;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, getter=isBlocked) BOOL blocked;
+@property (nonatomic, getter=isHidden) BOOL hidden;
 
 @end
 
@@ -25,6 +26,7 @@
     if (self = [super init]) {
         self.name = dictionary[@"name"];
         self.blocked = [dictionary[@"blocked"] boolValue];
+        self.hidden = [dictionary[@"hidden"] boolValue];
         
         NSTimeInterval startTime = [dictionary[@"startTime"] doubleValue] / 1000.;
         NSTimeInterval duration = [dictionary[@"duration"] doubleValue] / 1000.;
@@ -53,13 +55,14 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@: %p; start: %@; duration: %@; name: %@; blocked: %@>",
+    return [NSString stringWithFormat:@"<%@: %p; start: %@; duration: %@; name: %@; blocked: %@; hidden: %@>",
             [self class],
             self,
             @(CMTimeGetSeconds(self.timeRange.start)),
             @(CMTimeGetSeconds(self.timeRange.duration)),
             self.name,
-            self.blocked ? @"YES" : @"NO"];
+            self.blocked ? @"YES" : @"NO",
+            self.hidden ? @"YES" : @"NO"];
 }
 
 @end

@@ -326,6 +326,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSArray<id<SRGSegment>> *segments;
 
 /**
+ *  The visible segments which have been loaded into the player
+ */
+@property (nonatomic, readonly) NSArray<id<SRGSegment>> *visibleSegments;
+
+/**
  *  The current media time range (might be empty or indefinite)
  *
  *  @discussion Use `CMTimeRange` macros for checking time ranges

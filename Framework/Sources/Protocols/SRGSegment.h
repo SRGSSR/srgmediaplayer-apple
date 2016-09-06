@@ -24,6 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, getter=isBlocked) BOOL blocked;
 
+/**
+ *  Return YES iff the segment must be hidden (this information can be used by UI overlays to hide segments from
+ *  view)
+ */
+@property (nonatomic, readonly, getter=isHidden) BOOL hidden;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -87,7 +87,7 @@ static void commonInit(SRGTimelineView *self);
 
 - (id)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<SRGSegment>)segment
 {
-    NSInteger index = [self.mediaPlayerController.segments indexOfObject:segment];
+    NSInteger index = [self.mediaPlayerController.visibleSegments indexOfObject:segment];
     NSAssert(index != NSNotFound, @"The segment must be found");
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
@@ -104,12 +104,12 @@ static void commonInit(SRGTimelineView *self);
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.mediaPlayerController.segments.count;
+    return self.mediaPlayerController.visibleSegments.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<SRGSegment> segment = self.mediaPlayerController.segments[indexPath.row];
+    id<SRGSegment> segment = self.mediaPlayerController.visibleSegments[indexPath.row];
     return [self.delegate timelineView:self cellForSegment:segment];
 }
 
@@ -117,7 +117,7 @@ static void commonInit(SRGTimelineView *self);
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<SRGSegment> segment = self.mediaPlayerController.segments[indexPath.row];
+    id<SRGSegment> segment = self.mediaPlayerController.visibleSegments[indexPath.row];
     [self.mediaPlayerController seekToSegment:segment withCompletionHandler:nil];
     
     if ([self.delegate respondsToSelector:@selector(timelineView:didSelectSegmentAtIndexPath:)]) {
@@ -149,7 +149,7 @@ static void commonInit(SRGTimelineView *self);
         return;
     }
     
-    NSInteger segmentIndex = [self.mediaPlayerController.segments indexOfObject:segment];
+    NSInteger segmentIndex = [self.mediaPlayerController.visibleSegments indexOfObject:segment];
     if (segmentIndex == NSNotFound) {
         return;
     }

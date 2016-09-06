@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SRGTimelineViewDelegate;
 
 /**
- *  A view displaying segments associated a linear collection of cells
+ *  A view displaying non-hidden segments associated with a media player controller as a linear collection of cells.
  *
  *  To add a timeline to a custom player layout, simply drag and drop an `SRGTimelineView` onto the player layout,
  *  and bind its `mediaPlayerController` and `delegate` outlets. You can of course instantiate and configure the view
@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
 
 /**
- *  Trigger a reload of the timeline based on the segments available from the media player controller
+ *  Trigger a reload of the timeline based on the non-hidden segments available from the media player controller
  */
 - (void)reloadData;
 

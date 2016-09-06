@@ -18,8 +18,6 @@
 					<integer>5000</integer>
 					<key>duration</key>
 					<integer>10000</integer>
-					<key>blocked</key>
-					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
@@ -28,8 +26,6 @@
 					<integer>30000</integer>
 					<key>duration</key>
 					<integer>10000</integer>
-					<key>blocked</key>
-					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
@@ -38,8 +34,6 @@
 					<integer>55000</integer>
 					<key>duration</key>
 					<integer>10000</integer>
-					<key>blocked</key>
-					<false/>
 				</dict>
 			</array>
 		</dict>
@@ -52,12 +46,52 @@
 			<array>
 				<dict>
 					<key>name</key>
-					<string>Segment #1</string>
+					<string>Segment #0</string>
 					<key>startTime</key>
 					<integer>5000</integer>
 					<key>duration</key>
 					<integer>10000</integer>
 					<key>blocked</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>One hidden segment</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>5000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+					<key>hidden</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>One blocked hidden segment</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>5000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+					<key>blocked</key>
+					<true/>
+					<key>hidden</key>
 					<true/>
 				</dict>
 			</array>
@@ -114,8 +148,6 @@
 					<integer>0</integer>
 					<key>duration</key>
 					<integer>10000</integer>
-					<key>blocked</key>
-					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
@@ -124,8 +156,6 @@
 					<integer>10000</integer>
 					<key>duration</key>
 					<integer>20000</integer>
-					<key>blocked</key>
-					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
@@ -134,8 +164,6 @@
 					<integer>30000</integer>
 					<key>duration</key>
 					<integer>5</integer>
-					<key>blocked</key>
-					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
@@ -144,8 +172,6 @@
 					<integer>35000</integer>
 					<key>duration</key>
 					<integer>15000</integer>
-					<key>blocked</key>
-					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
@@ -154,8 +180,6 @@
 					<integer>50000</integer>
 					<key>duration</key>
 					<integer>10000</integer>
-					<key>blocked</key>
-					<false/>
 				</dict>
 			</array>
 		</dict>

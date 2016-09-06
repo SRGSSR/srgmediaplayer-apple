@@ -54,10 +54,8 @@ Several convenience methods are also provided to match the most common uses, e.g
 
 No basic overlay management is now provided by the media player controller. This was adding unnecessary complexity, and could require a whole lot of customization hooks to cover animation potential strategies (e.g. fade in or fade out, constraint changes, etc.). Since UI management is mostly the responsibility of the client application, overly management is now its responsibility entirely. To detect user activity, `SRGActivityGestureRecognizer` has now been exposed publicly.
 
-## Hidden and physical segments
+## Physical segments
 
-Hidden segments were adding no benefit. Unlike blocked segments, they were not skipped by the player. Clients can hide segments themselves if they need to.
+Since the player controller interface now accepts URLs to be played, supporting physical segments was not making sense anymore. A physical segment namely corresponds to a different URL being played, with different logical segments. 
 
-Similarly, a physical segment corresponds to a different URL being played, with potentially different logical segments. Since the player controller interface now accepts URLs to be played, supporting physical segments was not making sense anymore. 
-
-As a result, the SRG Media Player library now only supports logical segments. Clients which need to display several different medias in a timeline must not use `SRGTimelineView` anymore: They should simply create their own presentation, e.g. using a simple collection view.
+As a result, the SRG Media Player library now only supports logical segments. Clients which need to display several different medias in a timeline must not use `SRGTimelineView` anymore: They should simply create their own presentation view, e.g. using a simple collection view.

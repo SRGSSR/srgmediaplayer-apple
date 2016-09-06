@@ -29,6 +29,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic) NSArray<id<SRGSegment>> *segments;
+@property (nonatomic) NSArray<id<SRGSegment>> *visibleSegments;
 
 @property (nonatomic) SRGMediaPlayerPlaybackState playbackState;
 
@@ -151,6 +152,24 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                         object:self
                                                       userInfo:userInfo];
+}
+
+- (void)setSegments:(NSArray<id<SRGSegment>> *)segments
+{
+    _segments = segments;
+    
+    // Reset the cached visible segment list
+    _visibleSegments = nil;
+}
+
+- (NSArray<id<SRGSegment>> *)visibleSegments
+{
+    // Cached for faster access
+    if (! _visibleSegments) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hidden == NO"];
+        _visibleSegments = [self.segments filteredArrayUsingPredicate:predicate];
+    }
+    return _visibleSegments;
 }
 
 - (UIView *)view
