@@ -25,15 +25,16 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
                                                                                                            NSUnderlyingErrorKey: underlyingError }];
 }
 
-@interface SRGMediaPlayerController ()
+@interface SRGMediaPlayerController () {
+@private
+    SRGMediaPlayerPlaybackState _playbackState;
+}
 
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic) NSArray<id<SRGSegment>> *segments;
 @property (nonatomic) NSDictionary *userInfo;
 
 @property (nonatomic) NSArray<id<SRGSegment>> *visibleSegments;
-
-@property (nonatomic) SRGMediaPlayerPlaybackState playbackState;
 
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) id segmentPeriodicTimeObserver;
@@ -58,7 +59,8 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 - (instancetype)init
 {
     if (self = [super init]) {
-        self.playbackState = SRGMediaPlayerPlaybackStateIdle;
+        _playbackState = SRGMediaPlayerPlaybackStateIdle;
+        
         self.liveTolerance = SRGMediaPlayerLiveDefaultTolerance;
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
     }
@@ -137,7 +139,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     return (AVPlayerLayer *)self.view.layer;
 }
 
-- (void)setPlaybackState:(SRGMediaPlayerPlaybackState)playbackState
+- (void)setPlaybackState:(SRGMediaPlayerPlaybackState)playbackState withUserInfo:(NSDictionary *)userInfo
 {
     NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes must be notified on the main thread. Fix");
     
@@ -145,7 +147,10 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
         return;
     }
     
-    NSDictionary *userInfo = @{ SRGMediaPlayerPreviousPlaybackStateKey: @(_playbackState) };
+    NSMutableDictionary *fullUserInfo = [@{ SRGMediaPlayerPreviousPlaybackStateKey: @(_playbackState) } mutableCopy];
+    if (userInfo) {
+        [fullUserInfo addEntriesFromDictionary:userInfo];
+    }
     
     [self willChangeValueForKey:@"playbackState"];
     _playbackState = playbackState;
@@ -153,7 +158,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                         object:self
-                                                      userInfo:userInfo];
+                                                      userInfo:[fullUserInfo copy]];
 }
 
 - (void)setSegments:(NSArray<id<SRGSegment>> *)segments
@@ -329,7 +334,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     self.segments = segments;
     self.userInfo = userInfo;
     
-    self.playbackState = SRGMediaPlayerPlaybackStatePreparing;
+    [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
     
     self.startTimeValue = [NSValue valueWithCMTime:startTime];
     self.startCompletionHandler = completionHandler;
@@ -350,17 +355,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)stop
 {
-    if (self.pictureInPictureController.isPictureInPictureActive) {
-        [self.pictureInPictureController stopPictureInPicture];
-    }
-    
-    self.playbackState = SRGMediaPlayerPlaybackStateIdle;
-    self.previousSegment = nil;
-    
-    self.startTimeValue = nil;
-    self.startCompletionHandler = nil;
-    
-    self.player = nil;
+    [self stopWithUserInfo:nil];
 }
 
 - (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(nullable void (^)(BOOL))completionHandler
@@ -370,11 +365,21 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)reset
 {
+    // Save previous state information
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    if (self.contentURL) {
+        userInfo[SRGMediaPlayerPreviousContentURLKey] = self.contentURL;
+    }
+    if (self.userInfo) {
+        userInfo[SRGMediaPlayerPreviousUserInfoKey] = self.userInfo;
+    }
+    
+    // Reset player state before stopping (so that any state change notification reflects this new state)
     self.contentURL = nil;
     self.segments = nil;
     self.userInfo = nil;
     
-    [self stop];
+    [self stopWithUserInfo:[userInfo copy]];
 }
 
 #pragma mark Playback (convenience methods)
@@ -430,15 +435,30 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
         return;
     }
     
-    self.playbackState = SRGMediaPlayerPlaybackStateSeeking;
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
     self.selectedSegment = selectedSegment;
     
     [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
         if (finished) {
-            self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
+            [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
         }
         completionHandler ? completionHandler(finished) : nil;
     }];
+}
+
+- (void)stopWithUserInfo:(NSDictionary *)userInfo
+{
+    if (self.pictureInPictureController.isPictureInPictureActive) {
+        [self.pictureInPictureController stopPictureInPicture];
+    }
+    
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:userInfo];
+    self.previousSegment = nil;
+    
+    self.startTimeValue = nil;
+    self.startCompletionHandler = nil;
+    
+    self.player = nil;
 }
 
 #pragma mark Configuration
@@ -577,12 +597,12 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)srg_mediaPlayerController_playerItemPlaybackStalled:(NSNotification *)notification
 {
-    self.playbackState = SRGMediaPlayerPlaybackStateStalled;
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
 }
 
 - (void)srg_mediaPlayerController_playerItemDidPlayToEndTime:(NSNotification *)notification
 {
-    self.playbackState = SRGMediaPlayerPlaybackStateEnded;
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateEnded withUserInfo:nil];
 }
 
 - (void)srg_mediaPlayerController_playerItemFailedToPlayToEndTime:(NSNotification *)notification
@@ -590,7 +610,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     self.startTimeValue = nil;
     self.startCompletionHandler = nil;
     
-    self.playbackState = SRGMediaPlayerPlaybackStateIdle;
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
     
     NSError *error = SRGMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
@@ -640,7 +660,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
                         // If the state of the player was not changed in the completion handler (still preparing), update
                         // it
                         if (self.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-                            self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
+                            [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                         }
                     };
                     
@@ -658,12 +678,12 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
                 }
                 // Update the playback state immediately
                 else {
-                    self.playbackState = (self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying;
+                    [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                 }
             }
             else {
                 if (playerItem.status == AVPlayerItemStatusFailed) {
-                    self.playbackState = SRGMediaPlayerPlaybackStateIdle;
+                    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
                     
                     self.startTimeValue = nil;
                     self.startCompletionHandler = nil;

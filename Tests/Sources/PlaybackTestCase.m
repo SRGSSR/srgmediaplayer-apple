@@ -323,6 +323,10 @@ static NSURL *PlaybackTestURL(void)
         XCTAssertNil(mediaPlayerController.segments);
         XCTAssertNil(mediaPlayerController.userInfo);
         
+        // Receive previous playback information since it has changed
+        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
+        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+        
         return YES;
     }];
     
@@ -359,6 +363,10 @@ static NSURL *PlaybackTestURL(void)
         XCTAssertNotNil(mediaPlayerController.segments);
         XCTAssertNotNil(mediaPlayerController.userInfo);
         
+        // No previous playback information since it has not changed
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+        
         return YES;
     }];
     
@@ -380,13 +388,22 @@ static NSURL *PlaybackTestURL(void)
         return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [mediaPlayerController playURL:PlaybackTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    NSDictionary *userInfo = @{ @"test_key" : @"test_value" };
+    [mediaPlayerController playURL:PlaybackTestURL() atTime:kCMTimeZero withSegments:nil userInfo:userInfo];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     // Wait until playing again. Expect a playback state change to idle, then to play
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle);
+        if (mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateIdle) {
+            return NO;
+        }
+        
+        // Expect previous playback information since it has changed
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousContentURLKey], PlaybackTestURL());
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey], userInfo);
+        
+        return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying);
