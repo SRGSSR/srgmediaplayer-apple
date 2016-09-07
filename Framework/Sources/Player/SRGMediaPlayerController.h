@@ -238,6 +238,8 @@ NS_ASSUME_NONNULL_BEGIN
  *                           If the time is invalid it will be set to kCMTimeZero. Setting a start time outside the
  *                           actual media time range will seek to the nearest location (either zero or the end time)
  *  @param segments          A segment list
+ *  @param userInfo          A dictionary to associate arbitrary information with the media being played (for later retrieval).
+ *                           This information stays associated with the player controller until it is reset
  *  @param completionHandler The completion block to be called after the player has finished preparing the media. This
  *                           block will only be called if the media could be loaded.
  *
@@ -247,7 +249,7 @@ NS_ASSUME_NONNULL_BEGIN
  *              reflected after the completion handler has been executed, so that the player transitions from preparing
  *              to this state without transitioning through the paused state.
  */
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(void))completionHandler;
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments userInfo:(nullable NSDictionary *)userInfo completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Ask the player to play
@@ -267,7 +269,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)pause;
 
 /**
- *  Ask the player to stop playback. Call `-play` to restart playback with the same content URL and segments
+ *  Ask the player to stop playback. Call `-play` to restart playback with the same content URL, segments and user info
  *
  *  @discussion See `-stop`
  */
@@ -298,7 +300,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
- *  Reset the player to its original idle state with neither a media URL to play, nor segments
+ *  Reset the player to its original idle state with no media URL, segments or user info
  *
  *  @discussion Periodic time observers registered with the controller are not unregistered
  */
@@ -323,12 +325,17 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The segments which have been loaded into the player
  */
-@property (nonatomic, readonly) NSArray<id<SRGSegment>> *segments;
+@property (nonatomic, readonly, nullable) NSArray<id<SRGSegment>> *segments;
+
+/**
+ *  The user info which has been associated with the media being played
+ */
+@property (nonatomic, readonly, nullable) NSDictionary *userInfo;
 
 /**
  *  The visible segments which have been loaded into the player
  */
-@property (nonatomic, readonly) NSArray<id<SRGSegment>> *visibleSegments;
+@property (nonatomic, readonly, nullable) NSArray<id<SRGSegment>> *visibleSegments;
 
 /**
  *  The current media time range (might be empty or indefinite)
@@ -401,53 +408,102 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerController (Convenience)
 
 /**
+ *  Prepare to play the media, starting from the specified time. Segments and user info can be optionally provided
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`
+ */
+- (void)prepareToPlayURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments userInfo:(nullable NSDictionary *)userInfo completionHandler:(nullable void (^)(void))completionHandler;
+
+/**
  *  Prepare to play the media, starting from the specified time. Segments can be optionally provided
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`
  */
 - (void)prepareToPlayURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
+ *  Prepare to play the media, starting from the specified time. User info can be optionally provided
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`
+ */
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withUserInfo:(nullable NSDictionary *)userInfo completionHandler:(nullable void (^)(void))completionHandler;
+
+/**
  *  Prepare to play the media, starting from the specified time
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`
  */
 - (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
+ *  Prepare to play the media, starting at its default location. User info can be optionally provided
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`
+ */
+- (void)prepareToPlayURL:(NSURL *)URL withUserInfo:(nullable NSDictionary *)userInfo completionHandler:(nullable void (^)(void))completionHandler;
+
+/**
  *  Prepare to play the media, starting at its default location
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`
  */
 - (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Play a media, starting from the specified time. Segments can be optionally provided
+ *  Play a media, starting from the specified time. Segments and user info can be optionally provided
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:completionHandler:`
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`
  *
  *  @discussion The player immediately reaches the playing state
+ */
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments userInfo:(nullable NSDictionary *)userInfo;
+
+/**
+ *  Play a media, starting from the specified time. Segments can be optionally provided
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`
  */
 - (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
 
 /**
+ *  Play a media, starting from the specified time. User info can be optionally provided
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`
+ */
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time withUserInfo:(nullable NSDictionary *)userInfo;
+
+/**
  *  Play a media, starting from the specified time
  *
- *  For more information, @see `-playURL:atTime:withSegments:`
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`
  */
 - (void)playURL:(NSURL *)URL atTime:(CMTime)time;
 
 /**
  *  Play a media, starting at its default location. Segments can be optionally provided
  *
- *  For more information, @see `-playURL:atTime:withSegments:`
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`
+ */
+- (void)playURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments userInfo:(nullable NSDictionary *)userInfo;
+
+/**
+ *  Play a media, starting at its default location. Segments can be optionally provided
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`
  */
 - (void)playURL:(NSURL *)URL withSegments:(nullable NSArray<id<SRGSegment>> *)segments;
 
 /**
+ *  Play a media, starting at its default location. User info can be optionally provided
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`
+ */
+- (void)playURL:(NSURL *)URL withUserInfo:(nullable NSDictionary *)userInfo;
+
+/**
  *  Play a media, starting at its default location
  *
- *  For more information, @see `-playURL:atTime:withSegments:`
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`
  */
 - (void)playURL:(NSURL *)URL;
 

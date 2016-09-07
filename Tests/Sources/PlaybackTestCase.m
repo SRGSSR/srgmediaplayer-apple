@@ -308,8 +308,8 @@ static NSURL *PlaybackTestURL(void)
         return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    // Pass an empty array for segments
-    [mediaPlayerController playURL:PlaybackTestURL() withSegments:@[]];
+    // Pass empty collections as parameters
+    [mediaPlayerController playURL:PlaybackTestURL() withSegments:@[] userInfo:@{}];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -321,12 +321,14 @@ static NSURL *PlaybackTestURL(void)
         
         XCTAssertNil(mediaPlayerController.contentURL);
         XCTAssertNil(mediaPlayerController.segments);
+        XCTAssertNil(mediaPlayerController.userInfo);
         
         return YES;
     }];
     
     XCTAssertNotNil(mediaPlayerController.contentURL);
     XCTAssertNotNil(mediaPlayerController.segments);
+    XCTAssertNotNil(mediaPlayerController.userInfo);
     
     [mediaPlayerController reset];
     
@@ -342,8 +344,8 @@ static NSURL *PlaybackTestURL(void)
         return mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    // Pass an empty array for segments
-    [mediaPlayerController playURL:PlaybackTestURL() withSegments:@[]];
+    // Pass empty collections as parameters
+    [mediaPlayerController playURL:PlaybackTestURL() withSegments:@[] userInfo:@{}];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -355,12 +357,14 @@ static NSURL *PlaybackTestURL(void)
         
         XCTAssertNotNil(mediaPlayerController.contentURL);
         XCTAssertNotNil(mediaPlayerController.segments);
+        XCTAssertNotNil(mediaPlayerController.userInfo);
         
         return YES;
     }];
     
     XCTAssertNotNil(mediaPlayerController.contentURL);
     XCTAssertNotNil(mediaPlayerController.segments);
+    XCTAssertNotNil(mediaPlayerController.userInfo);
     
     [mediaPlayerController stop];
     
