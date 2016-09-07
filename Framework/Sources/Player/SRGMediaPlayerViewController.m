@@ -25,6 +25,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @interface SRGMediaPlayerViewController ()
 
 @property (nonatomic) NSURL *contentURL;
+@property (nonatomic) NSDictionary *userInfo;
 @property (nonatomic) BOOL autoplay;
 
 @property (nonatomic, weak) IBOutlet UIView *playerView;
@@ -72,11 +73,12 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-designated-initializers"
 
-- (instancetype)initWithContentURL:(NSURL *)contentURL
+- (instancetype)initWithContentURL:(NSURL *)contentURL userInfo:(nullable NSDictionary *)userInfo
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:[NSBundle srg_mediaPlayerBundle]];
     SRGMediaPlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.contentURL = contentURL;
+    viewController.userInfo = userInfo;
     viewController.autoplay = YES;
     return viewController;
 }
@@ -88,11 +90,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 #pragma clang diagnostic pop
 
-- (instancetype)initWithCurrentURL
+- (instancetype)initWithCurrentURLandUserInfo
 {
     NSAssert(s_mediaPlayerController.contentURL, @"This method can only be called when a valid URL is being attached to the shared player");
     
-    if (self = [self initWithContentURL:s_mediaPlayerController.contentURL]) {
+    if (self = [self initWithContentURL:s_mediaPlayerController.contentURL userInfo:s_mediaPlayerController.userInfo]) {
         self.autoplay = NO;
     }
     return self;
@@ -101,7 +103,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithContentURL:[NSURL URLWithString:@""]];
+    return [self initWithContentURL:[NSURL URLWithString:@""] userInfo:nil];
 }
 
 - (void)dealloc
@@ -153,7 +155,10 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self.view addGestureRecognizer:activityGestureRecognizer];
     
     if (self.autoplay) {
-        [s_mediaPlayerController playURL:self.contentURL];
+        [s_mediaPlayerController playURL:self.contentURL
+                                  atTime:kCMTimeZero
+                            withSegments:nil
+                                userInfo:self.userInfo];
     }
     
     self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;

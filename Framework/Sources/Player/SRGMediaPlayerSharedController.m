@@ -39,7 +39,7 @@
     
     // If no SRGMediaPlayerViewController instance is currently displayed (always modally)
     if (! [rootViewController.presentedViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
-        SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithCurrentURL];
+        SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithCurrentURLandUserInfo];
         
         // Dismiss any modal currently displayed if needed
         if (rootViewController.presentedViewController) {

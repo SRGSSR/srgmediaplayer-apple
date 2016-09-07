@@ -12,6 +12,6 @@
  *  Create a view controller with the current status of the underlying shared controller. Intended for picture in
  *  picture state restoration
  */
-- (instancetype)initWithCurrentURL;
+- (instancetype)initWithCurrentURLandUserInfo;
 
 @end

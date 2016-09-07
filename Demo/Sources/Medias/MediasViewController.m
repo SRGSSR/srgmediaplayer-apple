@@ -185,7 +185,7 @@
             }
                 
             case 1: {
-                SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:contentURL];
+                SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:contentURL userInfo:nil];
                 [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
                 break;
             }
