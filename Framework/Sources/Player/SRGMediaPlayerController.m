@@ -370,39 +370,14 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)reset
 {
-    [self stop];
-    
     self.contentURL = nil;
     self.segments = nil;
     self.userInfo = nil;
+    
+    [self stop];
 }
 
 #pragma mark Playback (convenience methods)
-
-- (void)prepareToPlayURL:(NSURL *)URL withSegments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
-{
-    [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:segments userInfo:userInfo completionHandler:completionHandler];
-}
-
-- (void)prepareToPlayURL:(NSURL *)URL withSegments:(NSArray<id<SRGSegment>> *)segments completionHandler:(void (^)(void))completionHandler
-{
-    [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:segments userInfo:nil completionHandler:completionHandler];
-}
-
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withUserInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
-{
-    [self prepareToPlayURL:URL atTime:startTime withSegments:nil userInfo:userInfo completionHandler:completionHandler];
-}
-
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withCompletionHandler:(void (^)(void))completionHandler
-{
-    [self prepareToPlayURL:URL atTime:startTime withSegments:nil userInfo:nil completionHandler:completionHandler];
-}
-
-- (void)prepareToPlayURL:(NSURL *)URL withUserInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
-{
-    [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:nil userInfo:userInfo completionHandler:completionHandler];
-}
 
 - (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(void (^)(void))completionHandler
 {
@@ -414,36 +389,6 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     [self prepareToPlayURL:URL atTime:time withSegments:segments userInfo:userInfo completionHandler:^{
         [self play];
     }];
-}
-
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(NSArray<id<SRGSegment>> *)segments
-{
-    [self playURL:URL atTime:time withSegments:segments userInfo:nil];
-}
-
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time withUserInfo:(NSDictionary *)userInfo
-{
-    [self playURL:URL atTime:time withSegments:nil userInfo:userInfo];
-}
-
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time
-{
-    [self playURL:URL atTime:time withSegments:nil userInfo:nil];
-}
-
-- (void)playURL:(NSURL *)URL withSegments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo
-{
-    [self playURL:URL atTime:kCMTimeZero withSegments:segments userInfo:userInfo];
-}
-
-- (void)playURL:(NSURL *)URL withSegments:(NSArray<id<SRGSegment>> *)segments
-{
-    [self playURL:URL atTime:kCMTimeZero withSegments:segments userInfo:nil];
-}
-
-- (void)playURL:(NSURL *)URL withUserInfo:(NSDictionary *)userInfo
-{
-    [self playURL:URL atTime:kCMTimeZero withSegments:nil userInfo:userInfo];
 }
 
 - (void)playURL:(NSURL *)URL

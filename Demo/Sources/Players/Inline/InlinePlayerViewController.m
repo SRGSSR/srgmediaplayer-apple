@@ -45,7 +45,7 @@
 
 - (IBAction)prepareToPlay:(id)sender
 {
-    [self.mediaPlayerController prepareToPlayURL:self.contentURL atTime:kCMTimeZero withCompletionHandler:^{
+    [self.mediaPlayerController prepareToPlayURL:self.contentURL atTime:kCMTimeZero withSegments:nil userInfo:nil completionHandler:^{
         _ready = YES;
     }];
 }
