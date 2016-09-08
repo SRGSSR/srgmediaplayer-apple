@@ -116,7 +116,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  For more information about the available notifications, have a look at the `SRGMediaPlayerConstants.h` header file.
  *
  *  Some controller properties (e.g. the `playbackState` property) are key-value observable. If not stated explicitly,
- *  KVO might be possible but is not guaranteed.
+ *  KVO might be possible but is not guaranteed. You should in general listen to notifications, though, as they may
+ *  convey additional useful information.
+ *
+ *  Notifications and KVO changes are reported on the main thread.
  *
  *  ## Playback management
  *
