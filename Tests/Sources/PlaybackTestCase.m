@@ -516,16 +516,7 @@ static NSURL *PlaybackTestURL(void)
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
-    XCTestExpectation *kvoExpectation = [self expectationWithDescription:@"Playback state change observed (preparing)"];
-    
-    __weak __typeof(mediaPlayerController) weakMediaPlayerController = mediaPlayerController;
-    [mediaPlayerController addObservationKeyPath:@"playbackState" options:0 block:^(MAKVONotification *notification) {
-        XCTAssertEqual(weakMediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
-        [kvoExpectation fulfill];
-        
-        // Do not fulfill the expectation more than once
-        [weakMediaPlayerController removeAllObservers];
-    }];
+    [self keyValueObservingExpectationForObject:mediaPlayerController keyPath:@"playbackState" expectedValue:@(SRGMediaPlayerPlaybackStatePreparing)];
     
     [mediaPlayerController playURL:PlaybackTestURL()];
     
