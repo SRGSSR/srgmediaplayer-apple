@@ -76,4 +76,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface SRGPeriodicTimeObserver (Unavailable)
+
+- (instancetype)init NS_UNAVAILABLE;
+
+@end
+
 NS_ASSUME_NONNULL_END
