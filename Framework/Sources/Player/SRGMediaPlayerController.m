@@ -531,14 +531,16 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
             return;
         }
         
-        // Find the segment matching the current time
-        __block id<SRGSegment> currentSegment = nil;
-        [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (CMTimeRangeContainsTime(segment.timeRange, time)) {
-                currentSegment = segment;
-                *stop = YES;
-            }
-        }];
+        // Find the segment matching the current time (force the selected one if any)
+        __block id<SRGSegment> currentSegment = self.selectedSegment;
+        if (! currentSegment) {
+            [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (CMTimeRangeContainsTime(segment.timeRange, time)) {
+                    currentSegment = segment;
+                    *stop = YES;
+                }
+            }];
+        }
         
         // Segment transition notifications
         if (self.previousSegment != currentSegment) {
@@ -580,12 +582,12 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
                         }
                     }];
                 }
-                
-                self.selectedSegment = nil;
             }
             
             self.previousSegment = currentSegment;
         }
+        
+        self.selectedSegment = nil;
     }];
 }
 
