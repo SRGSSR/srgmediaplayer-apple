@@ -16,6 +16,8 @@
 
 @implementation Segment
 
+#pragma mark Class methods
+
 + (Segment *)segmentWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
 {
     return [[[self class] alloc] initWithName:name timeRange:timeRange];
@@ -28,6 +30,8 @@
     return segment;
 }
 
+#pragma mark Object lifecycle
+
 - (instancetype)initWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
 {
     if (self = [super init]) {
@@ -37,10 +41,24 @@
     return self;
 }
 
+#pragma mark Getters and setters
+
 - (BOOL)isHidden
 {
     // NO need to test hidden segments in unit tests, those are only for use by UI overlays
     return NO;
+}
+
+#pragma mark Description
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p; name: %@; startTime: %@; duration: %@>",
+            [self class],
+            self,
+            self.name,
+            @(CMTimeGetSeconds(self.timeRange.start)),
+            @(CMTimeGetSeconds(self.timeRange.duration))];
 }
 
 @end
