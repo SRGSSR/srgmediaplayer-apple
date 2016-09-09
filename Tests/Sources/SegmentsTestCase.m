@@ -526,4 +526,30 @@ static NSURL *SegmentsTestURL(void)
     XCTFail(@"TODO");
 }
 
+- (void)testPrepareSelectedSegment
+{
+    XCTFail(@"TODO");
+}
+
+- (void)testPlaySelectedSegment
+{
+    XCTFail(@"TODO");
+}
+
+- (void)testPlaySelectedSegmentWithoutSegments
+{
+    XCTFail(@"TODO");
+}
+
+- (void)testPlaySelectedSegmentWithInvalidIndex
+{
+    XCTFail(@"TODO");
+}
+
+- (void)testPlayOutOfRangeSegment
+{
+    // Should probably receive both notifications
+    XCTFail(@"TODO");
+}
+
 @end

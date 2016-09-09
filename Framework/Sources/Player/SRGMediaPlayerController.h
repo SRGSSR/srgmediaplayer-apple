@@ -237,7 +237,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  call `-play` from the completion handler (in which case the player will immediately reach the playing state).
  *
  *  @param URL               The URL to play
- *  @param startTime         The time to start at. Use kCMTimeZero to start at the default location:
+ *  @param time              The time to start at. Use kCMTimeZero to start at the default location:
  *                             - For on-demand streams: At the beginning
  *                             - For live and DVR streams: In live conditions, i.e. at the end of the stream
  *                           If the time is invalid it will be set to kCMTimeZero. Setting a start time outside the
@@ -254,7 +254,7 @@ NS_ASSUME_NONNULL_BEGIN
  *              only be reflected after the completion handler has been executed, so that the player transitions from preparing
  *              to this state without transitioning through the paused state.
  */
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(nullable NSArray<id<SRGSegment>> *)segments userInfo:(nullable NSDictionary *)userInfo completionHandler:(nullable void (^)(void))completionHandler;
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments userInfo:(nullable NSDictionary *)userInfo completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Ask the player to play
@@ -285,7 +285,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  playing. You can use the completion handler to change the player state if needed, e.g. to automatically
  *  resume playback after a seek has been performed on a paused player
  *
- *  @param startTime         The time to start at. Use kCMTimeZero to start at the default location:
+ *  @param time              The time to start at. Use kCMTimeZero to start at the default location:
  *                             - For on-demand streams: At the beginning
  *                             - For live and DVR streams: In live conditions, i.e. at the end of the stream
  *                           If the time is invalid it will be set to kCMTimeZero. Setting a start time outside the
@@ -446,23 +446,68 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Ask the player to seek to a given location efficiently (the seek might be not perfeclty accurate but will be faster)
  *
- * For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
+ *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
  */
 - (void)seekEfficientlyToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
- * Ask the player to seek to a given location with no tolerance (this might incur some decoding overhead)
+ *  Ask the player to seek to a given location with no tolerance (this might incur some decoding overhead)
  *
- * For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
+ *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
  */
 - (void)seekPreciselyToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
+@end
+
 /**
- *  Seek to the beginning of the specified segment
+ *  @name Segment playback (the specified segment notifications will have `SRGMediaPlayerSelectedKey` set to YES)
+ */
+
+@interface SRGMediaPlayerController (SegmentSelection)
+
+/**
+ *  Prepare to play the media, starting at the beginning of the segment specified by `index`. User info can be optionally provided
+ *
+ *  @param index The index of the segment at which playback will start
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`
+ *
+ *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location
+ */
+- (void)prepareToPlayURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(nullable NSDictionary *)userInfo completionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Play a media, starting at the specified segment. User info can be optionally provided
+ *
+ *  @param index The index of the segment at which playback will start
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`
+ *
+ *  @discussion
+ *
+ *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location
+ */
+- (void)playURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(nullable NSDictionary *)userInfo;
+
+/**
+ *  Seek to the beginning of the specified segment. If a segment is played using this method,
+ *
+ *  @param index The index of the segment to seek to
+ *
+ *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
+ *
+ *  @discussion If the segment index is invalid, this method does nothing
+ */
+- (void)seekToSegmentAtIndex:(NSInteger)index withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+
+/**
+ *  Seek to the beginning of the specified segment. If a segment is played using this method,
  *
  *  @param segment The segment to seek to
  *
- * For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`
+ *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
+ *
+ *  @discussion If the segment does not belong to the registered segments, this method does nothing
  */
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 

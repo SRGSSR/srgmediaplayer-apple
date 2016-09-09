@@ -323,25 +323,9 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 #pragma mark Playback
 
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)startTime withSegments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)time withSegments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
 {
-    if (! CMTIME_IS_VALID(startTime)) {
-        startTime = kCMTimeZero;
-    }
-    
-    [self reset];
-    
-    self.contentURL = URL;
-    self.segments = segments;
-    self.userInfo = userInfo;
-    
-    [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
-    
-    self.startTimeValue = [NSValue valueWithCMTime:startTime];
-    self.startCompletionHandler = completionHandler;
-    
-    AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
-    self.player = [AVPlayer playerWithPlayerItem:playerItem];
+    [self prepareToPlayURL:URL atTime:time withSegments:segments selectedSegment:nil userInfo:userInfo completionHandler:completionHandler];
 }
 
 - (void)play
@@ -359,7 +343,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     [self stopWithUserInfo:nil];
 }
 
-- (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(nullable void (^)(BOOL))completionHandler
+- (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL))completionHandler
 {
     [self seekToTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter selectedSegment:nil completionHandler:completionHandler];
 }
@@ -422,16 +406,75 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     [self seekToTime:time withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:completionHandler];
 }
 
-- (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
+#pragma mark Segment playback
+
+- (void)prepareToPlayURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
 {
-    CMTime time = [segment timeRange].start;
-    [self seekToTime:time withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero selectedSegment:segment completionHandler:completionHandler];
+    if (index < 0 || index >= segments.count) {
+        return;
+    }
+    
+    [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:segments selectedSegment:segments[index] userInfo:userInfo completionHandler:completionHandler];
 }
 
-#pragma mark Playback (internal)
-
-- (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter selectedSegment:(id<SRGSegment>)selectedSegment completionHandler:(nullable void (^)(BOOL))completionHandler
+- (void)playURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo
 {
+    [self prepareToPlayURL:URL atIndex:index inSegments:segments withUserInfo:userInfo completionHandler:^{
+        [self play];
+    }];
+}
+
+- (void)seekToSegmentAtIndex:(NSInteger)index withCompletionHandler:(void (^)(BOOL finished))completionHandler
+{
+    if (index < 0 || index >= self.segments.count) {
+        return;
+    }
+    
+    [self seekToSegment:self.segments[index] withCompletionHandler:completionHandler];
+}
+
+- (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
+{
+    if (! [self.segments containsObject:segment]) {
+        return;
+    }
+    
+    [self seekToTime:[segment timeRange].start withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero selectedSegment:segment completionHandler:completionHandler];
+}
+
+#pragma mark Playback (internal). Time parameters are ignored when valid segments are provided
+
+- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)time withSegments:(NSArray<id<SRGSegment>> *)segments selectedSegment:(id<SRGSegment>)selectedSegment userInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
+{
+    NSAssert(! selectedSegment || [segments containsObject:selectedSegment], @"Segment must be valid");
+    
+    if (selectedSegment) {
+        time = [selectedSegment timeRange].start;
+    }
+    else if (! CMTIME_IS_VALID(time)) {
+        time = kCMTimeZero;
+    }
+    
+    [self reset];
+    
+    self.contentURL = URL;
+    self.segments = segments;
+    self.userInfo = userInfo;
+    self.selectedSegment = selectedSegment;
+    
+    [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
+    
+    self.startTimeValue = [NSValue valueWithCMTime:time];
+    self.startCompletionHandler = completionHandler;
+    
+    AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
+    self.player = [AVPlayer playerWithPlayerItem:playerItem];
+}
+
+- (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter selectedSegment:(id<SRGSegment>)selectedSegment completionHandler:(void (^)(BOOL))completionHandler
+{
+    NSAssert(! selectedSegment || [self.segments containsObject:selectedSegment], @"Segment must be valid");
+    
     if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
         return;
     }
