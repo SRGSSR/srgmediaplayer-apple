@@ -424,8 +424,6 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController seekToSegment:segment withCompletionHandler:nil];
-    
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 

@@ -28,7 +28,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 @interface SRGMediaPlayerController () {
 @private
     SRGMediaPlayerPlaybackState _playbackState;
-    BOOL _wasPreviousSegmentSelected;
+    BOOL _selected;
 }
 
 @property (nonatomic) NSURL *contentURL;
@@ -439,13 +439,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
         return;
     }
     
-    // If the segment is already the current one (and was selected by the user), simply return to the beginning (no end / start transition)
-    if (self.currentSegment == segment && _wasPreviousSegmentSelected) {
-        [self seekToTime:[segment timeRange].start withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero selectedSegment:nil completionHandler:completionHandler];
-    }
-    else {
-        [self seekToTime:[segment timeRange].start withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero selectedSegment:segment completionHandler:completionHandler];
-    }
+    [self seekToTime:[segment timeRange].start withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero selectedSegment:segment completionHandler:completionHandler];
 }
 
 #pragma mark Playback (internal). Time parameters are ignored when valid segments are provided
@@ -520,6 +514,58 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     }
 }
 
+#pragma mark Segments
+
+- (void)processTransitionToSegment:(id<SRGSegment>)segment selected:(BOOL)selected
+{
+    // No segment transition. Nothing to do
+    if (segment == self.previousSegment && ! selected) {
+        return;
+    }
+    
+    if (self.previousSegment && ! [self.previousSegment isBlocked]) {
+        NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : self.previousSegment,
+                                            SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
+        if (! [segment isBlocked]) {
+            userInfo[SRGMediaPlayerNextSegmentKey] = segment;
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
+                                                            object:self
+                                                          userInfo:[userInfo copy]];
+        _selected = NO;
+    }
+    
+    if (segment) {
+        if (! [segment isBlocked]) {
+            _selected = selected;
+            
+            NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : segment,
+                                                SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
+            if (self.previousSegment && ! [self.previousSegment isBlocked]) {
+                userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
+                                                                object:self
+                                                              userInfo:[userInfo copy]];
+        }
+        else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
+                                                                object:self
+                                                              userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
+            
+            [self seekPreciselyToTime:CMTimeRangeGetEnd([segment timeRange]) withCompletionHandler:^(BOOL finished) {
+                if (finished) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
+                                                                        object:self
+                                                                      userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
+                }
+            }];
+        }
+    }
+    
+    self.previousSegment = segment;
+}
+
 #pragma mark Time observers
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
@@ -537,63 +583,24 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
             return;
         }
         
-        // Find the segment matching the current time (force the selected one if any)
-        __block id<SRGSegment> currentSegment = self.selectedSegment;
-        if (! currentSegment) {
-            [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
-                if (CMTimeRangeContainsTime(segment.timeRange, time)) {
-                    currentSegment = segment;
-                    *stop = YES;
-                }
-            }];
+        if (self.selectedSegment) {
+            [self processTransitionToSegment:self.selectedSegment selected:YES];
+            self.selectedSegment = nil;
         }
-        
-        // Segment transition notifications
-        if (self.previousSegment != currentSegment) {
-            if (self.previousSegment && ! [self.previousSegment isBlocked]) {
-                NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : self.previousSegment,
-                                                    SRGMediaPlayerSelectedKey : @(_wasPreviousSegmentSelected) } mutableCopy];
-                if (currentSegment && ! [currentSegment isBlocked]) {
-                    userInfo[SRGMediaPlayerNextSegmentKey] = currentSegment;
-                }
-                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
-                                                                    object:self
-                                                                  userInfo:[userInfo copy]];
-                _wasPreviousSegmentSelected = NO;
-            }
-            
-            if (currentSegment) {
-                if (! [currentSegment isBlocked]) {
-                    _wasPreviousSegmentSelected = currentSegment && (currentSegment == self.selectedSegment);
-                    
-                    NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : currentSegment,
-                                                        SRGMediaPlayerSelectedKey : @(_wasPreviousSegmentSelected) } mutableCopy];
-                    if (self.previousSegment && ! [self.previousSegment isBlocked]) {
-                        userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
+        else {
+            // Find the segment matching the current time
+            __block id<SRGSegment> currentSegment = nil;
+            if (! currentSegment) {
+                [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if (CMTimeRangeContainsTime(segment.timeRange, time)) {
+                        currentSegment = segment;
+                        *stop = YES;
                     }
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
-                                                                        object:self
-                                                                      userInfo:[userInfo copy]];
-                }
-                else {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
-                                                                        object:self
-                                                                      userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
-                    
-                    [self seekPreciselyToTime:CMTimeRangeGetEnd([currentSegment timeRange]) withCompletionHandler:^(BOOL finished) {
-                        if (finished) {
-                            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
-                                                                                object:self
-                                                                              userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment }];
-                        }
-                    }];
-                }
+                }];
             }
             
-            self.previousSegment = currentSegment;
+            [self processTransitionToSegment:currentSegment selected:NO];
         }
-        
-        self.selectedSegment = nil;
     }];
 }
 
