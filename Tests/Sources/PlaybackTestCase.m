@@ -13,12 +13,17 @@ static NSURL *PlaybackTestURL(void)
     return [NSURL URLWithString:@"https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
 }
 
+static NSURL *ShortNonStreamedPlaybackTestURL(void)
+{
+    return [NSURL URLWithString:@"http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"];
+}
+
 @interface PlaybackTestCase : XCTestCase
 @end
 
 @implementation PlaybackTestCase
 
-- (void)testInitialPlayerStateIsIdle
+- (void)testInitialPlayerState
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
@@ -134,6 +139,35 @@ static NSURL *PlaybackTestURL(void)
     }];
     
     [mediaPlayerController playURL:PlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testNonStreamedMediaPlaythrough
+{
+    SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        // Ignore the notification associated with the preparing phase
+        if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+            return NO;
+        }
+        
+        // The player must have transitioned directly to the playing state without going through the paused state
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
+        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
+        return YES;
+    }];
+    
+    [mediaPlayerController playURL:ShortNonStreamedPlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateEnded);
+        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePlaying);
+        return YES;
+    }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }

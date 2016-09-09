@@ -676,8 +676,9 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
                         }];
                     }
                 }
-                // Update the playback state immediately
-                else {
+                // Update the playback state immediately, except when reaching the end. Non-streamed medias will namely reach the paused state right before
+                // the item end notification is received. We can eliminate this pause by checking if we are at the end or not
+                else if (CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange))) {
                     [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                 }
             }

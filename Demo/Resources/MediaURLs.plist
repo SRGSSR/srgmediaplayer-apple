@@ -40,6 +40,12 @@
 			<key>url</key>
 			<string>http://stream-i.rts.ch/i/bidbi/2007/bidbi_01082007-,450,k.mp4.csmil/master.m3u8</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>Short non-streamed video</string>
+			<key>url</key>
+			<string>http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4</string>
+		</dict>
 	</array>
 </dict>
 </plist>
