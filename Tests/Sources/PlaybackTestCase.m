@@ -33,22 +33,25 @@ static NSURL *ShortNonStreamedPlaybackTestURL(void)
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
-    // After completion handler execution, the player state is updated. Since nothing is done in the completion handler,
-    // the player must be paused
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        // Ignore the notification associated with the preparing phase
-        if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-            return NO;
-        }
-        
-        // Check the next notification
-        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePaused);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
         return YES;
     }];
     
     [mediaPlayerController prepareToPlayURL:PlaybackTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil completionHandler:^{
         // Upon completion handler entry, the state is always preparing
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // After completion handler execution, the player state is updated. Since nothing is done in the completion handler,
+    // the player must be paused
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        // Check the next notification
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePaused);
+        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
+        return YES;
     }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -64,7 +67,7 @@ static NSURL *ShortNonStreamedPlaybackTestURL(void)
         // Upon completion handler entry, the state is always preparing
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
         
-        // If we now play, the player just be immediately in the playing state
+        // If we now play, the player must immediately be in the playing state
         [mediaPlayerController play];
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
         
@@ -104,20 +107,22 @@ static NSURL *ShortNonStreamedPlaybackTestURL(void)
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
-    // After completion handler execution, the player state is updated. Since nothing is done in the completion handler,
-    // the player must be paused
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        // Ignore the notification associated with the preparing phase
-        if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-            return NO;
-        }
-        
-        // Check the next notification
-        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePaused);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
         return YES;
     }];
     
     [mediaPlayerController prepareToPlayURL:PlaybackTestURL() atTime:CMTimeMakeWithSeconds(24. * 60. * 60., NSEC_PER_SEC) withSegments:nil userInfo:nil completionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // After completion handler execution, the player state is updated. Since nothing is done in the completion handler,
+    // the player must be paused
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePaused);
+        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
+        return YES;
+    }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -127,18 +132,20 @@ static NSURL *ShortNonStreamedPlaybackTestURL(void)
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        // Ignore the notification associated with the preparing phase
-        if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-            return NO;
-        }
-        
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
+        return YES;
+    }];
+    
+    [mediaPlayerController playURL:PlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         // The player must have transitioned directly to the playing state without going through the paused state
         XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
         XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
         return YES;
     }];
-    
-    [mediaPlayerController playURL:PlaybackTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -148,18 +155,19 @@ static NSURL *ShortNonStreamedPlaybackTestURL(void)
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        // Ignore the notification associated with the preparing phase
-        if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-            return NO;
-        }
-        
-        // The player must have transitioned directly to the playing state without going through the paused state
-        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
-        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
         return YES;
     }];
     
     [mediaPlayerController playURL:ShortNonStreamedPlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
+        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
+        return YES;
+    }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -349,9 +357,7 @@ static NSURL *ShortNonStreamedPlaybackTestURL(void)
     
     // Reset the player and check its status
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        if (mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateIdle) {
-            return NO;
-        }
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
         
         XCTAssertNil(mediaPlayerController.contentURL);
         XCTAssertNil(mediaPlayerController.segments);
@@ -389,9 +395,7 @@ static NSURL *ShortNonStreamedPlaybackTestURL(void)
     
     // Stop the player and check its status
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        if (mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateIdle) {
-            return NO;
-        }
+        XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
         
         XCTAssertNotNil(mediaPlayerController.contentURL);
         XCTAssertNotNil(mediaPlayerController.segments);
