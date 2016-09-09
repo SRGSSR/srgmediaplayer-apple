@@ -535,7 +535,7 @@ static NSURL *SegmentsTestURL(void)
     // Select the segment. Expect a start notification because of the selection
     [self expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment");
-        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousSegmentKey]);
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerPreviousSegmentKey] name], @"segment");
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return YES;
     }];
