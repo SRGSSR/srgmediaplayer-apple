@@ -543,22 +543,29 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
         // Segment transition notifications
         if (self.previousSegment != currentSegment) {
             if (self.previousSegment && ! [self.previousSegment isBlocked]) {
+                NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : self.previousSegment,
+                                                    SRGMediaPlayerSelectedKey : @(_wasPreviousSegmentSelected) } mutableCopy];
+                if (currentSegment && ! [currentSegment isBlocked]) {
+                    userInfo[SRGMediaPlayerNextSegmentKey] = currentSegment;
+                }
                 [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
                                                                     object:self
-                                                                  userInfo:@{ SRGMediaPlayerSegmentKey : self.previousSegment,
-                                                                              SRGMediaPlayerSelectedKey : @(_wasPreviousSegmentSelected) }];
+                                                                  userInfo:[userInfo copy]];
                 _wasPreviousSegmentSelected = NO;
             }
-            
-            self.previousSegment = currentSegment;
             
             if (currentSegment) {
                 if (! [currentSegment isBlocked]) {
                     _wasPreviousSegmentSelected = currentSegment && (currentSegment == self.selectedSegment);
+                    
+                    NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : currentSegment,
+                                                        SRGMediaPlayerSelectedKey : @(_wasPreviousSegmentSelected) } mutableCopy];
+                    if (self.previousSegment && ! [self.previousSegment isBlocked]) {
+                        userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
+                    }
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
                                                                         object:self
-                                                                      userInfo:@{ SRGMediaPlayerSegmentKey : currentSegment,
-                                                                                  SRGMediaPlayerSelectedKey : @(_wasPreviousSegmentSelected) }];
+                                                                      userInfo:[userInfo copy]];
                 }
                 else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
@@ -576,6 +583,8 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
                 
                 self.selectedSegment = nil;
             }
+            
+            self.previousSegment = currentSegment;
         }
     }];
 }
