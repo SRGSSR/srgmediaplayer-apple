@@ -497,19 +497,17 @@ static NSURL *SegmentsTestURL(void)
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
-    // Ensure that no segment transition notifications are emitted when the same segment is selected again
-    __block id startObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"Segment start notification must not be called");
-        [[NSNotificationCenter defaultCenter] removeObserver:startObserver];
+    // Must receive end and start notifications for the segment again
+    [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment");
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerNextSegmentKey] name], @"segment");
+        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
+        return YES;
     }];
-    __block id endObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"Segment end notification must not be called");
-        [[NSNotificationCenter defaultCenter] removeObserver:endObserver];
-    }];
-    
-    // Wait until the player is playing again
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+    [self expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerSegmentKey] name], @"segment");
+        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerPreviousSegmentKey] name], @"segment");
+        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return YES;
     }];
     
