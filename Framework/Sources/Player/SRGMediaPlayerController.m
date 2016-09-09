@@ -516,6 +516,8 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 #pragma mark Segments
 
+// Emit correct notifications for transitions (selected = NO for normal playback, YES if the segment has been selected)
+// and seek over blocked segments
 - (void)processTransitionToSegment:(id<SRGSegment>)segment selected:(BOOL)selected
 {
     // No segment transition. Nothing to do
