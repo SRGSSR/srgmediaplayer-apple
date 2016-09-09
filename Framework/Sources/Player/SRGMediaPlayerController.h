@@ -460,7 +460,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- *  @name Segment playback (the specified segment notifications will have `SRGMediaPlayerSelectedKey` set to YES)
+ *  @name Segment playback (the specified segment start and end notifications will have `SRGMediaPlayerSelectedKey` set to YES)
  */
 
 @interface SRGMediaPlayerController (SegmentSelection)
@@ -490,18 +490,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Seek to the beginning of the specified segment. If a segment is played using this method,
+ *  Seek to the beginning of the specified segment
  *
  *  @param index The index of the segment to seek to
  *
  *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
  *
- *  @discussion If the segment index is invalid, this method does nothing
+ *  @discussion If the segment index is invalid, this method does nothing. If the segment is already the one 
  */
 - (void)seekToSegmentAtIndex:(NSInteger)index withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
- *  Seek to the beginning of the specified segment. If a segment is played using this method,
+ *  Seek to the beginning of the specified segment
  *
  *  @param segment The segment to seek to
  *

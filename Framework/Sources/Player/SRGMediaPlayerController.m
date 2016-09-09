@@ -439,7 +439,13 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
         return;
     }
     
-    [self seekToTime:[segment timeRange].start withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero selectedSegment:segment completionHandler:completionHandler];
+    // If the segment is already the current one (and was selected by the user), simply return to the beginning (no end / start transition)
+    if (self.currentSegment == segment && _wasPreviousSegmentSelected) {
+        [self seekToTime:[segment timeRange].start withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero selectedSegment:nil completionHandler:completionHandler];
+    }
+    else {
+        [self seekToTime:[segment timeRange].start withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero selectedSegment:segment completionHandler:completionHandler];
+    }
 }
 
 #pragma mark Playback (internal). Time parameters are ignored when valid segments are provided
