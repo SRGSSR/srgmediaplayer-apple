@@ -70,7 +70,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)dealloc
 {
-    [self reset];
+    // No need to call -reset here, since -stop or -reset must be called for the controller to be deallocated
     self.pictureInPictureController = nil;              // Unregister KVO
 }
 

@@ -55,6 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
  *          to set constraints or autoresizing masks properly so that the view behaves as expected.
  *      If you only need to implement an audio player, you can skip this step.
  *    - Call one of the play methods to start playing your media
+ *    - You must call either -stop or -reset on the player controller when you do not need it to play anymore. This is
+ *      essential so that it can get properly deallocated when no other strong reference to it exist
  *
  *  You should now have a working implementation able to play audios or videos. There is no way to pause playback or to 
  *  seek within the media, though. The `SRGMediaPlayer` library provides a few standard controls and overlays with which 
@@ -272,9 +274,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)pause;
 
 /**
- *  Ask the player to stop playback. Call `-play` to restart playback with the same content URL, segments and user info
+ *  Ask the player to stop playback. Call `-play` to restart playback with the same content URL, segments and user info.
  *
- *  @discussion See `-stop`
+ *  @discussion Calling either `-stop` or `-reset` on a player controller is required for it to be properly deallocated.
  */
 - (void)stop;
 
@@ -305,7 +307,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Reset the player to its original idle state with no media URL, segments or user info
  *
- *  @discussion Periodic time observers registered with the controller are not unregistered
+ *  @discussion Periodic time observers registered with the controller are not unregistered. Calling either `-stop` or 
+ *              `-reset` on a player controller is required for it to be properly deallocated.
  */
 - (void)reset;
 
