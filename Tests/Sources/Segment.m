@@ -8,7 +8,6 @@
 
 @interface Segment ()
 
-@property (nonatomic, copy) NSString *name;
 @property (nonatomic) CMTimeRange timeRange;
 @property (nonatomic, getter=isBlocked) BOOL blocked;
 
@@ -18,24 +17,23 @@
 
 #pragma mark Class methods
 
-+ (Segment *)segmentWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
++ (Segment *)segmentWithTimeRange:(CMTimeRange)timeRange
 {
-    return [[[self class] alloc] initWithName:name timeRange:timeRange];
+    return [[[self class] alloc] initWithTimeRange:timeRange];
 }
 
-+ (Segment *)blockedSegmentWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
++ (Segment *)blockedSegmentWithTimeRange:(CMTimeRange)timeRange
 {
-    Segment *segment = [[[self class] alloc] initWithName:name timeRange:timeRange];
+    Segment *segment = [[[self class] alloc] initWithTimeRange:timeRange];
     segment.blocked = YES;
     return segment;
 }
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithName:(NSString *)name timeRange:(CMTimeRange)timeRange
+- (instancetype)initWithTimeRange:(CMTimeRange)timeRange
 {
     if (self = [super init]) {
-        self.name = name;
         self.timeRange = timeRange;
     }
     return self;
@@ -53,10 +51,9 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@: %p; name: %@; startTime: %@; duration: %@>",
+    return [NSString stringWithFormat:@"<%@: %p; startTime: %@; duration: %@>",
             [self class],
             self,
-            self.name,
             @(CMTimeGetSeconds(self.timeRange.start)),
             @(CMTimeGetSeconds(self.timeRange.duration))];
 }
