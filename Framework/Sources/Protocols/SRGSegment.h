@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The optional dictionnary associated to the content
  */
-@property(nonatomic, readonly, nullable) NSDictionary *userInfo;
+@property (nonatomic, readonly, nullable) NSDictionary *userInfo;
 
 @end
 

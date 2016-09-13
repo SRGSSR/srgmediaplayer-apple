@@ -10,6 +10,7 @@
 
 @property (nonatomic) CMTimeRange timeRange;
 @property (nonatomic, getter=isBlocked) BOOL blocked;
+@property (nonatomic) NSDictionary *userInfo;
 
 @end
 
