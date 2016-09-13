@@ -689,9 +689,22 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-- (void)testStartPlayingSelectedSegment
+- (void)testPlaySegmentAtIndex
 {
-    XCTFail(@"TODO");
+    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(20., NSEC_PER_SEC), CMTimeMakeWithSeconds(50., NSEC_PER_SEC))];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    [self expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
+        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
 - (void)testPlaySelectedSegmentWithoutSegments
