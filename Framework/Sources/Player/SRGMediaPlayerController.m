@@ -410,11 +410,13 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 - (void)prepareToPlayURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
 {
+    // Incorrect index. Start at the default location
     if (index < 0 || index >= segments.count) {
-        return;
+        [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:segments selectedSegment:nil userInfo:userInfo completionHandler:completionHandler];
     }
-    
-    [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:segments selectedSegment:segments[index] userInfo:userInfo completionHandler:completionHandler];
+    else {
+        [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:segments selectedSegment:segments[index] userInfo:userInfo completionHandler:completionHandler];
+    }
 }
 
 - (void)playURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo
