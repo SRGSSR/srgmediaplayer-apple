@@ -720,8 +720,6 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
                 // completion handler has been executed (since it might immediately start playback)
                 if (self.startTimeValue) {
                     void (^completionBlock)(BOOL) = ^(BOOL finished) {
-                        NSAssert(finished, @"Finished must be YES, as no seek should be able to cancel the initial seek");
-                        
                         // Reset start time first so that playback state induced change made in the completion handler
                         // does not loop back here
                         self.startTimeValue = nil;
