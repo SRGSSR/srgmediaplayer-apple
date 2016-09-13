@@ -18,6 +18,11 @@ static NSURL *ShortNonStreamedPlaybackTestURL(void)
     return [NSURL URLWithString:@"http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"];
 }
 
+static NSURL *LiveTestURL(void)
+{
+    return [NSURL URLWithString:@"http://esioslive6-i.akamaihd.net/hls/live/202892/AL_P_ESP1_FR_FRA/playlist.m3u8"];
+}
+
 @interface PlaybackTestCase : XCTestCase
 
 @property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
@@ -184,6 +189,26 @@ static NSURL *ShortNonStreamedPlaybackTestURL(void)
     }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testLivePause
+{
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:LiveTestURL()];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePaused);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController pause];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
 - (void)testMediaInformationAvailabilityAfterPrepare
