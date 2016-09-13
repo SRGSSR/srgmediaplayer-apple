@@ -709,6 +709,13 @@ static NSURL *SegmentsTestURL(void)
 {
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(20., NSEC_PER_SEC), CMTimeMakeWithSeconds(50., NSEC_PER_SEC))];
     
+    // Ensure that no seek notification is emitted
+    id seekObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        if (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking) {
+            XCTFail(@"Segment start notification must not be called");
+        }
+    }];
+    
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -720,7 +727,9 @@ static NSURL *SegmentsTestURL(void)
     
     [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
     
-    [self waitForExpectationsWithTimeout:20. handler:nil];
+    [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:seekObserver];
+    }];
 }
 
 - (void)testPlaySegmentAtIndexWithoutSegments
