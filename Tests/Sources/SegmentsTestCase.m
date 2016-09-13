@@ -768,8 +768,27 @@ static NSURL *SegmentsTestURL(void)
 
 - (void)testPlayOutOfRangeSegment
 {
-    // Should probably receive both notifications
-    XCTFail(@"TODO");
+    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(10000000., NSEC_PER_SEC), CMTimeMakeWithSeconds(50., NSEC_PER_SEC))];
+    
+    // Playback will start at the end of the stream. Start and end notifications for the segment are still expected (the
+    // segment is there but has no overlap with the stream)
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded;
+    }];
+    [self expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
+        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
+        return YES;
+    }];
+    [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
+        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
 @end
