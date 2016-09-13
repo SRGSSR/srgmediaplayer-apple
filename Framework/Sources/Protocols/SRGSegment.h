@@ -30,11 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, getter=isHidden) BOOL hidden;
 
-/**
- *  The optional dictionnary associated to the content
- */
-@property (nonatomic, readonly, nullable) NSDictionary *userInfo;
-
 @end
 
 NS_ASSUME_NONNULL_END
