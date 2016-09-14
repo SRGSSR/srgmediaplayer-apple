@@ -20,6 +20,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
     volumeView.showsRouteButton = NO;
     volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
