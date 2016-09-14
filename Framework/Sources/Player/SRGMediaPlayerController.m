@@ -481,8 +481,8 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
         return;
     }
     
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
     self.selectedSegment = selectedSegment;
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
     
     [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
         if (finished) {
