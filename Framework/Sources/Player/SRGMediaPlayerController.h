@@ -460,7 +460,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- *  @name Segment playback (the specified segment start and end notifications will have `SRGMediaPlayerSelectedKey` set to YES)
+ *  @name Segment selection (notifications resulting from selection will have the `SRGMediaPlayerSelectedKey` set to YES)
  */
 
 @interface SRGMediaPlayerController (SegmentSelection)

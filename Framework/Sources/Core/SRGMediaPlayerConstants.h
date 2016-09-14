@@ -121,13 +121,13 @@ OBJC_EXTERN NSString * const SRGMediaPlayerDidSkipBlockedSegmentNotification;   
 // Information available for all segment-related notifications
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentKey;                                      // The involved segment as an id<SRGSegment> object
 
-// Information available for `SRGMediaPlayerSegmentDidStartNotification` and `SRGMediaPlayerSegmentDidEndNotification`
-OBJC_EXTERN NSString * const SRGMediaPlayerSelectedKey;                                     // Key to an `NSNumber` wrapping a boolean, set to YES if the segment was selected (key appearing both in start and end notifications)
-
 // Information available for `SRGMediaPlayerSegmentDidStartNotification`
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousSegmentKey;                              // The previously played segment, if any, as an id<SRGSegment> object
 
 // Information available for `SRGMediaPlayerSegmentDidEndNotification`
 OBJC_EXTERN NSString * const SRGMediaPlayerNextSegmentKey;                                  // The previously played segment, if any, as an id<SRGSegment> object
+
+// Information available for `SRGMediaPlayerSegmentDidStartNotification`, `SRGMediaPlayerSegmentDidEndNotification` and `SRGMediaPlayerPlaybackStateDidChangeNotification`
+OBJC_EXTERN NSString * const SRGMediaPlayerSelectedKey;                                     // Key to an `NSNumber` wrapping a boolean, set to YES if the notification results from a segment selection
 
 NS_ASSUME_NONNULL_END
