@@ -189,7 +189,9 @@ static NSURL *LiveTestURL(void)
         ++count1;
     }];
     
-    [self expectationForElapsedTimeInterval:4. witHandler:nil];
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+    }];
     
     [self.mediaPlayerController playURL:PlaybackTestURL()];
     
@@ -205,7 +207,9 @@ static NSURL *LiveTestURL(void)
         ++count2;
     }];
     
-    [self expectationForElapsedTimeInterval:4. witHandler:nil];
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePaused;
+    }];
     
     [self.mediaPlayerController pause];
     
@@ -221,7 +225,9 @@ static NSURL *LiveTestURL(void)
         ++count3;
     }];
     
-    [self expectationForElapsedTimeInterval:4. witHandler:nil];
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
+    }];
     
     [self.mediaPlayerController play];
     
@@ -231,6 +237,16 @@ static NSURL *LiveTestURL(void)
     
     // One event expected: playing
     XCTAssertEqual(count3, 1);
+    
+    [self expectationForElapsedTimeInterval:3. witHandler:nil];
+    
+    id eventObserver4 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No other playback state changes are expected");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver4];
+    }];
 }
 
 - (void)testNonStreamedMediaPlaythrough
