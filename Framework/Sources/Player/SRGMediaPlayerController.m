@@ -158,6 +158,9 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     _playbackState = playbackState;
     [self didChangeValueForKey:@"playbackState"];
     
+    // Ensure segment status is up to date
+    [self updateSegmentStatusForPlaybackState:playbackState time:self.player.currentTime];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                         object:self
                                                       userInfo:[fullUserInfo copy]];
@@ -519,6 +522,37 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 #pragma mark Segments
 
+- (void)updateSegmentStatusForPlaybackState:(SRGMediaPlayerPlaybackState)playbackState time:(CMTime)time
+{
+    if (CMTIME_IS_INVALID(time)) {
+        return;
+    }
+    
+    // Only update when relevant
+    if (playbackState != SRGMediaPlayerPlaybackStatePaused && playbackState != SRGMediaPlayerPlaybackStatePlaying) {
+        return;
+    }
+    
+    if (self.selectedSegment) {
+        [self processTransitionToSegment:self.selectedSegment selected:YES];
+        self.selectedSegment = nil;
+    }
+    else {
+        // Find the segment matching the current time
+        __block id<SRGSegment> currentSegment = nil;
+        if (! currentSegment) {
+            [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (CMTimeRangeContainsTime(segment.timeRange, time)) {
+                    currentSegment = segment;
+                    *stop = YES;
+                }
+            }];
+        }
+        
+        [self processTransitionToSegment:currentSegment selected:NO];
+    }
+}
+
 // Emit correct notifications for transitions (selected = NO for normal playback, YES if the segment has been selected)
 // and seek over blocked segments
 - (void)processTransitionToSegment:(id<SRGSegment>)segment selected:(BOOL)selected
@@ -582,30 +616,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     @weakify(self)
     self.segmentPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
-        
-        // Ignore when seeking (if we are skipping a segment)
-        if (self.playbackState == SRGMediaPlayerPlaybackStateSeeking) {
-            return;
-        }
-        
-        if (self.selectedSegment) {
-            [self processTransitionToSegment:self.selectedSegment selected:YES];
-            self.selectedSegment = nil;
-        }
-        else {
-            // Find the segment matching the current time
-            __block id<SRGSegment> currentSegment = nil;
-            if (! currentSegment) {
-                [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if (CMTimeRangeContainsTime(segment.timeRange, time)) {
-                        currentSegment = segment;
-                        *stop = YES;
-                    }
-                }];
-            }
-            
-            [self processTransitionToSegment:currentSegment selected:NO];
-        }
+        [self updateSegmentStatusForPlaybackState:self.playbackState time:time ];
     }];
 }
 
