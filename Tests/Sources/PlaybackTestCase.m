@@ -31,6 +31,19 @@ static NSURL *LiveTestURL(void)
 
 @implementation PlaybackTestCase
 
+#pragma mark Helpers
+
+- (XCTestExpectation *)expectationForElapsedTimeInterval:(NSTimeInterval)timeInterval witHandler:(void (^)(void))handler
+{
+    XCTestExpectation *expectation = [self expectationWithDescription:[NSString stringWithFormat:@"Wait for %@ seconds", @(timeInterval)]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [expectation fulfill];
+        handler ? handler() : nil;
+    });
+    return expectation;
+}
+
+
 #pragma mark Setup and teardown
 
 - (void)setUp
@@ -167,6 +180,57 @@ static NSURL *LiveTestURL(void)
     }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testPlayPausePlay
+{
+    __block NSInteger count1 = 0;
+    id eventObserver1 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        ++count1;
+    }];
+    
+    [self expectationForElapsedTimeInterval:4. witHandler:nil];
+    
+    [self.mediaPlayerController playURL:PlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver1];
+    }];
+    
+    // Two events expected: preparing and playing
+    XCTAssertEqual(count1, 2);
+
+    __block NSInteger count2 = 0;
+    id eventObserver2 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        ++count2;
+    }];
+    
+    [self expectationForElapsedTimeInterval:4. witHandler:nil];
+    
+    [self.mediaPlayerController pause];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver2];
+    }];
+    
+    // One event expected: paused
+    XCTAssertEqual(count2, 1);
+    
+    __block NSInteger count3 = 0;
+    id eventObserver3 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        ++count3;
+    }];
+    
+    [self expectationForElapsedTimeInterval:4. witHandler:nil];
+    
+    [self.mediaPlayerController play];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver3];
+    }];
+    
+    // One event expected: playing
+    XCTAssertEqual(count3, 1);
 }
 
 - (void)testNonStreamedMediaPlaythrough
