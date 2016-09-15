@@ -883,9 +883,28 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-- (void)testSegmentAtEnd
+- (void)testSelectedSegmentAtStreamEnd
 {
-    XCTFail(@"TODO");
+    // Precise nformation gathered from the stream itself
+    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1795045., 1000.), CMTimeMakeWithSeconds(5000., 1000.))];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded;
+    }];
+    [self expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
+        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
+        return YES;
+    }];
+    [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
+        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
 @end
