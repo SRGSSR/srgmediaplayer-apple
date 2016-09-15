@@ -24,7 +24,7 @@ static NSURL *SegmentsTestURL(void)
 
 #pragma mark Helpers
 
-- (XCTestExpectation *)expectationForElapsedTimeInterval:(NSTimeInterval)timeInterval witHandler:(void (^)(void))handler
+- (XCTestExpectation *)expectationForElapsedTimeInterval:(NSTimeInterval)timeInterval withHandler:(void (^)(void))handler
 {
     XCTestExpectation *expectation = [self expectationWithDescription:[NSString stringWithFormat:@"Wait for %@ seconds", @(timeInterval)]];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -810,7 +810,7 @@ static NSURL *SegmentsTestURL(void)
     }];
     
     // Check playback during 5 seconds
-    [self expectationForElapsedTimeInterval:5. witHandler:nil];
+    [self expectationForElapsedTimeInterval:5. withHandler:nil];
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
@@ -832,7 +832,7 @@ static NSURL *SegmentsTestURL(void)
     }];
     
     // Check playback during 5 seconds
-    [self expectationForElapsedTimeInterval:5. witHandler:nil];
+    [self expectationForElapsedTimeInterval:5. withHandler:nil];
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying;
