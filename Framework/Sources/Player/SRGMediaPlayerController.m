@@ -297,6 +297,12 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     }
 }
 
+- (id<SRGSegment>)currentSegment
+{
+    id<SRGSegment> currentSegment = [self segmentForTime:self.player.currentTime];
+    return ! [currentSegment isBlocked] ? currentSegment : nil;
+}
+
 - (AVPictureInPictureController *)pictureInPictureController
 {
     // It is especially important to wait until the player layer is ready for display, otherwise the player might behave
@@ -538,18 +544,8 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
         self.selectedSegment = nil;
     }
     else {
-        // Find the segment matching the current time
-        __block id<SRGSegment> currentSegment = nil;
-        if (! currentSegment) {
-            [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
-                if (CMTimeRangeContainsTime(segment.timeRange, time)) {
-                    currentSegment = segment;
-                    *stop = YES;
-                }
-            }];
-        }
-        
-        [self processTransitionToSegment:currentSegment selected:NO];
+        id<SRGSegment> segment = [self segmentForTime:time];
+        [self processTransitionToSegment:segment selected:NO];
     }
 }
 
@@ -603,6 +599,22 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     }
     
     self.previousSegment = segment;
+}
+
+- (id<SRGSegment>)segmentForTime:(CMTime)time
+{
+    if (CMTIME_IS_INVALID(time)) {
+        return nil;
+    }
+    
+    __block id<SRGSegment> locatedSegment = nil;
+    [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (CMTimeRangeContainsTime(segment.timeRange, time)) {
+            locatedSegment = segment;
+            *stop = YES;
+        }
+    }];
+    return locatedSegment;
 }
 
 #pragma mark Time observers

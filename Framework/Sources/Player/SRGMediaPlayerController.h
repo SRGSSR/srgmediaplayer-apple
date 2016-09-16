@@ -372,7 +372,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 
 /**
- *  Return the segment currently being played, nil if none
+ *  Return the segment corresponding to the current playback position, nil if none
+ *
+ *  @discussion This property never returns blocked segments
  */
 @property (nonatomic, readonly, nullable) id<SRGSegment> currentSegment;
 
