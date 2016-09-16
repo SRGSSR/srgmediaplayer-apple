@@ -50,7 +50,7 @@
 					<key>startTime</key>
 					<integer>5000</integer>
 					<key>duration</key>
-					<integer>10000</integer>
+					<integer>120000</integer>
 					<key>blocked</key>
 					<true/>
 				</dict>
