@@ -42,6 +42,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 
 @property (nonatomic, weak) id<SRGSegment> previousSegment;
 @property (nonatomic, weak) id<SRGSegment> selectedSegment;
+@property (nonatomic, weak) id<SRGSegment> currentSegment;
 
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
@@ -298,12 +299,6 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     }
 }
 
-- (id<SRGSegment>)currentSegment
-{
-    id<SRGSegment> currentSegment = [self segmentForTime:self.player.currentTime];
-    return ! [currentSegment isBlocked] ? currentSegment : nil;
-}
-
 - (AVPictureInPictureController *)pictureInPictureController
 {
     // It is especially important to wait until the player layer is ready for display, otherwise the player might behave
@@ -510,7 +505,10 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     }
     
     [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:userInfo];
+    
     self.previousSegment = nil;
+    self.selectedSegment = nil;
+    self.currentSegment = nil;
     
     self.startTimeValue = nil;
     self.startCompletionHandler = nil;
@@ -560,6 +558,8 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     }
     
     if (self.previousSegment && ! [self.previousSegment isBlocked]) {
+        self.currentSegment = nil;
+        
         NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : self.previousSegment,
                                             SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
         if (! [segment isBlocked]) {
@@ -574,6 +574,8 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     if (segment) {
         if (! [segment isBlocked]) {
             _selected = selected;
+            
+            self.currentSegment = segment;
             
             NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : segment,
                                                 SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];

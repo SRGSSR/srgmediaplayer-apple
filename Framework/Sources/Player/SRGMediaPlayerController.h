@@ -376,7 +376,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @discussion This property never returns blocked segments
  */
-@property (nonatomic, readonly, nullable) id<SRGSegment> currentSegment;
+@property (nonatomic, readonly, weak, nullable) id<SRGSegment> currentSegment;
 
 /**
  *  @name Time observers
