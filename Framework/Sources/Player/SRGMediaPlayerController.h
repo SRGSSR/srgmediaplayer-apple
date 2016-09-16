@@ -344,6 +344,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSArray<id<SRGSegment>> *visibleSegments;
 
 /**
+ *  Return the segment corresponding to the current playback position, nil if none
+ */
+@property (nonatomic, readonly, weak, nullable) id<SRGSegment> currentSegment;
+
+/**
  *  The current media time range (might be empty or indefinite)
  *
  *  @discussion Use `CMTimeRange` macros for checking time ranges
@@ -370,13 +375,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Return YES iff the stream is currently played in live conditions (@see `liveTolerance`)
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
-
-/**
- *  Return the segment corresponding to the current playback position, nil if none
- *
- *  @discussion This property never returns blocked segments
- */
-@property (nonatomic, readonly, weak, nullable) id<SRGSegment> currentSegment;
 
 /**
  *  @name Time observers
@@ -512,6 +510,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion If the segment does not belong to the registered segments, this method does nothing
  */
 - (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+
+/**
+ *  Return the currently selected segment if any, nil if none
+ */
+@property (nonatomic, readonly, weak, nullable) id<SRGSegment> selectedSegment;
 
 @end
 
