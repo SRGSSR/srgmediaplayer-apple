@@ -92,6 +92,7 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerPlaybackState) {
  *  previous state information from the notification `userInfo` dictionary
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerPlaybackStateDidChangeNotification;              // Notification name
+OBJC_EXTERN NSString * const SRGMediaPlayerPlaybackStateKey;                                // Key to access the current playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value)
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousPlaybackStateKey;                        // Key to access the previous playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value)
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousContentURLKey;                           // Key to access the previously played URL if it changed
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousUserInfoKey;                             // Key to access the previous user information if it changed

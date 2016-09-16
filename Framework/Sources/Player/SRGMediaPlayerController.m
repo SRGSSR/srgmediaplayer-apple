@@ -148,7 +148,8 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
         return;
     }
     
-    NSMutableDictionary *fullUserInfo = [@{ SRGMediaPlayerPreviousPlaybackStateKey: @(_playbackState) } mutableCopy];
+    NSMutableDictionary *fullUserInfo = [@{ SRGMediaPlayerPlaybackStateKey : @(playbackState),
+                                            SRGMediaPlayerPreviousPlaybackStateKey: @(_playbackState) } mutableCopy];
     fullUserInfo[SRGMediaPlayerSelectedKey] = @(self.selectedSegment != nil);
     if (userInfo) {
         [fullUserInfo addEntriesFromDictionary:userInfo];
