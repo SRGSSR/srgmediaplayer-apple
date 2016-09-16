@@ -453,6 +453,12 @@ static NSURL *LiveTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testSeekInterruptionSeries
+{
+    // Do many seeks in a loop!
+    XCTFail(@"TODO");
+}
+
 - (void)testReset
 {
     // Wait until playing
