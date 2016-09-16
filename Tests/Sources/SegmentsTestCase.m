@@ -1026,8 +1026,8 @@ static NSURL *SegmentsTestURL(void)
 
 - (void)testSelectedSegmentAtStreamEnd
 {
-    // Precise nformation gathered from the stream itself
-    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1795045., 1000.), CMTimeMakeWithSeconds(5000., 1000.))];
+    // Precise timing information gathered from the stream itself
+    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1795.045, NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateEnded;
