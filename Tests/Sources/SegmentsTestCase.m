@@ -63,6 +63,8 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqual(self.mediaPlayerController.currentSegment, segment);
+    
     [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerNextSegmentKey]);
@@ -70,6 +72,8 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testBlockedSegmentPlaythrough
@@ -84,12 +88,16 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
+    
     [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return YES;
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testNoStartOrEndNotificationsForBlockedSegments
@@ -129,6 +137,8 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
+    
     [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerNextSegmentKey]);
@@ -136,6 +146,8 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testBlockedSegmentAtStartPlaythrough
@@ -150,12 +162,16 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
+    
     [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return YES;
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testContiguousSegments
@@ -172,6 +188,8 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment1);
+    
     // Notifications for a transition may be sent one after the other. Use a common waiting point to be sure to trap them both
     [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment1);
@@ -187,6 +205,8 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment2);
+    
     [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment2);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerNextSegmentKey]);
@@ -194,6 +214,8 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testContiguousBlockedSegments
@@ -209,6 +231,8 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
+    
     // Notifications for a transition may be sent one after the other. Use a common waiting point to be sure to trap them both
     [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment1);
@@ -222,12 +246,16 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
+    
     [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment2);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return YES;
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testContiguousBlockedSegmentsAtStart
@@ -243,6 +271,8 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
+    
     // Notifications for a transition may be sent one after the other. Use a common waiting point to be sure to trap them both
     [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment1);
@@ -256,12 +286,16 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
+    
     [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment2);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return YES;
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testSegmentContiguousToBlockedSegment
@@ -278,6 +312,8 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment1);
+    
     // Notifications for a transition may be sent one after the other. Use a common waiting point to be sure to trap them both
     [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment1);
@@ -292,12 +328,16 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
+    
     [self expectationForNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment2);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return YES;
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testSegmentTransitionFromBlockedSegment
@@ -327,6 +367,8 @@ static NSURL *SegmentsTestURL(void)
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment2);
+    
     [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment2);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerNextSegmentKey]);
@@ -334,6 +376,8 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testSeekIntoSegment
@@ -360,6 +404,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(220., NSEC_PER_SEC) withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
 }
 
 - (void)testSeekIntoBlockedSegment
@@ -397,6 +443,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(220., NSEC_PER_SEC) withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testStartTimeInSegment
@@ -415,6 +463,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController playURL:SegmentsTestURL() atTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withSegments:@[segment] userInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
 }
 
 - (void)testSeekBetweenSegments
@@ -432,6 +482,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment1);
+    
     [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment1);
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerNextSegmentKey], segment2);
@@ -448,6 +500,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController seekPreciselyToTime:CMTimeMakeWithSeconds(210., NSEC_PER_SEC) withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment2);
 }
 
 - (void)testSeekWithinCurrentSegment
@@ -469,6 +523,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
+    
     // Ensure that no segment end notification is emitted
     id endObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"Segment end notification must not be called");
@@ -485,6 +541,8 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:endObserver];
     }];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
 }
 
 - (void)testSeekOutOfCurrentSegment
@@ -502,6 +560,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
+    
     // Expect the segment to end
     [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
@@ -512,6 +572,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController seekPreciselyToTime:CMTimeMakeWithSeconds(300., NSEC_PER_SEC) withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testSelectedSegmentPlaythrough
@@ -542,6 +604,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
+    
     // Pause playback. Since this playback event does not result from a segment selection, its selected flag must not be set
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePaused);
@@ -569,6 +633,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController play];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testConsecutiveSegmentSelection
@@ -600,6 +666,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment1);
+    
     // Programmatically select the second segment
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
@@ -621,6 +689,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController seekToSegment:segment2 withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment2);
 }
 
 - (void)testRepeatedSegmentSelection
@@ -651,6 +721,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
+    
     // Must receive end and start notifications for the segment again
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
@@ -672,6 +744,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController seekToSegment:segment withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
 }
 
 - (void)testSegmentSelectionWhileAlreadyPlayingItNormally
@@ -693,6 +767,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
+    
     // Select the segment. Expect a start notification because of the selection
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
@@ -708,6 +784,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController seekToSegment:segment withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
 }
 
 - (void)testBlockedSegmentSelection
@@ -733,6 +811,8 @@ static NSURL *SegmentsTestURL(void)
         [[NSNotificationCenter defaultCenter] removeObserver:startObserver];
     }];
     
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
+    
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
@@ -743,6 +823,8 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testPrepareToPlaySegmentAtIndex
@@ -763,6 +845,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
+    
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
@@ -771,6 +855,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController play];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
 }
 
 - (void)testPlaySegmentAtIndex
@@ -799,6 +885,8 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:seekObserver];
     }];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
 }
 
 - (void)testPlaySegmentAtIndexWithoutSegments
@@ -821,6 +909,8 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:startObserver];
     }];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testPlaySelectedSegmentWithInvalidIndex
@@ -844,6 +934,8 @@ static NSURL *SegmentsTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:startObserver];
     }];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testPlayOutOfRangeSegment
@@ -881,6 +973,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 - (void)testSelectedSegmentAtStreamEnd
@@ -905,6 +999,8 @@ static NSURL *SegmentsTestURL(void)
     [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.currentSegment);
 }
 
 @end
