@@ -469,6 +469,17 @@ static NSURL *SegmentsTestURL(void)
     
     XCTAssertNil(self.mediaPlayerController.currentSegment);
     XCTAssertNil(self.mediaPlayerController.selectedSegment);
+    
+    // Let playback continue for a while. No other events expected
+    id eventObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No other playback event must be received");
+    }];
+    
+    [self expectationForElapsedTimeInterval:3. withHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver];
+    }];
 }
 
 - (void)testStartTimeInSegment
