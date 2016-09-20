@@ -453,6 +453,36 @@ static NSURL *LiveTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testSharpSeekInterruption
+{
+    XCTestExpectation *seekFinishedExpectation = [self expectationWithDescription:@"Seek finished"];
+    
+    // Wait until the player is in the playing state to seek
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] != SRGMediaPlayerPlaybackStatePlaying) {
+            return NO;
+        }
+        
+        [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+            // This seek must have been interrupted by the second one
+            XCTAssertFalse(finished);
+            XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateSeeking);
+        }];
+        [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(50., NSEC_PER_SEC) withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+            XCTAssertTrue(finished);
+            XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
+            
+            [seekFinishedExpectation fulfill];
+        }];
+        
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:PlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
 - (void)testSeekInterruptionSeries
 {
     XCTestExpectation *seekFinishedExpectation = [self expectationWithDescription:@"Seek finished"];
