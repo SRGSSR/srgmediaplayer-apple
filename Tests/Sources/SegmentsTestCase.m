@@ -944,6 +944,16 @@ static NSURL *SegmentsTestURL(void)
     XCTAssertEqualObjects(self.mediaPlayerController.selectedSegment, segment);
 }
 
+- (void)testPrepareToPlayBlockedSegmentAtIndex
+{
+    XCTFail(@"TODO");
+}
+
+- (void)testPlayBlockedSegmentAtIndex
+{
+    XCTFail(@"TODO");
+}
+
 - (void)testPlaySegmentAtIndexWithoutSegments
 {
     // Ensure that no segment start notification is emitted
@@ -993,6 +1003,11 @@ static NSURL *SegmentsTestURL(void)
     
     XCTAssertNil(self.mediaPlayerController.currentSegment);
     XCTAssertNil(self.mediaPlayerController.selectedSegment);
+}
+
+- (void)testPlayBlockedSegment
+{
+    XCTFail(@"TODO");
 }
 
 - (void)testPlayOutOfRangeSegment
