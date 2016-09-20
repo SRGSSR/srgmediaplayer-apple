@@ -24,13 +24,47 @@ pod 'SRGMediaPlayer', '<version>'
 
 For more information about CocoaPods and the `Podfile`, please refer to the [official documentation](http://guides.cocoapods.org/).
 
+## Usage
+
+### Usage from Objective-C source files
+
+Import the global header file using
+
+```objective-c
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
+```
+
+You can similarly import individual files, e.g.
+
+```objective-c
+#import <SRGMediaPlayer/RTSMediaPlayerViewController.h>
+```
+
+It you use CocoaPods with the `use_frameworks!` directive, it is easier to import the SRGMediaPlayer module itself where needed:
+
+```objective-c
+@import SRGMediaPlayer;
+```
+
+### Usage from Swift source files
+
+If you installed SRGMediaPlayer with CocoaPods but without the `use_frameworks!` directive, import the global header from a bridging header:
+
+```objective-c
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
+```
+
+If you use CocoaPods with the `use_frameworks!` directive, the SRGMediaPlayer module can be imported where needed:
+
+```swift
+import SRGMediaPlayer
+```
+
+To learn about how the library can be used, have a look at the [getting started guide](Documentation/Getting-started.md).
+
 ## Demo project
 
 To test what the library is capable of, try running the associated demo by opening the workspace and building the associated scheme.
-
-## Usage
-
-To learn about how the library can be used, have a look at the [getting started guide](Documentation/Getting-started.md).
 
 ## License
 
