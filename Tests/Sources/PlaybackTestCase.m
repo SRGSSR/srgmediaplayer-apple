@@ -455,8 +455,38 @@ static NSURL *LiveTestURL(void)
 
 - (void)testSeekInterruptionSeries
 {
-    // Do many seeks in a loop!
-    XCTFail(@"TODO");
+    XCTestExpectation *seekFinishedExpectation = [self expectationWithDescription:@"Seek finished"];
+    
+    // Wait until the player is in the playing state to seek
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] != SRGMediaPlayerPlaybackStatePlaying) {
+            return NO;
+        }
+        
+        static const NSInteger kSeekCount = 100;
+        
+        __block NSInteger finishedSeekCount = 0;
+        for (NSInteger i = 0; i < kSeekCount; ++i) {
+            [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(10. + i * 5., NSEC_PER_SEC) withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
+                finishedSeekCount++;
+                
+                if (i != kSeekCount - 1) {
+                    XCTAssertFalse(finished);
+                }
+                else {
+                    XCTAssertTrue(finished);
+                    XCTAssertEqual(finishedSeekCount, kSeekCount);
+                    [seekFinishedExpectation fulfill];
+                }
+            }];
+        }
+        
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:PlaybackTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testReset
