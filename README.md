@@ -31,6 +31,38 @@ Then run `carthage update` to update the dependencies. You will need to manually
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
 
+## Usage
+
+### Usage from Objective-C source files
+
+Import the global header file using
+
+```objective-c
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
+```
+
+You can similarly import individual files, e.g.
+
+```objective-c
+#import <SRGMediaPlayer/SRGMediaPlayerViewController.h>
+```
+
+or directly import the SRGModule itself:
+
+```objective-c
+@import SRGMediaPlayer;
+```
+
+### Usage from Swift source files
+
+Import the SRGMediaPlayer module where needed:
+
+```swift
+import SRGMediaPlayer
+```
+
+To learn about how the library can be used, have a look at the [getting started guide](Documentation/Getting-started.md).
+
 ## Demo project
 
 To test what the library is capable of, try running the associated demo by opening the workspace and building the associated scheme.
@@ -38,10 +70,6 @@ To test what the library is capable of, try running the associated demo by openi
 ## Migration from versions 1.x
 
 For information about changes introduced with version 2 of the library, please read the [migration guide](Documentation/Migration-guide.md).
-
-## Usage
-
-To learn about how the library can be used, have a look at the [getting started guide](Documentation/Getting-started.md).
 
 ## License
 
