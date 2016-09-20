@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The media player resource bundle
  */
-+ (instancetype)srg_mediaPlayerBundle;
++ (NSBundle *)srg_mediaPlayerBundle;
 
 @end
 

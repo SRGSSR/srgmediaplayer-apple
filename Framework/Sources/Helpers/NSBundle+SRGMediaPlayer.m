@@ -10,7 +10,7 @@
 
 @implementation NSBundle (SRGMediaPlayer)
 
-+ (instancetype)srg_mediaPlayerBundle
++ (NSBundle *)srg_mediaPlayerBundle
 {
     static NSBundle *bundle;
     static dispatch_once_t once;
