@@ -493,23 +493,21 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     }
     
     self.targetSegment = targetSegment;
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
-    
-    void (^seekCompletionHandler)(BOOL) = ^(BOOL finished) {
-        if (finished) {
-            [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-        }
-        completionHandler ? completionHandler(finished) : nil;
-    };
     
     // Trap attempts to seek to blocked segments early. We cannot only rely on playback time observers to detect a blocked segment
     // for direct seeks, otherwise blocked segment detection would occur after the segment has been entered, which is too late
     id<SRGSegment> segment = targetSegment ?: [self segmentForTime:time];
     if (! segment || ! [segment isBlocked]) {
-        [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:seekCompletionHandler];
+        [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
+        [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
+            if (finished) {
+                [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+            }
+            completionHandler ? completionHandler(finished) : nil;
+        }];
     }
     else {
-        [self skipBlockedSegment:segment withCompletionHandler:seekCompletionHandler];
+        [self skipBlockedSegment:segment withCompletionHandler:completionHandler];
     }
 }
 
