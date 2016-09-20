@@ -58,8 +58,8 @@
     [self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(willSkipSegment:)
-                                                 name:SRGMediaPlayerWillSkipBlockedSegmentNotification
+                                             selector:@selector(didSkipSegment:)
+                                                 name:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                object:self.mediaPlayerController];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(segmentDidStart:)
@@ -148,7 +148,7 @@
 
 #pragma mark Notifications
 
-- (void)willSkipSegment:(NSNotification *)notification
+- (void)didSkipSegment:(NSNotification *)notification
 {
     self.blockingOverlayView.hidden = NO;
     [self.mediaPlayerController pause];
