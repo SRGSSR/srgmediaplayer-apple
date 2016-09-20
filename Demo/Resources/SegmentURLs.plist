@@ -196,7 +196,7 @@
 					<key>startTime</key>
 					<integer>5000</integer>
 					<key>duration</key>
-					<integer>10000</integer>
+					<integer>60000</integer>
 					<key>blocked</key>
 					<true/>
 				</dict>
@@ -204,9 +204,9 @@
 					<key>name</key>
 					<string>Segment #1</string>
 					<key>startTime</key>
-					<integer>15000</integer>
+					<integer>65000</integer>
 					<key>duration</key>
-					<integer>10000</integer>
+					<integer>40000</integer>
 					<key>blocked</key>
 					<true/>
 				</dict>
