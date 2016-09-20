@@ -495,12 +495,22 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     self.targetSegment = targetSegment;
     [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
     
-    [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
+    void (^seekCompletionHandler)(BOOL) = ^(BOOL finished) {
         if (finished) {
             [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
         }
         completionHandler ? completionHandler(finished) : nil;
-    }];
+    };
+    
+    // Trap attempts to seek to blocked segments early. We cannot only rely on playback time observers to detect a blocked segment
+    // for direct seeks, otherwise blocked segment detection would occur after the segment has been entered, which is too late
+    id<SRGSegment> segment = targetSegment ?: [self segmentForTime:time];
+    if (! segment || ! [segment isBlocked]) {
+        [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:seekCompletionHandler];
+    }
+    else {
+        [self skipBlockedSegment:segment withCompletionHandler:seekCompletionHandler];
+    }
 }
 
 - (void)stopWithUserInfo:(NSDictionary *)userInfo
@@ -592,17 +602,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
                                                               userInfo:[userInfo copy]];
         }
         else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
-                                                                object:self
-                                                              userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
-            
-            [self seekPreciselyToTime:CMTimeRangeGetEnd([segment timeRange]) withCompletionHandler:^(BOOL finished) {
-                if (finished) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
-                                                                        object:self
-                                                                      userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
-                }
-            }];
+            [self skipBlockedSegment:segment withCompletionHandler:nil];
         }
     }
     
@@ -623,6 +623,29 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
         }
     }];
     return locatedSegment;
+}
+
+// No tolerance parameters here. When skipping blocked segments, we want to resume sharply at segment end
+- (void)skipBlockedSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL finished))completionHandler
+{
+    NSAssert([segment isBlocked], @"Expect a blocked segment");
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
+                                                        object:self
+                                                      userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
+    
+    // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
+    // would trigger skips recursively)
+    [self seekToTime:CMTimeAdd(CMTimeRangeGetEnd([segment timeRange]), CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC)) withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+        // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
+        // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
+        // so that consecutive notifications are received in the correct order
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
+                                                            object:self
+                                                          userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
+        
+        completionHandler ? completionHandler(finished) : nil;
+    }];
 }
 
 #pragma mark Time observers
