@@ -19,12 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerViewController : UIViewController <UIGestureRecognizerDelegate>
 
 /**
- *  @param URL               The URL to play
+ *  Create a player view controller for playing the specified URL. Optional user information can be associated with the
+ *  player
  *
- *  @param userInfo          An optional dictionary to associate arbitrary information with the media being played (for later retrieval).
- *                           This information stays associated with the inside player controller
- *
- *  Returns an `SRGMediaPlayerViewController` object initialized with the media at the specified URL and an optional user info dictionnary
+ *  @param contentURL The URL to play (playback will automatically start at the default location)
+ *  @param userInfo   An optional dictionary to associate arbitrary information with the media being played (for later retrieval).
  */
 - (instancetype)initWithContentURL:(NSURL *)contentURL userInfo:(nullable NSDictionary *)userInfo NS_DESIGNATED_INITIALIZER;
 
@@ -34,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSURL *contentURL;
 
 /**
- *  The optional dictionnary associated to the content
+ *  The optional dictionnary associated with the player
  */
 @property (nonatomic, readonly, nullable) NSDictionary *userInfo;
 
