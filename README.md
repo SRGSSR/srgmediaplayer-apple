@@ -33,6 +33,8 @@ For more information about Carthage and its use, refer to the [official document
 
 ## Usage
 
+When you want to classes or functions provided by the library in your code, you must import it from your source files first.
+
 ### Usage from Objective-C source files
 
 Import the global header file using:
@@ -54,6 +56,8 @@ Import the module where needed:
 ```swift
 import SRGMediaPlayer
 ```
+
+### Working with the library
 
 To learn about how the library can be used, have a look at the [getting started guide](Documentation/Getting-started.md).
 
