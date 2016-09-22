@@ -74,7 +74,7 @@
 - (void)updateAppearanceWithTime:(CMTime)time
 {
     if (self.selectedSegment) {
-        time = [self.selectedSegment timeRange].start;
+        time = self.selectedSegment.srg_timeRange.start;
     }
     
     for (SegmentCollectionViewCell *segmentCell in [self.timelineView visibleCells]) {
@@ -108,7 +108,7 @@
 
     if (interactive) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
-            return CMTimeRangeContainsTime(segment.timeRange, time);
+            return CMTimeRangeContainsTime(segment.srg_timeRange, time);
         }];
         
         id<SRGSegment> segment = [self.timelineView.mediaPlayerController.segments filteredArrayUsingPredicate:predicate].firstObject;

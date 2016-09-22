@@ -38,17 +38,17 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
     self.titleLabel.text = segment.name;
 
-    if (! CMTIMERANGE_IS_EMPTY(segment.timeRange)) {
+    if (! CMTIMERANGE_IS_EMPTY(segment.srg_timeRange)) {
         self.durationLabel.hidden = NO;
-        self.durationLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.timeRange.duration)];
+        self.durationLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.duration)];
     }
     else {
         self.durationLabel.hidden = YES;
     }
 
-    self.timestampLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.timeRange.start)];
+    self.timestampLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.start)];
 
-    self.alpha = (segment.isBlocked) ? 0.5f : 1.f;
+    self.alpha = segment.srg_isBlocked ? 0.5f : 1.f;
 }
 
 #pragma mark Overrides
@@ -63,7 +63,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 - (void)updateAppearanceWithTime:(CMTime)time selectedSegment:(Segment *)selectedSegment
 {
-    CMTimeRange r = self.segment.timeRange;
+    CMTimeRange r = self.segment.srg_timeRange;
     float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(r.start)) / (CMTimeGetSeconds(CMTimeAdd(r.start, r.duration)) - CMTimeGetSeconds(r.start));
     progress = fminf(1.f, fmaxf(0.f, progress));
     

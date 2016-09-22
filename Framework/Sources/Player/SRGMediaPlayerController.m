@@ -149,7 +149,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     NSMutableDictionary *fullUserInfo = [@{ SRGMediaPlayerPlaybackStateKey : @(playbackState),
                                             SRGMediaPlayerPreviousPlaybackStateKey: @(_playbackState) } mutableCopy];
-    fullUserInfo[SRGMediaPlayerSelectedKey] = @(self.targetSegment && ! [self.targetSegment isBlocked]);
+    fullUserInfo[SRGMediaPlayerSelectedKey] = @(self.targetSegment && ! self.targetSegment.srg_blocked);
     if (userInfo) {
         [fullUserInfo addEntriesFromDictionary:userInfo];
     }
@@ -178,7 +178,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 {
     // Cached for faster access
     if (! _visibleSegments) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hidden == NO"];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"srg_hidden == NO"];
         _visibleSegments = [self.segments filteredArrayUsingPredicate:predicate];
     }
     return _visibleSegments;
@@ -445,7 +445,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         return;
     }
     
-    [self seekToTime:[segment timeRange].start withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero targetSegment:segment completionHandler:completionHandler];
+    [self seekToTime:segment.srg_timeRange.start withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero targetSegment:segment completionHandler:completionHandler];
 }
 
 - (id<SRGSegment>)selectedSegment
@@ -460,7 +460,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     NSAssert(! targetSegment || [segments containsObject:targetSegment], @"Segment must be valid");
     
     if (targetSegment) {
-        time = [targetSegment timeRange].start;
+        time = targetSegment.srg_timeRange.start;
     }
     else if (! CMTIME_IS_VALID(time)) {
         time = kCMTimeZero;
@@ -495,7 +495,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     // Trap attempts to seek to blocked segments early. We cannot only rely on playback time observers to detect a blocked segment
     // for direct seeks, otherwise blocked segment detection would occur after the segment has been entered, which is too late
     id<SRGSegment> segment = targetSegment ?: [self segmentForTime:time];
-    if (! segment || ! [segment isBlocked]) {
+    if (! segment || ! segment.srg_blocked) {
         [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
         [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
             if (finished) {
@@ -568,12 +568,12 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         return;
     }
     
-    if (self.previousSegment && ! [self.previousSegment isBlocked]) {
+    if (self.previousSegment && ! self.previousSegment.srg_blocked) {
         self.currentSegment = nil;
         
         NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : self.previousSegment,
                                             SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
-        if (! [segment isBlocked]) {
+        if (! segment.srg_blocked) {
             userInfo[SRGMediaPlayerNextSegmentKey] = segment;
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
@@ -583,14 +583,14 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     
     if (segment) {
-        if (! [segment isBlocked]) {
+        if (! segment.srg_blocked) {
             _selected = selected;
             
             self.currentSegment = segment;
             
             NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : segment,
                                                 SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
-            if (self.previousSegment && ! [self.previousSegment isBlocked]) {
+            if (self.previousSegment && ! self.previousSegment.srg_blocked) {
                 userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
@@ -613,7 +613,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     __block id<SRGSegment> locatedSegment = nil;
     [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (CMTimeRangeContainsTime(segment.timeRange, time)) {
+        if (CMTimeRangeContainsTime(segment.srg_timeRange, time)) {
             locatedSegment = segment;
             *stop = YES;
         }
@@ -624,7 +624,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 // No tolerance parameters here. When skipping blocked segments, we want to resume sharply at segment end
 - (void)skipBlockedSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
-    NSAssert([segment isBlocked], @"Expect a blocked segment");
+    NSAssert(segment.srg_blocked, @"Expect a blocked segment");
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
                                                         object:self
@@ -632,7 +632,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
     // would trigger skips recursively)
-    [self seekToTime:CMTimeAdd(CMTimeRangeGetEnd([segment timeRange]), CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC)) withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+    [self seekToTime:CMTimeAdd(CMTimeRangeGetEnd(segment.srg_timeRange), CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC)) withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
         // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
         // so that consecutive notifications are received in the correct order
