@@ -35,19 +35,13 @@ For more information about Carthage and its use, refer to the [official document
 
 ### Usage from Objective-C source files
 
-Import the global header file using
+Import the global header file using:
 
 ```objective-c
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 ```
 
-You can similarly import individual files, e.g.
-
-```objective-c
-#import <SRGMediaPlayer/SRGMediaPlayerViewController.h>
-```
-
-or directly import the SRGModule itself:
+or directly import the module itself:
 
 ```objective-c
 @import SRGMediaPlayer;
@@ -55,7 +49,7 @@ or directly import the SRGModule itself:
 
 ### Usage from Swift source files
 
-Import the SRGMediaPlayer module where needed:
+Import the module where needed:
 
 ```swift
 import SRGMediaPlayer
