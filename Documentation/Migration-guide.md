@@ -20,14 +20,14 @@ For consistency (and beside the prefix change), some classe, protocols and notif
 * `RTSMediaSegment` is now `SRGSegment`
 * Notifications in `SRGMediaPlayerConstants.h` have been made more consistent
 
-## Data source removal
+## Reduced complexity
 
 The original player implementation was making use of data sources, both to retrieve the content URL to be played as well as any segments associated with it. This additional content retrieval phase was adding complexity to the player:
 
 * The player required a mechanism to cancel content retrieval (e.g. when playing some content while another one was already being loaded). Proper cancellation was difficult to guarantee, leading to subtle issues
 * Internal player state management had to take into account this special phase, leading to potential state management issues
 
-To solve those problems and make the overall use of the player controller simple, loading URLs and segments is now the responsibility of the client application. Once URL and segments have been retrieved, they are simply supplied when calling a _play_ or _prepareToPlay_ method. This way, there is no need for additional state management or content loading mechanism within the player. As a result, the state of the player controller now only reflects playback status.
+To solve those problems and make the overall use of the player controller simple, loading URLs and segments is now the responsibility of the client application. Once URL and segments have been retrieved, they are simply supplied when calling a _play_ or _prepareToPlay_ method. This way, there is no need for additional state management or content loading mechanism within the player. As a result, the state of the player controller now only reflects playback status, and data sources have been completely removed.
 
 ## Player controller creation
 
