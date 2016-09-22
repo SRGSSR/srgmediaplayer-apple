@@ -18,12 +18,10 @@
 
 static void *s_kvoContext = &s_kvoContext;
 
-static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
-{
-    NSCParameterAssert(underlyingError);
-    return [NSError errorWithDomain:SRGMediaPlayerErrorDomain code:SRGMediaPlayerErrorPlayback userInfo:@{ NSLocalizedDescriptionKey: SRGMediaPlayerLocalizedString(@"The media cannot be played", nil),
-                                                                                                           NSUnderlyingErrorKey: underlyingError }];
-}
+static NSError *SRGMediaPlayerControllerError(NSError *underlyingError);
+static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlaybackState playbackState);
+static NSString *SRGMediaPlayerControllerNameForMediaType(SRGMediaPlayerMediaType mediaType);
+static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamType streamType);
 
 @interface SRGMediaPlayerController () {
 @private
@@ -831,4 +829,72 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
     }
 }
 
+
+#pragma mark Description
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p; playbackState: %@; mediaType: %@; streamType: %@; live: %@; "
+                "contentURL: %@; segments: %@; userInfo: %@; minimumDVRWindowLength: %@; liveTolerance: %@>",
+            [self class],
+            self,
+            SRGMediaPlayerControllerNameForPlaybackState(self.playbackState),
+            SRGMediaPlayerControllerNameForMediaType(self.mediaType),
+            SRGMediaPlayerControllerNameForStreamType(self.streamType),
+            self.live ? @"YES" : @"NO",
+            self.contentURL,
+            self.segments,
+            self.userInfo,
+            @(self.minimumDVRWindowLength),
+            @(self.liveTolerance)];
+}
+
 @end
+
+#pragma mark Functions
+
+static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
+{
+    NSCParameterAssert(underlyingError);
+    return [NSError errorWithDomain:SRGMediaPlayerErrorDomain code:SRGMediaPlayerErrorPlayback userInfo:@{ NSLocalizedDescriptionKey: SRGMediaPlayerLocalizedString(@"The media cannot be played", nil),
+                                                                                                           NSUnderlyingErrorKey: underlyingError }];
+}
+
+static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlaybackState playbackState)
+{
+    static NSDictionary<NSNumber *, NSString *> *s_names;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        s_names = @{ @(SRGMediaPlayerPlaybackStateIdle) : @"idle",
+                     @(SRGMediaPlayerPlaybackStatePreparing) : @"preparing",
+                     @(SRGMediaPlayerPlaybackStatePlaying) : @"playing",
+                     @(SRGMediaPlayerPlaybackStateSeeking) : @"seeking",
+                     @(SRGMediaPlayerPlaybackStatePaused) : @"paused",
+                     @(SRGMediaPlayerPlaybackStateStalled) : @"stalled",
+                     @(SRGMediaPlayerPlaybackStateEnded) : @"ended" };
+    });
+    return s_names[@(playbackState)] ?: @"unknown";
+}
+
+static NSString *SRGMediaPlayerControllerNameForMediaType(SRGMediaPlayerMediaType mediaType)
+{
+    static NSDictionary<NSNumber *, NSString *> *s_names;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        s_names = @{ @(SRGMediaPlayerMediaTypeVideo) : @"video",
+                     @(SRGMediaPlayerMediaTypeAudio) : @"audio" };
+    });
+    return s_names[@(mediaType)] ?: @"unknown";
+}
+
+static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamType streamType)
+{
+    static NSDictionary<NSNumber *, NSString *> *s_names;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        s_names = @{ @(SRGMediaPlayerStreamTypeOnDemand) : @"on-demand",
+                     @(SRGMediaPlayerStreamTypeLive) : @"live",
+                     @(SRGMediaPlayerStreamTypeOnDemand) : @"DVR" };
+    });
+    return s_names[@(streamType)] ?: @"unknown";
+}

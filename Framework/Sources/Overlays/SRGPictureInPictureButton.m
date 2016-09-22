@@ -117,13 +117,13 @@ static void commonInit(SRGPictureInPictureButton *self)
 
 UIImage *SRGPictureInPictureButtonStartImage(void)
 {
-    static UIImage *image;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    static UIImage *s_image;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
         NSString *imagePath = [[NSBundle srg_mediaPlayerBundle] pathForResource:@"picture_in_picture_start_button" ofType:@"png"];
-        image = [UIImage imageWithContentsOfFile:imagePath];
+        s_image = [UIImage imageWithContentsOfFile:imagePath];
     });
-    return image;
+    return s_image;
 }
 
 UIImage *SRGPictureInPictureButtonStopImage(void)
