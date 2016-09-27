@@ -10,5 +10,5 @@
 
 NSString *SRGMediaPlayerMarketingVersion(void)
 {
-    return [NSBundle srg_mediaPlayerBundle].infoDictionary[@"CFBundleVersion"];
+    return [NSBundle srg_mediaPlayerBundle].infoDictionary[@"CFBundleShortVersionString"];
 }
