@@ -1,5 +1,5 @@
-Migrating from verson 1.x to version 2
-======================================
+Migrating from version 1.x to version 2
+=======================================
 
 Version 2 of the SRG Media Player library introduces several changes which require you to migrate your existing code base. 
 

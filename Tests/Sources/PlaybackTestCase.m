@@ -43,7 +43,6 @@ static NSURL *LiveTestURL(void)
     return expectation;
 }
 
-
 #pragma mark Setup and teardown
 
 - (void)setUp
