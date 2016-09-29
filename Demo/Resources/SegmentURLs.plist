@@ -138,7 +138,7 @@
 			<key>name</key>
 			<string>Five consecutive segments</string>
 			<key>url</key>
-			<string>http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4</string>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
@@ -163,7 +163,7 @@
 					<key>startTime</key>
 					<integer>30000</integer>
 					<key>duration</key>
-					<integer>5</integer>
+					<integer>5000</integer>
 				</dict>
 				<dict>
 					<key>name</key>
