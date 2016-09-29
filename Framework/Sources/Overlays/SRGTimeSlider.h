@@ -33,9 +33,10 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
  *  can also bind two labels for displaying the time and the remaining time.
  *
  *  Slider colors can be customized as follows:
- *    - `borderColor`: Color of the small border around the non-elapsed time track (defaults to black)
+ *    - `borderColor`: Color of the small border around the non-elapsed time track (defaults to black) and of the
+ *                     preloading progress bar
  *    - `minimumTrackTintColor`: Elapsed time track color (defaults to white)
- *    - `maximumTrackTintColor`: Preloaded track color (defaults to black)
+ *    - `maximumTrackTintColor`: Reamining time track color (defaults to black)
  *    - `thumbTintColor`: Thumb color (defaults to white)
  */
 @interface SRGTimeSlider : UISlider
