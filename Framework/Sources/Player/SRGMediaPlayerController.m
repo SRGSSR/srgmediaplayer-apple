@@ -600,7 +600,7 @@ withToleranceBefore:(CMTime)toleranceBefore
         self.currentSegment = nil;
         
         NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : self.previousSegment,
-                                            SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
+                                            SRGMediaPlayerSelectedKey : @(selected) } mutableCopy];
         if (! segment.srg_blocked) {
             userInfo[SRGMediaPlayerNextSegmentKey] = segment;
         }
