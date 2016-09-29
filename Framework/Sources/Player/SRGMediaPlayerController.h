@@ -470,7 +470,7 @@ withToleranceBefore:(CMTime)toleranceBefore
 @end
 
 /**
- *  @name Segment selection (notifications resulting from selection will have the `SRGMediaPlayerSelectedKey` set to YES)
+ *  @name Segment selection (notifications resulting from selection will have the `SRGMediaPlayerSelectionKey` set to YES)
  */
 
 @interface SRGMediaPlayerController (SegmentSelection)

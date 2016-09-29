@@ -151,7 +151,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     NSMutableDictionary *fullUserInfo = [@{ SRGMediaPlayerPlaybackStateKey : @(playbackState),
                                             SRGMediaPlayerPreviousPlaybackStateKey: @(_playbackState) } mutableCopy];
-    fullUserInfo[SRGMediaPlayerSelectedKey] = @(self.targetSegment && ! self.targetSegment.srg_blocked);
+    fullUserInfo[SRGMediaPlayerSelectionKey] = @(self.targetSegment && ! self.targetSegment.srg_blocked);
     if (userInfo) {
         [fullUserInfo addEntriesFromDictionary:userInfo];
     }
@@ -600,7 +600,8 @@ withToleranceBefore:(CMTime)toleranceBefore
         self.currentSegment = nil;
         
         NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : self.previousSegment,
-                                            SRGMediaPlayerSelectedKey : @(selected) } mutableCopy];
+                                            SRGMediaPlayerSelectionKey : @(selected),
+                                            SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
         if (! segment.srg_blocked) {
             userInfo[SRGMediaPlayerNextSegmentKey] = segment;
         }
@@ -617,6 +618,7 @@ withToleranceBefore:(CMTime)toleranceBefore
             self.currentSegment = segment;
             
             NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : segment,
+                                                SRGMediaPlayerSelectionKey : @(_selected),
                                                 SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
             if (self.previousSegment && ! self.previousSegment.srg_blocked) {
                 userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
