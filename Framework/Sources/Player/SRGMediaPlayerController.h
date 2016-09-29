@@ -254,7 +254,11 @@ NS_ASSUME_NONNULL_BEGIN
  *              only be reflected after the completion handler has been executed, so that the player transitions from preparing
  *              to this state without transitioning through the paused state.
  */
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments userInfo:(nullable NSDictionary *)userInfo completionHandler:(nullable void (^)(void))completionHandler;
+- (void)prepareToPlayURL:(NSURL *)URL
+                  atTime:(CMTime)time
+            withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+                userInfo:(nullable NSDictionary *)userInfo
+       completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Ask the player to play
@@ -302,7 +306,10 @@ NS_ASSUME_NONNULL_BEGIN
  *              Refer to `-[AVPlayer seekToTime:toleranceBefore:toleranceAfter:completionHandler:] documentation
  *              for more information about seek tolerances.
  */
-- (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)seekToTime:(CMTime)time
+withToleranceBefore:(CMTime)toleranceBefore
+    toleranceAfter:(CMTime)toleranceAfter
+ completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
  *  Reset the player to its original idle state with no media URL, segments or user info
@@ -427,7 +434,10 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @discussion The player immediately reaches the playing state
  */
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(nullable NSArray<id<SRGSegment>> *)segments userInfo:(nullable NSDictionary *)userInfo;
+- (void)playURL:(NSURL *)URL
+         atTime:(CMTime)time
+   withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+       userInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Play a media, starting at its default location
@@ -474,7 +484,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location
  */
-- (void)prepareToPlayURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(nullable NSDictionary *)userInfo completionHandler:(nullable void (^)(void))completionHandler;
+- (void)prepareToPlayURL:(NSURL *)URL
+                 atIndex:(NSInteger)index
+              inSegments:(NSArray<id<SRGSegment>> *)segments
+            withUserInfo:(nullable NSDictionary *)userInfo
+       completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Play a media, starting at the specified segment. User info can be optionally provided
@@ -487,7 +501,10 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location
  */
-- (void)playURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(nullable NSDictionary *)userInfo;
+- (void)playURL:(NSURL *)URL
+        atIndex:(NSInteger)index
+     inSegments:(NSArray<id<SRGSegment>> *)segments
+   withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Seek to the beginning of the specified segment

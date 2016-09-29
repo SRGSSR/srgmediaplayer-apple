@@ -327,7 +327,11 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 #pragma mark Playback
 
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)time withSegments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
+- (void)prepareToPlayURL:(NSURL *)URL
+                  atTime:(CMTime)time
+            withSegments:(NSArray<id<SRGSegment>> *)segments
+                userInfo:(NSDictionary *)userInfo
+       completionHandler:(void (^)(void))completionHandler
 {
     [self prepareToPlayURL:URL atTime:time withSegments:segments targetSegment:nil userInfo:userInfo completionHandler:completionHandler];
 }
@@ -347,7 +351,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     [self stopWithUserInfo:nil];
 }
 
-- (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToTime:(CMTime)time
+withToleranceBefore:(CMTime)toleranceBefore
+    toleranceAfter:(CMTime)toleranceAfter
+ completionHandler:(void (^)(BOOL))completionHandler
 {
     [self seekToTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter targetSegment:nil completionHandler:completionHandler];
 }
@@ -412,7 +419,11 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 #pragma mark Segment playback
 
-- (void)prepareToPlayURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
+- (void)prepareToPlayURL:(NSURL *)URL
+                 atIndex:(NSInteger)index
+              inSegments:(NSArray<id<SRGSegment>> *)segments
+            withUserInfo:(NSDictionary *)userInfo
+       completionHandler:(void (^)(void))completionHandler
 {
     // Incorrect index. Start at the default location
     if (index < 0 || index >= segments.count) {
@@ -455,7 +466,12 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 #pragma mark Playback (internal). Time parameters are ignored when valid segments are provided
 
-- (void)prepareToPlayURL:(NSURL *)URL atTime:(CMTime)time withSegments:(NSArray<id<SRGSegment>> *)segments targetSegment:(id<SRGSegment>)targetSegment userInfo:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler
+- (void)prepareToPlayURL:(NSURL *)URL
+                  atTime:(CMTime)time
+            withSegments:(NSArray<id<SRGSegment>> *)segments
+           targetSegment:(id<SRGSegment>)targetSegment
+                userInfo:(NSDictionary *)userInfo
+       completionHandler:(void (^)(void))completionHandler
 {
     NSAssert(! targetSegment || [segments containsObject:targetSegment], @"Segment must be valid");
     
@@ -482,7 +498,11 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
 }
 
-- (void)seekToTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter targetSegment:(id<SRGSegment>)targetSegment completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToTime:(CMTime)time
+withToleranceBefore:(CMTime)toleranceBefore
+    toleranceAfter:(CMTime)toleranceAfter
+     targetSegment:(id<SRGSegment>)targetSegment
+ completionHandler:(void (^)(BOOL))completionHandler
 {
     NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Segment must be valid");
     
