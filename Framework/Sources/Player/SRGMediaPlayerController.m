@@ -16,6 +16,8 @@
 #import <libextobjc/EXTScope.h>
 #import <objc/runtime.h>
 
+static const NSTimeInterval SRGSegmentSeekToleranceInSeconds = 0.1;
+
 static void *s_kvoContext = &s_kvoContext;
 
 static NSError *SRGMediaPlayerControllerError(NSError *underlyingError);
@@ -456,7 +458,12 @@ withToleranceBefore:(CMTime)toleranceBefore
         return;
     }
     
-    [self seekToTime:segment.srg_timeRange.start withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero targetSegment:segment completionHandler:completionHandler];
+    // Do not seek to the very beginning, seek slightly after with zero tolerance to be sure to end within the segment
+    [self seekToTime:CMTimeAdd(segment.srg_timeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))
+ withToleranceBefore:kCMTimeZero
+      toleranceAfter:kCMTimeZero
+       targetSegment:segment
+   completionHandler:completionHandler];
 }
 
 - (id<SRGSegment>)selectedSegment
@@ -476,7 +483,8 @@ withToleranceBefore:(CMTime)toleranceBefore
     NSAssert(! targetSegment || [segments containsObject:targetSegment], @"Segment must be valid");
     
     if (targetSegment) {
-        time = targetSegment.srg_timeRange.start;
+        // Do not seek to the very beginning, seek slightly after with zero tolerance to be sure to end within the segment
+        time = CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC));
     }
     else if (! CMTIME_IS_VALID(time)) {
         time = kCMTimeZero;
@@ -652,7 +660,10 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
     // would trigger skips recursively)
-    [self seekToTime:CMTimeAdd(CMTimeRangeGetEnd(segment.srg_timeRange), CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC)) withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+    [self seekToTime:CMTimeAdd(CMTimeRangeGetEnd(segment.srg_timeRange), CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))
+ withToleranceBefore:kCMTimeZero
+      toleranceAfter:kCMTimeZero
+   completionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
         // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
         // so that consecutive notifications are received in the correct order
