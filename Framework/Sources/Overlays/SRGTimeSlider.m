@@ -7,7 +7,7 @@
 #import "SRGTimeSlider.h"
 
 #import "NSBundle+SRGMediaPlayer.h"
-#import "SRGLogger.h"
+#import "SRGMediaPlayerLogger.h"
 #import "UIBezierPath+SRGMediaPlayer.h"
 
 #import <libextobjc/EXTScope.h>
@@ -152,10 +152,10 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
                     self.userInteractionEnabled = NO;
                 }
                 
-                SRGLogVerbose(@"Range min = %@ (value = %@) --- Current = %@ (value = %@) --- Range max = %@ (value = %@)",
-                              @(CMTimeGetSeconds(timeRange.start)), @(self.minimumValue),
-                              @(CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.currentTime)), @(self.value),
-                              @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange))), @(self.maximumValue));
+                SRGMediaPlayerLogVerbose("Timeslider", @"Range min = %@ (value = %@) --- Current = %@ (value = %@) --- Range max = %@ (value = %@)",
+                                         @(CMTimeGetSeconds(timeRange.start)), @(self.minimumValue),
+                                         @(CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.currentTime)), @(self.value),
+                                         @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange))), @(self.maximumValue));
                 
                 [self.delegate timeSlider:self
                    isMovingToPlaybackTime:self.time

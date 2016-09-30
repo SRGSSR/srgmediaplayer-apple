@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6FA09D2A1D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */; };
 		E654909C1D7F33AE007D96E7 /* libextobjc.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E67799321D75AE2600E58331 /* SRGTimelineView.h in Headers */ = {isa = PBXBuildFile; fileRef = E67799301D75AE2500E58331 /* SRGTimelineView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E67799331D75AE2600E58331 /* SRGTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67799311D75AE2500E58331 /* SRGTimelineView.m */; };
@@ -158,6 +159,7 @@
 		05E918D1654F8CC2553EED74 /* libPods-SRGMediaPlayer-tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer-tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33B591AC767A97272DB49F32 /* Pods-SRGMediaPlayer-tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer-tests/Pods-SRGMediaPlayer-tests.release.xcconfig"; sourceTree = "<group>"; };
 		3C5FC1E08CA3F0C8CA810E82 /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerLogger.h; sourceTree = "<group>"; };
 		DB0EA89370C6F3092C040D13 /* Pods-SRGMediaPlayer-tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer-tests/Pods-SRGMediaPlayer-tests.debug.xcconfig"; sourceTree = "<group>"; };
 		E67799301D75AE2500E58331 /* SRGTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGTimelineView.h; sourceTree = "<group>"; };
 		E67799311D75AE2500E58331 /* SRGTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGTimelineView.m; sourceTree = "<group>"; };
@@ -552,6 +554,7 @@
 				E6FC7F391D62072400A55085 /* SRGMediaPlayerView.m */,
 				E6FC7F3A1D62072400A55085 /* SRGPeriodicTimeObserver.h */,
 				E6FC7F3B1D62072400A55085 /* SRGPeriodicTimeObserver.m */,
+				6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -638,6 +641,7 @@
 				E6C9861E1D701D3800C45C7A /* SRGMediaPlayerSharedController.h in Headers */,
 				E6C986161D7015F600C45C7A /* SRGVolumeView.h in Headers */,
 				E6FC7F6E1D62072400A55085 /* SRGMediaPlayerError.h in Headers */,
+				6FA09D2A1D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h in Headers */,
 				E6FC7F711D62072400A55085 /* SRGLogger.h in Headers */,
 				E6FC7F771D62072400A55085 /* NSBundle+SRGMediaPlayer.h in Headers */,
 				E6C9860A1D6F36C900C45C7A /* SRGPlaybackButton.h in Headers */,
