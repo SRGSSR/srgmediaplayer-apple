@@ -9,7 +9,6 @@
 #import "MediasViewController.h"
 
 #import <AVFoundation/AVFoundation.h>
-#import <CocoaLumberjack/CocoaLumberjack.h>
 #import <SRGLogger/SRGLogger.h>
 
 @interface UIImage (Tinting)
@@ -46,24 +45,6 @@
 
 @end
 
-@interface LogFormatter : NSObject <DDLogFormatter>
-@end
-
-@implementation LogFormatter
-
-- (NSString *)formatLogMessage:(DDLogMessage *)logMessage
-{
-    static NSDateFormatter *dateFormatter;
-    static dispatch_once_t once;
-    dispatch_once(&once, ^{
-        dateFormatter = [NSDateFormatter new];
-        dateFormatter.dateFormat = @"HH:mm:ss.SSS";
-    });
-    return [NSString stringWithFormat:@"%@ [%@] %@", [dateFormatter stringFromDate:logMessage.timestamp], logMessage.threadID, logMessage.message];
-}
-
-@end
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -71,13 +52,6 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
-    
-    DDTTYLogger *ttyLogger = [DDTTYLogger sharedInstance];
-    ttyLogger.colorsEnabled = YES;
-    ttyLogger.logFormatter = [LogFormatter new];
-    [DDLog addLogger:ttyLogger withLevel:DDLogLevelInfo];
-    
-    SRGLogWarning(@"ch.app", @"Test", @"Message");
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
