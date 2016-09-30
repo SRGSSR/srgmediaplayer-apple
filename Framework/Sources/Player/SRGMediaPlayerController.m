@@ -612,7 +612,7 @@ withToleranceBefore:(CMTime)toleranceBefore
                                                           userInfo:[userInfo copy]];
         _selected = NO;
         
-        SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ did end with info %@", segment, userInfo);
+        SRGMediaPlayerLogDebug(@"Controller", @"Segment did end with info %@", userInfo);
     }
     
     if (segment) {
@@ -631,7 +631,7 @@ withToleranceBefore:(CMTime)toleranceBefore
                                                                 object:self
                                                               userInfo:[userInfo copy]];
             
-            SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ did start with user info %@", segment, userInfo);
+            SRGMediaPlayerLogDebug(@"Controller", @"Segment did start with info %@", userInfo);
         }
         else {
             [self skipBlockedSegment:segment withCompletionHandler:nil];
