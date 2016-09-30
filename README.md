@@ -26,9 +26,9 @@ github "SRGSSR/SRGMediaPlayer-iOS"
 
 Then run `carthage update` to update the dependencies. You will need to manually add the following `.framework`s generated in the `Carthage/Build/iOS` folder to your projet:
 
-* `SRGMediaPlayer.framework`
-* `SRGLogger.framework`
-* `libextobjc.framework`
+* `SRGMediaPlayer.framework`: The main data provider framework
+* `SRGLogger.framework`: The framework used for internal logging
+* `libextobjc.framework`: A utility framework
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
 
@@ -64,7 +64,7 @@ To learn about how the library can be used, have a look at the [getting started 
 
 ### Logging
 
-The SRG Media Player library internally uses the [SRG Logger](https://github.com/SRGSSR/srglogger-ios) library for logging. This logger either automatically integrates with your own logger choice, or can be easily integrated with it. Refer to the SRG Logger documentation for more information.
+The library internally uses the [SRG Logger](https://github.com/SRGSSR/srglogger-ios) library for logging. This logger either automatically integrates with your own logger, or can be easily integrated with it. Refer to the SRG Logger documentation for more information.
 
 ## Demo project
 

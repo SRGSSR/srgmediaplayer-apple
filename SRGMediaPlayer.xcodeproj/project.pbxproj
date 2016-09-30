@@ -546,11 +546,11 @@
 				E6C986101D70142D00C45C7A /* SRGMediaPlayerError.m */,
 				E6FC7F341D62072400A55085 /* SRGMediaPlayerIconTemplate.h */,
 				E6FC7F351D62072400A55085 /* SRGMediaPlayerIconTemplate.m */,
+				6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */,
 				E6FC7F381D62072400A55085 /* SRGMediaPlayerView.h */,
 				E6FC7F391D62072400A55085 /* SRGMediaPlayerView.m */,
 				E6FC7F3A1D62072400A55085 /* SRGPeriodicTimeObserver.h */,
 				E6FC7F3B1D62072400A55085 /* SRGPeriodicTimeObserver.m */,
-				6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */,
 			);
 			path = Core;
 			sourceTree = "<group>";
