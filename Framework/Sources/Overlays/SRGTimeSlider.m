@@ -152,7 +152,7 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
                     self.userInteractionEnabled = NO;
                 }
                 
-                SRGMediaPlayerLogVerbose("Timeslider", @"Range min = %@ (value = %@) --- Current = %@ (value = %@) --- Range max = %@ (value = %@)",
+                SRGMediaPlayerLogVerbose(@"Timeslider", @"Range min = %@ (value = %@) --- Current = %@ (value = %@) --- Range max = %@ (value = %@)",
                                          @(CMTimeGetSeconds(timeRange.start)), @(self.minimumValue),
                                          @(CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.currentTime)), @(self.value),
                                          @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange))), @(self.maximumValue));

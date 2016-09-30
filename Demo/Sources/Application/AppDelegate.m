@@ -10,6 +10,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
+#import <SRGLogger/SRGLogger.h>
 
 @interface UIImage (Tinting)
 
@@ -75,6 +76,8 @@
     ttyLogger.colorsEnabled = YES;
     ttyLogger.logFormatter = [LogFormatter new];
     [DDLog addLogger:ttyLogger withLevel:DDLogLevelInfo];
+    
+    SRGLogWarning(@"ch.app", @"Test", @"Message");
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
