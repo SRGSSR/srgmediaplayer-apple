@@ -93,8 +93,8 @@
 		E6FC7F6E1D62072400A55085 /* SRGMediaPlayerError.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F331D62072400A55085 /* SRGMediaPlayerError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F6F1D62072400A55085 /* SRGMediaPlayerIconTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F341D62072400A55085 /* SRGMediaPlayerIconTemplate.h */; };
 		E6FC7F701D62072400A55085 /* SRGMediaPlayerIconTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F351D62072400A55085 /* SRGMediaPlayerIconTemplate.m */; };
-		E6FC7F711D62072400A55085 /* SRGMediaPlayerLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F361D62072400A55085 /* SRGMediaPlayerLogger.h */; };
-		E6FC7F721D62072400A55085 /* SRGMediaPlayerLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F371D62072400A55085 /* SRGMediaPlayerLogger.m */; };
+		E6FC7F711D62072400A55085 /* SRGLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F361D62072400A55085 /* SRGLogger.h */; };
+		E6FC7F721D62072400A55085 /* SRGLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F371D62072400A55085 /* SRGLogger.m */; };
 		E6FC7F731D62072400A55085 /* SRGMediaPlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F381D62072400A55085 /* SRGMediaPlayerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F741D62072400A55085 /* SRGMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F391D62072400A55085 /* SRGMediaPlayerView.m */; };
 		E6FC7F751D62072400A55085 /* SRGPeriodicTimeObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F3A1D62072400A55085 /* SRGPeriodicTimeObserver.h */; };
@@ -241,8 +241,8 @@
 		E6FC7F331D62072400A55085 /* SRGMediaPlayerError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerError.h; sourceTree = "<group>"; };
 		E6FC7F341D62072400A55085 /* SRGMediaPlayerIconTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerIconTemplate.h; sourceTree = "<group>"; };
 		E6FC7F351D62072400A55085 /* SRGMediaPlayerIconTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerIconTemplate.m; sourceTree = "<group>"; };
-		E6FC7F361D62072400A55085 /* SRGMediaPlayerLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerLogger.h; sourceTree = "<group>"; };
-		E6FC7F371D62072400A55085 /* SRGMediaPlayerLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerLogger.m; sourceTree = "<group>"; };
+		E6FC7F361D62072400A55085 /* SRGLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGLogger.h; sourceTree = "<group>"; };
+		E6FC7F371D62072400A55085 /* SRGLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGLogger.m; sourceTree = "<group>"; };
 		E6FC7F381D62072400A55085 /* SRGMediaPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerView.h; sourceTree = "<group>"; };
 		E6FC7F391D62072400A55085 /* SRGMediaPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerView.m; sourceTree = "<group>"; };
 		E6FC7F3A1D62072400A55085 /* SRGPeriodicTimeObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGPeriodicTimeObserver.h; sourceTree = "<group>"; };
@@ -546,8 +546,8 @@
 				E6C986101D70142D00C45C7A /* SRGMediaPlayerError.m */,
 				E6FC7F341D62072400A55085 /* SRGMediaPlayerIconTemplate.h */,
 				E6FC7F351D62072400A55085 /* SRGMediaPlayerIconTemplate.m */,
-				E6FC7F361D62072400A55085 /* SRGMediaPlayerLogger.h */,
-				E6FC7F371D62072400A55085 /* SRGMediaPlayerLogger.m */,
+				E6FC7F361D62072400A55085 /* SRGLogger.h */,
+				E6FC7F371D62072400A55085 /* SRGLogger.m */,
 				E6FC7F381D62072400A55085 /* SRGMediaPlayerView.h */,
 				E6FC7F391D62072400A55085 /* SRGMediaPlayerView.m */,
 				E6FC7F3A1D62072400A55085 /* SRGPeriodicTimeObserver.h */,
@@ -638,7 +638,7 @@
 				E6C9861E1D701D3800C45C7A /* SRGMediaPlayerSharedController.h in Headers */,
 				E6C986161D7015F600C45C7A /* SRGVolumeView.h in Headers */,
 				E6FC7F6E1D62072400A55085 /* SRGMediaPlayerError.h in Headers */,
-				E6FC7F711D62072400A55085 /* SRGMediaPlayerLogger.h in Headers */,
+				E6FC7F711D62072400A55085 /* SRGLogger.h in Headers */,
 				E6FC7F771D62072400A55085 /* NSBundle+SRGMediaPlayer.h in Headers */,
 				E6C9860A1D6F36C900C45C7A /* SRGPlaybackButton.h in Headers */,
 				E6FC7F751D62072400A55085 /* SRGPeriodicTimeObserver.h in Headers */,
@@ -871,7 +871,7 @@
 				E6C9860B1D6F36C900C45C7A /* SRGPlaybackButton.m in Sources */,
 				E6C9861F1D701D3800C45C7A /* SRGMediaPlayerSharedController.m in Sources */,
 				E6FC7F8E1D62072400A55085 /* SRGMediaPlayerController.m in Sources */,
-				E6FC7F721D62072400A55085 /* SRGMediaPlayerLogger.m in Sources */,
+				E6FC7F721D62072400A55085 /* SRGLogger.m in Sources */,
 				E6C986111D70142D00C45C7A /* SRGMediaPlayerError.m in Sources */,
 				E6C986171D7015F600C45C7A /* SRGVolumeView.m in Sources */,
 				E6C9860D1D6F42CB00C45C7A /* SRGPlaybackActivityIndicatorView.m in Sources */,

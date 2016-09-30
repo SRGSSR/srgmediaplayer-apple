@@ -11,7 +11,7 @@
 #import "SRGMediaPlayerView.h"
 #import "SRGPeriodicTimeObserver.h"
 #import "SRGActivityGestureRecognizer.h"
-#import "SRGMediaPlayerLogger.h"
+#import "SRGLogger.h"
 
 #import <libextobjc/EXTScope.h>
 #import <objc/runtime.h>
@@ -262,7 +262,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 - (void)setMinimumDVRWindowLength:(NSTimeInterval)minimumDVRWindowLength
 {
     if (minimumDVRWindowLength < 0.) {
-        SRGMediaPlayerLogWarning(@"The minimum DVR window length cannot be negative. Set to 0");
+        SRGLogWarning(@"The minimum DVR window length cannot be negative. Set to 0");
         _minimumDVRWindowLength = 0.;
     }
     else {
@@ -273,7 +273,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 - (void)setLiveTolerance:(NSTimeInterval)liveTolerance
 {
     if (liveTolerance < 0.) {
-        SRGMediaPlayerLogWarning(@"Live tolerance cannot be negative. Set to 0");
+        SRGLogWarning(@"Live tolerance cannot be negative. Set to 0");
         _liveTolerance = 0.;
     }
     else {
