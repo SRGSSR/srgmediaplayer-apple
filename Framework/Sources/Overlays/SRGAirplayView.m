@@ -7,6 +7,7 @@
 #import "SRGAirplayView.h"
 
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGMediaPlayerLogger.h"
 
 @interface SRGAirplayView ()
 
@@ -51,9 +52,11 @@ static void commonInit(SRGAirplayView *self);
 - (void)setFillFactor:(CGFloat)fillFactor
 {
     if (fillFactor <= 0.f) {
+        SRGMediaPlayerLogWarning(@"AirplayView", @"Fill factor cannot be negative. Fixed to 0");
         _fillFactor = SRGAirplayViewDefaultFillFactor;
     }
     else if (fillFactor > 1.f) {
+        SRGMediaPlayerLogWarning(@"AirplayView", @"Fill factor cannot be larger than 1. Fixed to 1");
         _fillFactor = 1.f;
     }
     else {

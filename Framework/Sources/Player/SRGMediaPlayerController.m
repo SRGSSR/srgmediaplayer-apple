@@ -166,6 +166,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                         object:self
                                                       userInfo:[fullUserInfo copy]];
+    
+    SRGMediaPlayerLogDebug(@"Controller", @"Playback state did change to %@ with info %@", SRGMediaPlayerControllerNameForPlaybackState(playbackState), fullUserInfo);
 }
 
 - (void)setSegments:(NSArray<id<SRGSegment>> *)segments
@@ -609,6 +611,8 @@ withToleranceBefore:(CMTime)toleranceBefore
                                                             object:self
                                                           userInfo:[userInfo copy]];
         _selected = NO;
+        
+        SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ did end with info %@", segment, userInfo);
     }
     
     if (segment) {
@@ -626,6 +630,8 @@ withToleranceBefore:(CMTime)toleranceBefore
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
                                                                 object:self
                                                               userInfo:[userInfo copy]];
+            
+            SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ did start with user info %@", segment, userInfo);
         }
         else {
             [self skipBlockedSegment:segment withCompletionHandler:nil];
@@ -660,21 +666,25 @@ withToleranceBefore:(CMTime)toleranceBefore
                                                         object:self
                                                       userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
     
+    SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ will be skipped", segment);
+    
     // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
     // would trigger skips recursively)
     [self seekToTime:CMTimeAdd(CMTimeRangeGetEnd(segment.srg_timeRange), CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))
  withToleranceBefore:kCMTimeZero
       toleranceAfter:kCMTimeZero
    completionHandler:^(BOOL finished) {
-        // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
-        // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
-        // so that consecutive notifications are received in the correct order
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
-                                                            object:self
-                                                          userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
-        
-        completionHandler ? completionHandler(finished) : nil;
-    }];
+       // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
+       // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
+       // so that consecutive notifications are received in the correct order
+       [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
+                                                           object:self
+                                                         userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
+       
+       SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ was skipped", segment);
+       
+       completionHandler ? completionHandler(finished) : nil;
+   }];
 }
 
 #pragma mark Time observers
@@ -774,6 +784,8 @@ withToleranceBefore:(CMTime)toleranceBefore
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
                                                         object:self
                                                       userInfo:@{ SRGMediaPlayerErrorKey: error }];
+    
+    SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
 }
 
 #pragma mark KVO
@@ -850,6 +862,8 @@ withToleranceBefore:(CMTime)toleranceBefore
                     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
                                                                         object:self
                                                                       userInfo:@{ SRGMediaPlayerErrorKey: error }];
+                    
+                    SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
                 }
             }
         }
