@@ -6,9 +6,9 @@
 	<array>
 		<dict>
 			<key>name</key>
-			<string>Pop Music (LIVE)</string>
+			<string>Clock</string>
 			<key>url</key>
-			<string>http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch1/appleman.m3u8</string>
+			<string>https://wowza.jwplayer.com/live/jelly.stream/playlist.m3u8?DVR</string>
 		</dict>
 	</array>
 </dict>
