@@ -312,7 +312,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     if (! _pictureInPictureController && self.playerLayer.readyForDisplay) {
         // Call the setter for KVO registration
         self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
-        self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
+        self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(_pictureInPictureController) : nil;
     }
     return _pictureInPictureController;
 }
