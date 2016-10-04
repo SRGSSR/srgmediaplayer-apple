@@ -32,7 +32,7 @@ SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewCo
 
 You can also use the `controller` property to register for playback notifications.
 
-The `SRGMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams), picture in picture for compatible devices, as well as segments.
+The `SRGMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams), picture in picture for compatible devices. Segments are currently supported (notifications will be received for them) but not displayed. If you need to display segments, implement a custom player.
 
 ## Designing custom players
 
