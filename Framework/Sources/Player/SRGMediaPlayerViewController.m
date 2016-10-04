@@ -13,7 +13,6 @@
 #import "SRGPictureInPictureButton.h"
 #import "SRGPlaybackActivityIndicatorView.h"
 #import "SRGMediaPlayerSharedController.h"
-#import "SRGMediaPlayerViewController+Private.h"
 #import "SRGTimeSlider.h"
 #import "SRGVolumeView.h"
 
@@ -23,10 +22,6 @@
 static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @interface SRGMediaPlayerViewController ()
-
-@property (nonatomic) NSURL *contentURL;
-@property (nonatomic) NSDictionary *userInfo;
-@property (nonatomic) BOOL autoplay;
 
 @property (nonatomic, weak) IBOutlet UIView *playerView;
 
@@ -65,45 +60,16 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         return;
     }
     
+    // FIXME: Must be recreated with each view controller instantiation (though stored globally)
     s_mediaPlayerController = [[SRGMediaPlayerSharedController alloc] init];
 }
 
 #pragma mark Object lifecycle
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-designated-initializers"
-
-- (instancetype)initWithContentURL:(NSURL *)contentURL userInfo:(nullable NSDictionary *)userInfo
+- (instancetype)init
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:[NSBundle srg_mediaPlayerBundle]];
-    SRGMediaPlayerViewController *viewController = [storyboard instantiateInitialViewController];
-    viewController.contentURL = contentURL;
-    viewController.userInfo = userInfo;
-    viewController.autoplay = YES;
-    return viewController;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    return [super initWithCoder:aDecoder];
-}
-
-#pragma clang diagnostic pop
-
-- (instancetype)initWithCurrentURLandUserInfo
-{
-    NSAssert(s_mediaPlayerController.contentURL, @"This method can only be called when a valid URL is being attached to the shared player");
-    
-    if (self = [self initWithContentURL:s_mediaPlayerController.contentURL userInfo:s_mediaPlayerController.userInfo]) {
-        self.autoplay = NO;
-    }
-    return self;
-}
-
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    [self doesNotRecognizeSelector:_cmd];
-    return [self initWithContentURL:[NSURL URLWithString:@""] userInfo:nil];
+    return [storyboard instantiateInitialViewController];
 }
 
 - (void)dealloc
@@ -115,6 +81,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 }
 
 #pragma mark Getters and setters
+
+- (SRGMediaPlayerController *)controller
+{
+    return s_mediaPlayerController;
+}
 
 - (void)setInactivityTimer:(NSTimer *)inactivityTimer
 {
@@ -153,13 +124,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     SRGActivityGestureRecognizer *activityGestureRecognizer = [[SRGActivityGestureRecognizer alloc] initWithTarget:self action:@selector(resetInactivityTimer:)];
     activityGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:activityGestureRecognizer];
-    
-    if (self.autoplay) {
-        [s_mediaPlayerController playURL:self.contentURL
-                                  atTime:kCMTimeZero
-                            withSegments:nil
-                                userInfo:self.userInfo];
-    }
     
     self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
     self.playbackActivityIndicatorView.mediaPlayerController = s_mediaPlayerController;

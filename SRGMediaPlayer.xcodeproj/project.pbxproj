@@ -226,7 +226,6 @@
 		E6BCE94D1D76CB900021973D /* TimeshiftPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TimeshiftPlayerViewController.storyboard; sourceTree = "<group>"; };
 		E6BCE9581D76CBCE0021973D /* SegmentsPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SegmentsPlayerViewController.storyboard; sourceTree = "<group>"; };
 		E6BCE95A1D76CF7D0021973D /* SegmentURLs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SegmentURLs.plist; sourceTree = "<group>"; };
-		E6BCE95C1D76DE380021973D /* SRGMediaPlayerViewController+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayerViewController+Private.h"; sourceTree = "<group>"; };
 		E6BCE9621D7943F50021973D /* SRGMediaPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SRGMediaPlayerViewController.storyboard; sourceTree = "<group>"; };
 		E6C315661D76AB62001FC93A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		E6C315751D76B2AA001FC93A /* MediasViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MediasViewController.storyboard; sourceTree = "<group>"; };
@@ -599,7 +598,6 @@
 				E6FC7F5E1D62072400A55085 /* SRGMediaPlayerViewController.h */,
 				E6FC7F5F1D62072400A55085 /* SRGMediaPlayerViewController.m */,
 				E6BCE9621D7943F50021973D /* SRGMediaPlayerViewController.storyboard */,
-				E6BCE95C1D76DE380021973D /* SRGMediaPlayerViewController+Private.h */,
 			);
 			path = Player;
 			sourceTree = "<group>";

@@ -7,7 +7,6 @@
 #import "SRGMediaPlayerSharedController.h"
 
 #import "SRGMediaPlayerViewController.h"
-#import "SRGMediaPlayerViewController+Private.h"
 
 @implementation SRGMediaPlayerSharedController
 
@@ -19,6 +18,11 @@
         self.playerConfigurationBlock = ^(AVPlayer *player) {
             player.allowsExternalPlayback = YES;
             player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
+        };
+        
+        __weak __typeof(self) weakSelf = self;
+        self.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
+            pictureInPictureController.delegate = weakSelf;
         };
     }
     return self;
@@ -39,7 +43,8 @@
     
     // If no SRGMediaPlayerViewController instance is currently displayed (always modally)
     if (! [rootViewController.presentedViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
-        SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithCurrentURLandUserInfo];
+        // FIXME: Init with controller
+        SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
         
         // Dismiss any modal currently displayed if needed
         if (rootViewController.presentedViewController) {
@@ -68,16 +73,6 @@
     if (! [rootViewController.presentedViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
         [self reset];
     }
-}
-
-- (AVPictureInPictureController *)pictureInPictureController
-{
-    // Lazily installs itself as delegate, in case the picture in picture controller gets recreated
-    AVPictureInPictureController *pictureInPictureController = super.pictureInPictureController;
-    if (! pictureInPictureController.delegate) {
-        pictureInPictureController.delegate = self;
-    }
-    return pictureInPictureController;
 }
 
 @end
