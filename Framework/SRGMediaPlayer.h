@@ -6,10 +6,6 @@
 
 #import <Foundation/Foundation.h>
 
-// Framework standard version number
-FOUNDATION_EXPORT double SRGMediaPlayerVersionNumber;
-FOUNDATION_EXPORT const unsigned char SRGMediaPlayerVersionString[];
-
 // Oficial version number
 FOUNDATION_EXPORT NSString *SRGMediaPlayerMarketingVersion(void);
 
