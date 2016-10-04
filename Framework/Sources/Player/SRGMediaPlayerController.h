@@ -497,8 +497,6 @@ withToleranceBefore:(CMTime)toleranceBefore
  *
  *  For more information, @see `-playURL:atTime:withSegments:userInfo:`
  *
- *  @discussion
- *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location
  */
 - (void)playURL:(NSURL *)URL
