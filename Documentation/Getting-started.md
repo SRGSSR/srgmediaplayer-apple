@@ -21,16 +21,18 @@ Let us now discuss these components further and describe how they can be glued t
 
 ## Media player view controller
 
-If you do not need to customize the player appearance, simply instantiate `SRGMediaPlayerViewController` and display it modally:
+If you do not need to customize the player appearance, simply instantiate `SRGMediaPlayerViewController` and display it modally. The view controller exposes its underlying `controller` property, which you must use to start playback
 
 ```objective-c
-SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithContentURL:contentURL];
-[self presentViewController:mediaPlayerViewController animated:YES completion:nil];
+SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
+[self presentViewController:mediaPlayerViewController animated:YES completion:^{
+    [mediaPlayerViewController.controller playURL:contentURL];
+}];
 ```
 
-This view controller will immediately play the given URL as soon it is displayed.
+You can also use the `controller` property to register for playback notifications.
 
-The `SRGMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams) and picture in picture for compatible devices, but does not provide support for segments. For this you need to design your own player view, see the _Designing custom players_ section below.
+The `SRGMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams), picture in picture for compatible devices, as well as segments.
 
 ## Designing custom players
 
