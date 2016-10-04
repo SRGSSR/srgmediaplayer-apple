@@ -49,6 +49,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @property (nonatomic) NSValue *startTimeValue;
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
 
+@property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
+
 @end
 
 @implementation SRGMediaPlayerController
@@ -310,6 +312,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     if (! _pictureInPictureController && self.playerLayer.readyForDisplay) {
         // Call the setter for KVO registration
         self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
+        self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
     }
     return _pictureInPictureController;
 }

@@ -552,6 +552,11 @@ withToleranceBefore:(CMTime)toleranceBefore
  */
 @property (nonatomic, readonly, nullable) AVPictureInPictureController *pictureInPictureController;
 
+/**
+ *  Optional block which gets called right after picture in picture controller creation
+ */
+@property (nonatomic, copy, nullable) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
+
 @end
 
 NS_ASSUME_NONNULL_END

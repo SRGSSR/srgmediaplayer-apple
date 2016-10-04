@@ -19,6 +19,11 @@
             player.allowsExternalPlayback = YES;
             player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
         };
+        
+        __weak __typeof(self) weakSelf = self;
+        self.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
+            pictureInPictureController.delegate = weakSelf;
+        };
     }
     return self;
 }
@@ -68,16 +73,6 @@
     if (! [rootViewController.presentedViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
         [self reset];
     }
-}
-
-- (AVPictureInPictureController *)pictureInPictureController
-{
-    // Lazily installs itself as delegate, in case the picture in picture controller gets recreated
-    AVPictureInPictureController *pictureInPictureController = super.pictureInPictureController;
-    if (! pictureInPictureController.delegate) {
-        pictureInPictureController.delegate = self;
-    }
-    return pictureInPictureController;
 }
 
 @end
