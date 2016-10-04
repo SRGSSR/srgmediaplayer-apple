@@ -7,7 +7,6 @@
 #import "SRGMediaPlayerSharedController.h"
 
 #import "SRGMediaPlayerViewController.h"
-#import "SRGMediaPlayerViewController+Private.h"
 
 @implementation SRGMediaPlayerSharedController
 
@@ -39,7 +38,8 @@
     
     // If no SRGMediaPlayerViewController instance is currently displayed (always modally)
     if (! [rootViewController.presentedViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
-        SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithCurrentURLandUserInfo];
+        // FIXME: Init with controller
+        SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
         
         // Dismiss any modal currently displayed if needed
         if (rootViewController.presentedViewController) {
