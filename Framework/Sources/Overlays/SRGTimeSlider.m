@@ -9,7 +9,7 @@
 #import "NSBundle+SRGMediaPlayer.h"
 #import "UIBezierPath+SRGMediaPlayer.h"
 
-#import <libextobjc/EXTScope.h>
+#import <libextobjc/libextobjc.h>
 
 static void commonInit(SRGTimeSlider *self);
 

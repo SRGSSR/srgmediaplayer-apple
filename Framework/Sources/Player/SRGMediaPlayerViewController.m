@@ -16,7 +16,7 @@
 #import "SRGTimeSlider.h"
 #import "SRGVolumeView.h"
 
-#import <libextobjc/EXTScope.h>
+#import <libextobjc/libextobjc.h>
 
 // Shared instance to manage picture in picture playback
 static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;

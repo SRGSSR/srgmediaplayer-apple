@@ -6,7 +6,7 @@
 
 #import "SRGPeriodicTimeObserver.h"
 
-#import <libextobjc/EXTScope.h>
+#import <libextobjc/libextobjc.h>
 
 static void *s_kvoContext  = &s_kvoContext;
 

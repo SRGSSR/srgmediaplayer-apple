@@ -13,7 +13,7 @@
 #import "SRGMediaPlayerView.h"
 #import "SRGPeriodicTimeObserver.h"
 
-#import <libextobjc/EXTScope.h>
+#import <libextobjc/libextobjc.h>
 #import <objc/runtime.h>
 
 static const NSTimeInterval SRGSegmentSeekToleranceInSeconds = 0.1;

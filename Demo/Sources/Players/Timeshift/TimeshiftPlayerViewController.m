@@ -8,7 +8,7 @@
 
 #import "SegmentCollectionViewCell.h"
 
-#import <libextobjc/EXTScope.h>
+#import <libextobjc/libextobjc.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface TimeshiftPlayerViewController ()
