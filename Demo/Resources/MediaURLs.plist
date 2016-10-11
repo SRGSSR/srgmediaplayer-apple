@@ -46,6 +46,12 @@
 			<key>url</key>
 			<string>http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>SWI sample with strange behavior if seeking to the end (consistent between iOS and SRG players)</string>
+			<key>url</key>
+			<string>http://srgplayerswivod-vh.akamaihd.net/i/2016/09/13/,Hoechstgelegener_Windpark-42441158-360k,Hoechstgelegener_Windpark-42441158-720k,.mp4.csmil/master.m3u8</string>
+		</dict>
 	</array>
 </dict>
 </plist>
