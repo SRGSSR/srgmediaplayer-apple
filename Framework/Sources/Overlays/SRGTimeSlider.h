@@ -90,7 +90,14 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
  *
  *  Defaults to YES
  */
-@property (nonatomic, getter=isSeekingDuringTracking) BOOL seekingDuringTracking;
+@property (nonatomic, getter=isSeekingDuringTracking) IBInspectable BOOL seekingDuringTracking;
+
+/**
+ *  Set to YES to have the player automatically resume after a seek (if paused)
+ *
+ *  Defaults to NO
+ */
+@property (nonatomic, getter=isResumingAfterSeek) IBInspectable BOOL resumingAfterSeek;
 
 /**
  *  The position of the slider knob when playing a live stream. Defaults to `SRGTimeSliderLiveKnobPositionDefault`

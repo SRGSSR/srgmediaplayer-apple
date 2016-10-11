@@ -279,7 +279,11 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if ([self isDraggable]) {
-        [self.mediaPlayerController seekEfficientlyToTime:self.time withCompletionHandler:nil];
+        [self.mediaPlayerController seekEfficientlyToTime:self.time withCompletionHandler:^(BOOL finished) {
+            if (self.resumingAfterSeek) {
+                [self.mediaPlayerController play];
+            }
+        }];
     }
     
     [super endTrackingWithTouch:touch withEvent:event];
