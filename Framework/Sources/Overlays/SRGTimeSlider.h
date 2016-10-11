@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
  *    - `borderColor`: Color of the small border around the non-elapsed time track (defaults to black) and of the
  *                     preloading progress bar
  *    - `minimumTrackTintColor`: Elapsed time track color (defaults to white)
- *    - `maximumTrackTintColor`: Reamining time track color (defaults to black)
+ *    - `maximumTrackTintColor`: Remaining time track color (defaults to black)
  *    - `thumbTintColor`: Thumb color (defaults to white)
  */
 @interface SRGTimeSlider : UISlider
