@@ -135,7 +135,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 10;
+			dstSubfolderSpec = 16;
 			files = (
 				6F68E75C1DAE19A2001F39C4 /* SRGLogger.framework in CopyFiles */,
 				6F68E75B1DAE1969001F39C4 /* libextobjc.framework in CopyFiles */,
