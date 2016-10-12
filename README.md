@@ -24,7 +24,7 @@ The library can be added to a project using [Carthage](https://github.com/Cartha
 github "SRGSSR/SRGMediaPlayer-iOS"
 ```
 
-Then run `carthage update` to update the dependencies. You will need to manually add the following `.framework`s generated in the `Carthage/Build/iOS` folder to your projet:
+Then run `carthage update --platform iOS` to update the dependencies. You will need to manually add the following `.framework`s generated in the `Carthage/Build/iOS` folder to your projet:
 
 * `SRGMediaPlayer.framework`: The main data provider framework
 * `SRGLogger.framework`: The framework used for internal logging
