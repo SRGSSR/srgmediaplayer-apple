@@ -104,6 +104,12 @@ static void commonInit(SRGPictureInPictureButton *self);
     [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
 }
 
+- (void)prepareForInterfaceBuilder
+{
+    [self setTitle:nil forState:UIControlStateNormal];
+    [self setImage:SRGPictureInPictureButtonStartImage() forState:UIControlStateNormal];
+}
+
 @end
 
 #pragma mark Static functions
