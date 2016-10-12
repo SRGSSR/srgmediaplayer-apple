@@ -73,6 +73,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)dealloc
 {
+    [self.view.layer removeObserver:self forKeyPath:@"readyForDisplay" context:s_kvoContext];
+    
     // No need to call -reset here, since -stop or -reset must be called for the controller to be deallocated
     self.pictureInPictureController = nil;              // Unregister KVO
 }
@@ -190,10 +192,22 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     return _visibleSegments;
 }
 
+// Called when installing the view by binding it in a storyboard or xib
+- (void)setView:(SRGMediaPlayerView *)view
+{
+    _view = view;
+    
+    if (_view) {
+        [_view.layer addObserver:self forKeyPath:@"readyForDisplay" options:0 context:s_kvoContext];
+    }
+}
+
+// Called when lazily creating the view, not binding it
 - (UIView *)view
 {
     if (! _view) {
         _view = [[SRGMediaPlayerView alloc] init];
+        [_view.layer addObserver:self forKeyPath:@"readyForDisplay" options:0 context:s_kvoContext];
     }
     return _view;
 }
@@ -301,20 +315,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     else {
         return NO;
     }
-}
-
-- (AVPictureInPictureController *)pictureInPictureController
-{
-    // It is especially important to wait until the player layer is ready for display, otherwise the player might behave
-    // incorrectly (not correctly pause when asked to) because of the picture in picture controller, even if not active.
-    // Weird, but it seems the relationship between both is tight, see
-    //   https://developer.apple.com/library/ios/documentation/WindowsViews/Conceptual/AdoptingMultitaskingOniPad/QuickStartForPictureInPicture.html)
-    if (! _pictureInPictureController && self.playerLayer.readyForDisplay) {
-        // Call the setter for KVO registration
-        self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
-        self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(_pictureInPictureController) : nil;
-    }
-    return _pictureInPictureController;
 }
 
 - (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
@@ -873,6 +873,15 @@ withToleranceBefore:(CMTime)toleranceBefore
         }
         else if ([keyPath isEqualToString:@"pictureInPictureActive"] || [keyPath isEqualToString:@"pictureInPicturePossible"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
+        }
+        else if ([keyPath isEqualToString:@"readyForDisplay"]) {
+            if (self.playerLayer.readyForDisplay) {
+                self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
+                self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(_pictureInPictureController) : nil;
+            }
+            else {
+                self.pictureInPictureController = nil;
+            }
         }
     }
     else {
