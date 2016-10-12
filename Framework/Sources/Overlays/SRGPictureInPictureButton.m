@@ -104,6 +104,8 @@ static void commonInit(SRGPictureInPictureButton *self);
     [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
 }
 
+#pragma mark Interface Builder integration
+
 - (void)prepareForInterfaceBuilder
 {
     [self setTitle:nil forState:UIControlStateNormal];

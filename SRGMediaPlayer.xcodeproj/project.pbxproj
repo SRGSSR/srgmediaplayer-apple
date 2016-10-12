@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6F3744271DAE533E008A6C0C /* SRGLogger.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6F3744281DAE533E008A6C0C /* libextobjc.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; };
+		6F37442E1DAE5485008A6C0C /* Designables in Resources */ = {isa = PBXBuildFile; fileRef = 6F37442D1DAE5485008A6C0C /* Designables */; };
 		6F68E7581DAE0877001F39C4 /* SRGMediaPlayerView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */; };
 		6FA09D2A1D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */; };
 		6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -173,6 +174,7 @@
 		05E918D1654F8CC2553EED74 /* libPods-SRGMediaPlayer-tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer-tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		33B591AC767A97272DB49F32 /* Pods-SRGMediaPlayer-tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer-tests/Pods-SRGMediaPlayer-tests.release.xcconfig"; sourceTree = "<group>"; };
 		3C5FC1E08CA3F0C8CA810E82 /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F37442D1DAE5485008A6C0C /* Designables */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Designables; sourceTree = "<group>"; };
 		6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayerView+Private.h"; sourceTree = "<group>"; };
 		6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerLogger.h; sourceTree = "<group>"; };
 		6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 		E69A1DB11D61BAFD0064E6C1 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				6F37442D1DAE5485008A6C0C /* Designables */,
 				E6FC7F2E1D62072400A55085 /* Sources */,
 				E69A1DFF1D61BAFD0064E6C1 /* Resources */,
 				E69A1DDF1D61BAFD0064E6C1 /* Info.plist */,
@@ -772,6 +775,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F37442E1DAE5485008A6C0C /* Designables in Resources */,
 				E6C315671D76AB62001FC93A /* LaunchScreen.xib in Resources */,
 				E69A1E581D61BAFD0064E6C1 /* picture_in_picture_start_button@2x.png in Resources */,
 				E69A1E5C1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png in Resources */,
