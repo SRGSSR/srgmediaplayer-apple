@@ -11,6 +11,7 @@
 #import "SRGMediaPlayerError.h"
 #import "SRGMediaPlayerLogger.h"
 #import "SRGMediaPlayerView.h"
+#import "SRGMediaPlayerView+Private.h"
 #import "SRGPeriodicTimeObserver.h"
 
 #import <libextobjc/libextobjc.h>
@@ -73,7 +74,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)dealloc
 {
-    [self.view.layer removeObserver:self forKeyPath:@"readyForDisplay" context:s_kvoContext];
+    AVPlayerLayer *playerLayer = self.playerLayer;
+    [playerLayer removeObserver:self forKeyPath:@keypath(playerLayer.readyForDisplay) context:s_kvoContext];
     
     // No need to call -reset here, since -stop or -reset must be called for the controller to be deallocated
     self.pictureInPictureController = nil;              // Unregister KVO
@@ -87,8 +89,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     if (previousPlayer) {
         [self unregisterTimeObservers];
         
-        [previousPlayer removeObserver:self forKeyPath:@"currentItem.status" context:s_kvoContext];
-        [previousPlayer removeObserver:self forKeyPath:@"rate" context:s_kvoContext];
+        [previousPlayer removeObserver:self forKeyPath:@keypath(previousPlayer.currentItem.status) context:s_kvoContext];
+        [previousPlayer removeObserver:self forKeyPath:@keypath(previousPlayer.rate) context:s_kvoContext];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemPlaybackStalledNotification
@@ -108,14 +110,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     if (player) {
         [self registerTimeObserversForPlayer:player];
         
-        [player addObserver:self
-                 forKeyPath:@"currentItem.status"
-                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                    context:s_kvoContext];
-        [player addObserver:self
-                 forKeyPath:@"rate"
-                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                    context:s_kvoContext];
+        [player addObserver:self forKeyPath:@keypath(player.currentItem.status) options:0 context:s_kvoContext];
+        [player addObserver:self forKeyPath:@keypath(player.rate) options:0 context:s_kvoContext];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_mediaPlayerController_playerItemPlaybackStalled:)
@@ -142,7 +138,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (AVPlayerLayer *)playerLayer
 {
-    return (AVPlayerLayer *)self.view.layer;
+    return self.view.playerLayer;
 }
 
 - (void)setPlaybackState:(SRGMediaPlayerPlaybackState)playbackState withUserInfo:(NSDictionary *)userInfo
@@ -160,9 +156,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         [fullUserInfo addEntriesFromDictionary:userInfo];
     }
     
-    [self willChangeValueForKey:@"playbackState"];
+    [self willChangeValueForKey:@keypath(self.playbackState)];
     _playbackState = playbackState;
-    [self didChangeValueForKey:@"playbackState"];
+    [self didChangeValueForKey:@keypath(self.playbackState)];
     
     // Ensure segment status is up to date
     [self updateSegmentStatusForPlaybackState:playbackState time:self.player.currentTime];
@@ -198,7 +194,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     _view = view;
     
     if (_view) {
-        [_view.layer addObserver:self forKeyPath:@"readyForDisplay" options:0 context:s_kvoContext];
+        AVPlayerLayer *playerLayer = _view.playerLayer;
+        [playerLayer addObserver:self forKeyPath:@keypath(playerLayer.readyForDisplay) options:0 context:s_kvoContext];
     }
 }
 
@@ -207,7 +204,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 {
     if (! _view) {
         _view = [[SRGMediaPlayerView alloc] init];
-        [_view.layer addObserver:self forKeyPath:@"readyForDisplay" options:0 context:s_kvoContext];
+        
+        AVPlayerLayer *playerLayer = _view.playerLayer;
+        [playerLayer addObserver:self forKeyPath:@keypath(playerLayer.readyForDisplay) options:0 context:s_kvoContext];
     }
     return _view;
 }
@@ -320,15 +319,15 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 - (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
 {
     if (_pictureInPictureController) {
-        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPicturePossible" context:s_kvoContext];
-        [_pictureInPictureController removeObserver:self forKeyPath:@"pictureInPictureActive" context:s_kvoContext];
+        [_pictureInPictureController removeObserver:self forKeyPath:@keypath(_pictureInPictureController.pictureInPicturePossible) context:s_kvoContext];
+        [_pictureInPictureController removeObserver:self forKeyPath:@keypath(_pictureInPictureController.pictureInPictureActive) context:s_kvoContext];
     }
     
     _pictureInPictureController = pictureInPictureController;
     
     if (pictureInPictureController) {
-        [pictureInPictureController addObserver:self forKeyPath:@"pictureInPicturePossible" options:NSKeyValueObservingOptionNew context:s_kvoContext];
-        [pictureInPictureController addObserver:self forKeyPath:@"pictureInPictureActive" options:NSKeyValueObservingOptionNew context:s_kvoContext];
+        [pictureInPictureController addObserver:self forKeyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 context:s_kvoContext];
+        [pictureInPictureController addObserver:self forKeyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 context:s_kvoContext];
     }
 }
 
@@ -809,7 +808,7 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     if (context == s_kvoContext) {
         // If the rate or the item status changes, calculate the new playback status
-        if ([keyPath isEqualToString:@"currentItem.status"] || [keyPath isEqualToString:@"rate"]) {
+        if ([keyPath isEqualToString:@keypath(AVPlayer.new, currentItem.status)] || [keyPath isEqualToString:@keypath(AVPlayer.new, rate)]) {
             AVPlayerItem *playerItem = self.player.currentItem;
             
             // Do not let playback pause when the player stalls, attempt to play again
@@ -871,10 +870,11 @@ withToleranceBefore:(CMTime)toleranceBefore
                 }
             }
         }
-        else if ([keyPath isEqualToString:@"pictureInPictureActive"] || [keyPath isEqualToString:@"pictureInPicturePossible"]) {
+        else if ([keyPath isEqualToString:@keypath(AVPictureInPictureController.new, pictureInPictureActive)]
+                 || [keyPath isEqualToString:@keypath(AVPictureInPictureController.new, pictureInPicturePossible)]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
         }
-        else if ([keyPath isEqualToString:@"readyForDisplay"]) {
+        else if ([keyPath isEqualToString:@keypath(AVPlayerLayer.new, readyForDisplay)]) {
             if (self.playerLayer.readyForDisplay) {
                 self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
                 self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(_pictureInPictureController) : nil;
