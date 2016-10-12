@@ -10,3 +10,8 @@ IB_DESIGNABLE
 @interface SRGPictureInPictureButton (Designable)
 
 @end
+
+IB_DESIGNABLE
+@interface SRGTimeSlider (Designable)
+
+@end
