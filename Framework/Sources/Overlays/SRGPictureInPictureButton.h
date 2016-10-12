@@ -23,7 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  it automatically from full-screen playback (this is controlled by a system setting). Apple might reject your
  *  application otherwise.
  */
-IB_DESIGNABLE
 @interface SRGPictureInPictureButton : UIButton
 
 /**
