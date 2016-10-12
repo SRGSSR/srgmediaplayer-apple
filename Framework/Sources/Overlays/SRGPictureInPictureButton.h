@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Simply install an instance somewhere onto your custom player interface and bind to the media player controller which
  *  the button must be associated with. The button will be hidden automatically if picture in picture is not possible.
+ *  If your controls are stacked using a `UIStackView`, the layout will automatically adjust when the button appears
+ *  or disappears.
  *
  *  It is important that picture in picture is never enabled without user intervention, except when the system does
  *  it automatically from full-screen playback (this is controlled by a system setting). Apple might reject your
