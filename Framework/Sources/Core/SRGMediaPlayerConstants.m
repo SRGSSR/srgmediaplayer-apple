@@ -17,6 +17,9 @@ NSString * const SRGMediaPlayerPreviousUserInfoKey = @"SRGMediaPlayerPreviousUse
 NSString * const SRGMediaPlayerPlaybackDidFailNotification = @"SRGMediaPlayerPlaybackDidFailNotification";
 NSString * const SRGMediaPlayerErrorKey = @"SRGMediaPlayerErrorKey";
 
+NSString * const SRGMediaPlayerSeekNotification = @"SRGMediaPlayerSeekNotification";
+NSString * const SRGMediaPlayerSeekTimeKey = @"SRGMediaPlayerSeekTimeKey";
+
 NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotification = @"SRGMediaPlayerPictureInPictureStateDidChangeNotification";
 
 NSString * const SRGMediaPlayerSegmentDidStartNotification = @"SRGMediaPlayerSegmentDidStartNotification";

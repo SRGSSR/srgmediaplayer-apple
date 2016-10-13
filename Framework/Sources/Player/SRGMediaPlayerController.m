@@ -529,6 +529,11 @@ withToleranceBefore:(CMTime)toleranceBefore
     id<SRGSegment> segment = targetSegment ?: [self segmentForTime:time];
     if (! segment || ! segment.srg_blocked) {
         [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSeekNotification
+                                                            object:self
+                                                          userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:time] }];
+        
         [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
             if (finished) {
                 [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];

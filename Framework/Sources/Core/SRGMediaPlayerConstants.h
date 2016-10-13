@@ -105,6 +105,13 @@ OBJC_EXTERN NSString * const SRGMediaPlayerPlaybackDidFailNotification;         
 OBJC_EXTERN NSString * const SRGMediaPlayerErrorKey;                                        // Key to access error information
 
 /**
+ *  Notification sent just before a seek is made (the player is already in the seeking state, though). Use the `SRGMediaPlayerSeekTimeKey`
+ *  to retrieve an `NSValue` containing the `CMTime` of the target seek position
+ */
+OBJC_EXTERN NSString * const SRGMediaPlayerSeekNotification;                                // Notification name
+OBJC_EXTERN NSString * const SRGMediaPlayerSeekTimeKey;                                     // Key to access the time to which the seek is made, as an `NSValue` (wrapping a `CMTime` value)
+
+/**
  *  Notification sent when the picture in picture state changes
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotification;
