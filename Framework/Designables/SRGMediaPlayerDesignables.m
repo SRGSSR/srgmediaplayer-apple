@@ -35,6 +35,11 @@ IB_DESIGNABLE
 @end
 
 IB_DESIGNABLE
+@interface SRGTimelineView (Designable)
+
+@end
+
+IB_DESIGNABLE
 @interface SRGVolumeView (Designable)
 
 @end

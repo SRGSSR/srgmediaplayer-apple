@@ -159,6 +159,21 @@ static void commonInit(SRGTimelineView *self);
                                         animated:animated];
 }
 
+
+#pragma mark Interface Builder integration
+
+- (void)prepareForInterfaceBuilder
+{
+    for (NSInteger i = 0; i < 10; ++i) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i * (self.itemWidth + self.itemSpacing),
+                                                                0.f,
+                                                                self.itemWidth,
+                                                                CGRectGetHeight(self.frame))];
+        view.backgroundColor = [UIColor darkGrayColor];
+        [self addSubview:view];
+    }
+}
+
 @end
 
 #pragma mark Static functions
