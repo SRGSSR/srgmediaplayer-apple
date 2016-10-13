@@ -25,6 +25,11 @@ IB_DESIGNABLE
 @end
 
 IB_DESIGNABLE
+@interface SRGPlaybackButton (Designable)
+
+@end
+
+IB_DESIGNABLE
 @interface SRGTimeSlider (Designable)
 
 @end

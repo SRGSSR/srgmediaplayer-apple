@@ -201,6 +201,13 @@ static void commonInit(SRGPlaybackButton *self);
     [self refreshButton];
 }
 
+#pragma mark Interface Builder integration
+
+- (void)prepareForInterfaceBuilder
+{
+    [self refreshButton];
+}
+
 @end
 
 static void commonInit(SRGPlaybackButton *self)
