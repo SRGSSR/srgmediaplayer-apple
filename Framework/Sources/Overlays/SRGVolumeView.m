@@ -22,7 +22,7 @@
 {
     [super awakeFromNib];
     
-    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0.f, 0.f, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
+    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:self.bounds];
     volumeView.showsRouteButton = NO;
     volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:volumeView];
@@ -35,6 +35,18 @@
 {
     [super setHidden:hidden];
     [self.volumeView setHidden:hidden];
+}
+
+#pragma mark Interface Builder integration
+
+- (void)prepareForInterfaceBuilder
+{
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:self.bounds];
+    placeholderLabel.textColor = [UIColor whiteColor];
+    placeholderLabel.textAlignment = NSTextAlignmentCenter;
+    placeholderLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    placeholderLabel.text = @"Volume view (only visible on a device)";
+    [self addSubview:placeholderLabel];
 }
 
 @end

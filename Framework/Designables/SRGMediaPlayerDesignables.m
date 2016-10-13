@@ -33,3 +33,8 @@ IB_DESIGNABLE
 @interface SRGTimeSlider (Designable)
 
 @end
+
+IB_DESIGNABLE
+@interface SRGVolumeView (Designable)
+
+@end
