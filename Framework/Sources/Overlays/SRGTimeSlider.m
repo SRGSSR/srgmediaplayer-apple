@@ -131,45 +131,27 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
             @strongify(self)
             
             if (! self.isTracking && self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
-                CMTimeRange timeRange = [self.mediaPlayerController timeRange];
-                if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeOnDemand && self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
-                    self.maximumValue = 0.f;
-                    self.value = 0.f;
-                    self.userInteractionEnabled = YES;
-                }
-                else if (! CMTIMERANGE_IS_EMPTY(timeRange) && ! CMTIMERANGE_IS_INDEFINITE(timeRange) && ! CMTIMERANGE_IS_INVALID(timeRange)) {
-                    self.maximumValue = CMTimeGetSeconds(timeRange.duration);
-                    
-                    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-                    self.value = CMTimeGetSeconds(CMTimeSubtract(playerItem.currentTime, timeRange.start));
-                    self.userInteractionEnabled = YES;
-                }
-                else {
-                    float value = [self resetValue];
-                    self.maximumValue = value;
-                    self.value = value;
-                    self.userInteractionEnabled = NO;
-                }
-                                
-                [self.delegate timeSlider:self
-                   isMovingToPlaybackTime:self.time
-                                withValue:self.value
-                              interactive:NO];
-                
-                [self setNeedsDisplay];
-                [self updateTimeRangeLabels];
+                [self updateDisplayWithTime:time];
             }
         }];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(timesliderPlaybackStateDidChange:)
+                                                 selector:@selector(srg_timeSlider_playbackStateDidChange:)
                                                      name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                   object:self.mediaPlayerController];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(srg_timeSlider_seek:)
+                                                     name:SRGMediaPlayerSeekNotification
                                                    object:self.mediaPlayerController];
     }
     else {
         [self.mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
+        
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                      object:self.mediaPlayerController];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:SRGMediaPlayerSeekNotification
                                                       object:self.mediaPlayerController];
     }
 }
@@ -196,7 +178,37 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
                       CGRectGetHeight(trackFrame));
 }
 
-#pragma mark Time display
+#pragma mark Information display
+
+- (void)updateDisplayWithTime:(CMTime)time
+{
+    CMTimeRange timeRange = [self.mediaPlayerController timeRange];
+    if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeOnDemand && self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
+        self.maximumValue = 0.f;
+        self.value = 0.f;
+        self.userInteractionEnabled = YES;
+    }
+    else if (! CMTIMERANGE_IS_EMPTY(timeRange) && ! CMTIMERANGE_IS_INDEFINITE(timeRange) && ! CMTIMERANGE_IS_INVALID(timeRange)) {
+        self.maximumValue = CMTimeGetSeconds(timeRange.duration);
+        
+        self.value = CMTimeGetSeconds(CMTimeSubtract(time, timeRange.start));
+        self.userInteractionEnabled = YES;
+    }
+    else {
+        float value = [self resetValue];
+        self.maximumValue = value;
+        self.value = value;
+        self.userInteractionEnabled = NO;
+    }
+    
+    [self.delegate timeSlider:self
+       isMovingToPlaybackTime:time
+                    withValue:self.value
+                  interactive:NO];
+    
+    [self setNeedsDisplay];
+    [self updateTimeRangeLabels];
+}
 
 - (CMTime)time
 {
@@ -399,7 +411,7 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 
 #pragma mark Notifications
 
-- (void)timesliderPlaybackStateDidChange:(NSNotification *)notification
+- (void)srg_timeSlider_playbackStateDidChange:(NSNotification *)notification
 {
     if (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
         float value = [self resetValue];
@@ -411,6 +423,13 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
         [self setNeedsDisplay];
         [self updateTimeRangeLabels];
     }
+}
+
+- (void)srg_timeSlider_seek:(NSNotification *)notification
+{
+    // Do not wait for playback to resume to update display, update to the target location of seeks
+    CMTime time = [notification.userInfo[SRGMediaPlayerSeekTimeKey] CMTimeValue];
+    [self updateDisplayWithTime:time];
 }
 
 #pragma mark Interface Builder integration
