@@ -219,6 +219,13 @@ static void commonInit(SRGAirplayView *self);
     self.hidden = hidden;
 }
 
+#pragma mark Interface Builder integration
+
+- (void)prepareForInterfaceBuilder
+{
+    [self setNeedsDisplay];
+}
+
 @end
 
 #pragma mark Static functions
