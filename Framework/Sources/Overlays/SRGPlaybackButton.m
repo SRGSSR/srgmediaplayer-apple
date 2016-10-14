@@ -185,7 +185,8 @@ static void commonInit(SRGPlaybackButton *self);
     if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
         [mediaPlayerController seekEfficientlyToTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
             if (finished) {
-                togglePlayPause();
+                [mediaPlayerController play];
+                [self refreshButton];
             }
         }];
     }
