@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Button which is automatically shown when Airplay is active, hidden otherwise. If your controls are stacked using a
  *  `UIStackView`, the layout will automatically adjust when the button appears or disappears.
  */
-@interface SRGAirplayButton : UIButton
+@interface SRGAirplayButton : UIView
 
 @end
 

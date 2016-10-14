@@ -6,10 +6,13 @@
 
 #import "SRGAirplayButton.h"
 
+#import "MPVolumeView+SRGMediaPlayer.h"
+#import "NSBundle+SRGMediaPlayer.h"
+
 #import <libextobjc/libextobjc.h>
-#import <MediaPlayer/MediaPlayer.h>
 
 static void commonInit(SRGAirplayButton *self);
+static UIImage *SRGAirplayButtonImage(void);
 
 @interface SRGAirplayButton ()
 
@@ -36,6 +39,13 @@ static void commonInit(SRGAirplayButton *self);
         commonInit(self);
     }
     return self;
+}
+
+#pragma mark Getters and setters
+
+- (void)setTintColor:(UIColor *)tintColor
+{
+    self.volumeView.srg_airplayButton.tintColor = tintColor;
 }
 
 #pragma mark Overrides
@@ -69,10 +79,26 @@ static void commonInit(SRGAirplayButton *self);
 
 - (void)prepareForInterfaceBuilder
 {
-    self.backgroundColor = [UIColor greenColor];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    imageView.image = SRGAirplayButtonImage();
+    [self addSubview:imageView];
 }
 
 @end
+
+#pragma mark Functions
+
+static UIImage *SRGAirplayButtonImage(void)
+{
+    static UIImage *image;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString *imagePath = [[NSBundle srg_mediaPlayerBundle] pathForResource:@"airplay" ofType:@"png"];
+        image = [[UIImage imageWithContentsOfFile:imagePath] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    });
+    return image;
+}
 
 static void commonInit(SRGAirplayButton *self)
 {
@@ -81,4 +107,10 @@ static void commonInit(SRGAirplayButton *self)
     volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:volumeView];
     self.volumeView = volumeView;
+    
+    // Replace with custom image to be able to apply a tint color. We cannot apply the tint color to the button
+    // itself since its type is custom (see https://developer.apple.com/reference/uikit/uibutton/1624025-tintcolor)
+    UIButton *airplayButton = volumeView.srg_airplayButton;
+    [airplayButton setImage:SRGAirplayButtonImage() forState:UIControlStateNormal];
+    airplayButton.tintColor = self.tintColor;
 }

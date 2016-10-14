@@ -9,8 +9,8 @@
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaPlayerController.h"
 
-UIImage *SRGPictureInPictureButtonStartImage(void);
-UIImage *SRGPictureInPictureButtonStopImage(void);
+static UIImage *SRGPictureInPictureButtonStartImage(void);
+static UIImage *SRGPictureInPictureButtonStopImage(void);
 
 static void commonInit(SRGPictureInPictureButton *self);
 
@@ -123,24 +123,24 @@ static void commonInit(SRGPictureInPictureButton *self)
 
 #pragma mark Functions
 
-UIImage *SRGPictureInPictureButtonStartImage(void)
+static UIImage *SRGPictureInPictureButtonStartImage(void)
 {
     static UIImage *s_image;
     static dispatch_once_t s_onceToken;
     dispatch_once(&s_onceToken, ^{
         NSString *imagePath = [[NSBundle srg_mediaPlayerBundle] pathForResource:@"picture_in_picture_start_button" ofType:@"png"];
-        s_image = [UIImage imageWithContentsOfFile:imagePath];
+        s_image = [[UIImage imageWithContentsOfFile:imagePath] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     });
     return s_image;
 }
 
-UIImage *SRGPictureInPictureButtonStopImage(void)
+static UIImage *SRGPictureInPictureButtonStopImage(void)
 {
     static UIImage *image;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSString *imagePath = [[NSBundle srg_mediaPlayerBundle] pathForResource:@"picture_in_picture_stop_button" ofType:@"png"];
-        image = [UIImage imageWithContentsOfFile:imagePath];
+        image = [[UIImage imageWithContentsOfFile:imagePath] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     });
     return image;
 }
