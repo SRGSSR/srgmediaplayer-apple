@@ -26,8 +26,6 @@ static void commonInit(SRGAirplayView *self);
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        self.autoresizesSubviews = YES;
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.backgroundColor = [UIColor clearColor];
         commonInit(self);
     }
@@ -194,7 +192,7 @@ static void commonInit(SRGAirplayView *self);
 
 #pragma mark Notifications
 
-- (void)wirelessRouteActiveDidChange:(NSNotification *)notification
+- (void)srg_airplayView_wirelessRouteActiveDidChange:(NSNotification *)notification
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(airplayViewShouldBeDisplayed:)]) {
         if (! [self.delegate airplayViewShouldBeDisplayed:self]) {
@@ -238,7 +236,7 @@ static void commonInit(SRGAirplayView *self)
     self.fillFactor = SRGAirplayViewDefaultFillFactor;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(wirelessRouteActiveDidChange:)
+                                             selector:@selector(srg_airplayView_wirelessRouteActiveDidChange:)
                                                  name:MPVolumeViewWirelessRouteActiveDidChangeNotification
                                                object:nil];
     

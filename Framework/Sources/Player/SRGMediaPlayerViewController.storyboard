@@ -162,6 +162,12 @@
                                         </view>
                                         <blurEffect style="light"/>
                                     </visualEffectView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g2J-CT-qsH" userLabel="Airplay Button" customClass="SRGAirplayButton">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="34" id="C9h-yT-Qbx"/>
+                                            <constraint firstAttribute="width" constant="43" id="kVm-Yg-hMX"/>
+                                        </constraints>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o5t-je-W81" customClass="SRGPlaybackButton">
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -203,8 +209,10 @@
                                     <constraint firstItem="o5t-je-W81" firstAttribute="top" secondItem="YwM-m3-QWC" secondAttribute="top" constant="15" id="HIX-a0-0JW"/>
                                     <constraint firstItem="Tou-sR-6sx" firstAttribute="leading" secondItem="YwM-m3-QWC" secondAttribute="leading" constant="8" id="M6e-1g-XJI"/>
                                     <constraint firstAttribute="trailing" secondItem="bTT-cI-yED" secondAttribute="trailing" id="NNl-Lj-UDZ"/>
+                                    <constraint firstItem="g2J-CT-qsH" firstAttribute="centerY" secondItem="o5t-je-W81" secondAttribute="centerY" id="RVe-ef-UyH"/>
                                     <constraint firstItem="o5t-je-W81" firstAttribute="centerY" secondItem="Qzx-Hl-j2l" secondAttribute="centerY" id="YW1-bd-Q1y"/>
                                     <constraint firstAttribute="height" constant="80" id="aqK-IH-2zy"/>
+                                    <constraint firstItem="g2J-CT-qsH" firstAttribute="leading" secondItem="YwM-m3-QWC" secondAttribute="leading" constant="2" id="fAH-Fh-k1V"/>
                                     <constraint firstAttribute="trailing" secondItem="Qzx-Hl-j2l" secondAttribute="trailing" constant="2" id="gkw-Ah-2wa"/>
                                     <constraint firstItem="bTT-cI-yED" firstAttribute="top" secondItem="YwM-m3-QWC" secondAttribute="top" id="rgE-J3-vUI"/>
                                 </constraints>

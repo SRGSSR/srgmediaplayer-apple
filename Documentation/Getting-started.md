@@ -120,6 +120,8 @@ To add basic Airplay support to your application, you can for example:
 * Enable the corresponding background mode for your target
 * Enable `allowsExternalPlayback` (which is the default) and `usesExternalPlaybackWhileExternalScreenIsActive` (to switch to full-screen playback when mirroring is active) in the `playerConfigurationBlock`.
 
+You can also drop an `SRGAirplayButton` onto your layout (displayed only when Airplay is available) or an `SRGAirplayView` (displaying the current route when Airplay is active).
+
 ## Audio session management
 
 No audio session specific management is provided by the library. Managing audio sessions is entirely the responsibility of the application, which gives you complete freedom over how playback happens, especially in the background or when switching between applications. As for Airplay setup (see above), you can use the various block hooks to setup and restore audio session settings as required by your application.

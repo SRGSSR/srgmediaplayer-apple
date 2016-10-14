@@ -15,6 +15,11 @@
  */
 
 IB_DESIGNABLE
+@interface SRGAirplayButton (Designable)
+
+@end
+
+IB_DESIGNABLE
 @interface SRGAirplayView (Designable)
 
 @end

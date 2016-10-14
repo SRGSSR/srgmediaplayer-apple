@@ -77,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    - `SRGVolumeView`: A slider to adjust the volume
  *  - Miscellaneous:
  *    - `SRGPlaybackActivityIndicatorView`: An activity indicator displayed when the playing is buffering or seeking
+ *    - `SRGAirplayButton`: A button which is visible when Airplay is available
  *    - `SRGAirplayView`: An overlay which is visible when external Airplay playback is active, and which displays the
  *                        current route
  *    - `SRGTimelineView`: A linear collection to display the segments associated with a media
