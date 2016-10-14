@@ -129,6 +129,8 @@ static void commonInit(SRGPictureInPictureButton *self)
     [button addTarget:self action:@selector(srg_pictureInPictureButton_togglePictureInPicture:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
     self.button = button;
+    
+    self.hidden = YES;
 }
 
 #pragma mark Functions
