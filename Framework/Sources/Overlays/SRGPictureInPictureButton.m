@@ -108,6 +108,8 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (void)prepareForInterfaceBuilder
 {
+    [super prepareForInterfaceBuilder];
+    
     [self setTitle:nil forState:UIControlStateNormal];
     [self setImage:SRGPictureInPictureButtonStartImage() forState:UIControlStateNormal];
 }

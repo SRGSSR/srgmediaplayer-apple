@@ -221,6 +221,8 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)prepareForInterfaceBuilder
 {
+    [super prepareForInterfaceBuilder];
+    
     [self setNeedsDisplay];
 }
 

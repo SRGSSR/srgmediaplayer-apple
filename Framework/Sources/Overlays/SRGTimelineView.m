@@ -164,6 +164,8 @@ static void commonInit(SRGTimelineView *self);
 
 - (void)prepareForInterfaceBuilder
 {
+    [super prepareForInterfaceBuilder];
+    
     for (NSInteger i = 0; i < 10; ++i) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(i * (self.itemWidth + self.itemSpacing),
                                                                 0.f,

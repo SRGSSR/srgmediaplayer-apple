@@ -436,6 +436,8 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 
 - (void)prepareForInterfaceBuilder
 {
+    [super prepareForInterfaceBuilder];
+    
     [self setNeedsDisplay];
 }
 

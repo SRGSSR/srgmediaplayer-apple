@@ -205,6 +205,8 @@ static void commonInit(SRGPlaybackButton *self);
 
 - (void)prepareForInterfaceBuilder
 {
+    [super prepareForInterfaceBuilder];
+    
     [self refreshButton];
 }
 

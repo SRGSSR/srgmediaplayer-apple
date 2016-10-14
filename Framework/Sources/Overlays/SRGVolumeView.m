@@ -41,6 +41,8 @@
 
 - (void)prepareForInterfaceBuilder
 {
+    [super prepareForInterfaceBuilder];
+    
     UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:self.bounds];
     placeholderLabel.textColor = [UIColor whiteColor];
     placeholderLabel.textAlignment = NSTextAlignmentCenter;
