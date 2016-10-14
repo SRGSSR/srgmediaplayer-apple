@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -244,9 +245,9 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="kvR-ic-iMa" firstAttribute="top" secondItem="cGO-JC-VIK" secondAttribute="bottom" id="BUN-F5-Dwi"/>
                             <constraint firstItem="cMf-gA-UK0" firstAttribute="top" secondItem="f2q-AQ-hq3" secondAttribute="bottom" id="Eq5-eo-FAj"/>
                             <constraint firstItem="Vif-GO-woe" firstAttribute="top" secondItem="YwM-m3-QWC" secondAttribute="bottom" id="FVd-PA-7fP"/>
+                            <constraint firstItem="kvR-ic-iMa" firstAttribute="top" secondItem="ZBA-nY-fz5" secondAttribute="topMargin" id="Gz0-cj-vvl"/>
                             <constraint firstItem="YwM-m3-QWC" firstAttribute="top" secondItem="cMf-gA-UK0" secondAttribute="bottom" id="KSu-85-0nc"/>
                             <constraint firstAttribute="trailing" secondItem="I5F-oL-EgU" secondAttribute="trailing" constant="14" id="LAs-15-OFT"/>
                             <constraint firstItem="f2q-AQ-hq3" firstAttribute="top" secondItem="cGO-JC-VIK" secondAttribute="bottom" constant="-20" id="M0o-QR-kaA"/>
@@ -257,11 +258,11 @@
                             <constraint firstItem="kvR-ic-iMa" firstAttribute="leading" secondItem="ZBA-nY-fz5" secondAttribute="leading" id="dfb-g8-J4L"/>
                             <constraint firstItem="YwM-m3-QWC" firstAttribute="leading" secondItem="ZBA-nY-fz5" secondAttribute="leading" id="idI-SL-Gr5"/>
                             <constraint firstAttribute="trailing" secondItem="YwM-m3-QWC" secondAttribute="trailing" id="m9i-Jo-TNH"/>
-                            <constraint firstItem="Vif-GO-woe" firstAttribute="top" secondItem="kvR-ic-iMa" secondAttribute="bottom" id="mv9-dh-KZ4"/>
                             <constraint firstItem="f2q-AQ-hq3" firstAttribute="leading" secondItem="ZBA-nY-fz5" secondAttribute="leading" id="mwR-Y0-wQ3"/>
                             <constraint firstAttribute="trailing" secondItem="f2q-AQ-hq3" secondAttribute="trailing" id="quf-es-aZl"/>
                             <constraint firstAttribute="trailing" secondItem="cMf-gA-UK0" secondAttribute="trailing" id="wd9-Dw-qDf"/>
                             <constraint firstAttribute="centerY" secondItem="cpU-c6-AfG" secondAttribute="centerY" id="wwd-Zn-MAr"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="kvR-ic-iMa" secondAttribute="bottom" id="xrU-tA-EPh"/>
                         </constraints>
                     </view>
                     <connections>
