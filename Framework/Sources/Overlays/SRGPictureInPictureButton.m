@@ -14,6 +14,12 @@ static UIImage *SRGPictureInPictureButtonStopImage(void);
 
 static void commonInit(SRGPictureInPictureButton *self);
 
+@interface SRGPictureInPictureButton ()
+
+@property (nonatomic, weak) UIButton *button;
+
+@end
+
 @implementation SRGPictureInPictureButton
 
 #pragma mark Object lifecycle
@@ -54,7 +60,7 @@ static void commonInit(SRGPictureInPictureButton *self);
     
     if (mediaPlayerController) {
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(pictureInPictureStateDidChange:)
+                                                 selector:@selector(srg_pictureInPictureButton_pictureInPictureStateDidChange:)
                                                      name:SRGMediaPlayerPictureInPictureStateDidChangeNotification
                                                    object:mediaPlayerController];
     }
@@ -66,20 +72,20 @@ static void commonInit(SRGPictureInPictureButton *self);
 {
     AVPictureInPictureController *pictureInPictureController = mediaPlayerController.pictureInPictureController;
     
-    if (! pictureInPictureController.pictureInPicturePossible) {
-        self.hidden = YES;
-        return;
+    if (pictureInPictureController.pictureInPicturePossible) {
+        self.hidden = NO;
+        
+        UIImage *image = pictureInPictureController.pictureInPictureActive ? SRGPictureInPictureButtonStopImage() : SRGPictureInPictureButtonStartImage();
+        [self.button setImage:image forState:UIControlStateNormal];
     }
-    
-    self.hidden = NO;
-    
-    UIImage *image = pictureInPictureController.pictureInPictureActive ? SRGPictureInPictureButtonStopImage() : SRGPictureInPictureButtonStartImage();
-    [self setImage:image forState:UIControlStateNormal];
+    else {
+        self.hidden = YES;
+    }
 }
 
 #pragma mark Actions
 
-- (void)togglePictureInPicture:(id)sender
+- (void)srg_pictureInPictureButton_togglePictureInPicture:(id)sender
 {
     AVPictureInPictureController *pictureInPictureController = self.mediaPlayerController.pictureInPictureController;
 
@@ -89,17 +95,17 @@ static void commonInit(SRGPictureInPictureButton *self);
 
     if (pictureInPictureController.pictureInPictureActive) {
         [pictureInPictureController stopPictureInPicture];
-        [self setImage:SRGPictureInPictureButtonStartImage() forState:UIControlStateNormal];
+        [self.button setImage:SRGPictureInPictureButtonStartImage() forState:UIControlStateNormal];
     }
     else {
         [pictureInPictureController startPictureInPicture];
-        [self setImage:SRGPictureInPictureButtonStopImage() forState:UIControlStateNormal];
+        [self.button setImage:SRGPictureInPictureButtonStopImage() forState:UIControlStateNormal];
     }
 }
 
 #pragma mark Notifications
 
-- (void)pictureInPictureStateDidChange:(NSNotification *)notification
+- (void)srg_pictureInPictureButton_pictureInPictureStateDidChange:(NSNotification *)notification
 {
     [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
 }
@@ -108,10 +114,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (void)prepareForInterfaceBuilder
 {
-    [super prepareForInterfaceBuilder];
-    
-    [self setTitle:nil forState:UIControlStateNormal];
-    [self setImage:SRGPictureInPictureButtonStartImage() forState:UIControlStateNormal];
+    [self.button setImage:SRGPictureInPictureButtonStartImage() forState:UIControlStateNormal];
 }
 
 @end
@@ -120,7 +123,12 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 static void commonInit(SRGPictureInPictureButton *self)
 {
-    [self addTarget:self action:@selector(togglePictureInPicture:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = self.bounds;
+    button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [button addTarget:self action:@selector(srg_pictureInPictureButton_togglePictureInPicture:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:button];
+    self.button = button;
 }
 
 #pragma mark Functions

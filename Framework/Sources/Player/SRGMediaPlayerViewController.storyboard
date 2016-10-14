@@ -188,35 +188,36 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v1o-Zf-hvu" customClass="SRGPictureInPictureButton">
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="43" id="1iN-us-j9C"/>
+                                            <constraint firstAttribute="height" constant="34" id="9LL-vT-JEx"/>
+                                        </constraints>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tou-sR-6sx" customClass="SRGVolumeView">
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="E3g-eE-I2q"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qzx-Hl-j2l" userLabel="PIP Button" customClass="SRGPictureInPictureButton">
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="34" id="1wo-kd-1On"/>
-                                            <constraint firstAttribute="width" constant="43" id="G8e-lj-Taa"/>
-                                        </constraints>
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="o5t-je-W81" secondAttribute="centerX" id="0fp-WV-WFP"/>
                                     <constraint firstItem="bTT-cI-yED" firstAttribute="leading" secondItem="YwM-m3-QWC" secondAttribute="leading" id="58r-fX-NQz"/>
+                                    <constraint firstAttribute="trailing" secondItem="v1o-Zf-hvu" secondAttribute="trailing" constant="2" id="5VJ-cQ-DBV"/>
                                     <constraint firstItem="fWe-Va-NMR" firstAttribute="leading" secondItem="YwM-m3-QWC" secondAttribute="leading" constant="2" id="BJU-d4-3cV"/>
                                     <constraint firstAttribute="trailing" secondItem="Tou-sR-6sx" secondAttribute="trailing" constant="8" id="DGg-ry-RTx"/>
                                     <constraint firstAttribute="bottom" secondItem="Tou-sR-6sx" secondAttribute="bottom" id="EPj-4F-wNw"/>
+                                    <constraint firstItem="v1o-Zf-hvu" firstAttribute="centerY" secondItem="o5t-je-W81" secondAttribute="centerY" id="FDr-sM-tZb"/>
                                     <constraint firstAttribute="bottom" secondItem="bTT-cI-yED" secondAttribute="bottom" id="FrS-mr-NYG"/>
                                     <constraint firstItem="o5t-je-W81" firstAttribute="top" secondItem="YwM-m3-QWC" secondAttribute="top" constant="15" id="HIX-a0-0JW"/>
                                     <constraint firstItem="Tou-sR-6sx" firstAttribute="leading" secondItem="YwM-m3-QWC" secondAttribute="leading" constant="8" id="M6e-1g-XJI"/>
                                     <constraint firstAttribute="trailing" secondItem="bTT-cI-yED" secondAttribute="trailing" id="NNl-Lj-UDZ"/>
-                                    <constraint firstItem="o5t-je-W81" firstAttribute="centerY" secondItem="Qzx-Hl-j2l" secondAttribute="centerY" id="YW1-bd-Q1y"/>
                                     <constraint firstItem="fWe-Va-NMR" firstAttribute="centerY" secondItem="o5t-je-W81" secondAttribute="centerY" id="Yl0-Aa-g0R"/>
                                     <constraint firstAttribute="height" constant="80" id="aqK-IH-2zy"/>
-                                    <constraint firstAttribute="trailing" secondItem="Qzx-Hl-j2l" secondAttribute="trailing" constant="2" id="gkw-Ah-2wa"/>
                                     <constraint firstItem="bTT-cI-yED" firstAttribute="top" secondItem="YwM-m3-QWC" secondAttribute="top" id="rgE-J3-vUI"/>
                                 </constraints>
                             </view>
@@ -267,7 +268,7 @@
                         <outlet property="liveButton" destination="I5F-oL-EgU" id="EyS-dr-24b"/>
                         <outlet property="loadingActivityIndicatorView" destination="NGj-dK-4gE" id="uTA-2Q-DRi"/>
                         <outlet property="loadingLabel" destination="3qI-dY-lbJ" id="w4C-7m-x9S"/>
-                        <outlet property="pictureInPictureButton" destination="Qzx-Hl-j2l" id="dmK-ko-okh"/>
+                        <outlet property="pictureInPictureButton" destination="v1o-Zf-hvu" id="Gp1-6n-jx4"/>
                         <outlet property="playPauseButton" destination="o5t-je-W81" id="ZGY-OQ-MM5"/>
                         <outlet property="playbackActivityIndicatorView" destination="cpU-c6-AfG" id="a56-Ij-esx"/>
                         <outlet property="playerView" destination="kvR-ic-iMa" id="yTl-Xr-5zG"/>

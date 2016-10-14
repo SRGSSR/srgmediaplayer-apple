@@ -11,8 +11,9 @@
 
 #import <libextobjc/libextobjc.h>
 
-static void commonInit(SRGAirplayButton *self);
 static UIImage *SRGAirplayButtonImage(void);
+
+static void commonInit(SRGAirplayButton *self);
 
 @interface SRGAirplayButton ()
 
@@ -39,6 +40,11 @@ static UIImage *SRGAirplayButtonImage(void);
         commonInit(self);
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark Overrides
