@@ -43,17 +43,16 @@ typedef NS_ENUM(NSInteger, SRGPlaybackButtonBehavior) {
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
- *  Color customization
- */
-@property (nonatomic, nullable) IBInspectable UIColor *normalColor;
-@property (nonatomic, nullable) IBInspectable UIColor *hightlightColor;
-
-/**
  *  Image customization (default images are used if not set)
  */
-@property (nonatomic, null_resettable) UIImage *playImage;
-@property (nonatomic, null_resettable) UIImage *pauseImage;
-@property (nonatomic, null_resettable) UIImage *stopImage;
+@property (nonatomic, null_resettable) IBInspectable UIImage *playImage;
+@property (nonatomic, null_resettable) IBInspectable UIImage *pauseImage;
+@property (nonatomic, null_resettable) IBInspectable UIImage *stopImage;
+
+/**
+ *  The tint color to apply when the button is highlighted (if nil, then the usual tint color is applied)
+ */
+@property (nonatomic, null_resettable) IBInspectable UIColor *highlightedTintColor;
 
 /**
  *  Set the button behavior for some stream type (default is NO for all stream types). If stop is set to NO for some

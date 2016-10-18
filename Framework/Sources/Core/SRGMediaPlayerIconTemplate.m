@@ -10,7 +10,7 @@
 
 #pragma mark Bezier Paths
 
-+ (UIImage *)imageWithBezierPath:(UIBezierPath *)bezierPath size:(CGSize)size color:(UIColor *)color
++ (UIImage *)imageWithBezierPath:(UIBezierPath *)bezierPath size:(CGSize)size
 {
     CGFloat scale = [UIScreen mainScreen].scale;
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -19,7 +19,7 @@
 
     CGContextScaleCTM(context, scale, scale);
     CGContextAddPath(context, bezierPath.CGPath);
-    CGContextSetFillColorWithColor(context, color.CGColor ?: [UIColor blackColor].CGColor);
+    CGContextSetFillColorWithColor(context, [UIColor blackColor].CGColor);
     CGContextFillPath(context);
 
     CGImageRef imageRef = CGBitmapContextCreateImage(context);
@@ -27,7 +27,7 @@
     CGImageRelease(imageRef);
     CGContextRelease(context);
 
-    return image;
+    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 + (UIBezierPath *)playBezierPathWithSize:(CGSize)size
@@ -87,19 +87,19 @@
 
 #pragma mark Images
 
-+ (UIImage *)playImageWithSize:(CGSize)size color:(UIColor *)color
++ (UIImage *)playImageWithSize:(CGSize)size
 {
-    return [self imageWithBezierPath:[self playBezierPathWithSize:size] size:size color:color];
+    return [self imageWithBezierPath:[self playBezierPathWithSize:size] size:size];
 }
 
-+ (UIImage *)pauseImageWithSize:(CGSize)size color:(UIColor *)color
++ (UIImage *)pauseImageWithSize:(CGSize)size
 {
-    return [self imageWithBezierPath:[self pauseBezierPathWithSize:size] size:size color:color];
+    return [self imageWithBezierPath:[self pauseBezierPathWithSize:size] size:size];
 }
 
-+ (UIImage *)stopImageWithSize:(CGSize)size color:(UIColor *)color
++ (UIImage *)stopImageWithSize:(CGSize)size
 {
-    return [self imageWithBezierPath:[self stopBezierPathWithSize:size] size:size color:color];
+    return [self imageWithBezierPath:[self stopBezierPathWithSize:size] size:size];
 }
 
 @end

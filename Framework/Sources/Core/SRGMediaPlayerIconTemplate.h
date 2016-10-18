@@ -17,25 +17,22 @@ NS_ASSUME_NONNULL_BEGIN
  *  Play image
  *
  *  @param size  The desired image size
- *  @param color The desired tint color (black if nil)
  */
-+ (UIImage *)playImageWithSize:(CGSize)size color:(nullable UIColor *)color;
++ (UIImage *)playImageWithSize:(CGSize)size;
 
 /**
  *  Pause image
  *
  *  @param size  The desired image size
- *  @param color The desired tint color (black if nil)
  */
-+ (UIImage *)pauseImageWithSize:(CGSize)size color:(nullable UIColor *)color;
++ (UIImage *)pauseImageWithSize:(CGSize)size;
 
 /**
  *  Stop image
  *
  *  @param size  The desired image size
- *  @param color The desired tint color (black if nil)
  */
-+ (UIImage *)stopImageWithSize:(CGSize)size color:(nullable UIColor *)color;
++ (UIImage *)stopImageWithSize:(CGSize)size;
 
 @end
 

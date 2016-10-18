@@ -13,10 +13,16 @@ static void commonInit(SRGPlaybackButton *self);
 @interface SRGPlaybackButton ()
 
 @property (nonatomic) NSMutableDictionary<NSNumber *, NSNumber *> *streamTypeToStoppingMap;
+@property (nonatomic) UIColor *normalTintColor;
 
 @end
 
 @implementation SRGPlaybackButton
+
+@synthesize playImage = _playImage;
+@synthesize pauseImage = _pauseImage;
+@synthesize stopImage = _stopImage;
+@synthesize highlightedTintColor = _highlightedTintColor;
 
 #pragma mark Object lifecycle
 
@@ -48,8 +54,28 @@ static void commonInit(SRGPlaybackButton *self);
     [super willMoveToWindow:newWindow];
     
     if (newWindow) {
+        self.normalTintColor = self.tintColor;
         [self refreshButton];
     }
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    if (highlighted) {
+        [super setTintColor:self.highlightedTintColor];
+    }
+    else {
+        [super setTintColor:self.normalTintColor];
+    }
+}
+
+- (void)setTintColor:(UIColor *)tintColor
+{
+    [super setTintColor:tintColor];
+    
+    self.normalTintColor = tintColor;
 }
 
 #pragma mark Getters and setters
@@ -73,10 +99,20 @@ static void commonInit(SRGPlaybackButton *self);
     }
 }
 
+- (UIImage *)playImage
+{
+    return _playImage ?: [SRGMediaPlayerIconTemplate playImageWithSize:self.bounds.size];
+}
+
 - (void)setPlayImage:(UIImage *)playImage
 {
     _playImage = playImage;
     [self refreshButton];
+}
+
+- (UIImage *)pauseImage
+{
+    return _pauseImage ?: [SRGMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size];
 }
 
 - (void)setPauseImage:(UIImage *)pauseImage
@@ -85,27 +121,31 @@ static void commonInit(SRGPlaybackButton *self);
     [self refreshButton];
 }
 
+- (UIImage *)stopImage
+{
+    return _stopImage ?: [SRGMediaPlayerIconTemplate stopImageWithSize:self.bounds.size];
+}
+
 - (void)setStopImage:(UIImage *)stopImage
 {
     _stopImage = stopImage;
     [self refreshButton];
 }
 
+- (void)setHighlightedTintColor:(UIColor *)highlightedTintColor
+{
+    _highlightedTintColor = highlightedTintColor;
+    [self refreshButton];
+}
+
+- (UIColor *)highlightedTintColor
+{
+    return _highlightedTintColor ?: self.tintColor;
+}
+
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    [self refreshButton];
-}
-
-- (void)setNormalColor:(UIColor *)normalColor
-{
-    _normalColor = normalColor;
-    [self refreshButton];
-}
-
-- (void)setHightlightColor:(UIColor *)hightlightColor
-{
-    _hightlightColor = hightlightColor;
     [self refreshButton];
 }
 
@@ -132,20 +172,22 @@ static void commonInit(SRGPlaybackButton *self);
     
     UIImage *normalImage = nil;
     UIImage *highlightedImage = nil;
+    
     if (displaysInterruptionButton) {
         if ([self hasStopButton]) {
-            normalImage = self.stopImage ?: [SRGMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.normalColor];
-            highlightedImage = self.stopImage ?: [SRGMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.hightlightColor];
+            normalImage = self.stopImage;
+            highlightedImage = self.stopImage;
         }
         else {
-            normalImage = self.pauseImage ?: [SRGMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
-            highlightedImage = self.pauseImage ?: [SRGMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
+            normalImage = self.pauseImage;
+            highlightedImage = self.pauseImage;
         }
     }
     else {
-        normalImage = self.playImage ?: [SRGMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.normalColor];
-        highlightedImage = self.playImage ?: [SRGMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.hightlightColor];
+        normalImage = self.playImage;
+        highlightedImage = self.playImage;
     }
+    
     [self setImage:normalImage forState:UIControlStateNormal];
     [self setImage:highlightedImage forState:UIControlStateHighlighted];
 }
@@ -208,7 +250,7 @@ static void commonInit(SRGPlaybackButton *self);
 {
     [super prepareForInterfaceBuilder];
     
-    [self refreshButton];
+    [self setImage:self.playImage forState:UIControlStateNormal];
 }
 
 @end
