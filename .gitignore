@@ -2,3 +2,6 @@ docs
 Carthage/
 xcuserdata
 .DS_Store
+
+report.xml
+test_output
