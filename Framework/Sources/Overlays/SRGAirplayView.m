@@ -9,6 +9,10 @@
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaPlayerLogger.h"
 
+#import <libextobjc/libextobjc.h>
+
+static void *s_kvoContext = &s_kvoContext;
+
 @interface SRGAirplayView ()
 
 @property (nonatomic) MPVolumeView *volumeView;
@@ -43,6 +47,18 @@ static void commonInit(SRGAirplayView *self);
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark Overrides
+
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    if (newWindow) {
+        [self addObserver:self forKeyPath:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
+    }
+    else {
+        [self removeObserver:self forKeyPath:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
+    }
 }
 
 #pragma mark Getters and setters
@@ -234,6 +250,20 @@ static void commonInit(SRGAirplayView *self);
 - (void)srg_airplayView_wirelessRouteActiveDidChange:(NSNotification *)notification
 {
     [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+}
+
+#pragma mark KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    if (context == s_kvoContext) {
+        if ([keyPath isEqualToString:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)]) {
+            [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+        }
+    }
+    else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 #pragma mark Interface Builder integration

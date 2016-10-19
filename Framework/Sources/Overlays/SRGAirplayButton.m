@@ -11,6 +11,8 @@
 
 #import <libextobjc/libextobjc.h>
 
+static void *s_kvoContext = &s_kvoContext;
+
 static UIImage *SRGAirplayButtonImage(void);
 
 static void commonInit(SRGAirplayButton *self);
@@ -63,23 +65,19 @@ static void commonInit(SRGAirplayButton *self);
     
     if (newWindow) {
         [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+        
+        [self addObserver:self forKeyPath:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_airplayButton_wirelessRoutesAvailableDidChange:)
                                                      name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
                                                    object:self.volumeView];
     }
     else {
+        [self removeObserver:self forKeyPath:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
                                                       object:self.volumeView];
     }
-}
-
-#pragma mark Notifications
-
-- (void)srg_airplayButton_wirelessRoutesAvailableDidChange:(NSNotification *)notification
-{
-    [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
 }
 
 #pragma mark Appearance
@@ -93,6 +91,27 @@ static void commonInit(SRGAirplayButton *self);
     }
     
     self.hidden = ! self.fakeInterfaceBuilderButton && ! self.volumeView.areWirelessRoutesAvailable;
+}
+
+#pragma mark Notifications
+
+- (void)srg_airplayButton_wirelessRoutesAvailableDidChange:(NSNotification *)notification
+{
+    [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+}
+
+#pragma mark KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    if (context == s_kvoContext) {
+        if ([keyPath isEqualToString:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)]) {
+            [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+        }
+    }
+    else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 #pragma mark Interface Builder integration
