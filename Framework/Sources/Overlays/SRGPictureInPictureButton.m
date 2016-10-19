@@ -40,11 +40,6 @@ static void commonInit(SRGPictureInPictureButton *self);
     return self;
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 #pragma mark Getters and setters
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
@@ -63,6 +58,17 @@ static void commonInit(SRGPictureInPictureButton *self);
                                                  selector:@selector(srg_pictureInPictureButton_pictureInPictureStateDidChange:)
                                                      name:SRGMediaPlayerPictureInPictureStateDidChangeNotification
                                                    object:mediaPlayerController];
+    }
+}
+
+#pragma mark Overrides
+
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    
+    if (newWindow) {
+        [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
     }
 }
 

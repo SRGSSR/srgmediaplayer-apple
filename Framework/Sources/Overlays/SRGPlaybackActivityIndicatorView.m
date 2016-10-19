@@ -28,11 +28,6 @@ static void commonInit(SRGPlaybackActivityIndicatorView *self);
     return self;
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 #pragma mark Getters and setters
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
@@ -44,6 +39,7 @@ static void commonInit(SRGPlaybackActivityIndicatorView *self);
     }
     
     _mediaPlayerController = mediaPlayerController;
+    [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -51,8 +47,6 @@ static void commonInit(SRGPlaybackActivityIndicatorView *self);
                                                      name:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                    object:mediaPlayerController];
     }
-    
-    [self updateWithMediaPlayerController:mediaPlayerController];
 }
 
 #pragma mark Overrides
@@ -62,13 +56,13 @@ static void commonInit(SRGPlaybackActivityIndicatorView *self);
     [super willMoveToWindow:newWindow];
 
     if (newWindow) {
-        [self updateWithMediaPlayerController:self.mediaPlayerController];
+        [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
     }
 }
 
 #pragma mark UI
 
-- (void)updateWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
+- (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
             || mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePaused
@@ -85,7 +79,7 @@ static void commonInit(SRGPlaybackActivityIndicatorView *self);
 
 - (void)updateUponPlaybackStateChange:(NSNotification *)notif
 {
-    [self updateWithMediaPlayerController:self.mediaPlayerController];
+    [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
 }
 
 @end

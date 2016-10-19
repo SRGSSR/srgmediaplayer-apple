@@ -46,15 +46,30 @@ static void commonInit(SRGAirplayButton *self);
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.mediaPlayerController = nil;       // Unregister KVO and notifications
 }
 
 #pragma mark Getters and setters
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
+    if (_mediaPlayerController) {
+        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
+                                                      object:self.volumeView];
+    }
+    
     _mediaPlayerController = mediaPlayerController;
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
+    
+    if (mediaPlayerController) {
+        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(srg_airplayButton_wirelessRoutesAvailableDidChange:)
+                                                     name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
+                                                   object:self.volumeView];
+    }
 }
 
 #pragma mark Overrides
@@ -64,19 +79,7 @@ static void commonInit(SRGAirplayButton *self);
     [super willMoveToWindow:newWindow];
     
     if (newWindow) {
-        [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
-        
-        [self addObserver:self forKeyPath:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airplayButton_wirelessRoutesAvailableDidChange:)
-                                                     name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
-                                                   object:self.volumeView];
-    }
-    else {
-        [self removeObserver:self forKeyPath:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
-                                                      object:self.volumeView];
+        [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];   
     }
 }
 
@@ -87,10 +90,10 @@ static void commonInit(SRGAirplayButton *self);
     // Hide when the associated player uses Airplay mirroring
     if (mediaPlayerController && ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) {
         self.hidden = YES;
-        return;
     }
-    
-    self.hidden = ! self.fakeInterfaceBuilderButton && ! self.volumeView.areWirelessRoutesAvailable;
+    else {
+        self.hidden = ! self.fakeInterfaceBuilderButton && ! self.volumeView.areWirelessRoutesAvailable;
+    }
 }
 
 #pragma mark Notifications

@@ -46,27 +46,23 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-#pragma mark Overrides
-
-- (void)willMoveToWindow:(UIWindow *)newWindow
-{
-    if (newWindow) {
-        [self addObserver:self forKeyPath:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
-    }
-    else {
-        [self removeObserver:self forKeyPath:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
-    }
+    self.mediaPlayerController = nil;       // Unregister KVO
 }
 
 #pragma mark Getters and setters
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
+    if (_mediaPlayerController) {
+        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
+    }
+    
     _mediaPlayerController = mediaPlayerController;
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
+    
+    if (mediaPlayerController) {
+        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
+    }
 }
 
 - (void)setFillFactor:(CGFloat)fillFactor

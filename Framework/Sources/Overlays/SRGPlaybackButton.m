@@ -15,6 +15,8 @@ static void commonInit(SRGPlaybackButton *self);
 @property (nonatomic) NSMutableDictionary<NSNumber *, NSNumber *> *streamTypeToStoppingMap;
 @property (nonatomic) UIColor *normalTintColor;
 
+@property (weak) id periodicTimeObserver;
+
 @end
 
 @implementation SRGPlaybackButton
@@ -40,11 +42,6 @@ static void commonInit(SRGPlaybackButton *self);
         commonInit(self);
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark Overrides
@@ -83,6 +80,7 @@ static void commonInit(SRGPlaybackButton *self);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
+        [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                       object:_mediaPlayerController];
@@ -92,6 +90,9 @@ static void commonInit(SRGPlaybackButton *self);
     [self refreshButton];
     
     if (mediaPlayerController) {
+        self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+            [self refreshButton];
+        }];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(mediaPlayerPlaybackStateDidChange:)
                                                      name:SRGMediaPlayerPlaybackStateDidChangeNotification

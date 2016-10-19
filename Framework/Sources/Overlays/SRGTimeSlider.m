@@ -68,11 +68,6 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
     return self;
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 #pragma mark Getters and setters
 
 - (BOOL)isDraggable

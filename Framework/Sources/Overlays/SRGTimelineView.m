@@ -40,6 +40,12 @@ static void commonInit(SRGTimelineView *self);
 
 #pragma mark Getters and setters
 
+- (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
+{
+    _mediaPlayerController = mediaPlayerController;
+    [self reloadData];
+}
+
 - (void)setItemWidth:(CGFloat)itemWidth
 {
     _itemWidth = itemWidth;
