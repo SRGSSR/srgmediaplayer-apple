@@ -47,6 +47,14 @@ static void commonInit(SRGAirplayButton *self);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark Getters and setters
+
+- (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
+{
+    _mediaPlayerController = mediaPlayerController;
+    [self updateAppearanceForMediaPlayerController:mediaPlayerController];
+}
+
 #pragma mark Overrides
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
@@ -54,7 +62,7 @@ static void commonInit(SRGAirplayButton *self);
     [super willMoveToWindow:newWindow];
     
     if (newWindow) {
-        [self updateAppearance];
+        [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_airplayButton_wirelessRoutesAvailableDidChange:)
                                                      name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
@@ -71,13 +79,19 @@ static void commonInit(SRGAirplayButton *self);
 
 - (void)srg_airplayButton_wirelessRoutesAvailableDidChange:(NSNotification *)notification
 {
-    [self updateAppearance];
+    [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
 }
 
 #pragma mark Appearance
 
-- (void)updateAppearance
+- (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
+    // Hide when the associated player uses Airplay mirroring
+    if (mediaPlayerController && ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) {
+        self.hidden = YES;
+        return;
+    }
+    
     self.hidden = ! self.fakeInterfaceBuilderButton && ! self.volumeView.areWirelessRoutesAvailable;
 }
 

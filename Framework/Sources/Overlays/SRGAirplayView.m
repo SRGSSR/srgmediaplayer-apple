@@ -47,6 +47,12 @@ static void commonInit(SRGAirplayView *self);
 
 #pragma mark Getters and setters
 
+- (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
+{
+    _mediaPlayerController = mediaPlayerController;
+    [self updateAppearanceForMediaPlayerController:mediaPlayerController];
+}
+
 - (void)setFillFactor:(CGFloat)fillFactor
 {
     if (fillFactor <= 0.f) {
@@ -162,6 +168,39 @@ static void commonInit(SRGAirplayView *self);
     }
 }
 
+#pragma mark UI
+
+- (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
+{
+    // Hide when the associated player uses Airplay mirroring
+    if (mediaPlayerController && ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) {
+        self.hidden = YES;
+        return;
+    }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(airplayViewShouldBeDisplayed:)]) {
+        if (! [self.delegate airplayViewShouldBeDisplayed:self]) {
+            self.hidden = YES;
+            return;
+        }
+    }
+    
+    [self setNeedsDisplay];
+    
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
+    
+    BOOL hidden = YES;
+    for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
+        if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
+            hidden = NO;
+            break;
+        }
+    }
+    
+    self.hidden = hidden;
+}
+
 #pragma mark SRGAirplayViewDataSource protocol
 
 - (NSDictionary<NSString *, id> *)airplayViewTitleAttributedDictionary:(SRGAirplayView *)airplayView
@@ -194,27 +233,7 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)srg_airplayView_wirelessRouteActiveDidChange:(NSNotification *)notification
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(airplayViewShouldBeDisplayed:)]) {
-        if (! [self.delegate airplayViewShouldBeDisplayed:self]) {
-            self.hidden = YES;
-            return;
-        }
-    }
-    
-    [self setNeedsDisplay];
-
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
-    
-    BOOL hidden = YES;
-    for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
-        if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
-            hidden = NO;
-            break;
-        }
-    }
-    
-    self.hidden = hidden;
+    [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
 }
 
 #pragma mark Interface Builder integration

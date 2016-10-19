@@ -8,6 +8,8 @@
 
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
+#import "SRGAirplayButton.h"
+#import "SRGAirplayView.h"
 #import "SRGMediaPlayerController.h"
 #import "SRGPlaybackButton.h"
 #import "SRGPictureInPictureButton.h"
@@ -31,6 +33,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (weak) IBOutlet SRGPlaybackButton *playPauseButton;
 @property (weak) IBOutlet SRGTimeSlider *timeSlider;
 @property (weak) IBOutlet SRGVolumeView *volumeView;
+@property (weak) IBOutlet SRGAirplayButton *airplayButton;
+@property (weak) IBOutlet SRGAirplayView *airplayView;
 @property (weak) IBOutlet UIButton *liveButton;
 
 @property (weak) IBOutlet UIActivityIndicatorView *loadingActivityIndicatorView;
@@ -129,6 +133,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.playbackActivityIndicatorView.mediaPlayerController = s_mediaPlayerController;
     self.timeSlider.mediaPlayerController = s_mediaPlayerController;
     self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
+    self.airplayButton.mediaPlayerController = s_mediaPlayerController;
+    self.airplayView.mediaPlayerController = s_mediaPlayerController;
     
     [self.liveButton setTitle:SRGMediaPlayerLocalizedString(@"Back to live", nil) forState:UIControlStateNormal];
     self.liveButton.hidden = YES;

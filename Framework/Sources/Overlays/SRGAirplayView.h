@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "SRGMediaPlayerController.h"
+
 #import <AVFoundation/AVFoundation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <UIKit/UIKit.h>
@@ -48,11 +50,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  View automatically displaying whether Airplay playback is active. Simply install somewhere onto your custom player
- *  interface, the view will automatically appear when Airplay playback begins and disappear when it ends
+ *  interface, the view will automatically appear when Airplay playback begins and disappear when it ends.
+ *
+ *  A media player controller can be optionally attached. If Airplay playback mirroring is used (the `AVPlayer`
+ *  `usesExternalPlaybackWhileExternalScreenIsActive` property has been set to `NO`), no overlay will be displayed.
+ *  If no media player controller is attached, the overlay will be displayed for any kind of Airplay usage.
  *
  *  Further customization is available by using the associated delegate.
  */
 @interface SRGAirplayView : UIView <SRGAirplayViewDelegate>
+
+/**
+ *  The media player to which the overlay must be associated with.
+ */
+@property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
  *  A filling factor for the overlay contents, > 0 and <= 1 (full frame). Defaults to 0.6
