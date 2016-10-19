@@ -192,6 +192,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     if (_view) {
         AVPlayerLayer *playerLayer = _view.playerLayer;
+        playerLayer.player = self.player;
         [playerLayer addObserver:self forKeyPath:@keypath(playerLayer.readyForDisplay) options:0 context:s_kvoContext];
     }
 }
@@ -203,6 +204,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         _view = [[SRGMediaPlayerView alloc] init];
         
         AVPlayerLayer *playerLayer = _view.playerLayer;
+        playerLayer.player = self.player;
         [playerLayer addObserver:self forKeyPath:@keypath(playerLayer.readyForDisplay) options:0 context:s_kvoContext];
     }
     return _view;
