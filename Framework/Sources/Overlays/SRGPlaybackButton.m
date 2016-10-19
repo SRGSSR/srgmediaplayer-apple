@@ -8,6 +8,8 @@
 
 #import "SRGMediaPlayerIconTemplate.h"
 
+#import <libextobjc/libextobjc.h>
+
 static void commonInit(SRGPlaybackButton *self);
 
 @interface SRGPlaybackButton ()
@@ -90,7 +92,10 @@ static void commonInit(SRGPlaybackButton *self);
     [self refreshButton];
     
     if (mediaPlayerController) {
+        @weakify(self)
         self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+            @strongify(self)
+            
             [self refreshButton];
         }];
         [[NSNotificationCenter defaultCenter] addObserver:self
