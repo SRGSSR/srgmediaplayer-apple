@@ -32,6 +32,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     BOOL _selected;
 }
 
+@property (nonatomic) AVPlayer *player;
+
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic) NSArray<id<SRGSegment>> *segments;
 @property (nonatomic) NSDictionary *userInfo;
@@ -85,26 +87,26 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)setPlayer:(AVPlayer *)player
 {
-    AVPlayer *previousPlayer = self.playerLayer.player;
-    if (previousPlayer) {
+    if (_player) {
         [self unregisterTimeObservers];
         
-        [previousPlayer removeObserver:self forKeyPath:@keypath(previousPlayer.currentItem.status) context:s_kvoContext];
-        [previousPlayer removeObserver:self forKeyPath:@keypath(previousPlayer.rate) context:s_kvoContext];
+        [_player removeObserver:self forKeyPath:@keypath(_player.currentItem.status) context:s_kvoContext];
+        [_player removeObserver:self forKeyPath:@keypath(_player.rate) context:s_kvoContext];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemPlaybackStalledNotification
-                                                      object:previousPlayer.currentItem];
+                                                      object:_player.currentItem];
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemDidPlayToEndTimeNotification
-                                                      object:previousPlayer.currentItem];
+                                                      object:_player.currentItem];
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemFailedToPlayToEndTimeNotification
-                                                      object:previousPlayer.currentItem];
+                                                      object:_player.currentItem];
         
-        self.playerDestructionBlock ? self.playerDestructionBlock(previousPlayer) : nil;
+        self.playerDestructionBlock ? self.playerDestructionBlock(_player) : nil;
     }
     
+    _player = player;
     self.playerLayer.player = player;
     
     if (player) {
@@ -131,14 +133,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
 }
 
-- (AVPlayer *)player
-{
-    return self.playerLayer.player;
-}
-
 - (AVPlayerLayer *)playerLayer
 {
-    return self.view.playerLayer;
+    return _view.playerLayer;
 }
 
 - (void)setPlaybackState:(SRGMediaPlayerPlaybackState)playbackState withUserInfo:(NSDictionary *)userInfo
