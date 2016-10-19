@@ -108,8 +108,9 @@ static void commonInit(SRGAirplayButton *self);
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
     if (context == s_kvoContext) {
-        if ([keyPath isEqualToString:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)]) {
-            [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+        SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
+        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)]) {
+            [self updateAppearanceForMediaPlayerController:mediaPlayerController];
         }
     }
     else {

@@ -54,6 +54,7 @@ static void commonInit(SRGAirplayView *self);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
+        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive) context:s_kvoContext];
         [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
     }
     
@@ -61,6 +62,7 @@ static void commonInit(SRGAirplayView *self);
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
+        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 context:s_kvoContext];
         [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
     }
 }
@@ -247,8 +249,10 @@ static void commonInit(SRGAirplayView *self);
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
     if (context == s_kvoContext) {
-        if ([keyPath isEqualToString:@keypath(self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)]) {
-            [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+        SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
+        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.externalPlaybackActive)]
+                || [keyPath isEqualToString:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)]) {
+            [self updateAppearanceForMediaPlayerController:mediaPlayerController];
         }
     }
     else {
