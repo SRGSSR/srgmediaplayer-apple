@@ -184,17 +184,11 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    // Hide when the associated player uses Airplay mirroring
-    if (mediaPlayerController && ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) {
+    // Hide when the associated player if playing audio on a device supporting audio only, or when using Airplay mirroring
+    if (mediaPlayerController
+            && (! mediaPlayerController.player.externalPlaybackActive || ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)) {
         self.hidden = YES;
         return;
-    }
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(airplayViewShouldBeDisplayed:)]) {
-        if (! [self.delegate airplayViewShouldBeDisplayed:self]) {
-            self.hidden = YES;
-            return;
-        }
     }
     
     [self setNeedsDisplay];

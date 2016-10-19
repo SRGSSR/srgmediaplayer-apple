@@ -22,14 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /**
- *  By default the Airplay overlay is displayed when external playback is active. You can override this behavior
- *  if you do not want to display the view in some cases (e.g. routing only audio)
- *
- *  If not implemented, the Airplay overlay behaves as if this method returns YES
- */
-- (BOOL)airplayViewShouldBeDisplayed:(SRGAirplayView *)airplayView;
-
-/**
  *  Attributes for the 'Airplay' title. If not implemented, a default style will be applied (bold system font, white,
  *  centered, 14 pts)
  */
@@ -54,6 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  A media player controller can be optionally attached. If Airplay playback mirroring is used (the `AVPlayer`
  *  `usesExternalPlaybackWhileExternalScreenIsActive` property has been set to `NO`), no overlay will be displayed.
+ *  No overlay will be displayed if only audio is sent to a device supporting only audio casting (e.g. Airport express).
+ *
  *  If no media player controller is attached, the overlay will be displayed for any kind of Airplay usage.
  *
  *  Further customization is available by using the associated delegate.
