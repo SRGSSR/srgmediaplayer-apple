@@ -209,6 +209,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     return UIStatusBarStyleDefault;
 }
 
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationFade;
+}
+
 #pragma mark UI
 
 - (void)setTimeSliderHidden:(BOOL)hidden
@@ -261,7 +266,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     _userInterfaceHidden = hidden;
     
     if (animated) {
-        [UIView animateWithDuration:0.2 animations:animations completion:nil];
+        [self.view layoutIfNeeded];
+        [UIView animateWithDuration:0.2 animations:^{
+            animations();
+            [self.view layoutIfNeeded];
+        } completion:nil];
     }
     else {
         animations();
