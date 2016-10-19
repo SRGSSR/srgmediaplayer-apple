@@ -135,7 +135,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (AVPlayerLayer *)playerLayer
 {
-    return _view.playerLayer;
+    // TODO: I would have expected AVPlayer to work well without a layer (i.e. if we replace the following with
+    //       _view.playerLayer, which prevents lazy instantiation). But KVO does not work with tests on DVR streams.
+    //       Investigate and improve
+    return self.view.playerLayer;
 }
 
 - (void)setPlaybackState:(SRGMediaPlayerPlaybackState)playbackState withUserInfo:(NSDictionary *)userInfo
