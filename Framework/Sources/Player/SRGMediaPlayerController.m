@@ -808,8 +808,7 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *, id> *)change context:(void *)context
 {
-    NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes must be notified on the main thread. Fix");
-    
+    // Changes are guaranteed to be reported on the main thread, see https://developer.apple.com/reference/avfoundation/avplayer
     if (context == s_kvoContext) {
         // If the rate or the item status changes, calculate the new playback status
         if ([keyPath isEqualToString:@keypath(AVPlayer.new, currentItem.status)] || [keyPath isEqualToString:@keypath(AVPlayer.new, rate)]) {
