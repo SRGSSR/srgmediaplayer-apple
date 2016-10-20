@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, SRGPlaybackButtonBehavior) {
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
- *  Image customization (default images are used if not set)
+ *  Image customization (default scalable images are used if not set)
  */
 @property (nonatomic, null_resettable) IBInspectable UIImage *playImage;
 @property (nonatomic, null_resettable) IBInspectable UIImage *pauseImage;
