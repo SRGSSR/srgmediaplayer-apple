@@ -113,7 +113,8 @@ static void commonInit(SRGAirplayButton *self);
 
 - (UIColor *)activeTintColor
 {
-    return _activeTintColor ?: [UIColor blueColor];
+    // If none, use standard blue tint color
+    return _activeTintColor ?: [UIColor colorWithRed:0.f / 255.f green:122.f / 255.f blue:255.f / 255.f alpha:1.f];
 }
 
 - (void)setActiveTintColor:(UIColor *)activeTintColor
