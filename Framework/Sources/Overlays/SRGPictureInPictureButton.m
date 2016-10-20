@@ -22,6 +22,9 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 @implementation SRGPictureInPictureButton
 
+@synthesize startImage = _startImage;
+@synthesize stopImage = _stopImage;
+
 #pragma mark Object lifecycle
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -61,6 +64,28 @@ static void commonInit(SRGPictureInPictureButton *self);
     }
 }
 
+- (UIImage *)startImage
+{
+    return _startImage ?: SRGPictureInPictureButtonStartImage();
+}
+
+- (void)setStartImage:(UIImage *)startImage
+{
+    _startImage = startImage;
+    [self updateAppearance];
+}
+
+- (UIImage *)stopImage
+{
+    return _stopImage ?: SRGPictureInPictureButtonStopImage();
+}
+
+- (void)setStopImage:(UIImage *)stopImage
+{
+    _stopImage = stopImage;
+    [self updateAppearance];
+}
+
 #pragma mark Overrides
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
@@ -68,11 +93,16 @@ static void commonInit(SRGPictureInPictureButton *self);
     [super willMoveToWindow:newWindow];
     
     if (newWindow) {
-        [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+        [self updateAppearance];
     }
 }
 
-#pragma mark Appearance
+#pragma mark UI
+
+- (void)updateAppearance
+{
+    return [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+}
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
@@ -81,7 +111,7 @@ static void commonInit(SRGPictureInPictureButton *self);
     if (pictureInPictureController.pictureInPicturePossible) {
         self.hidden = NO;
         
-        UIImage *image = pictureInPictureController.pictureInPictureActive ? SRGPictureInPictureButtonStopImage() : SRGPictureInPictureButtonStartImage();
+        UIImage *image = pictureInPictureController.pictureInPictureActive ? self.stopImage : self.startImage;
         [self.button setImage:image forState:UIControlStateNormal];
     }
     else {
@@ -101,11 +131,11 @@ static void commonInit(SRGPictureInPictureButton *self);
 
     if (pictureInPictureController.pictureInPictureActive) {
         [pictureInPictureController stopPictureInPicture];
-        [self.button setImage:SRGPictureInPictureButtonStartImage() forState:UIControlStateNormal];
+        [self.button setImage:self.startImage forState:UIControlStateNormal];
     }
     else {
         [pictureInPictureController startPictureInPicture];
-        [self.button setImage:SRGPictureInPictureButtonStopImage() forState:UIControlStateNormal];
+        [self.button setImage:self.stopImage forState:UIControlStateNormal];
     }
 }
 
@@ -113,19 +143,21 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (void)srg_pictureInPictureButton_pictureInPictureStateDidChange:(NSNotification *)notification
 {
-    [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+    [self updateAppearance];
 }
 
 #pragma mark Interface Builder integration
 
 - (void)prepareForInterfaceBuilder
 {
-    [self.button setImage:SRGPictureInPictureButtonStartImage() forState:UIControlStateNormal];
+    [super prepareForInterfaceBuilder];
+    
+    [self.button setImage:self.startImage forState:UIControlStateNormal];
 }
 
 @end
 
-#pragma mark Static functions
+#pragma mark Functions
 
 static void commonInit(SRGPictureInPictureButton *self)
 {
@@ -138,8 +170,6 @@ static void commonInit(SRGPictureInPictureButton *self)
     
     self.hidden = YES;
 }
-
-#pragma mark Functions
 
 static UIImage *SRGPictureInPictureButtonStartImage(void)
 {

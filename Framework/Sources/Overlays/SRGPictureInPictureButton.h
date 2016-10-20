@@ -30,6 +30,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
+/**
+ *  Image customization (default images are used if not set)
+ */
+@property (nonatomic, null_resettable) IBInspectable UIImage *startImage;
+@property (nonatomic, null_resettable) IBInspectable UIImage *stopImage;
+
 @end
 
 NS_ASSUME_NONNULL_END
