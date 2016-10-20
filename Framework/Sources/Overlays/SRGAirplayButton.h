@@ -26,6 +26,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
+/**
+ *  Image customization (default 18x22 images are used if not set)
+ */
+@property (nonatomic, null_resettable) IBInspectable UIImage *image;
+
+/**
+ *  The tint color to apply when Airplay is active (if nil, then the usual blue tint color is applied)
+ */
+@property (nonatomic, null_resettable) IBInspectable UIColor *activeTintColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, SRGPlaybackButtonBehavior) {
 @property (nonatomic, null_resettable) IBInspectable UIImage *stopImage;
 
 /**
- *  The tint color to apply when the button is highlighted (if nil, then the usual tint color is applied)
+ *  The tint color to apply when the button is highlighted (if nil, then the tint color is applied)
  */
 @property (nonatomic, null_resettable) IBInspectable UIColor *highlightedTintColor;
 

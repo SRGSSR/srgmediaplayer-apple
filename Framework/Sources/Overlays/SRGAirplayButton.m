@@ -26,6 +26,9 @@ static void commonInit(SRGAirplayButton *self);
 
 @implementation SRGAirplayButton
 
+@synthesize image = _image;
+@synthesize activeTintColor = _activeTintColor;
+
 #pragma mark Object lifecycle
 
 - (id)initWithFrame:(CGRect)frame
@@ -56,6 +59,9 @@ static void commonInit(SRGAirplayButton *self);
     if (_mediaPlayerController) {
         [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
         [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:MPVolumeViewWirelessRouteActiveDidChangeNotification
+                                                      object:self.volumeView];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
                                                       object:self.volumeView];
     }
@@ -66,10 +72,36 @@ static void commonInit(SRGAirplayButton *self);
     if (mediaPlayerController) {
         [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
         [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(srg_airplayButton_wirelessRouteActiveDidChange:)
+                                                     name:MPVolumeViewWirelessRouteActiveDidChangeNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_airplayButton_wirelessRoutesAvailableDidChange:)
                                                      name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
                                                    object:self.volumeView];
     }
+}
+
+- (UIImage *)image
+{
+    return _image ?: SRGAirplayButtonImage();
+}
+
+- (void)setImage:(UIImage *)image
+{
+    _image = image;
+    [self updateAppearance];
+}
+
+- (UIColor *)activeTintColor
+{
+    return _activeTintColor ?: [UIColor blueColor];
+}
+
+- (void)setActiveTintColor:(UIColor *)activeTintColor
+{
+    _activeTintColor = activeTintColor;
+    [self updateAppearance];
 }
 
 #pragma mark Overrides
@@ -79,17 +111,47 @@ static void commonInit(SRGAirplayButton *self);
     [super willMoveToWindow:newWindow];
     
     if (newWindow) {
-        [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];   
+        [self updateAppearance];
     }
 }
 
 #pragma mark Appearance
 
+- (void)updateAppearance
+{
+    [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+}
+
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    // Hide when the associated player uses Airplay mirroring
-    if (mediaPlayerController && ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) {
-        self.hidden = YES;
+    // Replace with custom image to be able to apply a tint color. The button color is automagically inherited from
+    // the enclosing view (this works both at runtime and when rendering in Interface Builder)
+    UIButton *airplayButton = self.volumeView.srg_airplayButton;
+    airplayButton.showsTouchWhenHighlighted = NO;
+    [airplayButton setImage:self.image forState:UIControlStateNormal];
+    [airplayButton setImage:self.image forState:UIControlStateSelected];
+    
+    if (mediaPlayerController) {
+        // Determine whether Airplay is active or not
+        if (mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) {
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
+            
+            BOOL active = YES;
+            for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
+                if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
+                    active = NO;
+                    break;
+                }
+            }
+            
+            airplayButton.tintColor = active ? self.tintColor : self.activeTintColor;
+            self.hidden = NO;
+        }
+        // Mirroring. Hide the button
+        else {
+            self.hidden = YES;
+        }
     }
     else {
         self.hidden = ! self.fakeInterfaceBuilderButton && ! self.volumeView.areWirelessRoutesAvailable;
@@ -100,7 +162,12 @@ static void commonInit(SRGAirplayButton *self);
 
 - (void)srg_airplayButton_wirelessRoutesAvailableDidChange:(NSNotification *)notification
 {
-    [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+    [self updateAppearance];
+}
+
+- (void)srg_airplayButton_wirelessRouteActiveDidChange:(NSNotification *)notification
+{
+    [self updateAppearance];
 }
 
 #pragma mark KVO
@@ -110,7 +177,7 @@ static void commonInit(SRGAirplayButton *self);
     if (context == s_kvoContext) {
         SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
         if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)]) {
-            [self updateAppearanceForMediaPlayerController:mediaPlayerController];
+            [self updateAppearance];
         }
     }
     else {
@@ -129,7 +196,7 @@ static void commonInit(SRGAirplayButton *self);
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [fakeInterfaceBuilderButton setImage:SRGAirplayButtonImage() forState:UIControlStateNormal];
+    [fakeInterfaceBuilderButton setImage:self.image forState:UIControlStateNormal];
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
 }
@@ -156,9 +223,4 @@ static void commonInit(SRGAirplayButton *self)
     volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:volumeView];
     self.volumeView = volumeView;
-    
-    // Replace with custom image to be able to apply a tint color. The button color is automagically inherited from
-    // the enclosing view (this works both at runtime and when rendering in Interface Builder)
-    UIButton *airplayButton = volumeView.srg_airplayButton;
-    [airplayButton setImage:SRGAirplayButtonImage() forState:UIControlStateNormal];
 }

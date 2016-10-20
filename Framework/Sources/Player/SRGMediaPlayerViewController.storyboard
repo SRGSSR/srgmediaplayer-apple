@@ -165,7 +165,7 @@
                                     </visualEffectView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fWe-Va-NMR" customClass="SRGAirplayButton">
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="43" id="Dcd-0I-Qaq"/>
                                             <constraint firstAttribute="height" constant="34" id="Nhm-7b-caO"/>
