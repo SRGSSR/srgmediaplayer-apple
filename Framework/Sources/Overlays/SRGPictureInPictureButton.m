@@ -17,6 +17,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 @interface SRGPictureInPictureButton ()
 
 @property (nonatomic, weak) UIButton *button;
+@property (nonatomic, getter=isFakedForInterfaceBuilder) BOOL fakedForInterfaceBuilder;
 
 @end
 
@@ -114,6 +115,10 @@ static void commonInit(SRGPictureInPictureButton *self);
         UIImage *image = pictureInPictureController.pictureInPictureActive ? self.stopImage : self.startImage;
         [self.button setImage:image forState:UIControlStateNormal];
     }
+    else if (self.fakedForInterfaceBuilder) {
+        [self.button setImage:self.startImage forState:UIControlStateNormal];
+        self.hidden = NO;
+    }
     else {
         self.hidden = YES;
     }
@@ -152,7 +157,8 @@ static void commonInit(SRGPictureInPictureButton *self);
 {
     [super prepareForInterfaceBuilder];
     
-    [self.button setImage:self.startImage forState:UIControlStateNormal];
+    self.fakedForInterfaceBuilder = YES;
+    [self updateAppearance];
 }
 
 @end
