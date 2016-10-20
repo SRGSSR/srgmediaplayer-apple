@@ -62,7 +62,7 @@ static void commonInit(SRGAirplayView *self);
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                      object:nil];
+                                                      object:self.volumeView];
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:UIScreenDidConnectNotification
                                                       object:nil];
@@ -81,7 +81,7 @@ static void commonInit(SRGAirplayView *self);
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_airplayView_wirelessRouteActiveDidChange:)
                                                      name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                   object:nil];
+                                                   object:self.volumeView];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_airplayView_screenDidConnect:)
                                                      name:UIScreenDidConnectNotification
