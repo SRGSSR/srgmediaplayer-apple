@@ -6,7 +6,9 @@
 
 #import "SRGAirplayView.h"
 
+#import "AVAudioSession+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "UIScreen+SRGMediaPlayer.h"
 #import "SRGMediaPlayerLogger.h"
 
 #import <libextobjc/libextobjc.h>
@@ -16,6 +18,7 @@ static void *s_kvoContext = &s_kvoContext;
 @interface SRGAirplayView ()
 
 @property (nonatomic) MPVolumeView *volumeView;
+@property (nonatomic, getter=isFakedForInterfaceBuilder) BOOL fakedForInterfaceBuilder;
 
 @end
 
@@ -56,6 +59,16 @@ static void commonInit(SRGAirplayView *self);
     if (_mediaPlayerController) {
         [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive) context:s_kvoContext];
         [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:MPVolumeViewWirelessRouteActiveDidChangeNotification
+                                                      object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:UIScreenDidConnectNotification
+                                                      object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:UIScreenDidDisconnectNotification
+                                                      object:nil];
     }
     
     _mediaPlayerController = mediaPlayerController;
@@ -64,6 +77,19 @@ static void commonInit(SRGAirplayView *self);
     if (mediaPlayerController) {
         [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 context:s_kvoContext];
         [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(srg_airplayView_wirelessRouteActiveDidChange:)
+                                                     name:MPVolumeViewWirelessRouteActiveDidChangeNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(srg_airplayView_screenDidConnect:)
+                                                     name:UIScreenDidConnectNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(srg_airplayView_screenDidDisconnect:)
+                                                     name:UIScreenDidDisconnectNotification
+                                                   object:nil];
     }
 }
 
@@ -184,29 +210,29 @@ static void commonInit(SRGAirplayView *self);
 
 #pragma mark UI
 
+- (void)updateAppearance
+{
+    [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+}
+
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    // Hide when the associated player if playing audio on a device supporting audio only, or when using Airplay mirroring
-    if (mediaPlayerController
-            && (! mediaPlayerController.player.externalPlaybackActive || ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)) {
-        self.hidden = YES;
-        return;
-    }
-    
     [self setNeedsDisplay];
     
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
-    
-    BOOL hidden = YES;
-    for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
-        if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
-            hidden = NO;
-            break;
+    if (mediaPlayerController) {
+        // Device mirrored, and playback not sent to the external display. Always hide the overlay (true mirroring: never
+        // show Airplay controls on the device screen, and thus on the external display)
+        if ([UIScreen srg_isMirroring] && ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) {
+            self.hidden = YES;
+        }
+        // Otherwise use Airplay status
+        else {
+            self.hidden = ! [AVAudioSession srg_isAirplayActive];
         }
     }
-    
-    self.hidden = hidden;
+    else {
+        self.hidden = ! self.fakedForInterfaceBuilder && ! [AVAudioSession srg_isAirplayActive];
+    }
 }
 
 #pragma mark SRGAirplayViewDataSource protocol
@@ -241,7 +267,17 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)srg_airplayView_wirelessRouteActiveDidChange:(NSNotification *)notification
 {
-    [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
+    [self updateAppearance];
+}
+
+- (void)srg_airplayView_screenDidConnect:(NSNotification *)notification
+{
+    [self updateAppearance];
+}
+
+- (void)srg_airplayView_screenDidDisconnect:(NSNotification *)notification
+{
+    [self updateAppearance];
 }
 
 #pragma mark KVO
@@ -252,7 +288,7 @@ static void commonInit(SRGAirplayView *self);
         SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
         if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.externalPlaybackActive)]
                 || [keyPath isEqualToString:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)]) {
-            [self updateAppearanceForMediaPlayerController:mediaPlayerController];
+            [self updateAppearance];
         }
     }
     else {
@@ -266,7 +302,8 @@ static void commonInit(SRGAirplayView *self);
 {
     [super prepareForInterfaceBuilder];
     
-    [self setNeedsDisplay];
+    self.fakedForInterfaceBuilder = YES;
+    [self updateAppearance];
 }
 
 @end
@@ -279,11 +316,5 @@ static void commonInit(SRGAirplayView *self)
     self.userInteractionEnabled = NO;
     self.hidden = YES;
     self.fillFactor = SRGAirplayViewDefaultFillFactor;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(srg_airplayView_wirelessRouteActiveDidChange:)
-                                                 name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                               object:nil];
-    
     self.volumeView = [[MPVolumeView alloc] init];
 }
