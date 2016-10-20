@@ -122,6 +122,8 @@ static void commonInit(SRGAirplayButton *self);
 
 - (void)prepareForInterfaceBuilder
 {
+    [super prepareForInterfaceBuilder];
+    
     // Use a fake button for Interface Builder rendering, since the volume view (and thus its Airplay button) is only
     // visible on a device
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
