@@ -57,9 +57,9 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
 @property (nonatomic, weak, nullable) IBOutlet UILabel *timeLeftValueLabel;
 
 /**
- *  The remaining time string displayed in the timeLeftValueLabel outlet
+ *  The remaining time string displayed in the `timeLeftValueLabel` outlet
  */
-@property (nonatomic, readonly) NSString *timeLeftValueString;
+@property (nonatomic, readonly, copy, nullable) NSString *timeLeftValueString;
 
 /**
  *  Outlet which must be bound to the label displaying the current time
@@ -67,9 +67,9 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
 @property (nonatomic, weak, nullable) IBOutlet UILabel *valueLabel;
 
 /**
- *  The current time string displayed in the valueLabel outlet
+ *  The current time string displayed in the `valueLabel` outlet
  */
-@property (nonatomic, readonly) NSString *valueString;
+@property (nonatomic, readonly, copy, nullable) NSString *valueString;
 
 /**
  *  Bar border color (defaults to black)
