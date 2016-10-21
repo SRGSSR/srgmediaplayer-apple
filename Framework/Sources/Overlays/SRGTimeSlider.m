@@ -46,6 +46,9 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 @property (nonatomic) UIColor *overriddenMaximumTrackTintColor;
 @property (nonatomic) UIColor *overriddenMinimumTrackTintColor;
 
+@property (nonatomic) NSString *timeLeftValueString;
+@property (nonatomic) NSString *valueString;
+
 @end
 
 @implementation SRGTimeSlider
@@ -232,19 +235,24 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
     if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
             || playerItem.status != AVPlayerItemStatusReadyToPlay) {
-        self.valueLabel.text = @"--:--";
-        self.timeLeftValueLabel.text = @"--:--";
+        self.valueString = @"--:--";
+        self.timeLeftValueString = @"--:--";
+        self.valueLabel.text = self.valueString;
+        self.timeLeftValueLabel.text = self.timeLeftValueString;
         return;
     }
     
     if (self.live) {
-        self.valueLabel.text = @"--:--";
-        self.timeLeftValueLabel.text = SRGMediaPlayerLocalizedString(@"Live", nil);
+        self.valueString = @"--:--";
+        self.timeLeftValueString = SRGMediaPlayerLocalizedString(@"Live", nil);
     }
     else {
-        self.valueLabel.text = SRGTimeSliderFormatter(self.value);
-        self.timeLeftValueLabel.text = SRGTimeSliderFormatter(self.value - self.maximumValue);
+        self.valueString = SRGTimeSliderFormatter(self.value);
+        self.timeLeftValueString = SRGTimeSliderFormatter(self.value - self.maximumValue);
     }
+    
+    self.valueLabel.text = self.valueString;
+    self.timeLeftValueLabel.text = self.timeLeftValueString;
 }
 
 #pragma mark Touch handling
