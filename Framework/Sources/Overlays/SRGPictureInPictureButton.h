@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGPictureInPictureButton : UIView
 
 /**
- *  The media player to which the picture in picture button must be associated with.
+ *  The media player which the picture in picture button must be associated with
  */
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 

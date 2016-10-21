@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGAirplayButton : UIView
 
 /**
- *  The media player to which the button must be associated with.
+ *  The media player which the button must be associated with
  */
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 

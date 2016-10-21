@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGPlaybackActivityIndicatorView : UIActivityIndicatorView
 
 /**
- *  The media player to which the playback button must be associated with.
+ *  The media player which the playback button must be associated with
  */
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 

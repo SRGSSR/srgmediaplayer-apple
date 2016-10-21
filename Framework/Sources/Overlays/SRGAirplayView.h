@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGAirplayView : UIView <SRGAirplayViewDelegate>
 
 /**
- *  The media player to which the overlay must be associated with.
+ *  The media player which the overlay must be associated with
  */
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
