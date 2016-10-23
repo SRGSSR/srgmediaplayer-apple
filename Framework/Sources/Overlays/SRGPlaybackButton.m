@@ -10,11 +10,8 @@
 
 #import <libextobjc/libextobjc.h>
 
-static void commonInit(SRGPlaybackButton *self);
-
 @interface SRGPlaybackButton ()
 
-@property (nonatomic) NSMutableDictionary<NSNumber *, NSNumber *> *streamTypeToStoppingMap;
 @property (nonatomic) UIColor *normalTintColor;
 
 @property (weak) id periodicTimeObserver;
@@ -25,26 +22,7 @@ static void commonInit(SRGPlaybackButton *self);
 
 @synthesize playImage = _playImage;
 @synthesize pauseImage = _pauseImage;
-@synthesize stopImage = _stopImage;
 @synthesize highlightedTintColor = _highlightedTintColor;
-
-#pragma mark Object lifecycle
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    if (self = [super initWithFrame:frame]) {
-        commonInit(self);
-    }
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    if (self = [super initWithCoder:aDecoder]) {
-        commonInit(self);
-    }
-    return self;
-}
 
 #pragma mark Overrides
 
@@ -127,17 +105,6 @@ static void commonInit(SRGPlaybackButton *self);
     [self refreshButton];
 }
 
-- (UIImage *)stopImage
-{
-    return _stopImage ?: [SRGMediaPlayerIconTemplate stopImageWithSize:self.bounds.size];
-}
-
-- (void)setStopImage:(UIImage *)stopImage
-{
-    _stopImage = stopImage;
-    [self refreshButton];
-}
-
 - (void)setHighlightedTintColor:(UIColor *)highlightedTintColor
 {
     _highlightedTintColor = highlightedTintColor;
@@ -155,39 +122,23 @@ static void commonInit(SRGPlaybackButton *self);
     [self refreshButton];
 }
 
-- (void)setStopping:(BOOL)stopping forStreamType:(SRGMediaPlayerStreamType)streamType
-{
-    if (streamType == SRGMediaPlayerStreamTypeUnknown) {
-        return;
-    }
-    
-    self.streamTypeToStoppingMap[@(streamType)] = @(stopping);
-    [self refreshButton];
-}
-
 #pragma mark UI
 
 - (void)refreshButton
 {
-    BOOL displaysInterruptionButton = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
-                                       || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking
-                                       || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled);
-    
     [self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImage *normalImage = nil;
     UIImage *highlightedImage = nil;
+ 
+    BOOL displaysInterruptionButton = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
+                                        || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking
+                                        || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled);
     
     if (displaysInterruptionButton) {
-        if ([self hasStopButton]) {
-            normalImage = self.stopImage;
-            highlightedImage = self.stopImage;
-        }
-        else {
-            normalImage = self.pauseImage;
-            highlightedImage = self.pauseImage;
-        }
+        normalImage = self.pauseImage;
+        highlightedImage = self.pauseImage;
     }
     else {
         normalImage = self.playImage;
@@ -198,49 +149,11 @@ static void commonInit(SRGPlaybackButton *self);
     [self setImage:highlightedImage forState:UIControlStateHighlighted];
 }
 
-
-- (BOOL)hasStopButton
-{
-    if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeUnknown) {
-        return YES;
-    }
-    else {
-        return [self.streamTypeToStoppingMap[@(self.mediaPlayerController.streamType)] boolValue];
-    }
-}
-
 #pragma mark Actions
 
 - (void)togglePlayPause:(id)sender
 {
-    SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
-    
-    void (^togglePlayPause)(void) = ^{
-        if ([self hasStopButton]) {
-            if (mediaPlayerController.player.rate == 0.f && mediaPlayerController.contentURL) {
-                [mediaPlayerController playURL:mediaPlayerController.contentURL];
-            }
-            else {
-                [mediaPlayerController stop];
-            }
-        }
-        else {
-            [mediaPlayerController togglePlayPause];
-        }
-        [self refreshButton];
-    };
-    
-    if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
-        [mediaPlayerController seekEfficientlyToTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
-            if (finished) {
-                [mediaPlayerController play];
-                [self refreshButton];
-            }
-        }];
-    }
-    else {
-        togglePlayPause();
-    }
+    [self.mediaPlayerController togglePlayPause];
 }
 
 #pragma mark Notifications
@@ -260,8 +173,3 @@ static void commonInit(SRGPlaybackButton *self);
 }
 
 @end
-
-static void commonInit(SRGPlaybackButton *self)
-{
-    self.streamTypeToStoppingMap = [NSMutableDictionary dictionary];
-}
