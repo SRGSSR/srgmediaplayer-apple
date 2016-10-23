@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger, SRGPlaybackButtonBehavior) {
  *  Set the button behavior for some stream type (default is NO for all stream types). If stop is set to NO for some
  *  stream type, a stop button will be displayed instead of the pause button when a stream of this type is played
  *
- *  @discussion Attempting to set this value for `SRGMediaPlayerStreamType` has no effect
+ *  @discussion Attempting to set this value for `SRGMediaPlayerStreamTypeUnknown` has no effect
  */
 - (void)setStopping:(BOOL)stopping forStreamType:(SRGMediaPlayerStreamType)streamType;
 
