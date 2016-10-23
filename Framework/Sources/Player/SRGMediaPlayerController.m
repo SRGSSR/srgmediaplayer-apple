@@ -420,10 +420,10 @@ withToleranceBefore:(CMTime)toleranceBefore
 - (void)togglePlayPause
 {
     if (self.player.rate == 0.f) {
-        [self.player play];
+        [self play];
     }
     else {
-        [self.player pause];
+        [self pause];
     }
 }
 
