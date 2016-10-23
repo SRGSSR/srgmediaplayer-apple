@@ -377,16 +377,18 @@ static NSURL *DVRTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    // Pause at the end. Expect restart at the beginning of the stream with no seek events
-    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePaused);
-        return YES;
+    id eventObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"Pausing when the stream already ended must be a no-op");
     }];
     
-    // Toggle play pause. Expect restart playing (at the beginning of the stream) with no seek events
+    // Pause at the end. Nothing must happen, the player has already a rate of 0
+    [self expectationForElapsedTimeInterval:3. withHandler:nil];
+    
     [self.mediaPlayerController pause];
     
-    [self waitForExpectationsWithTimeout:30. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver];
+    }];
 }
 
 - (void)testLivePause
