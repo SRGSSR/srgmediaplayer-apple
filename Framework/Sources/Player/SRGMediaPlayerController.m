@@ -346,11 +346,23 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)play
 {
-    [self.player play];
+    // Normal conditions. Simply forward to the player
+    if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
+        [self.player play];
+    }
+    // Playback ended. Restart at the beginning. Use low-level API to avoid sending seek events
+    else {
+        [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+            if (finished) {
+                [self.player play];
+            }
+        }];
+    }
 }
 
 - (void)pause
 {
+    // Won't do anything if called after playback has ended
     [self.player pause];
 }
 
@@ -408,10 +420,10 @@ withToleranceBefore:(CMTime)toleranceBefore
 - (void)togglePlayPause
 {
     if (self.player.rate == 0.f) {
-        [self.player play];
+        [self play];
     }
     else {
-        [self.player pause];
+        [self pause];
     }
 }
 
@@ -858,6 +870,10 @@ withToleranceBefore:(CMTime)toleranceBefore
                 else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
                             && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
                     [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+                }
+                // Playback restarted after it ended (see -play and -pause)
+                else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && self.player.rate != 0.f) {
+                    [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                 }
             }
             else {
