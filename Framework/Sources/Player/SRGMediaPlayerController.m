@@ -407,11 +407,11 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)togglePlayPause
 {
-    // Playback ended. Restart at the beginning
+    // Playback ended. Restart at the beginning. Use low-level API to avoid sending seek events
     if (self.playbackState == SRGMediaPlayerPlaybackStateEnded) {
-        [self seekEfficientlyToTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
+        [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
             if (finished) {
-                [self play];
+                [self.player play];
             }
         }];
     }
@@ -869,6 +869,10 @@ withToleranceBefore:(CMTime)toleranceBefore
                 else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
                             && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
                     [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+                }
+                // Playback restarted after it endeded (see -togglePlayPause:)
+                else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && self.player.rate != 0.f) {
+                    [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                 }
             }
             else {
