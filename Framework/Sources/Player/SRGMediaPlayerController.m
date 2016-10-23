@@ -407,11 +407,22 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)togglePlayPause
 {
-    if (self.player.rate == 0.f) {
-        [self.player play];
+    // Playback ended. Restart at the beginning
+    if (self.playbackState == SRGMediaPlayerPlaybackStateEnded) {
+        [self seekEfficientlyToTime:kCMTimeZero withCompletionHandler:^(BOOL finished) {
+            if (finished) {
+                [self play];
+            }
+        }];
     }
+    // Normal conditions. Toggle state
     else {
-        [self.player pause];
+        if (self.player.rate == 0.f) {
+            [self.player play];
+        }
+        else {
+            [self.player pause];
+        }
     }
 }
 
