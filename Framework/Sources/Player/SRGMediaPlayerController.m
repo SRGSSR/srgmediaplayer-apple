@@ -976,7 +976,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     dispatch_once(&s_onceToken, ^{
         s_names = @{ @(SRGMediaPlayerStreamTypeOnDemand) : @"on-demand",
                      @(SRGMediaPlayerStreamTypeLive) : @"live",
-                     @(SRGMediaPlayerStreamTypeOnDemand) : @"DVR" };
+                     @(SRGMediaPlayerStreamTypeDVR) : @"DVR" };
     });
     return s_names[@(streamType)] ?: @"unknown";
 }
