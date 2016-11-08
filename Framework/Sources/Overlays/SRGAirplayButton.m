@@ -84,7 +84,7 @@ static void commonInit(SRGAirplayButton *self);
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_airplayButton_wirelessRouteActiveDidChange:)
                                                      name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                   object:nil];
+                                                   object:self.volumeView];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_airplayButton_wirelessRoutesAvailableDidChange:)
                                                      name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
