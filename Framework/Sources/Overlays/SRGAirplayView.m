@@ -91,6 +91,17 @@ static void commonInit(SRGAirplayView *self);
     }
 }
 
+#pragma mark Overrides
+
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    
+    if (newWindow) {
+        [self updateAppearance];
+    }
+}
+
 #pragma mark Drawing
 
 - (void)drawRect:(CGRect)rect
@@ -188,6 +199,11 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
+    // Do not update before the view is actually visible, so that show / hide delegate methods are correclty called 
+    if (! self.window) {
+        return;
+    }
+    
     [self setNeedsDisplay];
     
     BOOL wasHidden = self.hidden;
