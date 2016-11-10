@@ -22,8 +22,6 @@ static void *s_kvoContext = &s_kvoContext;
 
 @end
 
-static const CGFloat SRGAirplayViewDefaultFillFactor = 0.6f;
-
 static void commonInit(SRGAirplayView *self);
 
 @implementation SRGAirplayView
@@ -93,41 +91,15 @@ static void commonInit(SRGAirplayView *self);
     }
 }
 
-- (void)setFillFactor:(CGFloat)fillFactor
-{
-    if (fillFactor <= 0.f) {
-        SRGMediaPlayerLogWarning(@"AirplayView", @"Fill factor cannot be negative. Fixed to 0");
-        _fillFactor = SRGAirplayViewDefaultFillFactor;
-    }
-    else if (fillFactor > 1.f) {
-        SRGMediaPlayerLogWarning(@"AirplayView", @"Fill factor cannot be larger than 1. Fixed to 1");
-        _fillFactor = 1.f;
-    }
-    else {
-        _fillFactor = fillFactor;
-    }
-
-    [self setNeedsDisplay];
-}
-
-- (NSString *)activeAirplayOutputRouteName
-{
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
-    
-    for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
-        if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
-            return outputPort.portName;
-        }
-    }
-    
-    return SRGMediaPlayerLocalizedString(@"External device", nil);
-}
-
 #pragma mark Drawing
 
 - (void)drawRect:(CGRect)rect
 {
+    // Do not display the default overlay if a custom view is used (i.e. containing subviews)
+    if (self.subviews.count != 0) {
+        return;
+    }
+    
     CGFloat width, height;
     CGFloat stringRectHeight = 30.f;
     CGFloat stringRectMargin = 5.f;
@@ -135,8 +107,9 @@ static void commonInit(SRGAirplayView *self);
     CGFloat shapeSeparatorDelta = 5.f;
     CGFloat quadCurveHeight = 20.f;
 
-    CGFloat maxWidth = CGRectGetWidth(self.bounds) * self.fillFactor - 2.f * lineWidth;
-    CGFloat maxHeight = CGRectGetHeight(self.bounds) * self.fillFactor - stringRectHeight - quadCurveHeight - shapeSeparatorDelta - 10.f;
+    static CGFloat kFillFactor = 0.6f;
+    CGFloat maxWidth = CGRectGetWidth(self.bounds) * kFillFactor - 2.f * lineWidth;
+    CGFloat maxHeight = CGRectGetHeight(self.bounds) * kFillFactor - stringRectHeight - quadCurveHeight - shapeSeparatorDelta - 10.f;
     CGFloat aspectRatio = 16.f / 10.f;
 
     if (maxWidth < maxHeight * aspectRatio) {
@@ -188,7 +161,7 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)drawSubtitleInRect:(CGRect)rect
 {
-    NSString *routeName = [self activeAirplayOutputRouteName];
+    NSString *routeName = [AVAudioSession srg_activeAirplayRouteName];
 
     NSString *subtitle = [self airplayView:self subtitleForAirplayRouteName:routeName];
     if ([self.delegate respondsToSelector:@selector(airplayView:subtitleForAirplayRouteName:)]) {
@@ -315,6 +288,5 @@ static void commonInit(SRGAirplayView *self)
     self.contentMode = UIViewContentModeRedraw;
     self.userInteractionEnabled = NO;
     self.hidden = YES;
-    self.fillFactor = SRGAirplayViewDefaultFillFactor;
     self.volumeView = [[MPVolumeView alloc] init];
 }

@@ -6,6 +6,8 @@
 
 #import "AVAudioSession+SRGMediaPlayer.h"
 
+#import "NSBundle+SRGMediaPlayer.h"
+
 #import <MediaPlayer/MediaPlayer.h>
 
 static MPVolumeView *s_volumeView = nil;
@@ -18,7 +20,7 @@ NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification = @"SRGMediaPl
 
 + (BOOL)srg_isAirplayActive
 {
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    AVAudioSession *audioSession = [self sharedInstance];
     AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
     
     for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
@@ -28,6 +30,20 @@ NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification = @"SRGMediaPl
     }
     
     return NO;
+}
+
++ (NSString *)srg_activeAirplayRouteName
+{
+    AVAudioSession *audioSession = [self sharedInstance];
+    AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
+    
+    for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
+        if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
+            return outputPort.portName;
+        }
+    }
+    
+    return SRGMediaPlayerLocalizedString(@"External device", nil);
 }
 
 #pragma mark Notifications

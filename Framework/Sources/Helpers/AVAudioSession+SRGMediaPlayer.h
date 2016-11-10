@@ -25,5 +25,6 @@ OBJC_EXTERN NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification;
  *  @discussion You can listen to the `SRGMediaPlayerWirelessRouteDidChangeNotification` notification to detect route changes
  */
 + (BOOL)srg_isAirplayActive;
++ (NSString *)srg_activeAirplayRouteName;
 
 @end
