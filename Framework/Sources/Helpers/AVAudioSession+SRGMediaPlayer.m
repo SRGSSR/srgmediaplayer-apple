@@ -43,7 +43,12 @@ NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification = @"SRGMediaPl
         }
     }
     
-    return SRGMediaPlayerLocalizedString(@"External device", nil);
+    if (currentRoute.outputs.count != 0) {
+        return SRGMediaPlayerLocalizedString(@"External device", nil);
+    }
+    else {
+        return nil;
+    }
 }
 
 #pragma mark Notifications

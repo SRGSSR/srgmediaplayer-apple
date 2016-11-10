@@ -161,11 +161,9 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)drawSubtitleInRect:(CGRect)rect
 {
-    NSString *routeName = [AVAudioSession srg_activeAirplayRouteName];
-
-    NSString *subtitle = [self airplayView:self subtitleForAirplayRouteName:routeName];
-    if ([self.delegate respondsToSelector:@selector(airplayView:subtitleForAirplayRouteName:)]) {
-        subtitle = [self.delegate airplayView:self subtitleForAirplayRouteName:routeName];
+    NSString *subtitle = [self airplayViewSubtitle:self];
+    if ([self.delegate respondsToSelector:@selector(airplayViewSubtitle:)]) {
+        subtitle = [self.delegate airplayViewSubtitle:self];
     }
 
     if (subtitle.length > 0) {
@@ -220,9 +218,9 @@ static void commonInit(SRGAirplayView *self);
               NSParagraphStyleAttributeName: style };
 }
 
-- (NSString *)airplayView:(SRGAirplayView *)airplayView subtitleForAirplayRouteName:(NSString *)routeName
+- (NSString *)airplayViewSubtitle:(SRGAirplayView *)airplayView
 {
-    return [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"This media is playing on «%@»", nil), routeName];
+    return SRGAirplayRouteDescription();
 }
 
 - (NSDictionary<NSString *, id> *)airplayViewSubtitleAttributedDictionary:(SRGAirplayView *)airplayView
@@ -281,7 +279,7 @@ static void commonInit(SRGAirplayView *self);
 
 @end
 
-#pragma mark Static functions
+#pragma mark Functions
 
 static void commonInit(SRGAirplayView *self)
 {
@@ -289,4 +287,15 @@ static void commonInit(SRGAirplayView *self)
     self.userInteractionEnabled = NO;
     self.hidden = YES;
     self.volumeView = [[MPVolumeView alloc] init];
+}
+
+NSString * const SRGAirplayRouteDescription(void)
+{
+    NSString *routeName = [AVAudioSession srg_activeAirplayRouteName];
+    if (routeName) {
+        return [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"This media is playing on «%@»", nil), routeName];
+    }
+    else {
+        return nil;
+    }
 }

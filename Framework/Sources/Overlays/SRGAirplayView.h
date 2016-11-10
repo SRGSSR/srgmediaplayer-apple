@@ -16,6 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 @class SRGAirplayView;
 
 /**
+ *  Suggested localized description for the current Airplay route (if any). Can be used by custom overview implementations
+ *  to display a standard route description message
+ */
+OBJC_EXTERN NSString * _Nullable const SRGAirplayRouteDescription(void);
+
+/**
  *  Airplay view delegate protocol, providing optional customization behaviour for the default `SRGAirplayView`
  *  appearance. These methods are ignored if a custom layout is used
  */
@@ -36,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @discussion This method is ignored is `-airplayView:customViewForAirplayRouteName:` returns a custom view
  */
-- (nullable NSString *)airplayView:(SRGAirplayView *)airplayView subtitleForAirplayRouteName:(NSString *)routeName;
+- (nullable NSString *)airplayViewSubtitle:(SRGAirplayView *)airplayView;
 
 /**
  *  Attributes for the route subtitle on the default overlay. If not implemented, a default style will be applied 
