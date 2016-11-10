@@ -23,10 +23,21 @@ OBJC_EXTERN NSString * _Nullable const SRGAirplayRouteDescription(void);
 
 /**
  *  Airplay view delegate protocol, providing optional customization behaviour for the default `SRGAirplayView`
- *  appearance. These methods are ignored if a custom layout is used
+ *  appearance.
  */
 @protocol SRGAirplayViewDelegate <NSObject>
 @optional
+
+/**
+ *  This method is called when the view is shown. Custom views can use this method to update their display with the
+ *  new route name
+ */
+- (void)airplayView:(SRGAirplayView *)airplayView didShowWithAirplayRouteName:(nullable NSString *)routeName;
+
+/**
+ *  This method is called when the view has been hidden
+ */
+- (void)airplayViewDidHide:(SRGAirplayView *)airplayView;
 
 /**
  *  Attributes for the 'Airplay' title of the default overlay. If not implemented, a default style will be applied 

@@ -190,6 +190,8 @@ static void commonInit(SRGAirplayView *self);
 {
     [self setNeedsDisplay];
     
+    BOOL wasHidden = self.hidden;
+    
     if (mediaPlayerController) {
         // Device mirrored, and playback not sent to the external display. Always hide the overlay (true mirroring: never
         // show Airplay controls on the device screen, and thus on the external display)
@@ -203,6 +205,13 @@ static void commonInit(SRGAirplayView *self);
     }
     else {
         self.hidden = ! self.fakedForInterfaceBuilder && ! [AVAudioSession srg_isAirplayActive];
+    }
+    
+    if (wasHidden && ! self.hidden && [self.delegate respondsToSelector:@selector(airplayView:didShowWithAirplayRouteName:)]) {
+        [self.delegate airplayView:self didShowWithAirplayRouteName:[AVAudioSession srg_activeAirplayRouteName]];
+    }
+    else if (! wasHidden && self.hidden && [self.delegate respondsToSelector:@selector(airplayViewDidHide:)]) {
+        [self.delegate airplayViewDidHide:self];
     }
 }
 
