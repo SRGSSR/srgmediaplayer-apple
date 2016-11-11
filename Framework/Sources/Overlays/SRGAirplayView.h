@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Suggested localized description for the current Airplay route (if any). Can be used by custom overview implementations
  *  to display a standard route description message
  */
-OBJC_EXTERN NSString * _Nullable const SRGAirplayRouteDescription(void);
+OBJC_EXTERN NSString * _Nullable SRGAirplayRouteDescription(void);
 
 /**
  *  Airplay view delegate protocol, providing optional customization behaviour for the default `SRGAirplayView`
