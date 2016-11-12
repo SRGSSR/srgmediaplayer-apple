@@ -314,7 +314,7 @@ static void commonInit(SRGAirplayView *self)
     self.volumeView = [[MPVolumeView alloc] init];
 }
 
-NSString * const SRGAirplayRouteDescription(void)
+NSString * SRGAirplayRouteDescription(void)
 {
     NSString *routeName = [AVAudioSession srg_activeAirplayRouteName];
     if (routeName) {
