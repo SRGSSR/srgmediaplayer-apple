@@ -903,7 +903,7 @@ static NSURL *DVRTestURL(void)
     }];
     
     XCTestExpectation *destructionExpectation = [self expectationWithDescription:@"Player destroyed"];
-    self.mediaPlayerController.playerDestructionBlock = ^(AVPlayer *player) {
+    self.mediaPlayerController.playerDestructionBlock = ^{
         [destructionExpectation fulfill];
     };
     

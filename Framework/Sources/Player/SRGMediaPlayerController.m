@@ -87,6 +87,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)setPlayer:(AVPlayer *)player
 {
+    BOOL destroyed = NO;
+    
     if (_player) {
         [self unregisterTimeObservers];
         
@@ -103,11 +105,16 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                                                         name:AVPlayerItemFailedToPlayToEndTimeNotification
                                                       object:_player.currentItem];
         
-        self.playerDestructionBlock ? self.playerDestructionBlock(_player) : nil;
+        destroyed = YES;
     }
     
     _player = player;
     self.playerLayer.player = player;
+    
+    // Call the block only after player destruction
+    if (destroyed) {
+        self.playerDestructionBlock ? self.playerDestructionBlock() : nil;
+    }
     
     if (player) {
         [self registerTimeObserversForPlayer:player];
