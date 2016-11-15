@@ -207,18 +207,18 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 /**
- *  Optional block which gets called right after player creation
+ *  Optional block which gets called right after player creation (player changes from `nil` to not `nil`)
  */
 @property (nonatomic, copy, nullable) void (^playerCreationBlock)(AVPlayer *player);
 
 /**
- *  Optional block which gets called right after player creation and when the configuration is reloaded by calling
- *  `-reloadPlayerConfiguration`
+ *  Optional block which gets called right after player creation, when the player changes, or when the configuration is 
+ *  reloaded by calling `-reloadPlayerConfiguration`. Does not get called when the player is set to `nil`
  */
 @property (nonatomic, copy, nullable) void (^playerConfigurationBlock)(AVPlayer *player);
 
 /**
- *  Optional block which gets called right before player destruction
+ *  Optional block which gets called right before player destruction (player changes from not `nil` to `nil`)
  */
 @property (nonatomic, copy, nullable) void (^playerDestructionBlock)(void);
 
