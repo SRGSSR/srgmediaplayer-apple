@@ -52,6 +52,12 @@
 			<key>url</key>
 			<string>http://srgplayerswivod-vh.akamaihd.net/i/2016/09/13/,Hoechstgelegener_Windpark-42441158-360k,Hoechstgelegener_Windpark-42441158-720k,.mp4.csmil/master.m3u8</string>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>403 error</string>
+			<key>url</key>
+			<string>http://httpbin.org/status/403</string>
+		</dict>
 	</array>
 </dict>
 </plist>
