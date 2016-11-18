@@ -70,20 +70,7 @@ To start playback, bind your media player controller to a `mediaPlayerController
 }
 ```
 
-It is important that you either call `-stop` or `-reset` when the controller is not needed anymore, so that it can be properly deallocated. In our case, since the controller is not meant to be reused, we can call either one of these methods when the view has disappaered:
-
-```objective-c
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-
-    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-        [self.mediaPlayerController reset];
-    }
-}
-```
-
-This is it. If you bound a playback button or a slider to the player controller, you should readily be able to control playback as well.
+This is it. If you then bound a playback button or a slider to the player controller using Interface Builder, you should readily be able to control playback as well.
 
 ## Displaying segments
 

@@ -76,6 +76,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)dealloc
 {
+    [self stopWithUserInfo:nil];
+    
     AVPlayerLayer *playerLayer = self.playerLayer;
     [playerLayer removeObserver:self forKeyPath:@keypath(playerLayer.readyForDisplay) context:s_kvoContext];
     
