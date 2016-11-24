@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08D3BEB01DE6EAB100AE1368 /* SRGSubtitlesButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3BEAE1DE6EAB100AE1368 /* SRGSubtitlesButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		08D3BEB11DE6EAB100AE1368 /* SRGSubtitlesButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3BEAF1DE6EAB100AE1368 /* SRGSubtitlesButton.m */; };
+		08D3BEB51DE7671E00AE1368 /* alternate_tracks_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEB21DE7671E00AE1368 /* alternate_tracks_button.png */; };
+		08D3BEB61DE7671E00AE1368 /* alternate_tracks_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEB31DE7671E00AE1368 /* alternate_tracks_button@2x.png */; };
+		08D3BEB71DE7671E00AE1368 /* alternate_tracks_button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEB41DE7671E00AE1368 /* alternate_tracks_button@3x.png */; };
+		08D3BEBB1DE7699500AE1368 /* alternate_tracks_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEB81DE7699500AE1368 /* alternate_tracks_button_selected.png */; };
+		08D3BEBC1DE7699500AE1368 /* alternate_tracks_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEB91DE7699500AE1368 /* alternate_tracks_button_selected@2x.png */; };
+		08D3BEBD1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEBA1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png */; };
 		6F0D051B1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0D05191DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F0D051C1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0D051A1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m */; };
 		6F0D051F1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0D051D1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -187,6 +195,14 @@
 
 /* Begin PBXFileReference section */
 		05E918D1654F8CC2553EED74 /* libPods-SRGMediaPlayer-tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer-tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		08D3BEAE1DE6EAB100AE1368 /* SRGSubtitlesButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGSubtitlesButton.h; sourceTree = "<group>"; };
+		08D3BEAF1DE6EAB100AE1368 /* SRGSubtitlesButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGSubtitlesButton.m; sourceTree = "<group>"; };
+		08D3BEB21DE7671E00AE1368 /* alternate_tracks_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alternate_tracks_button.png; sourceTree = "<group>"; };
+		08D3BEB31DE7671E00AE1368 /* alternate_tracks_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alternate_tracks_button@2x.png"; sourceTree = "<group>"; };
+		08D3BEB41DE7671E00AE1368 /* alternate_tracks_button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alternate_tracks_button@3x.png"; sourceTree = "<group>"; };
+		08D3BEB81DE7699500AE1368 /* alternate_tracks_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alternate_tracks_button_selected.png; sourceTree = "<group>"; };
+		08D3BEB91DE7699500AE1368 /* alternate_tracks_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alternate_tracks_button_selected@2x.png"; sourceTree = "<group>"; };
+		08D3BEBA1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alternate_tracks_button_selected@3x.png"; sourceTree = "<group>"; };
 		33B591AC767A97272DB49F32 /* Pods-SRGMediaPlayer-tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer-tests/Pods-SRGMediaPlayer-tests.release.xcconfig"; sourceTree = "<group>"; };
 		3C5FC1E08CA3F0C8CA810E82 /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0D05191DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAudioSession+SRGMediaPlayer.h"; sourceTree = "<group>"; };
@@ -404,6 +420,12 @@
 				6FEB51601DB0A8FA002D1751 /* airplay.png */,
 				6FEB51611DB0A8FB002D1751 /* airplay@2x.png */,
 				6FEB51621DB0A8FB002D1751 /* airplay@3x.png */,
+				08D3BEB81DE7699500AE1368 /* alternate_tracks_button_selected.png */,
+				08D3BEB91DE7699500AE1368 /* alternate_tracks_button_selected@2x.png */,
+				08D3BEBA1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png */,
+				08D3BEB21DE7671E00AE1368 /* alternate_tracks_button.png */,
+				08D3BEB31DE7671E00AE1368 /* alternate_tracks_button@2x.png */,
+				08D3BEB41DE7671E00AE1368 /* alternate_tracks_button@3x.png */,
 				E69A1E001D61BAFD0064E6C1 /* Localizable.strings */,
 				E69A1E051D61BAFD0064E6C1 /* picture_in_picture_start_button.png */,
 				E69A1E061D61BAFD0064E6C1 /* picture_in_picture_start_button@2x.png */,
@@ -637,6 +659,8 @@
 				E6FC7F501D62072400A55085 /* SRGPlaybackActivityIndicatorView.m */,
 				E6FC7F4B1D62072400A55085 /* SRGPlaybackButton.h */,
 				E6FC7F4C1D62072400A55085 /* SRGPlaybackButton.m */,
+				08D3BEAE1DE6EAB100AE1368 /* SRGSubtitlesButton.h */,
+				08D3BEAF1DE6EAB100AE1368 /* SRGSubtitlesButton.m */,
 				E6FC7F511D62072400A55085 /* SRGTimelineSlider.h */,
 				E6FC7F521D62072400A55085 /* SRGTimelineSlider.m */,
 				E67799301D75AE2500E58331 /* SRGTimelineView.h */,
@@ -678,6 +702,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08D3BEB01DE6EAB100AE1368 /* SRGSubtitlesButton.h in Headers */,
 				6F0D051B1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.h in Headers */,
 				E67799321D75AE2600E58331 /* SRGTimelineView.h in Headers */,
 				E6FC7F6F1D62072400A55085 /* SRGMediaPlayerIconTemplate.h in Headers */,
@@ -821,6 +846,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08D3BEBD1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png in Resources */,
+				08D3BEB51DE7671E00AE1368 /* alternate_tracks_button.png in Resources */,
 				6F37442E1DAE5485008A6C0C /* Designables in Resources */,
 				E6C315671D76AB62001FC93A /* LaunchScreen.xib in Resources */,
 				E69A1E581D61BAFD0064E6C1 /* picture_in_picture_start_button@2x.png in Resources */,
@@ -830,11 +857,15 @@
 				6FEB51641DB0A8FB002D1751 /* airplay@2x.png in Resources */,
 				E69A1E561D61BAFD0064E6C1 /* Localizable.strings in Resources */,
 				E69A1E591D61BAFD0064E6C1 /* picture_in_picture_stop_button.png in Resources */,
+				08D3BEBB1DE7699500AE1368 /* alternate_tracks_button_selected.png in Resources */,
 				E69A1E571D61BAFD0064E6C1 /* picture_in_picture_start_button.png in Resources */,
 				E6BCE9631D7943F50021973D /* SRGMediaPlayerViewController.storyboard in Resources */,
+				08D3BEB71DE7671E00AE1368 /* alternate_tracks_button@3x.png in Resources */,
+				08D3BEBC1DE7699500AE1368 /* alternate_tracks_button_selected@2x.png in Resources */,
 				6FEB51681DB0A909002D1751 /* picture_in_picture_start_button@3x.png in Resources */,
 				E69A1E5A1D61BAFD0064E6C1 /* picture_in_picture_stop_button@2x.png in Resources */,
 				6FEB51631DB0A8FB002D1751 /* airplay.png in Resources */,
+				08D3BEB61DE7671E00AE1368 /* alternate_tracks_button@2x.png in Resources */,
 				6FEB51691DB0A909002D1751 /* picture_in_picture_stop_button@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -939,6 +970,7 @@
 				E6C986191D70182300C45C7A /* SRGPictureInPictureButton.m in Sources */,
 				E6FC7F781D62072400A55085 /* NSBundle+SRGMediaPlayer.m in Sources */,
 				E6FC7F741D62072400A55085 /* SRGMediaPlayerView.m in Sources */,
+				08D3BEB11DE6EAB100AE1368 /* SRGSubtitlesButton.m in Sources */,
 				6F0D051C1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m in Sources */,
 				6FEB516D1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.m in Sources */,
 				E6C9860B1D6F36C900C45C7A /* SRGPlaybackButton.m in Sources */,
