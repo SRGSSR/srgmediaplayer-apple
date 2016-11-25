@@ -7,6 +7,7 @@
 #import "SRGSubtitlesButton.h"
 
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGAlternateTracksViewController.h"
 
 #import <libextobjc/libextobjc.h>
 
@@ -16,6 +17,8 @@ static UIImage *SRGSubtitlesButtonImage(void);
 static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 @interface SRGSubtitlesButton ()
+
+@property (nonatomic) UIPopoverController *currentPopover;
 
 @end
 
@@ -84,6 +87,10 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     
     if (newWindow) {
         [self updateAppearance];
+        [self addTarget:self action:@selector(showSubtitlesMenu:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else {
+        [self removeTarget:self action:@selector(showSubtitlesMenu:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 
@@ -140,6 +147,32 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
+
+#pragma mark Actions
+
+- (IBAction)showSubtitlesMenu:(id)sender
+ {
+     if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad))
+     {
+         [self.currentPopover dismissPopoverAnimated:YES];
+         self.currentPopover = nil;
+         self.currentPopover = [SRGAlternateTracksViewController alternateTracksViewControllerInPopoverWithDelegate:nil
+                                                                                                             player:self.mediaPlayerController.player];
+         [self.currentPopover presentPopoverFromRect:self.frame
+                                              inView:self
+                            permittedArrowDirections:UIPopoverArrowDirectionAny
+                                            animated:YES];
+     }
+     else {
+         UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerWithDelegate:nil
+                                                                                                                                                       player:self.mediaPlayerController.player];
+         UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?:
+         [UIApplication sharedApplication].delegate.window.rootViewController;
+         [presentedViewController presentViewController:navigationController
+                                               animated:YES
+                                             completion:nil];
+     }
+ }
 
 #pragma mark Interface Builder integration
 
