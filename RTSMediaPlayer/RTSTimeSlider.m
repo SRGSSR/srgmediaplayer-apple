@@ -468,7 +468,7 @@ static NSString *RTSTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
     else {
         CGFloat ratio = self.value / self.maximumValue;
-        return [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%.0f%% played", @"Slider state when playing AOD/VOD"), round(ratio * 100) ];
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%.0f%% played", @"Slider state when playing AOD/VOD, in percentage"), round(ratio * 100) ];
     }
 }
 
