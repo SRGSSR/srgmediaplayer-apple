@@ -7,6 +7,8 @@
 #import "RTSVolumeView.h"
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "NSBundle+RTSMediaPlayer.h"
+
 @interface RTSVolumeView ()
 @property MPVolumeView *mpVolumeView;
 @end
@@ -19,6 +21,7 @@
 	self.mpVolumeView.showsRouteButton = NO;
 	self.mpVolumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self addSubview:self.mpVolumeView];
+    self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"AirPlay", @"AirPlay button");
 }
 
 - (void) setHidden:(BOOL)hidden
