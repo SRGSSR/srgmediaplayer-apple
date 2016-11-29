@@ -42,26 +42,15 @@ static NSString *RTSTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     else if (isinf(seconds))
         return SRGMediaPlayerAccessibityLocalizedString(@"Infinity duration", @"Time state if infinity duration");
     
-    div_t qr = div((int)round(ABS(seconds)), 60);
-    int second = qr.rem;
-    qr = div(qr.quot, 60);
-    int minute = qr.rem;
-    int hour = qr.quot;
+    static dispatch_once_t onceToken;
+    static NSDateComponentsFormatter *dateComponentsFormatter;
+    dispatch_once(&onceToken, ^{
+        dateComponentsFormatter = [[NSDateComponentsFormatter alloc] init];
+        dateComponentsFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
+        dateComponentsFormatter.allowedUnits = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    });
     
-    NSString *hoursName = SRGMediaPlayerAccessibityLocalizedString(@"hours", @"Time state name for hours");
-    NSString *hourName = SRGMediaPlayerAccessibityLocalizedString(@"hour", @"Time state name for 1 hour");
-    NSString *minutesName = SRGMediaPlayerAccessibityLocalizedString(@"minutes", @"Time state name for minutes");
-    NSString *minuteName = SRGMediaPlayerAccessibityLocalizedString(@"minute", @"Time state name for 1 minute");
-    NSString *secondsName = SRGMediaPlayerAccessibityLocalizedString(@"seconds", @"Time state name for seconds");
-    NSString *secondName = SRGMediaPlayerAccessibityLocalizedString(@"second", @"Time state name for 1 second");
-    
-    NSString *timeName = [NSString stringWithFormat:@"%d %@", second, (second > 1) ? secondsName : secondName];
-    if (minute > 0)
-        timeName = [NSString stringWithFormat:@"%d %@, %@", minute, (minute > 1) ? minutesName : minuteName, timeName];
-    if (hour > 0)
-        timeName = [NSString stringWithFormat:@"%d %@, %@", hour, (hour > 1) ? hoursName : hourName, timeName];
-    
-    return timeName;
+    return [dateComponentsFormatter stringFromTimeInterval:ABS(seconds)];
 }
 
 @interface RTSTimeSlider ()
