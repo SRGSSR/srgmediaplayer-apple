@@ -35,6 +35,35 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		return [NSString stringWithFormat:@"%@%02d:%02d", negative ? @"-" : @"", minute, second];
 }
 
+static NSString *RTSTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
+{
+    if (isnan(seconds))
+        return SRGMediaPlayerAccessibityLocalizedString(@"No duration", @"Time state if no duration");
+    else if (isinf(seconds))
+        return SRGMediaPlayerAccessibityLocalizedString(@"Infinity duration", @"Time state if infinity duration");
+    
+    div_t qr = div((int)round(ABS(seconds)), 60);
+    int second = qr.rem;
+    qr = div(qr.quot, 60);
+    int minute = qr.rem;
+    int hour = qr.quot;
+    
+    NSString *hoursName = SRGMediaPlayerAccessibityLocalizedString(@"hours", @"Time state name for hours");
+    NSString *hourName = SRGMediaPlayerAccessibityLocalizedString(@"hour", @"Time state name for 1 hour");
+    NSString *minutesName = SRGMediaPlayerAccessibityLocalizedString(@"minutes", @"Time state name for minutes");
+    NSString *minuteName = SRGMediaPlayerAccessibityLocalizedString(@"minute", @"Time state name for 1 minute");
+    NSString *secondsName = SRGMediaPlayerAccessibityLocalizedString(@"seconds", @"Time state name for seconds");
+    NSString *secondName = SRGMediaPlayerAccessibityLocalizedString(@"second", @"Time state name for 1 second");
+    
+    NSString *timeName = [NSString stringWithFormat:@"%d %@", second, (second > 1) ? secondsName : secondName];
+    if (minute > 0)
+        timeName = [NSString stringWithFormat:@"%d %@, %@", minute, (minute > 1) ? minutesName : minuteName, timeName];
+    if (hour > 0)
+        timeName = [NSString stringWithFormat:@"%d %@, %@", hour, (hour > 1) ? hoursName : hourName, timeName];
+    
+    return timeName;
+}
+
 @interface RTSTimeSlider ()
 
 @property (weak) id periodicTimeObserver;
@@ -171,11 +200,15 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	if (self.live)
 	{
 		self.valueLabel.text = @"--:--";
+        self.valueLabel.accessibilityLabel = nil;
 		self.timeLeftValueLabel.text = RTSMediaPlayerLocalizedString(@"Live", nil);
+        self.timeLeftValueLabel.accessibilityLabel = nil;
 	}
 	else {
 		self.valueLabel.text = RTSTimeSliderFormatter(self.value);
+        self.valueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%@ played", @"Label on slider for time played"), RTSTimeSliderAccessibilityFormatter(self.value)];
 		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
+        self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), RTSTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
 	}
 }
 
@@ -416,6 +449,27 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 														name:RTSMediaPlayerPlaybackStateDidChangeNotification
 													  object:self.mediaPlayerController];
 	}
+}
+
+- (NSString *)accessibilityLabel
+{
+    AVPlayerItem *playerItem = self.mediaPlayerController.playerItem;
+    if (! playerItem || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded
+        || playerItem.status != AVPlayerItemStatusReadyToPlay) {
+        return SRGMediaPlayerAccessibityLocalizedString(@"Nothing playing", @"Slider state when nothing to play");;
+    }
+    else if (self.live)
+    {
+        return SRGMediaPlayerAccessibityLocalizedString(@"Playing in live", @"Slider state when playing live");
+    }
+    else if (self.mediaPlayerController.streamType == RTSMediaStreamTypeDVR) {
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%@ late to direct", @"Slider state when playing DVR"),
+                RTSTimeSliderAccessibilityFormatter(self.maximumValue - self.value)];
+    }
+    else {
+        CGFloat ratio = self.value / self.maximumValue;
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%.0f%% played", @"Slider state when playing AOD/VOD"), round(ratio * 100) ];
+    }
 }
 
 #pragma mark Notifications
