@@ -16,7 +16,7 @@ static void *s_kvoContext = &s_kvoContext;
 static UIImage *SRGSubtitlesButtonImage(void);
 static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
-@interface SRGSubtitlesButton ()
+@interface SRGSubtitlesButton () <SRGAlternateTracksViewControllerDelegate>
 
 @property (nonatomic) UIPopoverController *currentPopover;
 
@@ -156,9 +156,9 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
      {
          [self.currentPopover dismissPopoverAnimated:YES];
          self.currentPopover = nil;
-         self.currentPopover = [SRGAlternateTracksViewController alternateTracksViewControllerInPopoverWithDelegate:nil
+         self.currentPopover = [SRGAlternateTracksViewController alternateTracksViewControllerInPopoverWithDelegate:self
                                                                                                              player:self.mediaPlayerController.player];
-         [self.currentPopover presentPopoverFromRect:self.frame
+         [self.currentPopover presentPopoverFromRect:self.bounds
                                               inView:self
                             permittedArrowDirections:UIPopoverArrowDirectionAny
                                             animated:YES];
@@ -174,6 +174,12 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
      }
  }
 
+#pragma mark SRGAlternateTracksViewControllerDelegate
+
+- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController selectedMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group
+{
+    [self updateAppearance];
+}
 #pragma mark Interface Builder integration
 
 - (void)prepareForInterfaceBuilder

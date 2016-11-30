@@ -26,7 +26,6 @@
     SRGAlternateTracksViewController *trackSelector = [[SRGAlternateTracksViewController alloc] init];
     trackSelector.delegate = delegate;
     trackSelector.player = player;
-    //  trackSelector.contentSizeForViewInPopover = CGSizeMake(300, 200);
     UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:trackSelector];
     return popover;
 }
