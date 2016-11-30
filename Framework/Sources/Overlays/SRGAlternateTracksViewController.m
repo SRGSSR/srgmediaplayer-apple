@@ -90,9 +90,11 @@
     NSString *characteristic = self.characteristics[section];
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
         return SRGMediaPlayerLocalizedString(@"Audio Languages", nil);
-    } else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
+    }
+    else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         return SRGMediaPlayerLocalizedString(@"Subtitles", nil);
-    } else if ([characteristic isEqualToString:AVMediaCharacteristicVisual]) {
+    }
+    else if ([characteristic isEqualToString:AVMediaCharacteristicVisual]) {
         return SRGMediaPlayerLocalizedString(@"Video", nil);
     }
     else {
@@ -107,8 +109,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[self.characteristics[section]];
-    return group.options.count;
+    NSString *characteristic = self.characteristics[section];
+    AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
+    return [characteristic isEqual:AVMediaCharacteristicLegible] ? group.options.count + 1 : group.options.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -120,14 +123,21 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
-    AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[self.characteristics[indexPath.section]];
-    AVMediaSelectionOption *option = group.options[indexPath.row];
-    //  cell.textLabel.text = [option.locale displayNameForKey:NSLocaleLanguageCode value:option.locale.localeIdentifier];
-    cell.textLabel.text = option.displayName;
-    
-    AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-    
-    cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    NSString *characteristic = self.characteristics[indexPath.section];
+    AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
+    // OFF option for subtitles needs a customisation
+    if ([characteristic isEqual:AVMediaCharacteristicLegible] && indexPath.row == 0) {
+        cell.textLabel.text = SRGMediaPlayerLocalizedString(@"OFF", @"No subtitle option in alternate tracks list");
+        AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+        cell.accessoryType = (!currentOptionInGroup) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    }
+    else {
+        AVMediaSelectionOption *option = [characteristic isEqual:AVMediaCharacteristicLegible] ? group.options[indexPath.row -1] : group.options[indexPath.row];
+        cell.textLabel.text = option.displayName;
+        
+        AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+        cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    }
     
     return cell;
 }
@@ -138,8 +148,13 @@
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[self.characteristics[indexPath.section]];
-    AVMediaSelectionOption *option = group.options[indexPath.row];
+    NSString *characteristic = self.characteristics[indexPath.section];
+    AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
+    AVMediaSelectionOption *option = nil;
+    // OFF option for subtitles needs a customisation
+    if ([characteristic isEqual:AVMediaCharacteristicLegible] && indexPath.row != 0){
+        option = [characteristic isEqual:AVMediaCharacteristicLegible] ? group.options[indexPath.row -1] : group.options[indexPath.row];
+    }
     
     [self.player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
     
