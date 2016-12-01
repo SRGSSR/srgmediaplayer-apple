@@ -28,20 +28,19 @@ BOOL SRGIsCharacteristicLegible(NSString *characteristic)
 
 + (UIPopoverController *)alternateTracksViewControllerInPopoverWithDelegate:(id<SRGAlternateTracksViewControllerDelegate>)delegate player:(AVPlayer *)player
 {
-    SRGAlternateTracksViewController *trackSelector = [[SRGAlternateTracksViewController alloc] init];
-    trackSelector.delegate = delegate;
-    trackSelector.player = player;
-    UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:trackSelector];
-    return popover;
+    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerWithDelegate:delegate
+                                                                                                                                              player:player];
+    UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:navigationController];
+    return popoverController;
 }
 
 + (UINavigationController *)alternateTracksViewControllerInNavigationControllerWithDelegate:(id<SRGAlternateTracksViewControllerDelegate>)delegate player:(AVPlayer *)player
 {
-    SRGAlternateTracksViewController *trackSelector = [[SRGAlternateTracksViewController alloc] init];
-    trackSelector.delegate = delegate;
-    trackSelector.player = player;
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:trackSelector];
-    return nav;
+    SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    alternateTracksViewController.delegate = delegate;
+    alternateTracksViewController.player = player;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:alternateTracksViewController];
+    return navigationController;
 }
 
 - (void)viewDidLoad
@@ -50,11 +49,21 @@ BOOL SRGIsCharacteristicLegible(NSString *characteristic)
     
     self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", nil);
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                           target:self
-                                                                                           action:@selector(done:)];
-    
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:NSStringFromClass([self class])];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (!self.navigationController.popoverPresentationController) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                               target:self
+                                                                                               action:@selector(done:)];
+    }
+    else {
+        self.view.backgroundColor = [UIColor clearColor];
+    }
 }
 
 - (void)setPlayer:(AVPlayer *)player {
