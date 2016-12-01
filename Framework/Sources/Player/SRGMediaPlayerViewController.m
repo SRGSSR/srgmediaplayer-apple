@@ -13,6 +13,7 @@
 #import "SRGMediaPlayerController.h"
 #import "SRGPlaybackButton.h"
 #import "SRGPictureInPictureButton.h"
+#import "SRGSubtitlesButton.h"
 #import "SRGPlaybackActivityIndicatorView.h"
 #import "SRGMediaPlayerSharedController.h"
 #import "SRGTimeSlider.h"
@@ -27,6 +28,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @property (nonatomic, weak) IBOutlet UIView *playerView;
 
+@property (nonatomic, weak) IBOutlet SRGSubtitlesButton *subtitlesButton;
 @property (nonatomic, weak) IBOutlet SRGPictureInPictureButton *pictureInPictureButton;
 @property (nonatomic, weak) IBOutlet SRGPlaybackActivityIndicatorView *playbackActivityIndicatorView;
 
@@ -130,6 +132,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self.view addGestureRecognizer:activityGestureRecognizer];
     
     self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
+    self.subtitlesButton.mediaPlayerController = s_mediaPlayerController;
     self.playbackActivityIndicatorView.mediaPlayerController = s_mediaPlayerController;
     self.timeSlider.mediaPlayerController = s_mediaPlayerController;
     self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
