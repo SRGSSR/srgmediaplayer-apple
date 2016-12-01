@@ -43,6 +43,8 @@
 {
     [super viewDidLoad];
     
+    self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", nil);
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                            target:self
                                                                                            action:@selector(done:)];
@@ -58,23 +60,18 @@
     if (audioGroup.options.count < 2) {
         audioGroup = nil;
     }
-    AVMediaSelectionGroup *visualGroup = [_player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicVisual];
     
     self.characteristics = @[];
     NSMutableDictionary *tracksGroupByCharacteristics = @{}.mutableCopy;
     
     tracksGroupByCharacteristics[AVMediaCharacteristicLegible] = legibleGroup;
     tracksGroupByCharacteristics[AVMediaCharacteristicAudible] = audioGroup;
-    tracksGroupByCharacteristics[AVMediaCharacteristicVisual] = visualGroup;
     
     if (legibleGroup) {
         self.characteristics = [self.characteristics arrayByAddingObject:AVMediaCharacteristicLegible];
     }
     if (audioGroup) {
         self.characteristics = [self.characteristics arrayByAddingObject:AVMediaCharacteristicAudible];
-    }
-    if (visualGroup) {
-        self.characteristics = [self.characteristics arrayByAddingObject:AVMediaCharacteristicVisual];
     }
     
     self.tracksGroupByCharacteristics = tracksGroupByCharacteristics.copy;
@@ -94,9 +91,6 @@
     }
     else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         return SRGMediaPlayerLocalizedString(@"Subtitles & CC", nil);
-    }
-    else if ([characteristic isEqualToString:AVMediaCharacteristicVisual]) {
-        return SRGMediaPlayerLocalizedString(@"Videos", nil);
     }
     else {
        return @"";
