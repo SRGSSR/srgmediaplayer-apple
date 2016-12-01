@@ -90,13 +90,13 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *characteristic = self.characteristics[section];
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
-        return SRGMediaPlayerLocalizedString(@"Audio Languages", nil);
+        return SRGMediaPlayerLocalizedString(@"Audios", nil);
     }
     else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
-        return SRGMediaPlayerLocalizedString(@"Subtitles", nil);
+        return SRGMediaPlayerLocalizedString(@"Subtitles & CC", nil);
     }
     else if ([characteristic isEqualToString:AVMediaCharacteristicVisual]) {
-        return SRGMediaPlayerLocalizedString(@"Video", nil);
+        return SRGMediaPlayerLocalizedString(@"Videos", nil);
     }
     else {
        return @"";
