@@ -22,11 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign) id<SRGAlternateTracksViewControllerDelegate> delegate;
 
-+ (UIPopoverController *)alternateTracksViewControllerInPopoverWithDelegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
-                                                                     player:(AVPlayer *)player;
++ (UIPopoverController *)alternateTracksViewControllerInPopoverForPlayer:(AVPlayer *)player
+                                                                delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate;
 
-+ (UINavigationController *)alternateTracksViewControllerInNavigationControllerWithDelegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
-                                                                                     player:(AVPlayer *)player;
++ (UINavigationController *)alternateTracksViewControllerInNavigationControllerForPlayer:(AVPlayer *)player
+                                                                                delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate;
+
 @end
 
 

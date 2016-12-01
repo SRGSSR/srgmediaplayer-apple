@@ -18,8 +18,6 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 @interface SRGSubtitlesButton () <SRGAlternateTracksViewControllerDelegate>
 
-@property (nonatomic) UIPopoverController *currentPopover;
-
 @end
 
 @implementation SRGSubtitlesButton
@@ -152,26 +150,18 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (IBAction)showSubtitlesMenu:(id)sender
  {
-     if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad))
-     {
-         [self.currentPopover dismissPopoverAnimated:YES];
-         self.currentPopover = nil;
-         self.currentPopover = [SRGAlternateTracksViewController alternateTracksViewControllerInPopoverWithDelegate:self
-                                                                                                             player:self.mediaPlayerController.player];
-         [self.currentPopover presentPopoverFromRect:self.bounds
-                                              inView:self
-                            permittedArrowDirections:UIPopoverArrowDirectionAny
-                                            animated:YES];
-     }
-     else {
-         UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerWithDelegate:nil
-                                                                                                                                                       player:self.mediaPlayerController.player];
-         UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?:
-         [UIApplication sharedApplication].delegate.window.rootViewController;
-         [presentedViewController presentViewController:navigationController
-                                               animated:YES
-                                             completion:nil];
-     }
+     UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerForPlayer:self.mediaPlayerController.player
+                                                                                                                                          delegate:self];
+     navigationController.modalPresentationStyle = UIModalPresentationPopover;
+     
+     navigationController.popoverPresentationController.delegate = self;
+     navigationController.popoverPresentationController.sourceView = self;
+     navigationController.popoverPresentationController.sourceRect = self.bounds;
+     
+     UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?: [UIApplication sharedApplication].delegate.window.rootViewController;
+     [presentedViewController presentViewController:navigationController
+                                           animated:YES
+                                         completion:nil];
  }
 
 #pragma mark SRGAlternateTracksViewControllerDelegate
@@ -179,7 +169,18 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 - (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController selectedMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group
 {
     [self updateAppearance];
+    UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?: [UIApplication sharedApplication].delegate.window.rootViewController;
+    [presentedViewController.presentedViewController dismissViewControllerAnimated:YES
+                                                                        completion:nil];
 }
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+
+- (UIModalPresentationStyle) adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+{
+    return UIModalPresentationNone; //You have to specify this particular value in order to make it work on iPhone.
+}
+
 #pragma mark Interface Builder integration
 
 - (void)prepareForInterfaceBuilder

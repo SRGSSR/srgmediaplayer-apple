@@ -26,15 +26,15 @@ BOOL SRGIsCharacteristicLegible(NSString *characteristic)
 @synthesize delegate = _delegate;
 @synthesize player = _player;
 
-+ (UIPopoverController *)alternateTracksViewControllerInPopoverWithDelegate:(id<SRGAlternateTracksViewControllerDelegate>)delegate player:(AVPlayer *)player
++ (UIPopoverController *)alternateTracksViewControllerInPopoverForPlayer:(AVPlayer *)player delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
 {
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerWithDelegate:delegate
-                                                                                                                                              player:player];
+    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerForPlayer:player
+                                                                                                                                         delegate:delegate];
     UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:navigationController];
     return popoverController;
 }
 
-+ (UINavigationController *)alternateTracksViewControllerInNavigationControllerWithDelegate:(id<SRGAlternateTracksViewControllerDelegate>)delegate player:(AVPlayer *)player
++ (UINavigationController *)alternateTracksViewControllerInNavigationControllerForPlayer:(AVPlayer *)player delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
 {
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
     alternateTracksViewController.delegate = delegate;
