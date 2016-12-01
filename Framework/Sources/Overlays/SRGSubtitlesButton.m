@@ -39,6 +39,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 {
     if (_mediaPlayerController) {
         [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.currentItem) context:s_kvoContext];
+        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.currentMediaSelectionOptionsByCharacteristics) context:s_kvoContext];
     }
     
     _mediaPlayerController = mediaPlayerController;
@@ -46,6 +47,8 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     
     if (mediaPlayerController) {
         [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.currentItem) options:0 context:s_kvoContext];
+        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.currentMediaSelectionOptionsByCharacteristics) options:0 context:s_kvoContext];
+
     }
 }
 
@@ -121,7 +124,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
             self.hidden = NO;
             self.enabled = YES;
             
-            AVMediaSelectionOption *currentOption = [playerItem selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
+            AVMediaSelectionOption *currentOption = mediaPlayerController.currentMediaSelectionOptionsByCharacteristics[AVMediaCharacteristicLegible];
             self.selected = (currentOption != nil);
         }
     }
@@ -137,7 +140,8 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 {
     if (context == s_kvoContext) {
         SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
-        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.currentItem)]) {
+        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.currentItem)] ||
+            [keyPath isEqualToString:@keypath(mediaPlayerController.currentMediaSelectionOptionsByCharacteristics)]) {
             [self updateAppearance];
         }
     }
@@ -168,7 +172,6 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController selectedMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group
 {
-    [self updateAppearance];
     UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?: [UIApplication sharedApplication].delegate.window.rootViewController;
     [presentedViewController.presentedViewController dismissViewControllerAnimated:YES
                                                                         completion:nil];

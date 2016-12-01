@@ -142,4 +142,9 @@ OBJC_EXTERN NSString * const SRGMediaPlayerNextSegmentKey;                      
 // Information available for `SRGMediaPlayerSegmentDidStartNotification`, `SRGMediaPlayerSegmentDidEndNotification` and `SRGMediaPlayerPlaybackStateDidChangeNotification`
 OBJC_EXTERN NSString * const SRGMediaPlayerSelectionKey;                                    // Key to an `NSNumber` wrapping a boolean, set to YES iff the notification results from a segment selection
 
+OBJC_EXTERN NSString * const SRGMediaSelectionOptionDidChangeNotification;                  // Notification sent when a media selection option changed
+OBJC_EXTERN NSString * const SRGMediaSelectionOptionCharacteristicKey;                      // The media selection option characteristic, concerns by the change notification
+OBJC_EXTERN NSString * const SRGMediaSelectionOptionPreviousKey;                            // The previously media selection option, if any, as an AVMediaSelectionOption object
+OBJC_EXTERN NSString * const SRGMediaSelectionOptionNewKey;                                 // The new media selection option, if any, as an AVMediaSelectionOption object
+
 NS_ASSUME_NONNULL_END

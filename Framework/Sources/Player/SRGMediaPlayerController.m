@@ -47,6 +47,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @property (nonatomic, weak) id<SRGSegment> targetSegment;
 @property (nonatomic, weak) id<SRGSegment> currentSegment;
 
+@property (nonatomic) NSDictionary<NSString *, AVMediaSelectionOption *> *currentMediaSelectionOptionsByCharacteristics;
+
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
 @property (nonatomic) NSValue *startTimeValue;
@@ -70,6 +72,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         self.liveTolerance = SRGMediaPlayerLiveDefaultTolerance;
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
+        self.currentMediaSelectionOptionsByCharacteristics = [NSDictionary dictionary];
     }
     return self;
 }
@@ -716,6 +719,34 @@ withToleranceBefore:(CMTime)toleranceBefore
    }];
 }
 
+#pragma mark Media Options
+
+- (void)updateMediaSelectionOptionsByCharacteristics
+{
+    NSArray<NSString *> *characteristics = [self.player.currentItem.asset availableMediaCharacteristicsWithMediaSelectionOptions];
+    for (NSString *characteristic in characteristics) {
+        AVMediaSelectionGroup *mediaGroup = [self.player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:characteristic];
+        AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:mediaGroup];
+        AVMediaSelectionOption *previousOptionInGroup = self.currentMediaSelectionOptionsByCharacteristics[characteristic];
+        if (!((previousOptionInGroup && [previousOptionInGroup isEqual:currentOptionInGroup]) || (!previousOptionInGroup && !currentOptionInGroup))) {
+            NSMutableDictionary *updateDictionary = self.currentMediaSelectionOptionsByCharacteristics.mutableCopy;
+            updateDictionary[characteristic] = currentOptionInGroup;
+            self.currentMediaSelectionOptionsByCharacteristics = updateDictionary.copy;
+            
+            NSMutableDictionary *userInfo = [@{ SRGMediaSelectionOptionCharacteristicKey : characteristic } mutableCopy];
+            if (previousOptionInGroup) {
+                userInfo[SRGMediaSelectionOptionPreviousKey] = previousOptionInGroup;
+            }
+            if (currentOptionInGroup) {
+                userInfo[SRGMediaSelectionOptionNewKey] = currentOptionInGroup;
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaSelectionOptionDidChangeNotification
+                                                                object:self
+                                                              userInfo:[userInfo copy]];
+        }
+    }
+}
+
 #pragma mark Time observers
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
@@ -727,7 +758,8 @@ withToleranceBefore:(CMTime)toleranceBefore
     @weakify(self)
     self.segmentPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
-        [self updateSegmentStatusForPlaybackState:self.playbackState time:time ];
+        [self updateSegmentStatusForPlaybackState:self.playbackState time:time];
+        [self updateMediaSelectionOptionsByCharacteristics];
     }];
 }
 

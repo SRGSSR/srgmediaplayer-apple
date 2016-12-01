@@ -340,6 +340,11 @@ withToleranceBefore:(CMTime)toleranceBefore
 @property (nonatomic, readonly, nullable) NSArray<id<SRGSegment>> *segments;
 
 /**
+ *  Current selected MediaSelectionOptions by characteristics
+ */
+@property (nonatomic, readonly) NSDictionary<NSString *, AVMediaSelectionOption *> *currentMediaSelectionOptionsByCharacteristics;
+
+/**
  *  The user info which has been associated with the media being played
  */
 @property (nonatomic, readonly, nullable) NSDictionary *userInfo;
