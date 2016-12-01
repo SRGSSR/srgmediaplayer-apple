@@ -103,7 +103,7 @@ BOOL SRGIsCharacteristicLegible(NSString *characteristic)
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
         return SRGMediaPlayerLocalizedString(@"Audio", nil);
     }
-    else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
+    else if (SRGIsCharacteristicLegible(characteristic)) {
         return SRGMediaPlayerLocalizedString(@"Subtitles & CC", nil);
     }
     else {
@@ -120,7 +120,7 @@ BOOL SRGIsCharacteristicLegible(NSString *characteristic)
 {
     NSString *characteristic = self.characteristics[section];
     AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
-    return [characteristic isEqual:AVMediaCharacteristicLegible] ? group.options.count + 1 : group.options.count;
+    return SRGIsCharacteristicLegible(characteristic) ? group.options.count + 1 : group.options.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
