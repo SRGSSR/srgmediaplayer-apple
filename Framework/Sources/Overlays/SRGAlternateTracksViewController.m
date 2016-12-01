@@ -7,10 +7,15 @@
 
 #import "NSBundle+SRGMediaPlayer.h"
 
+BOOL SRGIsCharacteristicLegible(NSString *characteristic)
+{
+    return [characteristic isEqual:AVMediaCharacteristicLegible];
+}
+
 @interface SRGAlternateTracksViewController ()
 
-@property (nonatomic) NSArray *characteristics;
-@property (nonatomic) NSDictionary *tracksGroupByCharacteristics;
+@property (nonatomic) NSArray<NSString *> *characteristics;
+@property (nonatomic) NSDictionary<NSString *, AVMediaSelectionGroup *> *tracksGroupByCharacteristics;
 
 @property (nonatomic) AVPlayer *player;
 
@@ -87,7 +92,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *characteristic = self.characteristics[section];
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
-        return SRGMediaPlayerLocalizedString(@"Audios", nil);
+        return SRGMediaPlayerLocalizedString(@"Audio", nil);
     }
     else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         return SRGMediaPlayerLocalizedString(@"Subtitles & CC", nil);
@@ -106,7 +111,7 @@
 {
     NSString *characteristic = self.characteristics[section];
     AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
-    return group.allowsEmptySelection ? group.options.count + 1 : group.options.count;
+    return [characteristic isEqual:AVMediaCharacteristicLegible] ? group.options.count + 1 : group.options.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -121,13 +126,13 @@
     NSString *characteristic = self.characteristics[indexPath.section];
     AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
     // OFF option for subtitles needs a customisation
-    if (group.allowsEmptySelection && indexPath.row == 0) {
-        cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Off", @"Option to remove a media option (like subtitles)");
+    if (SRGIsCharacteristicLegible(characteristic) && indexPath.row == 0) {
+        cell.textLabel.text = SRGMediaPlayerLocalizedString(@"No subtitles", @"Option to remove subtitles");
         AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
         cell.accessoryType = (!currentOptionInGroup) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     else {
-        AVMediaSelectionOption *option = [characteristic isEqual:AVMediaCharacteristicLegible] ? group.options[indexPath.row -1] : group.options[indexPath.row];
+        AVMediaSelectionOption *option = SRGIsCharacteristicLegible(characteristic) ? group.options[indexPath.row -1] : group.options[indexPath.row];
         cell.textLabel.text = option.displayName;
         
         AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
@@ -143,8 +148,8 @@
     AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
     AVMediaSelectionOption *option = nil;
     // OFF option for subtitles needs a customisation
-    if (group.allowsEmptySelection && indexPath.row != 0){
-        option = [characteristic isEqual:AVMediaCharacteristicLegible] ? group.options[indexPath.row -1] : group.options[indexPath.row];
+    if (!(SRGIsCharacteristicLegible(characteristic) && indexPath.row == 0)) {
+        option = SRGIsCharacteristicLegible(characteristic) ? group.options[indexPath.row -1] : group.options[indexPath.row];
     }
     
     [self.player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
