@@ -1,41 +1,41 @@
-//
+// 
 // Copyright (c) SRG. All rights reserved.
-//
+// 
 // License information is available from the LICENSE file.
-//
-
+// 
 /* Slider state when playing AOD/VOD, in percentage */
-"%.0f%% played" = "%.0f%% played";
+
+"%.0f%% played" = "%.0f%% riprodotto";
 
 /* Slider state when playing DVR */
-"%@ late to direct" = "%@ late to direct";
+"%@ late to direct" = "%@ rispetto al live";
 
 /* Label on slider for time played */
-"%@ played" = "%@ played";
+"%@ played" = "%@ riprodotto";
 
 /* Label on slider for time remaining */
-"%@ remaining" = "%@ remaining";
+"%@ remaining" = "%@ restante";
 
 /* AirPlay button */
 "AirPlay" = "AirPlay";
 
 /* Time state if infinity duration */
-"Infinity duration" = "Infinity duration";
+"Infinity duration" = "Senza limiti di tempo";
 
 /* Time state if no duration */
-"No duration" = "No duration";
+"No duration" = "Nessuna durata";
 
 /* Slider state when nothing to play */
-"Nothing playing" = "Nothing playing";
+"Nothing playing" = "Nulla in riproduzione";
 
 /* Pause state of the Play/Pause/Stop button */
-"Pause" = "Pause";
+"Pause" = "Pausa";
 
 /* Play state of the Play/Pause/Stop button */
 "Play" = "Play";
 
 /* Slider state when playing live */
-"Playing in live" = "Playing in live";
+"Playing in live" = "Live";
 
 /* Stop state of the Play/Pause/Stop button */
 "Stop" = "Stop";
@@ -44,5 +44,4 @@
 "Stop Picture in Picture" = "Stop Picture in Picture";
 
 /* Picture In Picture button state, when PiP is available */
-"Switch to Picture in Picture" = "Switch to Picture in Picture";
-
+"Switch to Picture in Picture" = "Passare a Picture in Picture";

@@ -1,10 +1,10 @@
-//
+// 
 // Copyright (c) SRG. All rights reserved.
-//
+// 
 // License information is available from the LICENSE file.
-//
-
+// 
 /* Slider state when playing AOD/VOD, in percentage */
+
 "%.0f%% played" = "%.0f%% played";
 
 /* Slider state when playing DVR */
@@ -45,4 +45,3 @@
 
 /* Picture In Picture button state, when PiP is available */
 "Switch to Picture in Picture" = "Switch to Picture in Picture";
-
