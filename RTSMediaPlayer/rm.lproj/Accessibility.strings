@@ -8,40 +8,40 @@
 "%.0f%% played" = "%.0f%% played";
 
 /* Slider state when playing DVR */
-"%@ late to direct" = "%@ late to direct";
+"%@ late to direct" = "%@ retard tar live";
 
 /* Label on slider for time played */
-"%@ played" = "%@ played";
+"%@ played" = "%@ reproducì";
 
 /* Label on slider for time remaining */
-"%@ remaining" = "%@ remaining";
+"%@ remaining" = "%@ restant";
 
 /* AirPlay button */
 "AirPlay" = "AirPlay";
 
 /* Time state if infinity duration */
-"Infinity duration" = "Infinity duration";
+"Infinity duration" = "Senza fin";
 
 /* Time state if no duration */
-"No duration" = "No duration";
+"No duration" = "Durada nunenconuschenta";
 
 /* Slider state when nothing to play */
-"Nothing playing" = "Nothing playing";
+"Nothing playing" = "Nagut da reproducir";
 
 /* Pause state of the Play/Pause/Stop button */
-"Pause" = "Pause";
+"Pause" = "Pausa";
 
 /* Play state of the Play/Pause/Stop button */
-"Play" = "Play";
+"Play" = "Laschar ir";
 
 /* Slider state when playing live */
-"Playing in live" = "Playing in live";
+"Playing in live" = "Live";
 
 /* Stop state of the Play/Pause/Stop button */
 "Stop" = "Stop";
 
 /* Picture In Picture button state, when PiP is active */
-"Stop Picture in Picture" = "Stop Picture in Picture";
+"Stop Picture in Picture" = "Terminar maletg en maletg";
 
 /* Picture In Picture button state, when PiP is available */
-"Switch to Picture in Picture" = "Switch to Picture in Picture";
+"Switch to Picture in Picture" = "Svitschar tar maletg en maletg";
