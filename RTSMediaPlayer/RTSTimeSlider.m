@@ -461,6 +461,11 @@ static NSString *RTSTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
 }
 
+- (NSString *)accessibilityValue
+{
+    return nil;
+}
+
 #pragma mark Notifications
 
 - (void)timesliderPlaybackStateDidChange:(NSNotification *)notification
