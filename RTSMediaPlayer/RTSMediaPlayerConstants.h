@@ -200,3 +200,26 @@ FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeValueInfoKey;
  *  The key to access an `NSNumber` (wrapping a boolean) indicating whether the change is requested by the user or not.
  */
 FOUNDATION_EXTERN NSString * const RTSMediaPlaybackSegmentChangeUserSelectInfoKey;
+
+/**
+ *  ---------------------------
+ *  @name Accessibility strings
+ *  ---------------------------
+ *
+ *  You can use those string, or the macro SRGMediaPlayerAccessibityLocalizedString(key, nil) to get other strings
+ */
+
+/**
+ *  A translated accessibility label, could be use for a Go to Live button.
+ */
+FOUNDATION_EXTERN NSString * RTSMediaPlaybackButtonGoToLiveAccessibilityLabel;
+
+/**
+ *  A translated accessibility label, could be use for backward button, Use it as a pre-formatted string: "%@ backward", time.
+ */
+FOUNDATION_EXTERN NSString * RTSMediaPlaybackButtonBackwardAccessibilityLabelFormat;
+
+/**
+ *  A translated accessibility label, could be use for forward button. Use it as a pre-formatted string: "%@ forward", time.
+ */
+FOUNDATION_EXTERN NSString * RTSMediaPlaybackButtonForwardAccessibilityLabelFormat;

@@ -10,7 +10,18 @@
 #import "RTSMediaPlayerIconTemplate.h"
 #import "NSBundle+RTSMediaPlayer.h"
 
+NSString * RTSMediaPlaybackButtonGoToLiveAccessibilityLabel = nil;
+NSString * RTSMediaPlaybackButtonBackwardAccessibilityLabelFormat = nil;
+NSString * RTSMediaPlaybackButtonForwardAccessibilityLabelFormat = nil;
+
 @implementation RTSMediaPlayerPlaybackButton
+
+- (void)initialize
+{
+	RTSMediaPlaybackButtonGoToLiveAccessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Go to live", @"A go to live button");
+	RTSMediaPlaybackButtonBackwardAccessibilityLabelFormat = SRGMediaPlayerAccessibityLocalizedString(@"%@ backward", @"A seek backward button");
+	RTSMediaPlaybackButtonForwardAccessibilityLabelFormat = SRGMediaPlayerAccessibityLocalizedString(@"%@ forward", @"A seek forward button");
+}
 
 - (void) dealloc
 {

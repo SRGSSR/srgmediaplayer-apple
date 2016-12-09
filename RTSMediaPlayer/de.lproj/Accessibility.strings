@@ -1,11 +1,11 @@
-// 
-// Copyright (c) SRG. All rights reserved.
-// 
-// License information is available from the LICENSE file.
-// 
 /* Slider state when playing AOD/VOD, in percentage */
-
 "%.0f%% played" = "%.0f%% gespielt";
+
+/* A seek backward button */
+"%@ backward" = "%@ backward";
+
+/* A seek forward button */
+"%@ forward" = "%@ forward";
 
 /* Slider state when playing DVR */
 "%@ late to direct" = "%@ versetzt zu live";
@@ -18,6 +18,9 @@
 
 /* AirPlay button */
 "AirPlay" = "Airplay";
+
+/* A go to live button */
+"Go to live" = "Go to live";
 
 /* Time state if infinity duration */
 "Infinity duration" = "ohne Ende";
