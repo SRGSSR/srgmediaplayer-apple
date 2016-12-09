@@ -12,6 +12,7 @@
  *  ---------------
  */
 
+FOUNDATION_EXTERN NSTimeInterval const RTSMediaPlayerOverlayHidingDefaultDelay; // 5 seconds.
 FOUNDATION_EXTERN NSTimeInterval const RTSMediaLiveDefaultTolerance; // in seconds.
 
 /**

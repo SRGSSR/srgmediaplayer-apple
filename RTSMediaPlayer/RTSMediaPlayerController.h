@@ -140,8 +140,8 @@
 @property (copy) IBOutletCollection(UIView) NSArray *overlayViews;
 
 /**
- *  The delay after which the overlay views are hidden. Default to `RTSMediaPlayerOverlayHidingDelay` (5 sec).
- *  Ignored if <= 0.0;
+ *  The delay after which the overlay views are hidden. Default to `RTSMediaPlayerOverlayHidingDefaultDelay` (5 sec).
+ *  Never hide if == 0.0. Ignored if < 0.0;
  */
 @property (assign) NSTimeInterval overlayViewsHidingDelay;
 
