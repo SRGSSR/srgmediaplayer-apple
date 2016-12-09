@@ -2,10 +2,10 @@
 "%.0f%% played" = "%.0f%% riprodotto";
 
 /* A seek backward button */
-"%@ backward" = "%@ backward";
+"%@ backward" = "%@ indietro";
 
 /* A seek forward button */
-"%@ forward" = "%@ forward";
+"%@ forward" = "%@ avanti";
 
 /* Slider state when playing DVR */
 "%@ late to direct" = "%@ rispetto al live";
@@ -20,7 +20,7 @@
 "AirPlay" = "AirPlay";
 
 /* A go to live button */
-"Go to live" = "Go to live";
+"Go to live" = "Vai alla diretta";
 
 /* Time state if infinity duration */
 "Infinity duration" = "Senza limiti di tempo";
