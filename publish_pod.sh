@@ -1,2 +1,2 @@
-pod repo push bitbucket-srgpodspecs --allow-warnings
+pod trunk push SRGMediaPlayer.podspec
 
