@@ -8,8 +8,20 @@
 
 #import "RTSMediaPlayerController.h"
 #import "RTSMediaPlayerIconTemplate.h"
+#import "NSBundle+RTSMediaPlayer.h"
+
+NSString * RTSMediaPlaybackButtonGoToLiveAccessibilityLabel = nil;
+NSString * RTSMediaPlaybackButtonBackwardAccessibilityLabelFormat = nil;
+NSString * RTSMediaPlaybackButtonForwardAccessibilityLabelFormat = nil;
 
 @implementation RTSMediaPlayerPlaybackButton
+
+- (void)initialize
+{
+	RTSMediaPlaybackButtonGoToLiveAccessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Go to live", @"A go to live button");
+	RTSMediaPlaybackButtonBackwardAccessibilityLabelFormat = SRGMediaPlayerAccessibityLocalizedString(@"%@ backward", @"A seek backward button");
+	RTSMediaPlaybackButtonForwardAccessibilityLabelFormat = SRGMediaPlayerAccessibityLocalizedString(@"%@ forward", @"A seek forward button");
+}
 
 - (void) dealloc
 {
@@ -77,15 +89,18 @@
 		if ([self hasStopButton]) {
             normalImage = self.stopImage ?: [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.normalColor];
             highlightedImage = self.stopImage ?: [RTSMediaPlayerIconTemplate stopImageWithSize:self.bounds.size color:self.hightlightColor];
+            self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Stop", @"Stop state of the Play/Pause/Stop button");
 		}
 		else {
             normalImage = self.pauseImage ?: [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.normalColor];
             highlightedImage = self.pauseImage ?: [RTSMediaPlayerIconTemplate pauseImageWithSize:self.bounds.size color:self.hightlightColor];
+            self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Pause", @"Pause state of the Play/Pause/Stop button");
 		}
 	}
 	else {
         normalImage = self.playImage ?: [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.normalColor];
         highlightedImage = self.playImage ?: [RTSMediaPlayerIconTemplate playImageWithSize:self.bounds.size color:self.hightlightColor];
+        self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Play", @"Play state of the Play/Pause/Stop button");
 	}
 	[self setImage:normalImage forState:UIControlStateNormal];
 	[self setImage:highlightedImage forState:UIControlStateHighlighted];

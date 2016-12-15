@@ -1,0 +1,50 @@
+/* Slider state when playing AOD/VOD, in percentage */
+"%.0f%% played" = "%.0f%% gespielt";
+
+/* A seek backward button */
+"%@ backward" = "%@ backward";
+
+/* A seek forward button */
+"%@ forward" = "%@ forward";
+
+/* Slider state when playing DVR */
+"%@ late to direct" = "%@ versetzt zu live";
+
+/* Label on slider for time played */
+"%@ played" = "%@ gespielt";
+
+/* Label on slider for time remaining */
+"%@ remaining" = "noch %@";
+
+/* AirPlay button */
+"AirPlay" = "Airplay";
+
+/* A go to live button */
+"Go to live" = "Go to live";
+
+/* Time state if infinity duration */
+"Infinity duration" = "ohne Ende";
+
+/* Time state if no duration */
+"No duration" = "Dauer unbekannt";
+
+/* Slider state when nothing to play */
+"Nothing playing" = "Kein Medienelement zum Abspielen vorhanden";
+
+/* Pause state of the Play/Pause/Stop button */
+"Pause" = "Pause";
+
+/* Play state of the Play/Pause/Stop button */
+"Play" = "Abspielen";
+
+/* Slider state when playing live */
+"Playing in live" = "Live";
+
+/* Stop state of the Play/Pause/Stop button */
+"Stop" = "Stop";
+
+/* Picture In Picture button state, when PiP is active */
+"Stop Picture in Picture" = "Bild im Bild Modus beenden";
+
+/* Picture In Picture button state, when PiP is available */
+"Switch to Picture in Picture" = "Bild im Bild Modus starten";

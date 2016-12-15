@@ -74,6 +74,12 @@ static void commonInit(RTSPictureInPictureButton *self);
 	
 	UIImage *image = pictureInPictureController.pictureInPictureActive ? RTSPictureInPictureButtonStopImage() : RTSPictureInPictureButtonStartImage();
 	[self setImage:image forState:UIControlStateNormal];
+    if (pictureInPictureController.pictureInPictureActive) {
+        self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Stop Picture in Picture", @"Picture In Picture button state, when PiP is active");
+    }
+    else {
+        self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Switch to Picture in Picture", @"Picture In Picture button state, when PiP is available");
+    }
 }
 
 #pragma mark Actions
@@ -110,6 +116,7 @@ static void commonInit(RTSPictureInPictureButton *self);
 static void commonInit(RTSPictureInPictureButton *self)
 {
 	[self addTarget:self action:@selector(togglePictureInPicture:) forControlEvents:UIControlEventTouchUpInside];
+    self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Switch to Picture in Picture", @"Picture In Picture button state, when PiP is available");
 }
 
 #pragma mark Functions

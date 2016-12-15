@@ -35,6 +35,24 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 		return [NSString stringWithFormat:@"%@%02d:%02d", negative ? @"-" : @"", minute, second];
 }
 
+static NSString *RTSTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
+{
+    if (isnan(seconds))
+        return SRGMediaPlayerAccessibityLocalizedString(@"No duration", @"Time state if no duration");
+    else if (isinf(seconds))
+        return SRGMediaPlayerAccessibityLocalizedString(@"Infinity duration", @"Time state if infinity duration");
+    
+    static dispatch_once_t onceToken;
+    static NSDateComponentsFormatter *dateComponentsFormatter;
+    dispatch_once(&onceToken, ^{
+        dateComponentsFormatter = [[NSDateComponentsFormatter alloc] init];
+        dateComponentsFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
+        dateComponentsFormatter.allowedUnits = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    });
+    
+    return [dateComponentsFormatter stringFromTimeInterval:ABS(seconds)];
+}
+
 @interface RTSTimeSlider ()
 
 @property (weak) id periodicTimeObserver;
@@ -171,11 +189,15 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 	if (self.live)
 	{
 		self.valueLabel.text = @"--:--";
+        self.valueLabel.accessibilityLabel = nil;
 		self.timeLeftValueLabel.text = RTSMediaPlayerLocalizedString(@"Live", nil);
+        self.timeLeftValueLabel.accessibilityLabel = nil;
 	}
 	else {
 		self.valueLabel.text = RTSTimeSliderFormatter(self.value);
+        self.valueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%@ played", @"Label on slider for time played"), RTSTimeSliderAccessibilityFormatter(self.value)];
 		self.timeLeftValueLabel.text = RTSTimeSliderFormatter(self.value - self.maximumValue);
+        self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), RTSTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
 	}
 }
 
@@ -416,6 +438,32 @@ static NSString *RTSTimeSliderFormatter(NSTimeInterval seconds)
 														name:RTSMediaPlayerPlaybackStateDidChangeNotification
 													  object:self.mediaPlayerController];
 	}
+}
+
+- (NSString *)accessibilityLabel
+{
+    AVPlayerItem *playerItem = self.mediaPlayerController.playerItem;
+    if (! playerItem || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateIdle || self.mediaPlayerController.playbackState == RTSMediaPlaybackStateEnded
+        || playerItem.status != AVPlayerItemStatusReadyToPlay) {
+        return SRGMediaPlayerAccessibityLocalizedString(@"Nothing playing", @"Slider state when nothing to play");;
+    }
+    else if (self.live)
+    {
+        return SRGMediaPlayerAccessibityLocalizedString(@"Playing in live", @"Slider state when playing live");
+    }
+    else if (self.mediaPlayerController.streamType == RTSMediaStreamTypeDVR) {
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%@ late to direct", @"Slider state when playing DVR"),
+                RTSTimeSliderAccessibilityFormatter(self.maximumValue - self.value)];
+    }
+    else {
+        CGFloat ratio = self.value / self.maximumValue;
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%.0f%% played", @"Slider state when playing AOD/VOD, in percentage"), round(ratio * 100) ];
+    }
+}
+
+- (NSString *)accessibilityValue
+{
+    return nil;
 }
 
 #pragma mark Notifications

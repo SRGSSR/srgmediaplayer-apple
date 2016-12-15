@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0890DBAF1DED98B600313B0C /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0890DBA91DED989400313B0C /* Accessibility.strings */; };
 		3E531318629E78FDF4A8A6C7 /* libPods-SRGMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFBCB61B782D585E9C06E29E /* libPods-SRGMediaPlayer.a */; };
 		9F43A6E11B1610D0007832B7 /* RTSMediaSegmentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F43A6E01B1610D0007832B7 /* RTSMediaSegmentsController.m */; };
 		9F598B391B305FC400201366 /* RTSPlaybackActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F598B381B305FC400201366 /* RTSPlaybackActivityIndicatorView.m */; };
@@ -127,6 +128,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0890DBAA1DED989400313B0C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Accessibility.strings; sourceTree = "<group>"; };
+		0890DBAB1DED989900313B0C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Accessibility.strings; sourceTree = "<group>"; };
+		0890DBAC1DED989A00313B0C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Accessibility.strings; sourceTree = "<group>"; };
+		0890DBAD1DED989B00313B0C /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Accessibility.strings; sourceTree = "<group>"; };
+		0890DBAE1DED989C00313B0C /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Accessibility.strings; sourceTree = "<group>"; };
 		1FFDEE2B53B3CCCB732DB3B6 /* Pods-SRGMediaPlayer-SRGMediaPlayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-SRGMediaPlayerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer-SRGMediaPlayerTests/Pods-SRGMediaPlayer-SRGMediaPlayerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8489F6A3D992C5C800B81305 /* Pods-SRGMediaPlayerAbstract-SRGMediaPlayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayerAbstract-SRGMediaPlayerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayerAbstract-SRGMediaPlayerTests/Pods-SRGMediaPlayerAbstract-SRGMediaPlayerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		85428878003956F2E6B71BE1 /* libPods-SRGMediaPlayerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -416,6 +422,7 @@
 		E699062C1AFB9684005ED143 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0890DBA91DED989400313B0C /* Accessibility.strings */,
 				E60F1C0B1B21C96F00F3272F /* Localizable.strings */,
 				E6C2F4981BE895100003DEC6 /* picture_in_picture_start_button.png */,
 				E6C2F4991BE895100003DEC6 /* picture_in_picture_start_button@2x.png */,
@@ -552,6 +559,7 @@
 				E6D220161B21C9A00009BB17 /* Localizable.strings in Resources */,
 				E69906301AFB969F005ED143 /* thumb_timeline_slider@2x.png in Resources */,
 				C2AB24EB1ABC186100EB51B8 /* RTSMediaPlayerViewController.xib in Resources */,
+				0890DBAF1DED98B600313B0C /* Accessibility.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,6 +718,18 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		0890DBA91DED989400313B0C /* Accessibility.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0890DBAA1DED989400313B0C /* en */,
+				0890DBAB1DED989900313B0C /* fr */,
+				0890DBAC1DED989A00313B0C /* de */,
+				0890DBAD1DED989B00313B0C /* it */,
+				0890DBAE1DED989C00313B0C /* rm */,
+			);
+			name = Accessibility.strings;
+			sourceTree = "<group>";
+		};
 		E60F1C0B1B21C96F00F3272F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

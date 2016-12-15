@@ -23,7 +23,7 @@
 static const void * const RTSMediaPlayerPictureInPicturePossibleContext = &RTSMediaPlayerPictureInPicturePossibleContext;
 static const void * const RTSMediaPlayerPictureInPictureActiveContext = &RTSMediaPlayerPictureInPictureActiveContext;
 
-NSTimeInterval const RTSMediaPlayerOverlayHidingDelay = 5.0;
+NSTimeInterval const RTSMediaPlayerOverlayHidingDefaultDelay = 5.0;
 NSTimeInterval const RTSMediaLiveDefaultTolerance = 30.0;		// same tolerance as built-in iOS player
 
 NSString * const RTSMediaPlayerErrorDomain = @"RTSMediaPlayerErrorDomain";
@@ -136,7 +136,7 @@ NSString * const RTSMediaPlayerPlaybackSeekingUponBlockingReasonInfoKey = @"Bloc
 	_allowsExternalPlayback = YES;
 	_usesExternalPlaybackWhileExternalScreenIsActive = NO;
 	
-	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDelay;
+	self.overlayViewsHidingDelay = RTSMediaPlayerOverlayHidingDefaultDelay;
 	self.periodicTimeObservers = [NSMutableDictionary dictionary];
 	
 	[self.stateMachine activate];
@@ -797,7 +797,7 @@ static const void * const AVPlayerItemBufferEmptyContext = &AVPlayerItemBufferEm
 			return;
 		}
 		
-		if ((self.player.rate == 1) && [self.stateMachine.currentState isEqual:self.pausedState]) {
+		if ((self.player.rate == 1) && ([self.stateMachine.currentState isEqual:self.pausedState] || [self.stateMachine.currentState isEqual:self.stalledState])) {
 			[self fireEvent:self.playEvent userInfo:nil];
 		}
 		
@@ -1190,7 +1190,7 @@ static void LogProperties(id object)
 		@weakify(self)
 		dispatch_source_set_event_handler(_idleTimer, ^{
 			@strongify(self)
-			if ([self.stateMachine.currentState isEqual:self.playingState])
+			if ([self.stateMachine.currentState isEqual:self.playingState] && self.overlayViewsHidingDelay != 0.0)
 				[self setOverlaysVisible:NO];
 		});
 		dispatch_resume(_idleTimer);
@@ -1200,7 +1200,7 @@ static void LogProperties(id object)
 
 - (void)resetIdleTimer
 {
-	int64_t delayInNanoseconds = ((self.overlayViewsHidingDelay > 0.0) ? self.overlayViewsHidingDelay : RTSMediaPlayerOverlayHidingDelay) * NSEC_PER_SEC;
+	int64_t delayInNanoseconds = ((self.overlayViewsHidingDelay > 0.0) ? self.overlayViewsHidingDelay : RTSMediaPlayerOverlayHidingDefaultDelay) * NSEC_PER_SEC;
 	int64_t toleranceInNanoseconds = 0.1 * NSEC_PER_SEC;
 	dispatch_source_set_timer(self.idleTimer, dispatch_time(DISPATCH_TIME_NOW, delayInNanoseconds), DISPATCH_TIME_FOREVER, toleranceInNanoseconds);
 }

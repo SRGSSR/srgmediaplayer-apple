@@ -10,6 +10,7 @@
  *  Return a localized string from the media player resource bundle
  */
 #define RTSMediaPlayerLocalizedString(key, comment) [[NSBundle RTSMediaPlayerBundle] localizedStringForKey:(key) value:@"" table:nil]
+#define SRGMediaPlayerAccessibityLocalizedString(key, comment) [[NSBundle RTSMediaPlayerBundle] localizedStringForKey:(key) value:@"" table:@"Accessibility"]
 
 @interface NSBundle (RTSMediaPlayer)
 
