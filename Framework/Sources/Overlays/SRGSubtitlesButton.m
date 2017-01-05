@@ -110,16 +110,20 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
         // Get available subtitles. If no one, the button disappears or disable. if one or more, display the button. If
         // one of subtitles is displayed, set the button in the selected state.
         AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
-        AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        NSArray *options = subtitleGroup.options;
         
-        if (!options.count) {
-            self.hidden = YES && !self.alwaysVisible;
-            self.enabled = NO;
-        }
-        else {
+        AVMediaSelectionGroup *legibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        NSArray *legibleOptions = legibleGroup.options;
+        
+        AVMediaSelectionGroup *audibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        NSArray *audibleOptions = audibleGroup.options;
+        
+        if (legibleOptions.count != 0 || audibleOptions.count > 1) {
             self.hidden = NO;
             self.enabled = YES;
+        }
+        else {
+            self.hidden = YES && !self.alwaysVisible;
+            self.enabled = NO;
         }
     }
     else {
