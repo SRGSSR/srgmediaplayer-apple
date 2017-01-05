@@ -18,6 +18,8 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 @interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate>
 
+@property (nonatomic, getter=isFakedForInterfaceBuilder) BOOL fakedForInterfaceBuilder;
+
 @end
 
 @implementation SRGTracksButton
@@ -101,25 +103,31 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    // Replace with custom image to be able to apply a tint color. The button color is automagically inherited from
-    // the enclosing view (this works both at runtime and when rendering in Interface Builder)
-    [self setImage:self.image forState:UIControlStateNormal];
-    [self setImage:self.selectedImage forState:UIControlStateSelected];
-    
-    if (mediaPlayerController) {
-        // Get available subtitles. If no one, the button disappears or disable. if one or more, display the button. If
-        // one of subtitles is displayed, set the button in the selected state.
-        AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
+    if (! self.fakedForInterfaceBuilder) {
+        // Replace with custom image to be able to apply a tint color. The button color is automagically inherited from
+        // the enclosing view (this works both at runtime and when rendering in Interface Builder)
+        [self setImage:self.image forState:UIControlStateNormal];
+        [self setImage:self.selectedImage forState:UIControlStateSelected];
         
-        AVMediaSelectionGroup *legibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        NSArray *legibleOptions = legibleGroup.options;
-        
-        AVMediaSelectionGroup *audibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-        NSArray *audibleOptions = audibleGroup.options;
-        
-        if (legibleOptions.count != 0 || audibleOptions.count > 1) {
-            self.hidden = NO;
-            self.enabled = YES;
+        if (mediaPlayerController) {
+            // Get available subtitles. If no one, the button disappears or disable. if one or more, display the button. If
+            // one of subtitles is displayed, set the button in the selected state.
+            AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
+            
+            AVMediaSelectionGroup *legibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+            NSArray *legibleOptions = legibleGroup.options;
+            
+            AVMediaSelectionGroup *audibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+            NSArray *audibleOptions = audibleGroup.options;
+            
+            if (legibleOptions.count != 0 || audibleOptions.count > 1) {
+                self.hidden = NO;
+                self.enabled = YES;
+            }
+            else {
+                self.hidden = YES && !self.alwaysVisible;
+                self.enabled = NO;
+            }
         }
         else {
             self.hidden = YES && !self.alwaysVisible;
@@ -127,8 +135,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
         }
     }
     else {
-        self.hidden = YES && !self.alwaysVisible;
-        self.enabled = NO;
+        self.hidden = NO;
     }
 }
 
@@ -187,6 +194,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 {
     [super prepareForInterfaceBuilder];
     
+    self.fakedForInterfaceBuilder = YES;
     [self setImage:self.image forState:UIControlStateNormal];
 }
 
