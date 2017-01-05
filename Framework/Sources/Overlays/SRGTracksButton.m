@@ -13,6 +13,8 @@
 
 static void *s_kvoContext = &s_kvoContext;
 
+static void commonInit(SRGTracksButton *self);
+
 static UIImage *SRGTracksButtonImage(void);
 static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
@@ -29,6 +31,22 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 @synthesize alwaysVisible = _alwaysVisible;
 
 #pragma mark Object lifecycle
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+        commonInit(self);
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super initWithCoder:aDecoder]) {
+        commonInit(self);
+    }
+    return self;
+}
 
 - (void)dealloc
 {
@@ -201,6 +219,11 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 @end
 
 #pragma mark Functions
+
+static void commonInit(SRGTracksButton *self)
+{
+    self.hidden = YES;
+}
 
 static UIImage *SRGTracksButtonImage(void)
 {
