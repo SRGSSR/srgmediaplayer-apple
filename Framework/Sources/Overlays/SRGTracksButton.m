@@ -58,14 +58,14 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
-        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.currentItem) context:s_kvoContext];
+        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.playbackState) context:s_kvoContext];
     }
     
     _mediaPlayerController = mediaPlayerController;
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
-        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.currentItem) options:0 context:s_kvoContext];
+        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.playbackState) options:0 context:s_kvoContext];
     }
 }
 
@@ -141,6 +141,10 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
             if (legibleOptions.count != 0 || audibleOptions.count > 1) {
                 self.hidden = NO;
                 self.enabled = YES;
+                
+                // Enable the button if an (optional) subtitle has been selected (an audio track is always selected)
+                AVMediaSelectionOption *currentLegibleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:legibleGroup];
+                self.selected = (currentLegibleOption != nil);
             }
             else {
                 self.hidden = YES && !self.alwaysVisible;
@@ -163,7 +167,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 {
     if (context == s_kvoContext) {
         SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
-        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.currentItem)]) {
+        if ([keyPath isEqualToString:@keypath(mediaPlayerController.playbackState)]) {
             [self updateAppearance];
         }
     }
@@ -194,6 +198,8 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController selectedMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group
 {
+    [self updateAppearance];
+    
     UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?: [UIApplication sharedApplication].delegate.window.rootViewController;
     [presentedViewController.presentedViewController dismissViewControllerAnimated:YES
                                                                         completion:nil];
