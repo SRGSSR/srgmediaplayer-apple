@@ -33,8 +33,3 @@ NSString * const SRGMediaPlayerSelectedKey = @"SRGMediaPlayerSelectedKey";
 NSString * const SRGMediaPlayerPreviousSegmentKey = @"SRGMediaPlayerPreviousSegmentKey";
 NSString * const SRGMediaPlayerNextSegmentKey = @"SRGMediaPlayerNextSegmentKey";
 NSString * const SRGMediaPlayerSelectionKey = @"SRGMediaPlayerSelectionKey";
-
-NSString * const SRGMediaSelectionOptionDidChangeNotification = @"SRGMediaSelectionOptionsDidChangeNotification";
-NSString * const SRGMediaSelectionOptionCharacteristicKey = @"SRGMediaSelectionOptionCharacteristicKey";
-NSString * const SRGMediaSelectionOptionPreviousKey = @"SRGMediaSelectionOptionPreviousKey";
-NSString * const SRGMediaSelectionOptionNewKey = @"SRGMediaSelectionOptionNewKey";

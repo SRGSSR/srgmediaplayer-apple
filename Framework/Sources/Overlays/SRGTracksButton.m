@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGSubtitlesButton.h"
+#import "SRGTracksButton.h"
 
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGAlternateTracksViewController.h"
@@ -13,14 +13,16 @@
 
 static void *s_kvoContext = &s_kvoContext;
 
-static UIImage *SRGSubtitlesButtonImage(void);
+static UIImage *SRGTracksButtonImage(void);
 static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
-@interface SRGSubtitlesButton () <SRGAlternateTracksViewControllerDelegate>
+@interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate>
+
+@property (nonatomic, getter=isFakedForInterfaceBuilder) BOOL fakedForInterfaceBuilder;
 
 @end
 
-@implementation SRGSubtitlesButton
+@implementation SRGTracksButton
 
 @synthesize image = _image;
 @synthesize selectedImage = _selectedImage;
@@ -39,7 +41,6 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 {
     if (_mediaPlayerController) {
         [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.currentItem) context:s_kvoContext];
-        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.currentMediaSelectionOptionsByCharacteristics) context:s_kvoContext];
     }
     
     _mediaPlayerController = mediaPlayerController;
@@ -47,14 +48,12 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     
     if (mediaPlayerController) {
         [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.currentItem) options:0 context:s_kvoContext];
-        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.currentMediaSelectionOptionsByCharacteristics) options:0 context:s_kvoContext];
-
     }
 }
 
 - (UIImage *)image
 {
-    return _image ?: SRGSubtitlesButtonImage();
+    return _image ?: SRGTracksButtonImage();
 }
 
 - (void)setImage:(UIImage *)image
@@ -104,33 +103,39 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    // Replace with custom image to be able to apply a tint color. The button color is automagically inherited from
-    // the enclosing view (this works both at runtime and when rendering in Interface Builder)
-    [self setImage:self.image forState:UIControlStateNormal];
-    [self setImage:self.selectedImage forState:UIControlStateSelected];
-    
-    if (mediaPlayerController) {
-        // Get available subtitles. If no one, the button disappears or disable. if one or more, display the button. If
-        // one of subtitles is displayed, set the button in the selected state.
-        AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
-        AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        NSArray *options = subtitleGroup.options;
+    if (! self.fakedForInterfaceBuilder) {
+        // Replace with custom image to be able to apply a tint color. The button color is automagically inherited from
+        // the enclosing view (this works both at runtime and when rendering in Interface Builder)
+        [self setImage:self.image forState:UIControlStateNormal];
+        [self setImage:self.selectedImage forState:UIControlStateSelected];
         
-        if (!options.count) {
+        if (mediaPlayerController) {
+            // Get available subtitles. If no one, the button disappears or disable. if one or more, display the button. If
+            // one of subtitles is displayed, set the button in the selected state.
+            AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
+            
+            AVMediaSelectionGroup *legibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+            NSArray *legibleOptions = legibleGroup.options;
+            
+            AVMediaSelectionGroup *audibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+            NSArray *audibleOptions = audibleGroup.options;
+            
+            if (legibleOptions.count != 0 || audibleOptions.count > 1) {
+                self.hidden = NO;
+                self.enabled = YES;
+            }
+            else {
+                self.hidden = YES && !self.alwaysVisible;
+                self.enabled = NO;
+            }
+        }
+        else {
             self.hidden = YES && !self.alwaysVisible;
             self.enabled = NO;
         }
-        else {
-            self.hidden = NO;
-            self.enabled = YES;
-            
-            AVMediaSelectionOption *currentOption = mediaPlayerController.currentMediaSelectionOptionsByCharacteristics[AVMediaCharacteristicLegible];
-            self.selected = (currentOption != nil);
-        }
     }
     else {
-        self.hidden = YES && !self.alwaysVisible;
-        self.enabled = NO;
+        self.hidden = NO;
     }
 }
 
@@ -140,8 +145,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 {
     if (context == s_kvoContext) {
         SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
-        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.currentItem)] ||
-            [keyPath isEqualToString:@keypath(mediaPlayerController.currentMediaSelectionOptionsByCharacteristics)]) {
+        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.currentItem)]) {
             [self updateAppearance];
         }
     }
@@ -177,9 +181,9 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
                                                                         completion:nil];
 }
 
-#pragma mark - UIPopoverPresentationControllerDelegate
+#pragma mark UIPopoverPresentationControllerDelegate
 
-- (UIModalPresentationStyle) adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
 {
     return UIModalPresentationNone; //You have to specify this particular value in order to make it work on iPhone.
 }
@@ -190,6 +194,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 {
     [super prepareForInterfaceBuilder];
     
+    self.fakedForInterfaceBuilder = YES;
     [self setImage:self.image forState:UIControlStateNormal];
 }
 
@@ -197,7 +202,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 #pragma mark Functions
 
-static UIImage *SRGSubtitlesButtonImage(void)
+static UIImage *SRGTracksButtonImage(void)
 {
     static UIImage *image;
     static dispatch_once_t onceToken;

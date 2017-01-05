@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  the button is displayed, and regarding a subtitle selected or not, the button is selected.
  *  Action on the button display the available subtitles list in an action sheet, with possibity to select one.
  */
-@interface SRGSubtitlesButton : UIButton <UIPopoverPresentationControllerDelegate>
+@interface SRGTracksButton : UIButton <UIPopoverPresentationControllerDelegate>
 
 /**
  *  The media player which the button must be associated with
@@ -33,9 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  By defaut, NO. The button disappears when no mediaPlayerContorller or no subtitle available. Set this property to
- *  YES will always display the button the button, with a disable state when no subtitle are available.
+ *  YES will always display the button the button
  */
-@property (nonatomic, assign) IBInspectable BOOL alwaysVisible;
+@property (nonatomic, getter=isAlwaysVisible) IBInspectable BOOL alwaysVisible;
 
 @end
 

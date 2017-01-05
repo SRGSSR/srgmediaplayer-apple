@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="d9c-I7-8ft">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="d9c-I7-8ft">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -60,7 +60,7 @@
                                                 <rect key="frame" x="59" y="0.0" width="316" height="30"/>
                                                 <subviews>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="FmA-bo-Sop" customClass="SRGTimeSlider">
-                                                        <rect key="frame" x="56" y="0.0" width="201" height="31"/>
+                                                        <rect key="frame" x="56" y="7" width="201" height="17"/>
                                                         <connections>
                                                             <action selector="seek:" destination="d9c-I7-8ft" eventType="valueChanged" id="OyP-zH-Cy4"/>
                                                             <outlet property="timeLeftValueLabel" destination="ZVv-Y2-DhP" id="9Qb-Mh-beJ"/>
@@ -209,7 +209,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OMx-Y7-xyM" userLabel="Subtitles Button" customClass="SRGSubtitlesButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OMx-Y7-xyM" userLabel="Tracks Button" customClass="SRGTracksButton">
                                         <rect key="frame" x="285" y="9" width="43" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="43" id="K4e-fG-ZMK"/>
@@ -311,9 +311,9 @@
                         <outlet property="playPauseButton" destination="o5t-je-W81" id="ZGY-OQ-MM5"/>
                         <outlet property="playbackActivityIndicatorView" destination="cpU-c6-AfG" id="a56-Ij-esx"/>
                         <outlet property="playerView" destination="kvR-ic-iMa" id="yTl-Xr-5zG"/>
-                        <outlet property="subtitlesButton" destination="OMx-Y7-xyM" id="3BE-D1-i1u"/>
                         <outlet property="timeLeftValueLabelWidthConstraint" destination="Rro-tt-QoX" id="98i-e5-MMY"/>
                         <outlet property="timeSlider" destination="FmA-bo-Sop" id="bAh-w7-cKK"/>
+                        <outlet property="tracksButton" destination="OMx-Y7-xyM" id="3BE-D1-i1u"/>
                         <outlet property="valueLabelWidthConstraint" destination="zWQ-dl-pwm" id="KPf-oy-Oi0"/>
                         <outlet property="volumeView" destination="Tou-sR-6sx" id="3AQ-NU-ghu"/>
                         <outletCollection property="overlayViews" destination="f2q-AQ-hq3" id="4aO-Ky-v45"/>
