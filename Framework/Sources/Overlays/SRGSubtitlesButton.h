@@ -33,9 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  By defaut, NO. The button disappears when no mediaPlayerContorller or no subtitle available. Set this property to
- *  YES will always display the button the button, with a disable state when no subtitle are available.
+ *  YES will always display the button the button
  */
-@property (nonatomic, assign) IBInspectable BOOL alwaysVisible;
+@property (nonatomic, getter=isAlwaysVisible) IBInspectable BOOL alwaysVisible;
 
 @end
 

@@ -120,12 +120,6 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
         else {
             self.hidden = NO;
             self.enabled = YES;
-      
-            // FIXME:
-#if 0
-            AVMediaSelectionOption *currentOption = mediaPlayerController.currentMediaSelectionOptionsByCharacteristics[AVMediaCharacteristicLegible];
-            self.selected = (currentOption != nil);
-#endif
         }
     }
     else {
