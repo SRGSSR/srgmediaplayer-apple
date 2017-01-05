@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGSubtitlesButton.h"
+#import "SRGTracksButton.h"
 
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGAlternateTracksViewController.h"
@@ -13,14 +13,14 @@
 
 static void *s_kvoContext = &s_kvoContext;
 
-static UIImage *SRGSubtitlesButtonImage(void);
+static UIImage *SRGTracksButtonImage(void);
 static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
-@interface SRGSubtitlesButton () <SRGAlternateTracksViewControllerDelegate>
+@interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate>
 
 @end
 
-@implementation SRGSubtitlesButton
+@implementation SRGTracksButton
 
 @synthesize image = _image;
 @synthesize selectedImage = _selectedImage;
@@ -51,7 +51,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (UIImage *)image
 {
-    return _image ?: SRGSubtitlesButtonImage();
+    return _image ?: SRGTracksButtonImage();
 }
 
 - (void)setImage:(UIImage *)image
@@ -194,7 +194,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 #pragma mark Functions
 
-static UIImage *SRGSubtitlesButtonImage(void)
+static UIImage *SRGTracksButtonImage(void)
 {
     static UIImage *image;
     static dispatch_once_t onceToken;
