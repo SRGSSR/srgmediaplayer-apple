@@ -39,7 +39,6 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 {
     if (_mediaPlayerController) {
         [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.currentItem) context:s_kvoContext];
-        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.currentMediaSelectionOptionsByCharacteristics) context:s_kvoContext];
     }
     
     _mediaPlayerController = mediaPlayerController;
@@ -47,8 +46,6 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     
     if (mediaPlayerController) {
         [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.currentItem) options:0 context:s_kvoContext];
-        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.currentMediaSelectionOptionsByCharacteristics) options:0 context:s_kvoContext];
-
     }
 }
 
@@ -123,9 +120,12 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
         else {
             self.hidden = NO;
             self.enabled = YES;
-            
+      
+            // FIXME:
+#if 0
             AVMediaSelectionOption *currentOption = mediaPlayerController.currentMediaSelectionOptionsByCharacteristics[AVMediaCharacteristicLegible];
             self.selected = (currentOption != nil);
+#endif
         }
     }
     else {
@@ -140,8 +140,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 {
     if (context == s_kvoContext) {
         SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
-        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.currentItem)] ||
-            [keyPath isEqualToString:@keypath(mediaPlayerController.currentMediaSelectionOptionsByCharacteristics)]) {
+        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.currentItem)]) {
             [self updateAppearance];
         }
     }
