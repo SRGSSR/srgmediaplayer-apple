@@ -25,8 +25,7 @@
 {
     UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerForPlayer:player
                                                                                                                                          delegate:delegate];
-    UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:navigationController];
-    return popoverController;
+    return [[UIPopoverController alloc] initWithContentViewController:navigationController];
 }
 
 + (UINavigationController *)alternateTracksViewControllerInNavigationControllerForPlayer:(AVPlayer *)player delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
@@ -34,8 +33,7 @@
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
     alternateTracksViewController.delegate = delegate;
     alternateTracksViewController.player = player;
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:alternateTracksViewController];
-    return navigationController;
+    return [[UINavigationController alloc] initWithRootViewController:alternateTracksViewController];
 }
 
 - (void)viewDidLoad

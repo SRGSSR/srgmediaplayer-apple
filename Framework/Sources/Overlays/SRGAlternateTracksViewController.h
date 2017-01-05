@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SRGAlternateTracksViewController : UITableViewController
 
-@property (assign) id<SRGAlternateTracksViewControllerDelegate> delegate;
+@property (weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
 
 + (UIPopoverController *)alternateTracksViewControllerInPopoverForPlayer:(AVPlayer *)player
                                                                 delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate;
