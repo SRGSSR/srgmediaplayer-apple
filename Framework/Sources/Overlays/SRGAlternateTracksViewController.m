@@ -156,9 +156,9 @@
     
     [self.player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(alternateTracksViewController:selectedMediaOption:inGroup:)]) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(alternateTracksViewController:didSelectMediaOption:inGroup:)]) {
         [self.delegate alternateTracksViewController:self
-                                 selectedMediaOption:option
+                                didSelectMediaOption:option
                                              inGroup:group];
     }
     

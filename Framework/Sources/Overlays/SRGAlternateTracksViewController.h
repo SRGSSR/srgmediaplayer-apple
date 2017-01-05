@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SRGAlternateTracksViewControllerDelegate <NSObject>
 
 @optional
-- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController selectedMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group;
+- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController didSelectMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group;
 
 @end
 

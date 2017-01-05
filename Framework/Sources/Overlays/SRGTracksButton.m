@@ -196,7 +196,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 #pragma mark SRGAlternateTracksViewControllerDelegate
 
-- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController selectedMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group
+- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController didSelectMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group
 {
     [self updateAppearance];
     
