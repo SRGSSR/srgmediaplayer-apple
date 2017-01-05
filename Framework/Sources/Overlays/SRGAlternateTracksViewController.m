@@ -21,13 +21,6 @@
 @synthesize delegate = _delegate;
 @synthesize player = _player;
 
-+ (UIPopoverController *)alternateTracksViewControllerInPopoverForPlayer:(AVPlayer *)player delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
-{
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerForPlayer:player
-                                                                                                                                         delegate:delegate];
-    return [[UIPopoverController alloc] initWithContentViewController:navigationController];
-}
-
 + (UINavigationController *)alternateTracksViewControllerInNavigationControllerForPlayer:(AVPlayer *)player delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
 {
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -156,7 +149,7 @@
     
     [self.player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(alternateTracksViewController:didSelectMediaOption:inGroup:)]) {
+    if ([self.delegate respondsToSelector:@selector(alternateTracksViewController:didSelectMediaOption:inGroup:)]) {
         [self.delegate alternateTracksViewController:self
                                 didSelectMediaOption:option
                                              inGroup:group];
