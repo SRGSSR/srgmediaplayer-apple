@@ -45,6 +45,11 @@ IB_DESIGNABLE
 @end
 
 IB_DESIGNABLE
+@interface SRGTracksButton (Designable)
+
+@end
+
+IB_DESIGNABLE
 @interface SRGVolumeView (Designable)
 
 @end

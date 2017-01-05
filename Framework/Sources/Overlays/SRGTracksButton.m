@@ -174,9 +174,9 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
                                                                         completion:nil];
 }
 
-#pragma mark - UIPopoverPresentationControllerDelegate
+#pragma mark UIPopoverPresentationControllerDelegate
 
-- (UIModalPresentationStyle) adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
 {
     return UIModalPresentationNone; //You have to specify this particular value in order to make it work on iPhone.
 }
