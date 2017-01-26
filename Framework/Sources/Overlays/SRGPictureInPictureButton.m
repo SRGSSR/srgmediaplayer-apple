@@ -98,6 +98,15 @@ static void commonInit(SRGPictureInPictureButton *self);
     }
 }
 
+- (CGSize)intrinsicContentSize
+{
+    // Sadly, returning self.startImage.size (or any kind of "runtime" size calculation) does not work in all cases,
+    // most notably when the view is embedded in a stack view. This is probably because of a designable rendering bug.
+    // This is why we choose a fixed intrinsic size. If the user wants another one, she can add width and height
+    // constraints accordingly
+    return CGSizeMake(28.f, 22.f);
+}
+
 #pragma mark UI
 
 - (void)updateAppearance

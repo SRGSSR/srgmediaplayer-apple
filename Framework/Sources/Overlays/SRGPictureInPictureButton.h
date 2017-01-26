@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Image customization (default 28x22 images are used if not set)
+ *
+ *  @discussion The button has an intrinsic size of 28 x 22 pixels. If you change the start and stop images, you might
+ *              need to add width and height constraints to tailor the button size to your needs
  */
 @property (nonatomic, null_resettable) IBInspectable UIImage *startImage;
 @property (nonatomic, null_resettable) IBInspectable UIImage *stopImage;
