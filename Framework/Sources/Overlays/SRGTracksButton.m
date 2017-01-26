@@ -91,6 +91,12 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     [self updateAppearance];
 }
 
+// Must never display any title
+- (void)setTitle:(NSString *)title forState:(UIControlState)state
+{
+    [super setTitle:nil forState:state];
+}
+
 - (void)setAlwaysVisible:(BOOL)alwaysVisible
 {
     _alwaysVisible = alwaysVisible;
