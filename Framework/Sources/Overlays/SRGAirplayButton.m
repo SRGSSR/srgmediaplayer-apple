@@ -140,7 +140,7 @@ static void commonInit(SRGAirplayButton *self);
         return self.fakeInterfaceBuilderButton.intrinsicContentSize;
     }
     else {
-        return self.volumeView.intrinsicContentSize;
+        return super.intrinsicContentSize;
     }
 }
 

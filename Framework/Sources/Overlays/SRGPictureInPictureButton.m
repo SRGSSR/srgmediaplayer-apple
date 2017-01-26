@@ -17,7 +17,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 @interface SRGPictureInPictureButton ()
 
 @property (nonatomic, weak) UIButton *button;
-@property (nonatomic, getter=isFakedForInterfaceBuilder) BOOL fakedForInterfaceBuilder;
+@property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
 
 @end
 
@@ -100,11 +100,12 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (CGSize)intrinsicContentSize
 {
-    // Sadly, returning self.startImage.size (or any kind of "runtime" size calculation) does not work in all cases,
-    // most notably when the view is embedded in a stack view. This is probably because of a designable rendering bug.
-    // This is why we choose a fixed intrinsic size. If the user wants another one, she can add width and height
-    // constraints accordingly
-    return CGSizeMake(28.f, 22.f);
+    if (self.fakeInterfaceBuilderButton) {
+        return self.fakeInterfaceBuilderButton.intrinsicContentSize;
+    }
+    else {
+        return super.intrinsicContentSize;
+    }
 }
 
 #pragma mark UI
@@ -124,8 +125,7 @@ static void commonInit(SRGPictureInPictureButton *self);
         UIImage *image = pictureInPictureController.pictureInPictureActive ? self.stopImage : self.startImage;
         [self.button setImage:image forState:UIControlStateNormal];
     }
-    else if (self.fakedForInterfaceBuilder) {
-        [self.button setImage:self.startImage forState:UIControlStateNormal];
+    else if (self.fakeInterfaceBuilderButton) {
         self.hidden = NO;
     }
     else {
@@ -166,8 +166,18 @@ static void commonInit(SRGPictureInPictureButton *self);
 {
     [super prepareForInterfaceBuilder];
     
-    self.fakedForInterfaceBuilder = YES;
-    [self updateAppearance];
+    // Use a fake button for Interface Builder rendering. Using the "normal" button does not work correctly with
+    // Interface Builder rendering, when the view is wrapped into a stack view. Using a button added in the
+    // -prepareForInterfaceBuilder works
+    UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    fakeInterfaceBuilderButton.frame = self.bounds;
+    fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [fakeInterfaceBuilderButton setImage:self.startImage forState:UIControlStateNormal];
+    [self addSubview:fakeInterfaceBuilderButton];
+    self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
+    
+    // Hide the normal button
+    self.button.hidden = YES;
 }
 
 @end
