@@ -44,6 +44,11 @@ static void commonInit(SRGPictureInPictureButton *self);
     return self;
 }
 
+- (void)dealloc
+{
+    self.mediaPlayerController = nil;       // Unregister KVO and notifications
+}
+
 #pragma mark Getters and setters
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
@@ -166,9 +171,11 @@ static void commonInit(SRGPictureInPictureButton *self);
 {
     [super prepareForInterfaceBuilder];
     
-    // Use a fake button for Interface Builder rendering. Using the "normal" button does not work correctly with
-    // Interface Builder rendering, when the view is wrapped into a stack view. Using a button added in the
-    // -prepareForInterfaceBuilder works
+    // Use a fake button for Interface Builder rendering. Using the normal button added in commonInit does not work
+    // correctly with Interface Builder preview in all cases, since the preview lifecycle is probably different from
+    // the view lifecycle when the application is run on iOS. When the view is wrapped into a stack view, the
+    // intrinsic size is namely incorrect, leading to layout issues. It seems that using a button added in
+    // -prepareForInterfaceBuilder works, though
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

@@ -20,7 +20,8 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 @interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate>
 
-@property (nonatomic, getter=isFakedForInterfaceBuilder) BOOL fakedForInterfaceBuilder;
+@property (nonatomic, weak) UIButton *button;
+@property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
 
 @end
 
@@ -91,12 +92,6 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     [self updateAppearance];
 }
 
-// Must never display any title
-- (void)setTitle:(NSString *)title forState:(UIControlState)state
-{
-    [super setTitle:nil forState:state];
-}
-
 - (void)setAlwaysVisible:(BOOL)alwaysVisible
 {
     _alwaysVisible = alwaysVisible;
@@ -111,14 +106,20 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     
     if (newWindow) {
         [self updateAppearance];
-        [self addTarget:self action:@selector(showSubtitlesMenu:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    else {
-        [self removeTarget:self action:@selector(showSubtitlesMenu:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 
-#pragma mark Appearance
+- (CGSize)intrinsicContentSize
+{
+    if (self.fakeInterfaceBuilderButton) {
+        return self.fakeInterfaceBuilderButton.intrinsicContentSize;
+    }
+    else {
+        return super.intrinsicContentSize;
+    }
+}
+
+#pragma mark UI
 
 - (void)updateAppearance
 {
@@ -127,44 +128,77 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    if (! self.fakedForInterfaceBuilder) {
-        // Replace with custom image to be able to apply a tint color. The button color is automagically inherited from
-        // the enclosing view (this works both at runtime and when rendering in Interface Builder)
-        [self setImage:self.image forState:UIControlStateNormal];
-        [self setImage:self.selectedImage forState:UIControlStateSelected];
+    [self.button setImage:self.image forState:UIControlStateNormal];
+    [self.button setImage:self.selectedImage forState:UIControlStateSelected];
+    
+    if (mediaPlayerController) {
+        // Get available subtitles. If no one, the button disappears or disable. if one or more, display the button. If
+        // one of subtitles is displayed, set the button in the selected state.
+        AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
         
-        if (mediaPlayerController) {
-            // Get available subtitles. If no one, the button disappears or disable. if one or more, display the button. If
-            // one of subtitles is displayed, set the button in the selected state.
-            AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
+        AVMediaSelectionGroup *legibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        NSArray *legibleOptions = legibleGroup.options;
+        
+        AVMediaSelectionGroup *audibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        NSArray *audibleOptions = audibleGroup.options;
+        
+        if (legibleOptions.count != 0 || audibleOptions.count > 1) {
+            self.hidden = NO;
+            self.button.enabled = YES;
             
-            AVMediaSelectionGroup *legibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-            NSArray *legibleOptions = legibleGroup.options;
-            
-            AVMediaSelectionGroup *audibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-            NSArray *audibleOptions = audibleGroup.options;
-            
-            if (legibleOptions.count != 0 || audibleOptions.count > 1) {
-                self.hidden = NO;
-                self.enabled = YES;
-                
-                // Enable the button if an (optional) subtitle has been selected (an audio track is always selected)
-                AVMediaSelectionOption *currentLegibleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:legibleGroup];
-                self.selected = (currentLegibleOption != nil);
-            }
-            else {
-                self.hidden = YES && !self.alwaysVisible;
-                self.enabled = NO;
-            }
+            // Enable the button if an (optional) subtitle has been selected (an audio track is always selected)
+            AVMediaSelectionOption *currentLegibleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:legibleGroup];
+            self.button.selected = (currentLegibleOption != nil);
         }
         else {
-            self.hidden = YES && !self.alwaysVisible;
-            self.enabled = NO;
+            self.hidden = !self.alwaysVisible;
+            self.button.enabled = NO;
         }
     }
-    else {
+    else if (self.fakeInterfaceBuilderButton) {
         self.hidden = NO;
     }
+    else {
+        self.hidden = YES;
+        self.button.enabled = NO;
+    }
+}
+
+#pragma mark SRGAlternateTracksViewControllerDelegate protocol
+
+- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController didSelectMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group
+{
+    [self updateAppearance];
+    
+    UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?: [UIApplication sharedApplication].delegate.window.rootViewController;
+    [presentedViewController.presentedViewController dismissViewControllerAnimated:YES
+                                                                        completion:nil];
+}
+
+#pragma mark UIPopoverPresentationControllerDelegate protocol
+
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+{
+    // Needed for the iPhone
+    return UIModalPresentationNone;
+}
+
+#pragma mark Actions
+
+- (void)showSubtitlesMenu:(id)sender
+{
+    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerForPlayer:self.mediaPlayerController.player
+                                                                                                                                         delegate:self];
+    navigationController.modalPresentationStyle = UIModalPresentationPopover;
+    
+    navigationController.popoverPresentationController.delegate = self;
+    navigationController.popoverPresentationController.sourceView = self;
+    navigationController.popoverPresentationController.sourceRect = self.bounds;
+    
+    UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?: [UIApplication sharedApplication].delegate.window.rootViewController;
+    [presentedViewController presentViewController:navigationController
+                                          animated:YES
+                                        completion:nil];
 }
 
 #pragma mark KVO
@@ -182,50 +216,26 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     }
 }
 
-#pragma mark Actions
-
-- (IBAction)showSubtitlesMenu:(id)sender
- {
-     UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerForPlayer:self.mediaPlayerController.player
-                                                                                                                                          delegate:self];
-     navigationController.modalPresentationStyle = UIModalPresentationPopover;
-     
-     navigationController.popoverPresentationController.delegate = self;
-     navigationController.popoverPresentationController.sourceView = self;
-     navigationController.popoverPresentationController.sourceRect = self.bounds;
-     
-     UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?: [UIApplication sharedApplication].delegate.window.rootViewController;
-     [presentedViewController presentViewController:navigationController
-                                           animated:YES
-                                         completion:nil];
- }
-
-#pragma mark SRGAlternateTracksViewControllerDelegate
-
-- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController didSelectMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group
-{
-    [self updateAppearance];
-    
-    UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?: [UIApplication sharedApplication].delegate.window.rootViewController;
-    [presentedViewController.presentedViewController dismissViewControllerAnimated:YES
-                                                                        completion:nil];
-}
-
-#pragma mark UIPopoverPresentationControllerDelegate
-
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
-{
-    return UIModalPresentationNone; //You have to specify this particular value in order to make it work on iPhone.
-}
-
 #pragma mark Interface Builder integration
 
 - (void)prepareForInterfaceBuilder
 {
     [super prepareForInterfaceBuilder];
     
-    self.fakedForInterfaceBuilder = YES;
-    [self setImage:self.image forState:UIControlStateNormal];
+    // Use a fake button for Interface Builder rendering. Using the normal button added in commonInit does not work
+    // correctly with Interface Builder preview in all cases, since the preview lifecycle is probably different from
+    // the view lifecycle when the application is run on iOS. When the view is wrapped into a stack view, the
+    // intrinsic size is namely incorrect, leading to layout issues. It seems that using a button added in
+    // -prepareForInterfaceBuilder works, though
+    UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    fakeInterfaceBuilderButton.frame = self.bounds;
+    fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [fakeInterfaceBuilderButton setImage:self.image forState:UIControlStateNormal];
+    [self addSubview:fakeInterfaceBuilderButton];
+    self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
+    
+    // Hide the normal button
+    self.button.hidden = YES;
 }
 
 @end
@@ -234,6 +244,13 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 static void commonInit(SRGTracksButton *self)
 {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = self.bounds;
+    button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [button addTarget:self action:@selector(showSubtitlesMenu:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:button];
+    self.button = button;
+    
     self.hidden = YES;
 }
 
