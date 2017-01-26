@@ -134,6 +134,16 @@ static void commonInit(SRGAirplayButton *self);
     }
 }
 
+- (CGSize)intrinsicContentSize
+{
+    if (self.fakeInterfaceBuilderButton) {
+        return self.fakeInterfaceBuilderButton.intrinsicContentSize;
+    }
+    else {
+        return self.volumeView.intrinsicContentSize;
+    }
+}
+
 #pragma mark Appearance
 
 - (void)updateAppearance
