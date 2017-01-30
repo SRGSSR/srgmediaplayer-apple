@@ -26,15 +26,15 @@ github "SRGSSR/SRGMediaPlayer-iOS"
 
 Then run `carthage update --platform iOS` to update the dependencies. You will need to manually add the following `.framework`s generated in the `Carthage/Build/iOS` folder to your projet:
 
-* `SRGMediaPlayer.framework`: The main data provider framework
-* `SRGLogger.framework`: The framework used for internal logging
 * `libextobjc.framework`: A utility framework
+* `SRGLogger.framework`: The framework used for internal logging
+* `SRGMediaPlayer.framework`: The main data provider framework
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
 
 ## Usage
 
-When you want to classes or functions provided by the library in your code, you must import it from your source files first.
+When you want to use classes or functions provided by the library in your code, you must import it from your source files first.
 
 ### Usage from Objective-C source files
 
@@ -75,9 +75,7 @@ When dropping a media player control (e.g. `SRGPictureInPictureButton`) onto a s
 If rendering does not work properly:
 
 * Be sure that your project correctly compiles
-* If you still get `dlopen` errors, this means some frameworks are not available to Xcode when it runs your project for rendering. This usually means that the `copy-frameworks` build phase described in the [Carthage readme](https://github.com/Carthage/Carthage#getting-started) has not been setup properly. Be sure that all SRG Media Player dependencies are properly copied:
-	* `libextobjc.framework`
-	* `SRGLogger.framework`
+* If you still get `dlopen` errors, this means some frameworks are not available to Xcode when it runs your project for rendering. This usually means that the `copy-frameworks` build phase described in the [Carthage readme](https://github.com/Carthage/Carthage#getting-started) has not been setup properly. Be sure that all SRG Media Player dependencies are properly copied (see above framework list).
 
 #### Remark
 
