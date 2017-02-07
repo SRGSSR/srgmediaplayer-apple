@@ -32,6 +32,10 @@
 		6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FA09D7D1D9E9C4400EDCA64 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6FA09D7E1D9E9D1400EDCA64 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6FB97FDE1E4A0E080014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
+		6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6FB97FE11E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
+		6FB97FE21E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FEB51631DB0A8FB002D1751 /* airplay.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51601DB0A8FA002D1751 /* airplay.png */; };
 		6FEB51641DB0A8FB002D1751 /* airplay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51611DB0A8FB002D1751 /* airplay@2x.png */; };
 		6FEB51651DB0A8FB002D1751 /* airplay@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51621DB0A8FB002D1751 /* airplay@3x.png */; };
@@ -135,7 +139,6 @@
 		E6FC7F8E1D62072400A55085 /* SRGMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F5B1D62072400A55085 /* SRGMediaPlayerController.m */; };
 		E6FC7F951D62072400A55085 /* SRGSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F631D62072400A55085 /* SRGSegment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F9C1D62097E00A55085 /* SRGMediaPlayer.m */; };
-		F90EE7B27DDA4C504ED93629 /* libPods-SRGMediaPlayer-tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05E918D1654F8CC2553EED74 /* libPods-SRGMediaPlayer-tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +177,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Copy Frameworks Into Test Bundle */,
 				6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Copy Frameworks Into Test Bundle */,
 				E654909C1D7F33AE007D96E7 /* libextobjc.framework in Copy Frameworks Into Test Bundle */,
 			);
@@ -187,6 +191,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				6FA09D7E1D9E9D1400EDCA64 /* SRGLogger.framework in Embed Frameworks */,
+				6FB97FE21E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */,
 				E6B027711D7EF78000012FDF /* libextobjc.framework in Embed Frameworks */,
 				E69A1FC51D61C06B0064E6C1 /* SRGMediaPlayer.framework in Embed Frameworks */,
 			);
@@ -207,7 +212,6 @@
 		08D3BEBA1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alternate_tracks_button_selected@3x.png"; sourceTree = "<group>"; };
 		08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAlternateTracksViewController.h; sourceTree = "<group>"; };
 		08D3BEBF1DE8756500AE1368 /* SRGAlternateTracksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAlternateTracksViewController.m; sourceTree = "<group>"; };
-		33B591AC767A97272DB49F32 /* Pods-SRGMediaPlayer-tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer-tests/Pods-SRGMediaPlayer-tests.release.xcconfig"; sourceTree = "<group>"; };
 		3C5FC1E08CA3F0C8CA810E82 /* libPods-SRGMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SRGMediaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F0D05191DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAudioSession+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F0D051A1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAudioSession+SRGMediaPlayer.m"; sourceTree = "<group>"; };
@@ -219,6 +223,7 @@
 		6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayerView+Private.h"; sourceTree = "<group>"; };
 		6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerLogger.h; sourceTree = "<group>"; };
 		6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
+		6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
 		6FEB51601DB0A8FA002D1751 /* airplay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airplay.png; sourceTree = "<group>"; };
 		6FEB51611DB0A8FB002D1751 /* airplay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airplay@2x.png"; sourceTree = "<group>"; };
 		6FEB51621DB0A8FB002D1751 /* airplay@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airplay@3x.png"; sourceTree = "<group>"; };
@@ -226,7 +231,6 @@
 		6FEB51671DB0A909002D1751 /* picture_in_picture_stop_button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picture_in_picture_stop_button@3x.png"; sourceTree = "<group>"; };
 		6FEB516A1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPVolumeView+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6FEB516B1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MPVolumeView+SRGMediaPlayer.m"; sourceTree = "<group>"; };
-		DB0EA89370C6F3092C040D13 /* Pods-SRGMediaPlayer-tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SRGMediaPlayer-tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SRGMediaPlayer-tests/Pods-SRGMediaPlayer-tests.debug.xcconfig"; sourceTree = "<group>"; };
 		E67799301D75AE2500E58331 /* SRGTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGTimelineView.h; sourceTree = "<group>"; };
 		E67799311D75AE2500E58331 /* SRGTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGTimelineView.m; sourceTree = "<group>"; };
 		E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGMediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -344,6 +348,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FB97FDE1E4A0E080014C4C2 /* MAKVONotificationCenter.framework in Frameworks */,
 				E6B0276F1D7EF76700012FDF /* libextobjc.framework in Frameworks */,
 				6FA09D7D1D9E9C4400EDCA64 /* SRGLogger.framework in Frameworks */,
 			);
@@ -354,6 +359,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F5D662E1DAF50E3009AD6DD /* SRGLogger.framework in Frameworks */,
+				6FB97FE11E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Frameworks */,
 				E6B027701D7EF78000012FDF /* libextobjc.framework in Frameworks */,
 				E69A1FC41D61C06B0064E6C1 /* SRGMediaPlayer.framework in Frameworks */,
 			);
@@ -364,22 +370,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E69A1FD61D61C6830064E6C1 /* SRGMediaPlayer.framework in Frameworks */,
-				F90EE7B27DDA4C504ED93629 /* libPods-SRGMediaPlayer-tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6A44E0C3C2BC72E93517A789 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				DB0EA89370C6F3092C040D13 /* Pods-SRGMediaPlayer-tests.debug.xcconfig */,
-				33B591AC767A97272DB49F32 /* Pods-SRGMediaPlayer-tests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		C201D8EC1A9DC1A40016C629 = {
 			isa = PBXGroup;
 			children = (
@@ -388,7 +384,6 @@
 				E69A1FD21D61C6830064E6C1 /* Tests */,
 				E69A1FCC1D61C32D0064E6C1 /* Frameworks */,
 				C201D8F61A9DC1A40016C629 /* Products */,
-				6A44E0C3C2BC72E93517A789 /* Pods */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -495,11 +490,12 @@
 		E69A1FCC1D61C32D0064E6C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */,
 				E6B0276E1D7EF76700012FDF /* libextobjc.framework */,
-				E69A1FE91D61DD870064E6C1 /* WebImage.framework */,
-				3C5FC1E08CA3F0C8CA810E82 /* libPods-SRGMediaPlayer.a */,
 				05E918D1654F8CC2553EED74 /* libPods-SRGMediaPlayer-tests.a */,
+				3C5FC1E08CA3F0C8CA810E82 /* libPods-SRGMediaPlayer.a */,
+				6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */,
+				6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */,
+				E69A1FE91D61DD870064E6C1 /* WebImage.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -785,12 +781,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E69A1FD91D61C6830064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-tests" */;
 			buildPhases = (
-				4D7EACCA34FC9C1B699F128F /* [CP] Check Pods Manifest.lock */,
 				E69A1FCD1D61C6830064E6C1 /* Sources */,
 				E69A1FCE1D61C6830064E6C1 /* Frameworks */,
 				E69A1FCF1D61C6830064E6C1 /* Resources */,
-				CCD7FED9F257FF7EF0B91D5D /* [CP] Embed Pods Frameworks */,
-				9960556C23D7123F0E9E5827 /* [CP] Copy Pods Resources */,
 				E65490981D7F2E9B007D96E7 /* Copy Frameworks Into Test Bundle */,
 			);
 			buildRules = (
@@ -919,54 +912,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		4D7EACCA34FC9C1B699F128F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		9960556C23D7123F0E9E5827 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SRGMediaPlayer-tests/Pods-SRGMediaPlayer-tests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CCD7FED9F257FF7EF0B91D5D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SRGMediaPlayer-tests/Pods-SRGMediaPlayer-tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E69A1DA41D61B9380064E6C1 /* Sources */ = {
@@ -1256,7 +1201,6 @@
 		};
 		E69A1FDA1D61C6830064E6C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB0EA89370C6F3092C040D13 /* Pods-SRGMediaPlayer-tests.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1282,7 +1226,6 @@
 		};
 		E69A1FDB1D61C6830064E6C1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 33B591AC767A97272DB49F32 /* Pods-SRGMediaPlayer-tests.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
