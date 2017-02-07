@@ -76,10 +76,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 - (void)dealloc
 {
     [self stopWithUserInfo:nil];
-    
-    AVPlayerLayer *playerLayer = self.playerLayer;
-    [playerLayer removeObserver:self keyPath:@keypath(playerLayer.readyForDisplay)];
-    
+        
     // No need to call -reset here, since -stop or -reset must be called for the controller to be deallocated
     self.pictureInPictureController = nil;              // Unregister KVO
 }
@@ -91,7 +88,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     BOOL hadPlayer = (_player != nil);
     
     if (_player) {
-        [self unregisterTimeObservers];
+        [self unregisterTimeObserversForPlayer:_player];
         
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.status)];
         [_player removeObserver:self keyPath:@keypath(_player.rate)];
@@ -271,6 +268,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     if (_view) {
         AVPlayerLayer *playerLayer = _view.playerLayer;
         playerLayer.player = self.player;
+        
         [playerLayer addObserver:self keyPath:@keypath(playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
             [self updatePictureInPictureController];
         }];
@@ -285,6 +283,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         AVPlayerLayer *playerLayer = _view.playerLayer;
         playerLayer.player = self.player;
+        
         [playerLayer addObserver:self keyPath:@keypath(playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
             [self updatePictureInPictureController];
         }];
@@ -819,9 +818,9 @@ withToleranceBefore:(CMTime)toleranceBefore
     }];
 }
 
-- (void)unregisterTimeObservers
+- (void)unregisterTimeObserversForPlayer:(AVPlayer *)player
 {
-    [self.player removeTimeObserver:self.segmentPeriodicTimeObserver];
+    [player removeTimeObserver:self.segmentPeriodicTimeObserver];
     self.segmentPeriodicTimeObserver = nil;
     
     for (SRGPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
