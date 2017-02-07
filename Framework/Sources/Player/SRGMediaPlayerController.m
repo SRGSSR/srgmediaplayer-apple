@@ -821,7 +821,7 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
 {
-    if ([key isEqualToString:@"playbackState"]) {
+    if ([key isEqualToString:@keypath(SRGMediaPlayerController.new, playbackState)]) {
         return NO;
     }
     else {
