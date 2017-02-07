@@ -12,8 +12,7 @@
 #import "SRGMediaPlayerLogger.h"
 
 #import <libextobjc/libextobjc.h>
-
-static void *s_kvoContext = &s_kvoContext;
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 @interface SRGAirplayView ()
 
@@ -55,8 +54,8 @@ static void commonInit(SRGAirplayView *self);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
-        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive) context:s_kvoContext];
-        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive)];
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:MPVolumeViewWirelessRouteActiveDidChangeNotification
@@ -73,8 +72,12 @@ static void commonInit(SRGAirplayView *self);
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
-        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 context:s_kvoContext];
-        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
+        void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
+            [self updateAppearance];
+        };
+        
+        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:observationBlock];
+        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:observationBlock];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_airplayView_wirelessRouteActiveDidChange:)
@@ -274,22 +277,6 @@ static void commonInit(SRGAirplayView *self);
 - (void)srg_airplayView_screenDidDisconnect:(NSNotification *)notification
 {
     [self updateAppearance];
-}
-
-#pragma mark KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
-{
-    if (context == s_kvoContext) {
-        SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
-        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.externalPlaybackActive)]
-                || [keyPath isEqualToString:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)]) {
-            [self updateAppearance];
-        }
-    }
-    else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
 }
 
 #pragma mark Interface Builder integration

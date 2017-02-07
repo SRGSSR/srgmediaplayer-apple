@@ -12,8 +12,7 @@
 #import "UIScreen+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
-
-static void *s_kvoContext = &s_kvoContext;
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 static UIImage *SRGAirplayButtonImage(void);
 
@@ -59,7 +58,7 @@ static void commonInit(SRGAirplayButton *self);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
-        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) context:s_kvoContext];
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:MPVolumeViewWirelessRouteActiveDidChangeNotification
@@ -79,7 +78,9 @@ static void commonInit(SRGAirplayButton *self);
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
-        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 context:s_kvoContext];
+        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:^(MAKVONotification *notification) {
+            [self updateAppearance];
+        }];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_airplayButton_wirelessRouteActiveDidChange:)
@@ -197,21 +198,6 @@ static void commonInit(SRGAirplayButton *self);
 - (void)srg_airplayButton_screenDidDisconnect:(NSNotification *)notification
 {
     [self updateAppearance];
-}
-
-#pragma mark KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
-{
-    if (context == s_kvoContext) {
-        SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
-        if ([keyPath isEqualToString:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)]) {
-            [self updateAppearance];
-        }
-    }
-    else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
 }
 
 #pragma mark Interface Builder integration
