@@ -115,7 +115,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         [self registerTimeObserversForPlayer:player];
         
         // Common player status observation implementation
+        @weakify(self)
         void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
+            @strongify(self)
+            
             AVPlayerItem *playerItem = player.currentItem;
             
             // Do not let playback pause when the player stalls, attempt to play again
@@ -269,7 +272,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         AVPlayerLayer *playerLayer = _view.playerLayer;
         playerLayer.player = self.player;
         
+        @weakify(self)
         [playerLayer addObserver:self keyPath:@keypath(playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
             [self updatePictureInPictureController];
         }];
     }
@@ -284,7 +289,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         AVPlayerLayer *playerLayer = _view.playerLayer;
         playerLayer.player = self.player;
         
+        @weakify(self)
         [playerLayer addObserver:self keyPath:@keypath(playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
             [self updatePictureInPictureController];
         }];
     }
@@ -406,7 +413,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     _pictureInPictureController = pictureInPictureController;
     
     if (pictureInPictureController) {
+        @weakify(self)
         void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
+            @strongify(self)
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
         };
         

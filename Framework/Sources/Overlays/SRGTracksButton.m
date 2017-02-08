@@ -65,7 +65,9 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
+        @weakify(self)
         [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.playbackState) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
             [self updateAppearance];
         }];
     }

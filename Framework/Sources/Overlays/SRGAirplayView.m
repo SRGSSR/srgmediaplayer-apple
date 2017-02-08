@@ -72,7 +72,9 @@ static void commonInit(SRGAirplayView *self);
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
+        @weakify(self)
         void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
+            @strongify(self)
             [self updateAppearance];
         };
         
