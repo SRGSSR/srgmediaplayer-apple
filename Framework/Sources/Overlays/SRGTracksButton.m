@@ -10,8 +10,7 @@
 #import "SRGAlternateTracksViewController.h"
 
 #import <libextobjc/libextobjc.h>
-
-static void *s_kvoContext = &s_kvoContext;
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 static void commonInit(SRGTracksButton *self);
 
@@ -59,14 +58,18 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
-        [_mediaPlayerController removeObserver:self forKeyPath:@keypath(_mediaPlayerController.playbackState) context:s_kvoContext];
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.playbackState)];
     }
     
     _mediaPlayerController = mediaPlayerController;
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
-        [mediaPlayerController addObserver:self forKeyPath:@keypath(mediaPlayerController.playbackState) options:0 context:s_kvoContext];
+        @weakify(self)
+        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.playbackState) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updateAppearance];
+        }];
     }
 }
 
@@ -199,21 +202,6 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     [presentedViewController presentViewController:navigationController
                                           animated:YES
                                         completion:nil];
-}
-
-#pragma mark KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
-{
-    if (context == s_kvoContext) {
-        SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
-        if ([keyPath isEqualToString:@keypath(mediaPlayerController.playbackState)]) {
-            [self updateAppearance];
-        }
-    }
-    else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
 }
 
 #pragma mark Interface Builder integration

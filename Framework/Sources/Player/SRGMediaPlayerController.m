@@ -15,11 +15,10 @@
 #import "SRGPeriodicTimeObserver.h"
 
 #import <libextobjc/libextobjc.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <objc/runtime.h>
 
 static const NSTimeInterval SRGSegmentSeekToleranceInSeconds = 0.1;
-
-static void *s_kvoContext = &s_kvoContext;
 
 static NSError *SRGMediaPlayerControllerError(NSError *underlyingError);
 static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlaybackState playbackState);
@@ -78,9 +77,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 {
     [self stopWithUserInfo:nil];
     
-    AVPlayerLayer *playerLayer = self.playerLayer;
-    [playerLayer removeObserver:self forKeyPath:@keypath(playerLayer.readyForDisplay) context:s_kvoContext];
-    
     // No need to call -reset here, since -stop or -reset must be called for the controller to be deallocated
     self.pictureInPictureController = nil;              // Unregister KVO
 }
@@ -92,10 +88,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     BOOL hadPlayer = (_player != nil);
     
     if (_player) {
-        [self unregisterTimeObservers];
+        [self unregisterTimeObserversForPlayer:_player];
         
-        [_player removeObserver:self forKeyPath:@keypath(_player.currentItem.status) context:s_kvoContext];
-        [_player removeObserver:self forKeyPath:@keypath(_player.rate) context:s_kvoContext];
+        [_player removeObserver:self keyPath:@keypath(_player.currentItem.status)];
+        [_player removeObserver:self keyPath:@keypath(_player.rate)];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemPlaybackStalledNotification
@@ -118,8 +114,79 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         [self registerTimeObserversForPlayer:player];
         
-        [player addObserver:self forKeyPath:@keypath(player.currentItem.status) options:0 context:s_kvoContext];
-        [player addObserver:self forKeyPath:@keypath(player.rate) options:0 context:s_kvoContext];
+        // Common player status observation implementation
+        @weakify(self)
+        void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
+            @strongify(self)
+            
+            AVPlayerItem *playerItem = player.currentItem;
+            
+            // Do not let playback pause when the player stalls, attempt to play again
+            if (player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
+                [player play];
+            }
+            else if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+                // Playback start. Use received start parameters, do not update the playback state yet, wait until the
+                // completion handler has been executed (since it might immediately start playback)
+                if (self.startTimeValue) {
+                    void (^completionBlock)(BOOL) = ^(BOOL finished) {
+                        // Reset start time first so that playback state induced change made in the completion handler
+                        // does not loop back here
+                        self.startTimeValue = nil;
+                        
+                        self.startCompletionHandler ? self.startCompletionHandler() : nil;
+                        self.startCompletionHandler = nil;
+                        
+                        // If the state of the player was not changed in the completion handler (still preparing), update
+                        // it
+                        if (self.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+                            [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+                        }
+                    };
+                    
+                    CMTime startTime = self.startTimeValue.CMTimeValue;
+                    
+                    if (CMTIME_COMPARE_INLINE(startTime, ==, kCMTimeZero)) {
+                        completionBlock(YES);
+                    }
+                    else {
+                        // Call system method to avoid unwanted seek state in this special case
+                        [player seekToTime:startTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+                            completionBlock(finished);
+                        }];
+                    }
+                }
+                // Update the playback state immediately, except when reaching the end. Non-streamed medias will namely reach the paused state right before
+                // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
+                // live streams (empty range)
+                else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
+                         && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
+                    [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+                }
+                // Playback restarted after it ended (see -play and -pause)
+                else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && player.rate != 0.f) {
+                    [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+                }
+            }
+            else {
+                if (playerItem.status == AVPlayerItemStatusFailed) {
+                    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
+                    
+                    self.startTimeValue = nil;
+                    self.startCompletionHandler = nil;
+                    
+                    NSError *error = SRGMediaPlayerControllerError(playerItem.error);
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
+                                                                        object:self
+                                                                      userInfo:@{ SRGMediaPlayerErrorKey: error }];
+                    
+                    SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
+                }
+            }
+        };
+        
+        [player addObserver:self keyPath:@keypath(player.currentItem.status) options:0 block:observationBlock];
+        [player addObserver:self keyPath:@keypath(player.rate) options:0 block:observationBlock];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_mediaPlayerController_playerItemPlaybackStalled:)
@@ -204,7 +271,12 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     if (_view) {
         AVPlayerLayer *playerLayer = _view.playerLayer;
         playerLayer.player = self.player;
-        [playerLayer addObserver:self forKeyPath:@keypath(playerLayer.readyForDisplay) options:0 context:s_kvoContext];
+        
+        @weakify(self)
+        [playerLayer addObserver:self keyPath:@keypath(playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updatePictureInPictureController];
+        }];
     }
 }
 
@@ -216,7 +288,12 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         AVPlayerLayer *playerLayer = _view.playerLayer;
         playerLayer.player = self.player;
-        [playerLayer addObserver:self forKeyPath:@keypath(playerLayer.readyForDisplay) options:0 context:s_kvoContext];
+        
+        @weakify(self)
+        [playerLayer addObserver:self keyPath:@keypath(playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updatePictureInPictureController];
+        }];
     }
     return _view;
 }
@@ -329,15 +406,21 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 - (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
 {
     if (_pictureInPictureController) {
-        [_pictureInPictureController removeObserver:self forKeyPath:@keypath(_pictureInPictureController.pictureInPicturePossible) context:s_kvoContext];
-        [_pictureInPictureController removeObserver:self forKeyPath:@keypath(_pictureInPictureController.pictureInPictureActive) context:s_kvoContext];
+        [_pictureInPictureController removeObserver:self keyPath:@keypath(_pictureInPictureController.pictureInPicturePossible)];
+        [_pictureInPictureController removeObserver:self keyPath:@keypath(_pictureInPictureController.pictureInPictureActive)];
     }
     
     _pictureInPictureController = pictureInPictureController;
     
     if (pictureInPictureController) {
-        [pictureInPictureController addObserver:self forKeyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 context:s_kvoContext];
-        [pictureInPictureController addObserver:self forKeyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 context:s_kvoContext];
+        @weakify(self)
+        void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
+            @strongify(self)
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
+        };
+        
+        [pictureInPictureController addObserver:self keyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 block:observationBlock];
+        [pictureInPictureController addObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:observationBlock];
     }
 }
 
@@ -583,7 +666,10 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.startTimeValue = nil;
     self.startCompletionHandler = nil;
     
-    self.player = nil;
+    // Only reset if needed (this would otherwise lazily instantiate the view again and create potential issues)
+    if (self.player) {
+        self.player = nil;
+    }
 }
 
 #pragma mark Configuration
@@ -716,6 +802,19 @@ withToleranceBefore:(CMTime)toleranceBefore
    }];
 }
 
+#pragma mark Picture in picture
+
+- (void)updatePictureInPictureController
+{
+    if (self.playerLayer.readyForDisplay) {
+        self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
+        self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(_pictureInPictureController) : nil;
+    }
+    else {
+        self.pictureInPictureController = nil;
+    }
+}
+
 #pragma mark Time observers
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
@@ -731,9 +830,9 @@ withToleranceBefore:(CMTime)toleranceBefore
     }];
 }
 
-- (void)unregisterTimeObservers
+- (void)unregisterTimeObserversForPlayer:(AVPlayer *)player
 {
-    [self.player removeTimeObserver:self.segmentPeriodicTimeObserver];
+    [player removeTimeObserver:self.segmentPeriodicTimeObserver];
     self.segmentPeriodicTimeObserver = nil;
     
     for (SRGPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
@@ -828,97 +927,6 @@ withToleranceBefore:(CMTime)toleranceBefore
         return [super automaticallyNotifiesObserversForKey:key];
     }
 }
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *, id> *)change context:(void *)context
-{
-    // Changes are guaranteed to be reported on the main thread, see https://developer.apple.com/reference/avfoundation/avplayer
-    if (context == s_kvoContext) {
-        // If the rate or the item status changes, calculate the new playback status
-        if ([keyPath isEqualToString:@keypath(AVPlayer.new, currentItem.status)] || [keyPath isEqualToString:@keypath(AVPlayer.new, rate)]) {
-            AVPlayerItem *playerItem = self.player.currentItem;
-            
-            // Do not let playback pause when the player stalls, attempt to play again
-            if (self.player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
-                [self.player play];
-            }
-            else if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
-                // Playback start. Use received start parameters, do not update the playback state yet, wait until the
-                // completion handler has been executed (since it might immediately start playback)
-                if (self.startTimeValue) {
-                    void (^completionBlock)(BOOL) = ^(BOOL finished) {
-                        // Reset start time first so that playback state induced change made in the completion handler
-                        // does not loop back here
-                        self.startTimeValue = nil;
-                        
-                        self.startCompletionHandler ? self.startCompletionHandler() : nil;
-                        self.startCompletionHandler = nil;
-                        
-                        // If the state of the player was not changed in the completion handler (still preparing), update
-                        // it
-                        if (self.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-                            [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                        }
-                    };
-                    
-                    CMTime startTime = self.startTimeValue.CMTimeValue;
-                    
-                    if (CMTIME_COMPARE_INLINE(startTime, ==, kCMTimeZero)) {
-                        completionBlock(YES);
-                    }
-                    else {
-                        // Call system method to avoid unwanted seek state in this special case
-                        [self.player seekToTime:startTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
-                            completionBlock(finished);
-                        }];
-                    }
-                }
-                // Update the playback state immediately, except when reaching the end. Non-streamed medias will namely reach the paused state right before
-                // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
-                // live streams (empty range)
-                else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
-                            && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
-                    [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                }
-                // Playback restarted after it ended (see -play and -pause)
-                else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && self.player.rate != 0.f) {
-                    [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                }
-            }
-            else {
-                if (playerItem.status == AVPlayerItemStatusFailed) {
-                    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
-                    
-                    self.startTimeValue = nil;
-                    self.startCompletionHandler = nil;
-                    
-                    NSError *error = SRGMediaPlayerControllerError(playerItem.error);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
-                                                                        object:self
-                                                                      userInfo:@{ SRGMediaPlayerErrorKey: error }];
-                    
-                    SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
-                }
-            }
-        }
-        else if ([keyPath isEqualToString:@keypath(AVPictureInPictureController.new, pictureInPictureActive)]
-                 || [keyPath isEqualToString:@keypath(AVPictureInPictureController.new, pictureInPicturePossible)]) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
-        }
-        else if ([keyPath isEqualToString:@keypath(AVPlayerLayer.new, readyForDisplay)]) {
-            if (self.playerLayer.readyForDisplay) {
-                self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
-                self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(_pictureInPictureController) : nil;
-            }
-            else {
-                self.pictureInPictureController = nil;
-            }
-        }
-    }
-    else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
-}
-
 
 #pragma mark Description
 

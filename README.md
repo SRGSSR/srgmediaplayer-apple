@@ -26,9 +26,10 @@ github "SRGSSR/SRGMediaPlayer-iOS"
 
 Then run `carthage update --platform iOS` to update the dependencies. You will need to manually add the following `.framework`s generated in the `Carthage/Build/iOS` folder to your projet:
 
-* `libextobjc.framework`: A utility framework
-* `SRGLogger.framework`: The framework used for internal logging
-* `SRGMediaPlayer.framework`: The main data provider framework
+* `libextobjc`: A utility framework
+* `MAKVONotificationCenter`: A safe KVO framework
+* `SRGLogger`: The framework used for internal logging
+* `SRGMediaPlayer`: The main data provider framework
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
 
