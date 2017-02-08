@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  `usesExternalPlaybackWhileExternalScreenIsActive` property has been set to `NO`), no button will be displayed.
  *  (Airplay can still be enabled from the control center). If no media player controller is attached, the button will 
  *  be displayed for any kind of Airplay usage.
+ *
+ *  The button is automatically shown or hidden by having its `hidden` property automatically adjusted. Attempting
+ *  to manually alter this property leads to undefined behavior.
  */
 @interface SRGAirplayButton : UIView
 

@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  If your controls are stacked using a `UIStackView`, the layout will automatically adjust when the button appears
  *  or disappears.
  *
+ *  The button is automatically shown or hidden by having its `hidden` property automatically adjusted. Attempting
+ *  to manually alter this property leads to undefined behavior.
+ *
  *  It is important that picture in picture is never enabled without user intervention, except when the system does
  *  it automatically from full-screen playback (this is controlled by a system setting). Apple might reject your
  *  application otherwise.
