@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="d9c-I7-8ft">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="d9c-I7-8ft">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -209,17 +209,15 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OMx-Y7-xyM" userLabel="Tracks Button" customClass="SRGTracksButton">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BD2-S4-WOV" customClass="SRGTracksButton">
                                         <rect key="frame" x="285" y="9" width="43" height="34"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="43" id="K4e-fG-ZMK"/>
-                                            <constraint firstAttribute="height" constant="34" id="jUW-rk-CHI"/>
+                                            <constraint firstAttribute="height" constant="34" id="Htq-JW-JbS"/>
+                                            <constraint firstAttribute="width" constant="43" id="JhF-Kr-K8i"/>
                                         </constraints>
-                                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <state key="normal">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v1o-Zf-hvu" customClass="SRGPictureInPictureButton">
                                         <rect key="frame" x="330" y="9" width="43" height="34"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -240,10 +238,10 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="o5t-je-W81" secondAttribute="centerX" id="0fp-WV-WFP"/>
-                                    <constraint firstItem="v1o-Zf-hvu" firstAttribute="leading" secondItem="OMx-Y7-xyM" secondAttribute="trailing" constant="2" id="1Is-eT-wAr"/>
                                     <constraint firstItem="bTT-cI-yED" firstAttribute="leading" secondItem="YwM-m3-QWC" secondAttribute="leading" id="58r-fX-NQz"/>
                                     <constraint firstAttribute="trailing" secondItem="v1o-Zf-hvu" secondAttribute="trailing" constant="2" id="5VJ-cQ-DBV"/>
                                     <constraint firstItem="fWe-Va-NMR" firstAttribute="leading" secondItem="YwM-m3-QWC" secondAttribute="leading" constant="2" id="BJU-d4-3cV"/>
+                                    <constraint firstItem="BD2-S4-WOV" firstAttribute="centerY" secondItem="v1o-Zf-hvu" secondAttribute="centerY" id="CxW-d9-DWC"/>
                                     <constraint firstAttribute="trailing" secondItem="Tou-sR-6sx" secondAttribute="trailing" constant="8" id="DGg-ry-RTx"/>
                                     <constraint firstAttribute="bottom" secondItem="Tou-sR-6sx" secondAttribute="bottom" id="EPj-4F-wNw"/>
                                     <constraint firstItem="v1o-Zf-hvu" firstAttribute="centerY" secondItem="o5t-je-W81" secondAttribute="centerY" id="FDr-sM-tZb"/>
@@ -253,8 +251,8 @@
                                     <constraint firstAttribute="trailing" secondItem="bTT-cI-yED" secondAttribute="trailing" id="NNl-Lj-UDZ"/>
                                     <constraint firstItem="fWe-Va-NMR" firstAttribute="centerY" secondItem="o5t-je-W81" secondAttribute="centerY" id="Yl0-Aa-g0R"/>
                                     <constraint firstAttribute="height" constant="80" id="aqK-IH-2zy"/>
+                                    <constraint firstItem="v1o-Zf-hvu" firstAttribute="leading" secondItem="BD2-S4-WOV" secondAttribute="trailing" constant="2" id="lHf-2R-nNX"/>
                                     <constraint firstItem="bTT-cI-yED" firstAttribute="top" secondItem="YwM-m3-QWC" secondAttribute="top" id="rgE-J3-vUI"/>
-                                    <constraint firstItem="OMx-Y7-xyM" firstAttribute="centerY" secondItem="v1o-Zf-hvu" secondAttribute="centerY" id="vxi-x1-sGI"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I5F-oL-EgU" userLabel="Back To Live Button">
@@ -313,7 +311,7 @@
                         <outlet property="playerView" destination="kvR-ic-iMa" id="yTl-Xr-5zG"/>
                         <outlet property="timeLeftValueLabelWidthConstraint" destination="Rro-tt-QoX" id="98i-e5-MMY"/>
                         <outlet property="timeSlider" destination="FmA-bo-Sop" id="bAh-w7-cKK"/>
-                        <outlet property="tracksButton" destination="OMx-Y7-xyM" id="3BE-D1-i1u"/>
+                        <outlet property="tracksButton" destination="BD2-S4-WOV" id="ZXk-x4-7GH"/>
                         <outlet property="valueLabelWidthConstraint" destination="zWQ-dl-pwm" id="KPf-oy-Oi0"/>
                         <outlet property="volumeView" destination="Tou-sR-6sx" id="3AQ-NU-ghu"/>
                         <outletCollection property="overlayViews" destination="f2q-AQ-hq3" id="4aO-Ky-v45"/>

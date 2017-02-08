@@ -36,6 +36,7 @@
 		6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FB97FE11E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FB97FE21E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6FB97FF81E4B13CC0014C4C2 /* MAKVONotificationCenter.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FEB51631DB0A8FB002D1751 /* airplay.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51601DB0A8FA002D1751 /* airplay.png */; };
 		6FEB51641DB0A8FB002D1751 /* airplay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51611DB0A8FB002D1751 /* airplay@2x.png */; };
 		6FEB51651DB0A8FB002D1751 /* airplay@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51621DB0A8FB002D1751 /* airplay@3x.png */; };
@@ -165,6 +166,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				6FB97FF81E4B13CC0014C4C2 /* MAKVONotificationCenter.framework in Copy Framework Dependencies For Xcode View Rendering */,
 				6F1D6D021DAF50050072C107 /* SRGLogger.framework in Copy Framework Dependencies For Xcode View Rendering */,
 				6F1D6D031DAF50050072C107 /* libextobjc.framework in Copy Framework Dependencies For Xcode View Rendering */,
 			);
@@ -811,6 +813,7 @@
 					};
 					E69A1E661D61BEFC0064E6C1 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = VMGRRW6SG7;
 					};
 					E69A1FD01D61C6830064E6C1 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -1156,7 +1159,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -1185,7 +1188,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
