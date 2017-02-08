@@ -29,7 +29,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @private
     SRGMediaPlayerPlaybackState _playbackState;
     BOOL _selected;
-    BOOL _deallocating;
 }
 
 @property (nonatomic) AVPlayer *player;
@@ -76,8 +75,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)dealloc
 {
-    _deallocating = YES;
-    
     [self stopWithUserInfo:nil];
     
     // No need to call -reset here, since -stop or -reset must be called for the controller to be deallocated
@@ -281,7 +278,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 // Called when lazily creating the view, not binding it
 - (UIView *)view
 {
-    if (! _view && ! _deallocating) {
+    if (! _view) {
         _view = [[SRGMediaPlayerView alloc] init];
         
         AVPlayerLayer *playerLayer = _view.playerLayer;
@@ -660,7 +657,10 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.startTimeValue = nil;
     self.startCompletionHandler = nil;
     
-    self.player = nil;
+    // Only reset if needed (this would otherwise lazily instantiate the view again and create potential issues)
+    if (self.player) {
+        self.player = nil;
+    }
 }
 
 #pragma mark Configuration
