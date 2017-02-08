@@ -28,7 +28,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 @synthesize image = _image;
 @synthesize selectedImage = _selectedImage;
-@synthesize alwaysVisible = _alwaysVisible;
+@synthesize alwaysHidden = _alwaysHidden;
 
 #pragma mark Object lifecycle
 
@@ -95,9 +95,9 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     [self updateAppearance];
 }
 
-- (void)setAlwaysVisible:(BOOL)alwaysVisible
+- (void)setAlwaysHidden:(BOOL)alwaysHidden
 {
-    _alwaysVisible = alwaysVisible;
+    _alwaysHidden = alwaysHidden;
     [self updateAppearance];
 }
 
@@ -134,7 +134,10 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     [self.button setImage:self.image forState:UIControlStateNormal];
     [self.button setImage:self.selectedImage forState:UIControlStateSelected];
     
-    if (mediaPlayerController) {
+    if (self.alwaysHidden) {
+        self.hidden = YES;
+    }
+    else if (mediaPlayerController) {
         // Get available subtitles. If no one, the button disappears or disable. if one or more, display the button. If
         // one of subtitles is displayed, set the button in the selected state.
         AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
@@ -154,8 +157,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
             self.button.selected = (currentLegibleOption != nil);
         }
         else {
-            self.hidden = !self.alwaysVisible;
-            self.button.enabled = NO;
+            self.hidden = YES;
         }
     }
     else if (self.fakeInterfaceBuilderButton) {
@@ -163,7 +165,6 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     }
     else {
         self.hidden = YES;
-        self.button.enabled = NO;
     }
 }
 

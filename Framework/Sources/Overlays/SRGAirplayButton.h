@@ -20,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  be displayed for any kind of Airplay usage.
  *
  *  The button is automatically shown or hidden by having its `hidden` property automatically adjusted. Attempting
- *  to manually alter this property leads to undefined behavior.
+ *  to manually alter this property leads to undefined behavior. You can force the button to always be hidden by
+ *  setting its `alwaysHidden` property to YES if needed.
  */
 @interface SRGAirplayButton : UIView
 
@@ -38,6 +39,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  The tint color to apply when Airplay is active (if nil, then the usual blue tint color is applied)
  */
 @property (nonatomic, null_resettable) IBInspectable UIColor *activeTintColor;
+
+/**
+ *  When set to YES, force the button to be always hidden, even if subtitles are available.
+ *
+ *  Default value is NO
+ */
+@property (nonatomic, getter=isAlwaysHidden) IBInspectable BOOL alwaysHidden;
 
 @end
 

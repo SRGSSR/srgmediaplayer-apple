@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  Button which is automatically shown when subtitles are available, disappears otherwise by default. If your controls are
  *  stacked using a `UIStackView`, the layout will automatically adjust when the button appears or disappears.
  *
+ *  The button is automatically shown or hidden by having its `hidden` property automatically adjusted. Attempting
+ *  to manually alter this property leads to undefined behavior. You can force the button to always be hidden by
+ *  setting its `alwaysHidden` property to YES if needed.
+ *
  *  A media player controller must be attached. If the current AVplayerItem has subtitles (AVMediaCharacteristicLegible)
  *  the button is displayed, and regarding a subtitle selected or not, the button is selected.
  *  Action on the button display the available subtitles list in an action sheet, with possibity to select one.
@@ -32,11 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, null_resettable) IBInspectable UIImage *selectedImage;
 
 /**
- *  When set to YES, force the button to be always visible, even if no subtitles are available.
+ *  When set to YES, force the button to be always hidden, even if subtitles are available.
  *
  *  Default value is NO
  */
-@property (nonatomic, getter=isAlwaysVisible) IBInspectable BOOL alwaysVisible;
+@property (nonatomic, getter=isAlwaysHidden) IBInspectable BOOL alwaysHidden;
 
 @end
 

@@ -20,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  or disappears.
  *
  *  The button is automatically shown or hidden by having its `hidden` property automatically adjusted. Attempting
- *  to manually alter this property leads to undefined behavior.
+ *  to manually alter this property leads to undefined behavior. You can force the button to always be hidden by
+ *  setting its `alwaysHidden` property to YES if needed.
  *
  *  It is important that picture in picture is never enabled without user intervention, except when the system does
  *  it automatically from full-screen playback (this is controlled by a system setting). Apple might reject your
@@ -38,6 +39,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, null_resettable) IBInspectable UIImage *startImage;
 @property (nonatomic, null_resettable) IBInspectable UIImage *stopImage;
+
+/**
+ *  When set to YES, force the button to be always hidden, even if subtitles are available.
+ *
+ *  Default value is NO
+ */
+@property (nonatomic, getter=isAlwaysHidden) IBInspectable BOOL alwaysHidden;
 
 @end
 

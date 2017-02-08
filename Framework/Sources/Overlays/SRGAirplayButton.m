@@ -29,6 +29,7 @@ static void commonInit(SRGAirplayButton *self);
 
 @synthesize image = _image;
 @synthesize activeTintColor = _activeTintColor;
+@synthesize alwaysHidden = _alwaysHidden;
 
 #pragma mark Object lifecycle
 
@@ -126,6 +127,12 @@ static void commonInit(SRGAirplayButton *self);
     [self updateAppearance];
 }
 
+- (void)setAlwaysHidden:(BOOL)alwaysHidden
+{
+    _alwaysHidden = alwaysHidden;
+    [self updateAppearance];
+}
+
 #pragma mark Overrides
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
@@ -163,7 +170,10 @@ static void commonInit(SRGAirplayButton *self);
     [airplayButton setImage:self.image forState:UIControlStateNormal];
     [airplayButton setImage:self.image forState:UIControlStateSelected];
     
-    if (mediaPlayerController) {
+    if (self.alwaysHidden) {
+        self.hidden = YES;
+    }
+    else if (mediaPlayerController) {
         // Device mirrored, and playback not sent to the external display. Always hide the button (true mirroring: never
         // show Airplay controls on the device screen, and thus on the external display)
         if ([UIScreen srg_isMirroring] && ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) {

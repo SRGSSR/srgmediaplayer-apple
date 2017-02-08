@@ -25,6 +25,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 @synthesize startImage = _startImage;
 @synthesize stopImage = _stopImage;
+@synthesize alwaysHidden = _alwaysHidden;
 
 #pragma mark Object lifecycle
 
@@ -92,6 +93,12 @@ static void commonInit(SRGPictureInPictureButton *self);
     [self updateAppearance];
 }
 
+- (void)setAlwaysHidden:(BOOL)alwaysHidden
+{
+    _alwaysHidden = alwaysHidden;
+    [self updateAppearance];
+}
+
 #pragma mark Overrides
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
@@ -124,7 +131,10 @@ static void commonInit(SRGPictureInPictureButton *self);
 {
     AVPictureInPictureController *pictureInPictureController = mediaPlayerController.pictureInPictureController;
     
-    if (pictureInPictureController.pictureInPicturePossible) {
+    if (self.alwaysHidden) {
+        self.hidden = YES;
+    }
+    else if (pictureInPictureController.pictureInPicturePossible) {
         self.hidden = NO;
         
         UIImage *image = pictureInPictureController.pictureInPictureActive ? self.stopImage : self.startImage;
