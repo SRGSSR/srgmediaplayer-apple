@@ -102,6 +102,15 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
                 [self updateDisplayWithTime:time];
             }
         }];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(srg_timeSlider_playbackStateDidChange:)
+                                                     name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                   object:mediaPlayerController];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(srg_timeSlider_seek:)
+                                                     name:SRGMediaPlayerSeekNotification
+                                                   object:mediaPlayerController];
     }
 }
 
