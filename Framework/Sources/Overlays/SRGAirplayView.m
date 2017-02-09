@@ -46,7 +46,7 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)dealloc
 {
-    self.mediaPlayerController = nil;       // Unregister KVO
+    self.mediaPlayerController = nil;       // Unregister everything
 }
 
 #pragma mark Getters and setters

@@ -50,7 +50,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (void)dealloc
 {
-    self.mediaPlayerController = nil;       // Unregister KVO and notifications
+    self.mediaPlayerController = nil;       // Unregister everything
 }
 
 #pragma mark Getters and setters

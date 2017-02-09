@@ -71,7 +71,39 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
     return self;
 }
 
+- (void)dealloc
+{
+    self.mediaPlayerController = nil;           // Unregister observers
+}
+
 #pragma mark Getters and setters
+
+- (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
+{
+    if (_mediaPlayerController) {
+        [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                      object:_mediaPlayerController];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:SRGMediaPlayerSeekNotification
+                                                      object:_mediaPlayerController];
+    }
+    
+    _mediaPlayerController = mediaPlayerController;
+    
+    if (mediaPlayerController) {
+        @weakify(self)
+        self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
+            @strongify(self)
+            
+            if (! self.isTracking && mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
+                [self updateDisplayWithTime:time];
+            }
+        }];
+    }
+}
 
 - (BOOL)isDraggable
 {
@@ -115,43 +147,6 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 - (void)setMaximumTrackTintColor:(UIColor *)maximumTrackTintColor
 {
     self.overriddenMaximumTrackTintColor = maximumTrackTintColor;
-}
-
-#pragma mark Overrides
-
-- (void)willMoveToWindow:(UIWindow *)window
-{
-    [super willMoveToWindow:window];
-    
-    if (window) {
-        @weakify(self)
-        self.periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
-            @strongify(self)
-            
-            if (! self.isTracking && self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
-                [self updateDisplayWithTime:time];
-            }
-        }];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_timeSlider_playbackStateDidChange:)
-                                                     name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                                   object:self.mediaPlayerController];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_timeSlider_seek:)
-                                                     name:SRGMediaPlayerSeekNotification
-                                                   object:self.mediaPlayerController];
-    }
-    else {
-        [self.mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                                      object:self.mediaPlayerController];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:SRGMediaPlayerSeekNotification
-                                                      object:self.mediaPlayerController];
-    }
 }
 
 // Take into account the non-standard smaller knob we installed in commonInit()

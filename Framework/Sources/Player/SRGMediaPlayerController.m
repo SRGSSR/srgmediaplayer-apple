@@ -78,7 +78,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     [self stopWithUserInfo:nil];
     
     // No need to call -reset here, since -stop or -reset must be called for the controller to be deallocated
-    self.pictureInPictureController = nil;              // Unregister KVO
+    self.pictureInPictureController = nil;              // Unregister everything
 }
 
 #pragma mark Getters and setters
