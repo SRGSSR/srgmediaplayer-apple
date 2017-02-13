@@ -456,7 +456,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         return NO;
     }
     
-    if (! player.externalPlaybackActive) {
+    // We do not test the `externalPlaybackActive` property here, on purpose: The fact that Airplay is active was
+    // tested just above, and the `externalPlaybackActive` property is less reliable in some cases where Airplay
+    // settings are changed, but Airplay is still active
+    if (! player.allowsExternalPlayback) {
         return NO;
     }
     
