@@ -102,6 +102,7 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
                 [self updateDisplayWithTime:time];
             }
         }];
+        [self updateDisplayWithTime:mediaPlayerController.player.currentTime];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_timeSlider_playbackStateDidChange:)
@@ -192,7 +193,6 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
     }
     else if (! CMTIMERANGE_IS_EMPTY(timeRange) && ! CMTIMERANGE_IS_INDEFINITE(timeRange) && ! CMTIMERANGE_IS_INVALID(timeRange)) {
         self.maximumValue = CMTimeGetSeconds(timeRange.duration);
-        
         self.value = CMTimeGetSeconds(CMTimeSubtract(time, timeRange.start));
         self.userInteractionEnabled = YES;
     }
