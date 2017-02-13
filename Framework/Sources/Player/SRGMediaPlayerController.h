@@ -534,9 +534,15 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 /**
  *  Airplay. Use player lifecycle blocks (see main `SRGMediaPlayerController` documentation) to setup Airplay behavior.
+ *  Your audio session settings must be compatible with Airplay, see 
+ *      https://developer.apple.com/library/content/qa/qa1803/_index.html
  *
- *  Remark: Even if `allowsExternalPlayback` is set to `NO`, sound will still play on an external device. Only the visual
- *          tracks of a media won't be played on an external Airplay device.
+ *  Remark: Even if `allowsExternalPlayback` is set to `NO`, sound will still play on an external device if selected, only
+ *          the visual tracks of a media won't be played. This is normal expected Airplay behavior. 
+ *          As a corollary, if you change the `allowsExternalPlayback` from `YES` to `NO` while playing with Airplay, the
+ *          visual tracks will be restored on the device, while the sound will continue over Airplay. Though weird, this 
+ *          is expected behavior as well. To restore the sound on the device, the user has to manually open the control
+ *          center and choose to route audio through the device again.
  */
 @interface SRGMediaPlayerController (Airplay)
 
