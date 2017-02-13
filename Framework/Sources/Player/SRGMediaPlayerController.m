@@ -979,8 +979,10 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (NSString *)description
 {
+    CMTimeRange timeRange = self.timeRange;
     return [NSString stringWithFormat:@"<%@: %p; playbackState: %@; mediaType: %@; streamType: %@; live: %@; "
-                "contentURL: %@; segments: %@; userInfo: %@; minimumDVRWindowLength: %@; liveTolerance: %@>",
+                "contentURL: %@; segments: %@; userInfo: %@; minimumDVRWindowLength: %@; liveTolerance: %@;"
+                "timeRange: (%@, %@)>",
             [self class],
             self,
             SRGMediaPlayerControllerNameForPlaybackState(self.playbackState),
@@ -991,7 +993,9 @@ withToleranceBefore:(CMTime)toleranceBefore
             self.segments,
             self.userInfo,
             @(self.minimumDVRWindowLength),
-            @(self.liveTolerance)];
+            @(self.liveTolerance),
+            @(CMTimeGetSeconds(timeRange.start)),
+            @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange)))];
 }
 
 @end
