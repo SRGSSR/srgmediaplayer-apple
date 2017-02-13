@@ -174,15 +174,13 @@ static void commonInit(SRGAirplayButton *self);
         self.hidden = YES;
     }
     else if (mediaPlayerController) {
-        // Device mirrored, and playback not sent to the external display. Always hide the button (true mirroring: never
-        // show Airplay controls on the device screen, and thus on the external display)
-        if ([UIScreen srg_isMirroring] && ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) {
-            self.hidden = YES;
-        }
-        // Otherwise use Airplay availability / status
-        else {
+        // True Airplay active. Use Airplay availability status
+        if (mediaPlayerController.allowsExternalNonMirroredPlayback && self.volumeView.areWirelessRoutesAvailable) {
             airplayButton.tintColor = [AVAudioSession srg_isAirplayActive] ? self.activeTintColor : self.tintColor;
-            self.hidden = ! self.volumeView.areWirelessRoutesAvailable;
+            self.hidden = NO;
+        }
+        else {
+            self.hidden = YES;
         }
     }
     else {

@@ -533,6 +533,27 @@ withToleranceBefore:(CMTime)toleranceBefore
 @end
 
 /**
+ *  Airplay. Use player lifecycle blocks (see main `SRGMediaPlayerController` documentation) to setup Airplay behavior.
+ *
+ *  Remark: Even if `allowsExternalPlayback` is set to `NO`, sound will still play on an external device. Only the visual
+ *          tracks of a media won't be played on an external Airplay device.
+ */
+@interface SRGMediaPlayerController (Airplay)
+
+/**
+ *  Return YES iff the player must supported external non-mirrored playback (i.e. moving playback only to the external
+ *  display).
+ */
+@property (nonatomic, readonly) BOOL allowsExternalNonMirroredPlayback;
+
+/**
+ *  Return YES iff non-mirrored external playback is active
+ */
+@property (nonatomic, readonly, getter=isExternalNonMirroredPlaybackActive) BOOL externalNonMirroredPlaybackActive;
+
+@end
+
+/**
  *  Picture in picture functionality (not available on all devices)
  *
  *  Remark: When the application is sent to the background, the behavior is the same as the vanilla picture in picture

@@ -6,6 +6,7 @@
 
 #import "SRGMediaPlayerController.h"
 
+#import "AVAudioSession+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
 #import "SRGMediaPlayerError.h"
@@ -13,6 +14,7 @@
 #import "SRGMediaPlayerView.h"
 #import "SRGMediaPlayerView+Private.h"
 #import "SRGPeriodicTimeObserver.h"
+#import "UIScreen+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
@@ -422,6 +424,48 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         [pictureInPictureController addObserver:self keyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 block:observationBlock];
         [pictureInPictureController addObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:observationBlock];
     }
+}
+
+- (BOOL)allowsExternalNonMirroredPlayback
+{
+    AVPlayer *player = self.player;
+    if (! player) {
+        return NO;
+    }
+    
+    if (! player.allowsExternalPlayback) {
+        return NO;
+    }
+    
+    if (! [UIScreen srg_isMirroring]) {
+        return YES;
+    }
+    
+    // If the player switches to external playback, then it does not mirror the display
+    return player.usesExternalPlaybackWhileExternalScreenIsActive;
+}
+
+- (BOOL)isExternalNonMirroredPlaybackActive
+{
+    if (! [AVAudioSession srg_isAirplayActive]) {
+        return NO;
+    }
+    
+    AVPlayer *player = self.player;
+    if (! player) {
+        return NO;
+    }
+    
+    if (! player.externalPlaybackActive) {
+        return NO;
+    }
+    
+    if (! [UIScreen srg_isMirroring]) {
+        return YES;
+    }
+    
+    // If the player switches to external playback, then it does not mirror the display
+    return player.usesExternalPlaybackWhileExternalScreenIsActive;
 }
 
 #pragma mark Playback

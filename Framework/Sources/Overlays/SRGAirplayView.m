@@ -214,14 +214,12 @@ static void commonInit(SRGAirplayView *self);
     BOOL wasHidden = self.hidden;
     
     if (mediaPlayerController) {
-        // Device mirrored, and playback not sent to the external display. Always hide the overlay (true mirroring: never
-        // show Airplay controls on the device screen, and thus on the external display)
-        if ([UIScreen srg_isMirroring] && ! mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) {
-            self.hidden = YES;
-        }
-        // Otherwise use Airplay status
-        else {
+        // True Airplay active. Use Airplay availability status
+        if (mediaPlayerController.externalNonMirroredPlaybackActive) {
             self.hidden = ! [AVAudioSession srg_isAirplayActive];
+        }
+        else {
+            self.hidden = YES;
         }
     }
     else {
