@@ -413,6 +413,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     
     _pictureInPictureController = pictureInPictureController;
+    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
     
     if (pictureInPictureController) {
         @weakify(self)
