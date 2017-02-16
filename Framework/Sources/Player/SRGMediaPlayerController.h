@@ -408,9 +408,9 @@ withToleranceBefore:(CMTime)toleranceBefore
 /**
  *  Remove a time observer (does nothing if the observer is not registered)
  *
- *  @param observer The time observer to remove
+ *  @param observer The time observer to remove (does nothing if nil)
  */
-- (void)removePeriodicTimeObserver:(id)observer;
+- (void)removePeriodicTimeObserver:(nullable id)observer;
 
 @end
 

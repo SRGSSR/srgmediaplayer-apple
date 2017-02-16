@@ -929,6 +929,10 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)removePeriodicTimeObserver:(id)observer
 {
+    if (! observer) {
+        return;
+    }
+    
     for (NSString *key in self.periodicTimeObservers.allKeys) {
         SRGPeriodicTimeObserver *periodicTimeObserver = self.periodicTimeObservers[key];
         if (! [periodicTimeObserver hasBlockWithIdentifier:observer]) {
