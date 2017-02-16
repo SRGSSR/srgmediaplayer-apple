@@ -558,11 +558,16 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)togglePlayPause
 {
-    if (self.player.rate == 0.f) {
-        [self play];
+    if (self.player) {
+        if (self.player.rate == 0.f) {
+            [self play];
+        }
+        else {
+            [self pause];
+        }
     }
-    else {
-        [self pause];
+    else if (self.contentURL) {
+        [self playURL:self.contentURL];
     }
 }
 
