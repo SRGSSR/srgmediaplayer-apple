@@ -277,7 +277,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)pause;
 
 /**
- *  Ask the player to stop playback. Call `-play` to restart playback with the same content URL, segments and user info.
+ *  Ask the player to stop playback. Call `-play` to restart playback with the same content URL, segments, start position
+ *  and user info.
  *
  *  @discussion Calling either `-stop` or `-reset` on a player controller is required for it to be properly deallocated.
  */

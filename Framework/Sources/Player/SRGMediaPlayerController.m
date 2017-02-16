@@ -44,13 +44,17 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) id segmentPeriodicTimeObserver;
 
+// Saved values supplied when playback is started
+@property (nonatomic, weak) id<SRGSegment> initialTargetSegment;
+@property (nonatomic) NSValue *initialStartTimeValue;
+
 @property (nonatomic, weak) id<SRGSegment> previousSegment;
-@property (nonatomic, weak) id<SRGSegment> targetSegment;
+@property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
 @property (nonatomic, weak) id<SRGSegment> currentSegment;
 
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
-@property (nonatomic) NSValue *startTimeValue;
+@property (nonatomic) NSValue *startTimeValue;                      // Will be nilled when reached
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
 
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
@@ -485,16 +489,25 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)play
 {
-    // Normal conditions. Simply forward to the player
-    if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
-        [self.player play];
+    // Player is available
+    if (self.player) {
+        // Normal conditions. Simply forward to the player
+        if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
+            [self.player play];
+        }
+        // Playback ended. Restart at the beginning. Use low-level API to avoid sending seek events
+        else {
+            [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+                if (finished) {
+                    [self.player play];
+                }
+            }];
+        }
     }
-    // Playback ended. Restart at the beginning. Use low-level API to avoid sending seek events
-    else {
-        [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
-            if (finished) {
-                [self.player play];
-            }
+    // Player has been removed (e.g. after a -stop). Restart playback with the same conditions (if not cleared)
+    else if (self.contentURL) {
+        [self prepareToPlayURL:self.contentURL atTime:[self.initialStartTimeValue CMTimeValue] withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
+            [self play];
         }];
     }
 }
@@ -534,6 +547,10 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.segments = nil;
     self.userInfo = nil;
     
+    // Clear input values
+    self.initialTargetSegment = nil;
+    self.initialStartTimeValue = nil;
+    
     [self stopWithUserInfo:[userInfo copy]];
 }
 
@@ -558,16 +575,11 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)togglePlayPause
 {
-    if (self.player) {
-        if (self.player.rate == 0.f) {
-            [self play];
-        }
-        else {
-            [self pause];
-        }
+    if (! self.player || self.player.rate == 0.f) {
+        [self play];
     }
-    else if (self.contentURL) {
-        [self playURL:self.contentURL];
+    else {
+        [self pause];
     }
 }
 
@@ -663,6 +675,10 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     self.startTimeValue = [NSValue valueWithCMTime:time];
     self.startCompletionHandler = completionHandler;
+    
+    // Save initial values for restart after a stop
+    self.initialTargetSegment = targetSegment;
+    self.initialStartTimeValue = self.startTimeValue;
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
