@@ -726,6 +726,12 @@ withToleranceBefore:(CMTime)toleranceBefore
         [self.pictureInPictureController stopPictureInPicture];
     }
     
+    // Only reset if needed (this would otherwise lazily instantiate the view again and create potential issues)
+    if (self.player) {
+        self.player = nil;
+    }
+    
+    // The player is guaranteed to be nil when the idle notification is sent
     [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:userInfo];
     
     self.previousSegment = nil;
@@ -734,11 +740,6 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     self.startTimeValue = nil;
     self.startCompletionHandler = nil;
-    
-    // Only reset if needed (this would otherwise lazily instantiate the view again and create potential issues)
-    if (self.player) {
-        self.player = nil;
-    }
 }
 
 #pragma mark Configuration

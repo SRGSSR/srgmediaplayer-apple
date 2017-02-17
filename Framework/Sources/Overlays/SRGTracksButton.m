@@ -143,10 +143,10 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
         AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
         
         AVMediaSelectionGroup *legibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        NSArray *legibleOptions = legibleGroup.options;
+        NSArray<AVMediaSelectionOption *> *legibleOptions = legibleGroup.options;
         
         AVMediaSelectionGroup *audibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-        NSArray *audibleOptions = audibleGroup.options;
+        NSArray<AVMediaSelectionOption *> *audibleOptions = audibleGroup.options;
         
         if (legibleOptions.count != 0 || audibleOptions.count > 1) {
             self.hidden = NO;
