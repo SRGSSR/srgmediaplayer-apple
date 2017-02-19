@@ -125,10 +125,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
             @strongify(self)
             
-            if ([notification.oldValue isEqual:notification.newValue]) {
-                return;
-            }
-            
             AVPlayerItem *playerItem = player.currentItem;
             
             // Do not let playback pause when the player stalls, attempt to play again
@@ -195,8 +191,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             }
         };
         
-        [player addObserver:self keyPath:@keypath(player.currentItem.status) options:NSKeyValueObservingOptionOld block:observationBlock];
-        [player addObserver:self keyPath:@keypath(player.rate) options:NSKeyValueObservingOptionOld block:observationBlock];
+        [player addObserver:self keyPath:@keypath(player.currentItem.status) options:0 block:observationBlock];
+        [player addObserver:self keyPath:@keypath(player.rate) options:0 block:observationBlock];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_mediaPlayerController_playerItemPlaybackStalled:)
