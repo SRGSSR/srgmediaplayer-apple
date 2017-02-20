@@ -186,10 +186,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                 [player play];
             }
             // Update the playback state immediately, except when reaching the end. Non-streamed medias will namely reach the paused state right before
-            // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
-            // live streams (empty range)
+            // the item end notification is received. We can eliminate this pause by checking if we are at the end or not.
             else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
-                     && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
+                     && CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange))) {
                 [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
             }
             // Playback restarted after it ended (see -play and -pause)
