@@ -128,11 +128,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             
             AVPlayerItem *playerItem = player.currentItem;
             
-            // Do not let playback pause when the player stalls, attempt to play again
-            if (player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
-                [player play];
-            }
-            else if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+            if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
                 // Playback start. Use received start parameters, do not update the playback state yet, wait until the
                 // completion handler has been executed (since it might immediately start playback)
                 if (self.startTimeValue) {
@@ -163,32 +159,19 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                         }];
                     }
                 }
-                // Update the playback state immediately, except when reaching the end. Non-streamed medias will namely reach the paused state right before
-                // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
-                // live streams (empty range)
-                else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
-                         && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
-                    [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                }
-                // Playback restarted after it ended (see -play and -pause)
-                else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && player.rate != 0.f) {
-                    [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                }
             }
-            else {
-                if (playerItem.status == AVPlayerItemStatusFailed) {
-                    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
-                    
-                    self.startTimeValue = nil;
-                    self.startCompletionHandler = nil;
-                    
-                    NSError *error = SRGMediaPlayerControllerError(playerItem.error);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
-                                                                        object:self
-                                                                      userInfo:@{ SRGMediaPlayerErrorKey: error }];
-                    
-                    SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
-                }
+            else if (playerItem.status == AVPlayerItemStatusFailed) {
+                [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
+                
+                self.startTimeValue = nil;
+                self.startCompletionHandler = nil;
+                
+                NSError *error = SRGMediaPlayerControllerError(playerItem.error);
+                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
+                                                                    object:self
+                                                                  userInfo:@{ SRGMediaPlayerErrorKey: error }];
+                
+                SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
             }
         }];
         
@@ -202,63 +185,16 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             if (player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
                 [player play];
             }
-            else if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
-                // Playback start. Use received start parameters, do not update the playback state yet, wait until the
-                // completion handler has been executed (since it might immediately start playback)
-                if (self.startTimeValue) {
-                    void (^completionBlock)(BOOL) = ^(BOOL finished) {
-                        // Reset start time first so that playback state induced change made in the completion handler
-                        // does not loop back here
-                        self.startTimeValue = nil;
-                        
-                        self.startCompletionHandler ? self.startCompletionHandler() : nil;
-                        self.startCompletionHandler = nil;
-                        
-                        // If the state of the player was not changed in the completion handler (still preparing), update
-                        // it
-                        if (self.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-                            [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                        }
-                    };
-                    
-                    CMTime startTime = self.startTimeValue.CMTimeValue;
-                    
-                    if (CMTIME_COMPARE_INLINE(startTime, ==, kCMTimeZero)) {
-                        completionBlock(YES);
-                    }
-                    else {
-                        // Call system method to avoid unwanted seek state in this special case
-                        [player seekToTime:startTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
-                            completionBlock(finished);
-                        }];
-                    }
-                }
-                // Update the playback state immediately, except when reaching the end. Non-streamed medias will namely reach the paused state right before
-                // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
-                // live streams (empty range)
-                else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
-                         && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
-                    [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                }
-                // Playback restarted after it ended (see -play and -pause)
-                else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && player.rate != 0.f) {
-                    [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                }
+            // Update the playback state immediately, except when reaching the end. Non-streamed medias will namely reach the paused state right before
+            // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
+            // live streams (empty range)
+            else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
+                     && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
+                [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
             }
-            else {
-                if (playerItem.status == AVPlayerItemStatusFailed) {
-                    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
-                    
-                    self.startTimeValue = nil;
-                    self.startCompletionHandler = nil;
-                    
-                    NSError *error = SRGMediaPlayerControllerError(playerItem.error);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
-                                                                        object:self
-                                                                      userInfo:@{ SRGMediaPlayerErrorKey: error }];
-                    
-                    SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
-                }
+            // Playback restarted after it ended (see -play and -pause)
+            else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && player.rate != 0.f) {
+                [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
             }
         }];
         
