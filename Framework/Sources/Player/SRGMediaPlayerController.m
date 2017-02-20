@@ -211,6 +211,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         }];
         
         [player addObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
             @strongify(player)
             
             // When entering or exiting Airplay, the player rate will temporarily be set to 0 if it wasn't. To avoid generating
