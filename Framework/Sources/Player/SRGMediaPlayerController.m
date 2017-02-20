@@ -59,8 +59,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
 
-@property (nonatomic, getter=isExitingAirplay) BOOL exitingAirplay;
-
 @end
 
 @implementation SRGMediaPlayerController
@@ -167,7 +165,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                 // Update the playback state immediately, except when reaching the end. Non-streamed medias will namely reach the paused state right before
                 // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
                 // live streams (empty range)
-                else if (! self.exitingAirplay && self.playbackState != SRGMediaPlayerPlaybackStateEnded
+                else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
                          && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
                     [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                 }
@@ -175,8 +173,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                 else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && player.rate != 0.f) {
                     [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                 }
-                
-                self.exitingAirplay = NO;
             }
             else {
                 if (playerItem.status == AVPlayerItemStatusFailed) {
@@ -197,15 +193,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         [player addObserver:self keyPath:@keypath(player.currentItem.status) options:0 block:observationBlock];
         [player addObserver:self keyPath:@keypath(player.rate) options:0 block:observationBlock];
-        
-        @weakify(player)
-        [player addObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
-            @strongify(player)
-            
-            if (! player.externalPlaybackActive) {
-                self.exitingAirplay = YES;
-            }
-        }];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_mediaPlayerController_playerItemPlaybackStalled:)
