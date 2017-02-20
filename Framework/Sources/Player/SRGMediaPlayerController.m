@@ -120,18 +120,15 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         [self registerTimeObserversForPlayer:player];
         
-        // Common player status observation implementation
         @weakify(self)
-        void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
+        @weakify(player)
+        [player addObserver:self keyPath:@keypath(player.currentItem.status) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
+            @strongify(player)
             
             AVPlayerItem *playerItem = player.currentItem;
             
-            // Do not let playback pause when the player stalls, attempt to play again
-            if (player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
-                [player play];
-            }
-            else if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+            if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
                 // Playback start. Use received start parameters, do not update the playback state yet, wait until the
                 // completion handler has been executed (since it might immediately start playback)
                 if (self.startTimeValue) {
@@ -162,37 +159,44 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                         }];
                     }
                 }
-                // Update the playback state immediately, except when reaching the end. Non-streamed medias will namely reach the paused state right before
-                // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
-                // live streams (empty range)
-                else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
-                         && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
-                    [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                }
-                // Playback restarted after it ended (see -play and -pause)
-                else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && player.rate != 0.f) {
-                    [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                }
             }
-            else {
-                if (playerItem.status == AVPlayerItemStatusFailed) {
-                    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
-                    
-                    self.startTimeValue = nil;
-                    self.startCompletionHandler = nil;
-                    
-                    NSError *error = SRGMediaPlayerControllerError(playerItem.error);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
-                                                                        object:self
-                                                                      userInfo:@{ SRGMediaPlayerErrorKey: error }];
-                    
-                    SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
-                }
+            else if (playerItem.status == AVPlayerItemStatusFailed) {
+                [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
+                
+                self.startTimeValue = nil;
+                self.startCompletionHandler = nil;
+                
+                NSError *error = SRGMediaPlayerControllerError(playerItem.error);
+                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
+                                                                    object:self
+                                                                  userInfo:@{ SRGMediaPlayerErrorKey: error }];
+                
+                SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
             }
-        };
+        }];
         
-        [player addObserver:self keyPath:@keypath(player.currentItem.status) options:0 block:observationBlock];
-        [player addObserver:self keyPath:@keypath(player.rate) options:0 block:observationBlock];
+        [player addObserver:self keyPath:@keypath(player.rate) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            @strongify(player)
+            
+            AVPlayerItem *playerItem = player.currentItem;
+            
+            // Do not let playback pause when the player stalls, attempt to play again
+            if (player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
+                [player play];
+            }
+            // Update the playback state immediately, except when reaching the end. Non-streamed medias will namely reach the paused state right before
+            // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
+            // live streams (empty range)
+            else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
+                     && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
+                [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+            }
+            // Playback restarted after it ended (see -play and -pause)
+            else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && player.rate != 0.f) {
+                [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+            }
+        }];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_mediaPlayerController_playerItemPlaybackStalled:)
