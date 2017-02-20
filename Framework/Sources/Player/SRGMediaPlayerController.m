@@ -193,6 +193,11 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             
             AVPlayerItem *playerItem = player.currentItem;
             
+            // Only respond to rate changes when the item is ready to play 
+            if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+                return;
+            }
+            
             // Do not let playback pause when the player stalls, attempt to play again
             if (player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
                 [player play];
