@@ -1011,7 +1011,7 @@ withToleranceBefore:(CMTime)toleranceBefore
 {
     CMTimeRange timeRange = self.timeRange;
     return [NSString stringWithFormat:@"<%@: %p; playbackState: %@; mediaType: %@; streamType: %@; live: %@; "
-                "contentURL: %@; segments: %@; userInfo: %@; minimumDVRWindowLength: %@; liveTolerance: %@;"
+                "contentURL: %@; segments: %@; userInfo: %@; minimumDVRWindowLength: %@; liveTolerance: %@; "
                 "timeRange: (%@, %@)>",
             [self class],
             self,
