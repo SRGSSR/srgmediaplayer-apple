@@ -237,8 +237,10 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 - (void)updateTimeRangeLabels
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
-            || playerItem.status != AVPlayerItemStatusReadyToPlay) {
+    if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle
+            || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
+            || playerItem.status != AVPlayerItemStatusReadyToPlay
+            || self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeUnknown) {
         self.valueString = @"--:--";
         self.timeLeftValueString = @"--:--";
         self.valueLabel.text = self.valueString;
