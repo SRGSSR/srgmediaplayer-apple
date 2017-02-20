@@ -184,8 +184,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             @strongify(player)
             
             // Inhibit rate changes due to Airplay being enabled or disabled, until the original rate has been restored
-            if (self.togglingAirplay && player.rate != 0.f) {
-                self.togglingAirplay = NO;
+            if (self.togglingAirplay) {
+                if (self.player.rate != 0.f) {
+                    self.togglingAirplay = NO;
+                }
                 return;
             }
             
