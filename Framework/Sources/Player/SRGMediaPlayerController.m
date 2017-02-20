@@ -31,6 +31,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @private
     SRGMediaPlayerPlaybackState _playbackState;
     BOOL _selected;
+    CMTimeRange _timeRange;
 }
 
 @property (nonatomic) AVPlayer *player;
@@ -310,6 +311,13 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (CMTimeRange)timeRange
 {
+    // The time range is cached because it might become unreliable in some situations (e.g. when Airplay is connected
+    // or disconnected). Since stream properties are inferred from it we need this information to be reliable during
+    // playback. Once a valid value has been determined, it is cached for further reuse
+    if (CMTIMERANGE_IS_VALID(_timeRange)) {
+        return _timeRange;
+    }
+    
     AVPlayerItem *playerItem = self.player.currentItem;
     
     NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
@@ -333,11 +341,11 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     // DVR window size too small. Check that we the stream is not an on-demand one first, of course
     if (CMTIME_IS_INDEFINITE(playerItem.duration) && CMTimeGetSeconds(timeRange.duration) < self.minimumDVRWindowLength) {
-        return CMTimeRangeMake(timeRange.start, kCMTimeZero);
+        timeRange = CMTimeRangeMake(timeRange.start, kCMTimeZero);
     }
-    else {
-        return timeRange;
-    }
+    
+    _timeRange = timeRange;
+    return timeRange;
 }
 
 - (SRGMediaPlayerMediaType)mediaType
@@ -670,6 +678,8 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     [self reset];
     
+    _timeRange = kCMTimeRangeInvalid;
+    
     self.contentURL = URL;
     self.segments = segments;
     self.userInfo = userInfo;
@@ -737,6 +747,8 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     // The player is guaranteed to be nil when the idle notification is sent
     [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:userInfo];
+    
+    _timeRange = kCMTimeRangeInvalid;
     
     self.previousSegment = nil;
     self.targetSegment = nil;
