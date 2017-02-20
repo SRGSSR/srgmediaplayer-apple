@@ -333,9 +333,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (CMTimeRange)timeRange
 {
-    // The time range is cached because it might become unreliable in some situations (e.g. when Airplay is connected
-    // or disconnected). Since stream properties are inferred from it we need this information to be reliable during
-    // playback. Once a valid value has been determined, it is cached for further reuse
+    // Finite time ranges are cached because they might become unreliable in some situations (e.g. when Airplay is
+    // connected or disconnected). Since stream properties are inferred from it we need this information to be reliable
+    // during playback. Once a valid value has been determined, it is cached for further reuse
     if (CMTIMERANGE_IS_VALID(_timeRange)) {
         return _timeRange;
     }
@@ -366,7 +366,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         timeRange = CMTimeRangeMake(timeRange.start, kCMTimeZero);
     }
     
-    _timeRange = timeRange;
+    if (! CMTIMERANGE_IS_EMPTY(timeRange)) {
+        _timeRange = timeRange;
+    }
+    
     return timeRange;
 }
 
