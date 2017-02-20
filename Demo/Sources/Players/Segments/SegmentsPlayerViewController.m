@@ -24,6 +24,8 @@
 
 @property (nonatomic, weak) id periodicTimeObserver;
 
+@property (nonatomic, weak) IBOutlet UISwitch *externalPlaybackSwitch;
+
 @end
 
 @implementation SegmentsPlayerViewController
@@ -69,6 +71,8 @@
                                              selector:@selector(segmentDidEnd:)
                                                  name:SRGMediaPlayerSegmentDidEndNotification
                                                object:self.mediaPlayerController];
+    
+    self.externalPlaybackSwitch.on = self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive;
 }
 
 - (void)updateAppearanceWithTime:(CMTime)time
@@ -144,6 +148,11 @@
 - (IBAction)dismiss:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)toggleExternalPlayback:(id)sender
+{
+    self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive = self.externalPlaybackSwitch.on;
 }
 
 #pragma mark Notifications
