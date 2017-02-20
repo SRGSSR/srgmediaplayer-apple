@@ -53,6 +53,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
 @property (nonatomic, weak) id<SRGSegment> currentSegment;
 
+@property (nonatomic, getter=isTogglingAirplay) BOOL togglingAirplay;
+
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
 @property (nonatomic) NSValue *startTimeValue;                      // Will be nilled when reached
@@ -99,6 +101,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.status)];
         [_player removeObserver:self keyPath:@keypath(_player.rate)];
+        [_player removeObserver:self keyPath:@keypath(player.externalPlaybackActive)];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemPlaybackStalledNotification
@@ -180,6 +183,12 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             @strongify(self)
             @strongify(player)
             
+            // Inhibit rate changes due to Airplay being enabled or disabled, until the original rate has been restored
+            if (self.togglingAirplay && player.rate != 0.f) {
+                self.togglingAirplay = NO;
+                return;
+            }
+            
             AVPlayerItem *playerItem = player.currentItem;
             
             // Do not let playback pause when the player stalls, attempt to play again
@@ -196,6 +205,17 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             // Playback restarted after it ended (see -play and -pause)
             else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && player.rate != 0.f) {
                 [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+            }
+        }];
+        
+        [player addObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
+            @strongify(player)
+            
+            // When entering or exiting Airplay, the player rate will temporarily be set to 0 if it wasn't. To avoid generating
+            // incorrect controller state transitions, we inhibit player rate change observations until the rate has been
+            // restored
+            if (player.rate != 0.f) {
+                self.togglingAirplay = YES;
             }
         }];
         
