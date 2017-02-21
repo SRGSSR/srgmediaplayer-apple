@@ -707,7 +707,7 @@ withToleranceBefore:(CMTime)toleranceBefore
         time = kCMTimeZero;
     }
     
-    SRGMediaPlayerLogInfo(@"Controller", @"Playing %@", URL);
+    SRGMediaPlayerLogDebug(@"Controller", @"Playing %@", URL);
     
     [self reset];
     
