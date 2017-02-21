@@ -101,7 +101,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.status)];
         [_player removeObserver:self keyPath:@keypath(_player.rate)];
-        [_player removeObserver:self keyPath:@keypath(player.externalPlaybackActive)];
+        [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
+        [_player removeObserver:self keyPath:@keypath(_player.currentItem.playbackLikelyToKeepUp)];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemPlaybackStalledNotification
@@ -224,6 +225,15 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             // restored
             if (player.rate != 0.f) {
                 self.togglingAirplay = YES;
+            }
+        }];
+        
+        [player addObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            @strongify(player)
+            
+            if (player.currentItem.playbackLikelyToKeepUp && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
+                [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
             }
         }];
         
