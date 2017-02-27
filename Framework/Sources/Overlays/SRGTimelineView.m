@@ -165,7 +165,6 @@ static void commonInit(SRGTimelineView *self);
                                         animated:animated];
 }
 
-
 #pragma mark Interface Builder integration
 
 - (void)prepareForInterfaceBuilder
