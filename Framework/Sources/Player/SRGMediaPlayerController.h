@@ -143,6 +143,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  will be emitted when segment transitions occur (see above). If you want to display segments, you can use the supplied
  *  `SRGTimelineView` or create your own view, as required by your application.
  *
+ *  Overlapping segments are not supported, associated time ranges must be disjoint. The behavior is otherwise undefined.
+ *
  *  ## Boundary time and periodic time observers
  *
  *  Three kinds of observers can be set on a player to observe its playback:
@@ -304,7 +306,8 @@ NS_ASSUME_NONNULL_BEGIN
  *              the player will still be in the seeking state. Note that if the media was not ready to play, seeking
  *              won't take place, and the completion handler won't be called.
  *              Refer to `-[AVPlayer seekToTime:toleranceBefore:toleranceAfter:completionHandler:] documentation
- *              for more information about seek tolerances.
+ *              for more information about seek tolerances. Attempting to seek to a blocked segment will skip the segment
+ *              and resume after it.
  */
 - (void)seekToTime:(CMTime)time
 withToleranceBefore:(CMTime)toleranceBefore
@@ -511,7 +514,8 @@ withToleranceBefore:(CMTime)toleranceBefore
  *
  *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
  *
- *  @discussion If the segment index is invalid, this method does nothing. If the segment is already the one 
+ *  @discussion If the segment index is invalid, this method does nothing. If the segment is already the one being played,
+ *              playback will be restarted at its beginning.
  */
 - (void)seekToSegmentAtIndex:(NSInteger)index withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
