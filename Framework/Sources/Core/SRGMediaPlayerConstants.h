@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerPlaybackState) {
      *  The player is idle. This state occurs after the player has been initialized, reset, or when an error has been
      *  encountered
      */
-    SRGMediaPlayerPlaybackStateIdle,
+    SRGMediaPlayerPlaybackStateIdle = 1,
     /**
      *  The player is preparing to play a media
      */
