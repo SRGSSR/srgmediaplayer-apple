@@ -3,10 +3,10 @@ Getting started
 
 The SRG Media Player library is made of separate building blocks:
 
-* A core `AVPlayer`-based controller to play medias, optionally with support for a logical structure (segments)
-* A set of overlays to be readily used with it
+* A core `AVPlayer`-based controller to play medias, optionally with support for a logical playback structure (segments).
+* A set of overlays to be readily used with it.
 
-Those components can be combined together depending on your application needs. A ready-to-use player view is also available.
+Those components can be combined together depending on your application needs. A ready-to-use player view controller is also provided.
 
 ## Architecture
 
@@ -14,14 +14,14 @@ At the highest level, the library intends to provide a default player view contr
 
 This default player view controller is itself based on a set of lower-level components which you can combine to match your requirements:
 
-* A media player controller, which can be optionally attached to a view for playing videos
-* A set of components (slider, play / pause button, timeline, message view, Airplay overlay, etc.) which can be connected to an underlying media player controller
+* A media player controller, which can be optionally attached to a view for playing videos.
+* A set of components (slider, play / pause button, timeline, message view, Airplay overlay, etc.) which can be connected to an underlying media player controller.
 
 Let us now discuss these components further and describe how they can be glued together.
 
 ## Media player view controller
 
-If you do not need to customize the player appearance, simply instantiate `SRGMediaPlayerViewController` and display it modally. The view controller exposes its underlying `controller` property, which you must use to start playback
+If you do not need to customize the player appearance, simply instantiate `SRGMediaPlayerViewController` and display it modally. The view controller exposes its underlying `controller` property, which you must use to start playback:
 
 ```objective-c
 SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
@@ -32,7 +32,7 @@ SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewCo
 
 You can also use the `controller` property to register for playback notifications.
 
-The `SRGMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams), picture in picture for compatible devices. Segments are currently supported (notifications will be received for them) but not displayed. If you need to display segments, implement a custom player.
+The `SRGMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams), as well as picture in picture for compatible devices. Segments are currently supported (notifications will be received for them) but not displayed. If you need to display segments, implement a custom player.
 
 ## Designing custom players
 
@@ -50,13 +50,13 @@ Creating the player layout is then a matter of dropping more views onto the layo
 
 * To set where the player controller must display videos (if you want to play videos), add a view to your hierarchy, set its class to `SRGMediaPlayerView`, and bind it to the media player controller `view` property.
 * To control playback, you can drop one of the available overlay classes and bind their `mediaPlayerController` property directly in Interface Builder. No additional setup (except for appearance and constraints) is ususally required, as those components are automatically synchronized with the controller they have been attached to. Built-in overlay classes include most notably:
-  * `SRGPlaybackButton`: A play / pause button
-  * `SRGTimeSlider`: A time slider with elapsed and remaining time label support
-  * `SRGPlaybackActivityIndicatorView`: An activity indicator
+  * `SRGPlaybackButton`: A play / pause button.
+  * `SRGTimeSlider`: A time slider with elapsed and remaining time label support.
+  * `SRGPlaybackActivityIndicatorView`: An activity indicator.
 
 For a more thorough description of the player controller and the associated overlays, have a look at the documentation available from the `SRGMediaPlayerController` header file.
 
-To start playback, bind your media player controller to a `mediaPlayerController` outlet of your view controller class and start playback as soon as your view controller appears:
+To start playback, bind your media player controller to a `mediaPlayerController` outlet of your view controller class and start playback soon enough, for example:
 
 ```objective-c
 - (void)viewWillAppear:(BOOL)animated
@@ -76,8 +76,8 @@ This is it. If you then bound a playback button or a slider to the player contro
 
 To display segments, you must first have a class conform to the `SRGSegment` protocol, which captures the definition of a segment:
 
-* Segments correspond to a time range for the media URL being played
-* Segments can be optionally blocked to prevent users from seing them
+* Segments correspond to a time range for the media URL being played.
+* Segments can be optionally blocked to prevent users from seing them.
 
 Once you have segments, simply supply them to the player controller when playing a URL:
 
@@ -85,26 +85,28 @@ Once you have segments, simply supply them to the player controller when playing
 [self.mediaPlayerController playURL:mediaURL withSegments:segments];
 ```
 
+Note that overlapping segments are not supported yet and lead to undefined behavior.
+
 The player controller will then emit notifications when segments are being played and skip over blocked ones.
 
 You can display segments using dedicated built-in overlay classes you can drop onto your view controller layout and bind to your media player controller:
 
-* `SRGTimelineSlider`: A timeline displaying segment start points and providing a way to seek with a single tap. You can use a delegate protocol to display custom icons if you want
+* `SRGTimelineSlider`: A timeline displaying segment start points and providing a way to seek with a single tap. You can use a delegate protocol to display custom icons if you want.
 * `SRGTimelineView`: A horizontal list of cells displaying segments, used like a collection view.
 
 Both provide a `-reloadData` method to reload segments from the associated media player controller. Please refer to their respective header documentation to learn about the delegate protocols you need to implement to respond to reload requests.
 
 ## Airplay support
 
-Airplay support is entirely the responsibilty of client applications. `SRGMediaPlayerController` exposes three block hooks where you can easily configure Airplay playback settings as you see fit:
+Airplay configuration is entirely the responsibilty of client applications. `SRGMediaPlayerController` exposes three block hooks where you can easily configure Airplay playback settings as you see fit:
 
-* `playerCreationBlock`: Called when the `AVPlayer` is created
-* `playerConfigurationBlock`: Called when the `AVPlayer` is created, and when a configuration reload is requested
-* `playerDestructionBlock`: Called when the `AVPlayer` is released
+* `playerCreationBlock`: Called when the `AVPlayer` is created.
+* `playerConfigurationBlock`: Called when the `AVPlayer` is created, and when a configuration reload is requested.
+* `playerDestructionBlock`: Called when the `AVPlayer` is released.
 
 To add basic Airplay support to your application, you can for example:
 
-* Enable the corresponding background mode for your target
+* Enable the corresponding background mode for your target.
 * Enable `allowsExternalPlayback` (which is the default) and `usesExternalPlaybackWhileExternalScreenIsActive` (to switch to full-screen playback when mirroring is active) in the `playerConfigurationBlock`.
 
 You can also drop an `SRGAirplayButton` onto your layout (displayed only when Airplay is available) or an `SRGAirplayView` (displaying the current route when Airplay is active).

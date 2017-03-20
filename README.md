@@ -6,11 +6,11 @@
 
 The SRG Media Player library for iOS provides a simple way to add a universal audio / video player to any application. It provides:
 
-* A default player with the same look & feel as the standard iOS player, and automatic support for picture in picture for compatible devices
-* A set of overlays which can be combined to create the user interface you need
-* Support for segments. Those are simply sections of a video, defined by non-overlapping time ranges, which can be blocked or hidden
-* Support for DVR streams
-* Ability to use several instances of the player at the same time
+* A default player with the same look & feel as the standard iOS player, and automatic support for picture in picture for compatible devices.
+* A set of overlays which can be combined to create the user interface you need.
+* Support for segments. Those are simply sections of a video, defined by non-overlapping time ranges, which can be blocked or hidden.
+* Support for DVR streams.
+* Ability to use several instances of the player at the same time.
 
 ## Compatibility
 
@@ -26,10 +26,10 @@ github "SRGSSR/SRGMediaPlayer-iOS"
 
 Then run `carthage update --platform iOS` to update the dependencies. You will need to manually add the following `.framework`s generated in the `Carthage/Build/iOS` folder to your projet:
 
-* `libextobjc`: A utility framework
-* `MAKVONotificationCenter`: A safe KVO framework
-* `SRGLogger`: The framework used for internal logging
-* `SRGMediaPlayer`: The main data provider framework
+* `libextobjc`: A utility framework.
+* `MAKVONotificationCenter`: A safe KVO framework.
+* `SRGLogger`: The framework used for internal logging.
+* `SRGMediaPlayer`: The main data provider framework.
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
 
@@ -75,7 +75,7 @@ When dropping a media player control (e.g. `SRGPictureInPictureButton`) onto a s
 
 If rendering does not work properly:
 
-* Be sure that your project correctly compiles
+* Be sure that your project correctly compiles.
 * If you still get `dlopen` errors, this means some frameworks are not available to Xcode when it runs your project for rendering. This usually means that the `copy-frameworks` build phase described in the [Carthage readme](https://github.com/Carthage/Carthage#getting-started) has not been setup properly. Be sure that all SRG Media Player dependencies are properly copied (see above framework list).
 
 #### Remark
