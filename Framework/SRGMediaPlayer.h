@@ -6,10 +6,10 @@
 
 #import <Foundation/Foundation.h>
 
-// Oficial version number
+// Oficial version number.
 FOUNDATION_EXPORT NSString *SRGMediaPlayerMarketingVersion(void);
 
-// Public headers
+// Public headers.
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
 #import "SRGAirplayButton.h"

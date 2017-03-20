@@ -11,9 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIBezierPath (SRGMediaPlayer)
 
 /**
- *  Return the receiver as an image with the given tint color
+ *  Return the receiver as an image with the given tint color.
  *
- *  @param color The tint color
+ *  @param color The tint color.
  */
 - (UIImage *)srg_imageWithColor:(UIColor *)color;
 

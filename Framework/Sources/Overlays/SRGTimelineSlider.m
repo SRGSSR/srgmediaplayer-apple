@@ -63,8 +63,8 @@ static void commonInit(SRGTimelineSlider *self);
         CGFloat tickXPos = thumbStartXPos + (CMTimeGetSeconds(segment.srg_timeRange.start) / CMTimeGetSeconds(timeRange.duration)) * (thumbEndXPos - thumbStartXPos);
 
         UIImage *iconImage = nil;
-        if ([self.timelineDelegate respondsToSelector:@selector(timelineSlider:iconImageForSegment:)]) {
-            iconImage = [self.timelineDelegate timelineSlider:self iconImageForSegment:segment];
+        if ([self.timelineSliderDelegate respondsToSelector:@selector(timelineSlider:iconImageForSegment:)]) {
+            iconImage = [self.timelineSliderDelegate timelineSlider:self iconImageForSegment:segment];
         }
 
         if (iconImage) {

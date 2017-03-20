@@ -9,14 +9,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Return a localized string from the media player resource bundle
+ *  Return a localized string from the media player resource bundle.
  */
 #define SRGMediaPlayerLocalizedString(key, comment) [[NSBundle srg_mediaPlayerBundle] localizedStringForKey:(key) value:@"" table:nil]
 
 @interface NSBundle (SRGMediaPlayer)
 
 /**
- *  The media player resource bundle
+ *  The media player resource bundle.
  */
 + (NSBundle *)srg_mediaPlayerBundle;
 

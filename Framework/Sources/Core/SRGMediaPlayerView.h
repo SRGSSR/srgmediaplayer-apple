@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The view used by the player to display its media. You can instantiate such views in storyboards or xib files
- *  to bind them to the `view` property of an `SRGMediaPlayerController` instance
+ *  and bind them to the `view` property of an `SRGMediaPlayerController` instance.
  */
 @interface SRGMediaPlayerView : UIView
 

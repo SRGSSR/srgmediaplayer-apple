@@ -12,12 +12,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// Forward declarations
+// Forward declarations.
 @class SRGAirplayView;
 
 /**
  *  Suggested localized description for the current Airplay route (if any). Can be used by custom overview implementations
- *  to display a standard route description message
+ *  to display a standard route description message.
  */
 OBJC_EXTERN NSString * _Nullable SRGAirplayRouteDescription(void);
 
@@ -30,36 +30,30 @@ OBJC_EXTERN NSString * _Nullable SRGAirplayRouteDescription(void);
 
 /**
  *  This method is called when the view is shown. Custom views can use this method to update their display with the
- *  new route name
+ *  new route name.
  */
 - (void)airplayView:(SRGAirplayView *)airplayView didShowWithAirplayRouteName:(nullable NSString *)routeName;
 
 /**
- *  This method is called when the view has been hidden
+ *  This method is called when the view has been hidden.
  */
 - (void)airplayViewDidHide:(SRGAirplayView *)airplayView;
 
 /**
  *  Attributes for the 'Airplay' title of the default overlay. If not implemented, a default style will be applied 
- *  (bold system font, white, centered, 14 pts)
- *
- *  @discussion This method is ignored is `-airplayView:customViewForAirplayRouteName:` returns a custom view
+ *  (bold system font, white, centered, 14 pts).
  */
 - (nullable NSDictionary<NSString *, id> *)airplayViewTitleAttributedDictionary:(SRGAirplayView *)airplayView;
 
 /**
  *  Lets you customize the subtitle displaying the route name on the default overlay. If not implemented, a default 
- *  message will be used
- *
- *  @discussion This method is ignored is `-airplayView:customViewForAirplayRouteName:` returns a custom view
+ *  message will be used.
  */
 - (nullable NSString *)airplayViewSubtitle:(SRGAirplayView *)airplayView;
 
 /**
  *  Attributes for the route subtitle on the default overlay. If not implemented, a default style will be applied 
- *  (system font, light gray, centered, 12 pts)
- *
- *  @discussion This method is ignored is `-airplayView:customViewForAirplayRouteName:` returns a custom view
+ *  (system font, light gray, centered, 12 pts).
  */
 - (nullable NSDictionary<NSString *, id> *)airplayViewSubtitleAttributedDictionary:(SRGAirplayView *)airplayView;
 
@@ -80,15 +74,16 @@ OBJC_EXTERN NSString * _Nullable SRGAirplayRouteDescription(void);
  *
  *  Further customization is available by using the associated delegate.
  */
+IB_DESIGNABLE
 @interface SRGAirplayView : UIView <SRGAirplayViewDelegate>
 
 /**
- *  The media player which the overlay must be associated with
+ *  The media player which the overlay must be associated with.
  */
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
- *  An optional delegate for customization of the default appearance
+ *  An optional delegate for customization of the default appearance.
  */
 @property (nonatomic, weak, nullable) IBOutlet id<SRGAirplayViewDelegate> delegate;
 

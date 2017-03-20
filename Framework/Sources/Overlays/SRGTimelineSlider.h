@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// Forward declarations
+// Forward declarations.
 @protocol SRGTimelineSliderDelegate;
 
 /**
@@ -24,19 +24,19 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGTimelineSlider : SRGTimeSlider
 
 /**
- *  The slider delegate
+ *  The slider delegate.
  */
-@property (nonatomic, weak, nullable) IBOutlet id<SRGTimelineSliderDelegate> timelineDelegate;
+@property (nonatomic, weak, nullable) IBOutlet id<SRGTimelineSliderDelegate> timelineSliderDelegate;
 
 /**
- *  Trigger a reload of the timeline based on the non-hidden segments available from the media player controller
+ *  Trigger a reload of the timeline based on the non-hidden segments available from the media player controller.
  */
 - (void)reloadData;
 
 @end
 
 /**
- *  Delegate protocol
+ *  Delegate protocol.
  */
 @protocol SRGTimelineSliderDelegate <NSObject>
 
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Return the icon to display in the timeline for a segment. If no icon is provided, a tick is displayed instead. The
- *  recommended size for the image is 15x15 points
+ *  recommended size for the image is 15x15 points.
  */
 - (UIImage *)timelineSlider:(SRGTimelineSlider *)timelineSlider iconImageForSegment:(id<SRGSegment>)segment;
 

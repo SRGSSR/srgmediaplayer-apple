@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The slider knob position when a live stream is played (the knob itself cannot be moved). The default value is left,
- *  as for the standard iOS playback controller
+ *  as for the standard iOS playback controller.
  */
 typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
     SRGTimeSliderLiveKnobPositionDefault = 0,
@@ -34,100 +34,101 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
  *
  *  Slider colors can be customized as follows:
  *    - `borderColor`: Color of the small border around the non-elapsed time track (defaults to black) and of the
- *                     preloading progress bar
- *    - `minimumTrackTintColor`: Elapsed time track color (defaults to white)
- *    - `maximumTrackTintColor`: Remaining time track color (defaults to black)
- *    - `thumbTintColor`: Thumb color (defaults to white)
+ *                     preloading progress bar.
+ *    - `minimumTrackTintColor`: Elapsed time track color (defaults to white).
+ *    - `maximumTrackTintColor`: Remaining time track color (defaults to black).
+ *    - `thumbTintColor`: Thumb color (defaults to white).
  */
+IB_DESIGNABLE
 @interface SRGTimeSlider : UISlider
 
 /**
- *  The playback controller attached to the slider
+ *  The playback controller attached to the slider.
  */
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
- *  The delegate receiving slider events
+ *  The delegate receiving slider events.
  */
 @property (nonatomic, weak, nullable) IBOutlet id<SRGTimeSliderDelegate> delegate;
 
 /**
- *  Outlet which must be bound to the label displaying the remaining time
+ *  Outlet which must be bound to the label displaying the remaining time.
  */
 @property (nonatomic, weak, nullable) IBOutlet UILabel *timeLeftValueLabel;
 
 /**
- *  The remaining time string displayed in the `timeLeftValueLabel` outlet
+ *  The remaining time string displayed in the corresponding label.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *timeLeftValueString;
 
 /**
- *  Outlet which must be bound to the label displaying the current time
+ *  Outlet which must be bound to the label displaying the current time.
  */
 @property (nonatomic, weak, nullable) IBOutlet UILabel *valueLabel;
 
 /**
- *  The current time string displayed in the `valueLabel` outlet
+ *  The current time string displayed in the corresponding label.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *valueString;
 
 /**
- *  Bar border color (defaults to black)
+ *  Bar border color (defaults to black).
  */
 @property (nonatomic, null_resettable) IBInspectable UIColor *borderColor;
 
 /**
- *  The time corresponding to the current slider position
+ *  The time corresponding to the current slider position.
  *
  *  @discussion While dragging, this property may not reflect the value current time property of the asset being played.
  *              The slider `time` property namely reflects the current slider knob position, not the actual player
- *              position
+ *              position.
  */
 @property (nonatomic, readonly) CMTime time;
 
 /**
- *  Return YES iff the current slider position matches the conditions of a live feed
+ *  Return `YES` iff the current slider position matches the conditions of a live feed.
  *
  *  @discussion While dragging, this property may not reflect the value returned by the media player controller `live` 
  *              property. The slider `live` property namely reflects the current slider knob position, not the actual 
- *              player position
+ *              player position.
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 
 /**
- *  Set to YES to have the player seek when the slider knob is moved, or to NO if seeking must be performed only
- *  after the knob has been released
+ *  Set to `YES` to have the player seek when the slider knob is moved, or to `NO` if seeking must be performed only
+ *  after the knob has been released.
  *
- *  Defaults to YES
+ *  Defaults to `YES`.
  */
 @property (nonatomic, getter=isSeekingDuringTracking) IBInspectable BOOL seekingDuringTracking;
 
 /**
- *  Set to YES to have the player automatically resume after a seek (if paused)
+ *  Set to `YES` to have the player automatically resume after a seek (if paused).
  *
- *  Defaults to NO
+ *  Defaults to `NO`.
  */
 @property (nonatomic, getter=isResumingAfterSeek) IBInspectable BOOL resumingAfterSeek;
 
 /**
- *  The position of the slider knob when playing a live stream. Defaults to `SRGTimeSliderLiveKnobPositionDefault`
+ *  The position of the slider knob when playing a livestream. Defaults to `SRGTimeSliderLiveKnobPositionDefault`.
  */
 @property (nonatomic) SRGTimeSliderLiveKnobPosition knobLivePosition;
 
 @end
 
 /**
- *  Delegate protocol
+ *  Delegate protocol.
  */
 @protocol SRGTimeSliderDelegate <NSObject>
 
 /**
- *  Called when the slider is moved, either interactively or as the result of normal playback
+ *  Called when the slider is moved, either interactively or as the result of normal playback.
  *
- *  @param slider      The slider for which the event is received
- *  @param time        The time at which the slider was moved
- *  @param value       The corresponding slider value
- *  @param interactive Whether the change is a result of a user interfaction (YES) or not
+ *  @param slider      The slider for which the event is received.
+ *  @param time        The time at which the slider was moved.
+ *  @param value       The corresponding slider value.
+ *  @param interactive Whether the change is a result of a user interfaction (`YES`) or not.
  */
 - (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(CGFloat)value interactive:(BOOL)interactive;
 
