@@ -9,9 +9,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  A view to control the volume. Simply install somewhere onto your custom player interface
+ *  A view to control the volume. Simply install somewhere onto your custom player interface.
  *
- *  @discussion This view does not display any route button, unlike `MPVolumeView`
+ *  @discussion This view does not display any route button, unlike `MPVolumeView`.
  */
 IB_DESIGNABLE
 @interface SRGVolumeView : UIView

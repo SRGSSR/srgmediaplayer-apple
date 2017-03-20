@@ -9,28 +9,28 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Templates for various player icons
+ *  Templates for various player icons.
  */
 @interface SRGMediaPlayerIconTemplate : NSObject
 
 /**
- *  Play image
+ *  Play image.
  *
- *  @param size  The desired image size
+ *  @param size  The desired image size.
  */
 + (UIImage *)playImageWithSize:(CGSize)size;
 
 /**
- *  Pause image
+ *  Pause image.
  *
- *  @param size  The desired image size
+ *  @param size  The desired image size.
  */
 + (UIImage *)pauseImageWithSize:(CGSize)size;
 
 /**
- *  Stop image
+ *  Stop image.
  *
- *  @param size  The desired image size
+ *  @param size  The desired image size.
  */
 + (UIImage *)stopImageWithSize:(CGSize)size;
 

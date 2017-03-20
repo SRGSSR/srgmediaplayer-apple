@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Lightweight internal `SRGMediaPlayerController` subclass. An instance is shared among all `SRGMediaPlayerViewController`
- *  instances to manage picture in picture background playback
+ *  instances to manage picture in picture background playback.
  */
 @interface SRGMediaPlayerSharedController : SRGMediaPlayerController <AVPictureInPictureControllerDelegate>
 

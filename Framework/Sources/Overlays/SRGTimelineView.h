@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// Forward declarations
+// Forward declarations.
 @protocol SRGTimelineViewDelegate;
 
 /**
@@ -24,89 +24,89 @@ NS_ASSUME_NONNULL_BEGIN
  *  available from the media player controller.
  *
  *  Customisation of timeline cells is achieved through subclassing of `UICollectionViewCell`, exactly like a usual
- *  `UICollectionView`
+ *  `UICollectionView`.
  */
 IB_DESIGNABLE
 @interface SRGTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
 /**
- *  The controller to which the timeline is attached
+ *  The controller to which the timeline is attached.
  */
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
- *  The timeline delegate
+ *  The timeline delegate.
  */
 @property (nonatomic, weak, nullable) IBOutlet id<SRGTimelineViewDelegate> delegate;
 
 /**
- *  The width of cells within the timeline. Defaults to 60
+ *  The width of cells within the timeline. Defaults to 60.
  */
 @property (nonatomic) IBInspectable CGFloat itemWidth;
 
 /**
- * The spacing between cells in the timeline. Defaults to 4
+ * The spacing between cells in the timeline. Defaults to 4.
  */
 @property (nonatomic) IBInspectable CGFloat itemSpacing;
 
 /**
  *  Register cell classes for reuse. Cells must be subclasses of `UICollectionViewCell` and can be instantiated either
  *  programmatically or using a nib. For more information about cell reuse, refer to `UICollectionView` documentation.
- *  To dequeue cells from the reuse queue, call `-dequeueReusableCellWithReuseIdentifier:forSegment:`
+ *  To dequeue cells from the reuse queue, call `-dequeueReusableCellWithReuseIdentifier:forSegment:`.
  */
 - (void)registerClass:(Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 - (void)registerNib:(UINib *)nib forCellWithReuseIdentifier:(NSString *)identifier;
 
 /**
- *  Trigger a reload of the timeline based on the non-hidden segments available from the media player controller
+ *  Trigger a reload of the timeline based on the non-hidden segments available from the media player controller.
  */
 - (void)reloadData;
 
 /**
- *  Dequeue a reusable cell for a given segment
+ *  Dequeue a reusable cell for a given segment.
  *
- *  @param identifier The cell identifier (must be appropriately set for the cell)
- *  @param segment    The segment for which a cell must be dequeued
+ *  @param identifier The cell identifier (must be appropriately set for the cell).
+ *  @param segment    The segment for which a cell must be dequeued.
  */
 - (__kindof UICollectionViewCell *)dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forSegment:(id<SRGSegment>)segment;
 
 /**
- *  Return the list of currently visible cells
+ *  Return the list of currently visible cells.
  */
 - (NSArray<__kindof UICollectionViewCell *> *)visibleCells;
 
 /**
- *  Scroll to make the specified segment visible (does nothing if the segment does not belong to the visible segments)
+ *  Scroll to make the specified segment visible (does nothing if the segment does not belong to the visible segments).
  */
 - (void)scrollToSegment:(id<SRGSegment>)segment animated:(BOOL)animated;
 
 @end
 
 /**
- *  Timeline delegate protocol
+ *  Timeline delegate protocol.
  */
 @protocol SRGTimelineViewDelegate <NSObject>
 
 /**
  *  Return the cell to be displayed for a segment. You should call `-dequeueReusableCellWithReuseIdentifier:forSegment:`
- *  within the implementation of this method to reuse existing cells and improve scrolling smoothness
+ *  within the implementation of this method to reuse existing cells and improve scrolling smoothness.
  *
- *  @param timelineView The timeline
- *  @param segment      The segment for which the cell must be returned
+ *  @param timelineView The timeline.
+ *  @param segment      The segment for which the cell must be returned.
  *
- *  @return The cell to use
+ *  @return The cell to use.
  */
 - (UICollectionViewCell *)timelineView:(SRGTimelineView *)timelineView cellForSegment:(id<SRGSegment>)segment;
 
 @optional
 
 /**
- * Called when the user selects a segment from the timeline
+ *  Called when the user selects a segment from the timeline.
  */
 - (void)timelineView:(SRGTimelineView *)timelineView didSelectSegmentAtIndexPath:(NSIndexPath *)indexPath;
 
 /**
- * Called when the timeline has been scrolled interactively
+ *  Called when the timeline has been scrolled interactively.
  */
 - (void)timelineViewDidScroll:(SRGTimelineView *)timelineView;
 

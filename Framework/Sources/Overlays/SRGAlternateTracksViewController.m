@@ -21,6 +21,8 @@
 @synthesize delegate = _delegate;
 @synthesize player = _player;
 
+#pragma mark Class methods
+
 + (UINavigationController *)alternateTracksViewControllerInNavigationControllerForPlayer:(AVPlayer *)player delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
 {
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -29,30 +31,10 @@
     return [[UINavigationController alloc] initWithRootViewController:alternateTracksViewController];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", nil);
-    
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:NSStringFromClass([self class])];
-}
+#pragma mark Getters and setters
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)setPlayer:(AVPlayer *)player
 {
-    [super viewWillAppear:animated];
-    
-    if (!self.navigationController.popoverPresentationController) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                               target:self
-                                                                                               action:@selector(done:)];
-    }
-    else {
-        self.view.backgroundColor = [UIColor clearColor];
-    }
-}
-
-- (void)setPlayer:(AVPlayer *)player {
     _player = player;
     
     AVMediaSelectionGroup *legibleGroup = [_player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
@@ -78,13 +60,40 @@
     [self.tableView reloadData];
 }
 
-- (AVPlayer *)player {
+- (AVPlayer *)player
+{
     return _player;
+}
+
+#pragma mark View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", nil);
+    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:NSStringFromClass([self class])];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (!self.navigationController.popoverPresentationController) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                               target:self
+                                                                                               action:@selector(done:)];
+    }
+    else {
+        self.view.backgroundColor = [UIColor clearColor];
+    }
 }
 
 #pragma mark UITableViewDataSource protocol
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
     NSString *characteristic = self.characteristics[section];
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
         return SRGMediaPlayerLocalizedString(@"Audio", nil);
@@ -120,7 +129,7 @@
 {
     NSString *characteristic = self.characteristics[indexPath.section];
     AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
-    // OFF option for subtitles needs a customisation
+    
     if ((characteristic == AVMediaCharacteristicLegible) && indexPath.row == 0) {
         cell.textLabel.text = SRGMediaPlayerLocalizedString(@"No subtitles", @"Option to remove subtitles");
         AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
@@ -142,7 +151,7 @@
     NSString *characteristic = self.characteristics[indexPath.section];
     AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
     AVMediaSelectionOption *option = nil;
-    // OFF option for subtitles needs a customisation
+    
     if (!((characteristic == AVMediaCharacteristicLegible) && indexPath.row == 0)) {
         option = (characteristic == AVMediaCharacteristicLegible) ? group.options[indexPath.row -1] : group.options[indexPath.row];
     }
@@ -158,8 +167,9 @@
     [self.tableView reloadData];
 }
 
-#pragma mark - Actions
-- (void)done:(id)sender {
+#pragma mark Actions
+- (void)done:(id)sender
+{
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }

@@ -9,17 +9,17 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Media player error codes
+ *  Media player error codes.
  */
 typedef NS_ENUM(NSInteger, SRGMediaPlayerError) {
     /**
-     *  Playback error (e.g. playlist could not be read)
+     *  Playback error (e.g. playlist could not be read).
      */
     SRGMediaPlayerErrorPlayback,
 };
 
 /**
- *  Domain for media player errors
+ *  Domain for media player errors.
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerErrorDomain;
 

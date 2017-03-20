@@ -8,7 +8,7 @@
 
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
-// Heavily "inspired" by MPActivityGestureRecognizer from the MediaPlayer framework
+// Heavily inspired by MPActivityGestureRecognizer from the MediaPlayer framework
 @implementation SRGActivityGestureRecognizer
 
 #pragma mark Object lifecycle

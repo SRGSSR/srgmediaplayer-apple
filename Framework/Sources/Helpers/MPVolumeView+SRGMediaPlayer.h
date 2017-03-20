@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MPVolumeView (SRGMediaPlayer)
 
 /**
- *  Return the Airplay button within the volume view
+ *  Return the Airplay button within the volume view.
  */
 @property (nonatomic, readonly) UIButton *srg_airplayButton;
 
