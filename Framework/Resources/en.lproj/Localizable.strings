@@ -3,15 +3,34 @@
 // 
 // License information is available from the LICENSE file.
 //
-"An unknown error occurred" = "An unknown error occurred";
+
+/* No comment provided by engineer. */
 "Audio" = "Audio";
+
+/* No comment provided by engineer. */
 "Audio and Subtitles" = "Audio and Subtitles";
+
+/* No comment provided by engineer. */
 "Back to live" = "Back to live";
+
+/* No comment provided by engineer. */
 "External device" = "an external device";
+
+/* No comment provided by engineer. */
 "Live" = "Live";
-"Media not available" = "Media not available";
+
+/* (null) */
+/* "Media not available" = "Media not available"; */
+
+/* Option to remove subtitles */
 "No subtitles" = "No subtitles";
+
+/* No comment provided by engineer. */
 "Subtitles & CC" = "Subtitles & CC";
+
+/* No comment provided by engineer. */
 "The media cannot be played" = "The media cannot be played";
+
+/* No comment provided by engineer. */
 "This media is playing on «%@»" = "This media is playing on «%@»";
-"Videos" = "Videos";
+
