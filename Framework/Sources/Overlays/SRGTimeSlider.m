@@ -250,7 +250,7 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
     
     if (self.live) {
         self.valueString = @"--:--";
-        self.timeLeftValueString = SRGMediaPlayerLocalizedString(@"Live", nil);
+        self.timeLeftValueString = SRGMediaPlayerLocalizedString(@"Live", @"Very short text on left time label when playing a live stream");
     }
     else {
         self.valueString = SRGTimeSliderFormatter(self.value);

@@ -1091,7 +1091,7 @@ withToleranceBefore:(CMTime)toleranceBefore
 static NSError *SRGMediaPlayerControllerError(NSError *underlyingError)
 {
     NSCParameterAssert(underlyingError);
-    return [NSError errorWithDomain:SRGMediaPlayerErrorDomain code:SRGMediaPlayerErrorPlayback userInfo:@{ NSLocalizedDescriptionKey: SRGMediaPlayerLocalizedString(@"The media cannot be played", nil),
+    return [NSError errorWithDomain:SRGMediaPlayerErrorDomain code:SRGMediaPlayerErrorPlayback userInfo:@{ NSLocalizedDescriptionKey: SRGMediaPlayerLocalizedString(@"The media cannot be played", @"Error message when the media cannot be played due to a technical error."),
                                                                                                            NSUnderlyingErrorKey: underlyingError }];
 }
 

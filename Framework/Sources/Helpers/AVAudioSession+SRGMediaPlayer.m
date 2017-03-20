@@ -44,7 +44,7 @@ NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification = @"SRGMediaPl
     }
     
     if (currentRoute.outputs.count != 0) {
-        return SRGMediaPlayerLocalizedString(@"External device", nil);
+        return SRGMediaPlayerLocalizedString(@"an external device", @"AirPlay device description on which device the media is played if no name provided by the system. Use with \"This media is playing on %@\" ");
     }
     else {
         return nil;
