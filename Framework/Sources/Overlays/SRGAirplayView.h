@@ -80,6 +80,7 @@ OBJC_EXTERN NSString * _Nullable SRGAirplayRouteDescription(void);
  *
  *  Further customization is available by using the associated delegate.
  */
+IB_DESIGNABLE
 @interface SRGAirplayView : UIView <SRGAirplayViewDelegate>
 
 /**

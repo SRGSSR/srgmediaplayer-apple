@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  the button is displayed, and regarding a subtitle selected or not, the button is selected.
  *  Action on the button display the available subtitles list in an action sheet, with possibity to select one.
  */
+IB_DESIGNABLE
 @interface SRGTracksButton : UIView <UIPopoverPresentationControllerDelegate>
 
 /**

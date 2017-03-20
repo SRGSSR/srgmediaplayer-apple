@@ -23,7 +23,6 @@
 		6F0D05201DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0D051E1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.m */; };
 		6F1D6D021DAF50050072C107 /* SRGLogger.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6F1D6D031DAF50050072C107 /* libextobjc.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; };
-		6F37442E1DAE5485008A6C0C /* Designables in Resources */ = {isa = PBXBuildFile; fileRef = 6F37442D1DAE5485008A6C0C /* Designables */; };
 		6F5D662E1DAF50E3009AD6DD /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6F5D66451DAFCDF1009AD6DD /* SRGAirplayButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5D66431DAFCDF1009AD6DD /* SRGAirplayButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F5D66461DAFCDF1009AD6DD /* SRGAirplayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D66441DAFCDF1009AD6DD /* SRGAirplayButton.m */; };
@@ -219,7 +218,6 @@
 		6F0D051A1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAudioSession+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		6F0D051D1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F0D051E1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+SRGMediaPlayer.m"; sourceTree = "<group>"; };
-		6F37442D1DAE5485008A6C0C /* Designables */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Designables; sourceTree = "<group>"; };
 		6F5D66431DAFCDF1009AD6DD /* SRGAirplayButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAirplayButton.h; sourceTree = "<group>"; };
 		6F5D66441DAFCDF1009AD6DD /* SRGAirplayButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAirplayButton.m; sourceTree = "<group>"; };
 		6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayerView+Private.h"; sourceTree = "<group>"; };
@@ -405,9 +403,8 @@
 		E69A1DB11D61BAFD0064E6C1 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				6F37442D1DAE5485008A6C0C /* Designables */,
-				E6FC7F2E1D62072400A55085 /* Sources */,
 				E69A1DFF1D61BAFD0064E6C1 /* Resources */,
+				E6FC7F2E1D62072400A55085 /* Sources */,
 				E69A1DDF1D61BAFD0064E6C1 /* Info.plist */,
 				E69A1E121D61BAFD0064E6C1 /* SRGMediaPlayer.h */,
 				E6FC7F9C1D62097E00A55085 /* SRGMediaPlayer.m */,
@@ -851,7 +848,6 @@
 			files = (
 				08D3BEBD1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png in Resources */,
 				08D3BEB51DE7671E00AE1368 /* alternate_tracks_button.png in Resources */,
-				6F37442E1DAE5485008A6C0C /* Designables in Resources */,
 				E6C315671D76AB62001FC93A /* LaunchScreen.xib in Resources */,
 				E69A1E581D61BAFD0064E6C1 /* picture_in_picture_start_button@2x.png in Resources */,
 				E69A1E5C1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png in Resources */,

@@ -39,6 +39,7 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
  *    - `maximumTrackTintColor`: Remaining time track color (defaults to black)
  *    - `thumbTintColor`: Thumb color (defaults to white)
  */
+IB_DESIGNABLE
 @interface SRGTimeSlider : UISlider
 
 /**

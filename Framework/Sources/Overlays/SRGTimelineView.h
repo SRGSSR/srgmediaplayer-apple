@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Customisation of timeline cells is achieved through subclassing of `UICollectionViewCell`, exactly like a usual
  *  `UICollectionView`
  */
+IB_DESIGNABLE
 @interface SRGTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
 /**

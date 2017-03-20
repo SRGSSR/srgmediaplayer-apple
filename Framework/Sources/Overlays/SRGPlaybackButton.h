@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Simply install an instance somewhere onto your custom player interface and bind to the media player controller which
  *  needs to be controlled
  */
+IB_DESIGNABLE
 @interface SRGPlaybackButton : UIButton
 
 /**

@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @discussion This view does not display any route button, unlike `MPVolumeView`
  */
+IB_DESIGNABLE
 @interface SRGVolumeView : UIView
 
 @end
