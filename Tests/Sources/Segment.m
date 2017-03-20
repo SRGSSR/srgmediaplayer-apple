@@ -10,6 +10,7 @@
 
 @property (nonatomic) CMTimeRange srg_timeRange;
 @property (nonatomic, getter=srg_isBlocked) BOOL srg_blocked;
+@property (nonatomic, getter=srg_isHidden) BOOL srg_hidden;
 
 @end
 
@@ -29,6 +30,13 @@
     return segment;
 }
 
++ (Segment *)hiddenSegmentWithTimeRange:(CMTimeRange)timeRange
+{
+    Segment *segment = [[[self class] alloc] initWithTimeRange:timeRange];
+    segment.srg_hidden = YES;
+    return segment;
+}
+
 #pragma mark Object lifecycle
 
 - (instancetype)initWithTimeRange:(CMTimeRange)timeRange
@@ -37,14 +45,6 @@
         self.srg_timeRange = timeRange;
     }
     return self;
-}
-
-#pragma mark Getters and setters
-
-- (BOOL)srg_isHidden
-{
-    // NO need to test hidden segments in unit tests, those are only for use by UI overlays
-    return NO;
 }
 
 #pragma mark Description
