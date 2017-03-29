@@ -66,7 +66,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         return;
     }
     
-    // FIXME: Must be recreated with each view controller instantiation (though stored globally)
     s_mediaPlayerController = [[SRGMediaPlayerSharedController alloc] init];
 }
 
