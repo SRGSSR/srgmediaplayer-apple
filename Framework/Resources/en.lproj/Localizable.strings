@@ -16,11 +16,11 @@
 /* Option to remove subtitles in alternate tracks popup menu */
 "No subtitles" = "No subtitles";
 
+/* AirPlay description on which device the media is played. */
+"Playback on «%@»" = "Playback on «%@»";
+
 /* Section header title in the alternate tracks popup menu, for subtitles & CC tracks */
 "Subtitles & CC" = "Subtitles & CC";
 
 /* Error message when the media cannot be played due to a technical error. */
 "The media cannot be played" = "The media cannot be played";
-
-/* AirPlay description on which device the media is played. */
-"This media is playing on «%@»" = "This media is playing on «%@»";

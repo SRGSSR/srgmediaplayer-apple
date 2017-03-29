@@ -305,7 +305,7 @@ NSString * SRGAirplayRouteDescription(void)
 {
     NSString *routeName = [AVAudioSession srg_activeAirplayRouteName];
     if (routeName) {
-        return [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"This media is playing on «%@»", @"AirPlay description on which device the media is played."), routeName];
+        return [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"Playback on «%@»", @"AirPlay description on which device the media is played."), routeName];
     }
     else {
         return nil;
