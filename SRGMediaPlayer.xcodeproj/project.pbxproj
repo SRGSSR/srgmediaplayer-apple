@@ -803,7 +803,7 @@
 			attributes = {
 				CLASSPREFIX = SRG;
 				LastUpgradeCheck = 0800;
-				ORGANIZATIONNAME = SRG;
+				ORGANIZATIONNAME = "SRG SSR";
 				TargetAttributes = {
 					E69A1DA81D61B9380064E6C1 = {
 						CreatedOnToolsVersion = 7.3.1;
