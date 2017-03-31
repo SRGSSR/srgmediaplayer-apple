@@ -1070,4 +1070,48 @@ static NSURL *DVRTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testPeriodicTimeObserverAddedWhilePlaying
+{
+    XCTestExpectation *observerExpectation = [self expectationWithDescription:@"Periodic time observer fired"];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    __weak __typeof(self) weakSelf = self;
+    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        [observerExpectation fulfill];
+        
+        // Do not fulfill the expectation more than once
+        [weakSelf.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testPeriodicTimeObserverWithoutPlayback
+{
+    [self expectationForElapsedTimeInterval:3. withHandler:nil];
+    
+    __weak __typeof(self) weakSelf = self;
+    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        XCTFail(@"Periodic time observers are not fired when the player is idle");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testPeriodicTimeObserverAfterReset
+{
+    [self expectationForElapsedTimeInterval:3. withHandler:nil];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    [self.mediaPlayerController reset];
+    
+    __weak __typeof(self) weakSelf = self;
+    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        XCTFail(@"Periodic time observers are not fired when the player is idle");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
 @end
