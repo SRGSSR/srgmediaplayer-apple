@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerMediaType) {
     /**
      *  Audio.
      */
-    SRGMediaPlayerMediaTypeAudio,
+    SRGMediaPlayerMediaTypeAudio
 };
 
 /**
@@ -48,7 +48,7 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerStreamType) {
     /**
      *  DVR stream.
      */
-    SRGMediaPlayerStreamTypeDVR,
+    SRGMediaPlayerStreamTypeDVR
 };
 
 /**
@@ -84,7 +84,7 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerPlaybackState) {
     /**
      *  The player has reached the end of the media and has automatically stopped playback.
      */
-    SRGMediaPlayerPlaybackStateEnded,
+    SRGMediaPlayerPlaybackStateEnded
 };
 
 /**
