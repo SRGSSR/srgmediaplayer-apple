@@ -381,7 +381,7 @@ withToleranceBefore:(CMTime)toleranceBefore
  */
 
 /**
- *  Register a block for periodical execution. Unlike usual `AVPlayer` time observers, such observers not only run during playback, but
+ *  Register a block for periodic execution. Unlike usual `AVPlayer` time observers, such observers not only run during playback, but
  *  when the player has been created. They therefore also continue to trigger when the player is paused. This makes such observers very 
  *  helpful when UI must be updated continously when the player is up, for example in the case of paused DVR streams.
  *
