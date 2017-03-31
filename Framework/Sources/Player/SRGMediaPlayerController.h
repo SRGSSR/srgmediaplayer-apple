@@ -381,9 +381,9 @@ withToleranceBefore:(CMTime)toleranceBefore
  */
 
 /**
- *  Register a block for periodic execution. Unlike usual `AVPlayer` time observers, such observers not only run during playback, but
- *  when the player has been created. They therefore also continue to trigger when the player is paused. This makes such observers very 
- *  helpful when UI must be updated continously when the player is up, for example in the case of paused DVR streams.
+ *  Register a block for periodic execution when the player is not idle (unlike usual `AVPlayer` time observers which do
+ *  not run when playback has been paused). This makes such observers very helpful when UI must be updated continously 
+ *  when the player is up, for example in the case of paused DVR streams.
  *
  *  @param interval Time interval between block executions.
  *  @param queue    The serial queue onto which block should be enqueued (main queue if `NULL`).
@@ -394,7 +394,7 @@ withToleranceBefore:(CMTime)toleranceBefore
  *
  *  @discussion Your can registers observers with the media player controller when you like (you do not have to wait until the player
  *              is ready, observers will be attached to it automatically when appropriate). Note that such observers are not removed
- *              when the player controller is reset.
+ *              when the player controller is reset (they will not execute until playback is started again).
  */
 - (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
 
