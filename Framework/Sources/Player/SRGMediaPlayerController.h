@@ -393,7 +393,7 @@ withToleranceBefore:(CMTime)toleranceBefore
  *          to it and remove it at a later time if needed.
  *
  *  @discussion Your can registers observers with the media player controller when you like (you do not have to wait until the player
- *              is ready, observers will be attached to it automatically when appropriate). Not that such observers are not removed
+ *              is ready, observers will be attached to it automatically when appropriate). Note that such observers are not removed
  *              when the player controller is reset.
  */
 - (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
