@@ -1093,10 +1093,12 @@ static NSURL *DVRTestURL(void)
     
     __weak __typeof(self) weakSelf = self;
     __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
-        XCTFail(@"Periodic time observers are not fired when the player is idle");
+        _XCTPrimitiveFail(weakSelf, @"Periodic time observers are not fired when the player is idle");
     }];
     
-    [self waitForExpectationsWithTimeout:30. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
+    }];
 }
 
 - (void)testPeriodicTimeObserverAfterReset
@@ -1108,10 +1110,12 @@ static NSURL *DVRTestURL(void)
     
     __weak __typeof(self) weakSelf = self;
     __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
-        XCTFail(@"Periodic time observers are not fired when the player is idle");
+        _XCTPrimitiveFail(weakSelf, @"Periodic time observers are not fired when the player is idle");
     }];
     
-    [self waitForExpectationsWithTimeout:30. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
+    }];
 }
 
 @end
