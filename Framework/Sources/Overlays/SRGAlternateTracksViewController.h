@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Called when a media option has been selected within a group (subtitles or audio tracks).
  */
-- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController didSelectMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group;
+- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController didSelectMediaOption:(nullable AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group;
 
 @end
 
