@@ -1,17 +1,26 @@
-// 
-// Copyright (c) SRG SSR. All rights reserved.
-// 
-// License information is available from the LICENSE file.
-//
-"An unknown error occurred" = "An unknown error occurred";
+/* AirPlay device description on which device the media is played if no name provided by the system. Use with \"This media is playing on %@\" */
+"an external device" = "an external device";
+
+/* Section header title in the alternate tracks popup menu, for audio tracks */
 "Audio" = "Audio";
-"Audio and Subtitles" = "Audio and Subtitles";
+
+/* Title of the alternate tracks popup menu */
+"Audio and Subtitles" = "Audio and subtitles";
+
+/* Button title to go back to live */
 "Back to live" = "Back to live";
-"External device" = "an external device";
+
+/* Very short text on left time label when playing a live stream */
 "Live" = "Live";
-"Media not available" = "Media not available";
+
+/* Option to remove subtitles in alternate tracks popup menu */
 "No subtitles" = "No subtitles";
-"Subtitles & CC" = "Subtitles & CC";
+
+/* AirPlay description on which device the media is played. */
+"Playback on «%@»" = "Playback on «%@»";
+
+/* Section header title in the alternate tracks popup menu, for subtitles & CC tracks */
+"Subtitles & CC" = "Subtitles & closed captions";
+
+/* Error message when the media cannot be played due to a technical error. */
 "The media cannot be played" = "The media cannot be played";
-"This media is playing on «%@»" = "This media is playing on «%@»";
-"Videos" = "Videos";
