@@ -171,7 +171,8 @@ static void commonInit(SRGAirplayView *self);
 
     NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
 
-    NSString *title = @"Airplay";
+    // Use NSLocalizedString to fix analyzer warning, no localization is needed
+    NSString *title = NSLocalizedString(@"AirPlay", nil);
     [title drawWithRect:rect options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:drawingContext];
 }
 
