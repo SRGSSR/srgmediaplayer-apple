@@ -131,6 +131,10 @@ For proper integration into the control center and the lock screen, use the `MPR
 
 Note that control center integration does not work in the iOS simulator, you will need a real device for tests.
 
+## Thread-safety
+
+The library is intended to be used from the main thread only.
+
 ## Further reading
 
 This guide only scratches the surface of what you can do with the SRG Media Player library. For more information, please have a look at the demo implementations and check the header documentation (especially the `SRGMediaPlayerController` header documentation, which covers all topics extensively).
