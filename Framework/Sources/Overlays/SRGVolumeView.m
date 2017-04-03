@@ -47,7 +47,10 @@
     placeholderLabel.textColor = [UIColor whiteColor];
     placeholderLabel.textAlignment = NSTextAlignmentCenter;
     placeholderLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    placeholderLabel.text = @"Volume view (only visible on a device)";
+    
+    // Use NSLocalizedString to fix analyzer warning, no localization is needed
+    placeholderLabel.text = NSLocalizedString(@"Volume view (only visible on a device)", nil);
+    
     [self addSubview:placeholderLabel];
 }
 
