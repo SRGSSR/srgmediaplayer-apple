@@ -8,6 +8,11 @@
 
 #import "SRGMediaPlayerController.h"
 
+NSString *SRGMediaPlayerNonLocalizedString(NSString *string)
+{
+    return string;
+}
+
 @implementation NSBundle (SRGMediaPlayer)
 
 + (NSBundle *)srg_mediaPlayerBundle

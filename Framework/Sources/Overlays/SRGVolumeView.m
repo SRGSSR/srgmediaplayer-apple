@@ -6,6 +6,8 @@
 
 #import "SRGVolumeView.h"
 
+#import "NSBundle+SRGMediaPlayer.h"
+
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface SRGVolumeView ()
@@ -47,10 +49,7 @@
     placeholderLabel.textColor = [UIColor whiteColor];
     placeholderLabel.textAlignment = NSTextAlignmentCenter;
     placeholderLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    // Use NSLocalizedString to fix analyzer warning, no localization is needed
-    placeholderLabel.text = NSLocalizedString(@"Volume view (only visible on a device)", nil);
-    
+    placeholderLabel.text = SRGMediaPlayerNonLocalizedString(@"Volume view (only visible on a device)");
     [self addSubview:placeholderLabel];
 }
 
