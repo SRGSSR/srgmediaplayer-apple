@@ -152,7 +152,7 @@
     AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
     AVMediaSelectionOption *option = nil;
     
-    if (!((characteristic == AVMediaCharacteristicLegible) && indexPath.row == 0)) {
+    if (characteristic != AVMediaCharacteristicLegible || indexPath.row != 0)  {
         option = (characteristic == AVMediaCharacteristicLegible) ? group.options[indexPath.row -1] : group.options[indexPath.row];
     }
     
