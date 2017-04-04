@@ -26,50 +26,14 @@ github "SRGSSR/SRGMediaPlayer-iOS"
 
 Then run `carthage update --platform iOS` to update the dependencies. You will need to manually add the following `.framework`s generated in the `Carthage/Build/iOS` folder to your project:
 
-<<<<<<< HEAD
-## Usage
-
-### Usage from Objective-C source files
-=======
 * `libextobjc`: A utility framework.
 * `MAKVONotificationCenter`: A safe KVO framework.
 * `SRGLogger`: The framework used for internal logging.
 * `SRGMediaPlayer`: The main data provider framework.
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
->>>>>>> release/2.0
 
-Import the global header file using
-
-```objective-c
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
-```
-
-You can similarly import individual files, e.g.
-
-```objective-c
-#import <SRGMediaPlayer/RTSMediaPlayerViewController.h>
-```
-
-It you use CocoaPods with the `use_frameworks!` directive, it is easier to import the SRGMediaPlayer module itself where needed:
-
-```objective-c
-@import SRGMediaPlayer;
-```
-
-### Usage from Swift source files
-
-If you installed SRGMediaPlayer with CocoaPods but without the `use_frameworks!` directive, import the global header from a bridging header:
-
-```objective-c
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
-```
-
-If you use CocoaPods with the `use_frameworks!` directive, the SRGMediaPlayer module can be imported where needed:
-
-```swift
-import SRGMediaPlayer
-```
+## Usage
 
 When you want to use classes or functions provided by the library in your code, you must import it from your source files first.
 
@@ -99,8 +63,6 @@ import SRGMediaPlayer
 
 To learn about how the library can be used, have a look at the [getting started guide](Documentation/Getting-started.md).
 
-<<<<<<< HEAD
-=======
 ### Logging
 
 The library internally uses the [SRG Logger](https://github.com/SRGSSR/srglogger-ios) library for logging, within the `ch.srgssr.mediaplayer` subsystem. This logger either automatically integrates with your own logger, or can be easily integrated with it. Refer to the SRG Logger documentation for more information.
@@ -120,18 +82,14 @@ If rendering does not work properly:
 
 Since the `SRGMediaPlayerDesignables.m` must be copied to your project, you should update this file when updating the SRG Media Player library.
 
->>>>>>> release/2.0
 ## Demo project
 
 To test what the library is capable of, try running the associated demo by opening the workspace and building the associated scheme.
 
-<<<<<<< HEAD
-=======
 ## Migration from versions 1.x
 
 For information about changes introduced with version 2 of the library, please read the [migration guide](Documentation/Migration-guide.md).
 
->>>>>>> release/2.0
 ## License
 
 See the [LICENSE](LICENSE) file for more information.
