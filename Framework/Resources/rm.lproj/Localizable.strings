@@ -1,0 +1,26 @@
+/* AirPlay device description on which device the media is played if no name provided by the system. Use with \"This media is playing on %@\" */
+"an external device" = "in apparat extern";
+
+/* Section header title in the alternate tracks popup menu, for audio tracks */
+"Audio" = "Audio";
+
+/* Title of the alternate tracks popup menu */
+"Audio and Subtitles" = "Audio e suttitels";
+
+/* Button title to go back to live */
+"Back to live" = "Enavos tar live";
+
+/* Very short text on left time label when playing a live stream */
+"Live" = "Live";
+
+/* Option to remove subtitles in alternate tracks popup menu */
+"No subtitles" = "Nagins suttitels";
+
+/* AirPlay description on which device the media is played. */
+"Playback on «%@»" = "Playback sin «%@»";
+
+/* Section header title in the alternate tracks popup menu, for subtitles & CC tracks */
+"Subtitles & CC" = "Suttitels & CC";
+
+/* Error message when the media cannot be played due to a technical error. */
+"The media cannot be played" = "Quest cuntegn na sa betg vegnì laschà ir";

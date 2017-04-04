@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Medias</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>3 non-consecutive segments</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>5000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #1</string>
+					<key>startTime</key>
+					<integer>30000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #2</string>
+					<key>startTime</key>
+					<integer>55000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>One blocked segment</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>5000</integer>
+					<key>duration</key>
+					<integer>120000</integer>
+					<key>blocked</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>One hidden segment</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>5000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+					<key>hidden</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>One blocked hidden segment</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>5000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+					<key>blocked</key>
+					<true/>
+					<key>hidden</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Segment at start</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>0</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Blocked segment at start</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>0</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+					<key>blocked</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Five consecutive segments</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>0</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #1</string>
+					<key>startTime</key>
+					<integer>10000</integer>
+					<key>duration</key>
+					<integer>20000</integer>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #2</string>
+					<key>startTime</key>
+					<integer>30000</integer>
+					<key>duration</key>
+					<integer>5000</integer>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #3</string>
+					<key>startTime</key>
+					<integer>35000</integer>
+					<key>duration</key>
+					<integer>15000</integer>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #4</string>
+					<key>startTime</key>
+					<integer>50000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Two consecutive blocked segments</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>5000</integer>
+					<key>duration</key>
+					<integer>60000</integer>
+					<key>blocked</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #1</string>
+					<key>startTime</key>
+					<integer>65000</integer>
+					<key>duration</key>
+					<integer>40000</integer>
+					<key>blocked</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Real example (19h30 2016 09 06)</string>
+			<key>url</key>
+			<string>http://stream-i.akamaihd.net/i/tj/2016/tj_20160905_full_f_965656-,101,301,701,1201,k.mp4.csmil/master.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>L&apos;entrepreneur Pascal Jaussi a été retrouvé gravement blessé et brûlé après une agression violente</string>
+					<key>startTime</key>
+					<integer>95640</integer>
+					<key>duration</key>
+					<integer>120600</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>GE: le Grand Conseil a reconstitué les faits de la manifestation sauvage qui avait dégénéré fin 2015</string>
+					<key>startTime</key>
+					<integer>216520</integer>
+					<key>duration</key>
+					<integer>110480</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>L’efficacité du Baclofène pour lutter contre l’alcoolisme a été démontrée scientifiquement</string>
+					<key>startTime</key>
+					<integer>327120</integer>
+					<key>duration</key>
+					<integer>121440</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>VD: Pierre-Yves Maillard ouvre le jeu électoral et se déclare disponible pour un nouveau mandat</string>
+					<key>startTime</key>
+					<integer>448760</integer>
+					<key>duration</key>
+					<integer>130360</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Entretien avec Pierre-Yves Maillard, président du gouvernement vaudois</string>
+					<key>startTime</key>
+					<integer>579280</integer>
+					<key>duration</key>
+					<integer>340560</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Votation: la loi sur le renseignement donnerait des moyens d’écoute des candidats présumés au djihad</string>
+					<key>startTime</key>
+					<integer>939040</integer>
+					<key>duration</key>
+					<integer>145600</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Cahuzac affirme avoir ouvert un compte en Suisse pour financer l’activité politique de Michel Rocard</string>
+					<key>startTime</key>
+					<integer>1084840</integer>
+					<key>duration</key>
+					<integer>140080</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Allemagne: Angela Merkel se voit menacée par la percée des populistes de l’AFD</string>
+					<key>startTime</key>
+					<integer>1225240</integer>
+					<key>duration</key>
+					<integer>148800</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Allemagne / Succès électoral des populistes de l’AFD: les précisions de Marion Van Renterghem, écrivain et journaliste, à Paris</string>
+					<key>startTime</key>
+					<integer>1374160</integer>
+					<key>duration</key>
+					<integer>240400</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>L’instant politique: les entreprises de presse sont au cœur du débat sur la publicité de l’EPFL</string>
+					<key>startTime</key>
+					<integer>1616840</integer>
+					<key>duration</key>
+					<integer>265000</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

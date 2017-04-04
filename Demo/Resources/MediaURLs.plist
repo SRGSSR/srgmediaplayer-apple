@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Medias</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Euronews</string>
+			<key>url</key>
+			<string>http://fr-par-iphone-2.cdn.hexaglobe.net/streaming/euronews_ewns/9-live.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Apple Basic Stream</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Apple Advanced Stream</string>
+			<key>url</key>
+			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Big Buck Bunny (640×360 m4v)</string>
+			<key>url</key>
+			<string>http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Big Buck Bunny (1920x1080 mp4 30 fps)</string>
+			<key>url</key>
+			<string>http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Bidoum</string>
+			<key>url</key>
+			<string>http://stream-i.rts.ch/i/bidbi/2007/bidbi_01082007-,450,k.mp4.csmil/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Short non-streamed video</string>
+			<key>url</key>
+			<string>http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>SWI sample with strange behavior if seeking to the end (consistent between iOS and SRG players)</string>
+			<key>url</key>
+			<string>http://srgplayerswivod-vh.akamaihd.net/i/2016/09/13/,Hoechstgelegener_Windpark-42441158-360k,Hoechstgelegener_Windpark-42441158-720k,.mp4.csmil/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>403 error</string>
+			<key>url</key>
+			<string>http://httpbin.org/status/403</string>
+		</dict>
+	</array>
+</dict>
+</plist>

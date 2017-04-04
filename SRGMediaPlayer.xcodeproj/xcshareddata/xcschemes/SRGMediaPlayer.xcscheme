@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0710"
+   LastUpgradeVersion = "0800"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C201D8F41A9DC1A40016C629"
-               BuildableName = "libSRGMediaPlayer.a"
+               BlueprintIdentifier = "E69A1DA81D61B9380064E6C1"
+               BuildableName = "SRGMediaPlayer.framework"
                BlueprintName = "SRGMediaPlayer"
                ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
             </BuildableReference>
@@ -26,15 +26,16 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C201D8FF1A9DC1A40016C629"
-               BuildableName = "SRGMediaPlayerTests.xctest"
-               BlueprintName = "SRGMediaPlayerTests"
+               BlueprintIdentifier = "E69A1FD01D61C6830064E6C1"
+               BuildableName = "SRGMediaPlayer-tests.xctest"
+               BlueprintName = "SRGMediaPlayer-tests"
                ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -42,8 +43,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C201D8F41A9DC1A40016C629"
-            BuildableName = "libSRGMediaPlayer.a"
+            BlueprintIdentifier = "E69A1DA81D61B9380064E6C1"
+            BuildableName = "SRGMediaPlayer.framework"
             BlueprintName = "SRGMediaPlayer"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>
@@ -64,8 +65,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C201D8F41A9DC1A40016C629"
-            BuildableName = "libSRGMediaPlayer.a"
+            BlueprintIdentifier = "E69A1DA81D61B9380064E6C1"
+            BuildableName = "SRGMediaPlayer.framework"
             BlueprintName = "SRGMediaPlayer"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>
@@ -82,8 +83,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C201D8F41A9DC1A40016C629"
-            BuildableName = "libSRGMediaPlayer.a"
+            BlueprintIdentifier = "E69A1DA81D61B9380064E6C1"
+            BuildableName = "SRGMediaPlayer.framework"
             BlueprintName = "SRGMediaPlayer"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>

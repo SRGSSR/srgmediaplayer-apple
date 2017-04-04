@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zk8-W1-piv">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Timeshift Player View Controller-->
+        <scene sceneID="cbS-Cg-mbF">
+            <objects>
+                <viewController id="Zk8-W1-piv" customClass="TimeshiftPlayerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="R5C-zU-djv"/>
+                        <viewControllerLayoutGuide type="bottom" id="b0K-LD-In2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xTs-IJ-3tq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oWm-cH-DH1" customClass="SRGMediaPlayerView">
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K0I-7M-Ixt" userLabel="Bottom Bar View">
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DRr-Ir-Edl">
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="81" id="nkK-ZA-am7"/>
+                                            <constraint firstAttribute="height" constant="22" id="voC-Lz-wxH"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                        <state key="normal" title="GO TO LIVE">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="goToLive:" destination="Zk8-W1-piv" eventType="touchUpInside" id="HOC-pZ-bwD"/>
+                                        </connections>
+                                    </button>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Tml-pK-mQ9" customClass="SRGTimeSlider">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="ajA-g4-OfO"/>
+                                        </constraints>
+                                        <color key="minimumTrackTintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="maximumTrackTintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="thumbTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="seek:" destination="Zk8-W1-piv" eventType="valueChanged" id="uEP-FQ-ZVM"/>
+                                            <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="0On-eq-acQ"/>
+                                            <outlet property="timeLeftValueLabel" destination="szg-q5-gCR" id="S7R-dC-xO7"/>
+                                            <outlet property="valueLabel" destination="mq0-n2-ZD3" id="BXc-fi-WTd"/>
+                                        </connections>
+                                    </slider>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mq0-n2-ZD3">
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="Y3d-jk-it5"/>
+                                            <constraint firstAttribute="height" constant="16" id="cG4-oQ-Al5"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="szg-q5-gCR">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="16" id="0Da-xg-Piu"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="GfR-VX-7Em"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="lxj-2d-8t5"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="lxj-2d-8t5"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5E-wC-58R" customClass="SRGPlaybackButton">
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="22" id="Q5D-P0-pgq"/>
+                                            <constraint firstAttribute="width" constant="22" id="zzw-bX-KdR"/>
+                                        </constraints>
+                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="lr6-tC-yXm"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.85369551181793213" green="0.85369551181793213" blue="0.85369551181793213" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Tml-pK-mQ9" secondAttribute="trailing" constant="8" id="7U3-RC-AAY"/>
+                                    <constraint firstAttribute="bottom" secondItem="mq0-n2-ZD3" secondAttribute="bottom" constant="14" id="Dzd-0g-Zja"/>
+                                    <constraint firstAttribute="bottom" secondItem="P5E-wC-58R" secondAttribute="bottom" constant="11" id="F7X-pU-SQl"/>
+                                    <constraint firstAttribute="centerX" secondItem="P5E-wC-58R" secondAttribute="centerX" id="HE1-Y3-RnI"/>
+                                    <constraint firstAttribute="bottom" secondItem="szg-q5-gCR" secondAttribute="bottom" constant="14" id="HFe-2x-d4a"/>
+                                    <constraint firstAttribute="bottom" secondItem="szg-q5-gCR" secondAttribute="bottom" constant="14" id="JmQ-kZ-Nst"/>
+                                    <constraint firstItem="Tml-pK-mQ9" firstAttribute="leading" secondItem="K0I-7M-Ixt" secondAttribute="leading" constant="8" id="LPm-h5-At3"/>
+                                    <constraint firstAttribute="trailing" secondItem="szg-q5-gCR" secondAttribute="trailing" constant="8" id="Mmh-UI-IEu"/>
+                                    <constraint firstAttribute="height" constant="64" id="SAv-CI-EoW"/>
+                                    <constraint firstItem="mq0-n2-ZD3" firstAttribute="leading" secondItem="K0I-7M-Ixt" secondAttribute="leading" constant="8" id="atT-f0-JQg"/>
+                                    <constraint firstItem="szg-q5-gCR" firstAttribute="leading" secondItem="DRr-Ir-Edl" secondAttribute="trailing" constant="8" symbolic="YES" id="dJ1-BM-YTw"/>
+                                    <constraint firstItem="DRr-Ir-Edl" firstAttribute="top" secondItem="P5E-wC-58R" secondAttribute="top" id="nhg-g4-pMw"/>
+                                    <constraint firstItem="Tml-pK-mQ9" firstAttribute="top" secondItem="K0I-7M-Ixt" secondAttribute="top" id="tpM-Z6-heN"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G2B-1h-zvk" userLabel="Close Button">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="cKv-Ew-QKt"/>
+                                    <constraint firstAttribute="height" constant="44" id="suH-O7-DbC"/>
+                                </constraints>
+                                <state key="normal" image="close_button.png">
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="dismiss:" destination="Zk8-W1-piv" eventType="touchUpInside" id="q3U-6q-VCf"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="C5v-lq-cYV" customClass="SRGPlaybackActivityIndicatorView">
+                                <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="6VD-Uo-jhM"/>
+                                </connections>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="K0I-7M-Ixt" secondAttribute="trailing" id="1hn-vV-M0w"/>
+                            <constraint firstAttribute="trailing" secondItem="oWm-cH-DH1" secondAttribute="trailing" id="2kE-oK-a3J"/>
+                            <constraint firstAttribute="centerX" secondItem="C5v-lq-cYV" secondAttribute="centerX" id="50X-FM-qFd"/>
+                            <constraint firstItem="G2B-1h-zvk" firstAttribute="top" secondItem="R5C-zU-djv" secondAttribute="bottom" constant="10" id="AYC-XD-5ic"/>
+                            <constraint firstItem="K0I-7M-Ixt" firstAttribute="top" secondItem="oWm-cH-DH1" secondAttribute="bottom" id="CCS-as-yID"/>
+                            <constraint firstItem="oWm-cH-DH1" firstAttribute="top" secondItem="R5C-zU-djv" secondAttribute="bottom" id="L5N-3A-b1f"/>
+                            <constraint firstAttribute="trailing" secondItem="G2B-1h-zvk" secondAttribute="trailing" id="Ree-lc-Qo2"/>
+                            <constraint firstItem="b0K-LD-In2" firstAttribute="top" secondItem="K0I-7M-Ixt" secondAttribute="bottom" id="eGs-Z9-xrV"/>
+                            <constraint firstAttribute="centerY" secondItem="C5v-lq-cYV" secondAttribute="centerY" id="o3C-Et-mjD"/>
+                            <constraint firstItem="K0I-7M-Ixt" firstAttribute="leading" secondItem="xTs-IJ-3tq" secondAttribute="leading" id="qRg-d3-naG"/>
+                            <constraint firstItem="oWm-cH-DH1" firstAttribute="leading" secondItem="xTs-IJ-3tq" secondAttribute="leading" id="whZ-DW-1lh"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="liveButton" destination="DRr-Ir-Edl" id="oJN-tK-KoW"/>
+                        <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="f95-cZ-5LN"/>
+                        <outlet property="timelineSlider" destination="Tml-pK-mQ9" id="BTe-mi-dX1"/>
+                        <outlet property="videoView" destination="xTs-IJ-3tq" id="atl-ce-PXh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pNA-WI-9Vu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="UUZ-ax-3wC" customClass="SRGMediaPlayerController">
+                    <connections>
+                        <outlet property="view" destination="oWm-cH-DH1" id="Xkt-eI-tk0"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="-432" y="3580"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="close_button.png" width="32" height="32"/>
+    </resources>
+</document>

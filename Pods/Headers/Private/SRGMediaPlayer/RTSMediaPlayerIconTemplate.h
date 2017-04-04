@@ -1,1 +1,0 @@
-../../../../RTSMediaPlayer/RTSMediaPlayerIconTemplate.h
