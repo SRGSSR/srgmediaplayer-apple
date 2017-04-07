@@ -737,12 +737,13 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.initialTargetSegment = targetSegment;
     self.initialStartTimeValue = self.startTimeValue;
     
+    // Load item and player asynchrounously to eliminate main thread work as much as possible
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:URL options:nil];
     [asset loadValuesAsynchronouslyForKeys:@[@keypath(asset.playable)] completionHandler:^{
         AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
-        
+        AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.player = [AVPlayer playerWithPlayerItem:playerItem];
+            self.player = player;
         });
     }];
 }
