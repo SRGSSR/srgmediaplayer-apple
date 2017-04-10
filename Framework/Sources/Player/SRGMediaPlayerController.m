@@ -34,6 +34,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     CMTimeRange _timeRange;
 }
 
+@property (nonatomic, weak) AVAsset *asset;
 @property (nonatomic) AVPlayer *player;
 
 @property (nonatomic) NSURL *contentURL;
@@ -737,15 +738,22 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.initialTargetSegment = targetSegment;
     self.initialStartTimeValue = self.startTimeValue;
     
-    // Load item and player asynchrounously to eliminate main thread work as much as possible
+    // Load item and player asynchronously to eliminate main thread work as much as possible
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:URL options:nil];
     [asset loadValuesAsynchronouslyForKeys:@[@keypath(asset.playable)] completionHandler:^{
+        AVKeyValueStatus status = [asset statusOfValueForKey:@keypath(asset.playable) error:NULL];
+        if (status == AVKeyValueStatusCancelled) {
+            return;
+        }
+        
         AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
         AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             self.player = player;
         });
     }];
+    self.asset = asset;
 }
 
 - (void)seekToTime:(CMTime)time
@@ -786,6 +794,9 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)stopWithUserInfo:(NSDictionary *)userInfo
 {
+    // Cancel asynchronous asset retrieval
+    [self.asset cancelLoading];
+    
     if (self.pictureInPictureController.isPictureInPictureActive) {
         [self.pictureInPictureController stopPictureInPicture];
     }
