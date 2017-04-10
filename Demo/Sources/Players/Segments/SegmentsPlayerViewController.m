@@ -55,9 +55,8 @@
 {
     [super viewDidLoad];
     
-    // We discovered issues with AVPlayer and custom transitions, leading to issues with the ability to dismiss the
-    // controller in some cases, even to crashes. This example thus uses a transitioning delegate to check for such
-    // issues
+    // Use a custom transition, some subtle issues were discovered with incorrect implementations, when animated
+    // view controllers have an AVPlayer somewhere.
     self.transitioningDelegate = self;
 
     self.timelineSlider.delegate = self;
