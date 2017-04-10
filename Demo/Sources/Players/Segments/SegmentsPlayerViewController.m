@@ -6,6 +6,7 @@
 
 #import "SegmentsPlayerViewController.h"
 
+#import "ModalTransition.h"
 #import "SegmentCollectionViewCell.h"
 
 @interface SegmentsPlayerViewController ()
@@ -25,6 +26,8 @@
 @property (nonatomic, weak) id periodicTimeObserver;
 
 @property (nonatomic, weak) IBOutlet UISwitch *externalPlaybackSwitch;
+
+@property (nonatomic) ModalTransition *interactiveTransition;
 
 @end
 
@@ -51,6 +54,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Use a custom transition, some subtle issues were discovered with incorrect implementations, when animated
+    // view controllers have an AVPlayer somewhere.
+    self.transitioningDelegate = self;
 
     self.timelineSlider.delegate = self;
     self.blockingOverlayView.hidden = YES;
@@ -73,7 +80,20 @@
                                                object:self.mediaPlayerController];
     
     self.externalPlaybackSwitch.on = self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive;
+    
+    [self.mediaPlayerController playURL:self.contentURL atTime:kCMTimeZero withSegments:self.segments userInfo:nil];
 }
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+        [self.mediaPlayerController reset];
+    }
+}
+
+#pragma mark UI
 
 - (void)updateAppearanceWithTime:(CMTime)time
 {
@@ -86,25 +106,7 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self.mediaPlayerController playURL:self.contentURL atTime:kCMTimeZero withSegments:self.segments userInfo:nil];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-        [self.mediaPlayerController reset];
-    }
-}
-
-#pragma ark SRGTimeSliderDelegate protocol
+#pragma mark SRGTimeSliderDelegate protocol
 
 - (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(CGFloat)value interactive:(BOOL)interactive
 {
@@ -143,6 +145,22 @@
     [self updateAppearanceWithTime:self.timelineSlider.time];
 }
 
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    return [[ModalTransition alloc] initForPresentation:YES];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    return [[ModalTransition alloc] initForPresentation:NO];
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
+{
+    // Return the installed interactive transition, if any
+    return self.interactiveTransition;
+}
+
 #pragma mark Actions
 
 - (IBAction)dismiss:(id)sender
@@ -153,6 +171,58 @@
 - (IBAction)toggleExternalPlayback:(id)sender
 {
     self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive = self.externalPlaybackSwitch.on;
+}
+
+#pragma mark Gesture recognizers
+
+- (IBAction)pullDown:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    CGFloat progress = [panGestureRecognizer translationInView:self.view].y / CGRectGetHeight(self.view.frame);
+    CGFloat velocity = [panGestureRecognizer velocityInView:self.view].y;
+    
+    switch (panGestureRecognizer.state) {
+        case UIGestureRecognizerStateBegan: {
+            // Avoid duplicate dismissal (which can make it impossible to dismiss the view controller altogether)
+            if (self.interactiveTransition) {
+                return;
+            }
+            
+            // Install the interactive transition animation before triggering it
+            self.interactiveTransition = [[ModalTransition alloc] initForPresentation:NO];
+            [self dismissViewControllerAnimated:YES completion:^{
+                // Only stop tracking the interactive transition at the very end. The completion block is called
+                // whether the transition ended or was cancelled
+                self.interactiveTransition = nil;
+            }];
+            break;
+        }
+            
+        case UIGestureRecognizerStateChanged: {
+            [self.interactiveTransition updateInteractiveTransitionWithProgress:progress];
+            break;
+        }
+            
+        case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStateCancelled: {
+            [self.interactiveTransition cancelInteractiveTransitionWithVelocity:velocity];
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded: {
+            // Finish the transition if the view was dragged by 20% and the user is dragging downwards
+            if (progress > 0.2f && velocity >= 0.f) {
+                [self.interactiveTransition finishInteractiveTransitionWithVelocity:velocity];
+            }
+            else {
+                [self.interactiveTransition cancelInteractiveTransitionWithVelocity:velocity];
+            }
+            break;
+        }
+            
+        default: {
+            break;
+        }
+    }
 }
 
 #pragma mark Notifications

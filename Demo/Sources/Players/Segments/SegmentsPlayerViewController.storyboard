@@ -204,6 +204,9 @@
                             <constraint firstItem="VeV-H6-y34" firstAttribute="leading" secondItem="Alr-OS-1mK" secondAttribute="leading" constant="11" id="ys4-SR-9ij"/>
                             <constraint firstItem="VeV-H6-y34" firstAttribute="top" secondItem="UPa-4f-g1G" secondAttribute="bottom" constant="23" id="zoE-h5-rZB"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="ZsL-oZ-UDX" appends="YES" id="ChG-Fp-lwl"/>
+                        </connections>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
@@ -221,6 +224,11 @@
                         <outlet property="view" destination="Fdx-yQ-RWj" id="7A1-Tw-SZV"/>
                     </connections>
                 </customObject>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="ZsL-oZ-UDX">
+                    <connections>
+                        <action selector="pullDown:" destination="bsm-y7-rxx" id="6U7-yj-wKm"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-2243" y="3974"/>
         </scene>
