@@ -85,6 +85,17 @@
     [self.mediaPlayerController playURL:self.contentURL atTime:kCMTimeZero withSegments:self.segments userInfo:nil];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
+        [self.mediaPlayerController reset];
+    }
+}
+
+#pragma mark UI
+
 - (void)updateAppearanceWithTime:(CMTime)time
 {
     if (self.selectedSegment) {
@@ -96,16 +107,7 @@
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-
-    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-        [self.mediaPlayerController reset];
-    }
-}
-
-#pragma ark SRGTimeSliderDelegate protocol
+#pragma mark SRGTimeSliderDelegate protocol
 
 - (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(CGFloat)value interactive:(BOOL)interactive
 {
