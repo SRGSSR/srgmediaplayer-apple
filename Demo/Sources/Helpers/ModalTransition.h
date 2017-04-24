@@ -24,14 +24,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateInteractiveTransitionWithProgress:(CGFloat)progress;
 
 /**
- *  Finish the interactive transition with the specified initial animation velocity
+ *  Finish the interactive transition
  */
-- (void)finishInteractiveTransitionWithVelocity:(CGFloat)velocity;
+- (void)finishInteractiveTransition;
 
 /**
- *  Cancel the interactive transition with the specified initial animation velocity
+ *  Cancel the interactive transition
  */
-- (void)cancelInteractiveTransitionWithVelocity:(CGFloat)velocity;
+- (void)cancelInteractiveTransition;
 
 @end
 

@@ -113,7 +113,7 @@
     [self updateTransition:self.transitionContext withProgress:progress];
 }
 
-- (void)cancelInteractiveTransitionWithVelocity:(CGFloat)velocity
+- (void)cancelInteractiveTransition
 {
     if (! self.transitionContext) {
         return;
@@ -129,7 +129,7 @@
     }];
 }
 
-- (void)finishInteractiveTransitionWithVelocity:(CGFloat)velocity
+- (void)finishInteractiveTransition
 {
     if (! self.transitionContext) {
         return;
