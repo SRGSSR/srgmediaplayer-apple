@@ -22,6 +22,7 @@ static void commonInit(SRGAirplayButton *self);
 
 @property (nonatomic, weak) MPVolumeView *volumeView;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
+@property (nonatomic, weak) id periodicTimeObserver;
 
 @end
 
@@ -60,6 +61,7 @@ static void commonInit(SRGAirplayButton *self);
 {
     if (_mediaPlayerController) {
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
+        [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
         
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:MPVolumeViewWirelessRouteActiveDidChangeNotification
@@ -81,6 +83,11 @@ static void commonInit(SRGAirplayButton *self);
     if (mediaPlayerController) {
         @weakify(self)
         [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updateAppearance];
+        }];
+        
+        self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
             @strongify(self)
             [self updateAppearance];
         }];
@@ -174,8 +181,8 @@ static void commonInit(SRGAirplayButton *self);
         self.hidden = YES;
     }
     else if (mediaPlayerController) {
-        // True Airplay active. Use Airplay availability status
-        if (mediaPlayerController.allowsExternalNonMirroredPlayback && self.volumeView.areWirelessRoutesAvailable) {
+        if (mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeAudio
+                || (mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeVideo && mediaPlayerController.allowsExternalNonMirroredPlayback && self.volumeView.areWirelessRoutesAvailable)) {
             airplayButton.tintColor = [AVAudioSession srg_isAirplayActive] ? self.activeTintColor : self.tintColor;
             self.hidden = NO;
         }
