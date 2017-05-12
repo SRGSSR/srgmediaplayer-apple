@@ -24,13 +24,13 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>DRS 1 DVR mp3</string>
+			<string>SRF 1 DVR mp3</string>
 			<key>url</key>
 			<string>http://lsaplus.swisstxt.ch/audio/drs1_96.stream/playlist.m3u8</string>
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>DRS 2 Livestream mp3</string>
+			<string>SRF 2 Livestream mp3</string>
 			<key>url</key>
 			<string>http://streaming.swisstxt.ch/m/drs2/mp3_128</string>
 		</dict>
