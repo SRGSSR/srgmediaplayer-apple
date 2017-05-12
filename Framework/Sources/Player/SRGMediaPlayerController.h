@@ -535,7 +535,7 @@ withToleranceBefore:(CMTime)toleranceBefore
  *  Remark: Even if `allowsExternalPlayback` is set to `NO`, sound will still play on an external device if selected, only
  *          the visual tracks of a media won't be played. This is normal expected Airplay behavior, and this is also how
  *          audio-only medias must be played with Airplay (so that the screen displays media information notifications, 
- *          that the user can control the audio volume from its device, and that the screen does not turn to black).
+ *          that the user can control the audio volume from her device, and that the screen does not turn to black).
  *
  *          As a corollary, if you change the `allowsExternalPlayback` from `YES` to `NO` while playing with Airplay, the
  *          visual tracks will be restored on the device, while the sound will continue over Airplay. Though weird, this 
@@ -545,8 +545,8 @@ withToleranceBefore:(CMTime)toleranceBefore
 @interface SRGMediaPlayerController (Airplay)
 
 /**
- *  Return `YES` iff the player supports external non-mirrored playback (i.e. moving playback only to the external
- *  display).
+ *  Return `YES` iff the player supports external non-mirrored playback (i.e. moving playback to the external display,
+ *  not mirroring the whole device when a video is played).
  */
 @property (nonatomic, readonly) BOOL allowsExternalNonMirroredPlayback;
 
