@@ -86,7 +86,9 @@ static void commonInit(SRGAirplayButton *self);
             @strongify(self)
             [self updateAppearance];
         }];
+        
         self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+            @strongify(self)
             [self updateAppearance];
         }];
         
