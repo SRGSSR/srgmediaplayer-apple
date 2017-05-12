@@ -16,7 +16,7 @@
 {
     if (self = [super init]) {
         self.playerConfigurationBlock = ^(AVPlayer *player) {
-            player.allowsExternalPlayback = YES;
+            player.allowsExternalPlayback = (self.mediaType == SRGMediaPlayerMediaTypeVideo);
             player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
         };
         
