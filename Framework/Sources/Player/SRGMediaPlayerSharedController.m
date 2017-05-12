@@ -24,8 +24,18 @@
         self.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
             pictureInPictureController.delegate = weakSelf;
         };
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(playbackStateDidChange:)
+                                                     name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                   object:self];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark AVPictureInPictureControllerDelegate protocol
@@ -72,6 +82,18 @@
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     if (! [rootViewController.presentedViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
         [self reset];
+    }
+}
+
+#pragma mark Notifications
+
+- (void)playbackStateDidChange:(NSNotification *)notification
+{
+    SRGMediaPlayerPlaybackState previousPlaybackState = [notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue];
+    SRGMediaPlayerPlaybackState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+    
+    if (previousPlaybackState == SRGMediaPlayerPlaybackStatePreparing && playbackState == SRGMediaPlayerPlaybackStatePlaying) {
+        [self reloadPlayerConfiguration];
     }
 }
 
