@@ -181,8 +181,9 @@ static void commonInit(SRGAirplayButton *self);
         self.hidden = YES;
     }
     else if (mediaPlayerController) {
-        if (mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeAudio
-                || (mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeVideo && mediaPlayerController.allowsExternalNonMirroredPlayback && self.volumeView.areWirelessRoutesAvailable)) {
+        BOOL allowsAirplayPlayback = mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeAudio
+            || (mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeVideo && mediaPlayerController.allowsExternalNonMirroredPlayback);
+        if (self.volumeView.areWirelessRoutesAvailable && allowsAirplayPlayback) {
             airplayButton.tintColor = [AVAudioSession srg_isAirplayActive] ? self.activeTintColor : self.tintColor;
             self.hidden = NO;
         }
