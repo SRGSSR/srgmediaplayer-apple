@@ -84,7 +84,7 @@ Since the `SRGMediaPlayerDesignables.m` must be copied to your project, you shou
 
 ## Demo project
 
-To test what the library is capable of, try running the associated demo by opening the workspace and building the associated scheme.
+To test what the library is capable of, run the associated demo.
 
 ## Migration from versions 1.x
 

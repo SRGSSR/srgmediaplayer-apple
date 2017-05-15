@@ -214,7 +214,6 @@ static void commonInit(SRGAirplayView *self);
     BOOL wasHidden = self.hidden;
     
     if (mediaPlayerController) {
-        // True Airplay active. Use Airplay availability status
         if (mediaPlayerController.externalNonMirroredPlaybackActive) {
             self.hidden = ! [AVAudioSession srg_isAirplayActive];
         }
