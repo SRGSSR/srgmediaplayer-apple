@@ -7,6 +7,7 @@
 #import "SRGPlaybackButton.h"
 
 #import "SRGMediaPlayerIconTemplate.h"
+#import "NSBundle+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
 
@@ -23,6 +24,8 @@
 @synthesize playImage = _playImage;
 @synthesize pauseImage = _pauseImage;
 @synthesize highlightedTintColor = _highlightedTintColor;
+@synthesize playImageAccessibilityLabel = _playImageAccessibilityLabel;
+@synthesize pauseImageAccessibilityLabel = _pauseImageAccessibilityLabel;
 
 #pragma mark Overrides
 
@@ -116,6 +119,16 @@
     return _highlightedTintColor ?: self.tintColor;
 }
 
+- (NSString *)playImageAccessibilityLabel
+{
+    return _playImageAccessibilityLabel ?: SRGMediaPlayerAccessibityLocalizedString(@"Play", @"Play state of the Play/Pause/Stop button");
+}
+
+- (NSString *)pauseImageAccessibilityLabel
+{
+    return  _pauseImageAccessibilityLabel ?: SRGMediaPlayerAccessibityLocalizedString(@"Pause", @"Pause state of the Play/Pause/Stop button");
+}
+
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
@@ -131,6 +144,7 @@
     
     UIImage *normalImage = nil;
     UIImage *highlightedImage = nil;
+    NSString *accessibilityLabel = nil;
  
     BOOL displaysInterruptionButton = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
                                         || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking
@@ -139,14 +153,17 @@
     if (displaysInterruptionButton) {
         normalImage = self.pauseImage;
         highlightedImage = self.pauseImage;
+        accessibilityLabel = self.pauseImageAccessibilityLabel;
     }
     else {
         normalImage = self.playImage;
         highlightedImage = self.playImage;
+        accessibilityLabel = self.playImageAccessibilityLabel;
     }
     
     [self setImage:normalImage forState:UIControlStateNormal];
     [self setImage:highlightedImage forState:UIControlStateHighlighted];
+    self.accessibilityLabel = accessibilityLabel;
 }
 
 #pragma mark Actions
