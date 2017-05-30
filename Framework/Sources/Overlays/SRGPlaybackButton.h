@@ -39,8 +39,8 @@ IB_DESIGNABLE
 /**
  *  Accessibitly label customization (default labels are used if not set).
  */
-@property (nonatomic, null_resettable) IBInspectable NSString *playImageAccessibilityLabel;
-@property (nonatomic, null_resettable) IBInspectable NSString *pauseImageAccessibilityLabel;
+@property (nonatomic, null_resettable, copy) IBInspectable NSString *playImageAccessibilityLabel;
+@property (nonatomic, null_resettable, copy) IBInspectable NSString *pauseImageAccessibilityLabel;
 
 @end
 

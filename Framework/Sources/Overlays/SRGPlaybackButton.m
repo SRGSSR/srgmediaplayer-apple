@@ -121,12 +121,12 @@
 
 - (NSString *)playImageAccessibilityLabel
 {
-    return _playImageAccessibilityLabel ?: SRGMediaPlayerAccessibityLocalizedString(@"Play", @"Play state of the Play/Pause/Stop button");
+    return _playImageAccessibilityLabel ?: SRGMediaPlayerAccessibityLocalizedString(@"Play", @"Play state of the Play/Pause button");
 }
 
 - (NSString *)pauseImageAccessibilityLabel
 {
-    return  _pauseImageAccessibilityLabel ?: SRGMediaPlayerAccessibityLocalizedString(@"Pause", @"Pause state of the Play/Pause/Stop button");
+    return  _pauseImageAccessibilityLabel ?: SRGMediaPlayerAccessibityLocalizedString(@"Pause", @"Pause state of the Play/Pause button");
 }
 
 - (void)setBounds:(CGRect)bounds
