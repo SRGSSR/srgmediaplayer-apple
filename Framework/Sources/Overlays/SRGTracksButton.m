@@ -241,6 +241,8 @@ static void commonInit(SRGTracksButton *self)
     self.button = button;
     
     self.hidden = YES;
+    
+    self.accessibilityLabel = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Accessibility title of the button to display the pop over view to select audio or subtitles");
 }
 
 static UIImage *SRGTracksButtonImage(void)
