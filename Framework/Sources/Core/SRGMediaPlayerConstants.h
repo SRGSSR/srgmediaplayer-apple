@@ -145,4 +145,30 @@ OBJC_EXTERN NSString * const SRGMediaPlayerNextSegmentKey;                      
 // Information available for `SRGMediaPlayerSegmentDidStartNotification`, `SRGMediaPlayerSegmentDidEndNotification` and `SRGMediaPlayerPlaybackStateDidChangeNotification`.
 OBJC_EXTERN NSString * const SRGMediaPlayerSelectionKey;                                    // Key to an `NSNumber` wrapping a boolean, set to `YES` iff the notification results from a segment selection.
 
+
+/**
+ *  We provide some additional accessibility strings with translations, related to the media player.
+ */
+
+/**
+ *  A translated accessibility label, could be use for a stop button.
+ */
+OBJC_EXTERN NSString * SRGMediaPlaybackButtonStopAccessibilityLabel;
+
+/**
+ *  A translated accessibility label, could be use for a Go to Live button.
+ */
+OBJC_EXTERN NSString * SRGMediaPlaybackButtonGoToLiveAccessibilityLabel;
+
+/**
+ *  A translated accessibility label, could be use for backward button, Use it as a pre-formatted string: "%@ backward", time.
+ */
+OBJC_EXTERN NSString * SRGMediaPlaybackButtonBackwardAccessibilityLabelFormat;
+
+/**
+ *  A translated accessibility label, could be use for forward button. Use it as a pre-formatted string: "%@ forward", time.
+ */
+OBJC_EXTERN NSString * SRGMediaPlaybackButtonForwardAccessibilityLabelFormat;
+
+
 NS_ASSUME_NONNULL_END

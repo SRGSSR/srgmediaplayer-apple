@@ -11,6 +11,11 @@
 
 #import <libextobjc/libextobjc.h>
 
+NSString * SRGMediaPlaybackButtonStopAccessibilityLabel = nil;
+NSString * SRGMediaPlaybackButtonGoToLiveAccessibilityLabel = nil;
+NSString * SRGMediaPlaybackButtonBackwardAccessibilityLabelFormat = nil;
+NSString * SRGMediaPlaybackButtonForwardAccessibilityLabelFormat = nil;
+
 @interface SRGPlaybackButton ()
 
 @property (nonatomic) UIColor *normalTintColor;
@@ -28,6 +33,14 @@
 @synthesize pauseImageAccessibilityLabel = _pauseImageAccessibilityLabel;
 
 #pragma mark Overrides
+
+- (void)initialize
+{
+    SRGMediaPlaybackButtonStopAccessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Stop", @"A stop button");
+    SRGMediaPlaybackButtonGoToLiveAccessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Go to live", @"A go to live button");
+    SRGMediaPlaybackButtonBackwardAccessibilityLabelFormat = SRGMediaPlayerAccessibityLocalizedString(@"%@ backward", @"A seek backward button with a custom time range");
+    SRGMediaPlaybackButtonForwardAccessibilityLabelFormat = SRGMediaPlayerAccessibityLocalizedString(@"%@ forward", @"A seek forward button with a custom time range");
+}
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
