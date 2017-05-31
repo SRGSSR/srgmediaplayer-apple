@@ -522,7 +522,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     
     if (! [UIScreen srg_isMirroring]) {
-        return YES;
+        return player.externalPlaybackActive;
     }
     
     // If the player switches to external playback, then it does not mirror the display
