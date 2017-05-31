@@ -1,5 +1,50 @@
-//
-//  Copyright (c) SRG SSR. All rights reserved.
-//
-//  License information is available from the LICENSE file.
-//
+/* Slider state when playing AOD/VOD, in percentage */
+"%.0f%% played" = "%.0f%% played";
+
+/* A seek backward button with a custom time range */
+"%@ backward" = "%@ backward";
+
+/* A seek forward button with a custom time range */
+"%@ forward" = "%@ forward";
+
+/* Slider state when playing DVR */
+"%@ late to direct" = "%@ late to direct";
+
+/* Label on slider for time played */
+"%@ played" = "%@ played";
+
+/* Label on slider for time remaining */
+"%@ remaining" = "%@ remaining";
+
+/* AirPlay button */
+"AirPlay" = "AirPlay";
+
+/* A go to live button */
+"Go to live" = "Go to live";
+
+/* Time state if infinity duration */
+"Infinity duration" = "Infinity duration";
+
+/* Time state if no duration */
+"No duration" = "No duration";
+
+/* Slider state when nothing to play */
+"Nothing playing" = "Nothing playing";
+
+/* Pause state of the Play/Pause button */
+"Pause" = "Pause";
+
+/* Play state of the Play/Pause button */
+"Play" = "Play";
+
+/* Slider state when playing live */
+"Playing in live" = "Playing in live";
+
+/* A stop button */
+"Stop" = "Stop";
+
+/* Picture In Picture button state, when PiP is active */
+"Stop Picture in Picture" = "Stop Picture in Picture";
+
+/* Picture In Picture button state, when PiP is available */
+"Switch to Picture in Picture" = "Switch to Picture in Picture";
