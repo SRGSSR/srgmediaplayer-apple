@@ -8,6 +8,7 @@
 
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGAlternateTracksViewController.h"
+#import "UIWindow+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
@@ -199,10 +200,10 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     navigationController.popoverPresentationController.sourceView = self;
     navigationController.popoverPresentationController.sourceRect = self.bounds;
     
-    UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?: [UIApplication sharedApplication].delegate.window.rootViewController;
-    [presentedViewController presentViewController:navigationController
-                                          animated:YES
-                                        completion:nil];
+    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.srg_topViewController;
+    [topViewController presentViewController:navigationController
+                                    animated:YES
+                                  completion:nil];
 }
 
 #pragma mark Interface Builder integration

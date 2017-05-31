@@ -22,6 +22,8 @@
 		6F0D051C1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0D051A1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m */; };
 		6F0D051F1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0D051D1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F0D05201DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0D051E1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.m */; };
+		6F0F2A411EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0F2A3F1EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.h */; };
+		6F0F2A421EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0F2A401EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.m */; };
 		6F1D6D021DAF50050072C107 /* SRGLogger.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6F1D6D031DAF50050072C107 /* libextobjc.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; };
 		6F5D662E1DAF50E3009AD6DD /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
@@ -223,6 +225,8 @@
 		6F0D051A1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVAudioSession+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		6F0D051D1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F0D051E1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+SRGMediaPlayer.m"; sourceTree = "<group>"; };
+		6F0F2A3F1EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGMediaPlayer.h"; sourceTree = "<group>"; };
+		6F0F2A401EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		6F5D66431DAFCDF1009AD6DD /* SRGAirplayButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAirplayButton.h; sourceTree = "<group>"; };
 		6F5D66441DAFCDF1009AD6DD /* SRGAirplayButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAirplayButton.m; sourceTree = "<group>"; };
 		6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayerView+Private.h"; sourceTree = "<group>"; };
@@ -655,6 +659,8 @@
 				E6FC7F451D62072400A55085 /* UIBezierPath+SRGMediaPlayer.m */,
 				6F0D051D1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.h */,
 				6F0D051E1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.m */,
+				6F0F2A3F1EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.h */,
+				6F0F2A401EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -732,6 +738,7 @@
 				E6FC7F8D1D62072400A55085 /* SRGMediaPlayerController.h in Headers */,
 				E69A1E621D61BAFD0064E6C1 /* SRGMediaPlayer.h in Headers */,
 				6FEB516C1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h in Headers */,
+				6F0F2A411EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.h in Headers */,
 				E6FC7F6B1D62072400A55085 /* SRGActivityGestureRecognizer.h in Headers */,
 				E6C986181D70182300C45C7A /* SRGPictureInPictureButton.h in Headers */,
 				E6FC7F951D62072400A55085 /* SRGSegment.h in Headers */,
@@ -935,6 +942,7 @@
 				6F5D66461DAFCDF1009AD6DD /* SRGAirplayButton.m in Sources */,
 				E6C986191D70182300C45C7A /* SRGPictureInPictureButton.m in Sources */,
 				E6FC7F781D62072400A55085 /* NSBundle+SRGMediaPlayer.m in Sources */,
+				6F0F2A421EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.m in Sources */,
 				E6FC7F741D62072400A55085 /* SRGMediaPlayerView.m in Sources */,
 				08D3BEB11DE6EAB100AE1368 /* SRGTracksButton.m in Sources */,
 				6F0D051C1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m in Sources */,
