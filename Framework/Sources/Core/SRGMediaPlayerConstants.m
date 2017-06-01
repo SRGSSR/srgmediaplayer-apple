@@ -6,6 +6,8 @@
 
 #import "SRGMediaPlayerConstants.h"
 
+#import "NSBundle+SRGMediaPlayer.h"
+
 NSTimeInterval const SRGMediaPlayerLiveDefaultTolerance = 30.;                // Same tolerance as the built-in iOS player
 
 NSString * const SRGMediaPlayerPlaybackStateDidChangeNotification = @"SRGMediaPlayerPlaybackStateDidChangeNotification";
@@ -33,3 +35,16 @@ NSString * const SRGMediaPlayerSelectedKey = @"SRGMediaPlayerSelectedKey";
 NSString * const SRGMediaPlayerPreviousSegmentKey = @"SRGMediaPlayerPreviousSegmentKey";
 NSString * const SRGMediaPlayerNextSegmentKey = @"SRGMediaPlayerNextSegmentKey";
 NSString * const SRGMediaPlayerSelectionKey = @"SRGMediaPlayerSelectionKey";
+
+NSString * SRGMediaPlaybackButtonStopAccessibilityLabel = nil;
+NSString * SRGMediaPlaybackButtonGoToLiveAccessibilityLabel = nil;
+NSString * SRGMediaPlaybackButtonBackwardAccessibilityLabelFormat = nil;
+NSString * SRGMediaPlaybackButtonForwardAccessibilityLabelFormat = nil;
+
+__attribute__((constructor)) static void SRGMediaPlayerConstantsInit(void)
+{
+    SRGMediaPlaybackButtonStopAccessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Stop", @"A stop button");
+    SRGMediaPlaybackButtonGoToLiveAccessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Go to live", @"A go to live button");
+    SRGMediaPlaybackButtonBackwardAccessibilityLabelFormat = SRGMediaPlayerAccessibilityLocalizedString(@"%@ backward", @"A seek backward button with a custom time range");
+    SRGMediaPlaybackButtonForwardAccessibilityLabelFormat = SRGMediaPlayerAccessibilityLocalizedString(@"%@ forward", @"A seek forward button with a custom time range");
+}
