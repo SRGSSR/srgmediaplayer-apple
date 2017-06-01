@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 #define SRGMediaPlayerLocalizedString(key, comment) [[NSBundle srg_mediaPlayerBundle] localizedStringForKey:(key) value:@"" table:nil]
 
 /**
- *  Return a localized string from the accessibility media player resource bundle.
+ *  Return an accessibility-oriented localized string from the media player resource bundle.
  */
 #define SRGMediaPlayerAccessibilityLocalizedString(key, comment) [[NSBundle srg_mediaPlayerBundle] localizedStringForKey:(key) value:@"" table:@"Accessibility"]
 
