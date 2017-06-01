@@ -36,10 +36,10 @@ NSString * SRGMediaPlaybackButtonForwardAccessibilityLabelFormat = nil;
 
 - (void)initialize
 {
-    SRGMediaPlaybackButtonStopAccessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Stop", @"A stop button");
-    SRGMediaPlaybackButtonGoToLiveAccessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Go to live", @"A go to live button");
-    SRGMediaPlaybackButtonBackwardAccessibilityLabelFormat = SRGMediaPlayerAccessibityLocalizedString(@"%@ backward", @"A seek backward button with a custom time range");
-    SRGMediaPlaybackButtonForwardAccessibilityLabelFormat = SRGMediaPlayerAccessibityLocalizedString(@"%@ forward", @"A seek forward button with a custom time range");
+    SRGMediaPlaybackButtonStopAccessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Stop", @"A stop button");
+    SRGMediaPlaybackButtonGoToLiveAccessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Go to live", @"A go to live button");
+    SRGMediaPlaybackButtonBackwardAccessibilityLabelFormat = SRGMediaPlayerAccessibilityLocalizedString(@"%@ backward", @"A seek backward button with a custom time range");
+    SRGMediaPlaybackButtonForwardAccessibilityLabelFormat = SRGMediaPlayerAccessibilityLocalizedString(@"%@ forward", @"A seek forward button with a custom time range");
 }
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
@@ -134,12 +134,12 @@ NSString * SRGMediaPlaybackButtonForwardAccessibilityLabelFormat = nil;
 
 - (NSString *)playImageAccessibilityLabel
 {
-    return _playImageAccessibilityLabel ?: SRGMediaPlayerAccessibityLocalizedString(@"Play", @"Play state of the Play/Pause button");
+    return _playImageAccessibilityLabel ?: SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play state of the Play/Pause button");
 }
 
 - (NSString *)pauseImageAccessibilityLabel
 {
-    return  _pauseImageAccessibilityLabel ?: SRGMediaPlayerAccessibityLocalizedString(@"Pause", @"Pause state of the Play/Pause button");
+    return  _pauseImageAccessibilityLabel ?: SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause state of the Play/Pause button");
 }
 
 - (void)setBounds:(CGRect)bounds

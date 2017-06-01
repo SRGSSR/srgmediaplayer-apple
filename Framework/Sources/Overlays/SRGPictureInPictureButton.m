@@ -148,10 +148,10 @@ static void commonInit(SRGPictureInPictureButton *self);
     }
     
     if (pictureInPictureController.pictureInPictureActive) {
-        self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Stop Picture in Picture", @"Picture In Picture button state, when PiP is active");
+        self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Stop Picture in Picture", @"Picture In Picture button state, when PiP is active");
     }
     else {
-        self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Switch to Picture in Picture", @"Picture In Picture button state, when PiP is available");
+        self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Switch to Picture in Picture", @"Picture In Picture button state, when PiP is available");
     }
 }
 
@@ -219,7 +219,7 @@ static void commonInit(SRGPictureInPictureButton *self)
     
     self.hidden = YES;
     
-    self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Switch to Picture in Picture", @"Picture In Picture button state, when PiP is available");
+    self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Switch to Picture in Picture", @"Picture In Picture button state, when PiP is available");
 }
 
 static UIImage *SRGPictureInPictureButtonStartImage(void)

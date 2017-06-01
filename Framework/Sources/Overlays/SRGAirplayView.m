@@ -298,7 +298,7 @@ static void commonInit(SRGAirplayView *self)
     self.userInteractionEnabled = NO;
     self.hidden = YES;
     self.volumeView = [[MPVolumeView alloc] init];
-    self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"AirPlay", @"AirPlay button");
+    self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"AirPlay", @"AirPlay button");
 }
 
 NSString * SRGAirplayRouteDescription(void)

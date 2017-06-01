@@ -43,9 +43,9 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     if (isnan(seconds))
-        return SRGMediaPlayerAccessibityLocalizedString(@"No duration", @"Time state if no duration");
+        return SRGMediaPlayerAccessibilityLocalizedString(@"No duration", @"Time state if no duration");
     else if (isinf(seconds))
-        return SRGMediaPlayerAccessibityLocalizedString(@"Infinity duration", @"Time state if infinity duration");
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Infinity duration", @"Time state if infinity duration");
     
     static dispatch_once_t onceToken;
     static NSDateComponentsFormatter *dateComponentsFormatter;
@@ -279,9 +279,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
     else {
         self.valueString = SRGTimeSliderFormatter(self.value);
-        self.valueString.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%@ played", @"Label on slider for time played"), SRGTimeSliderAccessibilityFormatter(self.value)];
+        self.valueString.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time played"), SRGTimeSliderAccessibilityFormatter(self.value)];
         self.timeLeftValueString = SRGTimeSliderFormatter(self.value - self.maximumValue);
-        self.timeLeftValueString.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
+        self.timeLeftValueString.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
     }
     
     self.valueLabel.text = self.valueString;
@@ -295,19 +295,19 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
     if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
         || playerItem.status != AVPlayerItemStatusReadyToPlay) {
-        self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Nothing playing", @"Slider state when nothing to play");;
+        self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Nothing playing", @"Slider state when nothing to play");;
     }
     else if (self.live)
     {
-        self.accessibilityLabel = SRGMediaPlayerAccessibityLocalizedString(@"Playing in live", @"Slider state when playing live");
+        self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Playing in live", @"Slider state when playing live");
     }
     else if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
-        self.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%@ late to direct", @"Slider state when playing DVR"),
+        self.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ late to direct", @"Slider state when playing DVR"),
                 SRGTimeSliderAccessibilityFormatter(self.maximumValue - self.value)];
     }
     else {
         CGFloat ratio = self.value / self.maximumValue;
-        self.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibityLocalizedString(@"%.0f%% played", @"Slider state when playing AOD/VOD, in percentage"), round(ratio * 100)];
+        self.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%.0f%% played", @"Slider state when playing AOD/VOD, in percentage"), round(ratio * 100)];
     }
 }
 
