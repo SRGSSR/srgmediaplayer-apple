@@ -257,6 +257,7 @@ static void commonInit(SRGAirplayButton *self)
     [self addSubview:volumeView];
     self.volumeView = volumeView;
     self.accessibilityLabel = SRGMediaPlayerNonLocalizedString(@"AirPlay");
+    self.accessibilityLanguage = @"en-US";
     
     self.hidden = YES;
 }
