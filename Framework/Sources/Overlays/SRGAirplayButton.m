@@ -256,6 +256,7 @@ static void commonInit(SRGAirplayButton *self)
     volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:volumeView];
     self.volumeView = volumeView;
+    self.accessibilityLabel = SRGMediaPlayerNonLocalizedString(@"AirPlay");
     
     self.hidden = YES;
 }
