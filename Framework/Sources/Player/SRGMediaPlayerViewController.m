@@ -139,6 +139,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.airplayView.mediaPlayerController = s_mediaPlayerController;
     
     [self.liveButton setTitle:SRGMediaPlayerLocalizedString(@"Back to live", @"Button title to go back to live") forState:UIControlStateNormal];
+    self.liveButton.accessibilityLabel = SRGMediaPlaybackButtonGoToLiveAccessibilityLabel;
     self.liveButton.hidden = YES;
     
     self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
