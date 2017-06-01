@@ -47,15 +47,15 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     else if (isinf(seconds))
         return SRGMediaPlayerAccessibilityLocalizedString(@"Infinity duration", @"Time state if infinity duration");
     
-    static dispatch_once_t onceToken;
-    static NSDateComponentsFormatter *dateComponentsFormatter;
-    dispatch_once(&onceToken, ^{
-        dateComponentsFormatter = [[NSDateComponentsFormatter alloc] init];
-        dateComponentsFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
-        dateComponentsFormatter.allowedUnits = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    static NSDateComponentsFormatter *s_dateComponentsFormatter;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        s_dateComponentsFormatter = [[NSDateComponentsFormatter alloc] init];
+        s_dateComponentsFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
+        s_dateComponentsFormatter.allowedUnits = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
     });
     
-    return [dateComponentsFormatter stringFromTimeInterval:ABS(seconds)];
+    return [s_dateComponentsFormatter stringFromTimeInterval:ABS(seconds)];
 }
 
 @interface SRGTimeSlider ()
