@@ -42,10 +42,9 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 // Create a readable time to accessibitly label
 static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
-    if (isnan(seconds))
-        return SRGMediaPlayerAccessibilityLocalizedString(@"No duration", @"Time state if no duration");
-    else if (isinf(seconds))
-        return SRGMediaPlayerAccessibilityLocalizedString(@"Infinity duration", @"Time state if infinity duration");
+    if (isnan(seconds) || isinf(seconds)) {
+       return nil;
+    }
     
     static NSDateComponentsFormatter *s_dateComponentsFormatter;
     static dispatch_once_t s_onceToken;
