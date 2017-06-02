@@ -174,4 +174,17 @@
                              completion:nil];
 }
 
+#pragma mark Accessibility
+
+- (BOOL)accessibilityPerformEscape
+{
+    if (self.presentingViewController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return YES;
+    }
+    else {
+        return NO;
+    }
+}
+
 @end
