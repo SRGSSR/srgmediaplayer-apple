@@ -221,8 +221,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         self.userInteractionEnabled = NO;
     }
     
-    [self updateAccessibilityLabel];
-    
     [self.delegate timeSlider:self
        isMovingToPlaybackTime:time
                     withValue:self.value
@@ -289,27 +287,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     self.timeLeftValueLabel.accessibilityLabel = self.timeLeftValueString.accessibilityLabel;
 }
 
-- (void)updateAccessibilityLabel
-{
-    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
-        || playerItem.status != AVPlayerItemStatusReadyToPlay) {
-        self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Nothing playing", @"Slider state when nothing to play");;
-    }
-    else if (self.live)
-    {
-        self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Playing in live", @"Slider state when playing live");
-    }
-    else if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
-        self.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ late to direct", @"Slider state when playing DVR"),
-                SRGTimeSliderAccessibilityFormatter(self.maximumValue - self.value)];
-    }
-    else {
-        CGFloat ratio = self.value / self.maximumValue;
-        self.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%.0f%% played", @"Slider state when playing AOD/VOD, in percentage"), round(ratio * 100)];
-    }
-}
-
 #pragma mark Touch handling
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
@@ -328,7 +305,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     
     if (continueTracking && [self isDraggable]) {
         [self updateTimeRangeLabels];
-        [self updateAccessibilityLabel];
         [self setNeedsDisplay];
     }
     
@@ -477,8 +453,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         self.value = value;
         self.maximumValue = value;
         
-        [self updateAccessibilityLabel];
-        
         [self.delegate timeSlider:self isMovingToPlaybackTime:self.time withValue:self.value interactive:NO];
         
         [self setNeedsDisplay];
@@ -491,6 +465,33 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     // Do not wait for playback to resume to update display, update to the target location of seeks
     CMTime time = [notification.userInfo[SRGMediaPlayerSeekTimeKey] CMTimeValue];
     [self updateDisplayWithTime:time];
+}
+
+#pragma mark Accessibility
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+    if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
+        || playerItem.status != AVPlayerItemStatusReadyToPlay) {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Nothing playing", @"Slider state when nothing to play");;
+    }
+    else if (self.live)
+    {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Playing in live", @"Slider state when playing live");
+    }
+    else if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ late to direct", @"Slider state when playing DVR"),
+                SRGTimeSliderAccessibilityFormatter(self.maximumValue - self.value)];
+    }
+    else {
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time played"), SRGTimeSliderAccessibilityFormatter(self.value)];
+    }
 }
 
 #pragma mark Interface Builder integration
