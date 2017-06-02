@@ -494,6 +494,16 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
 }
 
+- (NSString *)accessibilityValue
+{
+    if (self.live) {
+        return nil;
+    }
+    else {
+        return [super accessibilityValue];
+    }
+}
+
 #pragma mark Interface Builder integration
 
 - (void)prepareForInterfaceBuilder
