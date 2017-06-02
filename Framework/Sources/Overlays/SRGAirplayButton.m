@@ -234,6 +234,28 @@ static void commonInit(SRGAirplayButton *self);
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
 }
 
+#pragma mark Accessibility
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    return SRGMediaPlayerNonLocalizedString(@"AirPlay");
+}
+
+- (UIAccessibilityTraits)accessibilityTraits
+{
+    return UIAccessibilityTraitButton;
+}
+
+- (NSArray *)accessibilityElements
+{
+    return @[];
+}
+
 @end
 
 #pragma mark Functions
@@ -256,7 +278,6 @@ static void commonInit(SRGAirplayButton *self)
     volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:volumeView];
     self.volumeView = volumeView;
-    self.accessibilityLabel = SRGMediaPlayerNonLocalizedString(@"AirPlay");
     
     self.hidden = YES;
 }

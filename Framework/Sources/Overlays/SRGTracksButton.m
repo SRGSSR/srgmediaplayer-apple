@@ -227,6 +227,28 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
     self.button.hidden = YES;
 }
 
+#pragma mark Accessibility
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    return SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Accessibility title of the button to display the pop over view to select audio or subtitles");
+}
+
+- (UIAccessibilityTraits)accessibilityTraits
+{
+    return UIAccessibilityTraitButton;
+}
+
+- (NSArray *)accessibilityElements
+{
+    return @[];
+}
+
 @end
 
 #pragma mark Functions
@@ -241,8 +263,6 @@ static void commonInit(SRGTracksButton *self)
     self.button = button;
     
     self.hidden = YES;
-    
-    self.accessibilityLabel = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Accessibility title of the button to display the pop over view to select audio or subtitles");
 }
 
 static UIImage *SRGTracksButtonImage(void)

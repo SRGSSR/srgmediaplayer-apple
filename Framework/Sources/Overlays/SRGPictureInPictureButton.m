@@ -146,13 +146,6 @@ static void commonInit(SRGPictureInPictureButton *self);
     else {
         self.hidden = YES;
     }
-    
-    if (pictureInPictureController.pictureInPictureActive) {
-        self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Stop Picture in Picture", @"Picture In Picture button state, when PiP is active");
-    }
-    else {
-        self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Switch to Picture in Picture", @"Picture In Picture button state, when PiP is available");
-    }
 }
 
 #pragma mark Actions
@@ -204,6 +197,35 @@ static void commonInit(SRGPictureInPictureButton *self);
     self.button.hidden = YES;
 }
 
+#pragma mark Accessibility
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    AVPictureInPictureController *pictureInPictureController = self.mediaPlayerController.pictureInPictureController;
+
+    if (pictureInPictureController.pictureInPictureActive) {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Stop Picture in Picture", @"Picture In Picture button state, when PiP is active");
+    }
+    else {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Start Picture in Picture", @"Picture In Picture button state, when PiP is available");
+    }
+}
+
+- (UIAccessibilityTraits)accessibilityTraits
+{
+    return UIAccessibilityTraitButton;
+}
+
+- (NSArray *)accessibilityElements
+{
+    return @[];
+}
+
 @end
 
 #pragma mark Functions
@@ -218,8 +240,6 @@ static void commonInit(SRGPictureInPictureButton *self)
     self.button = button;
     
     self.hidden = YES;
-    
-    self.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Switch to Picture in Picture", @"Picture In Picture button state, when PiP is available");
 }
 
 static UIImage *SRGPictureInPictureButtonStartImage(void)
