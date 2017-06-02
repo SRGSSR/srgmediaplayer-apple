@@ -26,6 +26,11 @@ IB_DESIGNABLE
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
+*  The image state. YES if pause image, NO if play image.
+*/
+@property (nonatomic, getter=isPauseImageDisplayed, readonly) BOOL pauseImageDisplayed;
+
+/**
  *  Image customization (default scalable images are used if not set).
  */
 @property (nonatomic, null_resettable) IBInspectable UIImage *playImage;

@@ -13,6 +13,8 @@
 
 @interface SRGPlaybackButton ()
 
+@property (nonatomic, getter=isPauseImageDisplayed) BOOL pauseImageDisplayed;
+
 @property (nonatomic) UIColor *normalTintColor;
 
 @property (weak) id periodicTimeObserver;
@@ -114,6 +116,30 @@
     [self refreshButton];
 }
 
+- (void)setPauseImageDisplayed:(BOOL)pauseImageDisplayed
+{
+    _pauseImageDisplayed = pauseImageDisplayed;
+    
+    UIImage *normalImage = nil;
+    UIImage *highlightedImage = nil;
+    NSString *accessibilityLabel = nil;
+    
+    if (pauseImageDisplayed) {
+        normalImage = self.pauseImage;
+        highlightedImage = self.pauseImage;
+        accessibilityLabel = self.pauseImageAccessibilityLabel;
+    }
+    else {
+        normalImage = self.playImage;
+        highlightedImage = self.playImage;
+        accessibilityLabel = self.playImageAccessibilityLabel;
+    }
+    
+    [self setImage:normalImage forState:UIControlStateNormal];
+    [self setImage:highlightedImage forState:UIControlStateHighlighted];
+    self.accessibilityLabel = accessibilityLabel;
+}
+
 - (UIColor *)highlightedTintColor
 {
     return _highlightedTintColor ?: self.tintColor;
@@ -154,28 +180,9 @@
     [self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIImage *normalImage = nil;
-    UIImage *highlightedImage = nil;
-    NSString *accessibilityLabel = nil;
- 
-    BOOL displaysInterruptionButton = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
-                                        || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking
-                                        || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled);
-    
-    if (displaysInterruptionButton) {
-        normalImage = self.pauseImage;
-        highlightedImage = self.pauseImage;
-        accessibilityLabel = self.pauseImageAccessibilityLabel;
-    }
-    else {
-        normalImage = self.playImage;
-        highlightedImage = self.playImage;
-        accessibilityLabel = self.playImageAccessibilityLabel;
-    }
-    
-    [self setImage:normalImage forState:UIControlStateNormal];
-    [self setImage:highlightedImage forState:UIControlStateHighlighted];
-    self.accessibilityLabel = accessibilityLabel;
+    self.pauseImageDisplayed = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
+                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking
+                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled);
 }
 
 #pragma mark Actions
@@ -199,6 +206,18 @@
     [super prepareForInterfaceBuilder];
     
     [self setImage:self.playImage forState:UIControlStateNormal];
+}
+
+#pragma mark Accessibility
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    return (self.pauseImageDisplayed) ? self.pauseImageAccessibilityLabel : self.playImageAccessibilityLabel;
 }
 
 @end
