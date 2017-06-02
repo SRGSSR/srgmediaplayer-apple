@@ -122,22 +122,18 @@
     
     UIImage *normalImage = nil;
     UIImage *highlightedImage = nil;
-    NSString *accessibilityLabel = nil;
     
     if (pauseImageDisplayed) {
         normalImage = self.pauseImage;
         highlightedImage = self.pauseImage;
-        accessibilityLabel = self.pauseImageAccessibilityLabel;
     }
     else {
         normalImage = self.playImage;
         highlightedImage = self.playImage;
-        accessibilityLabel = self.playImageAccessibilityLabel;
     }
     
     [self setImage:normalImage forState:UIControlStateNormal];
     [self setImage:highlightedImage forState:UIControlStateHighlighted];
-    self.accessibilityLabel = accessibilityLabel;
 }
 
 - (UIColor *)highlightedTintColor
@@ -150,21 +146,9 @@
     return _playImageAccessibilityLabel ?: SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play state of the Play/Pause button");
 }
 
-- (void)setPlayImageAccessibilityLabel:(NSString *)playImageAccessibilityLabel
-{
-    _playImageAccessibilityLabel = playImageAccessibilityLabel;
-    [self refreshButton];
-}
-
 - (NSString *)pauseImageAccessibilityLabel
 {
     return  _pauseImageAccessibilityLabel ?: SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause state of the Play/Pause button");
-}
-
-- (void)setPauseImageAccessibilityLabel:(NSString *)pauseImageAccessibilityLabel
-{
-    _pauseImageAccessibilityLabel = pauseImageAccessibilityLabel;
-    [self refreshButton];
 }
 
 - (void)setBounds:(CGRect)bounds
