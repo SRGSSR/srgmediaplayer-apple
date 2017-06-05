@@ -209,10 +209,10 @@ static void commonInit(SRGPictureInPictureButton *self);
     AVPictureInPictureController *pictureInPictureController = self.mediaPlayerController.pictureInPictureController;
 
     if (pictureInPictureController.pictureInPictureActive) {
-        return SRGMediaPlayerAccessibilityLocalizedString(@"Stop Picture in Picture", @"Picture In Picture button state, when PiP is active");
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Stop Picture in Picture", @"Picture In Picture button label, when PiP is active");
     }
     else {
-        return SRGMediaPlayerAccessibilityLocalizedString(@"Start Picture in Picture", @"Picture In Picture button state, when PiP is available");
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Start Picture in Picture", @"Picture In Picture button label, when PiP is available");
     }
 }
 

@@ -118,7 +118,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
                                                object:nil];
     
     self.playerView.isAccessibilityElement = YES;
-    self.playerView.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Media", @"Label of the main area on the player view controller, where the audio / video is displayed");
+    self.playerView.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Media", @"The player view label, where the audio / video is displayed");
 
     
     // Use a wrapper to avoid setting gesture recognizers widely on the shared player instance view
