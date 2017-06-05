@@ -6,8 +6,6 @@
 
 #import "SRGMediaPlayerConstants.h"
 
-#import "NSBundle+SRGMediaPlayer.h"
-
 NSTimeInterval const SRGMediaPlayerLiveDefaultTolerance = 30.;                // Same tolerance as the built-in iOS player
 
 NSString * const SRGMediaPlayerPlaybackStateDidChangeNotification = @"SRGMediaPlayerPlaybackStateDidChangeNotification";
@@ -35,8 +33,3 @@ NSString * const SRGMediaPlayerSelectedKey = @"SRGMediaPlayerSelectedKey";
 NSString * const SRGMediaPlayerPreviousSegmentKey = @"SRGMediaPlayerPreviousSegmentKey";
 NSString * const SRGMediaPlayerNextSegmentKey = @"SRGMediaPlayerNextSegmentKey";
 NSString * const SRGMediaPlayerSelectionKey = @"SRGMediaPlayerSelectionKey";
-
-NSString * SRGMediaPlaybackButtonStopAccessibilityLabel = nil;
-NSString * SRGMediaPlaybackButtonGoToLiveAccessibilityLabel = nil;
-NSString * SRGMediaPlaybackButtonBackwardAccessibilityLabelFormat = nil;
-NSString * SRGMediaPlaybackButtonForwardAccessibilityLabelFormat = nil;
