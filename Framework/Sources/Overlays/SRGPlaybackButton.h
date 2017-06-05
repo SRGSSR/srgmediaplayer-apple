@@ -11,6 +11,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ *  Available image scales.
+ */
+typedef NS_ENUM(NSInteger, SRGPlaybackButtonState) {
+    SRGPlaybackButtonStatePlay,
+    SRGPlaybackButtonStatePause
+};
+
+/**
  *  A play / pause button whose status is automatically synchronized with the media player controller it is attached
  *  to.
  *
@@ -26,9 +34,9 @@ IB_DESIGNABLE
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
-*  The image state. YES if pause image, NO if play image.
+*  The button state
 */
-@property (nonatomic, getter=isPauseImageDisplayed, readonly) BOOL pauseImageDisplayed;
+@property (nonatomic, readonly) SRGPlaybackButtonState playbackButtonState;
 
 /**
  *  Image customization (default scalable images are used if not set).

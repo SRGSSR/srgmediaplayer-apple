@@ -13,7 +13,7 @@
 
 @interface SRGPlaybackButton ()
 
-@property (nonatomic, getter=isPauseImageDisplayed) BOOL pauseImageDisplayed;
+@property (nonatomic) SRGPlaybackButtonState playbackButtonState;
 
 @property (nonatomic) UIColor *normalTintColor;
 
@@ -26,6 +26,7 @@
 @synthesize playImage = _playImage;
 @synthesize pauseImage = _pauseImage;
 @synthesize highlightedTintColor = _highlightedTintColor;
+@synthesize playbackButtonState = _playbackButtonState;
 
 #pragma mark Overrides
 
@@ -114,14 +115,14 @@
     [self refreshButton];
 }
 
-- (void)setPauseImageDisplayed:(BOOL)pauseImageDisplayed
+- (void)setPlaybackButtonState:(SRGPlaybackButtonState)playbackButtonState
 {
-    _pauseImageDisplayed = pauseImageDisplayed;
+    _playbackButtonState = playbackButtonState;
     
     UIImage *normalImage = nil;
     UIImage *highlightedImage = nil;
     
-    if (pauseImageDisplayed) {
+    if (playbackButtonState == SRGPlaybackButtonStatePause) {
         normalImage = self.pauseImage;
         highlightedImage = self.pauseImage;
     }
@@ -152,9 +153,9 @@
     [self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.pauseImageDisplayed = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
+    self.playbackButtonState = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
                                 || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking
-                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled);
+                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled) ? SRGPlaybackButtonStatePause : SRGPlaybackButtonStatePlay;
 }
 
 #pragma mark Actions
@@ -189,7 +190,7 @@
 
 - (NSString *)accessibilityLabel
 {
-    return (self.pauseImageDisplayed) ? SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause label of the Play/Pause button") : SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play label of the Play/Pause button");
+    return (self.playbackButtonState == SRGPlaybackButtonStatePause) ? SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause label of the Play/Pause button") : SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play label of the Play/Pause button");
 }
 
 @end
