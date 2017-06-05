@@ -41,12 +41,6 @@ IB_DESIGNABLE
  */
 @property (nonatomic, null_resettable) IBInspectable UIColor *highlightedTintColor;
 
-/**
- *  Accessibitly label customization (default labels are used if not set).
- */
-@property (nonatomic, null_resettable, copy) IBInspectable NSString *playImageAccessibilityLabel;
-@property (nonatomic, null_resettable, copy) IBInspectable NSString *pauseImageAccessibilityLabel;
-
 @end
 
 NS_ASSUME_NONNULL_END

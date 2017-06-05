@@ -26,8 +26,6 @@
 @synthesize playImage = _playImage;
 @synthesize pauseImage = _pauseImage;
 @synthesize highlightedTintColor = _highlightedTintColor;
-@synthesize playImageAccessibilityLabel = _playImageAccessibilityLabel;
-@synthesize pauseImageAccessibilityLabel = _pauseImageAccessibilityLabel;
 
 #pragma mark Overrides
 
@@ -141,16 +139,6 @@
     return _highlightedTintColor ?: self.tintColor;
 }
 
-- (NSString *)playImageAccessibilityLabel
-{
-    return _playImageAccessibilityLabel ?: SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play state of the Play/Pause button");
-}
-
-- (NSString *)pauseImageAccessibilityLabel
-{
-    return  _pauseImageAccessibilityLabel ?: SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause state of the Play/Pause button");
-}
-
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
@@ -201,7 +189,7 @@
 
 - (NSString *)accessibilityLabel
 {
-    return (self.pauseImageDisplayed) ? self.pauseImageAccessibilityLabel : self.playImageAccessibilityLabel;
+    return (self.pauseImageDisplayed) ? SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause label of the Play/Pause button") : SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play label of the Play/Pause button");
 }
 
 @end
