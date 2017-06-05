@@ -84,10 +84,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)dealloc
 {
-    [self stopWithUserInfo:nil];
+    [self reset];
     
-    // No need to call -reset here, since -stop or -reset must be called for the controller to be deallocated
-    self.pictureInPictureController = nil;              // Unregister everything
+    self.pictureInPictureController = nil;              // Perform associated unregistrations
 }
 
 #pragma mark Getters and setters
