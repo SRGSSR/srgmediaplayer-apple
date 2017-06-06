@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 #define SRGMediaPlayerLocalizedString(key, comment) [[NSBundle srg_mediaPlayerBundle] localizedStringForKey:(key) value:@"" table:nil]
 
 /**
+ *  Return an accessibility-oriented localized string from the media player resource bundle.
+ */
+#define SRGMediaPlayerAccessibilityLocalizedString(key, comment) [[NSBundle srg_mediaPlayerBundle] localizedStringForKey:(key) value:@"" table:@"Accessibility"]
+
+/**
  *  Use to avoid user-facing text analyzer warnings.
  *
  *  See https://clang-analyzer.llvm.org/faq.html.

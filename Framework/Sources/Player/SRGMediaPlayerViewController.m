@@ -112,6 +112,14 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
                                              selector:@selector(srg_mediaPlayerViewController_applicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:)
+                                                 name:UIAccessibilityVoiceOverStatusChanged
+                                               object:nil];
+    
+    self.playerView.isAccessibilityElement = YES;
+    self.playerView.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Media", @"The player view label, where the audio / video is displayed");
+
     
     // Use a wrapper to avoid setting gesture recognizers widely on the shared player instance view
     s_mediaPlayerController.view.frame = self.playerView.bounds;
@@ -139,6 +147,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.airplayView.mediaPlayerController = s_mediaPlayerController;
     
     [self.liveButton setTitle:SRGMediaPlayerLocalizedString(@"Back to live", @"Button title to go back to live") forState:UIControlStateNormal];
+    self.liveButton.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Back to live", @"Back to live label");
     self.liveButton.hidden = YES;
     
     self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -248,11 +257,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)resetInactivityTimer
 {
-    self.inactivityTimer = [NSTimer scheduledTimerWithTimeInterval:5.
-                                                            target:self
-                                                          selector:@selector(updateForInactivity:)
-                                                          userInfo:nil
-                                                           repeats:NO];
+    self.inactivityTimer = (! UIAccessibilityIsVoiceOverRunning()) ? [NSTimer scheduledTimerWithTimeInterval:5.
+                                                                                                      target:self
+                                                                                                    selector:@selector(updateForInactivity:)
+                                                                                                    userInfo:nil
+                                                                                                     repeats:NO] : nil;
 }
 
 - (void)setUserInterfaceHidden:(BOOL)hidden animated:(BOOL)animated
@@ -310,6 +319,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     if (pictureInPictureController.isPictureInPictureActive) {
         [pictureInPictureController stopPictureInPicture];
     }
+}
+
+- (void)srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:(NSNotification *)notification
+{
+    [self resetInactivityTimer];
 }
 
 #pragma mark Actions

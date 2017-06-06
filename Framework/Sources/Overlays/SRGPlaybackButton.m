@@ -6,11 +6,14 @@
 
 #import "SRGPlaybackButton.h"
 
+#import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaPlayerIconTemplate.h"
 
 #import <libextobjc/libextobjc.h>
 
 @interface SRGPlaybackButton ()
+
+@property (nonatomic) SRGPlaybackButtonState playbackButtonState;
 
 @property (nonatomic) UIColor *normalTintColor;
 
@@ -23,6 +26,7 @@
 @synthesize playImage = _playImage;
 @synthesize pauseImage = _pauseImage;
 @synthesize highlightedTintColor = _highlightedTintColor;
+@synthesize playbackButtonState = _playbackButtonState;
 
 #pragma mark Overrides
 
@@ -111,6 +115,26 @@
     [self refreshButton];
 }
 
+- (void)setPlaybackButtonState:(SRGPlaybackButtonState)playbackButtonState
+{
+    _playbackButtonState = playbackButtonState;
+    
+    UIImage *normalImage = nil;
+    UIImage *highlightedImage = nil;
+    
+    if (playbackButtonState == SRGPlaybackButtonStatePause) {
+        normalImage = self.pauseImage;
+        highlightedImage = self.pauseImage;
+    }
+    else {
+        normalImage = self.playImage;
+        highlightedImage = self.playImage;
+    }
+    
+    [self setImage:normalImage forState:UIControlStateNormal];
+    [self setImage:highlightedImage forState:UIControlStateHighlighted];
+}
+
 - (UIColor *)highlightedTintColor
 {
     return _highlightedTintColor ?: self.tintColor;
@@ -129,24 +153,9 @@
     [self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIImage *normalImage = nil;
-    UIImage *highlightedImage = nil;
- 
-    BOOL displaysInterruptionButton = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
-                                        || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking
-                                        || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled);
-    
-    if (displaysInterruptionButton) {
-        normalImage = self.pauseImage;
-        highlightedImage = self.pauseImage;
-    }
-    else {
-        normalImage = self.playImage;
-        highlightedImage = self.playImage;
-    }
-    
-    [self setImage:normalImage forState:UIControlStateNormal];
-    [self setImage:highlightedImage forState:UIControlStateHighlighted];
+    self.playbackButtonState = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
+                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking
+                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled) ? SRGPlaybackButtonStatePause : SRGPlaybackButtonStatePlay;
 }
 
 #pragma mark Actions
@@ -170,6 +179,18 @@
     [super prepareForInterfaceBuilder];
     
     [self setImage:self.playImage forState:UIControlStateNormal];
+}
+
+#pragma mark Accessibility
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    return (self.playbackButtonState == SRGPlaybackButtonStatePause) ? SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause label of the Play/Pause button") : SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play label of the Play/Pause button");
 }
 
 @end

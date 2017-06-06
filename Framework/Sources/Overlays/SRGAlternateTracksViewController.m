@@ -71,7 +71,7 @@
 {
     [super viewDidLoad];
     
-    self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", nil);
+    self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Title of the pop over view to select audio or subtitles");
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:NSStringFromClass([self class])];
 }
@@ -172,6 +172,19 @@
 {
     [self dismissViewControllerAnimated:YES
                              completion:nil];
+}
+
+#pragma mark Accessibility
+
+- (BOOL)accessibilityPerformEscape
+{
+    if (self.presentingViewController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return YES;
+    }
+    else {
+        return NO;
+    }
 }
 
 @end

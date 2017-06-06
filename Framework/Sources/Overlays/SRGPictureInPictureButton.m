@@ -197,6 +197,35 @@ static void commonInit(SRGPictureInPictureButton *self);
     self.button.hidden = YES;
 }
 
+#pragma mark Accessibility
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    AVPictureInPictureController *pictureInPictureController = self.mediaPlayerController.pictureInPictureController;
+
+    if (pictureInPictureController.pictureInPictureActive) {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Stop Picture in Picture", @"Picture In Picture button label, when PiP is active");
+    }
+    else {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Start Picture in Picture", @"Picture In Picture button label, when PiP is available");
+    }
+}
+
+- (UIAccessibilityTraits)accessibilityTraits
+{
+    return UIAccessibilityTraitButton;
+}
+
+- (NSArray *)accessibilityElements
+{
+    return nil;
+}
+
 @end
 
 #pragma mark Functions
