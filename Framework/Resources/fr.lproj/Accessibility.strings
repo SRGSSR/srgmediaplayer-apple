@@ -1,50 +1,32 @@
-/* Slider state when playing AOD/VOD, in percentage */
-"%.0f%% played" = "%.0f%% joué";
+/* Slider label when playing a DVR in the past */
+"%@ from live" = "À %@ du direct";
 
-/* A seek backward button with a custom time range */
-"%@ backward" = "Reculer de %@";
-
-/* A seek forward button with a custom time range */
-"%@ forward" = "Avancer de %@";
-
-/* Slider state when playing DVR */
-"%@ late to direct" = "%@ de retard par rapport au direct";
-
-/* Label on slider for time played */
+/* Label on slider for time elapsed */
 "%@ played" = "%@ joué";
 
 /* Label on slider for time remaining */
 "%@ remaining" = "%@ restant";
 
-/* AirPlay button */
-"AirPlay" = "AirPlay";
+/* Back to live label */
+"Back to live" = "Retour au direct";
 
-/* A go to live button */
-"Go to live" = "Retour au direct";
+/* Slider label when playing live */
+"Live playback" = "Lecture en direct";
 
-/* Time state if infinity duration */
-"Infinity duration" = "Durée infinie";
+/* The player view label, where the audio / video is displayed */
+"Media" = "Contenu";
 
-/* Time state if no duration */
-"No duration" = "Pas de durée";
+/* Slider label when nothing to play */
+"No playback" = "Aucune lecture";
 
-/* Slider state when nothing to play */
-"Nothing playing" = "Rien à jouer";
-
-/* Pause state of the Play/Pause button */
+/* Pause label of the Play/Pause button */
 "Pause" = "Pause";
 
-/* Play state of the Play/Pause button */
-"Play" = "Lire";
+/* Play label of the Play/Pause button */
+"Play" = "Jouer";
 
-/* Slider state when playing live */
-"Playing in live" = "En direct";
+/* Picture In Picture button label, when PiP is available */
+"Start Picture in Picture" = "Démarrer l’image dans l’image";
 
-/* A stop button */
-"Stop" = "Stop";
-
-/* Picture In Picture button state, when PiP is active */
+/* Picture In Picture button label, when PiP is active */
 "Stop Picture in Picture" = "Arrêter l’image dans l’image";
-
-/* Picture In Picture button state, when PiP is available */
-"Switch to Picture in Picture" = "Basculez vers l’image dans l’image";

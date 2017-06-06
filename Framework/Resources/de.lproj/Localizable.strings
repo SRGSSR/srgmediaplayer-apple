@@ -4,7 +4,9 @@
 /* Section header title in the alternate tracks popup menu, for audio tracks */
 "Audio" = "Ton";
 
-/* Title of the alternate tracks popup menu */
+/* Accessibility title of the button to display the pop over view to select audio or subtitles
+   Title of the pop over view to select audio or subtitles
+*/
 "Audio and Subtitles" = "Ton und Untertitel";
 
 /* Button title to go back to live */

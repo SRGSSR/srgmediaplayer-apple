@@ -1,50 +1,32 @@
-/* Slider state when playing AOD/VOD, in percentage */
-"%.0f%% played" = "%.0f%% gespielt";
+/* Slider label when playing a DVR in the past */
+"%@ from live" = "%@ from live";
 
-/* A seek backward button with a custom time range */
-"%@ backward" = "%@ zurück";
-
-/* A seek forward button with a custom time range */
-"%@ forward" = "%@ vorwärts";
-
-/* Slider state when playing DVR */
-"%@ late to direct" = "%@ versetzt zu live";
-
-/* Label on slider for time played */
+/* Label on slider for time elapsed */
 "%@ played" = "%@ gespielt";
 
 /* Label on slider for time remaining */
 "%@ remaining" = "noch %@";
 
-/* AirPlay button */
-"AirPlay" = "Airplay";
+/* Back to live label */
+"Back to live" = "Zurück zu live";
 
-/* A go to live button */
-"Go to live" = "Zurück zu live";
+/* Slider label when playing live */
+"Live playback" = "Live playback";
 
-/* Time state if infinity duration */
-"Infinity duration" = "ohne Ende";
+/* The player view label, where the audio / video is displayed */
+"Media" = "Player Bereich";
 
-/* Time state if no duration */
-"No duration" = "Dauer unbekannt";
+/* Slider label when nothing to play */
+"No playback" = "No playback";
 
-/* Slider state when nothing to play */
-"Nothing playing" = "Kein Medienelement zum Abspielen vorhanden";
-
-/* Pause state of the Play/Pause button */
+/* Pause label of the Play/Pause button */
 "Pause" = "Pause";
 
-/* Play state of the Play/Pause button */
+/* Play label of the Play/Pause button */
 "Play" = "Abspielen";
 
-/* Slider state when playing live */
-"Playing in live" = "Live";
+/* Picture In Picture button label, when PiP is available */
+"Start Picture in Picture" = "Bild in Bild Funktion starten";
 
-/* A stop button */
-"Stop" = "Stop";
-
-/* Picture In Picture button state, when PiP is active */
+/* Picture In Picture button label, when PiP is active */
 "Stop Picture in Picture" = "Bild im Bild Modus beenden";
-
-/* Picture In Picture button state, when PiP is available */
-"Switch to Picture in Picture" = "Bild im Bild Modus starten";
