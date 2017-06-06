@@ -253,7 +253,7 @@ static void commonInit(SRGAirplayButton *self);
 
 - (NSArray *)accessibilityElements
 {
-    return @[];
+    return nil;
 }
 
 @end

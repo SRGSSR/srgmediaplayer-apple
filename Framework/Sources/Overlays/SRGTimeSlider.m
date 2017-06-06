@@ -39,7 +39,7 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
     }
 }
 
-// Create a readable time to accessibitly label
+// Create a readable time for accessibility purposes
 static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     if (isnan(seconds) || isinf(seconds)) {
@@ -276,7 +276,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
     else {
         self.valueString = SRGTimeSliderFormatter(self.value);
-        self.valueString.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time played"), SRGTimeSliderAccessibilityFormatter(self.value)];
+        self.valueString.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time elapsed"), SRGTimeSliderAccessibilityFormatter(self.value)];
         self.timeLeftValueString = SRGTimeSliderFormatter(self.value - self.maximumValue);
         self.timeLeftValueString.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
     }
@@ -478,19 +478,18 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
     if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
-        || playerItem.status != AVPlayerItemStatusReadyToPlay) {
-        return SRGMediaPlayerAccessibilityLocalizedString(@"Nothing playing", @"Slider state when nothing to play");
+            || playerItem.status != AVPlayerItemStatusReadyToPlay) {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"No playback", @"Slider label when nothing to play");
     }
-    else if (self.live)
-    {
-        return SRGMediaPlayerAccessibilityLocalizedString(@"Playing in live", @"Slider state when playing live");
+    else if (self.live) {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Live playback", @"Slider label when playing live");
     }
     else if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
-        return [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ late to direct", @"Slider state when playing DVR"),
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ from live", @"Slider label when playing a DVR in the past"),
                 SRGTimeSliderAccessibilityFormatter(self.maximumValue - self.value)];
     }
     else {
-        return [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time played"), SRGTimeSliderAccessibilityFormatter(self.value)];
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time elapsed"), SRGTimeSliderAccessibilityFormatter(self.value)];
     }
 }
 

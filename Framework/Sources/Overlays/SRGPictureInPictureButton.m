@@ -223,7 +223,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (NSArray *)accessibilityElements
 {
-    return @[];
+    return nil;
 }
 
 @end

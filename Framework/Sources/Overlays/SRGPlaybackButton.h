@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Available image scales.
+ *  Possible button states.
  */
 typedef NS_ENUM(NSInteger, SRGPlaybackButtonState) {
     SRGPlaybackButtonStatePlay,
@@ -34,7 +34,7 @@ IB_DESIGNABLE
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
-*  The button state
+*  The current button state.
 */
 @property (nonatomic, readonly) SRGPlaybackButtonState playbackButtonState;
 

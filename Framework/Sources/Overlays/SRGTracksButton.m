@@ -246,7 +246,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (NSArray *)accessibilityElements
 {
-    return @[];
+    return nil;
 }
 
 @end

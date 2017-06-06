@@ -6,8 +6,8 @@
 
 #import "SRGPlaybackButton.h"
 
-#import "SRGMediaPlayerIconTemplate.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGMediaPlayerIconTemplate.h"
 
 #import <libextobjc/libextobjc.h>
 
