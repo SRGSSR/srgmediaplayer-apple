@@ -6,6 +6,7 @@
 
 #import "TimeshiftPlayerViewController.h"
 
+#import "NSBundle+Demo.h"
 #import "SegmentCollectionViewCell.h"
 
 #import <libextobjc/libextobjc.h>
@@ -43,7 +44,7 @@
 {
     [super viewDidLoad];
     
-    [self.liveButton setTitle:@"Back to live" forState:UIControlStateNormal];
+    [self.liveButton setTitle:DemoNonLocalizedString(@"Back to live") forState:UIControlStateNormal];
     self.liveButton.alpha = 0.f;
 
     self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
