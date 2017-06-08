@@ -7,6 +7,7 @@
 #import "AppDelegate.h"
 
 #import "MediasViewController.h"
+#import "NSBundle+Demo.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <SRGLogger/SRGLogger.h>
@@ -58,27 +59,27 @@
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     
     MediasViewController *videosViewController = [[MediasViewController alloc] initWithMediaFileName:@"MediaURLs"];
-    videosViewController.title = @"Videos";
+    videosViewController.title = DemoNonLocalizedString(@"Videos");
     videosViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
     UINavigationController *videosNavigationController = [[UINavigationController alloc] initWithRootViewController:videosViewController];
     
     MediasViewController *segmentsViewController = [[MediasViewController alloc] initWithMediaFileName:@"SegmentURLs"];
-    segmentsViewController.title = @"Segments";
+    segmentsViewController.title = DemoNonLocalizedString(@"Segments");
     segmentsViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
     UINavigationController *segmentsNavigationController = [[UINavigationController alloc] initWithRootViewController:segmentsViewController];
     
     MediasViewController *multiVideosViewController = [[MediasViewController alloc] initWithMediaFileName:@"MultiplayerURLs"];
-    multiVideosViewController.title = @"Multi-stream";
+    multiVideosViewController.title = DemoNonLocalizedString(@"Multi-stream");
     multiVideosViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
     UINavigationController *multiVideosNavigationController = [[UINavigationController alloc] initWithRootViewController:multiVideosViewController];
     
     MediasViewController *timeshiftViewController = [[MediasViewController alloc] initWithMediaFileName:@"TimeshiftURLs"];
-    timeshiftViewController.title = @"Timeshift";
+    timeshiftViewController.title = DemoNonLocalizedString(@"Timeshift");
     timeshiftViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
     UINavigationController *timeshiftNavigationController = [[UINavigationController alloc] initWithRootViewController:timeshiftViewController];
     
     MediasViewController *audiosViewController = [[MediasViewController alloc] initWithMediaFileName:@"AudioURLs"];
-    audiosViewController.title = @"Audios";
+    audiosViewController.title = DemoNonLocalizedString(@"Audios");
     audiosViewController.tabBarItem.image = [UIImage imageNamed:@"audios"];
     UINavigationController *audiosNavigationController = [[UINavigationController alloc] initWithRootViewController:audiosViewController];
     

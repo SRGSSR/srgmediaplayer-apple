@@ -31,6 +31,7 @@
 		6F5D66451DAFCDF1009AD6DD /* SRGAirplayButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5D66431DAFCDF1009AD6DD /* SRGAirplayButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F5D66461DAFCDF1009AD6DD /* SRGAirplayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D66441DAFCDF1009AD6DD /* SRGAirplayButton.m */; };
 		6F68E7581DAE0877001F39C4 /* SRGMediaPlayerView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */; };
+		6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */; };
 		6F97C7981E7A89C5001AD9B3 /* ModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */; };
 		6FA09D2A1D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */; };
 		6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -236,6 +237,8 @@
 		6F5D66431DAFCDF1009AD6DD /* SRGAirplayButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAirplayButton.h; sourceTree = "<group>"; };
 		6F5D66441DAFCDF1009AD6DD /* SRGAirplayButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAirplayButton.m; sourceTree = "<group>"; };
 		6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayerView+Private.h"; sourceTree = "<group>"; };
+		6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Demo.h"; sourceTree = "<group>"; };
+		6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Demo.m"; sourceTree = "<group>"; };
 		6F97C7961E7A89C5001AD9B3 /* ModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalTransition.h; sourceTree = "<group>"; };
 		6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalTransition.m; sourceTree = "<group>"; };
 		6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerLogger.h; sourceTree = "<group>"; };
@@ -397,6 +400,8 @@
 			children = (
 				6F97C7961E7A89C5001AD9B3 /* ModalTransition.h */,
 				6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */,
+				6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */,
+				6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -830,7 +835,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SRG;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "SRG SSR";
 				TargetAttributes = {
 					E69A1DA81D61B9380064E6C1 = {
@@ -982,6 +987,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6D21D221D76A3F500B477F3 /* AppDelegate.m in Sources */,
+				6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */,
 				E6BCE9561D76CB900021973D /* TimeshiftPlayerViewController.m in Sources */,
 				E6D21D241D76A3F500B477F3 /* MediasViewController.m in Sources */,
 				E6BCE94E1D76CB900021973D /* InlinePlayerViewController.m in Sources */,
@@ -1068,14 +1074,20 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1111,14 +1123,20 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

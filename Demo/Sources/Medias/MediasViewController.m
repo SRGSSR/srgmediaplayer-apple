@@ -6,14 +6,15 @@
 
 #import "MediasViewController.h"
 
-#import <MediaPlayer/MediaPlayer.h>
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
-
 #import "InlinePlayerViewController.h"
 #import "MultiPlayerViewController.h"
+#import "NSBundle+Demo.h"
 #import "Segment.h"
 #import "SegmentsPlayerViewController.h"
 #import "TimeshiftPlayerViewController.h"
+
+#import <MediaPlayer/MediaPlayer.h>
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface MediasViewController ()
 
@@ -123,32 +124,32 @@
     else {
         switch (indexPath.row) {
             case 0: {
-                cell.textLabel.text = @"iOS media player";
+                cell.textLabel.text = DemoNonLocalizedString(@"iOS media player");
                 break;
             }
                 
             case 1: {
-                cell.textLabel.text = @"SRG media player";
+                cell.textLabel.text = DemoNonLocalizedString(@"SRG media player");
                 break;
             }
                 
             case 2: {
-                cell.textLabel.text = @"Inline SRG player";
+                cell.textLabel.text = DemoNonLocalizedString(@"Inline SRG player");
                 break;
             }
                 
             case 3: {
-                cell.textLabel.text = @"Custom SRG player with timeshift support";
+                cell.textLabel.text = DemoNonLocalizedString(@"Custom SRG player with timeshift support");
                 break;
             }
                 
             case 4: {
-                cell.textLabel.text = @"Custom SRG player with segment support";
+                cell.textLabel.text = DemoNonLocalizedString(@"Custom SRG player with segment support");
                 break;
             }
                 
             case 5: {
-                cell.textLabel.text = @"Multi player";
+                cell.textLabel.text = DemoNonLocalizedString(@"Multi player");
                 break;
             }
                 
@@ -172,7 +173,7 @@
         
         if (! contentURL) {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Please select a media first" message:nil preferredStyle:UIAlertControllerStyleAlert];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+            [alertController addAction:[UIAlertAction actionWithTitle:DemoNonLocalizedString(@"OK") style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alertController animated:YES completion:nil];
             return;
         }
