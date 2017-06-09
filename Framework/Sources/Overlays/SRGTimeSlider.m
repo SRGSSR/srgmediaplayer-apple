@@ -252,13 +252,19 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         || (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR && (self.maximumValue - self.value < self.mediaPlayerController.liveTolerance));
 }
 
-- (void)updateTimeRangeLabels
+- (BOOL)isNotReadyToDisplayValues
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle
+
+    return (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle
             || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
             || playerItem.status != AVPlayerItemStatusReadyToPlay
-            || self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeUnknown) {
+            || self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeUnknown);
+}
+
+- (void)updateTimeRangeLabels
+{
+    if ([self isNotReadyToDisplayValues]) {
         self.valueString = @"--:--";
         self.valueString.accessibilityLabel = nil;
         self.timeLeftValueString = @"--:--";
@@ -476,9 +482,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 - (NSString *)accessibilityLabel
 {
-    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
-            || playerItem.status != AVPlayerItemStatusReadyToPlay) {
+    if ([self isNotReadyToDisplayValues]) {
         return SRGMediaPlayerAccessibilityLocalizedString(@"No playback", @"Slider label when nothing to play");
     }
     else if (self.live) {
