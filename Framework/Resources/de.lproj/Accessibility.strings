@@ -1,5 +1,5 @@
 /* Slider label when playing a DVR in the past */
-"%@ from live" = "%@ from live";
+"%@ from live" = "Livestream mit %@ Verzögerung";
 
 /* Label on slider for time elapsed */
 "%@ played" = "%@ gespielt";
@@ -11,13 +11,13 @@
 "Back to live" = "Zurück zu live";
 
 /* Slider label when playing live */
-"Live playback" = "Live playback";
+"Live playback" = "Livestream ohne Verzögerung";
 
 /* The player view label, where the audio / video is displayed */
 "Media" = "Player Bereich";
 
 /* Slider label when nothing to play */
-"No playback" = "No playback";
+"No playback" = "Kein Inhalt im Player";
 
 /* Pause label of the Play/Pause button */
 "Pause" = "Pause";

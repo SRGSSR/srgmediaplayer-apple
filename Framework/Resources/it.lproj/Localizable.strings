@@ -26,3 +26,6 @@
 
 /* Error message when the media cannot be played due to a technical error. */
 "The media cannot be played" = "Il contenuto non può essere riprodotto";
+
+/* Instructions for subtitles customization */
+"You can adjust the appearance of subtitles in the Accessibility section of the Settings application." = "You can adjust the appearance of subtitles in the Accessibility section of the Settings application.";
