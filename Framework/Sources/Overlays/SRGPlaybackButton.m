@@ -146,6 +146,11 @@
     [self refreshButton];
 }
 
+// Override to prevent setting a title. This fixes a nasty compiler issue when previewing in Interface Builder (eating
+// up all system memory) and at runtime
+- (void)setTitle:(NSString *)title forState:(UIControlState)state
+{}
+
 #pragma mark UI
 
 - (void)refreshButton

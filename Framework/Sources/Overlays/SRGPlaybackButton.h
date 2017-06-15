@@ -24,6 +24,8 @@ typedef NS_ENUM(NSInteger, SRGPlaybackButtonState) {
  *
  *  Simply install an instance somewhere onto your custom player interface and bind to the media player controller which
  *  needs to be controlled.
+ *
+ *  Remark: This special kind of button does not support the display of a title.
  */
 IB_DESIGNABLE
 @interface SRGPlaybackButton : UIButton
