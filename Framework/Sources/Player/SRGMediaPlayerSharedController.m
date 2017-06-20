@@ -7,6 +7,7 @@
 #import "SRGMediaPlayerSharedController.h"
 
 #import "SRGMediaPlayerViewController.h"
+#import "UIWindow+SRGMediaPlayer.h"
 
 @implementation SRGMediaPlayerSharedController
 
@@ -49,29 +50,16 @@
 
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.srg_topViewController;
     
     // If no SRGMediaPlayerViewController instance is currently displayed (always modally)
-    if (! [rootViewController.presentedViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
+    if (topViewController && ! [topViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
         // FIXME: Init with controller
         SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
-        
-        // Dismiss any modal currently displayed if needed
-        if (rootViewController.presentedViewController) {
-            [rootViewController dismissViewControllerAnimated:YES completion:^{
-                [rootViewController presentViewController:mediaPlayerViewController animated:YES completion:^{
-                    // It is very important that this block is called at the very end of the process, otherwise silly
-                    // things might happen during the transition (e.g. player rate set to 0)
-                    completionHandler(YES);
-                }];
-            }];
-        }
-        else {
-            [rootViewController presentViewController:mediaPlayerViewController animated:YES completion:^{
-                // See comment above
-                completionHandler(YES);
-            }];
-        }
+        [topViewController presentViewController:mediaPlayerViewController animated:YES completion:^{
+            // See comment above
+            completionHandler(YES);
+        }];
     }
 }
 
@@ -79,8 +67,8 @@
 {
     // Reset the status of the player when picture in picture is exited anywhere except from the SRGMediaPlayerViewController
     // itself
-    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    if (! [rootViewController.presentedViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
+    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.srg_topViewController;
+    if (! [topViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
         [self reset];
     }
 }

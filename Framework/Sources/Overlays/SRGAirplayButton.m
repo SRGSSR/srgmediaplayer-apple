@@ -234,6 +234,28 @@ static void commonInit(SRGAirplayButton *self);
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
 }
 
+#pragma mark Accessibility
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    return SRGMediaPlayerNonLocalizedString(@"AirPlay");
+}
+
+- (UIAccessibilityTraits)accessibilityTraits
+{
+    return UIAccessibilityTraitButton;
+}
+
+- (NSArray *)accessibilityElements
+{
+    return nil;
+}
+
 @end
 
 #pragma mark Functions

@@ -39,6 +39,24 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
     }
 }
 
+// Create a readable time for accessibility purposes
+static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
+{
+    if (isnan(seconds) || isinf(seconds)) {
+       return nil;
+    }
+    
+    static NSDateComponentsFormatter *s_dateComponentsFormatter;
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
+        s_dateComponentsFormatter = [[NSDateComponentsFormatter alloc] init];
+        s_dateComponentsFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;
+        s_dateComponentsFormatter.allowedUnits = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    });
+    
+    return [s_dateComponentsFormatter stringFromTimeInterval:ABS(seconds)];
+}
+
 @interface SRGTimeSlider ()
 
 @property (weak) id periodicTimeObserver;
@@ -234,15 +252,23 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
         || (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR && (self.maximumValue - self.value < self.mediaPlayerController.liveTolerance));
 }
 
-- (void)updateTimeRangeLabels
+- (BOOL)isNotReadyToDisplayValues
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    if (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle
+
+    return (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle
             || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
             || playerItem.status != AVPlayerItemStatusReadyToPlay
-            || self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeUnknown) {
+            || self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeUnknown);
+}
+
+- (void)updateTimeRangeLabels
+{
+    if ([self isNotReadyToDisplayValues]) {
         self.valueString = @"--:--";
+        self.valueString.accessibilityLabel = nil;
         self.timeLeftValueString = @"--:--";
+        self.timeLeftValueString.accessibilityLabel = nil;
         self.valueLabel.text = self.valueString;
         self.timeLeftValueLabel.text = self.timeLeftValueString;
         return;
@@ -250,15 +276,21 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
     
     if (self.live) {
         self.valueString = @"--:--";
+        self.valueString.accessibilityLabel = nil;
         self.timeLeftValueString = SRGMediaPlayerLocalizedString(@"Live", @"Very short text on left time label when playing a live stream");
+        self.timeLeftValueString.accessibilityLabel = nil;
     }
     else {
         self.valueString = SRGTimeSliderFormatter(self.value);
+        self.valueString.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time elapsed"), SRGTimeSliderAccessibilityFormatter(self.value)];
         self.timeLeftValueString = SRGTimeSliderFormatter(self.value - self.maximumValue);
+        self.timeLeftValueString.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
     }
     
     self.valueLabel.text = self.valueString;
+    self.valueLabel.accessibilityLabel = self.valueString.accessibilityLabel;
     self.timeLeftValueLabel.text = self.timeLeftValueString;
+    self.timeLeftValueLabel.accessibilityLabel = self.timeLeftValueString.accessibilityLabel;
 }
 
 #pragma mark Touch handling
@@ -439,6 +471,40 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
     // Do not wait for playback to resume to update display, update to the target location of seeks
     CMTime time = [notification.userInfo[SRGMediaPlayerSeekTimeKey] CMTimeValue];
     [self updateDisplayWithTime:time];
+}
+
+#pragma mark Accessibility
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    if ([self isNotReadyToDisplayValues]) {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"No playback", @"Slider label when nothing to play");
+    }
+    else if (self.live) {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Live playback", @"Slider label when playing live");
+    }
+    else if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ from live", @"Slider label when playing a DVR in the past"),
+                SRGTimeSliderAccessibilityFormatter(self.maximumValue - self.value)];
+    }
+    else {
+        return [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time elapsed"), SRGTimeSliderAccessibilityFormatter(self.value)];
+    }
+}
+
+- (NSString *)accessibilityValue
+{
+    if (self.live) {
+        return nil;
+    }
+    else {
+        return [super accessibilityValue];
+    }
 }
 
 #pragma mark Interface Builder integration

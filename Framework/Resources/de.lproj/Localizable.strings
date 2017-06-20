@@ -4,7 +4,9 @@
 /* Section header title in the alternate tracks popup menu, for audio tracks */
 "Audio" = "Ton";
 
-/* Title of the alternate tracks popup menu */
+/* Accessibility title of the button to display the pop over view to select audio or subtitles
+   Title of the pop over view to select audio or subtitles
+*/
 "Audio and Subtitles" = "Ton und Untertitel";
 
 /* Button title to go back to live */
@@ -24,3 +26,6 @@
 
 /* Error message when the media cannot be played due to a technical error. */
 "The media cannot be played" = "Inhalt kann nicht abgespielt werden";
+
+/* Instructions for subtitles customization */
+"You can adjust the appearance of subtitles in the Accessibility section of the Settings application." = "Sie können in der iOS App «Einstellungen» unter «Bedienungshilfen» die Darstellung von Untertiteln anpassen.";

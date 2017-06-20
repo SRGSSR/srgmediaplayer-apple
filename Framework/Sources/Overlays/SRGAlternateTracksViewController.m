@@ -71,7 +71,7 @@
 {
     [super viewDidLoad];
     
-    self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", nil);
+    self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Title of the pop over view to select audio or subtitles");
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:NSStringFromClass([self class])];
 }
@@ -102,7 +102,18 @@
         return SRGMediaPlayerLocalizedString(@"Subtitles & CC", @"Section header title in the alternate tracks popup menu, for subtitles & CC tracks");
     }
     else {
-       return @"";
+       return nil;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    NSString *characteristic = self.characteristics[section];
+    if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
+        return SRGMediaPlayerLocalizedString(@"You can adjust the appearance of subtitles in the Accessibility section of the Settings application.", @"Instructions for subtitles customization");
+    }
+    else {
+        return nil;
     }
 }
 
@@ -172,6 +183,19 @@
 {
     [self dismissViewControllerAnimated:YES
                              completion:nil];
+}
+
+#pragma mark Accessibility
+
+- (BOOL)accessibilityPerformEscape
+{
+    if (self.presentingViewController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return YES;
+    }
+    else {
+        return NO;
+    }
 }
 
 @end

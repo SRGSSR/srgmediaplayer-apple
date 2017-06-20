@@ -84,10 +84,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)dealloc
 {
-    [self stopWithUserInfo:nil];
+    [self reset];
     
-    // No need to call -reset here, since -stop or -reset must be called for the controller to be deallocated
-    self.pictureInPictureController = nil;              // Unregister everything
+    self.pictureInPictureController = nil;              // Perform associated unregistrations
 }
 
 #pragma mark Getters and setters
@@ -522,7 +521,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     
     if (! [UIScreen srg_isMirroring]) {
-        return YES;
+        return player.externalPlaybackActive;
     }
     
     // If the player switches to external playback, then it does not mirror the display

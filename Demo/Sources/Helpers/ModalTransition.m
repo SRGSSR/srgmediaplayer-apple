@@ -94,7 +94,7 @@
     
     UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
     
-    if ((self.presentation && ! success) || (! self.presentation && success)) {
+    if (! success) {
         [toView removeFromSuperview];
     }
     

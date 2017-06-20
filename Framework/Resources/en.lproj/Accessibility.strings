@@ -1,0 +1,32 @@
+/* Slider label when playing a DVR in the past */
+"%@ from live" = "%@ from live";
+
+/* Label on slider for time elapsed */
+"%@ played" = "%@ played";
+
+/* Label on slider for time remaining */
+"%@ remaining" = "%@ remaining";
+
+/* Back to live label */
+"Back to live" = "Back to live";
+
+/* Slider label when playing live */
+"Live playback" = "Live playback";
+
+/* The player view label, where the audio / video is displayed */
+"Media" = "Media";
+
+/* Slider label when nothing to play */
+"No playback" = "No playback";
+
+/* Pause label of the Play/Pause button */
+"Pause" = "Pause";
+
+/* Play label of the Play/Pause button */
+"Play" = "Play";
+
+/* Picture In Picture button label, when PiP is available */
+"Start Picture in Picture" = "Start Picture in Picture";
+
+/* Picture In Picture button label, when PiP is active */
+"Stop Picture in Picture" = "Stop Picture in Picture";
