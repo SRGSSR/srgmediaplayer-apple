@@ -379,7 +379,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         timeRange = CMTimeRangeMake(timeRange.start, kCMTimeZero);
     }
     
-    // On-demamnd time ranges are cached because they might become unreliable in some situations (e.g. when Airplay is
+    // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when Airplay is
     // connected or disconnected)
     if (! CMTIME_IS_INDEFINITE(playerItem.duration) && ! CMTIMERANGE_IS_EMPTY(timeRange)) {
         _timeRange = timeRange;
