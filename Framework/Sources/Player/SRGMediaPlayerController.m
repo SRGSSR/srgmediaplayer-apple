@@ -355,21 +355,18 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     AVPlayerItem *playerItem = self.player.currentItem;
     
+    // If no seekable time range information is available, return a time range of length 0
     NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-    if (! firstSeekableTimeRangeValue) {
-        return kCMTimeRangeInvalid;
-    }
-    
     NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
-    if (! lastSeekableTimeRangeValue) {
-        return kCMTimeRangeInvalid;
+    if (! firstSeekableTimeRangeValue || ! lastSeekableTimeRangeValue) {
+        return CMTimeRangeMake(playerItem.currentTime, kCMTimeZero);
     }
     
     CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
     CMTimeRange lastSeekableTimeRange = [lastSeekableTimeRangeValue CMTimeRangeValue];
     
     if (! CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || ! CMTIMERANGE_IS_VALID(lastSeekableTimeRange)) {
-        return kCMTimeRangeInvalid;
+        return CMTimeRangeMake(playerItem.currentTime, kCMTimeZero);
     }
     
     CMTimeRange timeRange = CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
@@ -381,7 +378,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when Airplay is
     // connected or disconnected)
-    if (! CMTIME_IS_INDEFINITE(playerItem.duration) && ! CMTIMERANGE_IS_EMPTY(timeRange)) {
+    else if (! CMTIME_IS_INDEFINITE(playerItem.duration) && ! CMTIMERANGE_IS_EMPTY(timeRange)) {
         _timeRange = timeRange;
     }
     
