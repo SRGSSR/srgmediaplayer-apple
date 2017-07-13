@@ -32,8 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return an instance wrapped into a navigation controller.
  */
-+ (UINavigationController *)alternateTracksViewControllerInNavigationControllerForPlayer:(AVPlayer *)player
-                                                                                delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate;
++ (UINavigationController *)alternateTracksNavigationControllerForPlayer:(AVPlayer *)player
+                                                            withDelegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate;
 
 /**
  *  The view controller delegate.

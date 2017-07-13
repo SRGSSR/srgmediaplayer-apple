@@ -23,7 +23,7 @@
 
 #pragma mark Class methods
 
-+ (UINavigationController *)alternateTracksViewControllerInNavigationControllerForPlayer:(AVPlayer *)player delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
++ (UINavigationController *)alternateTracksNavigationControllerForPlayer:(AVPlayer *)player withDelegate:(id<SRGAlternateTracksViewControllerDelegate>)delegate
 {
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
     alternateTracksViewController.delegate = delegate;
@@ -141,10 +141,10 @@
     NSString *characteristic = self.characteristics[indexPath.section];
     AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
     
-    if ((characteristic == AVMediaCharacteristicLegible) && indexPath.row == 0) {
+    if (characteristic == AVMediaCharacteristicLegible && indexPath.row == 0) {
         cell.textLabel.text = SRGMediaPlayerLocalizedString(@"No subtitles", @"Option to remove subtitles in alternate tracks popup menu");
         AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-        cell.accessoryType = (!currentOptionInGroup) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        cell.accessoryType = currentOptionInGroup ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
     }
     else {
         AVMediaSelectionOption *option = (characteristic == AVMediaCharacteristicLegible) ? group.options[indexPath.row -1] : group.options[indexPath.row];

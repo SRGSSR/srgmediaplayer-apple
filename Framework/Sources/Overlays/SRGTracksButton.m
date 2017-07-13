@@ -192,8 +192,8 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (void)showSubtitlesMenu:(id)sender
 {
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksViewControllerInNavigationControllerForPlayer:self.mediaPlayerController.player
-                                                                                                                                         delegate:self];
+    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForPlayer:self.mediaPlayerController.player
+                                                                                                                     withDelegate:self];
     navigationController.modalPresentationStyle = UIModalPresentationPopover;
     
     navigationController.popoverPresentationController.delegate = self;
