@@ -444,6 +444,7 @@ static NSURL *DVRTestURL(void)
     
     XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeOnDemand);
     XCTAssertFalse(self.mediaPlayerController.live);
+    XCTAssertNil(self.mediaPlayerController.date);
 }
 
 - (void)testLiveProperties
@@ -458,6 +459,7 @@ static NSURL *DVRTestURL(void)
     
     XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeLive);
     XCTAssertTrue(self.mediaPlayerController.live);
+    XCTAssertTrue([[NSDate date] timeIntervalSinceDate:self.mediaPlayerController.date] < 0.1);
 }
 
 - (void)testDVRProperties
@@ -472,6 +474,7 @@ static NSURL *DVRTestURL(void)
     
     XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeDVR);
     XCTAssertTrue(self.mediaPlayerController.live);
+    XCTAssertNotNil(self.mediaPlayerController.date);
     
     // Seek 10 seconds in the past. The default live tolerance is 30 seconds, we still must be in live conditions
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -483,6 +486,7 @@ static NSURL *DVRTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
     XCTAssertTrue(self.mediaPlayerController.live);
+    XCTAssertTrue([[NSDate date] timeIntervalSinceDate:self.mediaPlayerController.date] > 8);
     
     // Seek 40 seconds in the past. We now are outside the tolerance and therefore not live anymore
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -494,6 +498,7 @@ static NSURL *DVRTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
     XCTAssertFalse(self.mediaPlayerController.live);
+    XCTAssertTrue([[NSDate date] timeIntervalSinceDate:self.mediaPlayerController.date] > 38);
 }
 
 - (void)testLiveTolerance

@@ -365,7 +365,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
     CMTimeRange lastSeekableTimeRange = [lastSeekableTimeRangeValue CMTimeRangeValue];
     
-    if (! CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || ! CMTIMERANGE_IS_VALID(lastSeekableTimeRange)) {
+    if (CMTIMERANGE_IS_INVALID(firstSeekableTimeRange) || CMTIMERANGE_IS_INVALID(lastSeekableTimeRange)) {
         return CMTimeRangeMake(playerItem.currentTime, kCMTimeZero);
     }
     
@@ -437,6 +437,24 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     else {
         _liveTolerance = liveTolerance;
+    }
+}
+
+- (NSDate *)date
+{
+    CMTimeRange timeRange = self.timeRange;
+    if (CMTIMERANGE_IS_INVALID(timeRange)) {
+        return nil;
+    }
+    
+    if (self.streamType == SRGMediaPlayerStreamTypeLive) {
+        return [NSDate date];
+    }
+    else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
+        return [NSDate dateWithTimeIntervalSinceNow:-CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), self.player.currentTime))];
+    }
+    else {
+        return nil;
     }
 }
 
@@ -709,7 +727,7 @@ withToleranceBefore:(CMTime)toleranceBefore
         // Do not seek to the very beginning, seek slightly after with zero tolerance to be sure to end within the segment
         time = CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC));
     }
-    else if (! CMTIME_IS_VALID(time)) {
+    else if (CMTIME_IS_INVALID(time)) {
         time = kCMTimeZero;
     }
     
