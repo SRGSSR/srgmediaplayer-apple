@@ -241,6 +241,25 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     return CMTimeAdd(timeRange.start, relativeTime);
 }
 
+- (NSDate *)date
+{
+    SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
+    CMTimeRange timeRange = mediaPlayerController.timeRange;
+    if (CMTIMERANGE_IS_INVALID(timeRange)) {
+        return nil;
+    }
+    
+    if (mediaPlayerController.streamType == SRGMediaPlayerStreamTypeLive) {
+        return [NSDate date];
+    }
+    else if (mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
+        return [NSDate dateWithTimeIntervalSinceNow:-CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), self.time))];
+    }
+    else {
+        return nil;
+    }
+}
+
 - (BOOL)isLive
 {
     // Live and timeshift feeds in live conditions. This happens when either the following condition

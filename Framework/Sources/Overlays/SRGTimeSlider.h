@@ -87,6 +87,12 @@ IB_DESIGNABLE
 @property (nonatomic, readonly) CMTime time;
 
 /**
+ *  For DVR and live streams, returns the date corresponding to the current slider position. If the date cannot be
+ *  determined or for on-demand streams, the method returns `nil`.
+ */
+@property (nonatomic, readonly, nullable) NSDate *date;
+
+/**
  *  Return `YES` iff the current slider position matches the conditions of a live feed.
  *
  *  @discussion While dragging, this property may not reflect the value returned by the media player controller `live` 

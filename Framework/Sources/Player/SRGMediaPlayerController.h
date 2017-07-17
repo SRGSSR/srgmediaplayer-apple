@@ -372,6 +372,12 @@ withToleranceBefore:(CMTime)toleranceBefore
 @property (nonatomic, readonly) SRGMediaPlayerStreamType streamType;
 
 /**
+ *  For DVR and live streams, returns the date corresponding to the current playback time. If the date cannot be
+ *  determined or for on-demand streams, the method returns `nil`.
+ */
+@property (nonatomic, readonly, nullable) NSDate *date;
+
+/**
  *  Return `YES` iff the stream is currently played in live conditions (@see `liveTolerance`).
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;

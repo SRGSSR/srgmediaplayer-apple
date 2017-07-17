@@ -355,21 +355,18 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     AVPlayerItem *playerItem = self.player.currentItem;
     
+    // If no seekable time range information is available, return a time range of length 0
     NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-    if (! firstSeekableTimeRangeValue) {
-        return kCMTimeRangeInvalid;
-    }
-    
     NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
-    if (! lastSeekableTimeRangeValue) {
-        return kCMTimeRangeInvalid;
+    if (! firstSeekableTimeRangeValue || ! lastSeekableTimeRangeValue) {
+        return CMTimeRangeMake(playerItem.currentTime, kCMTimeZero);
     }
     
     CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
     CMTimeRange lastSeekableTimeRange = [lastSeekableTimeRangeValue CMTimeRangeValue];
     
-    if (! CMTIMERANGE_IS_VALID(firstSeekableTimeRange) || ! CMTIMERANGE_IS_VALID(lastSeekableTimeRange)) {
-        return kCMTimeRangeInvalid;
+    if (CMTIMERANGE_IS_INVALID(firstSeekableTimeRange) || CMTIMERANGE_IS_INVALID(lastSeekableTimeRange)) {
+        return CMTimeRangeMake(playerItem.currentTime, kCMTimeZero);
     }
     
     CMTimeRange timeRange = CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
@@ -379,9 +376,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         timeRange = CMTimeRangeMake(timeRange.start, kCMTimeZero);
     }
     
-    // On-demamnd time ranges are cached because they might become unreliable in some situations (e.g. when Airplay is
+    // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when Airplay is
     // connected or disconnected)
-    if (! CMTIME_IS_INDEFINITE(playerItem.duration) && ! CMTIMERANGE_IS_EMPTY(timeRange)) {
+    else if (! CMTIME_IS_INDEFINITE(playerItem.duration) && ! CMTIMERANGE_IS_EMPTY(timeRange)) {
         _timeRange = timeRange;
     }
     
@@ -440,6 +437,24 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     else {
         _liveTolerance = liveTolerance;
+    }
+}
+
+- (NSDate *)date
+{
+    CMTimeRange timeRange = self.timeRange;
+    if (CMTIMERANGE_IS_INVALID(timeRange)) {
+        return nil;
+    }
+    
+    if (self.streamType == SRGMediaPlayerStreamTypeLive) {
+        return [NSDate date];
+    }
+    else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
+        return [NSDate dateWithTimeIntervalSinceNow:-CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), self.player.currentTime))];
+    }
+    else {
+        return nil;
     }
 }
 
@@ -712,7 +727,7 @@ withToleranceBefore:(CMTime)toleranceBefore
         // Do not seek to the very beginning, seek slightly after with zero tolerance to be sure to end within the segment
         time = CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC));
     }
-    else if (! CMTIME_IS_VALID(time)) {
+    else if (CMTIME_IS_INVALID(time)) {
         time = kCMTimeZero;
     }
     
