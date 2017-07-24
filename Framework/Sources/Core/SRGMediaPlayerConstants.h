@@ -120,6 +120,11 @@ OBJC_EXTERN NSString * const SRGMediaPlayerSeekTimeKey;                         
 OBJC_EXTERN NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotification;
 
 /**
+ *  Notification sent when the external playback is enabled or disabled.
+ */
+OBJC_EXTERN NSString * const SRGMediaPlayerExternalPlaybackStateDidChangeNotification;
+
+/**
  *  Notification sent when the current segment changes. Use the keys available below to retrieve information from
  *  the notification `userInfo`dictionary.
  */

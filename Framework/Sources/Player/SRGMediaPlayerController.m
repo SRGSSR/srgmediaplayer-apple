@@ -219,6 +219,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             @strongify(self)
             @strongify(player)
             
+            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
+            
             // When entering or exiting Airplay, the player rate will temporarily be set to 0 if it wasn't. To avoid generating
             // incorrect controller state transitions, we inhibit player rate change observations until the rate has been
             // restored
