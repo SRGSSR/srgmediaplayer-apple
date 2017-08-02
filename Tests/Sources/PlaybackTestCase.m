@@ -331,6 +331,103 @@ static NSURL *DVRTestURL(void)
     }];
 }
 
+- (void)testFastPlayPauseSeek
+{
+    // Play the media. Two events expected: Preparing and playing
+    __block NSInteger count1 = 0;
+    id eventObserver1 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        ++count1;
+    }];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
+            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(0));
+            return YES;
+        }
+        else {
+            return NO;
+        }
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver1];
+    }];
+    
+    // Two events expected: preparing and playing
+    XCTAssertEqual(count1, 2);
+    
+    __block NSInteger count2 = 0;
+    id eventObserver2 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        ++count2;
+    }];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePaused;
+    }];
+    
+    [self.mediaPlayerController pause];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver2];
+    }];
+    
+    // One event expected: paused
+    XCTAssertEqual(count2, 1);
+    
+    __block NSInteger count3 = 0;
+    id eventObserver3 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        ++count3;
+    }];
+    
+    __block BOOL seekReceived = NO;
+    __block BOOL pauseReceived = NO;
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        SRGMediaPlayerPlaybackState playerPlaybackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+        if (playerPlaybackState == SRGMediaPlayerPlaybackStateSeeking) {
+            XCTAssertFalse(seekReceived);
+            XCTAssertFalse(pauseReceived);
+            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(0));
+            seekReceived = YES;
+        }
+        else if (playerPlaybackState == SRGMediaPlayerPlaybackStatePaused) {
+            XCTAssertFalse(pauseReceived);
+            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(2));
+            pauseReceived = YES;
+        }
+        else {
+            XCTFail(@"Unexpected playback state %@", @(playerPlaybackState));
+        }
+        
+        return seekReceived && pauseReceived;
+    }];
+    
+    [self.mediaPlayerController seekEfficientlyToTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver3];
+    }];
+    
+    // two events expected: seek and pause
+    XCTAssertEqual(count3, 2);
+    
+    [self expectationForElapsedTimeInterval:3. withHandler:nil];
+    
+    id eventObserver4 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        // Also see http://stackoverflow.com/questions/14565405/avplayer-pauses-for-no-obvious-reason and
+        // the demo project https://github.com/defagos/radars/tree/master/unexpected-player-rate-changes
+        NSLog(@"[AVPlayer probable bug]: Unexpected state change to %@. Fast play - pause sequences can induce unexpected rate changes "
+              "captured via KVO in our implementation. Those changes do not harm but cannot be tested reliably", @(self.mediaPlayerController.playbackState));
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver4];
+    }];
+}
+
+
 - (void)testStreamedMediaPlaythrough
 {
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
