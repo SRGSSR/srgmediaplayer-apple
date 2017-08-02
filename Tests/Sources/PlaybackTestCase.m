@@ -427,7 +427,6 @@ static NSURL *DVRTestURL(void)
     }];
 }
 
-
 - (void)testStreamedMediaPlaythrough
 {
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
