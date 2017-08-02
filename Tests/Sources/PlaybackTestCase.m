@@ -306,7 +306,7 @@ static NSURL *DVRTestURL(void)
         [[NSNotificationCenter defaultCenter] removeObserver:eventObserver2];
     }];
     
-    // two events expected: seek and play
+    // Two events expected: seek and play
     XCTAssertEqual(count2, 2);
     
     [self expectationForElapsedTimeInterval:3. withHandler:nil];
