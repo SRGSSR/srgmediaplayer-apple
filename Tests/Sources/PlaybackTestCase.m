@@ -266,7 +266,13 @@ static NSURL *DVRTestURL(void)
     }];
     
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+        if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
+            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(0));
+            return YES;
+        }
+        else {
+            return NO;
+        }
     }];
     
     [self.mediaPlayerController playURL:OnDemandTestURL()];
@@ -290,10 +296,12 @@ static NSURL *DVRTestURL(void)
         if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateSeeking) {
             XCTAssertFalse(seekReceived);
             XCTAssertFalse(playReceived);
+            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(0));
             seekReceived = YES;
         }
         else if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
             XCTAssertFalse(playReceived);
+            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(2));
             playReceived = YES;
         }
         
