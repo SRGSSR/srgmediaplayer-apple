@@ -845,12 +845,12 @@ withToleranceBefore:(CMTime)toleranceBefore
     }
     
     if (self.targetSegment) {
-        [self processTransitionToSegment:self.targetSegment selected:YES interrupted:NO];
+        [self processTransitionToSegment:self.targetSegment selected:YES interrupted:YES];
         self.targetSegment = nil;
     }
     else {
         id<SRGSegment> segment = [self segmentForTime:time];
-        BOOL interrupted = NO;
+        BOOL interrupted = (previousPlaybackState == SRGMediaPlayerPlaybackStateSeeking);
         [self processTransitionToSegment:segment selected:NO interrupted:interrupted];
     }
 }
