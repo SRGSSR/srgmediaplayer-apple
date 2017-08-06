@@ -275,8 +275,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         return;
     }
     
+    SRGMediaPlayerPlaybackState previousPlaybackState = _playbackState;
+    
     NSMutableDictionary *fullUserInfo = [@{ SRGMediaPlayerPlaybackStateKey : @(playbackState),
-                                            SRGMediaPlayerPreviousPlaybackStateKey: @(_playbackState) } mutableCopy];
+                                            SRGMediaPlayerPreviousPlaybackStateKey: @(previousPlaybackState) } mutableCopy];
     fullUserInfo[SRGMediaPlayerSelectionKey] = @(self.targetSegment && ! self.targetSegment.srg_blocked);
     if (userInfo) {
         [fullUserInfo addEntriesFromDictionary:userInfo];
@@ -287,7 +289,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     [self didChangeValueForKey:@keypath(self.playbackState)];
     
     // Ensure segment status is up to date
-    [self updateSegmentStatusForPlaybackState:playbackState time:self.player.currentTime];
+    [self updateSegmentStatusForPlaybackState:playbackState previousPlaybackState:previousPlaybackState time:self.player.currentTime];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                         object:self
@@ -829,7 +831,9 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 #pragma mark Segments
 
-- (void)updateSegmentStatusForPlaybackState:(SRGMediaPlayerPlaybackState)playbackState time:(CMTime)time
+- (void)updateSegmentStatusForPlaybackState:(SRGMediaPlayerPlaybackState)playbackState
+                      previousPlaybackState:(SRGMediaPlayerPlaybackState)previousPlaybackState
+                                       time:(CMTime)time
 {
     if (CMTIME_IS_INVALID(time)) {
         return;
@@ -841,18 +845,19 @@ withToleranceBefore:(CMTime)toleranceBefore
     }
     
     if (self.targetSegment) {
-        [self processTransitionToSegment:self.targetSegment selected:YES];
+        [self processTransitionToSegment:self.targetSegment selected:YES interrupted:NO];
         self.targetSegment = nil;
     }
     else {
         id<SRGSegment> segment = [self segmentForTime:time];
-        [self processTransitionToSegment:segment selected:NO];
+        BOOL interrupted = NO;
+        [self processTransitionToSegment:segment selected:NO interrupted:interrupted];
     }
 }
 
 // Emit correct notifications for transitions (selected = NO for normal playback, YES if the segment has been selected)
-// and seek over blocked segments
-- (void)processTransitionToSegment:(id<SRGSegment>)segment selected:(BOOL)selected
+// and seek over blocked segments. interrupted is set to NO if playback
+- (void)processTransitionToSegment:(id<SRGSegment>)segment selected:(BOOL)selected interrupted:(BOOL)interrupted
 {
     // No segment transition. Nothing to do
     if (segment == self.previousSegment && ! selected) {
@@ -864,7 +869,8 @@ withToleranceBefore:(CMTime)toleranceBefore
         
         NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : self.previousSegment,
                                             SRGMediaPlayerSelectionKey : @(selected),
-                                            SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
+                                            SRGMediaPlayerSelectedKey : @(_selected),
+                                            SRGMediaPlayerInterruptionKey : @(interrupted) } mutableCopy];
         if (! segment.srg_blocked) {
             userInfo[SRGMediaPlayerNextSegmentKey] = segment;
         }
@@ -972,7 +978,7 @@ withToleranceBefore:(CMTime)toleranceBefore
     @weakify(self)
     self.segmentPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
-        [self updateSegmentStatusForPlaybackState:self.playbackState time:time];
+        [self updateSegmentStatusForPlaybackState:self.playbackState previousPlaybackState:self.playbackState time:time];
     }];
 }
 
