@@ -267,7 +267,7 @@ static NSURL *DVRTestURL(void)
     
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
-            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(0));
+            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 0);
             return YES;
         }
         else {
@@ -296,12 +296,12 @@ static NSURL *DVRTestURL(void)
         if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateSeeking) {
             XCTAssertFalse(seekReceived);
             XCTAssertFalse(playReceived);
-            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(0));
+            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 0);
             seekReceived = YES;
         }
         else if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
             XCTAssertFalse(playReceived);
-            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(2));
+            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 2);
             playReceived = YES;
         }
         
@@ -341,7 +341,7 @@ static NSURL *DVRTestURL(void)
     
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
-            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(0));
+            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 0);
             return YES;
         }
         else {
@@ -389,12 +389,12 @@ static NSURL *DVRTestURL(void)
         if (playerPlaybackState == SRGMediaPlayerPlaybackStateSeeking) {
             XCTAssertFalse(seekReceived);
             XCTAssertFalse(pauseReceived);
-            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(0));
+            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 0);
             seekReceived = YES;
         }
         else if (playerPlaybackState == SRGMediaPlayerPlaybackStatePaused) {
             XCTAssertFalse(pauseReceived);
-            XCTAssertEqualObjects(@(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime])), @(2));
+            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 2);
             pauseReceived = YES;
         }
         else {
