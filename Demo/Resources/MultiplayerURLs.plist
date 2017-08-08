@@ -6,14 +6,13 @@
 	<array>
 		<dict>
 			<key>name</key>
-			<string>Live</string>
+			<string>Example</string>
 			<key>url</key>
-			<string>https://wowza.jwplayer.com/live/jelly.stream/playlist.m3u8?DVR</string>
+			<string>http://ndr_fs-lh.akamaihd.net/i/ndrfs_nds@119224/master.m3u8?dw=0</string>
 			<key>secondaryUrls</key>
 			<array>
-				<string>https://wowza.jwplayer.com/live/jelly.stream/playlist.m3u8?DVR</string>
-				<string>https://wowza.jwplayer.com/live/jelly.stream/playlist.m3u8?DVR</string>
-				<string>http://fr-par-iphone-2.cdn.hexaglobe.net/streaming/euronews_ewns/9-live.m3u8</string>
+				<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+				<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8</string>
 			</array>
 		</dict>
 	</array>

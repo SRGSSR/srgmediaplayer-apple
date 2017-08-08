@@ -6,9 +6,9 @@
 	<array>
 		<dict>
 			<key>name</key>
-			<string>Clock</string>
+			<string>Livestream with DVR support</string>
 			<key>url</key>
-			<string>https://wowza.jwplayer.com/live/jelly.stream/playlist.m3u8?DVR</string>
+			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8</string>
 		</dict>
 	</array>
 </dict>
