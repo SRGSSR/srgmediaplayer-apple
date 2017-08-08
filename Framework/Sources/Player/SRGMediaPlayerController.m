@@ -60,6 +60,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @property (nonatomic) NSValue *startTimeValue;                      // Will be nilled when reached
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
 
+@property (nonatomic) CMTime seekTargetTime;
+
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
 
 @end
@@ -78,6 +80,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         self.liveTolerance = SRGMediaPlayerLiveDefaultTolerance;
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
+        
+        self.seekTargetTime = kCMTimeIndefinite;
     }
     return self;
 }
@@ -623,6 +627,8 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.initialTargetSegment = nil;
     self.initialStartTimeValue = nil;
     
+    self.seekTargetTime = kCMTimeIndefinite;
+    
     [self stopWithUserInfo:[userInfo copy]];
 }
 
@@ -784,8 +790,10 @@ withToleranceBefore:(CMTime)toleranceBefore
                                                             object:self
                                                           userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:time] }];
         
+        self.seekTargetTime = time;
         [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
             if (finished) {
+                self.seekTargetTime = kCMTimeIndefinite;
                 [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
             }
             completionHandler ? completionHandler(finished) : nil;
