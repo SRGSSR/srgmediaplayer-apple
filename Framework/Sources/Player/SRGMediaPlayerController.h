@@ -288,11 +288,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  playing. You can use the completion handler to change the player state if needed, e.g. to automatically
  *  resume playback after a seek has been performed on a paused player.
  *
- *  @param time              The time to start at. Use `kCMTimeZero` to start at the default location:
- *                             - For on-demand streams: At the beginning.
- *                             - For live and DVR streams: In live conditions, i.e. at the end of the stream.
- *                           If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
- *                           actual media time range will seek to the nearest location (either zero or the end time).
+ *  @param time              The time to seek to. If the time is invalid it will be set to `kCMTimeZero`. Setting a 
+ *                           start time outside the actual media time range will seek to the nearest location (either 
+ *                           zero or the end time).
  *  @param toleranceBefore   The tolerance allowed before `time`. Use `kCMTimePositiveInfinity` for no tolerance
  *                           requirements.
  *  @param toleranceAfter    The tolerance allowed after `time`. Use `kCMTimePositiveInfinity` for no tolerance
