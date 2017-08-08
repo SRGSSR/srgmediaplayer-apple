@@ -362,6 +362,11 @@ withToleranceBefore:(CMTime)toleranceBefore
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
+ *  The current time at which the player is seeking, `kCMTimeIndefinite` if none.
+ */
+@property (nonatomic, readonly) CMTime seekTargetTime;
+
+/**
  *  The media type (audio / video).
  */
 @property (nonatomic, readonly) SRGMediaPlayerMediaType mediaType;
