@@ -7,6 +7,7 @@
 #import "SRGMediaPlayerController.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
+#import "AVPlayer+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
 #import "SRGMediaPlayerError.h"
@@ -204,7 +205,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             
             // Do not let playback pause when the player stalls, attempt to play again
             if (player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
-                [player play];
+                [player srg_playImmediatelyIfPossible];
             }
             // Update the playback state immediately, except when reaching the end or seeking. Non-streamed medias will namely reach the paused state right before
             // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
@@ -569,13 +570,13 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     if (self.player) {
         // Normal conditions. Simply forward to the player
         if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
-            [self.player play];
+            [self.player srg_playImmediatelyIfPossible];
         }
         // Playback ended. Restart at the beginning. Use low-level API to avoid sending seek events
         else {
             [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
                 if (finished) {
-                    [self.player play];
+                    [self.player srg_playImmediatelyIfPossible];
                 }
             }];
         }
