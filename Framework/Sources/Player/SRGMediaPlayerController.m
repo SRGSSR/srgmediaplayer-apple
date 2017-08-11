@@ -654,11 +654,11 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)togglePlayPause
 {
-    if (! self.player || self.player.rate == 0.f) {
-        [self play];
+    if (self.player && self.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
+        [self pause];
     }
     else {
-        [self pause];
+        [self play];
     }
 }
 
