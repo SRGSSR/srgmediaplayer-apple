@@ -616,17 +616,15 @@ withToleranceBefore:(CMTime)toleranceBefore
         userInfo[SRGMediaPlayerPreviousUserInfoKey] = self.userInfo;
     }
     
-    // Reset player state before stopping (so that any state change notification reflects this new state)
+    // Reset input values before stopping (so that any state change notification reflects this new state)
     self.contentURL = nil;
     self.segments = nil;
     self.userInfo = nil;
     
-    // Clear input values
     self.initialTargetSegment = nil;
     self.initialStartTimeValue = nil;
     
-    self.seekTargetTime = kCMTimeIndefinite;
-    
+    // Stop last. Will notify plaback state change (with state updated correctly above).
     [self stopWithUserInfo:[userInfo copy]];
 }
 
@@ -815,9 +813,6 @@ withToleranceBefore:(CMTime)toleranceBefore
         self.player = nil;
     }
     
-    // The player is guaranteed to be nil when the idle notification is sent
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:userInfo];
-    
     _timeRange = kCMTimeRangeInvalid;
     
     self.previousSegment = nil;
@@ -826,6 +821,11 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     self.startTimeValue = nil;
     self.startCompletionHandler = nil;
+    
+    self.seekTargetTime = kCMTimeIndefinite;
+    
+    // The player is guaranteed to be nil when the idle notification is sent. Notify last to reflect an accurate state.
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:userInfo];
 }
 
 #pragma mark Configuration
