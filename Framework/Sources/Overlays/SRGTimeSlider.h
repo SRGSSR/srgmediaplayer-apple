@@ -78,6 +78,11 @@ IB_DESIGNABLE
 @property (nonatomic, null_resettable) IBInspectable UIColor *borderColor;
 
 /**
+ *  Buffering bar color (defaults to dark gray).
+ */
+@property (nonatomic, null_resettable) IBInspectable UIColor *bufferingTrackColor;
+
+/**
  *  The time corresponding to the current slider position.
  *
  *  @discussion While dragging, this property may not reflect the value current time property of the asset being played.
