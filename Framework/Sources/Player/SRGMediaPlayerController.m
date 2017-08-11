@@ -170,10 +170,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                 }
             }
             else if (playerItem.status == AVPlayerItemStatusFailed) {
-                [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
-                
-                self.startTimeValue = nil;
-                self.startCompletionHandler = nil;
+                [self stopWithUserInfo:nil];
                 
                 NSError *error = SRGMediaPlayerControllerError(playerItem.error);
                 [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
@@ -1070,10 +1067,7 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)srg_mediaPlayerController_playerItemFailedToPlayToEndTime:(NSNotification *)notification
 {
-    self.startTimeValue = nil;
-    self.startCompletionHandler = nil;
-    
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
+    [self stopWithUserInfo:nil];
     
     NSError *error = SRGMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
