@@ -153,9 +153,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.liveButton.layer.borderWidth = 1.f;
     
-    // Hide the time slider while the stream type is unknown (i.e. the needed slider label size cannot be determined)
-    [self setTimeSliderHidden:YES];
-    
     @weakify(self)
     self.periodicTimeObserver = [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
         @strongify(self)
@@ -168,13 +165,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
             if (s_mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
                 [self updateLiveButton];
             }
-            
-            [self setTimeSliderHidden:NO];
         }
-        else {
-            [self setTimeSliderHidden:YES];
-        }
+        
+        [self updateTopBar];
     }];
+    [self updateTopBar];
     
     [self resetInactivityTimer];
 }
@@ -227,20 +222,35 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 #pragma mark UI
 
-- (void)setTimeSliderHidden:(BOOL)hidden
+- (void)updateTopBar
 {
-    self.timeSlider.timeLeftValueLabel.hidden = hidden;
-    self.timeSlider.valueLabel.hidden = hidden;
-    self.timeSlider.hidden = hidden;
+    SRGMediaPlayerPlaybackState playbackState = s_mediaPlayerController.playbackState;
     
-    self.loadingActivityIndicatorView.hidden = ! hidden;
-    if (hidden) {
-        [self.loadingActivityIndicatorView startAnimating];
+    if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+        self.timeSlider.timeLeftValueLabel.hidden = YES;
+        self.timeSlider.valueLabel.hidden = YES;
+        self.timeSlider.hidden = YES;
+        
+        if (playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+            self.loadingLabel.hidden = NO;
+            self.loadingActivityIndicatorView.hidden = NO;
+            [self.loadingActivityIndicatorView startAnimating];
+        }
+        else {
+            self.loadingLabel.hidden = YES;
+            self.loadingActivityIndicatorView.hidden = YES;
+            [self.loadingActivityIndicatorView stopAnimating];
+        }
     }
     else {
+        self.timeSlider.timeLeftValueLabel.hidden = NO;
+        self.timeSlider.valueLabel.hidden = NO;
+        self.timeSlider.hidden = NO;
+        
+        self.loadingLabel.hidden = YES;
+        self.loadingActivityIndicatorView.hidden = YES;
         [self.loadingActivityIndicatorView stopAnimating];
     }
-    self.loadingLabel.hidden = ! hidden;
 }
 
 - (void)updateLiveButton
@@ -310,6 +320,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
             [self dismiss:nil];
         }
     }
+    
+    [self updateTopBar];
 }
 
 - (void)srg_mediaPlayerViewController_applicationDidBecomeActive:(NSNotification *)notification
