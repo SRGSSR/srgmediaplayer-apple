@@ -1086,6 +1086,30 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testStopWhileWhilePreparing
+{
+    // Wait until preparing
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] != SRGMediaPlayerPlaybackStatePreparing) {
+            return NO;
+        }
+        
+        // Stop early when the notification is received
+        [self.mediaPlayerController stop];
+        return YES;
+    }];
+    
+    // Pass empty collections as parameters
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[] userInfo:@{}];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertNil(self.mediaPlayerController.player);
+    XCTAssertNotNil(self.mediaPlayerController.contentURL);
+    XCTAssertNotNil(self.mediaPlayerController.segments);
+    XCTAssertNotNil(self.mediaPlayerController.userInfo);
+}
+
 - (void)testPlayAfterStop
 {
     // Wait until playing

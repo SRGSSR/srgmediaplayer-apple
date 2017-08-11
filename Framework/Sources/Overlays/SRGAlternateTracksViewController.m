@@ -10,7 +10,7 @@
 @interface SRGAlternateTracksViewController ()
 
 @property (nonatomic) NSArray<NSString *> *characteristics;
-@property (nonatomic) NSDictionary<NSString *, AVMediaSelectionGroup *> *tracksGroupByCharacteristics;
+@property (nonatomic) NSDictionary<NSString *, AVMediaSelectionGroup *> *selectionGroups;
 
 @property (nonatomic) AVPlayer *player;
 
@@ -37,26 +37,34 @@
 {
     _player = player;
     
-    AVMediaSelectionGroup *legibleGroup = [_player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-    AVMediaSelectionGroup *audioGroup = [_player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-    if (audioGroup.options.count < 2) {
-        audioGroup = nil;
+    AVPlayerItem *playerItem = _player.currentItem;
+    
+    // Do not check tracks before the player item is ready to play (otherwise AVPlayer will internally wait on semaphores,
+    // locking the main thread).
+    if (playerItem && playerItem.status == AVPlayerItemStatusReadyToPlay) {
+        NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
+        NSMutableDictionary<NSString *, AVMediaSelectionGroup *> *selectionGroups = [NSMutableDictionary dictionary];
+        
+        AVMediaSelectionGroup *legibleGroup = [_player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        if (legibleGroup) {
+            [characteristics addObject:AVMediaCharacteristicLegible];
+            selectionGroups[AVMediaCharacteristicLegible] = legibleGroup;
+        }
+        
+        AVMediaSelectionGroup *audioGroup = [_player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        if (audioGroup.options.count > 1) {
+            [characteristics addObject:AVMediaCharacteristicAudible];
+            selectionGroups[AVMediaCharacteristicAudible] = audioGroup;
+        }
+        
+        self.characteristics = [characteristics copy];
+        self.selectionGroups = [selectionGroups copy];
+    }
+    else {
+        self.characteristics = nil;
+        self.selectionGroups = nil;
     }
     
-    self.characteristics = @[];
-    NSMutableDictionary *tracksGroupByCharacteristics = @{}.mutableCopy;
-    
-    tracksGroupByCharacteristics[AVMediaCharacteristicLegible] = legibleGroup;
-    tracksGroupByCharacteristics[AVMediaCharacteristicAudible] = audioGroup;
-    
-    if (legibleGroup) {
-        self.characteristics = [self.characteristics arrayByAddingObject:AVMediaCharacteristicLegible];
-    }
-    if (audioGroup) {
-        self.characteristics = [self.characteristics arrayByAddingObject:AVMediaCharacteristicAudible];
-    }
-    
-    self.tracksGroupByCharacteristics = tracksGroupByCharacteristics.copy;
     [self.tableView reloadData];
 }
 
@@ -87,6 +95,19 @@
     }
     else {
         self.view.backgroundColor = [UIColor clearColor];
+    }
+}
+
+#pragma mark Accessibility
+
+- (BOOL)accessibilityPerformEscape
+{
+    if (self.presentingViewController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return YES;
+    }
+    else {
+        return NO;
     }
 }
 
@@ -125,7 +146,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSString *characteristic = self.characteristics[section];
-    AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
+    AVMediaSelectionGroup *group = self.selectionGroups[characteristic];
     return (characteristic == AVMediaCharacteristicLegible) ? group.options.count + 1 : group.options.count;
 }
 
@@ -139,7 +160,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *characteristic = self.characteristics[indexPath.section];
-    AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
+    AVMediaSelectionGroup *group = self.selectionGroups[characteristic];
     
     if (characteristic == AVMediaCharacteristicLegible && indexPath.row == 0) {
         cell.textLabel.text = SRGMediaPlayerLocalizedString(@"No subtitles", @"Option to remove subtitles in alternate tracks popup menu");
@@ -147,7 +168,7 @@
         cell.accessoryType = currentOptionInGroup ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
     }
     else {
-        AVMediaSelectionOption *option = (characteristic == AVMediaCharacteristicLegible) ? group.options[indexPath.row -1] : group.options[indexPath.row];
+        AVMediaSelectionOption *option = (characteristic == AVMediaCharacteristicLegible) ? group.options[indexPath.row - 1] : group.options[indexPath.row];
         cell.textLabel.text = option.displayName;
         
         AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
@@ -160,11 +181,11 @@
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSString *characteristic = self.characteristics[indexPath.section];
-    AVMediaSelectionGroup *group = self.tracksGroupByCharacteristics[characteristic];
+    AVMediaSelectionGroup *group = self.selectionGroups[characteristic];
     AVMediaSelectionOption *option = nil;
     
     if (characteristic != AVMediaCharacteristicLegible || indexPath.row != 0)  {
-        option = (characteristic == AVMediaCharacteristicLegible) ? group.options[indexPath.row -1] : group.options[indexPath.row];
+        option = (characteristic == AVMediaCharacteristicLegible) ? group.options[indexPath.row - 1] : group.options[indexPath.row];
     }
     
     [self.player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
@@ -179,23 +200,11 @@
 }
 
 #pragma mark Actions
+
 - (void)done:(id)sender
 {
     [self dismissViewControllerAnimated:YES
                              completion:nil];
-}
-
-#pragma mark Accessibility
-
-- (BOOL)accessibilityPerformEscape
-{
-    if (self.presentingViewController) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        return YES;
-    }
-    else {
-        return NO;
-    }
 }
 
 @end

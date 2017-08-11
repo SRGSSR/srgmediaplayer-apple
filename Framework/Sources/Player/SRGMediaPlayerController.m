@@ -170,10 +170,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                 }
             }
             else if (playerItem.status == AVPlayerItemStatusFailed) {
-                [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
-                
-                self.startTimeValue = nil;
-                self.startCompletionHandler = nil;
+                [self stopWithUserInfo:nil];
                 
                 NSError *error = SRGMediaPlayerControllerError(playerItem.error);
                 [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
@@ -619,17 +616,15 @@ withToleranceBefore:(CMTime)toleranceBefore
         userInfo[SRGMediaPlayerPreviousUserInfoKey] = self.userInfo;
     }
     
-    // Reset player state before stopping (so that any state change notification reflects this new state)
+    // Reset input values before stopping (so that any state change notification reflects this new state)
     self.contentURL = nil;
     self.segments = nil;
     self.userInfo = nil;
     
-    // Clear input values
     self.initialTargetSegment = nil;
     self.initialStartTimeValue = nil;
     
-    self.seekTargetTime = kCMTimeIndefinite;
-    
+    // Stop last. Will notify plaback state change (with state updated correctly above).
     [self stopWithUserInfo:[userInfo copy]];
 }
 
@@ -654,11 +649,11 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)togglePlayPause
 {
-    if (! self.player || self.player.rate == 0.f) {
-        [self play];
+    if (self.player && self.player.rate == 1.f) {
+        [self pause];
     }
     else {
-        [self pause];
+        [self play];
     }
 }
 
@@ -754,8 +749,6 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.userInfo = userInfo;
     self.targetSegment = targetSegment;
     
-    [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
-    
     self.startTimeValue = [NSValue valueWithCMTime:time];
     self.startCompletionHandler = completionHandler;
     
@@ -765,6 +758,10 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
+    
+    // Notify the state change last. If clients repond to the preparing state change notification, the state need to
+    // be fully consistent first.
+    [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
 }
 
 - (void)seekToTime:(CMTime)time
@@ -816,9 +813,6 @@ withToleranceBefore:(CMTime)toleranceBefore
         self.player = nil;
     }
     
-    // The player is guaranteed to be nil when the idle notification is sent
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:userInfo];
-    
     _timeRange = kCMTimeRangeInvalid;
     
     self.previousSegment = nil;
@@ -827,6 +821,11 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     self.startTimeValue = nil;
     self.startCompletionHandler = nil;
+    
+    self.seekTargetTime = kCMTimeIndefinite;
+    
+    // The player is guaranteed to be nil when the idle notification is sent. Notify last to reflect an accurate state.
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:userInfo];
 }
 
 #pragma mark Configuration
@@ -1068,10 +1067,7 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)srg_mediaPlayerController_playerItemFailedToPlayToEndTime:(NSNotification *)notification
 {
-    self.startTimeValue = nil;
-    self.startCompletionHandler = nil;
-    
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:nil];
+    [self stopWithUserInfo:nil];
     
     NSError *error = SRGMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
