@@ -754,8 +754,6 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.userInfo = userInfo;
     self.targetSegment = targetSegment;
     
-    [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
-    
     self.startTimeValue = [NSValue valueWithCMTime:time];
     self.startCompletionHandler = completionHandler;
     
@@ -765,6 +763,10 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     AVPlayerItem *playerItem = [[AVPlayerItem alloc] initWithURL:URL];
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
+    
+    // Notify the state change last. If clients repond to the preparing state change notification, the state need to
+    // be fully consistent first.
+    [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
 }
 
 - (void)seekToTime:(CMTime)time
