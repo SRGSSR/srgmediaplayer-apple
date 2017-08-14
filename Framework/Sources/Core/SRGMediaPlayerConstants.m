@@ -32,6 +32,7 @@ NSString * const SRGMediaPlayerDidSkipBlockedSegmentNotification = @"SRGMediaPla
 
 NSString * const SRGMediaPlayerSegmentKey = @"SRGMediaPlayerSegmentKey";
 NSString * const SRGMediaPlayerSelectedKey = @"SRGMediaPlayerSelectedKey";
+NSString * const SRGMediaPlayerPreviousTimeKey = @"SRGMediaPlayerPreviousTimeKey";
 NSString * const SRGMediaPlayerPreviousSegmentKey = @"SRGMediaPlayerPreviousSegmentKey";
 NSString * const SRGMediaPlayerNextSegmentKey = @"SRGMediaPlayerNextSegmentKey";
 NSString * const SRGMediaPlayerInterruptionKey = @"SRGMediaPlayerInterruptionKey";

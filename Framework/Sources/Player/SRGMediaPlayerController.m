@@ -881,6 +881,10 @@ withToleranceBefore:(CMTime)toleranceBefore
         if (! segment.srg_blocked) {
             userInfo[SRGMediaPlayerNextSegmentKey] = segment;
         }
+        if (interrupted) {
+            // TODO: Time
+            userInfo[SRGMediaPlayerPreviousTimeKey] = [NSValue valueWithCMTime:kCMTimeZero];
+        }
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
                                                             object:self
                                                           userInfo:[userInfo copy]];
@@ -900,6 +904,10 @@ withToleranceBefore:(CMTime)toleranceBefore
                                                 SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
             if (self.previousSegment && ! self.previousSegment.srg_blocked) {
                 userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
+            }
+            if (selected) {
+                // TODO: Time
+                userInfo[SRGMediaPlayerPreviousTimeKey] = [NSValue valueWithCMTime:kCMTimeZero];
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
                                                                 object:self
