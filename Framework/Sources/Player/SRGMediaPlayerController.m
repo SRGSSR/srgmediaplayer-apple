@@ -807,13 +807,16 @@ withToleranceBefore:(CMTime)toleranceBefore
         [self.pictureInPictureController stopPictureInPicture];
     }
     
+    NSMutableDictionary *fullUserInfo = [userInfo mutableCopy] ?: [NSMutableDictionary dictionary];
+    
     // Only reset if needed (this would otherwise lazily instantiate the view again and create potential issues)
     if (self.player) {
+        fullUserInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:self.player.currentTime];
         self.player = nil;
     }
     
     // The player is guaranteed to be nil when the idle notification is sent
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:userInfo];
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:[fullUserInfo copy]];
     
     _timeRange = kCMTimeRangeInvalid;
     
