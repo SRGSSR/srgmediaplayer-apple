@@ -883,7 +883,7 @@ withToleranceBefore:(CMTime)toleranceBefore
         }
         if (interrupted) {
             // TODO: Time
-            userInfo[SRGMediaPlayerPreviousTimeKey] = [NSValue valueWithCMTime:kCMTimeZero];
+            userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:kCMTimeZero];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
                                                             object:self
@@ -907,7 +907,7 @@ withToleranceBefore:(CMTime)toleranceBefore
             }
             if (selected) {
                 // TODO: Time
-                userInfo[SRGMediaPlayerPreviousTimeKey] = [NSValue valueWithCMTime:kCMTimeZero];
+                userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:kCMTimeZero];
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
                                                                 object:self
