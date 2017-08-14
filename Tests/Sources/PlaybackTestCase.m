@@ -1037,6 +1037,9 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
         
+        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey]);
+        XCTAssertEqual(CMTimeCompare([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], kCMTimeZero), 0);
+        
         return YES;
     }];
     
@@ -1073,6 +1076,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         // No previous playback information since it has not changed
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+        
+        XCTAssertEqual(CMTimeCompare([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], kCMTimeZero), 0);
         
         return YES;
     }];
