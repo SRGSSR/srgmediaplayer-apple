@@ -61,6 +61,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @property (nonatomic) NSValue *startTimeValue;                      // Will be nilled when reached
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
 
+@property (nonatomic) CMTime seekStartTime;
 @property (nonatomic) CMTime seekTargetTime;
 
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
@@ -82,6 +83,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         self.liveTolerance = SRGMediaPlayerLiveDefaultTolerance;
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
         
+        self.seekStartTime = kCMTimeIndefinite;
         self.seekTargetTime = kCMTimeIndefinite;
     }
     return self;
@@ -787,11 +789,18 @@ withToleranceBefore:(CMTime)toleranceBefore
                                                             object:self
                                                           userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:time] }];
         
+        // Only store the origin in case of multiple seeks, but update the target
+        if (CMTIME_IS_INDEFINITE(self.seekStartTime)) {
+            self.seekStartTime = self.player.currentTime;
+        }
         self.seekTargetTime = time;
+        
         [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
             if (finished) {
-                self.seekTargetTime = kCMTimeIndefinite;
                 [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+                
+                self.seekStartTime = kCMTimeIndefinite;
+                self.seekTargetTime = kCMTimeIndefinite;
             }
             completionHandler ? completionHandler(finished) : nil;
         }];
@@ -884,9 +893,8 @@ withToleranceBefore:(CMTime)toleranceBefore
         if (! segment.srg_blocked) {
             userInfo[SRGMediaPlayerNextSegmentKey] = segment;
         }
-        if (interrupted) {
-            // TODO: Time
-            userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:kCMTimeZero];
+        if (interrupted && ! CMTIME_IS_INDEFINITE(self.seekStartTime)) {
+            userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:self.seekStartTime];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
                                                             object:self
@@ -908,9 +916,8 @@ withToleranceBefore:(CMTime)toleranceBefore
             if (self.previousSegment && ! self.previousSegment.srg_blocked) {
                 userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
             }
-            if (selected) {
-                // TODO: Time
-                userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:kCMTimeZero];
+            if (selected && ! CMTIME_IS_INDEFINITE(self.seekStartTime)) {
+                userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:self.seekStartTime];
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
                                                                 object:self

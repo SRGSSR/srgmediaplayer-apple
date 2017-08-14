@@ -362,6 +362,11 @@ withToleranceBefore:(CMTime)toleranceBefore
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
+ *  The original time at which the player started seeking, `kCMTimeIndefinite` if none.
+ */
+@property (nonatomic, readonly) CMTime seekStartTime;
+
+/**
  *  The current time at which the player is seeking, `kCMTimeIndefinite` if none.
  */
 @property (nonatomic, readonly) CMTime seekTargetTime;
