@@ -1070,7 +1070,6 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
         
-        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey]);
         TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
         
         return YES;
