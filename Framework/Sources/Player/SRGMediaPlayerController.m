@@ -787,7 +787,8 @@ withToleranceBefore:(CMTime)toleranceBefore
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSeekNotification
                                                             object:self
-                                                          userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:time] }];
+                                                          userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:time],
+                                                                      SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:self.player.currentTime] }];
         
         // Only store the origin in case of multiple seeks, but update the target
         if (CMTIME_IS_INDEFINITE(self.seekStartTime)) {
