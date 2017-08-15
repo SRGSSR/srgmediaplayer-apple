@@ -884,18 +884,18 @@ withToleranceBefore:(CMTime)toleranceBefore
         return;
     }
     
+    CMTime lastPlaybackTime = CMTIME_IS_INDEFINITE(self.seekStartTime) ? self.player.currentTime : self.seekStartTime;
+    
     if (self.previousSegment && ! self.previousSegment.srg_blocked) {
         self.currentSegment = nil;
         
         NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : self.previousSegment,
                                             SRGMediaPlayerSelectionKey : @(selected),
                                             SRGMediaPlayerSelectedKey : @(_selected),
-                                            SRGMediaPlayerInterruptionKey : @(interrupted) } mutableCopy];
+                                            SRGMediaPlayerInterruptionKey : @(interrupted),
+                                            SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:lastPlaybackTime] } mutableCopy];
         if (! segment.srg_blocked) {
             userInfo[SRGMediaPlayerNextSegmentKey] = segment;
-        }
-        if (interrupted && ! CMTIME_IS_INDEFINITE(self.seekStartTime)) {
-            userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:self.seekStartTime];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
                                                             object:self
@@ -913,12 +913,10 @@ withToleranceBefore:(CMTime)toleranceBefore
             
             NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : segment,
                                                 SRGMediaPlayerSelectionKey : @(_selected),
-                                                SRGMediaPlayerSelectedKey : @(_selected) } mutableCopy];
+                                                SRGMediaPlayerSelectedKey : @(_selected),
+                                                SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:lastPlaybackTime] } mutableCopy];
             if (self.previousSegment && ! self.previousSegment.srg_blocked) {
                 userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
-            }
-            if (selected && ! CMTIME_IS_INDEFINITE(self.seekStartTime)) {
-                userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:self.seekStartTime];
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
                                                                 object:self
@@ -955,11 +953,11 @@ withToleranceBefore:(CMTime)toleranceBefore
 {
     NSAssert(segment.srg_blocked, @"Expect a blocked segment");
     
-    NSValue *lastPlaybackTime = [NSValue valueWithCMTime:self.player.currentTime];
+    NSValue *lastPlaybackTimeValue = [NSValue valueWithCMTime:self.player.currentTime];
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
                                                         object:self
                                                       userInfo:@{ SRGMediaPlayerSegmentKey : segment,
-                                                                  SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTime }];
+                                                                  SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTimeValue }];
     
     SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ will be skipped", segment);
     
@@ -975,7 +973,7 @@ withToleranceBefore:(CMTime)toleranceBefore
        [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                            object:self
                                                          userInfo:@{ SRGMediaPlayerSegmentKey : segment,
-                                                                     SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTime}];
+                                                                     SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTimeValue}];
        
        SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ was skipped", segment);
        
