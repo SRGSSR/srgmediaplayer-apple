@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "TestMacros.h"
+
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <XCTest/XCTest.h>
@@ -73,7 +75,8 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
     XCTAssertEqual(mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
-    XCTAssertTrue(CMTIME_IS_INDEFINITE(mediaPlayerController.seekTargetTime));
+    TestAssertIndefiniteTime(mediaPlayerController.seekStartTime);
+    TestAssertIndefiniteTime(mediaPlayerController.seekTargetTime);
 }
 
 - (void)testPrepare
@@ -89,7 +92,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
     }];
     
-    XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -298,7 +302,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
-            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 0);
+            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 0);
             return YES;
         }
         else {
@@ -312,7 +316,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         [[NSNotificationCenter defaultCenter] removeObserver:eventObserver1];
     }];
     
-    XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
     
     // Two events expected: preparing and playing
     XCTAssertEqual(count1, 2);
@@ -329,12 +334,12 @@ static NSURL *AudioOverHTTPTestURL(void)
         if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateSeeking) {
             XCTAssertFalse(seekReceived);
             XCTAssertFalse(playReceived);
-            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 0);
+            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 0);
             seekReceived = YES;
         }
         else if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
             XCTAssertFalse(playReceived);
-            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 2);
+            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 2);
             playReceived = YES;
         }
         
@@ -342,13 +347,16 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     [self.mediaPlayerController seekPreciselyToTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withCompletionHandler:nil];
-    XCTAssertTrue(CMTIME_IS_VALID(self.mediaPlayerController.seekTargetTime));
+    
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 0);
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 2);
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:eventObserver2];
     }];
     
-    XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
     
     // Two events expected: seek and play
     XCTAssertEqual(count2, 2);
@@ -377,7 +385,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
-            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 0);
+            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 0);
             return YES;
         }
         else {
@@ -391,7 +399,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         [[NSNotificationCenter defaultCenter] removeObserver:eventObserver1];
     }];
     
-    XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
     
     // Two events expected: preparing and playing
     XCTAssertEqual(count1, 2);
@@ -411,7 +420,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         [[NSNotificationCenter defaultCenter] removeObserver:eventObserver2];
     }];
     
-    XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
     
     // One event expected: paused
     XCTAssertEqual(count2, 1);
@@ -429,12 +439,12 @@ static NSURL *AudioOverHTTPTestURL(void)
         if (playerPlaybackState == SRGMediaPlayerPlaybackStateSeeking) {
             XCTAssertFalse(seekReceived);
             XCTAssertFalse(pauseReceived);
-            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 0);
+            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 0);
             seekReceived = YES;
         }
         else if (playerPlaybackState == SRGMediaPlayerPlaybackStatePaused) {
             XCTAssertFalse(pauseReceived);
-            XCTAssertEqual(CMTimeGetSeconds([self.mediaPlayerController.player.currentItem currentTime]), 2);
+            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 2);
             pauseReceived = YES;
         }
         else {
@@ -446,13 +456,15 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController seekEfficientlyToTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withCompletionHandler:nil];
     
-    XCTAssertTrue(CMTIME_IS_VALID(self.mediaPlayerController.seekTargetTime));
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 0);
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 2);
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:eventObserver3];
     }];
     
-    XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
     
     // two events expected: seek and pause
     XCTAssertEqual(count3, 2);
@@ -814,7 +826,8 @@ static NSURL *AudioOverHTTPTestURL(void)
             return NO;
         }
         
-        XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+        TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+        TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
         
         [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
             // No seek could have interrupted this one
@@ -823,15 +836,17 @@ static NSURL *AudioOverHTTPTestURL(void)
             // The player must still be paused after the seek
             XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePaused);
             
-            XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+            TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+            TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
             [seekFinishedExpectation fulfill];
         }];
         
-        XCTAssertTrue(CMTIME_IS_VALID(self.mediaPlayerController.seekTargetTime));
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 2);
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 30);
         return YES;
     }];
     
-    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() withCompletionHandler:nil];
+    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withSegments:nil userInfo:nil completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -846,7 +861,8 @@ static NSURL *AudioOverHTTPTestURL(void)
             return NO;
         }
         
-        XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+        TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+        TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
         
         [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
             // No seek could have interrupted this one
@@ -855,15 +871,17 @@ static NSURL *AudioOverHTTPTestURL(void)
             // The player must still be playing after the seek
             XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
             
-            XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+            TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+            TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
             [seekFinishedExpectation fulfill];
         }];
         
-        XCTAssertTrue(CMTIME_IS_VALID(self.mediaPlayerController.seekTargetTime));
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 2);
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 30);
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -879,15 +897,14 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    CMTime time = CMTimeMakeWithSeconds(30., NSEC_PER_SEC);
-    
     [self expectationForNotification:SRGMediaPlayerSeekNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateSeeking);
-        XCTAssertTrue(CMTIME_COMPARE_INLINE([notification.userInfo[SRGMediaPlayerSeekTimeKey] CMTimeValue], ==, time));
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerSeekTimeKey] CMTimeValue], 30);
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
         return YES;
     }];
     
-    [self.mediaPlayerController seekToTime:time withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:nil];
+    [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -898,7 +915,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTFail(@"The completion handler must not be called since a seek must do nothing if the media was not prepared");
     }];
     XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
-    XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+    TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
 }
 
 - (void)testSeekInterruption
@@ -911,28 +929,33 @@ static NSURL *AudioOverHTTPTestURL(void)
             return NO;
         }
         
-        XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+        TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+        TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
         
         [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
             // This seek must have been interrupted by the second one
             XCTAssertFalse(finished);
             XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateSeeking);
-            XCTAssertTrue(CMTIME_IS_VALID(self.mediaPlayerController.seekTargetTime));
+            
+            TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 2);
+            TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 50);
         }];
         [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(50., NSEC_PER_SEC) withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
             XCTAssertTrue(finished);
             XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
-            XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+            TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+            TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
             
             [seekFinishedExpectation fulfill];
         }];
         
-        XCTAssertTrue(CMTIME_IS_VALID(self.mediaPlayerController.seekTargetTime));
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 2);
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 50);
         
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -947,28 +970,33 @@ static NSURL *AudioOverHTTPTestURL(void)
             return NO;
         }
         
-        XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+        TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+        TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
         
         [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(30., NSEC_PER_SEC) withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
             // This seek must have been interrupted by the second one
             XCTAssertFalse(finished);
             XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateSeeking);
-            XCTAssertTrue(CMTIME_IS_VALID(self.mediaPlayerController.seekTargetTime));
+            
+            TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 2);
+            TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 50);
         }];
         [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(50., NSEC_PER_SEC) withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
             XCTAssertTrue(finished);
             XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePlaying);
-            XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+            TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+            TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
             
             [seekFinishedExpectation fulfill];
         }];
         
-        XCTAssertTrue(CMTIME_IS_VALID(self.mediaPlayerController.seekTargetTime));
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 2);
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 50);
         
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -992,18 +1020,23 @@ static NSURL *AudioOverHTTPTestURL(void)
                 
                 if (i != kSeekCount - 1) {
                     XCTAssertFalse(finished);
-                    XCTAssertTrue(CMTIME_IS_VALID(self.mediaPlayerController.seekTargetTime));
+                    
+                    // The start time must remain constant while seeks are piling up. The end time changes and is therefore
+                    // difficult to test reliably when several seeks are interrupted.
+                    TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 0);
                 }
                 else {
                     XCTAssertTrue(finished);
                     XCTAssertEqual(finishedSeekCount, kSeekCount);
-                    XCTAssertTrue(CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime));
+                    TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
+                    TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
                     [seekFinishedExpectation fulfill];
                 }
             }];
         }
         
-        XCTAssertTrue(CMTIME_IS_VALID(self.mediaPlayerController.seekTargetTime));
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 0);
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 10. + (kSeekCount - 1) * 5.);
         return YES;
     }];
     
@@ -1020,7 +1053,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     // Pass empty collections as parameters
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[] userInfo:@{}];
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withSegments:@[] userInfo:@{}];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1036,6 +1069,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         // Receive previous playback information since it has changed
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+        
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
         
         return YES;
     }];
@@ -1073,6 +1108,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         // No previous playback information since it has not changed
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+        
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
         
         return YES;
     }];
