@@ -177,7 +177,8 @@ OBJC_EXTERN NSString * const SRGMediaPlayerInterruptionKey;                     
 OBJC_EXTERN NSString * const SRGMediaPlayerSelectionKey;                                    // Key to an `NSNumber` wrapping a boolean, set to `YES` iff the notification results from a segment selection.
 
 // Information available for `SRGMediaPlayerPlaybackStateDidChangeNotification`, `SRGMediaPlayerPlaybackDidFailNotification`,
-// `SRGMediaPlayerSegmentDidStartNotification` and `SRGMediaPlayerSegmentDidEndNotification`.
+// `SRGMediaPlayerSegmentDidStartNotification`, `SRGMediaPlayerSegmentDidEndNotification`, `SRGMediaPlayerWillSkipBlockedSegmentNotification`
+// and `SRGMediaPlayerDidSkipBlockedSegmentNotification`.
 OBJC_EXPORT NSString * const SRGMediaPlayerLastPlaybackTimeKey;                             // Key to an `NSValue` wrapping a `CMTime` specifying the valid definite previous playback position before a (discontinuous) segment transition occurred.
 
 NS_ASSUME_NONNULL_END

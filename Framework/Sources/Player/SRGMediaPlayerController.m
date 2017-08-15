@@ -954,9 +954,11 @@ withToleranceBefore:(CMTime)toleranceBefore
 {
     NSAssert(segment.srg_blocked, @"Expect a blocked segment");
     
+    NSValue *lastPlaybackTime = [NSValue valueWithCMTime:self.player.currentTime];
     [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
                                                         object:self
-                                                      userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
+                                                      userInfo:@{ SRGMediaPlayerSegmentKey : segment,
+                                                                  SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTime }];
     
     SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ will be skipped", segment);
     
@@ -971,7 +973,8 @@ withToleranceBefore:(CMTime)toleranceBefore
        // so that consecutive notifications are received in the correct order
        [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                            object:self
-                                                         userInfo:@{ SRGMediaPlayerSegmentKey : segment }];
+                                                         userInfo:@{ SRGMediaPlayerSegmentKey : segment,
+                                                                     SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTime}];
        
        SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ was skipped", segment);
        
