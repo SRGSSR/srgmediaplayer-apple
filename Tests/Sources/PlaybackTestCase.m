@@ -1068,6 +1068,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         
         // Receive previous playback information since it has changed
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
+        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousTimeRangeKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
@@ -1110,6 +1111,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         // No previous playback information since it has not changed
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey]);
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTimeRangeKey]);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey]);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
         
@@ -1233,6 +1235,9 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     SRGMediaPlayerMediaType mediaType = self.mediaPlayerController.mediaType;
     SRGMediaPlayerStreamType streamType = self.mediaPlayerController.streamType;
+    CMTimeRange timeRange = self.mediaPlayerController.timeRange;
+    NSInteger start = (NSInteger)CMTimeGetSeconds(timeRange.start);
+    NSInteger duration = (NSInteger)CMTimeGetSeconds(timeRange.duration);
     
     // Wait until playing again. Expect a playback state change to idle, then to play
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -1242,6 +1247,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         
         // Expect previous playback information since it has changed
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousContentURLKey], OnDemandTestURL());
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerPreviousTimeRangeKey] CMTimeRangeValue].start, start);
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerPreviousTimeRangeKey] CMTimeRangeValue].duration, duration);
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey], @(mediaType));
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey], @(streamType));
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey], userInfo);
