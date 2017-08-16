@@ -614,6 +614,8 @@ withToleranceBefore:(CMTime)toleranceBefore
     if (self.contentURL) {
         userInfo[SRGMediaPlayerPreviousContentURLKey] = self.contentURL;
     }
+    userInfo[SRGMediaPlayerPreviousMediaTypeKey] = @(self.mediaType);
+    userInfo[SRGMediaPlayerPreviousStreamTypeKey] = @(self.streamType);
     if (self.userInfo) {
         userInfo[SRGMediaPlayerPreviousUserInfoKey] = self.userInfo;
     }
