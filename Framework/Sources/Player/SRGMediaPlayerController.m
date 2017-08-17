@@ -614,6 +614,9 @@ withToleranceBefore:(CMTime)toleranceBefore
     if (self.contentURL) {
         userInfo[SRGMediaPlayerPreviousContentURLKey] = self.contentURL;
     }
+    userInfo[SRGMediaPlayerPreviousTimeRangeKey] = [NSValue valueWithCMTimeRange:self.timeRange];
+    userInfo[SRGMediaPlayerPreviousMediaTypeKey] = @(self.mediaType);
+    userInfo[SRGMediaPlayerPreviousStreamTypeKey] = @(self.streamType);
     if (self.userInfo) {
         userInfo[SRGMediaPlayerPreviousUserInfoKey] = self.userInfo;
     }
