@@ -1220,7 +1220,7 @@ static NSURL *SegmentsTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    // Incorrect. Playback will start at the default location. Check that nothing
+    // Incorrect. Playback will start at the default location.
     [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
