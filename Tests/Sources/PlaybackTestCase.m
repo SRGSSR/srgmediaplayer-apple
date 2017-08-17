@@ -1110,10 +1110,12 @@ static NSURL *AudioOverHTTPTestURL(void)
         
         // No previous playback information since it has not changed
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
-        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey]);
-        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTimeRangeKey]);
-        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey]);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+        
+        // Previous playback information since it has changed
+        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey]);
+        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousTimeRangeKey]);
+        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey]);
         
         TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
         

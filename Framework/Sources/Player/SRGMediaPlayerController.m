@@ -614,9 +614,6 @@ withToleranceBefore:(CMTime)toleranceBefore
     if (self.contentURL) {
         userInfo[SRGMediaPlayerPreviousContentURLKey] = self.contentURL;
     }
-    userInfo[SRGMediaPlayerPreviousTimeRangeKey] = [NSValue valueWithCMTimeRange:self.timeRange];
-    userInfo[SRGMediaPlayerPreviousMediaTypeKey] = @(self.mediaType);
-    userInfo[SRGMediaPlayerPreviousStreamTypeKey] = @(self.streamType);
     if (self.userInfo) {
         userInfo[SRGMediaPlayerPreviousUserInfoKey] = self.userInfo;
     }
@@ -825,6 +822,9 @@ withToleranceBefore:(CMTime)toleranceBefore
     // Only reset if needed (this would otherwise lazily instantiate the view again and create potential issues)
     if (self.player) {
         fullUserInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:self.player.currentTime];
+        fullUserInfo[SRGMediaPlayerPreviousTimeRangeKey] = [NSValue valueWithCMTimeRange:self.timeRange];
+        fullUserInfo[SRGMediaPlayerPreviousMediaTypeKey] = @(self.mediaType);
+        fullUserInfo[SRGMediaPlayerPreviousStreamTypeKey] = @(self.streamType);
         self.player = nil;
     }
     
