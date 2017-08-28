@@ -32,6 +32,8 @@
 		6F5D66461DAFCDF1009AD6DD /* SRGAirplayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D66441DAFCDF1009AD6DD /* SRGAirplayButton.m */; };
 		6F68E7581DAE0877001F39C4 /* SRGMediaPlayerView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */; };
 		6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */; };
+		6F90A56A1F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F90A5681F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h */; };
+		6F90A56B1F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F90A5691F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m */; };
 		6F97C7981E7A89C5001AD9B3 /* ModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */; };
 		6FA09D2A1D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */; };
 		6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -239,10 +241,13 @@
 		6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayerView+Private.h"; sourceTree = "<group>"; };
 		6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Demo.h"; sourceTree = "<group>"; };
 		6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Demo.m"; sourceTree = "<group>"; };
+		6F90A5681F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVPlayer+SRGMediaPlayer.h"; sourceTree = "<group>"; };
+		6F90A5691F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVPlayer+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		6F97C7961E7A89C5001AD9B3 /* ModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalTransition.h; sourceTree = "<group>"; };
 		6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalTransition.m; sourceTree = "<group>"; };
 		6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerLogger.h; sourceTree = "<group>"; };
 		6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
+		6FA1D6081F42C13E00C85D15 /* TestMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMacros.h; sourceTree = "<group>"; };
 		6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
 		6FEB51601DB0A8FA002D1751 /* airplay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airplay.png; sourceTree = "<group>"; };
 		6FEB51611DB0A8FB002D1751 /* airplay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airplay@2x.png"; sourceTree = "<group>"; };
@@ -406,6 +411,14 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		6FA1D6071F42C11600C85D15 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6FA1D6081F42C13E00C85D15 /* TestMacros.h */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		C201D8EC1A9DC1A40016C629 = {
 			isa = PBXGroup;
 			children = (
@@ -541,6 +554,7 @@
 		E69A1FDC1D61C6D20064E6C1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				6FA1D6071F42C11600C85D15 /* Helpers */,
 				E69A1FDE1D61C6D20064E6C1 /* PlaybackTestCase.m */,
 				E69A1FDF1D61C6D20064E6C1 /* SegmentsTestCase.m */,
 				E69A1FE01D61C6D20064E6C1 /* Segment.h */,
@@ -663,6 +677,8 @@
 			children = (
 				6F0D05191DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.h */,
 				6F0D051A1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m */,
+				6F90A5681F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h */,
+				6F90A5691F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m */,
 				6FEB516A1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h */,
 				6FEB516B1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.m */,
 				E6FC7F421D62072400A55085 /* NSBundle+SRGMediaPlayer.h */,
@@ -743,6 +759,7 @@
 				E67799341D75B0E300E58331 /* SRGTimelineSlider.h in Headers */,
 				E6FC7F731D62072400A55085 /* SRGMediaPlayerView.h in Headers */,
 				E6FC7F791D62072400A55085 /* UIBezierPath+SRGMediaPlayer.h in Headers */,
+				6F90A56A1F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h in Headers */,
 				E6C9860C1D6F42CB00C45C7A /* SRGPlaybackActivityIndicatorView.h in Headers */,
 				E6FC7F6D1D62072400A55085 /* SRGMediaPlayerConstants.h in Headers */,
 				6F68E7581DAE0877001F39C4 /* SRGMediaPlayerView+Private.h in Headers */,
@@ -960,6 +977,7 @@
 				08D3BEB11DE6EAB100AE1368 /* SRGTracksButton.m in Sources */,
 				6F0D051C1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m in Sources */,
 				6FEB516D1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.m in Sources */,
+				6F90A56B1F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m in Sources */,
 				E6C9860B1D6F36C900C45C7A /* SRGPlaybackButton.m in Sources */,
 				E6C9861F1D701D3800C45C7A /* SRGMediaPlayerSharedController.m in Sources */,
 				E6FC7F8E1D62072400A55085 /* SRGMediaPlayerController.m in Sources */,
@@ -1107,7 +1125,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1155,7 +1173,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXTERN NSTimeInterval const SRGMediaPlayerLiveDefaultTolerance;
 
 /**
+ *  @name Types
+ */
+
+/**
  *  Media types.
  */
 typedef NS_ENUM(NSInteger, SRGMediaPlayerMediaType) {
@@ -88,21 +92,19 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerPlaybackState) {
 };
 
 /**
- *  Notification sent when the player state changes. Use the `SRGMediaPlayerPreviousPlaybackStateKey` to retrieve
- *  previous state information from the notification `userInfo` dictionary.
+ *  @name Notifications
+ */
+
+/**
+ *  Notification sent when the player state changes.
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerPlaybackStateDidChangeNotification;              // Notification name.
-OBJC_EXTERN NSString * const SRGMediaPlayerPlaybackStateKey;                                // Key to access the current playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value).
-OBJC_EXTERN NSString * const SRGMediaPlayerPreviousPlaybackStateKey;                        // Key to access the previous playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value).
-OBJC_EXTERN NSString * const SRGMediaPlayerPreviousContentURLKey;                           // Key to access the previously played URL if it changed.
-OBJC_EXTERN NSString * const SRGMediaPlayerPreviousUserInfoKey;                             // Key to access the previous user information if it changed.
 
 /**
  *  Notification sent when playback failed. Use the `SRGMediaPlayerErrorKey` to retrieve an `NSError` information 
  *  from the notification `userInfo` dictionary).
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerPlaybackDidFailNotification;                     // Notification name.
-OBJC_EXTERN NSString * const SRGMediaPlayerErrorKey;                                        // Key to access error information.
 
 /**
  *  Notification sent just before a seek is made (the player is already in the seeking state, though). Use the `SRGMediaPlayerSeekTimeKey`
@@ -112,12 +114,16 @@ OBJC_EXTERN NSString * const SRGMediaPlayerErrorKey;                            
  *              time is not received in a notification).
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerSeekNotification;                                // Notification name.
-OBJC_EXTERN NSString * const SRGMediaPlayerSeekTimeKey;                                     // Key to access the time to which the seek is made, as an `NSValue` (wrapping a `CMTime` value).
 
 /**
  *  Notification sent when the picture in picture state changes.
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotification;
+
+/**
+ *  Notification sent when the external playback is enabled or disabled.
+ */
+OBJC_EXTERN NSString * const SRGMediaPlayerExternalPlaybackStateDidChangeNotification;
 
 /**
  *  Notification sent when the current segment changes. Use the keys available below to retrieve information from
@@ -126,9 +132,36 @@ OBJC_EXTERN NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotific
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidStartNotification;                     // Notification sent when a segment starts.
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidEndNotification;                       // Notification sent when a segment ends.
 
-// Blocked segments skipping notifications.
+/**
+ *  Blocked segments skipping notifications.
+ */
 OBJC_EXTERN NSString * const SRGMediaPlayerWillSkipBlockedSegmentNotification;              // Notification sent when the player starts skipping a blocked segment.
 OBJC_EXTERN NSString * const SRGMediaPlayerDidSkipBlockedSegmentNotification;               // Notification sent when the player finishes skipping a blocked segment.
+
+/**
+ *  @name Notification user information keys
+ */
+
+/**
+ *  Information available for `SRGMediaPlayerPlaybackStateDidChangeNotification`.
+ */
+OBJC_EXTERN NSString * const SRGMediaPlayerPlaybackStateKey;                                // Key to access the current playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value).
+OBJC_EXTERN NSString * const SRGMediaPlayerPreviousPlaybackStateKey;                        // Key to access the previous playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value).
+OBJC_EXTERN NSString * const SRGMediaPlayerPreviousContentURLKey;                           // Key to access the previously played URL.
+OBJC_EXTERN NSString * const SRGMediaPlayerPreviousTimeRangeKey;                            // Key to access the previous time range as an `NSValue` (wrapping an `CMTimeRange` value).
+OBJC_EXTERN NSString * const SRGMediaPlayerPreviousMediaTypeKey;                            // Key to access the previous media type as an `NSNumber` (wrapping an `SRGMediaPlayerMediaType` value).
+OBJC_EXTERN NSString * const SRGMediaPlayerPreviousStreamTypeKey;                           // Key to access the previous stream type as an `NSNumber` (wrapping an `SRGMediaPlayerStreamType` value).
+OBJC_EXTERN NSString * const SRGMediaPlayerPreviousUserInfoKey;                             // Key to access the previous user information.
+
+/**
+ *  Information available for `SRGMediaPlayerPlaybackDidFailNotification`.
+ */
+OBJC_EXTERN NSString * const SRGMediaPlayerErrorKey;                                        // Key to access error information.
+
+/**
+ *  Information available for `SRGMediaPlayerSeekNotification`.
+ */
+OBJC_EXTERN NSString * const SRGMediaPlayerSeekTimeKey;                                     // Key to access the time to which the seek is made, as an `NSValue` (wrapping a `CMTime` value).
 
 // Information available for all segment-related notifications.
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentKey;                                      // The involved segment as an `id<SRGSegment>` object.
@@ -141,8 +174,13 @@ OBJC_EXTERN NSString * const SRGMediaPlayerPreviousSegmentKey;                  
 
 // Information available for `SRGMediaPlayerSegmentDidEndNotification`.
 OBJC_EXTERN NSString * const SRGMediaPlayerNextSegmentKey;                                  // The previously played segment, if any, as an `id<SRGSegment>` object.
+OBJC_EXTERN NSString * const SRGMediaPlayerInterruptionKey;                                 // Key to an `NSNumber` wrapping a boolean, set to `YES` iff the end notification results because segment playback was interrupted.
 
 // Information available for `SRGMediaPlayerSegmentDidStartNotification`, `SRGMediaPlayerSegmentDidEndNotification` and `SRGMediaPlayerPlaybackStateDidChangeNotification`.
 OBJC_EXTERN NSString * const SRGMediaPlayerSelectionKey;                                    // Key to an `NSNumber` wrapping a boolean, set to `YES` iff the notification results from a segment selection.
+
+// Information available for all notifications, except `SRGMediaPlayerPictureInPictureStateDidChangeNotification` and `SRGMediaPlayerExternalPlaybackStateDidChangeNotification`.
+// For `SRGMediaPlayerPlaybackStateDidChangeNotification` notifications, this key is only present when the player returns to idle, and provides the last known playback position.
+OBJC_EXPORT NSString * const SRGMediaPlayerLastPlaybackTimeKey;                             // Key to an `NSValue` wrapping a `CMTime` specifying the last playback position before the event occurred.
 
 NS_ASSUME_NONNULL_END

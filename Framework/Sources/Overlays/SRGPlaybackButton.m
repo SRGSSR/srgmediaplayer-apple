@@ -158,9 +158,10 @@
     [self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.playbackButtonState = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
-                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateSeeking
-                                || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled) ? SRGPlaybackButtonStatePause : SRGPlaybackButtonStatePlay;
+    if (self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
+        self.playbackButtonState = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
+                                        || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled) ? SRGPlaybackButtonStatePause : SRGPlaybackButtonStatePlay;
+    }
 }
 
 #pragma mark Actions

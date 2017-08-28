@@ -144,6 +144,11 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     _borderColor = borderColor ?: [UIColor blackColor];
 }
 
+- (void)setBufferingTrackColor:(UIColor *)bufferingTrackColor
+{
+    _bufferingTrackColor = bufferingTrackColor ?: [UIColor darkGrayColor];
+}
+
 // Override color properties since the default superclass behavior is to remove corresponding images, which we here
 // already set in commonInit() and want to preserve
 
@@ -389,8 +394,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     [self drawBar:context];
-    [self drawDownloadProgressValueBar:context];
-    [self drawMinimumValueBar:context];
+    [self drawMaximumTrack:context];
+    [self drawMinimumTrack:context];
 }
 
 - (void)drawBar:(CGContextRef)context
@@ -407,7 +412,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     CGContextStrokePath(context);
 }
 
-- (void)drawDownloadProgressValueBar:(CGContextRef)context
+- (void)drawMaximumTrack:(CGContextRef)context
 {
     CGRect trackFrame = [self trackRectForBounds:self.bounds];
     
@@ -422,11 +427,11 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     
     for (NSValue *value in self.mediaPlayerController.player.currentItem.loadedTimeRanges) {
         CMTimeRange timeRange = [value CMTimeRangeValue];
-        [self drawTimeRangeProgress:timeRange context:context];
+        [self drawBuferringTrackForRange:timeRange context:context];
     }
 }
 
-- (void)drawTimeRangeProgress:(CMTimeRange)timeRange context:(CGContextRef)context
+- (void)drawBuferringTrackForRange:(CMTimeRange)timeRange context:(CGContextRef)context
 {
     CGFloat lineWidth = 1.f;
     
@@ -444,11 +449,11 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     CGContextSetLineCap(context, kCGLineCapButt);
     CGContextMoveToPoint(context, minX, CGRectGetMidY(self.bounds));
     CGContextAddLineToPoint(context, maxX, CGRectGetMidY(self.bounds));
-    CGContextSetStrokeColorWithColor(context, self.borderColor.CGColor);
+    CGContextSetStrokeColorWithColor(context, self.bufferingTrackColor.CGColor);
     CGContextStrokePath(context);
 }
 
-- (void)drawMinimumValueBar:(CGContextRef)context
+- (void)drawMinimumTrack:(CGContextRef)context
 {
     CGRect barFrame = [self minimumValueImageRectForBounds:self.bounds];
     
@@ -541,7 +546,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 static void commonInit(SRGTimeSlider *self)
 {
-    self.borderColor = nil;                     // Default color
+    // Apply default colors
+    self.borderColor = nil;
+    self.bufferingTrackColor = nil;
     
     self.minimumValue = 0.f;                    // Always 0
     self.maximumValue = 0.f;
