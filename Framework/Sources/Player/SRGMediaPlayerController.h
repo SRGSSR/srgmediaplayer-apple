@@ -261,12 +261,7 @@ NS_ASSUME_NONNULL_BEGIN
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Ask the player to play.
- *
- *  @discussion Calling this method does not guarantee that the player will be playing right afterwards. If the player
- *              has been prepared it will be the case (see above), but otherwise nothing will happen. For user interface
- *              related changes, you should in general check the value of the `playbackState` property and observe when
- *              it changes.
+ *  Start playback. Does nothing if no content URL is attached to the controller.
  */
 - (void)play;
 
