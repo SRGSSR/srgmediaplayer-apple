@@ -11,6 +11,8 @@
 
 #import <libextobjc/libextobjc.h>
 
+static void commonInit(SRGPlaybackButton *self);
+
 @interface SRGPlaybackButton ()
 
 @property (nonatomic) SRGPlaybackButtonState playbackButtonState;
@@ -27,6 +29,24 @@
 @synthesize pauseImage = _pauseImage;
 @synthesize highlightedTintColor = _highlightedTintColor;
 @synthesize playbackButtonState = _playbackButtonState;
+
+#pragma mark Object lifecycle
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+        commonInit(self);
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super initWithCoder:aDecoder]) {
+        commonInit(self);
+    }
+    return self;
+}
 
 #pragma mark Overrides
 
@@ -155,9 +175,6 @@
 
 - (void)refreshButton
 {
-    [self removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
-    [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
-    
     if (self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
         self.playbackButtonState = (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePlaying
                                         || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateStalled) ? SRGPlaybackButtonStatePause : SRGPlaybackButtonStatePlay;
@@ -200,3 +217,10 @@
 }
 
 @end
+
+#pragma mark Functions
+
+static void commonInit(SRGPlaybackButton *self)
+{
+    [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
+}
