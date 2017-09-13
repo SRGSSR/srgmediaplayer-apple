@@ -1177,12 +1177,12 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    [self.mediaPlayerController play];
-    
     // Can be played again after a stop
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
+    
+    [self.mediaPlayerController play];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -1209,14 +1209,14 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    [self.mediaPlayerController play];
-    
     // The player cannot be started by simply calling -play
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
     id eventObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"The player cannot be restarted with a play after a reset. No event expected");
     }];
+    
+    [self.mediaPlayerController play];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:eventObserver];
