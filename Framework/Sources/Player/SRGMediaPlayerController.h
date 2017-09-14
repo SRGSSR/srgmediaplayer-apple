@@ -357,6 +357,11 @@ withToleranceBefore:(CMTime)toleranceBefore
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
+ *  The current playback position.
+ */
+@property (nonatomic, readonly) CMTime currentTime;
+
+/**
  *  The original time at which the player started seeking, `kCMTimeIndefinite` if none.
  */
 @property (nonatomic, readonly) CMTime seekStartTime;

@@ -397,6 +397,11 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     return timeRange;
 }
 
+- (CMTime)currentTime
+{
+    return self.player.currentTime;
+}
+
 - (SRGMediaPlayerMediaType)mediaType
 {
     if (! self.player) {
