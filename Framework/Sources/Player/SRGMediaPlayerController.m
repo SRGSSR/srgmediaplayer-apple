@@ -202,6 +202,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                 return;
             }
             
+            CMTime currentTime = playerItem.currentTime;
+            CMTimeRange timeRange = self.timeRange;
+            
             // Do not let playback pause when the player stalls, attempt to play again
             if (player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
                 [player srg_playImmediatelyIfPossible];
@@ -211,7 +214,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             // live streams (empty range)
             else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
                      && self.playbackState != SRGMediaPlayerPlaybackStateSeeking
-                     && (CMTIMERANGE_IS_EMPTY(self.timeRange) || CMTIME_COMPARE_INLINE(playerItem.currentTime, !=, CMTimeRangeGetEnd(self.timeRange)))) {
+                     && (CMTIMERANGE_IS_EMPTY(timeRange) || CMTIME_COMPARE_INLINE(currentTime, !=, CMTimeRangeGetEnd(timeRange)))) {
                 [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
             }
             // Playback restarted after it ended (see -play and -pause)
