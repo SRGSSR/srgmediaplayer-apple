@@ -302,7 +302,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
-            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 0);
+            TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, 0);
             return YES;
         }
         else {
@@ -334,12 +334,12 @@ static NSURL *AudioOverHTTPTestURL(void)
         if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateSeeking) {
             XCTAssertFalse(seekReceived);
             XCTAssertFalse(playReceived);
-            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 0);
+            TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, 0);
             seekReceived = YES;
         }
         else if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
             XCTAssertFalse(playReceived);
-            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 2);
+            TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, 2);
             playReceived = YES;
         }
         
@@ -385,7 +385,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         if ([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying) {
-            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 0);
+            TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, 0);
             return YES;
         }
         else {
@@ -439,12 +439,12 @@ static NSURL *AudioOverHTTPTestURL(void)
         if (playerPlaybackState == SRGMediaPlayerPlaybackStateSeeking) {
             XCTAssertFalse(seekReceived);
             XCTAssertFalse(pauseReceived);
-            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 0);
+            TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, 0);
             seekReceived = YES;
         }
         else if (playerPlaybackState == SRGMediaPlayerPlaybackStatePaused) {
             XCTAssertFalse(pauseReceived);
-            TestAssertEqualTimeInSeconds([self.mediaPlayerController.player.currentItem currentTime], 2);
+            TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, 2);
             pauseReceived = YES;
         }
         else {
@@ -1118,7 +1118,6 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey]);
         
         TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
-        
         return YES;
     }];
     
@@ -1162,8 +1161,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    // Pass empty collections as parameters
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[] userInfo:@{}];
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1177,12 +1175,12 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    [self.mediaPlayerController play];
-    
     // Can be played again after a stop
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
+    
+    [self.mediaPlayerController play];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -1194,12 +1192,11 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    // Pass empty collections as parameters
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[] userInfo:@{}];
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    // Stop the player and check its status
+    // Reset the player and check its status
     [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateIdle);
         return YES;
@@ -1209,14 +1206,140 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    [self.mediaPlayerController play];
-    
     // The player cannot be started by simply calling -play
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
     id eventObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"The player cannot be restarted with a play after a reset. No event expected");
     }];
+    
+    [self.mediaPlayerController play];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver];
+    }];
+}
+
+- (void)testOnDemandTogglePlayPause
+{
+    // Wait until playing
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Toggle (pause)
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePaused;
+    }];
+    
+    [self.mediaPlayerController togglePlayPause];
+    
+    // Toggle (play)
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController togglePlayPause];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testDVRTogglePlayPause
+{
+    // Wait until playing
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Toggle (pause)
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePaused;
+    }];
+    
+    [self.mediaPlayerController togglePlayPause];
+    
+    // Toggle (play)
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController togglePlayPause];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testTogglePlayPauseAfterStop
+{
+    // Wait until playing
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Stop the player and check its status
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateIdle);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController stop];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Can be played again after a stop
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController togglePlayPause];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testTogglePlayPauseAfterReset
+{
+    // Wait until playing
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Reset the player and check its status
+    [self expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateIdle);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController reset];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // The player cannot be started by simply calling -play
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    id eventObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"The player cannot be restarted with a togglePlayPause after a reset. No event expected");
+    }];
+    
+    [self.mediaPlayerController togglePlayPause];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:eventObserver];

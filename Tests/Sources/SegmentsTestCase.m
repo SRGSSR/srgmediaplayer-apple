@@ -1282,7 +1282,7 @@ static NSURL *SegmentsTestURL(void)
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectionKey] boolValue]);
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 1799);      // Playback start near the end
+        XCTAssertTrue(CMTimeGetSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue]) > 1795);      // Playback start near the end
         return YES;
     }];
     [self expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -1290,7 +1290,7 @@ static NSURL *SegmentsTestURL(void)
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectionKey] boolValue]);
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerInterruptionKey] boolValue]);
-        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 1799);      // Playback start near the end
+        XCTAssertTrue(CMTimeGetSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue]) > 1795);      // Playback start near the end
         return YES;
     }];
     
