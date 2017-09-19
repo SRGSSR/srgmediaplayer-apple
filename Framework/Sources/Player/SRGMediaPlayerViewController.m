@@ -32,18 +32,19 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (nonatomic, weak) IBOutlet SRGPictureInPictureButton *pictureInPictureButton;
 @property (nonatomic, weak) IBOutlet SRGPlaybackActivityIndicatorView *playbackActivityIndicatorView;
 
-@property (weak) IBOutlet SRGPlaybackButton *playPauseButton;
-@property (weak) IBOutlet SRGTimeSlider *timeSlider;
-@property (weak) IBOutlet SRGVolumeView *volumeView;
-@property (weak) IBOutlet SRGAirplayButton *airplayButton;
-@property (weak) IBOutlet SRGAirplayView *airplayView;
-@property (weak) IBOutlet UIButton *liveButton;
+@property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
+@property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
+@property (nonatomic, weak) IBOutlet SRGVolumeView *volumeView;
+@property (nonatomic, weak) IBOutlet SRGAirplayButton *airplayButton;
+@property (nonatomic, weak) IBOutlet SRGAirplayView *airplayView;
+@property (nonatomic, weak) IBOutlet UIButton *liveButton;
 
-@property (weak) IBOutlet UIActivityIndicatorView *loadingActivityIndicatorView;
-@property (weak) IBOutlet UILabel *loadingLabel;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingActivityIndicatorView;
+@property (nonatomic, weak) IBOutlet UILabel *loadingLabel;
 
-@property (weak) IBOutlet NSLayoutConstraint *valueLabelWidthConstraint;
-@property (weak) IBOutlet NSLayoutConstraint *timeLeftValueLabelWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *valueLabelWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *timeLeftValueLabelWidthConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomPlayerViewConstraint;
 
 @property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
 
@@ -200,6 +201,15 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     
     if ([self isBeingDismissed]) {
         self.inactivityTimer = nil;
+    }
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    if (@available(iOS 11.0, *)) {
+        self.bottomPlayerViewConstraint.constant = -self.view.safeAreaInsets.bottom;
     }
 }
 
