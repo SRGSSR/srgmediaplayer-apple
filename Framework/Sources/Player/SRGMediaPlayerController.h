@@ -237,9 +237,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  call `-play` from the completion handler (in which case the player will immediately reach the playing state).
  *
  *  @param URL               The URL to play.
- *  @param time              The time to start at. Use `kCMTimeZero` to start at the default location:
- *                             - For on-demand streams: At the beginning.
- *                             - For live and DVR streams: In live conditions, i.e. at the end of the stream.
+ *  @param time              The time to start at.
  *                           If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
  *                           actual media time range will seek to the nearest location (either zero or the end time).
  *  @param segments          A segment list.
@@ -253,6 +251,10 @@ NS_ASSUME_NONNULL_BEGIN
  *              This way, any change to the player state in the completion handler (e.g. because of a `-play` request) will 
  *              only be reflected after the completion handler has been executed, so that the player transitions from preparing
  *              to this state without transitioning through the paused state.
+ *
+ *              Use `kCMTimeZero` to start at the beginning of an on-demand stream. For DVR streams, using `kCMTimeZero` will
+ *              start the stream at its end. For times smaller than the chunk size, playback might start at the end of the stream
+ *              (iOS 11 and above) or at the specified location (older iOS versions).
  */
 - (void)prepareToPlayURL:(NSURL *)URL
                   atTime:(CMTime)time
