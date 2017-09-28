@@ -6,12 +6,7 @@
 
 #import "XCTestCase+MediaPlayerTests.h"
 
-#import "NotificationListener.h"
-
-#import <libextobjc/libextobjc.h>
-#import <objc/runtime.h>
-
-static void *s_notiticationListener = &s_notiticationListener;
+static void *s_observerKey = &s_observerKey;
 
 @implementation XCTestCase (MediaPlayerTests)
 
@@ -19,15 +14,10 @@ static void *s_notiticationListener = &s_notiticationListener;
 {
     NSString *description = [NSString stringWithFormat:@"Expectation for notification '%@' from object %@", notificationName, objectToObserve];
     XCTestExpectation *expectation = [self expectationWithDescription:description];
-    
-    __block NotificationListener *notificationListener = [[NotificationListener alloc] initWithNotificationName:notificationName object:objectToObserve handler:^(NSNotification * _Nonnull notification) {
+    __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:notificationName object:objectToObserve queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
         void (^fulfill)(void) = ^{
-            [notificationListener stop];
-            notificationListener = nil;
-            
-            objc_setAssociatedObject(expectation, s_notiticationListener, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-            
             [expectation fulfill];
+            [[NSNotificationCenter defaultCenter] removeObserver:observer];
         };
         
         if (handler) {
@@ -39,9 +29,6 @@ static void *s_notiticationListener = &s_notiticationListener;
             fulfill();
         }
     }];
-    objc_setAssociatedObject(expectation, s_notiticationListener, notificationListener, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    [notificationListener start];
-    
     return expectation;
 }
 
