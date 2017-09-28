@@ -79,7 +79,7 @@
 			<key>name</key>
 			<string>One blocked hidden segment</string>
 			<key>url</key>
-			<string>https://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
