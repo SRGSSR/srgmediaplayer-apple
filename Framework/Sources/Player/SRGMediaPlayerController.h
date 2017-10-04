@@ -303,6 +303,9 @@ NS_ASSUME_NONNULL_BEGIN
  *              the player will still be in the seeking state. Note that if the media was not ready to play, seeking
  *              won't take place, and the completion handler won't be called.
  *
+ *              If the specified time lies outside the media time range, the location at which playback actually begins is
+ *              undefined.
+ *
  *              Refer to `-[AVPlayer seekToTime:toleranceBefore:toleranceAfter:completionHandler:]` documentation
  *              for more information about seek tolerances. Attempting to seek to a blocked segment will skip the segment
  *              and resume after it.
