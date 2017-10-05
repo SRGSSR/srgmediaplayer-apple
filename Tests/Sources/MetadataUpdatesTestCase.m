@@ -4,6 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "MediaPlayerBaseTestCase.h"
 #import "Segment.h"
 #import "TestMacros.h"
 #import "XCTestCase+MediaPlayerTests.h"
@@ -16,7 +17,7 @@ static NSURL *OnDemandTestURL(void)
     return [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
 }
 
-@interface MetadataUpdatesTestCase : XCTestCase
+@interface MetadataUpdatesTestCase : MediaPlayerBaseTestCase
 
 @property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
 
