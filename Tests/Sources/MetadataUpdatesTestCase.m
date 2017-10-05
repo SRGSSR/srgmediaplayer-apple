@@ -12,4 +12,94 @@
 
 @implementation MetadataUpdatesTestCase
 
+- (void)testSegmentAdditionWhilePlaying
+{
+    
+}
+
+- (void)testSegmentRemovalWhilePlaying
+{
+    
+}
+
+- (void)testSelectedSegmentRemovalWhilePlaying
+{
+    
+}
+
+- (void)testSelectedSegmentRemovalWhileSeekingInsideIt
+{
+    
+}
+
+- (void)testSelectedSegmentRemovalWhileSeekingOutsideIt
+{
+    
+}
+
+- (void)testSegmentUpdateWhilePlaying
+{
+    
+}
+
+- (void)testSegmentAdditionWhilePaused
+{
+    
+}
+
+- (void)testSegmentRemovalWhilePaused
+{
+    
+}
+
+- (void)testSelectedSegmentRemovalWhilePaused
+{
+    
+}
+
+- (void)testSegmentUpdateWhilePaused
+{
+    
+}
+
+- (void)testSegmentUpdateWhileSeekingInsideIt
+{
+    
+}
+
+- (void)testBlockedSegmentAdditionWhilePlaying
+{
+    
+}
+
+- (void)testBlockedSegmentAdditionWhilePaused
+{
+    
+}
+
+- (void)testBlockedSegmentAdditionWhileSeeking
+{
+    
+}
+
+- (void)testSegmentAdditionAtSeekLocation
+{
+    
+}
+
+- (void)testBlockedSegmentAdditionAtSeekLocation
+{
+    
+}
+
+- (void)testSegmentRemovalAtSeekLocation
+{
+    
+}
+
+- (void)testBlockedSegmentRemovalAtSeekLocation
+{
+    
+}
+
 @end
