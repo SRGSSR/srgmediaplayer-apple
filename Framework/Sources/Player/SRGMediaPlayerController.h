@@ -340,11 +340,15 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 /**
  *  The segments which have been loaded into the player.
+ *
+ *  @discussion The segment list can be updated while playing.
  */
 @property (nonatomic, nullable) NSArray<id<SRGSegment>> *segments;
 
 /**
  *  The user info which has been associated with the media being played.
+ *
+ *  @discussion This information can be updated while playing.
  */
 @property (nonatomic, nullable) NSDictionary *userInfo;
 
