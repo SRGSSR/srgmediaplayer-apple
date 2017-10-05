@@ -255,6 +255,9 @@ NS_ASSUME_NONNULL_BEGIN
  *              Use `kCMTimeZero` to start at the beginning of an on-demand stream. For DVR streams, using `kCMTimeZero` will
  *              start the stream at its end. For times smaller than the chunk size, playback might start at the end of the stream
  *              (iOS 11 and above) or at the specified location (older iOS versions).
+ *
+ *              If the specified time lies outside the media time range, the location at which playback actually begins is
+ *              undefined.
  */
 - (void)prepareToPlayURL:(NSURL *)URL
                   atTime:(CMTime)time
@@ -299,6 +302,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion Upon completion handler entry, the playback state will be up-to-date if the seek finished, otherwise
  *              the player will still be in the seeking state. Note that if the media was not ready to play, seeking
  *              won't take place, and the completion handler won't be called.
+ *
+ *              If the specified time lies outside the media time range, the location at which playback actually begins is
+ *              undefined.
+ *
  *              Refer to `-[AVPlayer seekToTime:toleranceBefore:toleranceAfter:completionHandler:]` documentation
  *              for more information about seek tolerances. Attempting to seek to a blocked segment will skip the segment
  *              and resume after it.
