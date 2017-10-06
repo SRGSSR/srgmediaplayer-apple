@@ -22,25 +22,12 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nE5-wI-3P2">
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nE5-wI-3P2" userLabel="Top Left Blur View">
                                 <rect key="frame" x="6" y="26" width="60" height="47"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="shU-cT-jEI">
                                     <rect key="frame" x="0.0" y="0.0" width="60" height="47"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NiY-8c-wad" userLabel="Close Button">
-                                            <rect key="frame" x="20" y="12" width="19" height="22"/>
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <state key="normal" image="close"/>
-                                            <connections>
-                                                <action selector="dismiss:" destination="d9c-I7-8ft" eventType="touchUpInside" id="HuO-wT-ghE"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="NiY-8c-wad" firstAttribute="centerY" secondItem="shU-cT-jEI" secondAttribute="centerY" id="NWZ-GD-Mh8"/>
-                                        <constraint firstItem="NiY-8c-wad" firstAttribute="centerX" secondItem="shU-cT-jEI" secondAttribute="centerX" id="nSb-mi-f6x"/>
-                                    </constraints>
+                                    <color key="backgroundColor" red="0.57414853570000002" green="0.57416242360000003" blue="0.57415497299999996" alpha="0.55000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="47" id="1CZ-mS-Mz8"/>
@@ -48,6 +35,14 @@
                                 </constraints>
                                 <blurEffect style="light"/>
                             </visualEffectView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pe8-vp-bVP" userLabel="Close Button">
+                                <rect key="frame" x="26.5" y="38.5" width="19" height="22"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="close"/>
+                                <connections>
+                                    <action selector="dismiss:" destination="d9c-I7-8ft" eventType="touchUpInside" id="cHt-E7-IRG"/>
+                                </connections>
+                            </button>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bLY-wi-w8n" userLabel="Controls Blur View">
                                 <rect key="frame" x="6" y="567" width="363" height="94"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Y5C-4q-i3v">
@@ -122,10 +117,12 @@
                             <constraint firstItem="bHB-EG-K8u" firstAttribute="top" secondItem="bLY-wi-w8n" secondAttribute="top" id="9Qd-dQ-s4C"/>
                             <constraint firstItem="bHB-EG-K8u" firstAttribute="leading" secondItem="bLY-wi-w8n" secondAttribute="leading" id="CjR-MC-n8f"/>
                             <constraint firstItem="CjI-bJ-s74" firstAttribute="leading" secondItem="ZBA-nY-fz5" secondAttribute="leading" id="Kou-MY-xEt"/>
+                            <constraint firstItem="Pe8-vp-bVP" firstAttribute="centerY" secondItem="nE5-wI-3P2" secondAttribute="centerY" id="LbZ-P3-pQb"/>
                             <constraint firstItem="bHB-EG-K8u" firstAttribute="bottom" secondItem="bLY-wi-w8n" secondAttribute="bottom" id="QiL-20-a9a"/>
                             <constraint firstItem="MoS-P5-AUe" firstAttribute="trailing" secondItem="bLY-wi-w8n" secondAttribute="trailing" constant="6" id="Rka-ri-mtZ"/>
                             <constraint firstItem="MoS-P5-AUe" firstAttribute="top" secondItem="nE5-wI-3P2" secondAttribute="top" constant="-6" id="Snv-kT-xHg"/>
                             <constraint firstAttribute="trailing" secondItem="CjI-bJ-s74" secondAttribute="trailing" id="dOA-eT-QYB"/>
+                            <constraint firstItem="Pe8-vp-bVP" firstAttribute="centerX" secondItem="nE5-wI-3P2" secondAttribute="centerX" id="gGh-YO-vjO"/>
                             <constraint firstItem="MoS-P5-AUe" firstAttribute="bottom" secondItem="bLY-wi-w8n" secondAttribute="bottom" constant="6" id="kYE-Fq-6NS"/>
                             <constraint firstAttribute="bottom" secondItem="CjI-bJ-s74" secondAttribute="bottom" id="rN0-Dn-k5i"/>
                             <constraint firstItem="bLY-wi-w8n" firstAttribute="leading" secondItem="MoS-P5-AUe" secondAttribute="leading" constant="6" id="vND-cI-OXG"/>
@@ -138,6 +135,8 @@
                         <outlet property="timeSlider" destination="EKV-Dg-mkD" id="lX0-ar-Fzm"/>
                         <outletCollection property="overlayViews" destination="bLY-wi-w8n" id="BtG-YP-ILN"/>
                         <outletCollection property="overlayViews" destination="bHB-EG-K8u" id="Pny-LA-N01"/>
+                        <outletCollection property="overlayViews" destination="nE5-wI-3P2" id="k1Q-Ym-rJb"/>
+                        <outletCollection property="overlayViews" destination="Pe8-vp-bVP" id="JU9-hy-das"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yRV-DO-uvq" userLabel="First Responder" sceneMemberID="firstResponder"/>
