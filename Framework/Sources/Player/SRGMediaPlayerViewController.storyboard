@@ -64,14 +64,24 @@
                                 <rect key="frame" x="6" y="567" width="363" height="94"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="EKV-Dg-mkD" customClass="SRGTimeSlider">
-                                        <rect key="frame" x="14" y="10" width="335" height="31"/>
+                                        <rect key="frame" x="14" y="10" width="335" height="17"/>
+                                        <color key="minimumTrackTintColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="maximumTrackTintColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bufferingTrackColor">
+                                                <color key="value" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="timeLeftValueLabel" destination="Erw-ST-7Yg" id="6dI-aG-zeW"/>
                                             <outlet property="valueLabel" destination="cyE-ky-Dbl" id="r0i-6M-RFv"/>
                                         </connections>
                                     </slider>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gL8-ry-Lc7" userLabel="Playback Button" customClass="SRGPlaybackButton">
-                                        <rect key="frame" x="166.5" y="40" width="30" height="34"/>
+                                        <rect key="frame" x="169" y="47" width="25" height="27"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="image" keyPath="playImage" value="play"/>
@@ -79,13 +89,13 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99:99" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyE-ky-Dbl">
-                                        <rect key="frame" x="16" y="40" width="37" height="16"/>
+                                        <rect key="frame" x="16" y="26" width="37" height="16"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99:99" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Erw-ST-7Yg">
-                                        <rect key="frame" x="310" y="40" width="37" height="16"/>
+                                        <rect key="frame" x="310" y="26" width="37" height="16"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -123,7 +133,9 @@
                         <viewLayoutGuide key="safeArea" id="MoS-P5-AUe"/>
                     </view>
                     <connections>
+                        <outlet property="playPauseButton" destination="gL8-ry-Lc7" id="9bQ-7K-RxK"/>
                         <outlet property="playerView" destination="CjI-bJ-s74" id="hYR-yU-i4j"/>
+                        <outlet property="timeSlider" destination="EKV-Dg-mkD" id="lX0-ar-Fzm"/>
                         <outletCollection property="overlayViews" destination="bLY-wi-w8n" id="BtG-YP-ILN"/>
                         <outletCollection property="overlayViews" destination="bHB-EG-K8u" id="Pny-LA-N01"/>
                     </connections>
