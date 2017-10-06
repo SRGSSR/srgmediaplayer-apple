@@ -171,15 +171,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
             [s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
         }
-        // We might restore the view controller at the end of playback in picture in picture mode (see
-        // srg_mediaPlayerViewController_playbackStateDidChange:). In this case, we close the view controller
-        // automatically, as is done when playing in full screen. We just wait one second to let restoration
-        // finish (visually)
-        else if (s_mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1. * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self dismiss:nil];
-            });
-        }
     }
 }
 
@@ -278,17 +269,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     SRGMediaPlayerController *mediaPlayerController = notification.object;
     
-    // Dismiss any video overlay (full screen or picture in picture) when playback normally ends
     if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
-        if (s_mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
-            [s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
-        }
-        else {
-            [self dismiss:nil];
-        }
+        [self updateInterfaceForControlsHidden:NO];
     }
-    
-    [self updateControls];
 }
 
 - (void)srg_mediaPlayerViewController_applicationDidBecomeActive:(NSNotification *)notification
