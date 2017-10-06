@@ -172,6 +172,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }];
     [self updateTopBar];
     
+    [self updateInterfaceForControlsHidden:NO];
     [self resetInactivityTimer];
 }
 
@@ -287,11 +288,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (void)setUserInterfaceHidden:(BOOL)hidden animated:(BOOL)animated
 {
     void (^animations)(void) = ^{
-        [self setNeedsStatusBarAppearanceUpdate];
-        
-        for (UIView *view in self.overlayViews) {
-            view.alpha = hidden ? 0.f : 1.f;
-        }
+        [self updateInterfaceForControlsHidden:hidden];
     };
     
     _userInterfaceHidden = hidden;
@@ -305,6 +302,15 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     else {
         animations();
+    }
+}
+
+- (void)updateInterfaceForControlsHidden:(BOOL)hidden
+{
+    [self setNeedsStatusBarAppearanceUpdate];
+    
+    for (UIView *view in self.overlayViews) {
+        view.alpha = hidden ? 0.f : 1.f;
     }
 }
 
