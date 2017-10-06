@@ -154,6 +154,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.liveButton.layer.borderWidth = 1.f;
     
+    for (UIView *view in self.overlayViews) {
+        view.layer.cornerRadius = 10.f;
+        view.clipsToBounds = YES;
+    }
+    
     @weakify(self)
     self.periodicTimeObserver = [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
         @strongify(self)
