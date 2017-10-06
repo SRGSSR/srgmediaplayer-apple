@@ -148,13 +148,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.airplayButton.mediaPlayerController = s_mediaPlayerController;
     self.airplayView.mediaPlayerController = s_mediaPlayerController;
     
-    [self.liveButton setTitle:SRGMediaPlayerLocalizedString(@"Back to live", @"Button title to go back to live") forState:UIControlStateNormal];
-    self.liveButton.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Back to live", @"Back to live label");
-    self.liveButton.hidden = YES;
-    
-    self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.liveButton.layer.borderWidth = 1.f;
-    
     for (UIView *view in self.overlayViews) {
         view.layer.cornerRadius = 10.f;
         view.clipsToBounds = YES;
@@ -168,10 +161,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
             CGFloat labelWidth = (CMTimeGetSeconds(s_mediaPlayerController.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
             self.valueLabelWidthConstraint.constant = labelWidth;
             self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
-            
-            if (s_mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
-                [self updateLiveButton];
-            }
         }
         
         [self updateControls];
@@ -246,7 +235,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
         self.timeSlider.timeLeftValueLabel.hidden = YES;
         self.timeSlider.valueLabel.hidden = YES;
-        self.timeSlider.hidden = YES;
         
         if (playbackState == SRGMediaPlayerPlaybackStatePreparing) {
             self.loadingLabel.hidden = NO;
@@ -262,23 +250,10 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     else {
         self.timeSlider.timeLeftValueLabel.hidden = NO;
         self.timeSlider.valueLabel.hidden = NO;
-        self.timeSlider.hidden = NO;
         
         self.loadingLabel.hidden = YES;
         self.loadingActivityIndicatorView.hidden = YES;
         [self.loadingActivityIndicatorView stopAnimating];
-    }
-}
-
-- (void)updateLiveButton
-{
-    if (s_mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
-        [UIView animateWithDuration:0.2 animations:^{
-            self.liveButton.hidden = self.timeSlider.live;
-        }];
-    }
-    else {
-        self.liveButton.hidden = YES;
     }
 }
 
@@ -369,27 +344,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)goToLive:(id)sender
-{
-    self.liveButton.hidden = YES;
-    
-    CMTimeRange timeRange = s_mediaPlayerController.timeRange;
-    if (CMTIMERANGE_IS_INDEFINITE(timeRange) || CMTIMERANGE_IS_EMPTY(timeRange)) {
-        return;
-    }
-    
-    [s_mediaPlayerController seekEfficientlyToTime:CMTimeRangeGetEnd(timeRange) withCompletionHandler:^(BOOL finished) {
-        if (finished) {
-            [s_mediaPlayerController play];
-        }
-    }];
-}
-
-- (IBAction)seek:(id)sender
-{
-    [self updateLiveButton];
 }
 
 #pragma mark Gesture recognizers
