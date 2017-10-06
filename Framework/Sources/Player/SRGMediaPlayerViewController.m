@@ -201,7 +201,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleDefault;
+    return UIStatusBarStyleLightContent;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
