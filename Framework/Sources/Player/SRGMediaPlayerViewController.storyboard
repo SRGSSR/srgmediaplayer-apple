@@ -105,10 +105,15 @@
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="omh-tb-D23">
+                                        <rect key="frame" x="10" y="28" width="20" height="20"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="3vg-6i-6jj" firstAttribute="leading" secondItem="gL8-ry-Lc7" secondAttribute="trailing" constant="30" id="0am-na-wrB"/>
+                                    <constraint firstItem="omh-tb-D23" firstAttribute="leading" secondItem="EKV-Dg-mkD" secondAttribute="leading" constant="-6" id="2qr-WB-QQh"/>
                                     <constraint firstAttribute="bottom" secondItem="gL8-ry-Lc7" secondAttribute="bottom" constant="20" id="7oR-Si-2Uc"/>
+                                    <constraint firstItem="omh-tb-D23" firstAttribute="centerY" secondItem="cyE-ky-Dbl" secondAttribute="centerY" id="FfS-47-y37"/>
                                     <constraint firstItem="Erw-ST-7Yg" firstAttribute="top" secondItem="EKV-Dg-mkD" secondAttribute="bottom" constant="6" id="GFq-QE-P8G"/>
                                     <constraint firstItem="3vg-6i-6jj" firstAttribute="centerY" secondItem="gL8-ry-Lc7" secondAttribute="centerY" id="SK4-nX-hkG"/>
                                     <constraint firstItem="cyE-ky-Dbl" firstAttribute="top" secondItem="EKV-Dg-mkD" secondAttribute="bottom" constant="6" id="ZtN-Sq-ZN7"/>
@@ -144,6 +149,7 @@
                         <viewLayoutGuide key="safeArea" id="MoS-P5-AUe"/>
                     </view>
                     <connections>
+                        <outlet property="loadingActivityIndicatorView" destination="omh-tb-D23" id="0RR-Fj-jAA"/>
                         <outlet property="playPauseButton" destination="gL8-ry-Lc7" id="9bQ-7K-RxK"/>
                         <outlet property="playerView" destination="CjI-bJ-s74" id="hYR-yU-i4j"/>
                         <outlet property="timeSlider" destination="EKV-Dg-mkD" id="lX0-ar-Fzm"/>

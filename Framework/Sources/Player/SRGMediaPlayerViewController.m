@@ -148,6 +148,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.airplayButton.mediaPlayerController = s_mediaPlayerController;
     self.airplayView.mediaPlayerController = s_mediaPlayerController;
     
+    // The frame of an activity indicator cannot be changed. Use a transform.
+    self.loadingActivityIndicatorView.transform = CGAffineTransformMakeScale(0.6f, 0.6f);
+    
     for (UIView *view in self.overlayViews) {
         view.layer.cornerRadius = 10.f;
         view.clipsToBounds = YES;
