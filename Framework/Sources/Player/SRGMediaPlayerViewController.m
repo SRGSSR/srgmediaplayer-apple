@@ -37,7 +37,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (nonatomic, weak) IBOutlet SRGVolumeView *volumeView;
 @property (nonatomic, weak) IBOutlet SRGAirplayButton *airplayButton;
 @property (nonatomic, weak) IBOutlet SRGAirplayView *airplayView;
-@property (nonatomic, weak) IBOutlet UIButton *liveButton;
+@property (nonatomic, weak) IBOutlet UIButton *skipBackButton;
+@property (nonatomic, weak) IBOutlet UIButton *skipForwardButton;
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingActivityIndicatorView;
 @property (nonatomic, weak) IBOutlet UILabel *loadingLabel;
@@ -173,9 +174,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
             }
         }
         
-        [self updateTopBar];
+        [self updateControls];
     }];
-    [self updateTopBar];
+    [self updateControls];
     
     [self updateInterfaceForControlsHidden:NO];
     [self resetInactivityTimer];
@@ -238,7 +239,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 #pragma mark UI
 
-- (void)updateTopBar
+- (void)updateControls
 {
     SRGMediaPlayerPlaybackState playbackState = s_mediaPlayerController.playbackState;
     
@@ -342,7 +343,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         }
     }
     
-    [self updateTopBar];
+    [self updateControls];
 }
 
 - (void)srg_mediaPlayerViewController_applicationDidBecomeActive:(NSNotification *)notification

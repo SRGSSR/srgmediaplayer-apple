@@ -75,6 +75,11 @@
                                             <outlet property="valueLabel" destination="cyE-ky-Dbl" id="r0i-6M-RFv"/>
                                         </connections>
                                     </slider>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRy-c9-UCc" userLabel="Skip Back Button">
+                                        <rect key="frame" x="120" y="49" width="19" height="23"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="skip_back_15"/>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gL8-ry-Lc7" userLabel="Playback Button" customClass="SRGPlaybackButton">
                                         <rect key="frame" x="169" y="47" width="25" height="27"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -82,6 +87,11 @@
                                             <userDefinedRuntimeAttribute type="image" keyPath="playImage" value="play"/>
                                             <userDefinedRuntimeAttribute type="image" keyPath="pauseImage" value="pause"/>
                                         </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3vg-6i-6jj" userLabel="Skip Forward Button">
+                                        <rect key="frame" x="224" y="49" width="19" height="23"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="skip_forward_15"/>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99:99" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyE-ky-Dbl">
                                         <rect key="frame" x="16" y="26" width="37" height="16"/>
@@ -97,12 +107,16 @@
                                     </label>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="3vg-6i-6jj" firstAttribute="leading" secondItem="gL8-ry-Lc7" secondAttribute="trailing" constant="30" id="0am-na-wrB"/>
                                     <constraint firstAttribute="bottom" secondItem="gL8-ry-Lc7" secondAttribute="bottom" constant="20" id="7oR-Si-2Uc"/>
                                     <constraint firstItem="Erw-ST-7Yg" firstAttribute="top" secondItem="EKV-Dg-mkD" secondAttribute="bottom" id="GFq-QE-P8G"/>
+                                    <constraint firstItem="3vg-6i-6jj" firstAttribute="centerY" secondItem="gL8-ry-Lc7" secondAttribute="centerY" id="SK4-nX-hkG"/>
                                     <constraint firstItem="cyE-ky-Dbl" firstAttribute="top" secondItem="EKV-Dg-mkD" secondAttribute="bottom" id="ZtN-Sq-ZN7"/>
                                     <constraint firstItem="EKV-Dg-mkD" firstAttribute="top" secondItem="bHB-EG-K8u" secondAttribute="top" constant="10" id="cyC-K6-Z0U"/>
+                                    <constraint firstItem="gL8-ry-Lc7" firstAttribute="leading" secondItem="BRy-c9-UCc" secondAttribute="trailing" constant="30" id="dAP-iZ-fyW"/>
                                     <constraint firstItem="EKV-Dg-mkD" firstAttribute="leading" secondItem="bHB-EG-K8u" secondAttribute="leading" constant="16" id="eBz-0S-UKI"/>
                                     <constraint firstItem="cyE-ky-Dbl" firstAttribute="leading" secondItem="EKV-Dg-mkD" secondAttribute="leading" id="eD0-b1-CW7"/>
+                                    <constraint firstItem="BRy-c9-UCc" firstAttribute="centerY" secondItem="gL8-ry-Lc7" secondAttribute="centerY" id="kr2-ZI-yx5"/>
                                     <constraint firstAttribute="trailing" secondItem="EKV-Dg-mkD" secondAttribute="trailing" constant="16" id="oXu-CF-HFh"/>
                                     <constraint firstItem="Erw-ST-7Yg" firstAttribute="trailing" secondItem="EKV-Dg-mkD" secondAttribute="trailing" id="tBD-NY-UZ2"/>
                                     <constraint firstItem="gL8-ry-Lc7" firstAttribute="centerX" secondItem="bHB-EG-K8u" secondAttribute="centerX" id="tR7-bx-m1b"/>
@@ -148,5 +162,7 @@
         <image name="close" width="19" height="19"/>
         <image name="pause" width="21" height="27"/>
         <image name="play" width="25" height="27"/>
+        <image name="skip_back_15" width="19" height="23"/>
+        <image name="skip_forward_15" width="19" height="23"/>
     </resources>
 </document>
