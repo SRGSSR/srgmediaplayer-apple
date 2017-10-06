@@ -41,16 +41,10 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (nonatomic, weak) IBOutlet UIButton *skipForwardButton;
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingActivityIndicatorView;
-@property (nonatomic, weak) IBOutlet UILabel *loadingLabel;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *valueLabelWidthConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *timeLeftValueLabelWidthConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomPlayerViewConstraint;
 
 @property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
 
 @property (nonatomic) NSTimer *inactivityTimer;
-
 @property (nonatomic, weak) id periodicTimeObserver;
 
 @end
@@ -150,6 +144,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     
     // The frame of an activity indicator cannot be changed. Use a transform.
     self.loadingActivityIndicatorView.transform = CGAffineTransformMakeScale(0.6f, 0.6f);
+    [self.loadingActivityIndicatorView startAnimating];
     
     for (UIView *view in self.overlayViews) {
         view.layer.cornerRadius = 10.f;
@@ -159,12 +154,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     @weakify(self)
     self.periodicTimeObserver = [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
         @strongify(self)
-        
-        if (s_mediaPlayerController.streamType != SRGMediaPlayerStreamTypeUnknown) {
-            CGFloat labelWidth = (CMTimeGetSeconds(s_mediaPlayerController.timeRange.duration) >= 60. * 60.) ? 56.f : 45.f;
-            self.valueLabelWidthConstraint.constant = labelWidth;
-            self.timeLeftValueLabelWidthConstraint.constant = labelWidth;
-        }
         
         [self updateControls];
     }];
@@ -203,15 +192,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    
-    if (@available(iOS 11.0, *)) {
-        self.bottomPlayerViewConstraint.constant = -self.view.safeAreaInsets.bottom;
-    }
-}
-
 #pragma mark Status bar
 
 - (BOOL)prefersStatusBarHidden
@@ -238,25 +218,12 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
         self.timeSlider.timeLeftValueLabel.hidden = YES;
         self.timeSlider.valueLabel.hidden = YES;
-        
-        if (playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-            self.loadingLabel.hidden = NO;
-            self.loadingActivityIndicatorView.hidden = NO;
-            [self.loadingActivityIndicatorView startAnimating];
-        }
-        else {
-            self.loadingLabel.hidden = YES;
-            self.loadingActivityIndicatorView.hidden = YES;
-            [self.loadingActivityIndicatorView stopAnimating];
-        }
+        self.loadingActivityIndicatorView.hidden = (playbackState != SRGMediaPlayerPlaybackStatePreparing);
     }
     else {
         self.timeSlider.timeLeftValueLabel.hidden = NO;
         self.timeSlider.valueLabel.hidden = NO;
-        
-        self.loadingLabel.hidden = YES;
         self.loadingActivityIndicatorView.hidden = YES;
-        [self.loadingActivityIndicatorView stopAnimating];
     }
 }
 

@@ -76,12 +76,15 @@
                                         </connections>
                                     </slider>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRy-c9-UCc" userLabel="Skip Back Button">
-                                        <rect key="frame" x="120" y="49" width="19" height="23"/>
+                                        <rect key="frame" x="117.5" y="49" width="19" height="23"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="skip_back_15"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gL8-ry-Lc7" userLabel="Playback Button" customClass="SRGPlaybackButton">
-                                        <rect key="frame" x="169" y="47" width="25" height="27"/>
+                                        <rect key="frame" x="166.5" y="47" width="30" height="27"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="mFJ-mP-3tP"/>
+                                        </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="image" keyPath="playImage" value="play"/>
@@ -89,7 +92,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3vg-6i-6jj" userLabel="Skip Forward Button">
-                                        <rect key="frame" x="224" y="49" width="19" height="23"/>
+                                        <rect key="frame" x="226.5" y="49" width="19" height="23"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="skip_forward_15"/>
                                     </button>
