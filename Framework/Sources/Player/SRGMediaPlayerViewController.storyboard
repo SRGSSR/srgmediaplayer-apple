@@ -23,26 +23,41 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nE5-wI-3P2" userLabel="Top Left Blur View">
-                                <rect key="frame" x="6" y="26" width="60" height="47"/>
+                                <rect key="frame" x="6" y="26" width="88" height="47"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="shU-cT-jEI">
-                                    <rect key="frame" x="0.0" y="0.0" width="60" height="47"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="88" height="47"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                 </view>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="47" id="1CZ-mS-Mz8"/>
-                                    <constraint firstAttribute="width" constant="60" id="TEd-x8-wXd"/>
-                                </constraints>
                                 <blurEffect style="light"/>
                             </visualEffectView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pe8-vp-bVP" userLabel="Close Button">
-                                <rect key="frame" x="26.5" y="38.5" width="19" height="22"/>
-                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="close"/>
-                                <connections>
-                                    <action selector="dismiss:" destination="d9c-I7-8ft" eventType="touchUpInside" id="cHt-E7-IRG"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t46-Ek-i6i">
+                                <rect key="frame" x="6" y="26" width="88" height="47"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pe8-vp-bVP" userLabel="Close Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="44" height="47"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="CVz-80-CWC"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="close"/>
+                                        <connections>
+                                            <action selector="dismiss:" destination="d9c-I7-8ft" eventType="touchUpInside" id="cHt-E7-IRG"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sdp-Xs-bRc" customClass="SRGPictureInPictureButton">
+                                        <rect key="frame" x="44" y="0.0" width="44" height="47"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="0HM-9P-ycR"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="3Mm-y2-eIX"/>
+                                </constraints>
+                            </stackView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bLY-wi-w8n" userLabel="Controls Blur View">
                                 <rect key="frame" x="6" y="567" width="363" height="94"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Y5C-4q-i3v">
@@ -145,25 +160,28 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="bHB-EG-K8u" firstAttribute="trailing" secondItem="bLY-wi-w8n" secondAttribute="trailing" id="0Wn-Wt-R7t"/>
-                            <constraint firstItem="nE5-wI-3P2" firstAttribute="leading" secondItem="MoS-P5-AUe" secondAttribute="leading" constant="6" id="3SS-Ly-NvQ"/>
+                            <constraint firstItem="nE5-wI-3P2" firstAttribute="bottom" secondItem="t46-Ek-i6i" secondAttribute="bottom" id="4Lr-J3-CDa"/>
+                            <constraint firstItem="nE5-wI-3P2" firstAttribute="leading" secondItem="t46-Ek-i6i" secondAttribute="leading" id="4Zl-kf-IPH"/>
                             <constraint firstItem="CjI-bJ-s74" firstAttribute="top" secondItem="ZBA-nY-fz5" secondAttribute="top" id="8wV-DM-byq"/>
                             <constraint firstItem="bHB-EG-K8u" firstAttribute="top" secondItem="bLY-wi-w8n" secondAttribute="top" id="9Qd-dQ-s4C"/>
                             <constraint firstItem="bHB-EG-K8u" firstAttribute="leading" secondItem="bLY-wi-w8n" secondAttribute="leading" id="CjR-MC-n8f"/>
+                            <constraint firstItem="t46-Ek-i6i" firstAttribute="leading" secondItem="MoS-P5-AUe" secondAttribute="leading" constant="6" id="EpY-tR-wE1"/>
+                            <constraint firstItem="t46-Ek-i6i" firstAttribute="top" secondItem="MoS-P5-AUe" secondAttribute="top" constant="6" id="Jvh-ki-B6p"/>
                             <constraint firstItem="CjI-bJ-s74" firstAttribute="leading" secondItem="ZBA-nY-fz5" secondAttribute="leading" id="Kou-MY-xEt"/>
-                            <constraint firstItem="Pe8-vp-bVP" firstAttribute="centerY" secondItem="nE5-wI-3P2" secondAttribute="centerY" id="LbZ-P3-pQb"/>
+                            <constraint firstItem="nE5-wI-3P2" firstAttribute="top" secondItem="t46-Ek-i6i" secondAttribute="top" id="MP2-EX-b2o"/>
                             <constraint firstItem="bHB-EG-K8u" firstAttribute="bottom" secondItem="bLY-wi-w8n" secondAttribute="bottom" id="QiL-20-a9a"/>
                             <constraint firstItem="MoS-P5-AUe" firstAttribute="trailing" secondItem="bLY-wi-w8n" secondAttribute="trailing" constant="6" id="Rka-ri-mtZ"/>
-                            <constraint firstItem="MoS-P5-AUe" firstAttribute="top" secondItem="nE5-wI-3P2" secondAttribute="top" constant="-6" id="Snv-kT-xHg"/>
                             <constraint firstAttribute="trailing" secondItem="CjI-bJ-s74" secondAttribute="trailing" id="dOA-eT-QYB"/>
-                            <constraint firstItem="Pe8-vp-bVP" firstAttribute="centerX" secondItem="nE5-wI-3P2" secondAttribute="centerX" id="gGh-YO-vjO"/>
                             <constraint firstItem="MoS-P5-AUe" firstAttribute="bottom" secondItem="bLY-wi-w8n" secondAttribute="bottom" constant="6" id="kYE-Fq-6NS"/>
                             <constraint firstAttribute="bottom" secondItem="CjI-bJ-s74" secondAttribute="bottom" id="rN0-Dn-k5i"/>
+                            <constraint firstItem="nE5-wI-3P2" firstAttribute="trailing" secondItem="t46-Ek-i6i" secondAttribute="trailing" id="tSI-ey-OxO"/>
                             <constraint firstItem="bLY-wi-w8n" firstAttribute="leading" secondItem="MoS-P5-AUe" secondAttribute="leading" constant="6" id="vND-cI-OXG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="MoS-P5-AUe"/>
                     </view>
                     <connections>
                         <outlet property="loadingActivityIndicatorView" destination="omh-tb-D23" id="0RR-Fj-jAA"/>
+                        <outlet property="pictureInPictureButton" destination="sdp-Xs-bRc" id="evg-d5-4zl"/>
                         <outlet property="playPauseButton" destination="gL8-ry-Lc7" id="9bQ-7K-RxK"/>
                         <outlet property="playerView" destination="CjI-bJ-s74" id="hYR-yU-i4j"/>
                         <outlet property="timeSlider" destination="EKV-Dg-mkD" id="lX0-ar-Fzm"/>
@@ -171,7 +189,7 @@
                         <outletCollection property="overlayViews" destination="bLY-wi-w8n" id="BtG-YP-ILN"/>
                         <outletCollection property="overlayViews" destination="bHB-EG-K8u" id="Pny-LA-N01"/>
                         <outletCollection property="overlayViews" destination="nE5-wI-3P2" id="k1Q-Ym-rJb"/>
-                        <outletCollection property="overlayViews" destination="Pe8-vp-bVP" id="JU9-hy-das"/>
+                        <outletCollection property="overlayViews" destination="t46-Ek-i6i" id="3ds-YZ-Wbb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yRV-DO-uvq" userLabel="First Responder" sceneMemberID="firstResponder"/>
