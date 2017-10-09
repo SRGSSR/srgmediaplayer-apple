@@ -14,8 +14,6 @@
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
-static UIImage *SRGAirplayButtonImage(void);
-
 static void commonInit(SRGAirplayButton *self);
 
 @interface SRGAirplayButton ()
@@ -113,7 +111,7 @@ static void commonInit(SRGAirplayButton *self);
 
 - (UIImage *)image
 {
-    return _image ?: SRGAirplayButtonImage();
+    return _image ?: [UIImage imageNamed:@"airplay" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
 }
 
 - (void)setImage:(UIImage *)image
@@ -258,17 +256,6 @@ static void commonInit(SRGAirplayButton *self);
 @end
 
 #pragma mark Functions
-
-static UIImage *SRGAirplayButtonImage(void)
-{
-    static UIImage *image;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSString *imagePath = [[NSBundle srg_mediaPlayerBundle] pathForResource:@"airplay" ofType:@"png"];
-        image = [[UIImage imageWithContentsOfFile:imagePath] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    });
-    return image;
-}
 
 static void commonInit(SRGAirplayButton *self)
 {
