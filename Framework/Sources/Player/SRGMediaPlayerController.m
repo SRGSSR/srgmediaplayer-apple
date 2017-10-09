@@ -38,8 +38,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @property (nonatomic) AVPlayer *player;
 
 @property (nonatomic) NSURL *contentURL;
-@property (nonatomic) NSArray<id<SRGSegment>> *segments;
-@property (nonatomic) NSDictionary *userInfo;
 
 @property (nonatomic) NSArray<id<SRGSegment>> *visibleSegments;
 
