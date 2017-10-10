@@ -210,6 +210,8 @@
                         <outlet property="pictureInPictureButton" destination="sdp-Xs-bRc" id="evg-d5-4zl"/>
                         <outlet property="playPauseButton" destination="gL8-ry-Lc7" id="9bQ-7K-RxK"/>
                         <outlet property="playerView" destination="CjI-bJ-s74" id="hYR-yU-i4j"/>
+                        <outlet property="skipBackwardButton" destination="BRy-c9-UCc" id="3Ma-UP-5OT"/>
+                        <outlet property="skipForwardButton" destination="3vg-6i-6jj" id="IeR-Xc-7O4"/>
                         <outlet property="timeSlider" destination="EKV-Dg-mkD" id="lX0-ar-Fzm"/>
                         <outlet property="tracksButton" destination="xRb-AE-54i" id="AvZ-0T-5cl"/>
                         <outletCollection property="overlayViews" destination="bLY-wi-w8n" id="BtG-YP-ILN"/>

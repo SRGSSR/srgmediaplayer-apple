@@ -116,7 +116,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMake(1., 5.) queue:NULL usingBlock:^(CMTime time) {
             @strongify(self)
             
-            if (! self.isTracking && mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
+            if (! self.tracking && mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
                 [self updateDisplayWithTime:time];
             }
         }];

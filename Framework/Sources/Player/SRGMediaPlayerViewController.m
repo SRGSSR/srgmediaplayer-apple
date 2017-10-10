@@ -40,7 +40,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (nonatomic, weak) IBOutlet SRGVolumeView *volumeView;
 @property (nonatomic, weak) IBOutlet SRGAirplayButton *airplayButton;
 @property (nonatomic, weak) IBOutlet SRGAirplayView *airplayView;
-@property (nonatomic, weak) IBOutlet UIButton *skipBackButton;
+@property (nonatomic, weak) IBOutlet UIButton *skipBackwardButton;
 @property (nonatomic, weak) IBOutlet UIButton *skipForwardButton;
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingActivityIndicatorView;
@@ -237,6 +237,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
             break;
         }
     }
+    
+    self.skipForwardButton.hidden = ! [self canSkipForward];
+    self.skipBackwardButton.hidden = ! [self canSkipBackward];
 }
 
 - (void)resetInactivityTimer
