@@ -208,16 +208,34 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (void)updateControls
 {
     SRGMediaPlayerPlaybackState playbackState = s_mediaPlayerController.playbackState;
-    
-    if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-        self.timeSlider.timeLeftValueLabel.hidden = YES;
-        self.timeSlider.valueLabel.hidden = YES;
-        self.loadingActivityIndicatorView.hidden = (playbackState != SRGMediaPlayerPlaybackStatePreparing);
-    }
-    else {
-        self.timeSlider.timeLeftValueLabel.hidden = NO;
-        self.timeSlider.valueLabel.hidden = NO;
-        self.loadingActivityIndicatorView.hidden = YES;
+    switch (playbackState) {
+        case SRGMediaPlayerPlaybackStateIdle: {
+            self.timeSlider.timeLeftValueLabel.hidden = YES;
+            self.timeSlider.valueLabel.hidden = YES;
+            self.loadingActivityIndicatorView.hidden = YES;
+            break;
+        }
+            
+        case SRGMediaPlayerPlaybackStatePreparing: {
+            self.timeSlider.timeLeftValueLabel.hidden = YES;
+            self.timeSlider.valueLabel.hidden = YES;
+            self.loadingActivityIndicatorView.hidden = NO;
+            break;
+        }
+            
+        case SRGMediaPlayerPlaybackStateSeeking: {
+            self.timeSlider.timeLeftValueLabel.hidden = NO;
+            self.timeSlider.valueLabel.hidden = YES;
+            self.loadingActivityIndicatorView.hidden = NO;
+            break;
+        }
+            
+        default: {
+            self.timeSlider.timeLeftValueLabel.hidden = NO;
+            self.timeSlider.valueLabel.hidden = NO;
+            self.loadingActivityIndicatorView.hidden = YES;
+            break;
+        }
     }
 }
 
