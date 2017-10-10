@@ -21,6 +21,9 @@
 
 #import <libextobjc/libextobjc.h>
 
+const NSInteger SRGMediaPlayerViewControllerBackwardSkipInterval = 10.;
+const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 30.;
+
 // Shared instance to manage picture in picture playback
 static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
@@ -256,6 +259,86 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
+#pragma mark Skips
+
+- (BOOL)canSkipBackward
+{
+    return [self canSkipBackwardFromTime:[self seekStartTime]];
+}
+
+- (BOOL)canSkipForward
+{
+    return [self canSkipForwardFromTime:[self seekStartTime]];
+}
+
+- (void)skipBackwardWithCompletionHandler:(void (^)(BOOL finished))completionHandler
+{
+    [self seekBackwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
+}
+
+- (void)skipForwardWithCompletionHandler:(void (^)(BOOL finished))completionHandler
+{
+    [self seekForwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
+}
+
+- (CMTime)seekStartTime
+{
+    return CMTIME_IS_INDEFINITE(self.controller.seekTargetTime) ? self.controller.currentTime : self.controller.seekTargetTime;
+}
+
+- (BOOL)canSkipBackwardFromTime:(CMTime)time
+{
+    if (CMTIME_IS_INDEFINITE(time)) {
+        return NO;
+    }
+    
+    SRGMediaPlayerStreamType streamType = self.controller.streamType;
+    return (streamType == SRGMediaPlayerStreamTypeOnDemand || streamType == SRGMediaPlayerStreamTypeDVR);
+}
+
+- (BOOL)canSkipForwardFromTime:(CMTime)time
+{
+    if (CMTIME_IS_INDEFINITE(time)) {
+        return NO;
+    }
+    
+    SRGMediaPlayerController *controller = self.controller;
+    return (controller.streamType == SRGMediaPlayerStreamTypeOnDemand && CMTimeGetSeconds(time) + SRGMediaPlayerViewControllerForwardSkipInterval < CMTimeGetSeconds(controller.player.currentItem.duration))
+        || (controller.streamType == SRGMediaPlayerStreamTypeDVR && ! controller.live);
+}
+
+- (void)seekBackwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
+{
+    if (! [self canSkipBackwardFromTime:time]) {
+        completionHandler ? completionHandler(NO) : nil;
+        return;
+    }
+    
+    CMTime targetTime = CMTimeSubtract(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerBackwardSkipInterval, NSEC_PER_SEC));
+    [self.controller seekToTime:targetTime withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
+        if (finished) {
+            [self.controller play];
+        }
+        completionHandler ? completionHandler(finished) : nil;
+    }];
+}
+
+- (void)seekForwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
+{
+    if (! [self canSkipForwardFromTime:time]) {
+        completionHandler ? completionHandler(NO) : nil;
+        return;
+    }
+    
+    CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerForwardSkipInterval, NSEC_PER_SEC));
+    [self.controller seekToTime:targetTime withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
+        if (finished) {
+            [self.controller play];
+        }
+        completionHandler ? completionHandler(finished) : nil;
+    }];
+}
+
 #pragma mark UIGestureRecognizerDelegate protocol
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
@@ -289,6 +372,16 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 }
 
 #pragma mark Actions
+
+- (IBAction)skipForward:(id)sender
+{
+    [self skipForwardWithCompletionHandler:nil];
+}
+
+- (IBAction)skipBackward:(id)sender
+{
+    [self skipBackwardWithCompletionHandler:nil];
+}
 
 - (IBAction)dismiss:(id)sender
 {

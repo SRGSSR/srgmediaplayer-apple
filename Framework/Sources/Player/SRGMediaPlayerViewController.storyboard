@@ -99,14 +99,17 @@
                                             <constraint firstAttribute="height" constant="40" id="aHc-Hs-sLt"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRy-c9-UCc" userLabel="Skip Back Button">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRy-c9-UCc" userLabel="Skip Backward Button">
                                         <rect key="frame" x="106.5" y="43" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="ZuJ-hh-dcV"/>
                                             <constraint firstAttribute="height" constant="40" id="eE0-aI-DSc"/>
                                         </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" image="skip_back_15"/>
+                                        <state key="normal" image="skip_backward_15"/>
+                                        <connections>
+                                            <action selector="skipBackward:" destination="d9c-I7-8ft" eventType="touchUpInside" id="ACa-Hq-6qk"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gL8-ry-Lc7" userLabel="Playback Button" customClass="SRGPlaybackButton">
                                         <rect key="frame" x="166.5" y="46" width="30" height="34"/>
@@ -127,6 +130,9 @@
                                         </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="skip_forward_15"/>
+                                        <connections>
+                                            <action selector="skipForward:" destination="d9c-I7-8ft" eventType="touchUpInside" id="UxR-oA-Kic"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99:99" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyE-ky-Dbl">
                                         <rect key="frame" x="16" y="46" width="32" height="13.5"/>
@@ -221,7 +227,7 @@
         <image name="close" width="19" height="19"/>
         <image name="pause" width="21" height="27"/>
         <image name="play" width="25" height="27"/>
-        <image name="skip_back_15" width="19" height="23"/>
+        <image name="skip_backward_15" width="19" height="23"/>
         <image name="skip_forward_15" width="19" height="23"/>
     </resources>
 </document>
