@@ -230,6 +230,20 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, ==, CMTimeMakeWithSeconds(20., NSEC_PER_SEC)));
 }
 
+- (void)testVideoTrackInLastPosition
+{
+    // The video track is not always located first in the tracks list.
+    [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(SRGMediaPlayerController * _Nullable mediaPlayerController, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return mediaPlayerController.streamType != SRGMediaPlayerStreamTypeUnknown;
+    }] evaluatedWithObject:self.mediaPlayerController handler:nil];
+    
+    [self.mediaPlayerController playURL:[NSURL URLWithString:@"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v"]];
+    
+    [self waitForExpectationsWithTimeout:40. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeVideo);
+}
+
 - (void)testHTTPAudioPlay
 {
     [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {

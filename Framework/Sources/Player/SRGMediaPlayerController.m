@@ -407,12 +407,22 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     
     NSArray *tracks = self.player.currentItem.tracks;
-    if (tracks.count == 0) {
-        return SRGMediaPlayerMediaTypeUnknown;
+    
+    NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
+    }];
+    if ([tracks filteredArrayUsingPredicate:videoPredicate].count != 0) {
+        return SRGMediaPlayerMediaTypeVideo;
     }
     
-    NSString *mediaType = [[tracks.firstObject assetTrack] mediaType];
-    return [mediaType isEqualToString:AVMediaTypeVideo] ? SRGMediaPlayerMediaTypeVideo : SRGMediaPlayerMediaTypeAudio;
+    NSPredicate *audioPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [track.assetTrack.mediaType isEqualToString:AVMediaTypeAudio];
+    }];
+    if ([tracks filteredArrayUsingPredicate:audioPredicate].count != 0) {
+        return SRGMediaPlayerMediaTypeAudio;
+    }
+    
+    return SRGMediaPlayerMediaTypeUnknown;
 }
 
 - (SRGMediaPlayerStreamType)streamType
