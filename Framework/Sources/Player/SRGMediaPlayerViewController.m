@@ -39,6 +39,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (nonatomic, weak) IBOutlet UIButton *skipBackwardButton;
 @property (nonatomic, weak) IBOutlet UIButton *skipForwardButton;
 
+@property (nonatomic, weak) IBOutlet UIImageView *errorImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *audioOnlyImageView;
+
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingActivityIndicatorView;
 
 @property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
@@ -104,6 +107,10 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
                                                  name:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                object:s_mediaPlayerController];
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(srg_mediaPlayerViewController_playbackDidFail:)
+                                                 name:SRGMediaPlayerPlaybackDidFailNotification
+                                               object:s_mediaPlayerController];
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(srg_mediaPlayerViewController_applicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
@@ -115,6 +122,18 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.playerView.isAccessibilityElement = YES;
     self.playerView.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Media", @"The player view label, where the audio / video is displayed");
 
+    self.errorImageView.hidden = YES;
+    self.audioOnlyImageView.hidden = YES;
+    
+    // Workaround UIImage view tint color bug
+    // See http://stackoverflow.com/a/26042893/760435
+    UIImage *errorImage = self.errorImageView.image;
+    self.errorImageView.image = nil;
+    self.errorImageView.image = errorImage;
+    
+    UIImage *audioOnlyImage = self.audioOnlyImageView.image;
+    self.audioOnlyImageView.image = nil;
+    self.audioOnlyImageView.image = audioOnlyImage;
     
     // Use a wrapper to avoid setting gesture recognizers widely on the shared player instance view
     s_mediaPlayerController.view.frame = self.playerView.bounds;
@@ -153,9 +172,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.periodicTimeObserver = [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
         @strongify(self)
         
-        [self updateControls];
+        [self updateUserInterface];
     }];
-    [self updateControls];
+    [self updateUserInterface];
     
     [self updateInterfaceForControlsHidden:NO];
     [self resetInactivityTimer];
@@ -200,7 +219,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 #pragma mark UI
 
-- (void)updateControls
+- (void)updateUserInterface
 {
     SRGMediaPlayerPlaybackState playbackState = s_mediaPlayerController.playbackState;
     switch (playbackState) {
@@ -235,6 +254,17 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     
     self.skipForwardButton.hidden = ! [self canSkipForward];
     self.skipBackwardButton.hidden = ! [self canSkipBackward];
+    
+    if (self.controller.mediaType != SRGMediaPlayerMediaTypeAudio) {
+        self.playerView.hidden = NO;
+        self.audioOnlyImageView.hidden = YES;
+    }
+    else {
+        [self updateInterfaceForControlsHidden:NO];
+        
+        self.playerView.hidden = YES;
+        self.audioOnlyImageView.hidden = NO;
+    }
 }
 
 - (void)resetInactivityTimer
@@ -371,6 +401,16 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
         [self updateInterfaceForControlsHidden:NO];
     }
+    else if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+        self.errorImageView.hidden = YES;
+        [self updateUserInterface];
+    }
+}
+
+- (void)srg_mediaPlayerViewController_playbackDidFail:(NSNotification *)notification
+{
+    self.errorImageView.hidden = NO;
+    [self updateUserInterface];
 }
 
 - (void)srg_mediaPlayerViewController_applicationDidBecomeActive:(NSNotification *)notification
