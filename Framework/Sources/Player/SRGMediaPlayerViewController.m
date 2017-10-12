@@ -13,11 +13,9 @@
 #import "SRGMediaPlayerController.h"
 #import "SRGPlaybackButton.h"
 #import "SRGPictureInPictureButton.h"
-#import "SRGPlaybackActivityIndicatorView.h"
 #import "SRGMediaPlayerSharedController.h"
 #import "SRGTimeSlider.h"
 #import "SRGTracksButton.h"
-#import "SRGVolumeView.h"
 
 #import <libextobjc/libextobjc.h>
 
@@ -33,11 +31,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @property (nonatomic, weak) IBOutlet SRGTracksButton *tracksButton;
 @property (nonatomic, weak) IBOutlet SRGPictureInPictureButton *pictureInPictureButton;
-@property (nonatomic, weak) IBOutlet SRGPlaybackActivityIndicatorView *playbackActivityIndicatorView;
 
 @property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
 @property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
-@property (nonatomic, weak) IBOutlet SRGVolumeView *volumeView;
 @property (nonatomic, weak) IBOutlet SRGAirplayButton *airplayButton;
 @property (nonatomic, weak) IBOutlet SRGAirplayView *airplayView;
 @property (nonatomic, weak) IBOutlet UIButton *skipBackwardButton;
@@ -139,7 +135,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     
     self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
     self.tracksButton.mediaPlayerController = s_mediaPlayerController;
-    self.playbackActivityIndicatorView.mediaPlayerController = s_mediaPlayerController;
     self.timeSlider.mediaPlayerController = s_mediaPlayerController;
     self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
     self.airplayButton.mediaPlayerController = s_mediaPlayerController;
