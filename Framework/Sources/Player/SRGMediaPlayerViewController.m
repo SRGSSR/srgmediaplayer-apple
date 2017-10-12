@@ -189,6 +189,10 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
             [s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
         }
     }
+    
+    if (@available(iOS 11, *)) {
+        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -215,6 +219,13 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
     return UIStatusBarAnimationFade;
+}
+
+#pragma mark Home indicator
+
+- (BOOL)prefersHomeIndicatorAutoHidden
+{
+    return _userInterfaceHidden;
 }
 
 #pragma mark UI
@@ -289,7 +300,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         [UIView animateWithDuration:0.2 animations:^{
             animations();
             [self.view layoutIfNeeded];
-        } completion:nil];
+        } completion:^(BOOL finished) {
+            if (@available(iOS 11, *)) {
+                [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+            }
+        }];
     }
     else {
         animations();
