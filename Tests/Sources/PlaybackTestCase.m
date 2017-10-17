@@ -234,7 +234,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     // The video track is not always located first in the tracks list.
     [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(SRGMediaPlayerController * _Nullable mediaPlayerController, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return mediaPlayerController.streamType != SRGMediaPlayerStreamTypeUnknown;
+        return mediaPlayerController.mediaType != SRGMediaPlayerMediaTypeUnknown;
     }] evaluatedWithObject:self.mediaPlayerController handler:nil];
     
     [self.mediaPlayerController playURL:[NSURL URLWithString:@"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v"]];
@@ -242,6 +242,19 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:40. handler:nil];
     
     XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeVideo);
+}
+
+- (void)testLiveAACPlayback
+{
+    [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(SRGMediaPlayerController * _Nullable mediaPlayerController, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return mediaPlayerController.streamType != SRGMediaPlayerStreamTypeUnknown;
+    }] evaluatedWithObject:self.mediaPlayerController handler:nil];
+    
+    [self.mediaPlayerController playURL:[NSURL URLWithString:@"http://stream.srg-ssr.ch/m/la-1ere/aacp_96"]];
+    
+    [self waitForExpectationsWithTimeout:40. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeLive);
 }
 
 - (void)testHTTPAudioPlay

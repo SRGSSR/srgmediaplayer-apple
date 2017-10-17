@@ -365,18 +365,15 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     AVPlayerItem *playerItem = self.player.currentItem;
     
-    // If no seekable time range information is available, return a time range of length 0
     NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
     NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
-    if (! firstSeekableTimeRangeValue || ! lastSeekableTimeRangeValue) {
-        return kCMTimeRangeInvalid;
-    }
     
     CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
     CMTimeRange lastSeekableTimeRange = [lastSeekableTimeRangeValue CMTimeRangeValue];
     
-    if (CMTIMERANGE_IS_INVALID(firstSeekableTimeRange) || CMTIMERANGE_IS_INVALID(lastSeekableTimeRange)) {
-        return kCMTimeRangeInvalid;
+    if (! firstSeekableTimeRangeValue || CMTIMERANGE_IS_INVALID(firstSeekableTimeRange)
+            || ! lastSeekableTimeRangeValue || CMTIMERANGE_IS_INVALID(lastSeekableTimeRange)) {
+        return playerItem.loadedTimeRanges ? kCMTimeRangeZero : kCMTimeRangeInvalid;
     }
     
     CMTimeRange timeRange = CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
