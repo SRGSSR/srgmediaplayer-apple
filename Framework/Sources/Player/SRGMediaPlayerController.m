@@ -406,7 +406,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         return SRGMediaPlayerMediaTypeUnknown;
     }
     
-    NSArray *tracks = self.player.currentItem.tracks;
+    NSArray<AVPlayerItemTrack *> *tracks = self.player.currentItem.tracks;
     
     NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
