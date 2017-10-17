@@ -19,8 +19,8 @@
 
 #import <libextobjc/libextobjc.h>
 
-const NSInteger SRGMediaPlayerViewControllerBackwardSkipInterval = 10.;
-const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 30.;
+const NSInteger SRGMediaPlayerViewControllerBackwardSkipInterval = 15.;
+const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
 
 // Shared instance to manage picture in picture playback
 static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
