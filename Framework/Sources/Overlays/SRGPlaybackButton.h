@@ -41,7 +41,7 @@ IB_DESIGNABLE
 @property (nonatomic, readonly) SRGPlaybackButtonState playbackButtonState;
 
 /**
- *  Image customization (default scalable images are used if not set).
+ *  Image customization (a default image is used if not set).
  */
 @property (nonatomic, null_resettable) IBInspectable UIImage *playImage;
 @property (nonatomic, null_resettable) IBInspectable UIImage *pauseImage;

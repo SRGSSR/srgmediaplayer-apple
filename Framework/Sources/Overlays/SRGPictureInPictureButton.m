@@ -9,9 +9,6 @@
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaPlayerController.h"
 
-static UIImage *SRGPictureInPictureButtonStartImage(void);
-static UIImage *SRGPictureInPictureButtonStopImage(void);
-
 static void commonInit(SRGPictureInPictureButton *self);
 
 @interface SRGPictureInPictureButton ()
@@ -73,7 +70,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (UIImage *)startImage
 {
-    return _startImage ?: SRGPictureInPictureButtonStartImage();
+    return _startImage ?: [UIImage imageNamed:@"picture_in_picture_start_button" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
 }
 
 - (void)setStartImage:(UIImage *)startImage
@@ -84,7 +81,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (UIImage *)stopImage
 {
-    return _stopImage ?: SRGPictureInPictureButtonStopImage();
+    return _stopImage ?: [UIImage imageNamed:@"picture_in_picture_stop_button" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
 }
 
 - (void)setStopImage:(UIImage *)stopImage
@@ -240,26 +237,4 @@ static void commonInit(SRGPictureInPictureButton *self)
     self.button = button;
     
     self.hidden = YES;
-}
-
-static UIImage *SRGPictureInPictureButtonStartImage(void)
-{
-    static UIImage *s_image;
-    static dispatch_once_t s_onceToken;
-    dispatch_once(&s_onceToken, ^{
-        NSString *imagePath = [[NSBundle srg_mediaPlayerBundle] pathForResource:@"picture_in_picture_start_button" ofType:@"png"];
-        s_image = [[UIImage imageWithContentsOfFile:imagePath] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    });
-    return s_image;
-}
-
-static UIImage *SRGPictureInPictureButtonStopImage(void)
-{
-    static UIImage *image;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSString *imagePath = [[NSBundle srg_mediaPlayerBundle] pathForResource:@"picture_in_picture_stop_button" ofType:@"png"];
-        image = [[UIImage imageWithContentsOfFile:imagePath] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    });
-    return image;
 }

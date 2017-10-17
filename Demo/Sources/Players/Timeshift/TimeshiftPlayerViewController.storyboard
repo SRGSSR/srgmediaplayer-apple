@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Zk8-W1-piv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Zk8-W1-piv">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Timeshift Player View Controller-->
         <scene sceneID="cbS-Cg-mbF">
             <objects>
                 <viewController id="Zk8-W1-piv" customClass="TimeshiftPlayerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="R5C-zU-djv"/>
-                        <viewControllerLayoutGuide type="bottom" id="b0K-LD-In2"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xTs-IJ-3tq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oWm-cH-DH1" customClass="SRGMediaPlayerView">
+                                <rect key="frame" x="0.0" y="20" width="375" height="583"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K0I-7M-Ixt" userLabel="Bottom Bar View">
+                                <rect key="frame" x="0.0" y="603" width="375" height="64"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DRr-Ir-Edl">
+                                        <rect key="frame" x="243" y="31" width="81" height="22"/>
                                         <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="81" id="nkK-ZA-am7"/>
@@ -39,6 +47,7 @@
                                         </connections>
                                     </button>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Tml-pK-mQ9" customClass="SRGTimeSlider">
+                                        <rect key="frame" x="6" y="0.0" width="363" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="ajA-g4-OfO"/>
                                         </constraints>
@@ -53,6 +62,7 @@
                                         </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mq0-n2-ZD3">
+                                        <rect key="frame" x="8" y="34" width="35" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="Y3d-jk-it5"/>
                                             <constraint firstAttribute="height" constant="16" id="cG4-oQ-Al5"/>
@@ -61,6 +71,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="szg-q5-gCR">
+                                        <rect key="frame" x="332" y="34" width="35" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="0Da-xg-Piu"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="35" id="GfR-VX-7Em"/>
@@ -75,6 +86,7 @@
                                         </variation>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5E-wC-58R" customClass="SRGPlaybackButton">
+                                        <rect key="frame" x="176.5" y="31" width="22" height="22"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="Q5D-P0-pgq"/>
@@ -107,6 +119,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G2B-1h-zvk" userLabel="Close Button">
+                                <rect key="frame" x="331" y="30" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="cKv-Ew-QKt"/>
                                     <constraint firstAttribute="height" constant="44" id="suH-O7-DbC"/>
@@ -119,6 +132,7 @@
                                 </connections>
                             </button>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="C5v-lq-cYV" customClass="SRGPlaybackActivityIndicatorView">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
                                 <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="6VD-Uo-jhM"/>
@@ -128,18 +142,19 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="K0I-7M-Ixt" secondAttribute="trailing" id="1hn-vV-M0w"/>
-                            <constraint firstAttribute="trailing" secondItem="oWm-cH-DH1" secondAttribute="trailing" id="2kE-oK-a3J"/>
-                            <constraint firstAttribute="centerX" secondItem="C5v-lq-cYV" secondAttribute="centerX" id="50X-FM-qFd"/>
-                            <constraint firstItem="G2B-1h-zvk" firstAttribute="top" secondItem="R5C-zU-djv" secondAttribute="bottom" constant="10" id="AYC-XD-5ic"/>
+                            <constraint firstItem="VxJ-xJ-ioo" firstAttribute="trailing" secondItem="K0I-7M-Ixt" secondAttribute="trailing" id="1hn-vV-M0w"/>
+                            <constraint firstItem="VxJ-xJ-ioo" firstAttribute="trailing" secondItem="oWm-cH-DH1" secondAttribute="trailing" id="2kE-oK-a3J"/>
+                            <constraint firstItem="VxJ-xJ-ioo" firstAttribute="centerX" secondItem="C5v-lq-cYV" secondAttribute="centerX" id="50X-FM-qFd"/>
+                            <constraint firstItem="G2B-1h-zvk" firstAttribute="top" secondItem="VxJ-xJ-ioo" secondAttribute="top" constant="10" id="AYC-XD-5ic"/>
                             <constraint firstItem="K0I-7M-Ixt" firstAttribute="top" secondItem="oWm-cH-DH1" secondAttribute="bottom" id="CCS-as-yID"/>
-                            <constraint firstItem="oWm-cH-DH1" firstAttribute="top" secondItem="R5C-zU-djv" secondAttribute="bottom" id="L5N-3A-b1f"/>
-                            <constraint firstAttribute="trailing" secondItem="G2B-1h-zvk" secondAttribute="trailing" id="Ree-lc-Qo2"/>
-                            <constraint firstItem="b0K-LD-In2" firstAttribute="top" secondItem="K0I-7M-Ixt" secondAttribute="bottom" id="eGs-Z9-xrV"/>
+                            <constraint firstItem="oWm-cH-DH1" firstAttribute="top" secondItem="VxJ-xJ-ioo" secondAttribute="top" id="L5N-3A-b1f"/>
+                            <constraint firstItem="VxJ-xJ-ioo" firstAttribute="trailing" secondItem="G2B-1h-zvk" secondAttribute="trailing" id="Ree-lc-Qo2"/>
+                            <constraint firstItem="VxJ-xJ-ioo" firstAttribute="bottom" secondItem="K0I-7M-Ixt" secondAttribute="bottom" id="eGs-Z9-xrV"/>
                             <constraint firstAttribute="centerY" secondItem="C5v-lq-cYV" secondAttribute="centerY" id="o3C-Et-mjD"/>
-                            <constraint firstItem="K0I-7M-Ixt" firstAttribute="leading" secondItem="xTs-IJ-3tq" secondAttribute="leading" id="qRg-d3-naG"/>
-                            <constraint firstItem="oWm-cH-DH1" firstAttribute="leading" secondItem="xTs-IJ-3tq" secondAttribute="leading" id="whZ-DW-1lh"/>
+                            <constraint firstItem="K0I-7M-Ixt" firstAttribute="leading" secondItem="VxJ-xJ-ioo" secondAttribute="leading" id="qRg-d3-naG"/>
+                            <constraint firstItem="oWm-cH-DH1" firstAttribute="leading" secondItem="VxJ-xJ-ioo" secondAttribute="leading" id="whZ-DW-1lh"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="VxJ-xJ-ioo"/>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>

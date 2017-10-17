@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="IH9-dj-2W7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="IH9-dj-2W7">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,10 +16,6 @@
         <scene sceneID="Oe1-BV-6Nh">
             <objects>
                 <viewController id="IH9-dj-2W7" customClass="InlinePlayerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="tBA-s6-BzM"/>
-                        <viewControllerLayoutGuide type="bottom" id="Kav-KH-kPV"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="VxK-5u-5wr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -102,17 +99,18 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="5GK-5L-sQL" secondAttribute="centerX" id="5wg-hP-RyW"/>
+                            <constraint firstItem="DNG-or-44v" firstAttribute="centerX" secondItem="5GK-5L-sQL" secondAttribute="centerX" id="5wg-hP-RyW"/>
                             <constraint firstItem="mz4-3g-dMP" firstAttribute="width" secondItem="VxK-5u-5wr" secondAttribute="width" multiplier="3/4" id="FBl-Le-WAa"/>
-                            <constraint firstAttribute="centerX" secondItem="utS-HI-UsH" secondAttribute="centerX" id="JGy-KD-6Lf"/>
-                            <constraint firstAttribute="centerX" secondItem="5GK-5L-sQL" secondAttribute="centerX" id="LW3-Jk-aRf"/>
+                            <constraint firstItem="DNG-or-44v" firstAttribute="centerX" secondItem="utS-HI-UsH" secondAttribute="centerX" id="JGy-KD-6Lf"/>
+                            <constraint firstItem="DNG-or-44v" firstAttribute="centerX" secondItem="5GK-5L-sQL" secondAttribute="centerX" id="LW3-Jk-aRf"/>
                             <constraint firstItem="5GK-5L-sQL" firstAttribute="top" secondItem="utS-HI-UsH" secondAttribute="bottom" constant="8" id="PVD-kX-F5l"/>
                             <constraint firstItem="utS-HI-UsH" firstAttribute="top" secondItem="vPP-hu-p6g" secondAttribute="bottom" constant="8" id="dRF-Bf-DZ5"/>
-                            <constraint firstAttribute="centerX" secondItem="mz4-3g-dMP" secondAttribute="centerX" id="iDI-ui-5nQ"/>
+                            <constraint firstItem="DNG-or-44v" firstAttribute="centerX" secondItem="mz4-3g-dMP" secondAttribute="centerX" id="iDI-ui-5nQ"/>
                             <constraint firstItem="vPP-hu-p6g" firstAttribute="top" secondItem="mz4-3g-dMP" secondAttribute="bottom" constant="8" id="lxR-8i-Awv"/>
-                            <constraint firstItem="mz4-3g-dMP" firstAttribute="top" secondItem="tBA-s6-BzM" secondAttribute="bottom" constant="20" id="s6e-fV-Bta"/>
-                            <constraint firstAttribute="centerX" secondItem="vPP-hu-p6g" secondAttribute="centerX" id="ve0-5v-MSh"/>
+                            <constraint firstItem="mz4-3g-dMP" firstAttribute="top" secondItem="DNG-or-44v" secondAttribute="top" constant="20" id="s6e-fV-Bta"/>
+                            <constraint firstItem="DNG-or-44v" firstAttribute="centerX" secondItem="vPP-hu-p6g" secondAttribute="centerX" id="ve0-5v-MSh"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="DNG-or-44v"/>
                     </view>
                     <connections>
                         <outlet property="mediaPlayerController" destination="VI1-qS-HQF" id="c0t-Es-Esg"/>

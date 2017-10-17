@@ -365,18 +365,15 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     AVPlayerItem *playerItem = self.player.currentItem;
     
-    // If no seekable time range information is available, return a time range of length 0
     NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
     NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
-    if (! firstSeekableTimeRangeValue || ! lastSeekableTimeRangeValue) {
-        return kCMTimeRangeInvalid;
-    }
     
     CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
     CMTimeRange lastSeekableTimeRange = [lastSeekableTimeRangeValue CMTimeRangeValue];
     
-    if (CMTIMERANGE_IS_INVALID(firstSeekableTimeRange) || CMTIMERANGE_IS_INVALID(lastSeekableTimeRange)) {
-        return kCMTimeRangeInvalid;
+    if (! firstSeekableTimeRangeValue || CMTIMERANGE_IS_INVALID(firstSeekableTimeRange)
+            || ! lastSeekableTimeRangeValue || CMTIMERANGE_IS_INVALID(lastSeekableTimeRange)) {
+        return playerItem.loadedTimeRanges ? kCMTimeRangeZero : kCMTimeRangeInvalid;
     }
     
     CMTimeRange timeRange = CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));
@@ -406,13 +403,23 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         return SRGMediaPlayerMediaTypeUnknown;
     }
     
-    NSArray *tracks = self.player.currentItem.tracks;
-    if (tracks.count == 0) {
-        return SRGMediaPlayerMediaTypeUnknown;
+    NSArray<AVPlayerItemTrack *> *tracks = self.player.currentItem.tracks;
+    
+    NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
+        return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
+    }];
+    if ([tracks filteredArrayUsingPredicate:videoPredicate].count != 0) {
+        return SRGMediaPlayerMediaTypeVideo;
     }
     
-    NSString *mediaType = [[tracks.firstObject assetTrack] mediaType];
-    return [mediaType isEqualToString:AVMediaTypeVideo] ? SRGMediaPlayerMediaTypeVideo : SRGMediaPlayerMediaTypeAudio;
+    NSPredicate *audioPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
+        return [track.assetTrack.mediaType isEqualToString:AVMediaTypeAudio];
+    }];
+    if ([tracks filteredArrayUsingPredicate:audioPredicate].count != 0) {
+        return SRGMediaPlayerMediaTypeAudio;
+    }
+    
+    return SRGMediaPlayerMediaTypeUnknown;
 }
 
 - (SRGMediaPlayerStreamType)streamType
