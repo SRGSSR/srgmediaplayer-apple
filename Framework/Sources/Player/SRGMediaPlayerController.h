@@ -15,7 +15,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  `SRGMediaPlayerController` is inspired by the `MPMoviePlayerController` class. It manages the playback of a media 
+ *  `SRGMediaPlayerController` is inspired by the `AVPlayerViewController` class. It manages the playback of a media 
  *  from a file or a network stream, but provides only core player functionality. As such, it is intended for custom
  *  media player implementation. If you need a player with limited customization abilities but which you can readily 
  *  use, you should have a look at `SRGMediaPlayerViewController` instead.
