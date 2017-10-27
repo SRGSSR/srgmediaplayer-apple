@@ -10,12 +10,6 @@
 		08293A4B1EDC62FC008CE02E /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08293A4D1EDC62FC008CE02E /* Accessibility.strings */; };
 		08D3BEB01DE6EAB100AE1368 /* SRGTracksButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3BEAE1DE6EAB100AE1368 /* SRGTracksButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08D3BEB11DE6EAB100AE1368 /* SRGTracksButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3BEAF1DE6EAB100AE1368 /* SRGTracksButton.m */; };
-		08D3BEB51DE7671E00AE1368 /* alternate_tracks_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEB21DE7671E00AE1368 /* alternate_tracks_button.png */; };
-		08D3BEB61DE7671E00AE1368 /* alternate_tracks_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEB31DE7671E00AE1368 /* alternate_tracks_button@2x.png */; };
-		08D3BEB71DE7671E00AE1368 /* alternate_tracks_button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEB41DE7671E00AE1368 /* alternate_tracks_button@3x.png */; };
-		08D3BEBB1DE7699500AE1368 /* alternate_tracks_button_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEB81DE7699500AE1368 /* alternate_tracks_button_selected.png */; };
-		08D3BEBC1DE7699500AE1368 /* alternate_tracks_button_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEB91DE7699500AE1368 /* alternate_tracks_button_selected@2x.png */; };
-		08D3BEBD1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 08D3BEBA1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png */; };
 		08D3BEC01DE8756500AE1368 /* SRGAlternateTracksViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */; };
 		08D3BEC11DE8756500AE1368 /* SRGAlternateTracksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3BEBF1DE8756500AE1368 /* SRGAlternateTracksViewController.m */; };
 		08F4E53F1E7FE76900C9E8FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08F4E5411E7FE76900C9E8FD /* Localizable.strings */; };
@@ -27,6 +21,7 @@
 		6F0F2A421EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0F2A401EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.m */; };
 		6F1D6D021DAF50050072C107 /* SRGLogger.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6F1D6D031DAF50050072C107 /* libextobjc.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; };
+		6F3C6DE01F738173007FB56B /* XCTestCase+MediaPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C6DDF1F738173007FB56B /* XCTestCase+MediaPlayerTests.m */; };
 		6F5D662E1DAF50E3009AD6DD /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6F5D66451DAFCDF1009AD6DD /* SRGAirplayButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5D66431DAFCDF1009AD6DD /* SRGAirplayButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F5D66461DAFCDF1009AD6DD /* SRGAirplayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D66441DAFCDF1009AD6DD /* SRGAirplayButton.m */; };
@@ -34,6 +29,7 @@
 		6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */; };
 		6F90A56A1F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F90A5681F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h */; };
 		6F90A56B1F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F90A5691F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m */; };
+		6F9453341F7225BC00A6507E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F9453331F7225BC00A6507E /* Images.xcassets */; };
 		6F97C7981E7A89C5001AD9B3 /* ModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */; };
 		6FA09D2A1D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */; };
 		6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -44,11 +40,8 @@
 		6FB97FE11E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FB97FE21E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FB97FF81E4B13CC0014C4C2 /* MAKVONotificationCenter.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
-		6FEB51631DB0A8FB002D1751 /* airplay.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51601DB0A8FA002D1751 /* airplay.png */; };
-		6FEB51641DB0A8FB002D1751 /* airplay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51611DB0A8FB002D1751 /* airplay@2x.png */; };
-		6FEB51651DB0A8FB002D1751 /* airplay@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51621DB0A8FB002D1751 /* airplay@3x.png */; };
-		6FEB51681DB0A909002D1751 /* picture_in_picture_start_button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51661DB0A909002D1751 /* picture_in_picture_start_button@3x.png */; };
-		6FEB51691DB0A909002D1751 /* picture_in_picture_stop_button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51671DB0A909002D1751 /* picture_in_picture_stop_button@3x.png */; };
+		6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */; };
+		6FE7D5EB1F86237D00817E89 /* MetadataUpdatesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */; };
 		6FEB516C1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FEB516A1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h */; };
 		6FEB516D1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FEB516B1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.m */; };
 		E654909C1D7F33AE007D96E7 /* libextobjc.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -57,10 +50,6 @@
 		E67799341D75B0E300E58331 /* SRGTimelineSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F511D62072400A55085 /* SRGTimelineSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E67799351D75B0E300E58331 /* SRGTimelineSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F521D62072400A55085 /* SRGTimelineSlider.m */; };
 		E69A1E561D61BAFD0064E6C1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E001D61BAFD0064E6C1 /* Localizable.strings */; };
-		E69A1E571D61BAFD0064E6C1 /* picture_in_picture_start_button.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E051D61BAFD0064E6C1 /* picture_in_picture_start_button.png */; };
-		E69A1E581D61BAFD0064E6C1 /* picture_in_picture_start_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E061D61BAFD0064E6C1 /* picture_in_picture_start_button@2x.png */; };
-		E69A1E591D61BAFD0064E6C1 /* picture_in_picture_stop_button.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E071D61BAFD0064E6C1 /* picture_in_picture_stop_button.png */; };
-		E69A1E5A1D61BAFD0064E6C1 /* picture_in_picture_stop_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E081D61BAFD0064E6C1 /* picture_in_picture_stop_button@2x.png */; };
 		E69A1E5B1D61BAFD0064E6C1 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E0A1D61BAFD0064E6C1 /* thumb_timeline_slider.png */; };
 		E69A1E5C1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E0B1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png */; };
 		E69A1E621D61BAFD0064E6C1 /* SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = E69A1E121D61BAFD0064E6C1 /* SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -217,12 +206,6 @@
 		08293A511EDC6307008CE02E /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Accessibility.strings; sourceTree = "<group>"; };
 		08D3BEAE1DE6EAB100AE1368 /* SRGTracksButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGTracksButton.h; sourceTree = "<group>"; };
 		08D3BEAF1DE6EAB100AE1368 /* SRGTracksButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGTracksButton.m; sourceTree = "<group>"; };
-		08D3BEB21DE7671E00AE1368 /* alternate_tracks_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alternate_tracks_button.png; sourceTree = "<group>"; };
-		08D3BEB31DE7671E00AE1368 /* alternate_tracks_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alternate_tracks_button@2x.png"; sourceTree = "<group>"; };
-		08D3BEB41DE7671E00AE1368 /* alternate_tracks_button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alternate_tracks_button@3x.png"; sourceTree = "<group>"; };
-		08D3BEB81DE7699500AE1368 /* alternate_tracks_button_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alternate_tracks_button_selected.png; sourceTree = "<group>"; };
-		08D3BEB91DE7699500AE1368 /* alternate_tracks_button_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alternate_tracks_button_selected@2x.png"; sourceTree = "<group>"; };
-		08D3BEBA1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alternate_tracks_button_selected@3x.png"; sourceTree = "<group>"; };
 		08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAlternateTracksViewController.h; sourceTree = "<group>"; };
 		08D3BEBF1DE8756500AE1368 /* SRGAlternateTracksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAlternateTracksViewController.m; sourceTree = "<group>"; };
 		08F4E5401E7FE76900C9E8FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -236,6 +219,8 @@
 		6F0D051E1DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		6F0F2A3F1EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F0F2A401EDEFB48001423F4 /* UIWindow+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+SRGMediaPlayer.m"; sourceTree = "<group>"; };
+		6F3C6DDE1F738173007FB56B /* XCTestCase+MediaPlayerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCTestCase+MediaPlayerTests.h"; sourceTree = "<group>"; };
+		6F3C6DDF1F738173007FB56B /* XCTestCase+MediaPlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "XCTestCase+MediaPlayerTests.m"; sourceTree = "<group>"; };
 		6F5D66431DAFCDF1009AD6DD /* SRGAirplayButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAirplayButton.h; sourceTree = "<group>"; };
 		6F5D66441DAFCDF1009AD6DD /* SRGAirplayButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAirplayButton.m; sourceTree = "<group>"; };
 		6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayerView+Private.h"; sourceTree = "<group>"; };
@@ -243,17 +228,16 @@
 		6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Demo.m"; sourceTree = "<group>"; };
 		6F90A5681F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVPlayer+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F90A5691F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVPlayer+SRGMediaPlayer.m"; sourceTree = "<group>"; };
+		6F9453331F7225BC00A6507E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6F97C7961E7A89C5001AD9B3 /* ModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalTransition.h; sourceTree = "<group>"; };
 		6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalTransition.m; sourceTree = "<group>"; };
 		6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerLogger.h; sourceTree = "<group>"; };
 		6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
 		6FA1D6081F42C13E00C85D15 /* TestMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMacros.h; sourceTree = "<group>"; };
 		6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
-		6FEB51601DB0A8FA002D1751 /* airplay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airplay.png; sourceTree = "<group>"; };
-		6FEB51611DB0A8FB002D1751 /* airplay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airplay@2x.png"; sourceTree = "<group>"; };
-		6FEB51621DB0A8FB002D1751 /* airplay@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airplay@3x.png"; sourceTree = "<group>"; };
-		6FEB51661DB0A909002D1751 /* picture_in_picture_start_button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picture_in_picture_start_button@3x.png"; sourceTree = "<group>"; };
-		6FEB51671DB0A909002D1751 /* picture_in_picture_stop_button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picture_in_picture_stop_button@3x.png"; sourceTree = "<group>"; };
+		6FE7D5E61F85039000817E89 /* MediaPlayerBaseTestCase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPlayerBaseTestCase.h; sourceTree = "<group>"; };
+		6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerBaseTestCase.m; sourceTree = "<group>"; };
+		6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetadataUpdatesTestCase.m; sourceTree = "<group>"; };
 		6FEB516A1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPVolumeView+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6FEB516B1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MPVolumeView+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		E67799301D75AE2500E58331 /* SRGTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGTimelineView.h; sourceTree = "<group>"; };
@@ -264,10 +248,6 @@
 		E69A1E021D61BAFD0064E6C1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E69A1E031D61BAFD0064E6C1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E69A1E041D61BAFD0064E6C1 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E69A1E051D61BAFD0064E6C1 /* picture_in_picture_start_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picture_in_picture_start_button.png; sourceTree = "<group>"; };
-		E69A1E061D61BAFD0064E6C1 /* picture_in_picture_start_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picture_in_picture_start_button@2x.png"; sourceTree = "<group>"; };
-		E69A1E071D61BAFD0064E6C1 /* picture_in_picture_stop_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picture_in_picture_stop_button.png; sourceTree = "<group>"; };
-		E69A1E081D61BAFD0064E6C1 /* picture_in_picture_stop_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picture_in_picture_stop_button@2x.png"; sourceTree = "<group>"; };
 		E69A1E091D61BAFD0064E6C1 /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E69A1E0A1D61BAFD0064E6C1 /* thumb_timeline_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumb_timeline_slider.png; sourceTree = "<group>"; };
 		E69A1E0B1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumb_timeline_slider@2x.png"; sourceTree = "<group>"; };
@@ -414,7 +394,11 @@
 		6FA1D6071F42C11600C85D15 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				6FE7D5E61F85039000817E89 /* MediaPlayerBaseTestCase.h */,
+				6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */,
 				6FA1D6081F42C13E00C85D15 /* TestMacros.h */,
+				6F3C6DDE1F738173007FB56B /* XCTestCase+MediaPlayerTests.h */,
+				6F3C6DDF1F738173007FB56B /* XCTestCase+MediaPlayerTests.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -459,24 +443,10 @@
 			isa = PBXGroup;
 			children = (
 				08293A4D1EDC62FC008CE02E /* Accessibility.strings */,
-				6FEB51601DB0A8FA002D1751 /* airplay.png */,
-				6FEB51611DB0A8FB002D1751 /* airplay@2x.png */,
-				6FEB51621DB0A8FB002D1751 /* airplay@3x.png */,
-				08D3BEB81DE7699500AE1368 /* alternate_tracks_button_selected.png */,
-				08D3BEB91DE7699500AE1368 /* alternate_tracks_button_selected@2x.png */,
-				08D3BEBA1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png */,
-				08D3BEB21DE7671E00AE1368 /* alternate_tracks_button.png */,
-				08D3BEB31DE7671E00AE1368 /* alternate_tracks_button@2x.png */,
-				08D3BEB41DE7671E00AE1368 /* alternate_tracks_button@3x.png */,
 				E69A1E001D61BAFD0064E6C1 /* Localizable.strings */,
-				E69A1E051D61BAFD0064E6C1 /* picture_in_picture_start_button.png */,
-				E69A1E061D61BAFD0064E6C1 /* picture_in_picture_start_button@2x.png */,
-				6FEB51661DB0A909002D1751 /* picture_in_picture_start_button@3x.png */,
-				E69A1E071D61BAFD0064E6C1 /* picture_in_picture_stop_button.png */,
-				E69A1E081D61BAFD0064E6C1 /* picture_in_picture_stop_button@2x.png */,
-				6FEB51671DB0A909002D1751 /* picture_in_picture_stop_button@3x.png */,
 				E69A1E0A1D61BAFD0064E6C1 /* thumb_timeline_slider.png */,
 				E69A1E0B1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png */,
+				6F9453331F7225BC00A6507E /* Images.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -555,10 +525,11 @@
 			isa = PBXGroup;
 			children = (
 				6FA1D6071F42C11600C85D15 /* Helpers */,
+				6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */,
 				E69A1FDE1D61C6D20064E6C1 /* PlaybackTestCase.m */,
-				E69A1FDF1D61C6D20064E6C1 /* SegmentsTestCase.m */,
 				E69A1FE01D61C6D20064E6C1 /* Segment.h */,
 				E69A1FE11D61C6D20064E6C1 /* Segment.m */,
+				E69A1FDF1D61C6D20064E6C1 /* SegmentsTestCase.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -896,27 +867,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08D3BEBD1DE7699500AE1368 /* alternate_tracks_button_selected@3x.png in Resources */,
-				08D3BEB51DE7671E00AE1368 /* alternate_tracks_button.png in Resources */,
 				E6C315671D76AB62001FC93A /* LaunchScreen.xib in Resources */,
-				E69A1E581D61BAFD0064E6C1 /* picture_in_picture_start_button@2x.png in Resources */,
 				E69A1E5C1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png in Resources */,
 				E69A1E5B1D61BAFD0064E6C1 /* thumb_timeline_slider.png in Resources */,
-				6FEB51651DB0A8FB002D1751 /* airplay@3x.png in Resources */,
-				6FEB51641DB0A8FB002D1751 /* airplay@2x.png in Resources */,
 				E69A1E561D61BAFD0064E6C1 /* Localizable.strings in Resources */,
-				E69A1E591D61BAFD0064E6C1 /* picture_in_picture_stop_button.png in Resources */,
-				08D3BEBB1DE7699500AE1368 /* alternate_tracks_button_selected.png in Resources */,
-				E69A1E571D61BAFD0064E6C1 /* picture_in_picture_start_button.png in Resources */,
 				E6BCE9631D7943F50021973D /* SRGMediaPlayerViewController.storyboard in Resources */,
-				08D3BEB71DE7671E00AE1368 /* alternate_tracks_button@3x.png in Resources */,
-				08D3BEBC1DE7699500AE1368 /* alternate_tracks_button_selected@2x.png in Resources */,
-				6FEB51681DB0A909002D1751 /* picture_in_picture_start_button@3x.png in Resources */,
-				E69A1E5A1D61BAFD0064E6C1 /* picture_in_picture_stop_button@2x.png in Resources */,
+				6F9453341F7225BC00A6507E /* Images.xcassets in Resources */,
 				08293A4B1EDC62FC008CE02E /* Accessibility.strings in Resources */,
-				6FEB51631DB0A8FB002D1751 /* airplay.png in Resources */,
-				08D3BEB61DE7671E00AE1368 /* alternate_tracks_button@2x.png in Resources */,
-				6FEB51691DB0A909002D1751 /* picture_in_picture_stop_button@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1022,8 +979,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FE7D5EB1F86237D00817E89 /* MetadataUpdatesTestCase.m in Sources */,
 				E6BCE95F1D77F1A50021973D /* PlaybackTestCase.m in Sources */,
 				E6BCE9641D794D6A0021973D /* SegmentsTestCase.m in Sources */,
+				6F3C6DE01F738173007FB56B /* XCTestCase+MediaPlayerTests.m in Sources */,
+				6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */,
 				E69A1FE61D61C6D20064E6C1 /* Segment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1123,8 +1083,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MARKETING_VERSION = 2.0.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MARKETING_VERSION = 2.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1170,8 +1130,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MARKETING_VERSION = 2.0.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MARKETING_VERSION = 2.1;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1257,7 +1217,6 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1281,7 +1240,6 @@
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";

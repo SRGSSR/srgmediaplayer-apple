@@ -36,7 +36,7 @@ IB_DESIGNABLE
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
- *  Image customization (default 28x22 images are used if not set).
+ *  Image customization (a default image is used if not set).
  */
 @property (nonatomic, null_resettable) IBInspectable UIImage *startImage;
 @property (nonatomic, null_resettable) IBInspectable UIImage *stopImage;

@@ -8,11 +8,8 @@
    Title of the pop over view to select audio or subtitles */
 "Audio and Subtitles" = "Audio et sous-titres";
 
-/* Button title to go back to live */
-"Back to live" = "Retour au direct";
-
 /* Very short text on left time label when playing a live stream */
-"Live" = "Direct";
+"Live" = "En direct";
 
 /* Option to remove subtitles in alternate tracks popup menu */
 "No subtitles" = "Pas de sous-titres";

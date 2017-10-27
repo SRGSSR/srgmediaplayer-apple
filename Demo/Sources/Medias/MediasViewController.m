@@ -13,7 +13,7 @@
 #import "SegmentsPlayerViewController.h"
 #import "TimeshiftPlayerViewController.h"
 
-#import <MediaPlayer/MediaPlayer.h>
+#import <AVKit/AVKit.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface MediasViewController ()
@@ -180,8 +180,12 @@
         
         switch (indexPath.row) {
             case 0: {
-                MPMoviePlayerViewController *moviePlayerViewController = [[MPMoviePlayerViewController alloc] initWithContentURL:contentURL];
-                [self presentMoviePlayerViewControllerAnimated:moviePlayerViewController];
+                AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+                AVPlayer *player = [AVPlayer playerWithURL:contentURL];
+                playerViewController.player = player;
+                [self presentViewController:playerViewController animated:YES completion:^{
+                    [player play];
+                }];
                 break;
             }
                 

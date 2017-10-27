@@ -15,9 +15,6 @@
 
 static void commonInit(SRGTracksButton *self);
 
-static UIImage *SRGTracksButtonImage(void);
-static UIImage *SRGSelectedSubtitlesButtonImage(void);
-
 @interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate>
 
 @property (nonatomic, weak) UIButton *button;
@@ -76,7 +73,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (UIImage *)image
 {
-    return _image ?: SRGTracksButtonImage();
+    return _image ?: [UIImage imageNamed:@"alternate_tracks_button" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
 }
 
 - (void)setImage:(UIImage *)image
@@ -87,7 +84,7 @@ static UIImage *SRGSelectedSubtitlesButtonImage(void);
 
 - (UIImage *)selectedImage
 {
-    return _selectedImage ?: SRGSelectedSubtitlesButtonImage();
+    return _selectedImage ?: [UIImage imageNamed:@"alternate_tracks_button_selected" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
 }
 
 - (void)setSelectedImage:(UIImage *)selectedImage
@@ -266,26 +263,4 @@ static void commonInit(SRGTracksButton *self)
     self.button = button;
     
     self.hidden = YES;
-}
-
-static UIImage *SRGTracksButtonImage(void)
-{
-    static UIImage *image;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSString *imagePath = [[NSBundle srg_mediaPlayerBundle] pathForResource:@"alternate_tracks_button" ofType:@"png"];
-        image = [[UIImage imageWithContentsOfFile:imagePath] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    });
-    return image;
-}
-
-static UIImage *SRGSelectedSubtitlesButtonImage(void)
-{
-    static UIImage *image;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSString *imagePath = [[NSBundle srg_mediaPlayerBundle] pathForResource:@"alternate_tracks_button_selected" ofType:@"png"];
-        image = [[UIImage imageWithContentsOfFile:imagePath] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    });
-    return image;
 }

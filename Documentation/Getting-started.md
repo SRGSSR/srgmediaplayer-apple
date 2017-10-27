@@ -10,7 +10,7 @@ Those components can be combined together depending on your application needs. A
 
 ## Architecture
 
-At the highest level, the library intends to provide a default player view controller which can be instantiated in a few keystrokes, much like the system `MPMoviePlayerViewController`. It supports only limited features and its layout is similar to the one of the system player, but cannot be customised.
+At the highest level, the library intends to provide a default player view controller which can be instantiated in a few keystrokes, much like the system `AVPlayerViewController`. It supports only limited features and its layout is similar to the one of the system player, but cannot be customised.
 
 This default player view controller is itself based on a set of lower-level components which you can combine to match your requirements:
 

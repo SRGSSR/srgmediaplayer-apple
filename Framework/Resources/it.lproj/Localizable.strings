@@ -8,9 +8,6 @@
    Title of the pop over view to select audio or subtitles */
 "Audio and Subtitles" = "Audio e sottotitoli";
 
-/* Button title to go back to live */
-"Back to live" = "Ritorno al Live";
-
 /* Very short text on left time label when playing a live stream */
 "Live" = "Live";
 

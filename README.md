@@ -14,7 +14,7 @@ The SRG Media Player library for iOS provides a simple way to add a universal au
 
 ## Compatibility
 
-The library is suitable for applications running on iOS 8 and above. The project is meant to be opened with the latest Xcode version (currently Xcode 8).
+The library is suitable for applications running on iOS 9 and above. The project is meant to be opened with the latest Xcode version (currently Xcode 9).
 
 ## Installation
 

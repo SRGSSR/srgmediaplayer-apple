@@ -15,7 +15,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  `SRGMediaPlayerController` is inspired by the `MPMoviePlayerController` class. It manages the playback of a media 
+ *  `SRGMediaPlayerController` is inspired by the `AVPlayerViewController` class. It manages the playback of a media 
  *  from a file or a network stream, but provides only core player functionality. As such, it is intended for custom
  *  media player implementation. If you need a player with limited customization abilities but which you can readily 
  *  use, you should have a look at `SRGMediaPlayerViewController` instead.
@@ -237,9 +237,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  call `-play` from the completion handler (in which case the player will immediately reach the playing state).
  *
  *  @param URL               The URL to play.
- *  @param time              The time to start at. Use `kCMTimeZero` to start at the default location:
- *                             - For on-demand streams: At the beginning.
- *                             - For live and DVR streams: In live conditions, i.e. at the end of the stream.
+ *  @param time              The time to start at.
  *                           If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
  *                           actual media time range will seek to the nearest location (either zero or the end time).
  *  @param segments          A segment list.
@@ -253,6 +251,13 @@ NS_ASSUME_NONNULL_BEGIN
  *              This way, any change to the player state in the completion handler (e.g. because of a `-play` request) will 
  *              only be reflected after the completion handler has been executed, so that the player transitions from preparing
  *              to this state without transitioning through the paused state.
+ *
+ *              Use `kCMTimeZero` to start at the beginning of an on-demand stream. For DVR streams, using `kCMTimeZero` will
+ *              start the stream at its end. For times smaller than the chunk size, playback might start at the end of the stream
+ *              (iOS 11 and above) or at the specified location (older iOS versions).
+ *
+ *              If the specified time lies outside the media time range, the location at which playback actually begins is
+ *              undefined.
  */
 - (void)prepareToPlayURL:(NSURL *)URL
                   atTime:(CMTime)time
@@ -297,6 +302,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion Upon completion handler entry, the playback state will be up-to-date if the seek finished, otherwise
  *              the player will still be in the seeking state. Note that if the media was not ready to play, seeking
  *              won't take place, and the completion handler won't be called.
+ *
+ *              If the specified time lies outside the media time range, the location at which playback actually begins is
+ *              undefined.
+ *
  *              Refer to `-[AVPlayer seekToTime:toleranceBefore:toleranceAfter:completionHandler:]` documentation
  *              for more information about seek tolerances. Attempting to seek to a blocked segment will skip the segment
  *              and resume after it.
@@ -331,13 +340,17 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 /**
  *  The segments which have been loaded into the player.
+ *
+ *  @discussion The segment list can be updated while playing.
  */
-@property (nonatomic, readonly, nullable) NSArray<id<SRGSegment>> *segments;
+@property (nonatomic, nullable) NSArray<id<SRGSegment>> *segments;
 
 /**
  *  The user info which has been associated with the media being played.
+ *
+ *  @discussion This information can be updated while playing.
  */
-@property (nonatomic, readonly, nullable) NSDictionary *userInfo;
+@property (nonatomic, nullable) NSDictionary *userInfo;
 
 /**
  *  The visible segments which have been loaded into the player.
