@@ -7,4 +7,4 @@
 #import <Foundation/Foundation.h>
 
 #define TestAssertIndefiniteTime(time)              XCTAssertTrue(CMTIME_IS_INDEFINITE(time))
-#define TestAssertEqualTimeInSeconds(time, seconds) XCTAssertEqual((NSInteger)CMTimeGetSeconds(time), (NSInteger)(seconds))
+#define TestAssertEqualTimeInSeconds(time, seconds) XCTAssertEqual(round(CMTimeGetSeconds(time)), round(seconds))
