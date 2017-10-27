@@ -42,11 +42,6 @@
 		6FB97FF81E4B13CC0014C4C2 /* MAKVONotificationCenter.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */; };
 		6FE7D5EB1F86237D00817E89 /* MetadataUpdatesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */; };
-		6FEB51631DB0A8FB002D1751 /* airplay.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51601DB0A8FA002D1751 /* airplay.png */; };
-		6FEB51641DB0A8FB002D1751 /* airplay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51611DB0A8FB002D1751 /* airplay@2x.png */; };
-		6FEB51651DB0A8FB002D1751 /* airplay@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51621DB0A8FB002D1751 /* airplay@3x.png */; };
-		6FEB51681DB0A909002D1751 /* picture_in_picture_start_button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51661DB0A909002D1751 /* picture_in_picture_start_button@3x.png */; };
-		6FEB51691DB0A909002D1751 /* picture_in_picture_stop_button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FEB51671DB0A909002D1751 /* picture_in_picture_stop_button@3x.png */; };
 		6FEB516C1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FEB516A1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h */; };
 		6FEB516D1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FEB516B1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.m */; };
 		E654909C1D7F33AE007D96E7 /* libextobjc.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -243,11 +238,6 @@
 		6FE7D5E61F85039000817E89 /* MediaPlayerBaseTestCase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPlayerBaseTestCase.h; sourceTree = "<group>"; };
 		6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerBaseTestCase.m; sourceTree = "<group>"; };
 		6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetadataUpdatesTestCase.m; sourceTree = "<group>"; };
-		6FEB51601DB0A8FA002D1751 /* airplay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = airplay.png; sourceTree = "<group>"; };
-		6FEB51611DB0A8FB002D1751 /* airplay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airplay@2x.png"; sourceTree = "<group>"; };
-		6FEB51621DB0A8FB002D1751 /* airplay@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "airplay@3x.png"; sourceTree = "<group>"; };
-		6FEB51661DB0A909002D1751 /* picture_in_picture_start_button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picture_in_picture_start_button@3x.png"; sourceTree = "<group>"; };
-		6FEB51671DB0A909002D1751 /* picture_in_picture_stop_button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picture_in_picture_stop_button@3x.png"; sourceTree = "<group>"; };
 		6FEB516A1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPVolumeView+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6FEB516B1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MPVolumeView+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		E67799301D75AE2500E58331 /* SRGTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGTimelineView.h; sourceTree = "<group>"; };
@@ -1094,7 +1084,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 2.0.6;
+				MARKETING_VERSION = 2.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1141,7 +1131,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 2.0.6;
+				MARKETING_VERSION = 2.1;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
