@@ -7,9 +7,6 @@
 /* Label on slider for time remaining */
 "%@ remaining" = "%@ remaining";
 
-/* Back to live label */
-"Back to live" = "Back to live";
-
 /* Slider label when playing live */
 "Live playback" = "Live playback";
 
