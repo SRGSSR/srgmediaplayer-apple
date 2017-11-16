@@ -79,8 +79,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     self.inactivityTimer = nil;                 // Invalidate timer
     [s_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark Getters and setters
