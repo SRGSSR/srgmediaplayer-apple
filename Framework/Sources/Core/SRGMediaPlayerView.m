@@ -6,31 +6,53 @@
 
 #import "SRGMediaPlayerView.h"
 
-#import <AVFoundation/AVFoundation.h>
+#import "SRGMediaPlayerFlatView.h"
 
-@interface SRGMediaPlayerView ()
-
-@property (nonatomic) AVPlayer *player;
-
-@end
+static void commonInit(SRGMediaPlayerView *self);
 
 @implementation SRGMediaPlayerView
 
-+ (Class)layerClass
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    return [AVPlayerLayer class];
+    if (self = [super initWithFrame:frame]) {
+        commonInit(self);
+    }
+    return self;
 }
 
-- (AVPlayerLayer *)playerLayer
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    return (AVPlayerLayer *)self.layer;
+    if (self = [super initWithCoder:aDecoder]) {
+        commonInit(self);
+    }
+    return self;
+}
+
+- (SRGMediaPlayerFlatView *)flatView
+{
+    return self.subviews.firstObject;
+}
+
+- (AVPlayer *)player
+{
+    return [self flatView].player;
 }
 
 - (void)setPlayer:(AVPlayer *)player
 {
-    _player = player;
-    
-    self.playerLayer.player = player;
+    [self flatView].player = player;
+}
+
+- (AVPlayerLayer *)playerLayer
+{
+    return [self flatView].playerLayer;
 }
 
 @end
+
+static void commonInit(SRGMediaPlayerView *self)
+{
+    SRGMediaPlayerFlatView *flatView = [[SRGMediaPlayerFlatView alloc] initWithFrame:self.bounds];
+    flatView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:flatView];
+}

@@ -18,12 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The player associated with the view.
  */
-@property (nonatomic) AVPlayer *player;
+@property (nonatomic, nullable) AVPlayer *player;
 
 /**
  *  The player layer associated with the view.
  */
-@property (nonatomic, readonly) AVPlayerLayer *playerLayer;
+@property (nonatomic, readonly, nullable) AVPlayerLayer *playerLayer;
 
 @end
 
