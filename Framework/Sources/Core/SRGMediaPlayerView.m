@@ -8,7 +8,16 @@
 
 #import "SRGMediaPlayerFlatView.h"
 
+#import <libextobjc/libextobjc.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
+
 static void commonInit(SRGMediaPlayerView *self);
+
+@interface SRGMediaPlayerView ()
+
+@property (nonatomic) AVPlayer *player;
+
+@end
 
 @implementation SRGMediaPlayerView
 
@@ -33,14 +42,21 @@ static void commonInit(SRGMediaPlayerView *self);
     return self.subviews.firstObject;
 }
 
-- (AVPlayer *)player
-{
-    return [self flatView].player;
-}
-
 - (void)setPlayer:(AVPlayer *)player
 {
+    if (_player) {
+        [_player removeObserver:self keyPath:@keypath(_player.currentItem.tracks)];
+    }
+    
+    _player = player;
+    
     [self flatView].player = player;
+    
+    if (player) {
+        [player addObserver:self keyPath:@keypath(player.currentItem.tracks) options:0 block:^(MAKVONotification *notification) {
+            // TODO: Branch on the correct view depending on the video type
+        }];
+    }
 }
 
 - (AVPlayerLayer *)playerLayer
