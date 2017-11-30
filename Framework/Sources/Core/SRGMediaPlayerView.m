@@ -8,6 +8,12 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+@interface SRGMediaPlayerView ()
+
+@property (nonatomic) AVPlayer *player;
+
+@end
+
 @implementation SRGMediaPlayerView
 
 + (Class)layerClass
@@ -18,6 +24,13 @@
 - (AVPlayerLayer *)playerLayer
 {
     return (AVPlayerLayer *)self.layer;
+}
+
+- (void)setPlayer:(AVPlayer *)player
+{
+    _player = player;
+    
+    self.playerLayer.player = player;
 }
 
 @end

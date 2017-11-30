@@ -120,7 +120,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     
     _player = player;
-    self.playerLayer.player = player;
+    self.view.player = player;
     
     if (player) {
         if (! hadPlayer) {
@@ -266,9 +266,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (AVPlayerLayer *)playerLayer
 {
-    // TODO: I would have expected AVPlayer to work well without a layer (i.e. if we replace the following with
-    //       _view.playerLayer, which prevents lazy instantiation). But KVO does not work with tests on DVR streams.
-    //       Investigate and improve
     return self.view.playerLayer;
 }
 
@@ -327,11 +324,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     _view = view;
     
     if (_view) {
-        AVPlayerLayer *playerLayer = _view.playerLayer;
-        playerLayer.player = self.player;
+        _view.player = self.player;
         
         @weakify(self)
-        [playerLayer addObserver:self keyPath:@keypath(playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
+        [_view addObserver:self keyPath:@keypath(_view.playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             [self updatePictureInPictureController];
         }];
@@ -343,12 +339,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 {
     if (! _view) {
         _view = [[SRGMediaPlayerView alloc] init];
-        
-        AVPlayerLayer *playerLayer = _view.playerLayer;
-        playerLayer.player = self.player;
+        _view.player = self.player;
         
         @weakify(self)
-        [playerLayer addObserver:self keyPath:@keypath(playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
+        [_view addObserver:self keyPath:@keypath(_view.playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             [self updatePictureInPictureController];
         }];

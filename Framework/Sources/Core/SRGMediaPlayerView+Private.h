@@ -16,6 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerView (Private)
 
 /**
+ *  The player associated with the view.
+ */
+@property (nonatomic) AVPlayer *player;
+
+/**
  *  The player layer associated with the view.
  */
 @property (nonatomic, readonly) AVPlayerLayer *playerLayer;
