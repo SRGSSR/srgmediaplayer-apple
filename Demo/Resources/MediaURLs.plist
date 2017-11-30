@@ -54,6 +54,18 @@
 		</dict>
 		<dict>
 			<key>name</key>
+			<string>360 video</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd-staging.net/i/360/2017/Gothard_360_full_f_8414077-,301k,701k,1201k,2001k,.mp4.csmil/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>360 video 2</string>
+			<key>url</key>
+			<string>https://eu-west-1-content.c-cast-fcc.tv/FB8732BDE45F3D10BF6F65BE11A88B05/FB8732BDE45F3D10BF6F65BE11A88B05.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
 			<string>403 error</string>
 			<key>url</key>
 			<string>http://httpbin.org/status/403</string>
