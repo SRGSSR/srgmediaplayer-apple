@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SRGMediaPlayer360View : SCNView
 
-@property (nonatomic) AVPlayer *player;
+@property (nonatomic, nullable) AVPlayer *player;
 
 @end
 

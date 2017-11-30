@@ -6,6 +6,7 @@
 
 #import "SRGMediaPlayerView.h"
 
+#import "SRGMediaPlayer360View.h"
 #import "SRGMediaPlayerFlatView.h"
 
 #import <libextobjc/libextobjc.h>
@@ -96,4 +97,9 @@ static void commonInit(SRGMediaPlayerView *self)
     SRGMediaPlayerFlatView *flatView = [[SRGMediaPlayerFlatView alloc] initWithFrame:self.bounds];
     flatView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:flatView];
+    
+    SRGMediaPlayer360View *threeSixtyView = [[SRGMediaPlayer360View alloc] initWithFrame:self.bounds];
+    threeSixtyView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    threeSixtyView.alpha = 0.f;
+    [self addSubview:threeSixtyView];
 }
