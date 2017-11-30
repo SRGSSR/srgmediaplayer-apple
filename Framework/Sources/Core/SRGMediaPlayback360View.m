@@ -6,6 +6,8 @@
 
 #import "SRGMediaPlayback360View.h"
 
+#import "AVPlayer+SRGMediaPlayer.h"
+
 #import <SpriteKit/SpriteKit.h>
 
 static void commonInit(SRGMediaPlayback360View *self);
@@ -50,7 +52,7 @@ static void commonInit(SRGMediaPlayback360View *self);
     cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
     [scene.rootNode addChildNode:cameraNode];
     
-    CGSize size = CGSizeMake(1024.f, 512.f);
+    CGSize size = player.srg_assetDimensions;
     SKScene *videoScene = [SKScene sceneWithSize:size];
     
     SKVideoNode *videoNode = [SKVideoNode videoNodeWithAVPlayer:player];
