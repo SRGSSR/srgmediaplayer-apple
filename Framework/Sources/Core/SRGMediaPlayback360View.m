@@ -6,9 +6,29 @@
 
 #import "SRGMediaPlayback360View.h"
 
+#import <SpriteKit/SpriteKit.h>
+
+static void commonInit(SRGMediaPlayback360View *self);
+
 @implementation SRGMediaPlayback360View
 
 @synthesize player = _player;
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+        commonInit(self);
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super initWithCoder:aDecoder]) {
+        commonInit(self);
+    }
+    return self;
+}
 
 #pragma mark SRGMediaPlaybackView protocol
 
@@ -18,4 +38,38 @@
     return nil;
 }
 
+- (void)setPlayer:(AVPlayer *)player
+{
+    _player = player;
+    
+    SCNScene *scene = [SCNScene scene];
+    self.scene = scene;
+    
+    SCNNode *cameraNode = [SCNNode node];
+    cameraNode.camera = [SCNCamera camera];
+    cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
+    [scene.rootNode addChildNode:cameraNode];
+    
+    CGSize size = CGSizeMake(1024.f, 512.f);
+    SKScene *videoScene = [SKScene sceneWithSize:size];
+    
+    SKVideoNode *videoNode = [SKVideoNode videoNodeWithAVPlayer:player];
+    videoNode.size = size;
+    videoNode.position = CGPointMake(size.width / 2.f, size.height / 2.f);
+    [videoScene addChild:videoNode];
+    
+    SCNSphere *sphere = [SCNSphere sphereWithRadius:20.f];
+    sphere.firstMaterial.doubleSided = YES;
+    sphere.firstMaterial.diffuse.contents = videoScene;
+    SCNNode *sphereNode = [SCNNode nodeWithGeometry:sphere];
+    sphereNode.position = SCNVector3Make(0.f, 0.f, 0.f);
+    [scene.rootNode addChildNode:sphereNode];
+}
+
 @end
+
+static void commonInit(SRGMediaPlayback360View *self)
+{
+    self.allowsCameraControl = YES;
+    self.showsStatistics = YES;
+}
