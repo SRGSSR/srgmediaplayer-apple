@@ -4,14 +4,14 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "SRGMediaPlayerView+Private.h"
+
 #import <AVFoundation/AVFoundation.h>
 #import <SceneKit/SceneKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SRGMediaPlayer360View : SCNView
-
-@property (nonatomic, nullable) AVPlayer *player;
+@interface SRGMediaPlayback360View : SCNView <SRGMediaPlaybackView>
 
 @end
 

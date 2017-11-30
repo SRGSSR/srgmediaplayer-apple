@@ -4,14 +4,18 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGMediaPlayerFlatView.h"
+#import "SRGMediaPlaybackFlatView.h"
 
-@implementation SRGMediaPlayerFlatView
+@implementation SRGMediaPlaybackFlatView
+
+#pragma mark Overrides
 
 + (Class)layerClass
 {
     return [AVPlayerLayer class];
 }
+
+#pragma mark SRGMediaPlaybackView protocol
 
 - (AVPlayerLayer *)playerLayer
 {

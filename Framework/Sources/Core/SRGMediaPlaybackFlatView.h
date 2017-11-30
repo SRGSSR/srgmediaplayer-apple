@@ -4,16 +4,14 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "SRGMediaPlayerView+Private.h"
+
 #import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SRGMediaPlayerFlatView : UIView
-
-@property (nonatomic, nullable) AVPlayer *player;
-
-@property (nonatomic, readonly) AVPlayerLayer *playerLayer;
+@interface SRGMediaPlaybackFlatView : UIView <SRGMediaPlaybackView>
 
 @end
 

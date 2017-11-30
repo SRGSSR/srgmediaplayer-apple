@@ -6,8 +6,8 @@
 
 #import "SRGMediaPlayerView.h"
 
-#import "SRGMediaPlayer360View.h"
-#import "SRGMediaPlayerFlatView.h"
+#import "SRGMediaPlayback360View.h"
+#import "SRGMediaPlaybackFlatView.h"
 
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
@@ -38,7 +38,7 @@ static void commonInit(SRGMediaPlayerView *self);
     return self;
 }
 
-- (SRGMediaPlayerFlatView *)flatView
+- (SRGMediaPlaybackFlatView *)flatView
 {
     return self.subviews.firstObject;
 }
@@ -94,12 +94,12 @@ static void commonInit(SRGMediaPlayerView *self);
 
 static void commonInit(SRGMediaPlayerView *self)
 {
-    SRGMediaPlayerFlatView *flatView = [[SRGMediaPlayerFlatView alloc] initWithFrame:self.bounds];
-    flatView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self addSubview:flatView];
+    SRGMediaPlaybackFlatView *playbackFlatView = [[SRGMediaPlaybackFlatView alloc] initWithFrame:self.bounds];
+    playbackFlatView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:playbackFlatView];
     
-    SRGMediaPlayer360View *threeSixtyView = [[SRGMediaPlayer360View alloc] initWithFrame:self.bounds];
-    threeSixtyView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    threeSixtyView.alpha = 0.f;
-    [self addSubview:threeSixtyView];
+    SRGMediaPlayback360View *playback360View = [[SRGMediaPlayback360View alloc] initWithFrame:self.bounds];
+    playback360View.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    playback360View.alpha = 0.f;
+    [self addSubview:playback360View];
 }
