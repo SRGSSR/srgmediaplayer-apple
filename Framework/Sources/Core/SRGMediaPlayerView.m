@@ -6,6 +6,7 @@
 
 #import "SRGMediaPlayerView.h"
 
+#import "AVPlayer+SRGMediaPlayer.h"
 #import "SRGMediaPlayback360View.h"
 #import "SRGMediaPlaybackFlatView.h"
 
@@ -52,21 +53,13 @@
         return;
     }
     
-    // TODO: See if AVAsset should be used for another reason (it has method to extract tracks of a given type, there
-    //       must be some reason)
-    NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
-        return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
-    }];
-    
-    AVAssetTrack *assetTrack = [player.currentItem.tracks filteredArrayUsingPredicate:videoPredicate].firstObject.assetTrack;
-    if (assetTrack) {
-        CGSize size = CGSizeApplyAffineTransform(assetTrack.naturalSize, assetTrack.preferredTransform);
-        CGFloat ratio = size.width / size.height;
-        
+    CGSize assetDimensions = player.srg_assetDimensions;
+    if (! CGSizeEqualToSize(assetDimensions, CGSizeZero)) {
         Class playbackViewClass = Nil;
         
         // 360 videos are provided in equirectangular format (2:1)
         // See https://www.360rize.com/2017/04/5-things-you-should-know-about-360-video-resolution/
+        CGFloat ratio = assetDimensions.width / assetDimensions.height;
         if (ratio == 2.f) {
             playbackViewClass = [SRGMediaPlayback360View class];
         }
