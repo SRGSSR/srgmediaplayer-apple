@@ -83,7 +83,9 @@
             self.playbackView = playbackView;
         }
         
-        self.playbackView.player = player;
+        if (self.playbackView.player != player) {
+            self.playbackView.player = player;
+        }
     }
 }
 
