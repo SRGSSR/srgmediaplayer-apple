@@ -7,12 +7,12 @@
 #import "SRGAirplayButton.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "MPVolumeView+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "UIScreen+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
-#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 static void commonInit(SRGAirplayButton *self);
 
@@ -80,7 +80,7 @@ static void commonInit(SRGAirplayButton *self);
     
     if (mediaPlayerController) {
         @weakify(self)
-        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:^(MAKVONotification *notification) {
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             [self updateAppearance];
         }];

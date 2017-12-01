@@ -7,11 +7,11 @@
 #import "SRGMediaPlayerView.h"
 
 #import "AVPlayer+SRGMediaPlayer.h"
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "SRGMediaPlayback360View.h"
 #import "SRGMediaPlaybackFlatView.h"
 
 #import <libextobjc/libextobjc.h>
-#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 @interface SRGMediaPlayerView ()
 
@@ -32,7 +32,7 @@
     
     if (player) {
         @weakify(player)
-        [player addObserver:self keyPath:@keypath(player.currentItem.tracks) options:0 block:^(MAKVONotification *notification) {
+        [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.tracks) options:0 block:^(MAKVONotification *notification) {
             @strongify(player)
             [self updatePlaybackViewWithPlayer:player];
         }];

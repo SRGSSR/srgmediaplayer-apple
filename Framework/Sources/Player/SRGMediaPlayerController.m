@@ -8,6 +8,7 @@
 
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "AVPlayer+SRGMediaPlayer.h"
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
 #import "SRGMediaPlayerError.h"
@@ -131,7 +132,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         @weakify(self)
         @weakify(player)
-        [player addObserver:self keyPath:@keypath(player.currentItem.status) options:0 block:^(MAKVONotification *notification) {
+        [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.status) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             @strongify(player)
             
@@ -181,7 +182,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             }
         }];
         
-        [player addObserver:self keyPath:@keypath(player.rate) options:0 block:^(MAKVONotification *notification) {
+        [player srg_addMainThreadObserver:self keyPath:@keypath(player.rate) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             @strongify(player)
             
@@ -221,7 +222,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             }
         }];
         
-        [player addObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
+        [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             @strongify(player)
             
@@ -235,7 +236,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             }
         }];
         
-        [player addObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
+        [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             @strongify(player)
             
@@ -327,7 +328,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         _view.player = self.player;
         
         @weakify(self)
-        [_view addObserver:self keyPath:@keypath(_view.playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
+        [_view srg_addMainThreadObserver:self keyPath:@keypath(_view.playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             [self updatePictureInPictureController];
         }];
@@ -342,7 +343,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         _view.player = self.player;
         
         @weakify(self)
-        [_view addObserver:self keyPath:@keypath(_view.playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
+        [_view srg_addMainThreadObserver:self keyPath:@keypath(_view.playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             [self updatePictureInPictureController];
         }];
@@ -512,8 +513,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
         };
         
-        [pictureInPictureController addObserver:self keyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 block:observationBlock];
-        [pictureInPictureController addObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:observationBlock];
+        [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 block:observationBlock];
+        [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:observationBlock];
     }
 }
 
