@@ -74,5 +74,7 @@ static void commonInit(SRGMediaPlayback360View *self);
 static void commonInit(SRGMediaPlayback360View *self)
 {
     // TODO: Too many controls are available we don't want. A custom solution must be implemented.
+    //       Currently there is sometimes a crash because of this camera controller when closing a video (commenting
+    //       out the following line fixes the crash)
     self.allowsCameraControl = YES;
 }
