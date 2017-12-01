@@ -999,7 +999,7 @@ withToleranceBefore:(CMTime)toleranceBefore
         if (self.playerLayer.readyForDisplay) {
             if (self.pictureInPictureController.playerLayer != self.playerLayer) {
                 self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
-                self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(_pictureInPictureController) : nil;
+                self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
             }
         }
         else {
