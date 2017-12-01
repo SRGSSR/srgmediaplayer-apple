@@ -91,8 +91,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 - (void)dealloc
 {
     [self reset];
-    
-    self.pictureInPictureController = nil;              // Perform associated unregistrations
 }
 
 #pragma mark Getters and setters
@@ -839,8 +837,6 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.startCompletionHandler = nil;
     
     self.seekTargetTime = kCMTimeIndefinite;
-    
-    self.pictureInPictureController = nil;
 }
 
 #pragma mark Configuration
