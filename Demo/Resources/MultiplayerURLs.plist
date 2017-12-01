@@ -12,7 +12,7 @@
 			<key>secondaryUrls</key>
 			<array>
 				<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
-				<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8</string>
+				<string>https://eu-west-1-content.c-cast-fcc.tv/FB8732BDE45F3D10BF6F65BE11A88B05/FB8732BDE45F3D10BF6F65BE11A88B05.m3u8</string>
 			</array>
 		</dict>
 	</array>
