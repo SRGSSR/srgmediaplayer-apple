@@ -61,7 +61,7 @@ static void commonInit(SRGMediaPlayback360View *self);
     videoNode.position = CGPointMake(size.width / 2.f, size.height / 2.f);
     [videoScene addChild:videoNode];
     
-    SCNSphere *sphere = [SCNSphere sphereWithRadius:20.f];
+    SCNSphere *sphere = [SCNSphere sphereWithRadius:100.f];
     sphere.firstMaterial.doubleSided = YES;
     sphere.firstMaterial.diffuse.contents = videoScene;
     SCNNode *sphereNode = [SCNNode nodeWithGeometry:sphere];
