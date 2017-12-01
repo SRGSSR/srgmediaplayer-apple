@@ -61,6 +61,31 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 #pragma mark Tests
 
+- (void)testDeallocation
+{
+    // If the player controller is not retained, its player and all associated resources (including the player layer) must
+    // be automatically discarded
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-unsafe-retained-assign"
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
+    }];
+    
+    __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    // Do not retain the controller anymore, and force an autorelease pool collection. The weak reference must be nilled
+    // automatically if the controller is correctly deallocated
+    @autoreleasepool {
+        self.mediaPlayerController = nil;
+    }
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertNil(weakMediaPlayerController);
+#pragma clang diagnostic pop
+}
+
 - (void)testInitialPlayerState
 {
     SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
