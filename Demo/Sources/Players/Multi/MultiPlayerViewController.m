@@ -115,15 +115,6 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-        [self.mediaPlayerControllers makeObjectsPerformSelector:@selector(reset)];
-    }
-}
-
 #pragma mark Rotation
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator

@@ -30,17 +30,6 @@
     return viewController;
 }
 
-#pragma mark View lifecycle
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    if ([self isMovingFromParentViewController]) {
-        [self.mediaPlayerController reset];
-    }
-}
-
 #pragma mark - Actions
 
 - (IBAction)prepareToPlay:(id)sender

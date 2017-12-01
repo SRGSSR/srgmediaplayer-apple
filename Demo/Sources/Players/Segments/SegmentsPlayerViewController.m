@@ -79,15 +79,6 @@
     [self.mediaPlayerController playURL:self.contentURL atTime:kCMTimeZero withSegments:self.segments userInfo:@{ @"test_field" : @"test_value" }];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-        [self.mediaPlayerController reset];
-    }
-}
-
 #pragma mark UI
 
 - (void)updateAppearanceWithTime:(CMTime)time

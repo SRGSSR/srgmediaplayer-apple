@@ -68,15 +68,6 @@
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-
-    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-        [self.mediaPlayerController reset];
-    }
-}
-
 #pragma mark UI
 
 - (void)updateLiveButton
