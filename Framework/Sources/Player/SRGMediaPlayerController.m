@@ -332,9 +332,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 - (UIView *)view
 {
     if (! _view) {
-        SRGMediaPlayerView *view = [[SRGMediaPlayerView alloc] init];
-        view.player = self.player;
-        _view = view;        
+        _view = [[SRGMediaPlayerView alloc] init];
+        _view.player = self.player;
     }
     return _view;
 }

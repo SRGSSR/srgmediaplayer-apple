@@ -199,7 +199,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The view where the player displays its content. Either install in your own view hierarchy, or bind a corresponding view
  *  with the `SRGMediaPlayerView` class in Interface Builder.
  */
-@property (nonatomic, readonly, weak) IBOutlet SRGMediaPlayerView *view;
+@property (nonatomic, readonly, nullable) IBOutlet SRGMediaPlayerView *view;
 
 /**
  *  @name Player lifecycle
