@@ -43,7 +43,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @property (nonatomic) NSArray<id<SRGSegment>> *visibleSegments;
 
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
-@property (nonatomic) id segmentPeriodicTimeObserver;
+@property (nonatomic) id periodicTimeObserver;
 
 // Saved values supplied when playback is started
 @property (nonatomic, weak) id<SRGSegment> initialTargetSegment;
@@ -322,16 +322,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 // Called when installing the view by binding it in a storyboard or xib
 - (void)setView:(SRGMediaPlayerView *)view
 {
-    _view = view;
-    
-    if (_view) {
+    if (_view != view) {
+        _view = view;
         _view.player = self.player;
-        
-        @weakify(self)
-        [_view srg_addMainThreadObserver:self keyPath:@keypath(_view.playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self)
-            [self updatePictureInPictureController];
-        }];
     }
 }
 
@@ -341,14 +334,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     if (! _view) {
         SRGMediaPlayerView *view = [[SRGMediaPlayerView alloc] init];
         view.player = self.player;
-        
-        @weakify(self)
-        [view srg_addMainThreadObserver:self keyPath:@keypath(view.playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self)
-            [self updatePictureInPictureController];
-        }];
-        
-        _view = view;
+        _view = view;        
     }
     return _view;
 }
@@ -854,6 +840,8 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.startCompletionHandler = nil;
     
     self.seekTargetTime = kCMTimeIndefinite;
+    
+    self.pictureInPictureController = nil;
 }
 
 #pragma mark Configuration
@@ -997,19 +985,6 @@ withToleranceBefore:(CMTime)toleranceBefore
    }];
 }
 
-#pragma mark Picture in picture
-
-- (void)updatePictureInPictureController
-{
-    if (self.playerLayer.readyForDisplay) {
-        self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
-        self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(_pictureInPictureController) : nil;
-    }
-    else {
-        self.pictureInPictureController = nil;
-    }
-}
-
 #pragma mark Time observers
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
@@ -1019,16 +994,27 @@ withToleranceBefore:(CMTime)toleranceBefore
     }
     
     @weakify(self)
-    self.segmentPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    self.periodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
+        
+        if (self.playerLayer.readyForDisplay) {
+            if (self.pictureInPictureController.playerLayer != self.playerLayer) {
+                self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
+                self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(_pictureInPictureController) : nil;
+            }
+        }
+        else {
+            self.pictureInPictureController = nil;
+        }
+        
         [self updateSegmentStatusForPlaybackState:self.playbackState previousPlaybackState:self.playbackState time:time];
     }];
 }
 
 - (void)unregisterTimeObserversForPlayer:(AVPlayer *)player
 {
-    [player removeTimeObserver:self.segmentPeriodicTimeObserver];
-    self.segmentPeriodicTimeObserver = nil;
+    [player removeTimeObserver:self.periodicTimeObserver];
+    self.periodicTimeObserver = nil;
     
     for (SRGPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
         [periodicTimeObserver detachFromMediaPlayer];
