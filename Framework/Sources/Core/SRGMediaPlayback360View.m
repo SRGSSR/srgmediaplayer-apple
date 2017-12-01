@@ -72,6 +72,6 @@ static void commonInit(SRGMediaPlayback360View *self);
 
 static void commonInit(SRGMediaPlayback360View *self)
 {
+    // TODO: Too many controls are available we don't want. A custom solution must be implemented.
     self.allowsCameraControl = YES;
-    self.showsStatistics = YES;
 }
