@@ -339,14 +339,16 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 - (UIView *)view
 {
     if (! _view) {
-        _view = [[SRGMediaPlayerView alloc] init];
-        _view.player = self.player;
+        SRGMediaPlayerView *view = [[SRGMediaPlayerView alloc] init];
+        view.player = self.player;
         
         @weakify(self)
-        [_view srg_addMainThreadObserver:self keyPath:@keypath(_view.playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
+        [view srg_addMainThreadObserver:self keyPath:@keypath(view.playerLayer.readyForDisplay) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             [self updatePictureInPictureController];
         }];
+        
+        _view = view;
     }
     return _view;
 }
