@@ -9,9 +9,52 @@
 #import "AVPlayer+SRGMediaPlayer.h"
 
 #import <CoreMotion/CoreMotion.h>
+#import <GLKit/GLKit.h>
 #import <SpriteKit/SpriteKit.h>
 
 static void commonInit(SRGMediaPlayback360View *self);
+
+static SCNVector4 SRGCameraDirectionForAttitude(CMAttitude *attitude)
+{
+    // Based on: https://gist.github.com/travisnewby/96ee1ac2bc2002f1d480
+    CMQuaternion quaternion = attitude.quaternion;
+    
+    GLKQuaternion aq = GLKQuaternionMake(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+    switch ([UIApplication sharedApplication].statusBarOrientation) {
+        case UIInterfaceOrientationPortrait: {
+            GLKQuaternion cq = GLKQuaternionMakeWithAngleAndAxis(M_PI_2, 1.f, 0.f, 0.f);
+            GLKQuaternion q = GLKQuaternionMultiply(cq, aq);
+            return SCNVector4Make(q.x, q.y, q.z, q.w);
+            break;
+        }
+            
+        case UIInterfaceOrientationPortraitUpsideDown: {
+            GLKQuaternion cq = GLKQuaternionMakeWithAngleAndAxis(-M_PI_2, 1.f, 0.f, 0.f);
+            GLKQuaternion q = GLKQuaternionMultiply(cq, aq);
+            return SCNVector4Make(-q.x, -q.y, q.z, q.w);
+            break;
+        }
+            
+        case UIInterfaceOrientationLandscapeLeft: {
+            GLKQuaternion cq = GLKQuaternionMakeWithAngleAndAxis(M_PI_2, 0.f, 1.f, 0.f);
+            GLKQuaternion q = GLKQuaternionMultiply(cq, aq);
+            return SCNVector4Make(q.y, -q.x, q.z, q.w);
+            break;
+        }
+            
+        case UIInterfaceOrientationLandscapeRight: {
+            GLKQuaternion cq = GLKQuaternionMakeWithAngleAndAxis(-M_PI_2, 0.f, 1.f, 0.f);
+            GLKQuaternion q = GLKQuaternionMultiply(cq, aq);
+            return SCNVector4Make(-q.y, q.x, q.z, q.w);
+            break;
+        }
+            
+        default: {
+            return SCNVector4Zero;
+            break;
+        }
+    }
+}
 
 @interface SRGMediaPlayback360View ()
 
@@ -61,33 +104,9 @@ static void commonInit(SRGMediaPlayback360View *self);
 - (void)renderer:(id<SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        CMAttitude *attitude = self.motionManager.deviceMotion.attitude;
-        if (attitude) {
-            switch ([UIApplication sharedApplication].statusBarOrientation) {
-                case UIInterfaceOrientationPortrait: {
-                    // TODO:
-                    break;
-                }
-                    
-                case UIInterfaceOrientationPortraitUpsideDown: {
-                    // TODO:
-                    break;
-                }
-                    
-                case UIInterfaceOrientationLandscapeLeft: {
-                    self.cameraNode.eulerAngles = SCNVector3Make(attitude.roll + M_PI_2, -attitude.yaw, -attitude.pitch);
-                    break;
-                }
-                    
-                case UIInterfaceOrientationLandscapeRight: {
-                    self.cameraNode.eulerAngles = SCNVector3Make(M_PI_2 - attitude.roll, -attitude.yaw, -attitude.pitch);
-                    break;
-                }
-                    
-                default: {
-                    break;
-                }
-            }
+        CMDeviceMotion *deviceMotion = self.motionManager.deviceMotion;
+        if (deviceMotion) {
+            self.cameraNode.orientation = SRGCameraDirectionForAttitude(deviceMotion.attitude);
         }
     });
 }
@@ -110,7 +129,6 @@ static void commonInit(SRGMediaPlayback360View *self);
     SCNNode *cameraNode = [SCNNode node];
     cameraNode.camera = [SCNCamera camera];
     cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
-    cameraNode.eulerAngles = SCNVector3Make(M_PI, 0.f, 0.f);
     [scene.rootNode addChildNode:cameraNode];
     self.cameraNode = cameraNode;
     
