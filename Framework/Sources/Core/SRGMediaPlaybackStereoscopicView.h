@@ -7,10 +7,11 @@
 #import "SRGMediaPlayerView+Private.h"
 
 #import <AVFoundation/AVFoundation.h>
+#import <SceneKit/SceneKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SRGMediaPlaybackStereoscopicView : UIView <SRGMediaPlaybackView>
+@interface SRGMediaPlaybackStereoscopicView : UIView <SCNSceneRendererDelegate, SRGMediaPlaybackView>
 
 @end
 
