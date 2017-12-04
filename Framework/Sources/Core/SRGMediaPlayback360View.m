@@ -14,6 +14,8 @@
 
 static void commonInit(SRGMediaPlayback360View *self);
 
+// TODO: Depending on the reference frame used for the motion manager, the values need to be tweaked for a correct
+//       result. This function must therefore expect the reference frame as parameter, and behave accordingly.
 static SCNVector4 SRGCameraDirectionForAttitude(CMAttitude *attitude)
 {
     // Based on: https://gist.github.com/travisnewby/96ee1ac2bc2002f1d480
