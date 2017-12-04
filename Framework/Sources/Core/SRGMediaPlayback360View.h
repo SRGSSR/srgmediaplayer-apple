@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SRGMediaPlayback360View : SCNView <SRGMediaPlaybackView>
+@interface SRGMediaPlayback360View : SCNView <SCNSceneRendererDelegate, SRGMediaPlaybackView>
 
 @end
 
