@@ -24,19 +24,13 @@
 
 - (void)setPlayer:(AVPlayer *)player
 {
-    if (_player) {
-        [_player removeObserver:self keyPath:@keypath(_player.currentItem.tracks)];
-    }
+    [_player removeObserver:self keyPath:@keypath(_player.currentItem.tracks)];
     
     _player = player;
     
-    if (player) {
-        @weakify(player)
-        [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.tracks) options:0 block:^(MAKVONotification *notification) {
-            @strongify(player)
-            [self updatePlaybackViewWithPlayer:player];
-        }];
-    }
+    [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.tracks) options:0 block:^(MAKVONotification *notification) {
+        [self updatePlaybackViewWithPlayer:player];
+    }];
     
     [self updatePlaybackViewWithPlayer:player];
 }
