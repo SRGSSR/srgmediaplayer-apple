@@ -22,7 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  tracking, though). Data refresh rate should be at least 1/60 for an optimal experience.
  *
  *  If no motion manager is provided at the time a media player view requires it, an internal motion manager will
- *  be used.
+ *  be used. You should set a motion manager before any playback occurs and not change it afterwards, otherwise the
+ *  behavior is undefined.
  */
 + (void)setMotionManager:(nullable CMMotionManager *)motionManager;
 

@@ -32,6 +32,8 @@
 		6F90A56A1F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F90A5681F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h */; };
 		6F90A56B1F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F90A5691F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m */; };
 		6F9453341F7225BC00A6507E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F9453331F7225BC00A6507E /* Images.xcassets */; };
+		6F962FBD1FD59EFE00EA42C1 /* SRGMotionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F962FBB1FD59EFE00EA42C1 /* SRGMotionManager.h */; };
+		6F962FBE1FD59EFE00EA42C1 /* SRGMotionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F962FBC1FD59EFE00EA42C1 /* SRGMotionManager.m */; };
 		6F97C7981E7A89C5001AD9B3 /* ModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */; };
 		6F9B0F751FCFF7A70063944D /* SRGMediaPlayback360View.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9B0F731FCFF7A70063944D /* SRGMediaPlayback360View.h */; };
 		6F9B0F761FCFF7A70063944D /* SRGMediaPlayback360View.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9B0F741FCFF7A70063944D /* SRGMediaPlayback360View.m */; };
@@ -239,6 +241,8 @@
 		6F90A5681F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVPlayer+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F90A5691F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVPlayer+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		6F9453331F7225BC00A6507E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6F962FBB1FD59EFE00EA42C1 /* SRGMotionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMotionManager.h; sourceTree = "<group>"; };
+		6F962FBC1FD59EFE00EA42C1 /* SRGMotionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGMotionManager.m; sourceTree = "<group>"; };
 		6F97C7961E7A89C5001AD9B3 /* ModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalTransition.h; sourceTree = "<group>"; };
 		6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalTransition.m; sourceTree = "<group>"; };
 		6F9B0F731FCFF7A70063944D /* SRGMediaPlayback360View.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayback360View.h; sourceTree = "<group>"; };
@@ -659,6 +663,8 @@
 				E6FC7F381D62072400A55085 /* SRGMediaPlayerView.h */,
 				E6FC7F391D62072400A55085 /* SRGMediaPlayerView.m */,
 				6F68E7561DAE0877001F39C4 /* SRGMediaPlayerView+Private.h */,
+				6F962FBB1FD59EFE00EA42C1 /* SRGMotionManager.h */,
+				6F962FBC1FD59EFE00EA42C1 /* SRGMotionManager.m */,
 				E6FC7F3A1D62072400A55085 /* SRGPeriodicTimeObserver.h */,
 				E6FC7F3B1D62072400A55085 /* SRGPeriodicTimeObserver.m */,
 			);
@@ -747,6 +753,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F9B0F7D1FCFF8B70063944D /* SRGMediaPlaybackFlatView.h in Headers */,
+				6F962FBD1FD59EFE00EA42C1 /* SRGMotionManager.h in Headers */,
 				08D3BEB01DE6EAB100AE1368 /* SRGTracksButton.h in Headers */,
 				6F0D051B1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.h in Headers */,
 				E67799321D75AE2600E58331 /* SRGTimelineView.h in Headers */,
@@ -974,6 +981,7 @@
 				08D3BEC11DE8756500AE1368 /* SRGAlternateTracksViewController.m in Sources */,
 				E67799331D75AE2600E58331 /* SRGTimelineView.m in Sources */,
 				6F0D05201DB89E9B00ED9E4B /* UIScreen+SRGMediaPlayer.m in Sources */,
+				6F962FBE1FD59EFE00EA42C1 /* SRGMotionManager.m in Sources */,
 				6F6377881FD11EA6004406BE /* MAKVONotificationCenter+SRGMediaPlayer.m in Sources */,
 				E67799351D75B0E300E58331 /* SRGTimelineSlider.m in Sources */,
 				6FFF40F41FD4B2640008E79B /* SRGMediaPlaybackStereoscopicView.m in Sources */,

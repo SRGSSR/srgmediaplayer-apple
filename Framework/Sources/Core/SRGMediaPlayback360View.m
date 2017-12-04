@@ -7,6 +7,7 @@
 #import "SRGMediaPlayback360View.h"
 
 #import "AVPlayer+SRGMediaPlayer.h"
+#import "SRGMotionManager.h"
 
 #import <CoreMotion/CoreMotion.h>
 #import <GLKit/GLKit.h>
@@ -61,7 +62,6 @@ static SCNVector4 SRGCameraDirectionForAttitude(CMAttitude *attitude)
 @interface SRGMediaPlayback360View ()
 
 @property (nonatomic, weak) SCNNode *cameraNode;
-@property (nonatomic) CMMotionManager *motionManager;
 
 @end
 
@@ -94,10 +94,10 @@ static SCNVector4 SRGCameraDirectionForAttitude(CMAttitude *attitude)
     [super willMoveToWindow:newWindow];
     
     if (newWindow) {
-        [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryZVertical];
+        [SRGMotionManager start];
     }
     else {
-        [self.motionManager stopDeviceMotionUpdates];
+        [SRGMotionManager stop];
     }
 }
 
@@ -105,8 +105,9 @@ static SCNVector4 SRGCameraDirectionForAttitude(CMAttitude *attitude)
 
 - (void)renderer:(id<SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time
 {
+    // CMMotionManager might deliver events to a background queue.
     dispatch_async(dispatch_get_main_queue(), ^{
-        CMDeviceMotion *deviceMotion = self.motionManager.deviceMotion;
+        CMDeviceMotion *deviceMotion = [SRGMotionManager motionManager].deviceMotion;
         if (deviceMotion) {
             self.cameraNode.orientation = SRGCameraDirectionForAttitude(deviceMotion.attitude);
         }
@@ -154,9 +155,5 @@ static SCNVector4 SRGCameraDirectionForAttitude(CMAttitude *attitude)
 
 static void commonInit(SRGMediaPlayback360View *self)
 {
-    // TODO: It is recommended to have a single instance for the whole app. Move elsewhere
-    self.motionManager = [[CMMotionManager alloc] init];
-    self.motionManager.deviceMotionUpdateInterval = 1. / 60.;
-    
     self.delegate = self;
 }
