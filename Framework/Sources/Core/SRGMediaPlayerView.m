@@ -10,8 +10,13 @@
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "SRGMediaPlayback360View.h"
 #import "SRGMediaPlaybackFlatView.h"
+#import "SRGMediaPlaybackStereoscopicView.h"
 
 #import <libextobjc/libextobjc.h>
+
+SRGMediaPlayerViewMode const SRGMediaPlayerViewModeFlat = @"flat";
+SRGMediaPlayerViewMode const SRGMediaPlayerViewMode360 = @"360";
+SRGMediaPlayerViewMode const SRGMediaPlayerViewModeStereoscopic = @"stereoscopic";
 
 static CMMotionManager *s_motionManager = nil;
 
@@ -20,9 +25,15 @@ static CMMotionManager *s_motionManager = nil;
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic, weak) UIView<SRGMediaPlaybackView> *playbackView;
 
+@property (nonatomic) NSArray<SRGMediaPlayerViewMode> *supportedViewModes;
+
 @end
 
 @implementation SRGMediaPlayerView
+
+@synthesize viewMode = _viewMode;
+
+#pragma mark Class methods
 
 + (CMMotionManager *)motionManager
 {
@@ -34,6 +45,8 @@ static CMMotionManager *s_motionManager = nil;
     s_motionManager = motionManager;
 }
 
+#pragma mark Getters and setters
+
 - (void)setPlayer:(AVPlayer *)player
 {
     [_player removeObserver:self keyPath:@keypath(_player.currentItem.tracks)];
@@ -41,10 +54,31 @@ static CMMotionManager *s_motionManager = nil;
     _player = player;
     
     [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.tracks) options:0 block:^(MAKVONotification *notification) {
-        [self updatePlaybackViewWithPlayer:player];
+        [self updateWithPlayer:player];
     }];
     
-    [self updatePlaybackViewWithPlayer:player];
+    [self updateWithPlayer:player];
+}
+
+- (SRGMediaPlayerViewMode)viewMode
+{
+    return _viewMode ?: self.supportedViewModes.firstObject;
+}
+
+- (void)setViewMode:(SRGMediaPlayerViewMode)viewMode
+{
+    if (_viewMode == viewMode) {
+        return;
+    }
+    
+    if (viewMode && [self.supportedViewModes containsObject:viewMode]) {
+        _viewMode = viewMode;
+    }
+    else {
+        _viewMode = nil;
+    }
+    
+    [self updatePlaybackViewWithPlayer:self.player];
 }
 
 - (AVPlayerLayer *)playerLayer
@@ -52,27 +86,44 @@ static CMMotionManager *s_motionManager = nil;
     return self.playbackView.playerLayer;
 }
 
+#pragma mark Updates
+
+- (void)updateWithPlayer:(AVPlayer *)player
+{
+    CGSize assetDimensions = player.srg_assetDimensions;
+    if (player) {
+        if (! CGSizeEqualToSize(assetDimensions, CGSizeZero)) {
+            // 360 videos are provided in equirectangular format (2:1)
+            // See https://www.360rize.com/2017/04/5-things-you-should-know-about-360-video-resolution/
+            CGFloat ratio = assetDimensions.width / assetDimensions.height;
+            if (ratio == 2.f) {
+                self.supportedViewModes = @[SRGMediaPlayerViewMode360, SRGMediaPlayerViewModeStereoscopic];
+            }
+            else {
+                self.supportedViewModes = @[SRGMediaPlayerViewModeFlat];
+            }
+        }
+    }
+    else {
+        self.supportedViewModes = nil;
+    }
+        
+    [self updatePlaybackViewWithPlayer:player];
+}
+
 - (void)updatePlaybackViewWithPlayer:(AVPlayer *)player
 {
-    if (! player) {
-        [self.playbackView removeFromSuperview];
-        return;
-    }
+    static dispatch_once_t s_onceToken;
+    static NSDictionary *s_viewClasses;
+    dispatch_once(&s_onceToken, ^{
+        s_viewClasses = @{ SRGMediaPlayerViewModeFlat : [SRGMediaPlaybackFlatView class],
+                           SRGMediaPlayerViewMode360 : [SRGMediaPlayback360View class],
+                           SRGMediaPlayerViewModeStereoscopic : [SRGMediaPlaybackStereoscopicView class] };
+    });
     
-    CGSize assetDimensions = player.srg_assetDimensions;
-    if (! CGSizeEqualToSize(assetDimensions, CGSizeZero)) {
-        Class playbackViewClass = Nil;
-        
-        // 360 videos are provided in equirectangular format (2:1)
-        // See https://www.360rize.com/2017/04/5-things-you-should-know-about-360-video-resolution/
-        CGFloat ratio = assetDimensions.width / assetDimensions.height;
-        if (ratio == 2.f) {
-            playbackViewClass = [SRGMediaPlayback360View class];
-        }
-        else {
-            playbackViewClass = [SRGMediaPlaybackFlatView class];
-        }
-        
+    if (self.viewMode) {
+        Class playbackViewClass = s_viewClasses[self.viewMode];
+        NSAssert(playbackViewClass != Nil, @"View mode must be officially supported");
         if (! [self.playbackView isKindOfClass:playbackViewClass]) {
             [self.playbackView removeFromSuperview];
             
@@ -85,6 +136,9 @@ static CMMotionManager *s_motionManager = nil;
         if (self.playbackView.player != player) {
             self.playbackView.player = player;
         }
+    }
+    else {
+        [self.playbackView removeFromSuperview];
     }
 }
 
