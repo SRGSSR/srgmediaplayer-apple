@@ -13,6 +13,8 @@
 
 #import <libextobjc/libextobjc.h>
 
+static CMMotionManager *s_motionManager = nil;
+
 @interface SRGMediaPlayerView ()
 
 @property (nonatomic) AVPlayer *player;
@@ -21,6 +23,16 @@
 @end
 
 @implementation SRGMediaPlayerView
+
++ (CMMotionManager *)motionManager
+{
+    return s_motionManager;
+}
+
++ (void)setMotionManager:(CMMotionManager *)motionManager
+{
+    s_motionManager = motionManager;
+}
 
 - (void)setPlayer:(AVPlayer *)player
 {

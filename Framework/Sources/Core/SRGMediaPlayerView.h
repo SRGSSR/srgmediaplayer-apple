@@ -4,6 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
+#import <CoreMotion/CoreMotion.h>
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -13,6 +14,17 @@ NS_ASSUME_NONNULL_BEGIN
  *  and bind them to the `view` property of an `SRGMediaPlayerController` instance.
  */
 @interface SRGMediaPlayerView : UIView
+
+/**
+ *  Set the motion manager to use for device tracking when playing 360° videos. At most one motion manager should
+ *  exist per app (see https://developer.apple.com/documentation/coremotion/cmmotionmanager). If your application
+ *  already uses its own core motion manager, you can set it there (you are then responsible of starting and stopping
+ *  tracking, though). Data refresh rate should be at least 1/60 for an optimal experience.
+ *
+ *  If no motion manager is provided at the time a media player view requires it, an internal motion manager will
+ *  be used.
+ */
++ (void)setMotionManager:(nullable CMMotionManager *)motionManager;
 
 @end
 

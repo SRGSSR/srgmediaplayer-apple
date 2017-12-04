@@ -23,6 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerView (Private)
 
 /**
+ *  The motion manager which has been set, if any.
+ */
++ (nullable CMMotionManager *)motionManager;
+
+/**
  *  The player associated with the view.
  */
 @property (nonatomic, nullable) AVPlayer *player;
