@@ -59,7 +59,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 @interface SRGTimeSlider ()
 
-@property (weak) id periodicTimeObserver;
+@property (nonatomic, weak) id periodicTimeObserver;
 @property (nonatomic) UIColor *overriddenThumbTintColor;
 @property (nonatomic) UIColor *overriddenMaximumTrackTintColor;
 @property (nonatomic) UIColor *overriddenMinimumTrackTintColor;
