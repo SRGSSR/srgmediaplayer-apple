@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * `SRGMediaPlayerController` provides standard player features:
  *    - Audio and video playback for all kinds of streams (on-demand, live, DVR).
+ *    - Support for 360° and cardboard playback (@see `SRGMediaPlayerView`).
  *    - Playback status information (mostly through notifications or KVO).
  *    - Media information extraction.
  *
@@ -80,7 +81,10 @@ NS_ASSUME_NONNULL_BEGIN
  *                        current route..
  *    - `SRGTimelineView`: A linear collection to display the segments associated with a media.
  *
- *  Customizing your player layout using these overlays is straightforward:
+ *  To switch between available modes available for a content (e.g. between 360° and cardboard modes), the library
+ *  also provides `SRGViewModeButton`, which must be connected to a media player view directly.
+ *
+ *  Customizing your player layout using the overlays above is straightforward:
  *    - Drop instances of the views you need onto your player layout (or instantiate them in code) and tweak their
  *      appearance.
  *    - Set their `mediaPlayerController` property to point at the underlying controller. If your controller was
