@@ -153,13 +153,8 @@ static void commonInit(SRGViewModeButton *self);
 
 - (void)srg_viewModeButton_toggleViewMode:(id)sender
 {
-    // TODO: Proper implementation
-    if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewMode360]) {
-        self.mediaPlayerView.viewMode = SRGMediaPlayerViewModeStereoscopic;
-    }
-    else if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeStereoscopic]) {
-        self.mediaPlayerView.viewMode = SRGMediaPlayerViewMode360;
-    }
+    self.mediaPlayerView.viewMode = [SRGViewModeButton nextSupportedViewModeForMediaPlayerView:self.mediaPlayerView];
+    [self updateAppearance];
 }
 
 #pragma mark Interface Builder integration
@@ -187,8 +182,16 @@ static void commonInit(SRGViewModeButton *self);
 
 - (NSString *)accessibilityLabel
 {
-    // TODO:
-    return nil;
+    static dispatch_once_t s_onceToken;
+    static NSDictionary<SRGMediaPlayerViewMode, NSString *> *s_accessibilityLabels;
+    dispatch_once(&s_onceToken, ^{
+        s_accessibilityLabels = @{ SRGMediaPlayerViewModeFlat : SRGMediaPlayerAccessibilityLocalizedString(@"Normal display", @"Normal video display"),
+                                   SRGMediaPlayerViewMode360 : SRGMediaPlayerAccessibilityLocalizedString(@"360 degrees", @"360° video display"),
+                                   SRGMediaPlayerViewModeStereoscopic : SRGMediaPlayerAccessibilityLocalizedString(@"Stereoscopic", @"Stereoscopic video display") };
+    });
+    
+    SRGMediaPlayerViewMode nextViewMode = [SRGViewModeButton nextSupportedViewModeForMediaPlayerView:self.mediaPlayerView];
+    return s_accessibilityLabels[nextViewMode];
 }
 
 - (UIAccessibilityTraits)accessibilityTraits
