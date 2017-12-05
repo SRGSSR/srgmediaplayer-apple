@@ -54,6 +54,8 @@
 		6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC57B191FD6A5BE00451B6B /* SRGViewModeButton.m */; };
 		6FC57B261FD6F03800451B6B /* UIDevice+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC57B241FD6F03700451B6B /* UIDevice+SRGMediaPlayer.h */; };
 		6FC57B271FD6F03800451B6B /* UIDevice+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC57B251FD6F03700451B6B /* UIDevice+SRGMediaPlayer.m */; };
+		6FCA7EBD1FD75D0800D57FAF /* AVPlayerItem+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCA7EBB1FD75D0800D57FAF /* AVPlayerItem+SRGMediaPlayer.h */; };
+		6FCA7EBE1FD75D0800D57FAF /* AVPlayerItem+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCA7EBC1FD75D0800D57FAF /* AVPlayerItem+SRGMediaPlayer.m */; };
 		6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */; };
 		6FE7D5EB1F86237D00817E89 /* MetadataUpdatesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */; };
 		6FEB516C1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FEB516A1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h */; };
@@ -265,6 +267,8 @@
 		6FC57B191FD6A5BE00451B6B /* SRGViewModeButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGViewModeButton.m; sourceTree = "<group>"; };
 		6FC57B241FD6F03700451B6B /* UIDevice+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6FC57B251FD6F03700451B6B /* UIDevice+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+SRGMediaPlayer.m"; sourceTree = "<group>"; };
+		6FCA7EBB1FD75D0800D57FAF /* AVPlayerItem+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVPlayerItem+SRGMediaPlayer.h"; sourceTree = "<group>"; };
+		6FCA7EBC1FD75D0800D57FAF /* AVPlayerItem+SRGMediaPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AVPlayerItem+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		6FE7D5E61F85039000817E89 /* MediaPlayerBaseTestCase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPlayerBaseTestCase.h; sourceTree = "<group>"; };
 		6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerBaseTestCase.m; sourceTree = "<group>"; };
 		6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetadataUpdatesTestCase.m; sourceTree = "<group>"; };
@@ -692,6 +696,8 @@
 				6F0D051A1DB89CF300ED9E4B /* AVAudioSession+SRGMediaPlayer.m */,
 				6F90A5681F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h */,
 				6F90A5691F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.m */,
+				6FCA7EBB1FD75D0800D57FAF /* AVPlayerItem+SRGMediaPlayer.h */,
+				6FCA7EBC1FD75D0800D57FAF /* AVPlayerItem+SRGMediaPlayer.m */,
 				6F6377851FD11EA6004406BE /* MAKVONotificationCenter+SRGMediaPlayer.h */,
 				6F6377861FD11EA6004406BE /* MAKVONotificationCenter+SRGMediaPlayer.m */,
 				6FEB516A1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h */,
@@ -796,6 +802,7 @@
 				E6FC7F6B1D62072400A55085 /* SRGActivityGestureRecognizer.h in Headers */,
 				E6C986181D70182300C45C7A /* SRGPictureInPictureButton.h in Headers */,
 				E6FC7F951D62072400A55085 /* SRGSegment.h in Headers */,
+				6FCA7EBD1FD75D0800D57FAF /* AVPlayerItem+SRGMediaPlayer.h in Headers */,
 				E6C986131D7014A000C45C7A /* SRGAirplayView.h in Headers */,
 				E6C9860E1D6F458900C45C7A /* SRGTimeSlider.h in Headers */,
 				08D3BEC01DE8756500AE1368 /* SRGAlternateTracksViewController.h in Headers */,
@@ -998,6 +1005,7 @@
 				E6FC7F8E1D62072400A55085 /* SRGMediaPlayerController.m in Sources */,
 				6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton.m in Sources */,
 				E6C986111D70142D00C45C7A /* SRGMediaPlayerError.m in Sources */,
+				6FCA7EBE1FD75D0800D57FAF /* AVPlayerItem+SRGMediaPlayer.m in Sources */,
 				E6C986171D7015F600C45C7A /* SRGVolumeView.m in Sources */,
 				E6C9860D1D6F42CB00C45C7A /* SRGPlaybackActivityIndicatorView.m in Sources */,
 				E6FC7F701D62072400A55085 /* SRGMediaPlayerIconTemplate.m in Sources */,

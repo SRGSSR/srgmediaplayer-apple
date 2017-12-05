@@ -6,6 +6,7 @@
 
 #import "SRGMediaPlayerController.h"
 
+#import "AVPlayerItem+SRGMediaPlayer.h"
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "AVPlayer+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
@@ -383,21 +384,13 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         return SRGMediaPlayerMediaTypeUnknown;
     }
     
-    NSArray<AVPlayerItemTrack *> *tracks = self.player.currentItem.tracks;
-    
-    // Tracks cannot be relably retrieved from assets for network content.
-    // For more information, refer to https://stackoverflow.com/questions/6242131/using-avassetreader-to-read-stream-from-a-remote-asset
-    NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
-        return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
-    }];
-    if ([tracks filteredArrayUsingPredicate:videoPredicate].count != 0) {
+    NSArray<AVAssetTrack *> *videoAssetTracks = [self.player.currentItem srg_assetTracksWithMediaType:AVMediaTypeVideo];
+    if (videoAssetTracks.count != 0) {
         return SRGMediaPlayerMediaTypeVideo;
     }
     
-    NSPredicate *audioPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
-        return [track.assetTrack.mediaType isEqualToString:AVMediaTypeAudio];
-    }];
-    if ([tracks filteredArrayUsingPredicate:audioPredicate].count != 0) {
+    NSArray<AVAssetTrack *> *audioAssetTracks = [self.player.currentItem srg_assetTracksWithMediaType:AVMediaTypeAudio];
+    if (audioAssetTracks.count != 0) {
         return SRGMediaPlayerMediaTypeAudio;
     }
     

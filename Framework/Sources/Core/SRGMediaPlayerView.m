@@ -7,6 +7,7 @@
 #import "SRGMediaPlayerView.h"
 
 #import "AVPlayer+SRGMediaPlayer.h"
+#import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "SRGMediaPlayback360View.h"
 #import "SRGMediaPlaybackFlatView.h"
@@ -87,16 +88,7 @@ static CMMotionManager *s_motionManager = nil;
 {
     CGSize assetDimensions = CGSizeZero;
     if (player) {
-        // During seeks, we might have no tracks. Skip updates until tracks are available.
-        NSArray<AVPlayerItemTrack *> *tracks = player.currentItem.tracks;
-        if (tracks.count == 0) {
-            return;
-        }
-        
-        NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
-            return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
-        }];
-        AVAssetTrack *videoAssetTrack = [tracks filteredArrayUsingPredicate:videoPredicate].firstObject.assetTrack;
+        AVAssetTrack *videoAssetTrack = [player.currentItem srg_assetTracksWithMediaType:AVMediaTypeVideo].firstObject;
         if (videoAssetTrack) {
             assetDimensions = CGSizeApplyAffineTransform(videoAssetTrack.naturalSize, videoAssetTrack.preferredTransform);
             
@@ -117,17 +109,14 @@ static CMMotionManager *s_motionManager = nil;
             }
         }
         else {
-            NSPredicate *audioPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
-                return [track.assetTrack.mediaType isEqualToString:AVMediaTypeAudio];
-            }];
-            
-            // An audio track is available. Content is an audio
-            if ([tracks filteredArrayUsingPredicate:audioPredicate].firstObject) {
-                self.supportedViewModes = nil;
-            }
-            else {
+            // During seeks, we might have no tracks at all. Skip updates until tracks are available.
+            AVAssetTrack *audioAssetTrack = [player.currentItem srg_assetTracksWithMediaType:AVMediaTypeAudio].firstObject;
+            if (! audioAssetTrack) {
                 return;
             }
+            
+            // Content is audio-only. No supported view modes
+            self.supportedViewModes = nil;
         }
     }
     else {
