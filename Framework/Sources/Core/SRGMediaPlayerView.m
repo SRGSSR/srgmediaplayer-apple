@@ -107,6 +107,10 @@ static CMMotionManager *s_motionManager = nil;
     else {
         self.supportedViewModes = nil;
     }
+    
+    if (self.viewMode && ! [self.supportedViewModes containsObject:self.viewMode]) {
+        self.viewMode = nil;
+    }
         
     [self updatePlaybackViewWithPlayer:player];
 }

@@ -103,6 +103,7 @@ static void commonInit(SRGMediaPlayerSceneView *self);
         
         SKVideoNode *videoNode = [SKVideoNode videoNodeWithAVPlayer:player];
         videoNode.size = size;
+        NSAssert(! CGSizeEqualToSize(size, CGSizeZero), @"A player must only be set if the media has a video track with a proper size");
         videoNode.position = CGPointMake(size.width / 2.f, size.height / 2.f);
         [videoScene addChild:videoNode];
         
