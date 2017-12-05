@@ -8,8 +8,6 @@
 
 #import "AVPlayer+SRGMediaPlayer.h"
 
-#import <SpriteKit/SpriteKit.h>
-
 static void commonInit(SRGMediaPlaybackStereoscopicView *self);
 
 @interface SRGMediaPlaybackStereoscopicView ()
@@ -52,49 +50,31 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self);
     self.rightEyeSceneView.frame = CGRectMake(eyeWidth, 0.f, eyeWidth, eyeHeight);
 }
 
-- (void)setPlayer:(AVPlayer *)player
+- (void)setupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode
 {
-    super.player = player;
-    
-    SCNScene *scene = [SCNScene scene];
     self.leftEyeSceneView.scene = scene;
+    self.leftEyeSceneView.hidden = (scene == nil);
+    
     self.rightEyeSceneView.scene = scene;
+    self.rightEyeSceneView.hidden = (scene == nil);
     
-    SCNNode *leftEyeCameraNode = [SCNNode node];
-    leftEyeCameraNode.camera = [SCNCamera camera];
-    leftEyeCameraNode.position = SCNVector3Make(-0.5f, 0.f, 0.f);
-    [scene.rootNode addChildNode:leftEyeCameraNode];
-    self.leftEyeSceneView.pointOfView = leftEyeCameraNode;
-    self.leftEyeSceneView.playing = YES;                // Ensures both scenes play at the same time
-    
-    SCNNode *rightEyeCameraNode = [SCNNode node];
-    rightEyeCameraNode.camera = [SCNCamera camera];
-    rightEyeCameraNode.position = SCNVector3Make(0.5f, 0.f, 0.f);
-    [scene.rootNode addChildNode:rightEyeCameraNode];
-    self.rightEyeSceneView.pointOfView = rightEyeCameraNode;
-    self.rightEyeSceneView.playing = YES;                // Ensures both scenes play at the same time
-    
-    SCNNode *cameraNode = [SCNNode node];
-    cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
-    [cameraNode addChildNode:leftEyeCameraNode];
-    [cameraNode addChildNode:rightEyeCameraNode];
-    [scene.rootNode addChildNode:cameraNode];
-    self.cameraNode = cameraNode;
-    
-    CGSize size = player.srg_assetDimensions;
-    SKScene *videoScene = [SKScene sceneWithSize:size];
-    
-    SKVideoNode *videoNode = [SKVideoNode videoNodeWithAVPlayer:player];
-    videoNode.size = size;
-    videoNode.position = CGPointMake(size.width / 2.f, size.height / 2.f);
-    [videoScene addChild:videoNode];
-    
-    SCNSphere *sphere = [SCNSphere sphereWithRadius:100.f];
-    sphere.firstMaterial.doubleSided = YES;
-    sphere.firstMaterial.diffuse.contents = videoScene;
-    SCNNode *sphereNode = [SCNNode nodeWithGeometry:sphere];
-    sphereNode.position = SCNVector3Make(0.f, 0.f, 0.f);
-    [scene.rootNode addChildNode:sphereNode];
+    if (cameraNode) {
+        SCNNode *leftEyeCameraNode = [SCNNode node];
+        leftEyeCameraNode.camera = [SCNCamera camera];
+        leftEyeCameraNode.position = SCNVector3Make(-0.5f, 0.f, 0.f);
+        [cameraNode addChildNode:leftEyeCameraNode];
+        self.leftEyeSceneView.pointOfView = leftEyeCameraNode;
+        
+        SCNNode *rightEyeCameraNode = [SCNNode node];
+        rightEyeCameraNode.camera = [SCNCamera camera];
+        rightEyeCameraNode.position = SCNVector3Make(0.5f, 0.f, 0.f);
+        [cameraNode addChildNode:rightEyeCameraNode];
+        self.rightEyeSceneView.pointOfView = rightEyeCameraNode;
+    }
+    else {
+        self.leftEyeSceneView.pointOfView = nil;
+        self.rightEyeSceneView.pointOfView = nil;
+    }
 }
 
 @end
@@ -103,12 +83,18 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self)
 {
     SCNView *leftEyeSceneView = [[SCNView alloc] initWithFrame:CGRectZero options:nil];
     leftEyeSceneView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    leftEyeSceneView.backgroundColor = [UIColor clearColor];
+    leftEyeSceneView.hidden = YES;
+    leftEyeSceneView.playing = YES;                // Ensures both scenes play at the same time
     leftEyeSceneView.delegate = self;
     [self addSubview:leftEyeSceneView];
     self.leftEyeSceneView = leftEyeSceneView;
     
     SCNView *rightEyeSceneView = [[SCNView alloc] initWithFrame:CGRectZero options:nil];
     rightEyeSceneView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    rightEyeSceneView.backgroundColor = [UIColor clearColor];
+    rightEyeSceneView.hidden = YES;
+    rightEyeSceneView.playing = YES;                // Ensures both scenes play at the same time
     rightEyeSceneView.delegate = self;
     [self addSubview:rightEyeSceneView];
     self.rightEyeSceneView = rightEyeSceneView;

@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SRGMediaPlayerSceneView : UIView <SCNSceneRendererDelegate, SRGMediaPlaybackView>
 
-@property (nonatomic, weak) SCNNode *cameraNode;
+- (void)setupScene:(nullable SCNScene *)scene withCameraNode:(nullable SCNNode *)cameraNode;
 
 @end
 

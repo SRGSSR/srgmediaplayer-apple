@@ -40,33 +40,10 @@ static void commonInit(SRGMediaPlayback360View *self);
 
 #pragma mark Overrides
 
-- (void)setPlayer:(AVPlayer *)player
+- (void)setupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode
 {
-    super.player = player;
-    
-    SCNScene *scene = [SCNScene scene];
     self.sceneView.scene = scene;
-    
-    SCNNode *cameraNode = [SCNNode node];
-    cameraNode.camera = [SCNCamera camera];
-    cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
-    [scene.rootNode addChildNode:cameraNode];
-    self.cameraNode = cameraNode;
-    
-    CGSize size = player.srg_assetDimensions;
-    SKScene *videoScene = [SKScene sceneWithSize:size];
-    
-    SKVideoNode *videoNode = [SKVideoNode videoNodeWithAVPlayer:player];
-    videoNode.size = size;
-    videoNode.position = CGPointMake(size.width / 2.f, size.height / 2.f);
-    [videoScene addChild:videoNode];
-    
-    SCNSphere *sphere = [SCNSphere sphereWithRadius:100.f];
-    sphere.firstMaterial.doubleSided = YES;
-    sphere.firstMaterial.diffuse.contents = videoScene;
-    SCNNode *sphereNode = [SCNNode nodeWithGeometry:sphere];
-    sphereNode.position = SCNVector3Make(0.f, 0.f, 0.f);
-    [scene.rootNode addChildNode:sphereNode];
+    self.sceneView.hidden = (scene == nil);
 }
 
 @end
@@ -75,6 +52,8 @@ static void commonInit(SRGMediaPlayback360View *self)
 {
     SCNView *sceneView = [[SCNView alloc] initWithFrame:self.bounds options:nil];
     sceneView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    sceneView.backgroundColor = [UIColor clearColor];
+    sceneView.hidden = YES;
     sceneView.delegate = self;
     [self addSubview:sceneView];
     self.sceneView = sceneView;

@@ -6,10 +6,21 @@
 
 #import "SRGMediaPlayerSceneView.h"
 
+#import "AVPlayer+SRGMediaPlayer.h"
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "SRGMotionManager.h"
 #import "UIDevice+SRGMediaPlayer.h"
 
+#import <libextobjc/libextobjc.h>
+#import <SpriteKit/SpriteKit.h>
+
 static void commonInit(SRGMediaPlayerSceneView *self);
+
+@interface SRGMediaPlayerSceneView ()
+
+@property (nonatomic, weak) SCNNode *cameraNode;
+
+@end
 
 @implementation SRGMediaPlayerSceneView
 
@@ -69,6 +80,54 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 
 #pragma mark SRGMediaPlaybackView protocol
 
+- (void)setPlayer:(AVPlayer *)player
+{
+    if (_player) {
+        [_player removeObserver:self keyPath:@keypath(_player.rate)];
+    }
+    
+    _player = player;
+    
+    if (player) {
+        SCNScene *scene = [SCNScene scene];
+        
+        SCNNode *cameraNode = [SCNNode node];
+        cameraNode.camera = [SCNCamera camera];
+        cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
+        [scene.rootNode addChildNode:cameraNode];
+        self.cameraNode = cameraNode;
+        
+        CGSize size = player.srg_assetDimensions;
+        SKScene *videoScene = [SKScene sceneWithSize:size];
+        
+        SKVideoNode *videoNode = [SKVideoNode videoNodeWithAVPlayer:player];
+        videoNode.size = size;
+        videoNode.position = CGPointMake(size.width / 2.f, size.height / 2.f);
+        [videoScene addChild:videoNode];
+        
+        SCNSphere *sphere = [SCNSphere sphereWithRadius:100.f];
+        sphere.firstMaterial.doubleSided = YES;
+        sphere.firstMaterial.diffuse.contents = videoScene;
+        SCNNode *sphereNode = [SCNNode nodeWithGeometry:sphere];
+        sphereNode.position = SCNVector3Make(0.f, 0.f, 0.f);
+        [scene.rootNode addChildNode:sphereNode];
+        
+        [self setupScene:scene withCameraNode:cameraNode];
+        
+        @weakify(self)
+        @weakify(player)
+        [player srg_addMainThreadObserver:self keyPath:@keypath(player.rate) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            @strongify(player)
+            
+            // TODO: Update video scene state accordingly
+        }];
+    }
+    else {
+        [self setupScene:nil withCameraNode:nil];
+    }
+}
+
 - (AVPlayerLayer *)playerLayer
 {
     // No player layer is available
@@ -93,5 +152,5 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 
 static void commonInit(SRGMediaPlayerSceneView *self)
 {
-    self.backgroundColor = [UIColor blackColor];
+    self.backgroundColor = [UIColor clearColor];
 }
