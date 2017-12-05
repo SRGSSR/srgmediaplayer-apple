@@ -67,11 +67,16 @@ static void commonInit(SRGViewModeButton *self);
     _mediaPlayerView = mediaPlayerView;
     [self updateAppearanceForMediaPlayerView:mediaPlayerView];
     
-    @weakify(mediaPlayerView)
-    [mediaPlayerView addObserver:self keyPath:@keypath(_mediaPlayerView.supportedViewModes) options:0 block:^(MAKVONotification *notification) {
-        @strongify(mediaPlayerView)
-        [self updateAppearanceForMediaPlayerView:mediaPlayerView];
-    }];
+    if (mediaPlayerView) {
+        @weakify(self)
+        @weakify(mediaPlayerView)
+        [mediaPlayerView addObserver:self keyPath:@keypath(_mediaPlayerView.supportedViewModes) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            @strongify(mediaPlayerView)
+            
+            [self updateAppearanceForMediaPlayerView:mediaPlayerView];
+        }];
+    }
 }
 
 - (UIImage *)viewModeFlatImage
