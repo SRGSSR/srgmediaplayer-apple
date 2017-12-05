@@ -385,9 +385,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     NSArray<AVPlayerItemTrack *> *tracks = self.player.currentItem.tracks;
     
-    // Track information between AVAsset and AVPlayerItem is not the same. Seems correct earlier in AVPlayerItem
-    // TODO: See if AVAsset should be used for another reason (it has method to extract tracks of a given type, there
-    //       must be some reason)
+    // Tracks cannot be relably retrieved from assets for network content.
+    // For more information, refer to https://stackoverflow.com/questions/6242131/using-avassetreader-to-read-stream-from-a-remote-asset
     NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
         return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
     }];
