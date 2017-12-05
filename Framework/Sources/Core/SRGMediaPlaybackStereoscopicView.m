@@ -7,9 +7,7 @@
 #import "SRGMediaPlaybackStereoscopicView.h"
 
 #import "AVPlayer+SRGMediaPlayer.h"
-#import "SRGMotionManager.h"
 
-#import <SceneKit/SceneKit.h>
 #import <SpriteKit/SpriteKit.h>
 
 static void commonInit(SRGMediaPlaybackStereoscopicView *self);
@@ -19,13 +17,11 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self);
 @property (nonatomic, weak) SCNView *leftEyeSceneView;
 @property (nonatomic, weak) SCNView *rightEyeSceneView;
 
-@property (nonatomic, weak) SCNNode *camerasNode;
-
 @end
 
 @implementation SRGMediaPlaybackStereoscopicView
 
-@synthesize player = _player;
+#pragma mark Object lifecycle
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -56,42 +52,9 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self);
     self.rightEyeSceneView.frame = CGRectMake(eyeWidth, 0.f, eyeWidth, eyeHeight);
 }
 
-- (void)willMoveToWindow:(UIWindow *)newWindow
-{
-    [super willMoveToWindow:newWindow];
-    
-    if (newWindow) {
-        [SRGMotionManager start];
-    }
-    else {
-        [SRGMotionManager stop];
-    }
-}
-
-#pragma marm SCNSceneRendererDelegate protocol
-
-- (void)renderer:(id<SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time
-{
-    // CMMotionManager might deliver events to a background queue.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        CMDeviceMotion *deviceMotion = [SRGMotionManager motionManager].deviceMotion;
-        if (deviceMotion) {
-            self.camerasNode.orientation = SRGCameraDirectionForAttitude(deviceMotion.attitude);
-        }
-    });
-}
-
-#pragma mark SRGMediaPlaybackView protocol
-
-- (AVPlayerLayer *)playerLayer
-{
-    // No player layer is available
-    return nil;
-}
-
 - (void)setPlayer:(AVPlayer *)player
 {
-    _player = player;
+    super.player = player;
     
     SCNScene *scene = [SCNScene scene];
     self.leftEyeSceneView.scene = scene;
@@ -111,13 +74,12 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self);
     self.rightEyeSceneView.pointOfView = rightEyeCameraNode;
     self.rightEyeSceneView.playing = YES;                // Ensures both scenes play at the same time
     
-    SCNNode *camerasNode = [SCNNode node];
-    camerasNode.position = SCNVector3Make(0.f, 0.f, 0.f);
-    camerasNode.eulerAngles = SCNVector3Make(M_PI, 0.f, 0.f);
-    [camerasNode addChildNode:leftEyeCameraNode];
-    [camerasNode addChildNode:rightEyeCameraNode];
-    [scene.rootNode addChildNode:camerasNode];
-    self.camerasNode = camerasNode;
+    SCNNode *cameraNode = [SCNNode node];
+    cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
+    [cameraNode addChildNode:leftEyeCameraNode];
+    [cameraNode addChildNode:rightEyeCameraNode];
+    [scene.rootNode addChildNode:cameraNode];
+    self.cameraNode = cameraNode;
     
     CGSize size = player.srg_assetDimensions;
     SKScene *videoScene = [SKScene sceneWithSize:size];
