@@ -62,7 +62,7 @@ static CMMotionManager *s_motionManager = nil;
 
 - (SRGMediaPlayerViewMode)viewMode
 {
-    return _viewMode ?: self.supportedViewModes.firstObject;
+    return (_viewMode && [self.supportedViewModes containsObject:_viewMode]) ? _viewMode : self.supportedViewModes.firstObject;
 }
 
 - (void)setViewMode:(SRGMediaPlayerViewMode)viewMode
@@ -71,14 +71,9 @@ static CMMotionManager *s_motionManager = nil;
         return;
     }
     
-    if (viewMode && [self.supportedViewModes containsObject:viewMode]) {
-        _viewMode = viewMode;
-    }
-    else {
-        _viewMode = nil;
-    }
+    _viewMode = viewMode;
     
-    [self updatePlaybackViewWithPlayer:self.player];
+    [self updateWithPlayer:self.player];
 }
 
 - (AVPlayerLayer *)playerLayer
@@ -90,8 +85,20 @@ static CMMotionManager *s_motionManager = nil;
 
 - (void)updateWithPlayer:(AVPlayer *)player
 {
-    CGSize assetDimensions = player.srg_assetDimensions;
+    CGSize assetDimensions = CGSizeZero;
     if (player) {
+        NSArray<AVPlayerItemTrack *> *tracks = player.currentItem.tracks;
+        NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
+            return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
+        }];
+        
+        // During seeks, we might have no track. Skip updates until tracks are available.
+        if (! tracks) {
+            return;
+        }
+        
+        AVAssetTrack *assetTrack = [tracks filteredArrayUsingPredicate:videoPredicate].firstObject.assetTrack;
+        assetDimensions = CGSizeApplyAffineTransform(assetTrack.naturalSize, assetTrack.preferredTransform);
         if (! CGSizeEqualToSize(assetDimensions, CGSizeZero)) {
             // 360 videos are provided in equirectangular format (2:1)
             // See https://www.360rize.com/2017/04/5-things-you-should-know-about-360-video-resolution/
@@ -107,15 +114,11 @@ static CMMotionManager *s_motionManager = nil;
     else {
         self.supportedViewModes = nil;
     }
-    
-    if (self.viewMode && ! [self.supportedViewModes containsObject:self.viewMode]) {
-        self.viewMode = nil;
-    }
         
-    [self updatePlaybackViewWithPlayer:player];
+    [self updatePlaybackViewWithPlayer:player assetDimensions:assetDimensions];
 }
 
-- (void)updatePlaybackViewWithPlayer:(AVPlayer *)player
+- (void)updatePlaybackViewWithPlayer:(AVPlayer *)player assetDimensions:(CGSize)assetDimensions
 {
     static dispatch_once_t s_onceToken;
     static NSDictionary *s_viewClasses;
@@ -138,7 +141,7 @@ static CMMotionManager *s_motionManager = nil;
         }
         
         if (self.playbackView.player != player) {
-            self.playbackView.player = player;
+            [self.playbackView setPlayer:player withAssetDimensions:assetDimensions];
         }
     }
     else {

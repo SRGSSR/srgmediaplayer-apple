@@ -17,13 +17,12 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 
 @interface SRGMediaPlayerSceneView ()
 
+@property (nonatomic) AVPlayer *player;
 @property (nonatomic, weak) SCNNode *cameraNode;
 
 @end
 
 @implementation SRGMediaPlayerSceneView
-
-@synthesize player = _player;
 
 #pragma mark Object lifecycle
 
@@ -84,9 +83,9 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 
 #pragma mark SRGMediaPlaybackView protocol
 
-- (void)setPlayer:(AVPlayer *)player
+- (void)setPlayer:(AVPlayer *)player withAssetDimensions:(CGSize)assetDimensions
 {
-    _player = player;
+    self.player = player;
     
     if (player) {
         SCNScene *scene = [SCNScene scene];
@@ -98,13 +97,12 @@ static void commonInit(SRGMediaPlayerSceneView *self);
         [scene.rootNode addChildNode:cameraNode];
         self.cameraNode = cameraNode;
         
-        CGSize size = player.srg_assetDimensions;
-        SKScene *videoScene = [SKScene sceneWithSize:size];
+        SKScene *videoScene = [SKScene sceneWithSize:assetDimensions];
         
         SKVideoNode *videoNode = [SKVideoNode videoNodeWithAVPlayer:player];
-        videoNode.size = size;
-        NSAssert(! CGSizeEqualToSize(size, CGSizeZero), @"A player must only be set if the media has a video track with a proper size");
-        videoNode.position = CGPointMake(size.width / 2.f, size.height / 2.f);
+        videoNode.size = assetDimensions;
+        NSAssert(! CGSizeEqualToSize(assetDimensions, CGSizeZero), @"A player must only be set if the media has a video track with a proper size");
+        videoNode.position = CGPointMake(assetDimensions.width / 2.f, assetDimensions.height / 2.f);
         [videoScene addChild:videoNode];
         
         SCNSphere *sphere = [SCNSphere sphereWithRadius:100.f];

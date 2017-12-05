@@ -12,7 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol SRGMediaPlaybackView <NSObject>
 
-@property (nonatomic, nullable) AVPlayer *player;       // Remark: The implementation guarantees this is only called when the player changes
+- (void)setPlayer:(AVPlayer *)player withAssetDimensions:(CGSize)assetDimensions;
+@property (nonatomic, readonly) AVPlayer *player;
+
 @property (nonatomic, readonly, nullable) AVPlayerLayer *playerLayer;
 
 @end

@@ -19,16 +19,4 @@
     }
 }
 
-- (CGSize)srg_assetDimensions
-{
-    // TODO: See if AVAsset should be used for another reason (it has method to extract tracks of a given type, there
-    //       must be some reason)
-    NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
-        return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
-    }];
-    
-    AVAssetTrack *assetTrack = [self.currentItem.tracks filteredArrayUsingPredicate:videoPredicate].firstObject.assetTrack;
-    return CGSizeApplyAffineTransform(assetTrack.naturalSize, assetTrack.preferredTransform);
-}
-
 @end

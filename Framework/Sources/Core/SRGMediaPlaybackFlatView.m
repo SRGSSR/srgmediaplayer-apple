@@ -22,7 +22,7 @@
     return (AVPlayerLayer *)self.layer;
 }
 
-- (void)setPlayer:(AVPlayer *)player
+- (void)setPlayer:(AVPlayer *)player withAssetDimensions:(CGSize)assetDimensions
 {
     self.playerLayer.player = player;
 }
