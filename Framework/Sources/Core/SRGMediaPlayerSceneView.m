@@ -99,6 +99,7 @@ static void commonInit(SRGMediaPlayerSceneView *self);
         SCNNode *cameraNode = [SCNNode node];
         cameraNode.camera = [SCNCamera camera];
         cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
+        cameraNode.eulerAngles = SCNVector3Make(M_PI, 0.f, 0.f);
         [scene.rootNode addChildNode:cameraNode];
         self.cameraNode = cameraNode;
         
