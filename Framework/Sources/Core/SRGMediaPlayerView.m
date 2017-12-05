@@ -87,19 +87,25 @@ static CMMotionManager *s_motionManager = nil;
 {
     CGSize assetDimensions = CGSizeZero;
     if (player) {
+        // During seeks, we might have no tracks. Skip updates until tracks are available.
         NSArray<AVPlayerItemTrack *> *tracks = player.currentItem.tracks;
-        NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
-            return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
-        }];
-        
-        // During seeks, we might have no track. Skip updates until tracks are available.
-        if (! tracks) {
+        if (tracks.count == 0) {
             return;
         }
         
-        AVAssetTrack *assetTrack = [tracks filteredArrayUsingPredicate:videoPredicate].firstObject.assetTrack;
-        assetDimensions = CGSizeApplyAffineTransform(assetTrack.naturalSize, assetTrack.preferredTransform);
-        if (! CGSizeEqualToSize(assetDimensions, CGSizeZero)) {
+        NSPredicate *videoPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
+            return [track.assetTrack.mediaType isEqualToString:AVMediaTypeVideo];
+        }];
+        AVAssetTrack *videoAssetTrack = [tracks filteredArrayUsingPredicate:videoPredicate].firstObject.assetTrack;
+        if (videoAssetTrack) {
+            assetDimensions = CGSizeApplyAffineTransform(videoAssetTrack.naturalSize, videoAssetTrack.preferredTransform);
+            
+            // Asset dimension is not always immediately available from the asset track. Skip updates until this
+            // information is available
+            if (CGSizeEqualToSize(assetDimensions, CGSizeZero)) {
+                return;
+            }
+            
             // 360 videos are provided in equirectangular format (2:1)
             // See https://www.360rize.com/2017/04/5-things-you-should-know-about-360-video-resolution/
             CGFloat ratio = assetDimensions.width / assetDimensions.height;
@@ -108,6 +114,19 @@ static CMMotionManager *s_motionManager = nil;
             }
             else {
                 self.supportedViewModes = @[SRGMediaPlayerViewModeFlat];
+            }
+        }
+        else {
+            NSPredicate *audioPredicate = [NSPredicate predicateWithBlock:^BOOL(AVPlayerItemTrack * _Nullable track, NSDictionary<NSString *, id> * _Nullable bindings) {
+                return [track.assetTrack.mediaType isEqualToString:AVMediaTypeAudio];
+            }];
+            
+            // An audio track is available. Content is an audio
+            if ([tracks filteredArrayUsingPredicate:audioPredicate].firstObject) {
+                self.supportedViewModes = nil;
+            }
+            else {
+                return;
             }
         }
     }
