@@ -7,7 +7,6 @@
 #import "SRGMediaPlayerSceneView.h"
 
 #import "AVPlayer+SRGMediaPlayer.h"
-#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "SRGMotionManager.h"
 #import "UIDevice+SRGMediaPlayer.h"
 
@@ -87,10 +86,6 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 
 - (void)setPlayer:(AVPlayer *)player
 {
-    if (_player) {
-        [_player removeObserver:self keyPath:@keypath(_player.rate)];
-    }
-    
     _player = player;
     
     if (player) {
@@ -119,15 +114,6 @@ static void commonInit(SRGMediaPlayerSceneView *self);
         [scene.rootNode addChildNode:sphereNode];
         
         [self setupScene:scene withCameraNode:cameraNode];
-        
-        @weakify(self)
-        @weakify(player)
-        [player srg_addMainThreadObserver:self keyPath:@keypath(player.rate) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self)
-            @strongify(player)
-            
-            // TODO: Update video scene state accordingly
-        }];
     }
     else {
         [self setupScene:nil withCameraNode:nil];
