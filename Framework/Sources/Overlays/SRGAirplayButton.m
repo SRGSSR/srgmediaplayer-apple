@@ -28,7 +28,6 @@ static void commonInit(SRGAirplayButton *self);
 
 @synthesize image = _image;
 @synthesize activeTintColor = _activeTintColor;
-@synthesize alwaysHidden = _alwaysHidden;
 
 #pragma mark Object lifecycle
 

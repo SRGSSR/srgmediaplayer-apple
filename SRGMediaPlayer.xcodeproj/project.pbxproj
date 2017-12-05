@@ -48,6 +48,8 @@
 		6FB97FE11E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FB97FE21E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FB97FF81E4B13CC0014C4C2 /* MAKVONotificationCenter.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
+		6FC57B1A1FD6A5BE00451B6B /* SRGViewModeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC57B191FD6A5BE00451B6B /* SRGViewModeButton.m */; };
 		6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */; };
 		6FE7D5EB1F86237D00817E89 /* MetadataUpdatesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */; };
 		6FEB516C1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FEB516A1DB0AA03002D1751 /* MPVolumeView+SRGMediaPlayer.h */; };
@@ -253,6 +255,8 @@
 		6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
 		6FA1D6081F42C13E00C85D15 /* TestMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMacros.h; sourceTree = "<group>"; };
 		6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
+		6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGViewModeButton.h; sourceTree = "<group>"; };
+		6FC57B191FD6A5BE00451B6B /* SRGViewModeButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGViewModeButton.m; sourceTree = "<group>"; };
 		6FE7D5E61F85039000817E89 /* MediaPlayerBaseTestCase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPlayerBaseTestCase.h; sourceTree = "<group>"; };
 		6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerBaseTestCase.m; sourceTree = "<group>"; };
 		6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetadataUpdatesTestCase.m; sourceTree = "<group>"; };
@@ -717,6 +721,8 @@
 				E6FC7F541D62072400A55085 /* SRGTimeSlider.m */,
 				08D3BEAE1DE6EAB100AE1368 /* SRGTracksButton.h */,
 				08D3BEAF1DE6EAB100AE1368 /* SRGTracksButton.m */,
+				6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */,
+				6FC57B191FD6A5BE00451B6B /* SRGViewModeButton.m */,
 				E6FC7F551D62072400A55085 /* SRGVolumeView.h */,
 				E6FC7F561D62072400A55085 /* SRGVolumeView.m */,
 			);
@@ -768,6 +774,7 @@
 				E6C9860C1D6F42CB00C45C7A /* SRGPlaybackActivityIndicatorView.h in Headers */,
 				E6FC7F6D1D62072400A55085 /* SRGMediaPlayerConstants.h in Headers */,
 				6F68E7581DAE0877001F39C4 /* SRGMediaPlayerView+Private.h in Headers */,
+				6FC57B1A1FD6A5BE00451B6B /* SRGViewModeButton.h in Headers */,
 				E6C9861B1D701BA700C45C7A /* SRGMediaPlayerViewController.h in Headers */,
 				E6FC7F8D1D62072400A55085 /* SRGMediaPlayerController.h in Headers */,
 				E69A1E621D61BAFD0064E6C1 /* SRGMediaPlayer.h in Headers */,
@@ -974,6 +981,7 @@
 				E6C9860B1D6F36C900C45C7A /* SRGPlaybackButton.m in Sources */,
 				E6C9861F1D701D3800C45C7A /* SRGMediaPlayerSharedController.m in Sources */,
 				E6FC7F8E1D62072400A55085 /* SRGMediaPlayerController.m in Sources */,
+				6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton.m in Sources */,
 				E6C986111D70142D00C45C7A /* SRGMediaPlayerError.m in Sources */,
 				E6C986171D7015F600C45C7A /* SRGVolumeView.m in Sources */,
 				E6C9860D1D6F42CB00C45C7A /* SRGPlaybackActivityIndicatorView.m in Sources */,

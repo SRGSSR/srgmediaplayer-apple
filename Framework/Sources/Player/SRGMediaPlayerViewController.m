@@ -16,6 +16,7 @@
 #import "SRGMediaPlayerSharedController.h"
 #import "SRGTimeSlider.h"
 #import "SRGTracksButton.h"
+#import "SRGViewModeButton.h"
 
 #import <libextobjc/libextobjc.h>
 
@@ -31,6 +32,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @property (nonatomic, weak) IBOutlet SRGTracksButton *tracksButton;
 @property (nonatomic, weak) IBOutlet SRGPictureInPictureButton *pictureInPictureButton;
+@property (nonatomic, weak) IBOutlet SRGViewModeButton *viewModeButton;
 
 @property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
 @property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
@@ -156,6 +158,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
     self.airplayButton.mediaPlayerController = s_mediaPlayerController;
     self.airplayView.mediaPlayerController = s_mediaPlayerController;
+    
+    self.viewModeButton.mediaPlayerView = s_mediaPlayerController.view;
     
     // The frame of an activity indicator cannot be changed. Use a transform.
     self.loadingActivityIndicatorView.transform = CGAffineTransformMakeScale(0.6f, 0.6f);

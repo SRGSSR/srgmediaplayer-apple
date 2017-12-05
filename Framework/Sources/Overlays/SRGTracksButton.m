@@ -26,7 +26,6 @@ static void commonInit(SRGTracksButton *self);
 
 @synthesize image = _image;
 @synthesize selectedImage = _selectedImage;
-@synthesize alwaysHidden = _alwaysHidden;
 
 #pragma mark Object lifecycle
 

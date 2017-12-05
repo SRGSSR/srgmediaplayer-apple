@@ -27,5 +27,6 @@ FOUNDATION_EXPORT NSString *SRGMediaPlayerMarketingVersion(void);
 #import "SRGTimelineView.h"
 #import "SRGTimeSlider.h"
 #import "SRGTracksButton.h"
+#import "SRGViewModeButton.h"
 #import "SRGVolumeView.h"
 #import "UIScreen+SRGMediaPlayer.h"

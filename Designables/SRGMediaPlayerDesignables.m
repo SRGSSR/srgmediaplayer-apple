@@ -50,6 +50,11 @@ IB_DESIGNABLE
 @end
 
 IB_DESIGNABLE
+@interface SRGViewModeButton (Designable)
+
+@end
+
+IB_DESIGNABLE
 @interface SRGVolumeView (Designable)
 
 @end
