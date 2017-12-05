@@ -65,6 +65,11 @@ static void commonInit(SRGMediaPlayerSceneView *self);
     }
 }
 
+#pragma mark Subclassing hooks
+
+- (void)setupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode
+{}
+
 #pragma marm SCNSceneRendererDelegate protocol
 
 - (void)renderer:(id<SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time
