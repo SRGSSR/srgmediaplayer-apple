@@ -37,8 +37,8 @@
 		6F962FBD1FD59EFE00EA42C1 /* SRGMotionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F962FBB1FD59EFE00EA42C1 /* SRGMotionManager.h */; };
 		6F962FBE1FD59EFE00EA42C1 /* SRGMotionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F962FBC1FD59EFE00EA42C1 /* SRGMotionManager.m */; };
 		6F97C7981E7A89C5001AD9B3 /* ModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */; };
-		6F9B0F751FCFF7A70063944D /* SRGMediaPlayback360View.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9B0F731FCFF7A70063944D /* SRGMediaPlayback360View.h */; };
-		6F9B0F761FCFF7A70063944D /* SRGMediaPlayback360View.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9B0F741FCFF7A70063944D /* SRGMediaPlayback360View.m */; };
+		6F9B0F751FCFF7A70063944D /* SRGMediaPlaybackMonoscopicView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9B0F731FCFF7A70063944D /* SRGMediaPlaybackMonoscopicView.h */; };
+		6F9B0F761FCFF7A70063944D /* SRGMediaPlaybackMonoscopicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9B0F741FCFF7A70063944D /* SRGMediaPlaybackMonoscopicView.m */; };
 		6F9B0F7D1FCFF8B70063944D /* SRGMediaPlaybackFlatView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9B0F7B1FCFF8B70063944D /* SRGMediaPlaybackFlatView.h */; };
 		6F9B0F7E1FCFF8B70063944D /* SRGMediaPlaybackFlatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9B0F7C1FCFF8B70063944D /* SRGMediaPlaybackFlatView.m */; };
 		6FA09D2A1D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */; };
@@ -257,8 +257,8 @@
 		6F962FBC1FD59EFE00EA42C1 /* SRGMotionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGMotionManager.m; sourceTree = "<group>"; };
 		6F97C7961E7A89C5001AD9B3 /* ModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalTransition.h; sourceTree = "<group>"; };
 		6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalTransition.m; sourceTree = "<group>"; };
-		6F9B0F731FCFF7A70063944D /* SRGMediaPlayback360View.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayback360View.h; sourceTree = "<group>"; };
-		6F9B0F741FCFF7A70063944D /* SRGMediaPlayback360View.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayback360View.m; sourceTree = "<group>"; };
+		6F9B0F731FCFF7A70063944D /* SRGMediaPlaybackMonoscopicView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackMonoscopicView.h; sourceTree = "<group>"; };
+		6F9B0F741FCFF7A70063944D /* SRGMediaPlaybackMonoscopicView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlaybackMonoscopicView.m; sourceTree = "<group>"; };
 		6F9B0F7B1FCFF8B70063944D /* SRGMediaPlaybackFlatView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackFlatView.h; sourceTree = "<group>"; };
 		6F9B0F7C1FCFF8B70063944D /* SRGMediaPlaybackFlatView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlaybackFlatView.m; sourceTree = "<group>"; };
 		6FA09D281D9E69EE00EDCA64 /* SRGMediaPlayerLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerLogger.h; sourceTree = "<group>"; };
@@ -667,10 +667,10 @@
 			children = (
 				E6FC7F301D62072400A55085 /* SRGActivityGestureRecognizer.h */,
 				E6FC7F311D62072400A55085 /* SRGActivityGestureRecognizer.m */,
-				6F9B0F731FCFF7A70063944D /* SRGMediaPlayback360View.h */,
-				6F9B0F741FCFF7A70063944D /* SRGMediaPlayback360View.m */,
 				6F9B0F7B1FCFF8B70063944D /* SRGMediaPlaybackFlatView.h */,
 				6F9B0F7C1FCFF8B70063944D /* SRGMediaPlaybackFlatView.m */,
+				6F9B0F731FCFF7A70063944D /* SRGMediaPlaybackMonoscopicView.h */,
+				6F9B0F741FCFF7A70063944D /* SRGMediaPlaybackMonoscopicView.m */,
 				6FFF40F11FD4B2630008E79B /* SRGMediaPlaybackStereoscopicView.h */,
 				6FFF40F21FD4B2640008E79B /* SRGMediaPlaybackStereoscopicView.m */,
 				E6FC7F321D62072400A55085 /* SRGMediaPlayerConstants.h */,
@@ -793,7 +793,7 @@
 				E67799341D75B0E300E58331 /* SRGTimelineSlider.h in Headers */,
 				6F3AA32D1FD7006A00FB5369 /* SRGMediaPlayerSceneView.h in Headers */,
 				E6FC7F731D62072400A55085 /* SRGMediaPlayerView.h in Headers */,
-				6F9B0F751FCFF7A70063944D /* SRGMediaPlayback360View.h in Headers */,
+				6F9B0F751FCFF7A70063944D /* SRGMediaPlaybackMonoscopicView.h in Headers */,
 				E6FC7F791D62072400A55085 /* UIBezierPath+SRGMediaPlayer.h in Headers */,
 				6F90A56A1F3C2C9700E42066 /* AVPlayer+SRGMediaPlayer.h in Headers */,
 				E6C9860C1D6F42CB00C45C7A /* SRGPlaybackActivityIndicatorView.h in Headers */,
@@ -1025,7 +1025,7 @@
 				E67799351D75B0E300E58331 /* SRGTimelineSlider.m in Sources */,
 				6FFF40F41FD4B2640008E79B /* SRGMediaPlaybackStereoscopicView.m in Sources */,
 				E6C9860F1D6F458900C45C7A /* SRGTimeSlider.m in Sources */,
-				6F9B0F761FCFF7A70063944D /* SRGMediaPlayback360View.m in Sources */,
+				6F9B0F761FCFF7A70063944D /* SRGMediaPlaybackMonoscopicView.m in Sources */,
 				6FC57B271FD6F03800451B6B /* UIDevice+SRGMediaPlayer.m in Sources */,
 				E6C9861C1D701BA700C45C7A /* SRGMediaPlayerViewController.m in Sources */,
 				E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */,

@@ -33,8 +33,7 @@ IB_DESIGNABLE
 /**
  *  Image customization (a default image is used if not set).
  */
-@property (nonatomic, null_resettable) IBInspectable UIImage *viewModeFlatImage;
-@property (nonatomic, null_resettable) IBInspectable UIImage *viewMode360Image;
+@property (nonatomic, null_resettable) IBInspectable UIImage *viewModeMonoscopicImage;
 @property (nonatomic, null_resettable) IBInspectable UIImage *viewModeStereoscopicImage;
 
 /**

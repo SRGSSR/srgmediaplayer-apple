@@ -22,19 +22,6 @@ static void commonInit(SRGViewModeButton *self);
 
 @implementation SRGViewModeButton
 
-#pragma mark Class methods
-
-+ (SRGMediaPlayerViewMode)nextSupportedViewModeForMediaPlayerView:(SRGMediaPlayerView *)mediaPlayerView
-{
-    if (mediaPlayerView.supportedViewModes.count < 2) {
-        return nil;
-    }
-    
-    NSUInteger index = [mediaPlayerView.supportedViewModes indexOfObject:mediaPlayerView.viewMode];
-    NSUInteger nextIndex = (index < mediaPlayerView.supportedViewModes.count - 1) ? index + 1 : 0;
-    return mediaPlayerView.supportedViewModes[nextIndex];
-}
-
 #pragma mark Object lifecycle
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -62,31 +49,13 @@ static void commonInit(SRGViewModeButton *self);
 
 - (void)setMediaPlayerView:(SRGMediaPlayerView *)mediaPlayerView
 {
-    [_mediaPlayerView removeObserver:self keyPath:@keypath(mediaPlayerView.supportedViewModes)];
-    
     _mediaPlayerView = mediaPlayerView;
     [self updateAppearanceForMediaPlayerView:mediaPlayerView];
-    
-    if (mediaPlayerView) {
-        @weakify(self)
-        @weakify(mediaPlayerView)
-        [mediaPlayerView addObserver:self keyPath:@keypath(_mediaPlayerView.supportedViewModes) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self)
-            @strongify(mediaPlayerView)
-            
-            [self updateAppearanceForMediaPlayerView:mediaPlayerView];
-        }];
-    }
 }
 
-- (UIImage *)viewModeFlatImage
+- (UIImage *)viewModeMonoscopicImage
 {
-    return _viewModeFlatImage ?: [UIImage imageNamed:@"view_mode_flat" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
-}
-
-- (UIImage *)viewMode360Image
-{
-    return _viewMode360Image ?: [UIImage imageNamed:@"view_mode_360" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
+    return _viewModeMonoscopicImage ?: [UIImage imageNamed:@"view_mode_360" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
 }
 
 - (UIImage *)viewModeStereoscopicImage
@@ -133,18 +102,14 @@ static void commonInit(SRGViewModeButton *self);
     if (self.alwaysHidden) {
         self.hidden = YES;
     }
-    else if (mediaPlayerView.supportedViewModes.count > 1) {
-        SRGMediaPlayerViewMode nextViewMode = [SRGViewModeButton nextSupportedViewModeForMediaPlayerView:mediaPlayerView];
-        if ([nextViewMode isEqualToString:SRGMediaPlayerViewMode360]) {
-            [self.button setImage:self.viewMode360Image forState:UIControlStateNormal];
-        }
-        else if ([nextViewMode isEqualToString:SRGMediaPlayerViewModeStereoscopic]) {
-            [self.button setImage:self.viewModeStereoscopicImage forState:UIControlStateNormal];
-        }
-        else {
-            [self.button setImage:self.viewModeFlatImage forState:UIControlStateNormal];
-        }
+    else if ([mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeMonoscopic]) {
+        [self.button setImage:self.viewModeStereoscopicImage forState:UIControlStateNormal];
         self.hidden = NO;
+    }
+    else if ([mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeStereoscopic]) {
+        [self.button setImage:self.viewModeMonoscopicImage forState:UIControlStateNormal];
+        self.hidden = NO;
+        
     }
     else if (self.fakeInterfaceBuilderButton) {
         self.hidden = NO;
@@ -158,7 +123,12 @@ static void commonInit(SRGViewModeButton *self);
 
 - (void)srg_viewModeButton_toggleViewMode:(id)sender
 {
-    self.mediaPlayerView.viewMode = [SRGViewModeButton nextSupportedViewModeForMediaPlayerView:self.mediaPlayerView];
+    if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeMonoscopic]) {
+        self.mediaPlayerView.viewMode = SRGMediaPlayerViewModeStereoscopic;
+    }
+    else if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeStereoscopic]) {
+        self.mediaPlayerView.viewMode = SRGMediaPlayerViewModeMonoscopic;
+    }
     [self updateAppearance];
 }
 
@@ -170,7 +140,7 @@ static void commonInit(SRGViewModeButton *self);
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [fakeInterfaceBuilderButton setImage:self.viewMode360Image forState:UIControlStateNormal];
+    [fakeInterfaceBuilderButton setImage:self.viewModeMonoscopicImage forState:UIControlStateNormal];
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
     
@@ -187,16 +157,16 @@ static void commonInit(SRGViewModeButton *self);
 
 - (NSString *)accessibilityLabel
 {
-    static dispatch_once_t s_onceToken;
-    static NSDictionary<SRGMediaPlayerViewMode, NSString *> *s_accessibilityLabels;
-    dispatch_once(&s_onceToken, ^{
-        s_accessibilityLabels = @{ SRGMediaPlayerViewModeFlat : SRGMediaPlayerAccessibilityLocalizedString(@"Normal display", @"Normal video display"),
-                                   SRGMediaPlayerViewMode360 : SRGMediaPlayerAccessibilityLocalizedString(@"360 degrees", @"360° video display"),
-                                   SRGMediaPlayerViewModeStereoscopic : SRGMediaPlayerAccessibilityLocalizedString(@"Stereoscopic", @"Stereoscopic video display") };
-    });
-    
-    SRGMediaPlayerViewMode nextViewMode = [SRGViewModeButton nextSupportedViewModeForMediaPlayerView:self.mediaPlayerView];
-    return s_accessibilityLabels[nextViewMode];
+    // The label corresponds to the other mode which can be enabled by tapping on the button
+    if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeMonoscopic]) {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"Stereoscopic", @"Stereoscopic video display");
+    }
+    else if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeStereoscopic]) {
+        return SRGMediaPlayerAccessibilityLocalizedString(@"360 degrees", @"360° video display");
+    }
+    else {
+        return nil;
+    }
 }
 
 - (UIAccessibilityTraits)accessibilityTraits

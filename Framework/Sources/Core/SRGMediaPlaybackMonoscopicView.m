@@ -4,21 +4,21 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGMediaPlayback360View.h"
+#import "SRGMediaPlaybackMonoscopicView.h"
 
 #import "AVPlayer+SRGMediaPlayer.h"
 
 #import <SpriteKit/SpriteKit.h>
 
-static void commonInit(SRGMediaPlayback360View *self);
+static void commonInit(SRGMediaPlaybackMonoscopicView *self);
 
-@interface SRGMediaPlayback360View ()
+@interface SRGMediaPlaybackMonoscopicView ()
 
 @property (nonatomic, weak) SCNView *sceneView;
 
 @end
 
-@implementation SRGMediaPlayback360View
+@implementation SRGMediaPlaybackMonoscopicView
 
 #pragma mark Object lifecycle
 
@@ -48,7 +48,7 @@ static void commonInit(SRGMediaPlayback360View *self);
 
 @end
 
-static void commonInit(SRGMediaPlayback360View *self)
+static void commonInit(SRGMediaPlaybackMonoscopicView *self)
 {
     SCNView *sceneView = [[SCNView alloc] initWithFrame:self.bounds options:nil];
     sceneView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

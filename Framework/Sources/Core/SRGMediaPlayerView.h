@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NSString * SRGMediaPlayerViewMode NS_STRING_ENUM;
 
 OBJC_EXPORT SRGMediaPlayerViewMode const SRGMediaPlayerViewModeFlat;
-OBJC_EXPORT SRGMediaPlayerViewMode const SRGMediaPlayerViewMode360;
+OBJC_EXPORT SRGMediaPlayerViewMode const SRGMediaPlayerViewModeMonoscopic;
 OBJC_EXPORT SRGMediaPlayerViewMode const SRGMediaPlayerViewModeStereoscopic;
 
 /**
@@ -37,20 +37,9 @@ OBJC_EXPORT SRGMediaPlayerViewMode const SRGMediaPlayerViewModeStereoscopic;
 + (void)setMotionManager:(nullable CMMotionManager *)motionManager;
 
 /**
- *  Retrieve or change the current view mode, if any. This property is KVO-observable.
- *
- *  @discussion If set to `nil`, the most recommended available view mode will be used, if any. Attempting to set
- *              an unsupported view mode does nothing.
+ *  Retrieve or change the current view mode, if any.
  */
-@property (nonatomic, copy, null_resettable) SRGMediaPlayerViewMode viewMode;
-
-/**
- *  Return a mask of supported modes for playback, from the most recommended to the least recommended one.
- *  This property is KVO-observable.
- *
- *  @discussion If no view mode is currently supported, `nil` is returned.
- */
-@property (nonatomic, readonly, nullable) NSArray<SRGMediaPlayerViewMode> *supportedViewModes;
+@property (nonatomic, copy) SRGMediaPlayerViewMode viewMode;
 
 @end
 

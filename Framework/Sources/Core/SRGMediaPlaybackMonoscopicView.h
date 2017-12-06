@@ -8,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SRGMediaPlayback360View : SRGMediaPlayerSceneView
+@interface SRGMediaPlaybackMonoscopicView : SRGMediaPlayerSceneView
 
 @end
 
