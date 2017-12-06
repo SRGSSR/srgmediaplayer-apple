@@ -13,6 +13,8 @@
 
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic) NSArray<Segment *> *segments;
+@property (nonatomic) BOOL is360;
+
 @property (nonatomic, weak) Segment *selectedSegment;
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
@@ -35,12 +37,13 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithContentURL:(NSURL *)contentURL segments:(NSArray<Segment *> *)segments
+- (instancetype)initWithContentURL:(NSURL *)contentURL segments:(NSArray<Segment *> *)segments is360:(BOOL)is360
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     SegmentsPlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.contentURL = contentURL;
     viewController.segments = segments;
+    viewController.is360 = is360;
     return viewController;
 }
 
@@ -76,6 +79,7 @@
     
     self.externalPlaybackSwitch.on = self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive;
     
+    self.mediaPlayerController.view.viewMode = self.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
     [self.mediaPlayerController playURL:self.contentURL atTime:kCMTimeZero withSegments:self.segments userInfo:@{ @"test_field" : @"test_value" }];
 }
 

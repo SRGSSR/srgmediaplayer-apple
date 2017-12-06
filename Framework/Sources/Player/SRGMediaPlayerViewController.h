@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerViewController : UIViewController <UIGestureRecognizerDelegate>
 
 /**
- *  The underlying controller. Use for starting or pausing playback or listening to playback notifications, for example 
+ *  The underlying controller. Use for starting or pausing playback or listening to playback notifications, for example.
  */
 @property (nonatomic, readonly) SRGMediaPlayerController *controller;
 

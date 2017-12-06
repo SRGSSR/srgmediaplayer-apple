@@ -55,7 +55,7 @@ static void commonInit(SRGViewModeButton *self);
 
 - (UIImage *)viewModeMonoscopicImage
 {
-    return _viewModeMonoscopicImage ?: [UIImage imageNamed:@"view_mode_360" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
+    return _viewModeMonoscopicImage ?: [UIImage imageNamed:@"view_mode_monoscopic" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
 }
 
 - (UIImage *)viewModeStereoscopicImage

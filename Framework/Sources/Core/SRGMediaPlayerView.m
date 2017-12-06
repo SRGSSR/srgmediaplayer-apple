@@ -16,7 +16,7 @@
 #import <libextobjc/libextobjc.h>
 
 SRGMediaPlayerViewMode const SRGMediaPlayerViewModeFlat = @"flat";
-SRGMediaPlayerViewMode const SRGMediaPlayerViewModeMonoscopic = @"360";
+SRGMediaPlayerViewMode const SRGMediaPlayerViewModeMonoscopic = @"monoscopic";
 SRGMediaPlayerViewMode const SRGMediaPlayerViewModeStereoscopic = @"stereoscopic";
 
 static CMMotionManager *s_motionManager = nil;

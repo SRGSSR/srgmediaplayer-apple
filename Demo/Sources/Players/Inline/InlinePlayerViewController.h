@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface InlinePlayerViewController : UIViewController
 
-- (instancetype)initWithContentURL:(NSURL *)contentURL;
+- (instancetype)initWithContentURL:(NSURL *)contentURL is360:(BOOL)is360;
 
 @end
 

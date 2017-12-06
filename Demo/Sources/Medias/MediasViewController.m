@@ -62,6 +62,11 @@
     return [NSURL URLWithString:self.medias[index][@"url"]];
 }
 
+- (BOOL)is360AtIndex:(NSInteger)index
+{
+    return [self.medias[index][@"is360"] boolValue];
+}
+
 - (NSArray<NSURL *> *)secondaryURLsForMediaAtIndex:(NSInteger)index
 {
     NSMutableArray<NSURL *> *urls = [NSMutableArray new];
@@ -170,6 +175,7 @@
     }
     else {
         NSURL *contentURL = [self URLForMediaAtIndex:self.selectedIndexPath.row];
+        BOOL is360 = [self is360AtIndex:self.selectedIndexPath.row];
         
         if (! contentURL) {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Please select a media first" message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -191,26 +197,29 @@
                 
             case 1: {
                 SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
+                if (is360) {
+                    mediaPlayerViewController.controller.view.viewMode = SRGMediaPlayerViewModeMonoscopic;
+                }
                 [mediaPlayerViewController.controller playURL:contentURL];
                 [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
                 break;
             }
                 
             case 2: {
-                InlinePlayerViewController *inlinePlayerViewController = [[InlinePlayerViewController alloc] initWithContentURL:contentURL];
+                InlinePlayerViewController *inlinePlayerViewController = [[InlinePlayerViewController alloc] initWithContentURL:contentURL is360:is360];
                 [self.navigationController pushViewController:inlinePlayerViewController animated:YES];
                 break;
             }
                 
             case 3: {
-                TimeshiftPlayerViewController *timeshiftPlayerViewController = [[TimeshiftPlayerViewController alloc] initWithContentURL:contentURL];
+                TimeshiftPlayerViewController *timeshiftPlayerViewController = [[TimeshiftPlayerViewController alloc] initWithContentURL:contentURL is360:is360];
                 [self presentViewController:timeshiftPlayerViewController animated:YES completion:nil];
                 break;
             }
                 
             case 4: {
                 NSArray<Segment *> *segments = [self segmentsForMediaAtIndex:self.selectedIndexPath.row];
-                SegmentsPlayerViewController *segmentsPlayerViewController = [[SegmentsPlayerViewController alloc] initWithContentURL:contentURL segments:segments];
+                SegmentsPlayerViewController *segmentsPlayerViewController = [[SegmentsPlayerViewController alloc] initWithContentURL:contentURL segments:segments is360:is360];
                 [self presentViewController:segmentsPlayerViewController animated:YES completion:nil];
                 break;
             }
