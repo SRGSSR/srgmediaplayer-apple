@@ -8,6 +8,7 @@
 
 #import "AVPlayer+SRGMediaPlayer.h"
 #import "SRGMotionManager.h"
+#import "SRGVideoNode.h"
 #import "UIDevice+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
@@ -99,7 +100,7 @@ static void commonInit(SRGMediaPlayerSceneView *self);
         
         SKScene *videoScene = [SKScene sceneWithSize:assetDimensions];
         
-        SKVideoNode *videoNode = [SKVideoNode videoNodeWithAVPlayer:player];
+        SRGVideoNode *videoNode = [[SRGVideoNode alloc] initWithAVPlayer:player];
         videoNode.size = assetDimensions;
         videoNode.position = CGPointMake(assetDimensions.width / 2.f, assetDimensions.height / 2.f);
         [videoScene addChild:videoNode];
