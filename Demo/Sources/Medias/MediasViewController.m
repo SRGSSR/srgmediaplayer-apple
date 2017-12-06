@@ -197,9 +197,7 @@
                 
             case 1: {
                 SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
-                if (is360) {
-                    mediaPlayerViewController.controller.view.viewMode = SRGMediaPlayerViewModeMonoscopic;
-                }
+                mediaPlayerViewController.controller.view.viewMode = is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
                 [mediaPlayerViewController.controller playURL:contentURL];
                 [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
                 break;
