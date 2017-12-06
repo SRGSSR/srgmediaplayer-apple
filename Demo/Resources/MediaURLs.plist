@@ -66,6 +66,12 @@
 		</dict>
 		<dict>
 			<key>name</key>
+			<string>Balloon 360</string>
+			<key>url</key>
+			<string>http://kolor.com/360-videos-files/kolor-balloon-icare-full-hd.mp4</string>
+		</dict>
+		<dict>
+			<key>name</key>
 			<string>403 error</string>
 			<key>url</key>
 			<string>http://httpbin.org/status/403</string>
