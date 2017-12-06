@@ -6,6 +6,7 @@
 
 #import "SRGViewModeButton.h"
 
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
@@ -49,8 +50,20 @@ static void commonInit(SRGViewModeButton *self);
 
 - (void)setMediaPlayerView:(SRGMediaPlayerView *)mediaPlayerView
 {
+    if (_mediaPlayerView) {
+        [_mediaPlayerView removeObserver:self keyPath:@keypath(_mediaPlayerView.viewMode)];
+    }
+
     _mediaPlayerView = mediaPlayerView;
     [self updateAppearanceForMediaPlayerView:mediaPlayerView];
+    
+    if (mediaPlayerView) {
+        @weakify(self)
+        [_mediaPlayerView srg_addMainThreadObserver:self keyPath:@keypath(_mediaPlayerView.viewMode) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updateAppearance];
+        }];
+    }
 }
 
 - (UIImage *)viewModeMonoscopicImage
@@ -129,7 +142,6 @@ static void commonInit(SRGViewModeButton *self);
     else if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeStereoscopic]) {
         self.mediaPlayerView.viewMode = SRGMediaPlayerViewModeMonoscopic;
     }
-    [self updateAppearance];
 }
 
 #pragma mark Interface Builder integration
