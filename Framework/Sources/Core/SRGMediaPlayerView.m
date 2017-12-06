@@ -137,6 +137,8 @@ static CMMotionManager *s_motionManager = nil;
     });
     
     if (self.viewMode) {
+        NSAssert(! CGSizeEqualToSize(assetDimensions, CGSizeZero), @"The view mode is based on asset dimemsions by construction");
+        
         Class playbackViewClass = s_viewClasses[self.viewMode];
         NSAssert(playbackViewClass != Nil, @"View mode must be officially supported");
         if (! [self.playbackView isKindOfClass:playbackViewClass]) {
