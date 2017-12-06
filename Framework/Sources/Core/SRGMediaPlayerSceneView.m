@@ -104,7 +104,9 @@ static void commonInit(SRGMediaPlayerSceneView *self);
         videoNode.position = CGPointMake(assetDimensions.width / 2.f, assetDimensions.height / 2.f);
         [videoScene addChild:videoNode];
         
-        SCNSphere *sphere = [SCNSphere sphereWithRadius:100.f];
+        // Avoid small radii (< 5) and large ones (> 100), for which the result is incorrect. Anything in between seems
+        // fine.
+        SCNSphere *sphere = [SCNSphere sphereWithRadius:20.f];
         sphere.firstMaterial.doubleSided = YES;
         sphere.firstMaterial.diffuse.contents = videoScene;
         SCNNode *sphereNode = [SCNNode nodeWithGeometry:sphere];
