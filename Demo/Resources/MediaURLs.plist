@@ -56,7 +56,7 @@
 			<key>name</key>
 			<string>Gotthard 360 video</string>
 			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd-staging.net/i/360/2017/Gothard_360_full_f_8414077-,301k,701k,1201k,2001k,.mp4.csmil/master.m3u8</string>
+			<string>https://rtsvodww-vh.akamaihd-staging.net/i/360/2017/Gothard_360_full_f_8414077-,301k,701k,1201k,2001k,.mp4.csmil/master.m3u8?__b__=2000</string>
 		</dict>
 		<dict>
 			<key>name</key>
