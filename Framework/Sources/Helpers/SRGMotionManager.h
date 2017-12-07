@@ -11,14 +11,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Return the camera direction to apply, corresponding to a Core Motion attitude and reference frame.
- */
-// TODO: Depending on the reference frame used for the motion manager, the values need to be tweaked for a correct
-//       result. This function must therefore expect the reference frame as parameter, and behave accordingly.
-// TODO: Could be moved into a category onf CMMotionManager, would be better.
-OBJC_EXTERN SCNVector4 SRGCameraDirectionForAttitude(CMAttitude *attitude);
-
-/**
  *  A default reference-counted internal motion manager.
  */
 @interface SRGMotionManager : NSObject

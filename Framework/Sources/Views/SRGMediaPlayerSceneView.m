@@ -8,6 +8,7 @@
 
 #import "AVPlayer+SRGMediaPlayer.h"
 #import "SRGMotionManager.h"
+#import "SRGQuaternion.h"
 #import "SRGVideoNode.h"
 #import "UIDevice+SRGMediaPlayer.h"
 
@@ -20,6 +21,13 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic, weak) SCNNode *cameraNode;
+
+@property (nonatomic) SCNQuaternion deviceBasedCameraOrientation;                    // The current device-based orientation for the camera.
+
+@property (nonatomic) CGPoint angularOffsets;                                        // The current angular offsets applied with the pan gesture.
+@property (nonatomic) CGPoint initialAngularOffsets;                                 // The angular offsets saved when the pan gesture begins.
+
+@property (nonatomic, weak) UIPanGestureRecognizer *panGestureRecognizer;
 
 @end
 
@@ -75,9 +83,16 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 {
     // CMMotionManager might deliver events to a background queue.
     dispatch_async(dispatch_get_main_queue(), ^{
-        CMDeviceMotion *deviceMotion = [SRGMotionManager motionManager].deviceMotion;
+        CMMotionManager *motionManager = [SRGMotionManager motionManager];
+        
+        // A `CMDeviceMotion` instance is returned only for devices supporting tracking.
+        CMDeviceMotion *deviceMotion = motionManager.deviceMotion;
         if (deviceMotion) {
-            self.cameraNode.orientation = SRGCameraDirectionForAttitude(deviceMotion.attitude);
+            // Calculate the requird camera orientation based on device orientation, and apply additional adjustements
+            // the user made with the pan gesture.
+            SCNVector4 deviceBasedCamerOrientation = SRGCameraOrientationForAttitude(deviceMotion.attitude, motionManager.attitudeReferenceFrame);
+            self.deviceBasedCameraOrientation = deviceBasedCamerOrientation;
+            self.cameraNode.orientation = SRGRotateQuaternion(deviceBasedCamerOrientation, self.angularOffsets.x, self.angularOffsets.y);
         }
     });
 }
@@ -87,6 +102,8 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 - (void)setPlayer:(AVPlayer *)player withAssetDimensions:(CGSize)assetDimensions
 {
     self.player = player;
+    
+    // TODO: Reset cached values
     
     if (player) {
         SCNScene *scene = [SCNScene scene];
@@ -127,6 +144,39 @@ static void commonInit(SRGMediaPlayerSceneView *self);
     return nil;
 }
 
+#pragma mark Actions
+
+- (void)rotateCamera:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    switch (panGestureRecognizer.state) {
+        case UIGestureRecognizerStateBegan: {
+            self.initialAngularOffsets = self.angularOffsets;
+            break;
+        }
+            
+        case UIGestureRecognizerStateChanged: {
+            CGPoint translation = [panGestureRecognizer translationInView:self];
+            
+            // Rotation around the x-axis (horizontal through the phone) is obtained with a pan gesture in the y-direction.
+            // Similarly for the y-axis. The angle is normalized so that a full gesture across the view would lead to a full
+            // rotation in this direction.
+            // Also see http://nshipster.com/cmdevicemotion/
+            // TODO: Lock up and down
+            float wx = 2 * M_PI * translation.y / CGRectGetWidth(self.frame);
+            float wy = 2 * M_PI * translation.x / CGRectGetHeight(self.frame);
+            
+            CGPoint angularOffsets = CGPointMake(wx + self.initialAngularOffsets.x, wy + self.initialAngularOffsets.y);
+            self.angularOffsets = angularOffsets;
+            self.cameraNode.orientation = SRGRotateQuaternion(self.deviceBasedCameraOrientation, angularOffsets.x,  angularOffsets.y);
+            break;
+        }
+            
+        default: {
+            break;
+        }
+    }
+}
+
 #pragma mark Notifications
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification
@@ -146,4 +196,9 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 static void commonInit(SRGMediaPlayerSceneView *self)
 {
     self.backgroundColor = [UIColor clearColor];
+    
+    // Let the camera be controlled by a pan gesture
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(rotateCamera:)];
+    [self addGestureRecognizer:panGestureRecognizer];
+    self.panGestureRecognizer = panGestureRecognizer;
 }
