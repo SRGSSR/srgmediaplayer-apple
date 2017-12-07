@@ -27,8 +27,9 @@ OBJC_EXPORT SRGMediaPlayerViewMode const SRGMediaPlayerViewModeStereoscopic;
 /**
  *  Set the motion manager to use for device tracking when playing 360° videos. At most one motion manager should
  *  exist per app (see https://developer.apple.com/documentation/coremotion/cmmotionmanager). If your application
- *  already uses its own core motion manager, you can set it there (you are then responsible of starting and stopping
- *  tracking, though). Data refresh rate should be at least 1/60 for an optimal experience.
+ *  already uses its own core motion manager, you can set it using this class method (not that you are then
+ *  responsible of starting and stopping tracking, though). Data refresh rate should be at least 1/60 for an optimal
+ *  experience.
  *
  *  If no motion manager is provided at the time a media player view requires it, an internal motion manager will
  *  be used. You should set a motion manager before any playback occurs and not change it afterwards, otherwise the
