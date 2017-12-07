@@ -71,10 +71,10 @@ static void commonInit(SRGMediaPlayerView *self);
     _player = player;
     
     [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.tracks) options:0 block:^(MAKVONotification *notification) {
-        [self updateWithPlayer:player];
+        [self updateSubviews];
     }];
     
-    [self updateWithPlayer:player];
+    [self updateSubviewsWithPlayer:player];
 }
 
 - (void)setViewMode:(SRGMediaPlayerViewMode)viewMode
@@ -85,7 +85,7 @@ static void commonInit(SRGMediaPlayerView *self);
     
     _viewMode = viewMode;
     
-    [self updateWithPlayer:self.player];
+    [self updateSubviewsWithPlayer:self.player];
 }
 
 - (AVPlayerLayer *)playerLayer
@@ -95,7 +95,12 @@ static void commonInit(SRGMediaPlayerView *self);
 
 #pragma mark Updates
 
-- (void)updateWithPlayer:(AVPlayer *)player
+- (void)updateSubviews
+{
+    [self updateSubviewsWithPlayer:self.player];
+}
+
+- (void)updateSubviewsWithPlayer:(AVPlayer *)player
 {
     if (player) {
         AVAssetTrack *videoAssetTrack = [player.currentItem srg_assetTracksWithMediaType:AVMediaTypeVideo].firstObject;
