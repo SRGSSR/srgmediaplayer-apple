@@ -829,6 +829,8 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.startCompletionHandler = nil;
     
     self.seekTargetTime = kCMTimeIndefinite;
+    
+    self.pictureInPictureController = nil;
 }
 
 #pragma mark Configuration
