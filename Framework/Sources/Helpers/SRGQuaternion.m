@@ -63,3 +63,9 @@ SCNQuaternion SRGRotateQuaternion(SCNQuaternion quaternion, float wx, float wy)
     
     return SCNVector4Make(glkQuaternion.x, glkQuaternion.y, glkQuaternion.z, glkQuaternion.w);
 }
+
+SCNQuaternion SRGQuaternionMakeWithAngleAndAxis(float radians, float x, float y, float z)
+{
+    GLKQuaternion glkQuaternion = GLKQuaternionMakeWithAngleAndAxis(radians, x, y, z);
+    return SCNVector4Make(glkQuaternion.x, glkQuaternion.y, glkQuaternion.z, glkQuaternion.w);
+}

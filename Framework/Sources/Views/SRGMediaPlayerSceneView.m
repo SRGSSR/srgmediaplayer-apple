@@ -85,15 +85,12 @@ static void commonInit(SRGMediaPlayerSceneView *self);
     dispatch_async(dispatch_get_main_queue(), ^{
         CMMotionManager *motionManager = [SRGMotionManager motionManager];
         
-        // A `CMDeviceMotion` instance is returned only for devices supporting tracking.
+        // Calculate the required camera orientation based on device orientation (if available), and apply additional
+        // adjustements the user made with the pan gesture.
         CMDeviceMotion *deviceMotion = motionManager.deviceMotion;
-        if (deviceMotion) {
-            // Calculate the requird camera orientation based on device orientation, and apply additional adjustements
-            // the user made with the pan gesture.
-            SCNVector4 deviceBasedCamerOrientation = SRGCameraOrientationForAttitude(deviceMotion.attitude, motionManager.attitudeReferenceFrame);
-            self.deviceBasedCameraOrientation = deviceBasedCamerOrientation;
-            self.cameraNode.orientation = SRGRotateQuaternion(deviceBasedCamerOrientation, self.angularOffsets.x, self.angularOffsets.y);
-        }
+        SCNVector4 deviceBasedCameraOrientation = deviceMotion ? SRGCameraOrientationForAttitude(deviceMotion.attitude, motionManager.attitudeReferenceFrame) : SRGQuaternionMakeWithAngleAndAxis(M_PI, 1.f, 0.f, 0.f);
+        self.deviceBasedCameraOrientation = deviceBasedCameraOrientation;
+        self.cameraNode.orientation = SRGRotateQuaternion(deviceBasedCameraOrientation, self.angularOffsets.x, self.angularOffsets.y);
     });
 }
 
@@ -111,7 +108,6 @@ static void commonInit(SRGMediaPlayerSceneView *self);
         SCNNode *cameraNode = [SCNNode node];
         cameraNode.camera = [SCNCamera camera];
         cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
-        cameraNode.eulerAngles = SCNVector3Make(M_PI, 0.f, 0.f);
         [scene.rootNode addChildNode:cameraNode];
         self.cameraNode = cameraNode;
         
@@ -122,8 +118,7 @@ static void commonInit(SRGMediaPlayerSceneView *self);
         videoNode.position = CGPointMake(assetDimensions.width / 2.f, assetDimensions.height / 2.f);
         [videoScene addChild:videoNode];
         
-        // Avoid small radii (< 5) and large ones (> 100), for which the result is incorrect. Anything in between seems
-        // fine.
+        // Avoid small radii (< 5) and large ones (> 100), for which the result is incorrect. Anything in between seems fine.
         SCNSphere *sphere = [SCNSphere sphereWithRadius:20.f];
         sphere.firstMaterial.doubleSided = YES;
         sphere.firstMaterial.diffuse.contents = videoScene;

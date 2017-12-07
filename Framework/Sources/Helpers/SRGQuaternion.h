@@ -34,4 +34,9 @@ OBJC_EXTERN SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude, 
  */
 OBJC_EXTERN SCNQuaternion SRGRotateQuaternion(SCNQuaternion quaternion, float wx, float wy);
 
+/**
+ *  Create a quaternion for a rotation around the specified axis.
+ */
+OBJC_EXTERN SCNQuaternion SRGQuaternionMakeWithAngleAndAxis(float radians, float x, float y, float z);
+
 NS_ASSUME_NONNULL_END
