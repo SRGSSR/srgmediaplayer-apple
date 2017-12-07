@@ -11,9 +11,7 @@
 
 @interface SegmentsPlayerViewController ()
 
-@property (nonatomic) NSURL *contentURL;
-@property (nonatomic) NSArray<Segment *> *segments;
-@property (nonatomic) BOOL is360;
+@property (nonatomic) Media *media;
 
 @property (nonatomic, weak) Segment *selectedSegment;
 
@@ -37,13 +35,11 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithContentURL:(NSURL *)contentURL segments:(NSArray<Segment *> *)segments is360:(BOOL)is360
+- (instancetype)initWithMedia:(Media *)media
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     SegmentsPlayerViewController *viewController = [storyboard instantiateInitialViewController];
-    viewController.contentURL = contentURL;
-    viewController.segments = segments;
-    viewController.is360 = is360;
+    viewController.media = media;
     return viewController;
 }
 
@@ -79,8 +75,8 @@
     
     self.externalPlaybackSwitch.on = self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive;
     
-    self.mediaPlayerController.view.viewMode = self.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
-    [self.mediaPlayerController playURL:self.contentURL atTime:kCMTimeZero withSegments:self.segments userInfo:@{ @"test_field" : @"test_value" }];
+    self.mediaPlayerController.view.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
+    [self.mediaPlayerController playURL:self.media.URL atTime:kCMTimeZero withSegments:self.media.segments userInfo:@{ @"test_field" : @"test_value" }];
 }
 
 #pragma mark UI
@@ -127,7 +123,7 @@
 
 - (void)timelineView:(SRGTimelineView *)timelineView didSelectSegmentAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedSegment = self.segments[indexPath.row];
+    self.selectedSegment = self.media.segments[indexPath.row];
 }
 
 - (void)timelineViewDidScroll:(SRGTimelineView *)timelineView

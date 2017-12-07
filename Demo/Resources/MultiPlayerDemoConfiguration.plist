@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>medias</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Tagesschau</string>
+			<key>url</key>
+			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8?dw=0</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Apple Basic Stream</string>
+			<key>url</key>
+			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Gotthard 360</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd-staging.net/i/360/2017/Gothard_360_full_f_8414077-,301k,701k,1201k,2001k,.mp4.csmil/master.m3u8?__b__=2000</string>
+			<key>is360</key>
+			<true/>
+		</dict>
+	</array>
+</dict>
+</plist>

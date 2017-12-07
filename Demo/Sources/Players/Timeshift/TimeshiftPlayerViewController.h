@@ -4,13 +4,15 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "Media.h"
+
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TimeshiftPlayerViewController : UIViewController
 
-- (instancetype)initWithContentURL:(NSURL *)contentURL is360:(BOOL)is360;
+- (instancetype)initWithMedia:(Media *)media;
 
 @end
 

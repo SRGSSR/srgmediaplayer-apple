@@ -8,9 +8,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, MediaPlayerType) {
+    MediaPlayerTypeStandard,
+    MediaPlayerTypeSegments,
+    MediaPlayerTypeTimeshift,
+    MediaPlayerTypeMulti
+};
+
 @interface MediasViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
 
-- (instancetype)initWithMediaFileName:(NSString *)mediaFileName;
+- (instancetype)initWithConfigurationFileName:(NSString *)configurationFileName mediaPlayerType:(MediaPlayerType)mediaPlayerType;
 
 @end
 

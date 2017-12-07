@@ -58,32 +58,32 @@
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     
-    MediasViewController *videosViewController = [[MediasViewController alloc] initWithMediaFileName:@"MediaURLs"];
+    MediasViewController *videosViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"VideoDemoConfiguration" mediaPlayerType:MediaPlayerTypeStandard];
     videosViewController.title = DemoNonLocalizedString(@"Videos");
     videosViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
     UINavigationController *videosNavigationController = [[UINavigationController alloc] initWithRootViewController:videosViewController];
     
-    MediasViewController *segmentsViewController = [[MediasViewController alloc] initWithMediaFileName:@"SegmentURLs"];
+    MediasViewController *segmentsViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"SegmentDemoConfiguration" mediaPlayerType:MediaPlayerTypeSegments];
     segmentsViewController.title = DemoNonLocalizedString(@"Segments");
     segmentsViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
     UINavigationController *segmentsNavigationController = [[UINavigationController alloc] initWithRootViewController:segmentsViewController];
     
-    MediasViewController *multiVideosViewController = [[MediasViewController alloc] initWithMediaFileName:@"MultiplayerURLs"];
-    multiVideosViewController.title = DemoNonLocalizedString(@"Multi-stream");
-    multiVideosViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
-    UINavigationController *multiVideosNavigationController = [[UINavigationController alloc] initWithRootViewController:multiVideosViewController];
+    MediasViewController *multiPlayerViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"MultiPlayerDemoConfiguration" mediaPlayerType:MediaPlayerTypeMulti];
+    multiPlayerViewController.title = DemoNonLocalizedString(@"Multi-stream");
+    multiPlayerViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
+    UINavigationController *multiPlayerNavigationController = [[UINavigationController alloc] initWithRootViewController:multiPlayerViewController];
     
-    MediasViewController *timeshiftViewController = [[MediasViewController alloc] initWithMediaFileName:@"TimeshiftURLs"];
+    MediasViewController *timeshiftViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"TimeshiftDemoConfiguration" mediaPlayerType:MediaPlayerTypeTimeshift];
     timeshiftViewController.title = DemoNonLocalizedString(@"Timeshift");
     timeshiftViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
     UINavigationController *timeshiftNavigationController = [[UINavigationController alloc] initWithRootViewController:timeshiftViewController];
     
-    MediasViewController *audiosViewController = [[MediasViewController alloc] initWithMediaFileName:@"AudioURLs"];
+    MediasViewController *audiosViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"AudioDemoConfiguration" mediaPlayerType:MediaPlayerTypeStandard];
     audiosViewController.title = DemoNonLocalizedString(@"Audios");
     audiosViewController.tabBarItem.image = [UIImage imageNamed:@"audios"];
     UINavigationController *audiosNavigationController = [[UINavigationController alloc] initWithRootViewController:audiosViewController];
     
-    tabBarController.viewControllers = @[videosNavigationController, segmentsNavigationController, multiVideosNavigationController, timeshiftNavigationController, audiosNavigationController];
+    tabBarController.viewControllers = @[videosNavigationController, segmentsNavigationController, multiPlayerNavigationController, timeshiftNavigationController, audiosNavigationController];
     self.window.rootViewController = tabBarController;
     
     // Avoid applying tint color to tab bar images

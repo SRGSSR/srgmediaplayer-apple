@@ -16,8 +16,7 @@
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
-@property (nonatomic) NSURL *contentURL;
-@property (nonatomic) BOOL is360;
+@property (nonatomic) Media *media;
 
 @property (nonatomic, weak) IBOutlet UIView *videoView;
 @property (nonatomic, weak) IBOutlet SRGTimeSlider *timelineSlider;
@@ -31,12 +30,11 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithContentURL:(NSURL *)contentURL is360:(BOOL)is360
+- (instancetype)initWithMedia:(Media *)media
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     TimeshiftPlayerViewController *viewController = [storyboard instantiateInitialViewController];
-    viewController.contentURL = contentURL;
-    viewController.is360 = is360;
+    viewController.media = media;
     return viewController;
 }
 
@@ -52,7 +50,7 @@
     self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.liveButton.layer.borderWidth = 1.f;
     
-    self.mediaPlayerController.view.viewMode = self.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
+    self.mediaPlayerController.view.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
 
     @weakify(self)
     [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
@@ -68,7 +66,7 @@
     [super viewWillAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        [self.mediaPlayerController playURL:self.contentURL];
+        [self.mediaPlayerController playURL:self.media.URL];
     }
 }
 
