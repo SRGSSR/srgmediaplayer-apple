@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGMediaPlayerView+Private.h"
+#import "SRGMediaPlaybackView.h"
 
 #import <SceneKit/SceneKit.h>
 #import <UIKit/UIKit.h>
@@ -27,10 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Method called when the scene has been setup.
  *
- *  @param scene  The scene which has been setup, if any.
- *  @param camera The main camera installed within the scene, if any.
+ *  @param scene  The scene which has been setup.
+ *  @param camera The main camera installed within the scene.
  */
-- (void)didSetupScene:(nullable SCNScene *)scene withCameraNode:(nullable SCNNode *)cameraNode NS_REQUIRES_SUPER;
+- (void)didSetupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode NS_REQUIRES_SUPER;
 
 @end
 

@@ -55,28 +55,22 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self);
     [super didSetupScene:scene withCameraNode:cameraNode];
     
     self.leftEyeSceneView.scene = scene;
-    self.leftEyeSceneView.hidden = (scene == nil);
+    self.leftEyeSceneView.hidden = NO;
     
     self.rightEyeSceneView.scene = scene;
-    self.rightEyeSceneView.hidden = (scene == nil);
+    self.rightEyeSceneView.hidden = NO;
     
-    if (cameraNode) {
-        SCNNode *leftEyeCameraNode = [SCNNode node];
-        leftEyeCameraNode.camera = [SCNCamera camera];
-        leftEyeCameraNode.position = SCNVector3Make(-0.5f, 0.f, 0.f);
-        [cameraNode addChildNode:leftEyeCameraNode];
-        self.leftEyeSceneView.pointOfView = leftEyeCameraNode;
-        
-        SCNNode *rightEyeCameraNode = [SCNNode node];
-        rightEyeCameraNode.camera = [SCNCamera camera];
-        rightEyeCameraNode.position = SCNVector3Make(0.5f, 0.f, 0.f);
-        [cameraNode addChildNode:rightEyeCameraNode];
-        self.rightEyeSceneView.pointOfView = rightEyeCameraNode;
-    }
-    else {
-        self.leftEyeSceneView.pointOfView = nil;
-        self.rightEyeSceneView.pointOfView = nil;
-    }
+    SCNNode *leftEyeCameraNode = [SCNNode node];
+    leftEyeCameraNode.camera = [SCNCamera camera];
+    leftEyeCameraNode.position = SCNVector3Make(-0.5f, 0.f, 0.f);
+    [cameraNode addChildNode:leftEyeCameraNode];
+    self.leftEyeSceneView.pointOfView = leftEyeCameraNode;
+    
+    SCNNode *rightEyeCameraNode = [SCNNode node];
+    rightEyeCameraNode.camera = [SCNCamera camera];
+    rightEyeCameraNode.position = SCNVector3Make(0.5f, 0.f, 0.f);
+    [cameraNode addChildNode:rightEyeCameraNode];
+    self.rightEyeSceneView.pointOfView = rightEyeCameraNode;
 }
 
 @end

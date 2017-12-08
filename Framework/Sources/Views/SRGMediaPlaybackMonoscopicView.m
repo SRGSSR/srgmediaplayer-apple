@@ -45,7 +45,7 @@ static void commonInit(SRGMediaPlaybackMonoscopicView *self);
     [super didSetupScene:scene withCameraNode:cameraNode];
     
     self.sceneView.scene = scene;
-    self.sceneView.hidden = (scene == nil);
+    self.sceneView.hidden = NO;
 }
 
 @end

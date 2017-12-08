@@ -10,15 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol SRGMediaPlaybackView <NSObject>
-
-- (void)setPlayer:(AVPlayer *)player withAssetDimensions:(CGSize)assetDimensions;
-@property (nonatomic, readonly) AVPlayer *player;
-
-@property (nonatomic, readonly, nullable) AVPlayerLayer *playerLayer;
-
-@end
-
 /**
  *  Private interface for internal use.
  */

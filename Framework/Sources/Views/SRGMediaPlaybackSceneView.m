@@ -109,35 +109,30 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
     // Reset stored values set by user interaction.
     self.angularOffsets = CGPointZero;
     
-    if (player) {
-        SCNScene *scene = [SCNScene scene];
-        
-        SCNNode *cameraNode = [SCNNode node];
-        cameraNode.camera = [SCNCamera camera];
-        cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
-        [scene.rootNode addChildNode:cameraNode];
-        self.cameraNode = cameraNode;
-        
-        SKScene *videoScene = [SKScene sceneWithSize:assetDimensions];
-        
-        SRGVideoNode *videoNode = [[SRGVideoNode alloc] initWithAVPlayer:player];
-        videoNode.size = assetDimensions;
-        videoNode.position = CGPointMake(assetDimensions.width / 2.f, assetDimensions.height / 2.f);
-        [videoScene addChild:videoNode];
-        
-        // Avoid small radii (< 5) and large ones (> 100), for which the result is incorrect. Anything in between seems fine.
-        SCNSphere *sphere = [SCNSphere sphereWithRadius:20.f];
-        sphere.firstMaterial.doubleSided = YES;
-        sphere.firstMaterial.diffuse.contents = videoScene;
-        SCNNode *sphereNode = [SCNNode nodeWithGeometry:sphere];
-        sphereNode.position = SCNVector3Make(0.f, 0.f, 0.f);
-        [scene.rootNode addChildNode:sphereNode];
-        
-        [self didSetupScene:scene withCameraNode:cameraNode];
-    }
-    else {
-        [self didSetupScene:nil withCameraNode:nil];
-    }
+    SCNScene *scene = [SCNScene scene];
+    
+    SCNNode *cameraNode = [SCNNode node];
+    cameraNode.camera = [SCNCamera camera];
+    cameraNode.position = SCNVector3Make(0.f, 0.f, 0.f);
+    [scene.rootNode addChildNode:cameraNode];
+    self.cameraNode = cameraNode;
+    
+    SKScene *videoScene = [SKScene sceneWithSize:assetDimensions];
+    
+    SRGVideoNode *videoNode = [[SRGVideoNode alloc] initWithAVPlayer:player];
+    videoNode.size = assetDimensions;
+    videoNode.position = CGPointMake(assetDimensions.width / 2.f, assetDimensions.height / 2.f);
+    [videoScene addChild:videoNode];
+    
+    // Avoid small radii (< 5) and large ones (> 100), for which the result is incorrect. Anything in between seems fine.
+    SCNSphere *sphere = [SCNSphere sphereWithRadius:20.f];
+    sphere.firstMaterial.doubleSided = YES;
+    sphere.firstMaterial.diffuse.contents = videoScene;
+    SCNNode *sphereNode = [SCNNode nodeWithGeometry:sphere];
+    sphereNode.position = SCNVector3Make(0.f, 0.f, 0.f);
+    [scene.rootNode addChildNode:sphereNode];
+    
+    [self didSetupScene:scene withCameraNode:cameraNode];
 }
 
 - (AVPlayerLayer *)playerLayer

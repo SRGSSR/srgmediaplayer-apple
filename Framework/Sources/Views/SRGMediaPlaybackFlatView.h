@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGMediaPlayerView+Private.h"
+#import "SRGMediaPlaybackView.h"
 
 #import <UIKit/UIKit.h>
 
