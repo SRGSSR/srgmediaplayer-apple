@@ -28,6 +28,18 @@ static void commonInit(SRGMediaPlayerView *self);
 
 @implementation SRGMediaPlayerView
 
+#pragma mark Class methods
+
++ (CMMotionManager *)motionManager
+{
+    return s_motionManager;
+}
+
++ (void)setMotionManager:(CMMotionManager *)motionManager
+{
+    s_motionManager = motionManager;
+}
+
 #pragma mark Object lifecycle
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -44,18 +56,6 @@ static void commonInit(SRGMediaPlayerView *self);
         commonInit(self);
     }
     return self;
-}
-
-#pragma mark Class methods
-
-+ (CMMotionManager *)motionManager
-{
-    return s_motionManager;
-}
-
-+ (void)setMotionManager:(CMMotionManager *)motionManager
-{
-    s_motionManager = motionManager;
 }
 
 #pragma mark Getters and setters

@@ -34,8 +34,6 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
 @property (nonatomic) CGPoint angularOffsets;                                        // The current angular offsets applied with the pan gesture.
 @property (nonatomic) CGPoint initialAngularOffsets;                                 // The angular offsets saved when the pan gesture begins.
 
-@property (nonatomic, weak) UIPanGestureRecognizer *panGestureRecognizer;
-
 @end
 
 @implementation SRGMediaPlaybackSceneView
@@ -177,11 +175,11 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
             CGPoint translation = [panGestureRecognizer translationInView:self];
             
             // Rotation around the x-axis (horizontal through the phone) is obtained with a pan gesture in the y-direction.
-            // Similarly for the y-axis. The angle is normalized so that a full gesture across the view would lead to a full
+            // Similarly for the y-axis. The angle is normalized so that a full gesture across the view would lead to a half
             // rotation in this direction.
             // Also see http://nshipster.com/cmdevicemotion/
-            float wx = 2 * M_PI * translation.y / CGRectGetHeight(self.frame);
-            float wy = 2 * M_PI * translation.x / CGRectGetWidth(self.frame);
+            float wx = M_PI_2 * translation.y / CGRectGetHeight(self.frame);
+            float wy = -M_PI * translation.x / CGRectGetWidth(self.frame);
             
             CGPoint angularOffsets = CGPointMake(wx + self.initialAngularOffsets.x, wy + self.initialAngularOffsets.y);
             self.angularOffsets = angularOffsets;
@@ -225,5 +223,4 @@ static void commonInit(SRGMediaPlaybackSceneView *self)
     // Let the camera be controlled by a pan gesture
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(rotateCamera:)];
     [self addGestureRecognizer:panGestureRecognizer];
-    self.panGestureRecognizer = panGestureRecognizer;
 }
