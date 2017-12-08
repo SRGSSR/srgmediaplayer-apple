@@ -50,16 +50,14 @@ static void commonInit(SRGViewModeButton *self);
 
 - (void)setMediaPlayerView:(SRGMediaPlayerView *)mediaPlayerView
 {
-    if (_mediaPlayerView) {
-        [_mediaPlayerView removeObserver:self keyPath:@keypath(_mediaPlayerView.viewMode)];
-    }
+    [_mediaPlayerView removeObserver:self keyPath:@keypath(_mediaPlayerView.viewMode)];
 
     _mediaPlayerView = mediaPlayerView;
     [self updateAppearanceForMediaPlayerView:mediaPlayerView];
     
     if (mediaPlayerView) {
         @weakify(self)
-        [_mediaPlayerView srg_addMainThreadObserver:self keyPath:@keypath(_mediaPlayerView.viewMode) options:0 block:^(MAKVONotification *notification) {
+        [mediaPlayerView srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerView.viewMode) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             [self updateAppearance];
         }];
@@ -171,12 +169,12 @@ static void commonInit(SRGViewModeButton *self);
 {
     switch (self.mediaPlayerView.viewMode) {
         case SRGMediaPlayerViewModeMonoscopic: {
-            return SRGMediaPlayerAccessibilityLocalizedString(@"Stereoscopic", @"Stereoscopic video display");
+            return SRGMediaPlayerAccessibilityLocalizedString(@"Headset", @"Button label to enable 360° video playback with a headset");
             break;
         }
             
         case SRGMediaPlayerViewModeStereoscopic: {
-            return SRGMediaPlayerAccessibilityLocalizedString(@"360 degrees", @"360° video display");
+            return SRGMediaPlayerAccessibilityLocalizedString(@"360 degrees", @"Button label to enable 360° video playback");
             break;
         }
             

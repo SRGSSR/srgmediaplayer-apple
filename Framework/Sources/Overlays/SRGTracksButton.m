@@ -54,9 +54,7 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    if (_mediaPlayerController) {
-        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.playbackState)];
-    }
+    [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.playbackState)];
     
     _mediaPlayerController = mediaPlayerController;
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];

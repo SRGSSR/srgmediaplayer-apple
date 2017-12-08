@@ -80,7 +80,6 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self);
 static void commonInit(SRGMediaPlaybackStereoscopicView *self)
 {
     SCNView *leftEyeSceneView = [[SCNView alloc] initWithFrame:CGRectZero options:nil];
-    leftEyeSceneView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     leftEyeSceneView.backgroundColor = [UIColor clearColor];
     leftEyeSceneView.hidden = YES;
     leftEyeSceneView.playing = YES;                // Ensures both scenes play at the same time
@@ -89,7 +88,6 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self)
     self.leftEyeSceneView = leftEyeSceneView;
     
     SCNView *rightEyeSceneView = [[SCNView alloc] initWithFrame:CGRectZero options:nil];
-    rightEyeSceneView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     rightEyeSceneView.backgroundColor = [UIColor clearColor];
     rightEyeSceneView.hidden = YES;
     rightEyeSceneView.playing = YES;                // Ensures both scenes play at the same time
