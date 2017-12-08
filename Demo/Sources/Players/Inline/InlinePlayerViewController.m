@@ -10,7 +10,8 @@
 
 @interface InlinePlayerViewController ()
 
-@property (nonatomic) NSURL *contentURL;
+@property (nonatomic) Media *media;
+
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
 
 @end
@@ -22,30 +23,20 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithContentURL:(NSURL *)contentURL
+- (instancetype)initWithMedia:(Media *)media
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     InlinePlayerViewController *viewController = [storyboard instantiateInitialViewController];
-    viewController.contentURL = contentURL;
+    viewController.media = media;
     return viewController;
 }
 
-#pragma mark View lifecycle
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    if ([self isMovingFromParentViewController]) {
-        [self.mediaPlayerController reset];
-    }
-}
-
-#pragma mark - Actions
+#pragma mark Actions
 
 - (IBAction)prepareToPlay:(id)sender
 {
-    [self.mediaPlayerController prepareToPlayURL:self.contentURL atTime:kCMTimeZero withSegments:nil userInfo:nil completionHandler:^{
+    self.mediaPlayerController.view.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
+    [self.mediaPlayerController prepareToPlayURL:self.media.URL atTime:kCMTimeZero withSegments:nil userInfo:nil completionHandler:^{
         _ready = YES;
     }];
 }
@@ -56,7 +47,7 @@
         [self.mediaPlayerController togglePlayPause];
     }
     else {
-        [self.mediaPlayerController playURL:self.contentURL];
+        [self.mediaPlayerController playURL:self.media.URL];
     }
 }
 

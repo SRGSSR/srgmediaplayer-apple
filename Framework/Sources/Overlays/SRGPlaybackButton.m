@@ -19,7 +19,7 @@ static void commonInit(SRGPlaybackButton *self);
 
 @property (nonatomic) UIColor *normalTintColor;
 
-@property (weak) id periodicTimeObserver;
+@property (nonatomic, weak) id periodicTimeObserver;
 
 @end
 

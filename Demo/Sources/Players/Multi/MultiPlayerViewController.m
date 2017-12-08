@@ -11,7 +11,7 @@
 
 @interface MultiPlayerViewController ()
 
-@property (nonatomic) NSArray<NSURL *> *mediaURLs;
+@property (nonatomic) NSArray<Media *> *medias;
 
 @property (nonatomic) NSMutableArray<UIView *> *playerViews;
 @property (nonatomic) NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers;
@@ -31,22 +31,22 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithMediaURLs:(NSArray<NSURL *> *)mediaURLs
+- (instancetype)initWithMedias:(NSArray<Media *> *)medias
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     MultiPlayerViewController *viewController = [storyboard instantiateInitialViewController];
-    viewController.mediaURLs = mediaURLs;
+    viewController.medias = medias;
     return viewController;
 }
 
 #pragma mark Getters and setters
 
-- (void)setMediaURLs:(NSArray<NSURL *> *)mediaURLs
+- (void)setMedias:(NSArray<Media *> *)medias
 {
-    _mediaURLs = mediaURLs;
+    _medias = medias;
     
     NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers = [NSMutableArray array];
-    for (NSInteger i = 0; i < mediaURLs.count; ++i) {
+    for (NSInteger i = 0; i < medias.count; ++i) {
         SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
         
         @weakify(self)
@@ -107,20 +107,12 @@
     [super viewWillAppear:animated];
     
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        for (NSInteger i = 0; i < self.mediaURLs.count; ++i) {
-            NSURL *URL = self.mediaURLs[i];
+        for (NSInteger i = 0; i < self.medias.count; ++i) {
+            Media *media = self.medias[i];
             SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerControllers[i];
-            [mediaPlayerController playURL:URL];
+            mediaPlayerController.view.viewMode = media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
+            [mediaPlayerController playURL:media.URL];
         }
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    if ([self isMovingFromParentViewController] || [self isBeingDismissed]) {
-        [self.mediaPlayerControllers makeObjectsPerformSelector:@selector(reset)];
     }
 }
 
@@ -142,10 +134,10 @@
 
 - (CGRect)rectForPlayerViewAtIndex:(NSInteger)index
 {
-    CGFloat playerWidth = MAX(100, MIN(200, CGRectGetWidth(self.playerViewsContainer.frame) / (self.mediaURLs.count - 1)));
+    CGFloat playerWidth = MAX(100, MIN(200, CGRectGetWidth(self.playerViewsContainer.frame) / (self.medias.count - 1)));
     CGFloat playerHeight = (playerWidth - 10) * 10 / 16;
     
-    CGFloat x = self.mediaURLs.count > 2 ? index * playerWidth : (CGRectGetWidth(self.playerViewsContainer.frame) - playerWidth) / 2;
+    CGFloat x = self.medias.count > 2 ? index * playerWidth : (CGRectGetWidth(self.playerViewsContainer.frame) - playerWidth) / 2;
     CGFloat y = CGRectGetHeight(self.playerViewsContainer.frame) / 2 - playerHeight / 2;
     
     return CGRectMake(x + 5, y, playerWidth - 10, playerHeight);

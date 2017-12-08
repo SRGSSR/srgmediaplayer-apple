@@ -6,12 +6,12 @@
 
 #import "SRGTracksButton.h"
 
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGAlternateTracksViewController.h"
 #import "UIWindow+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
-#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 static void commonInit(SRGTracksButton *self);
 
@@ -26,7 +26,6 @@ static void commonInit(SRGTracksButton *self);
 
 @synthesize image = _image;
 @synthesize selectedImage = _selectedImage;
-@synthesize alwaysHidden = _alwaysHidden;
 
 #pragma mark Object lifecycle
 
@@ -55,16 +54,14 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    if (_mediaPlayerController) {
-        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.playbackState)];
-    }
+    [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.playbackState)];
     
     _mediaPlayerController = mediaPlayerController;
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
         @weakify(self)
-        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.playbackState) options:0 block:^(MAKVONotification *notification) {
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.playbackState) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             [self updateAppearance];
         }];

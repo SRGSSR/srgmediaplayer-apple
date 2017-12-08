@@ -4,13 +4,15 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "Media.h"
+
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MultiPlayerViewController : UIViewController
 
-- (instancetype)initWithMediaURLs:(NSArray<NSURL *> *)mediaURLs;
+- (instancetype)initWithMedias:(NSArray<Media *> *)medias;
 
 @end
 
