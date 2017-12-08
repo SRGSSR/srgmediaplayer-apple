@@ -158,8 +158,8 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
             // Similarly for the y-axis. The angle is normalized so that a full gesture across the view would lead to a full
             // rotation in this direction.
             // Also see http://nshipster.com/cmdevicemotion/
-            float wx = 2 * M_PI * translation.y / CGRectGetWidth(self.frame);
-            float wy = 2 * M_PI * translation.x / CGRectGetHeight(self.frame);
+            float wx = 2 * M_PI * translation.y / CGRectGetHeight(self.frame);
+            float wy = 2 * M_PI * translation.x / CGRectGetWidth(self.frame);
             
             CGPoint angularOffsets = CGPointMake(wx + self.initialAngularOffsets.x, wy + self.initialAngularOffsets.y);
             self.angularOffsets = angularOffsets;
