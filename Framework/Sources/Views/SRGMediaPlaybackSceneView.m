@@ -130,6 +130,7 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
     self.cameraNode = cameraNode;
     
     SKScene *videoScene = [SKScene sceneWithSize:assetDimensions];
+    videoScene.backgroundColor = [UIColor blackColor];
     
     SRGVideoNode *videoNode = [[SRGVideoNode alloc] initWithAVPlayer:player];
     videoNode.size = assetDimensions;

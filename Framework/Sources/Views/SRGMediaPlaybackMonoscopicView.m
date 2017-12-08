@@ -56,7 +56,6 @@ static void commonInit(SRGMediaPlaybackMonoscopicView *self)
 {
     SCNView *sceneView = [[SCNView alloc] initWithFrame:self.bounds options:nil];
     sceneView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    sceneView.backgroundColor = [UIColor clearColor];
     sceneView.hidden = YES;
     sceneView.playing = YES;
     sceneView.delegate = self;
