@@ -27,6 +27,7 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
 
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic, weak) SCNNode *cameraNode;
+@property (nonatomic, weak) SCNSphere *sphere;
 
 @property (nonatomic) SCNQuaternion deviceBasedCameraOrientation;                    // The current device-based orientation for the camera.
 
@@ -55,6 +56,19 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
         commonInit(self);
     }
     return self;
+}
+
+- (void)dealloc
+{
+    // FIXME: iOS 9 issue: There is a retain cycle with SKVideoNode. At least we can mitigate this issue by
+    //        removing the material and pausing the player.
+    //        See https://github.com/NYTimes/ios-360-videos/issues/46 for more information.
+    //
+    //        Remove this code (and the sphere property) once iOS 9 is the minimum supported version.
+    if ([NSProcessInfo processInfo].operatingSystemVersion.majorVersion == 9) {
+        self.sphere.firstMaterial.diffuse.contents = nil;
+        [self.player pause];
+    }
 }
 
 #pragma mark Overrides
@@ -128,6 +142,8 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
     SCNSphere *sphere = [SCNSphere sphereWithRadius:20.f];
     sphere.firstMaterial.doubleSided = YES;
     sphere.firstMaterial.diffuse.contents = videoScene;
+    self.sphere = sphere;
+    
     SCNNode *sphereNode = [SCNNode nodeWithGeometry:sphere];
     sphereNode.position = SCNVector3Make(0.f, 0.f, 0.f);
     [scene.rootNode addChildNode:sphereNode];
