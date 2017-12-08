@@ -152,6 +152,12 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
         }
             
         case UIGestureRecognizerStateChanged: {
+            // Prevent interactions outside the view bounds
+            CGPoint location = [panGestureRecognizer locationInView:self];
+            if (! CGRectContainsPoint(self.bounds, location)) {
+                break;
+            }
+            
             CGPoint translation = [panGestureRecognizer translationInView:self];
             
             // Rotation around the x-axis (horizontal through the phone) is obtained with a pan gesture in the y-direction.
