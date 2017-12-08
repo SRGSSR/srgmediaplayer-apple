@@ -8,10 +8,8 @@
 
 #import <GLKit/GLKit.h>
 
-SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude, CMAttitudeReferenceFrame referenceFrame)
+SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude)
 {
-    // TODO: Take into account reference frame as well
-    
     // Based on: https://gist.github.com/travisnewby/96ee1ac2bc2002f1d480
     CMQuaternion quaternion = attitude.quaternion;
     GLKQuaternion glkQuaternion = GLKQuaternionMake(quaternion.x, quaternion.y, quaternion.z, quaternion.w);

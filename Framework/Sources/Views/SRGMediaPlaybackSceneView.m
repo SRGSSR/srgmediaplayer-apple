@@ -94,7 +94,7 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
         // Calculate the required camera orientation based on device orientation (if available), and apply additional
         // adjustements the user made with the pan gesture.
         CMDeviceMotion *deviceMotion = motionManager.deviceMotion;
-        SCNVector4 deviceBasedCameraOrientation = deviceMotion ? SRGCameraOrientationForAttitude(deviceMotion.attitude, motionManager.attitudeReferenceFrame) : SRGQuaternionMakeWithAngleAndAxis(M_PI, 1.f, 0.f, 0.f);
+        SCNVector4 deviceBasedCameraOrientation = deviceMotion ? SRGCameraOrientationForAttitude(deviceMotion.attitude) : SRGQuaternionMakeWithAngleAndAxis(M_PI, 1.f, 0.f, 0.f);
         self.deviceBasedCameraOrientation = deviceBasedCameraOrientation;
         self.cameraNode.orientation = SRGRotateQuaternion(deviceBasedCameraOrientation, self.angularOffsets.x, self.angularOffsets.y);
     });
