@@ -15,10 +15,6 @@
 
 #import <libextobjc/libextobjc.h>
 
-SRGMediaPlayerViewMode const SRGMediaPlayerViewModeFlat = @"flat";
-SRGMediaPlayerViewMode const SRGMediaPlayerViewModeMonoscopic = @"monoscopic";
-SRGMediaPlayerViewMode const SRGMediaPlayerViewModeStereoscopic = @"stereoscopic";
-
 static CMMotionManager *s_motionManager = nil;
 
 static void commonInit(SRGMediaPlayerView *self);
@@ -114,14 +110,14 @@ static void commonInit(SRGMediaPlayerView *self);
             }
             
             static dispatch_once_t s_onceToken;
-            static NSDictionary *s_viewClasses;
+            static NSDictionary<NSNumber *, Class> *s_viewClasses;
             dispatch_once(&s_onceToken, ^{
-                s_viewClasses = @{ SRGMediaPlayerViewModeFlat : [SRGMediaPlaybackFlatView class],
-                                   SRGMediaPlayerViewModeMonoscopic : [SRGMediaPlaybackMonoscopicView class],
-                                   SRGMediaPlayerViewModeStereoscopic : [SRGMediaPlaybackStereoscopicView class] };
+                s_viewClasses = @{ @(SRGMediaPlayerViewModeFlat) : [SRGMediaPlaybackFlatView class],
+                                   @(SRGMediaPlayerViewModeMonoscopic) : [SRGMediaPlaybackMonoscopicView class],
+                                   @(SRGMediaPlayerViewModeStereoscopic) : [SRGMediaPlaybackStereoscopicView class] };
             });
             
-            Class playbackViewClass = s_viewClasses[self.viewMode];
+            Class playbackViewClass = s_viewClasses[@(self.viewMode)];
             if (! [self.playbackView isKindOfClass:playbackViewClass]) {
                 [self.playbackView removeFromSuperview];
                 

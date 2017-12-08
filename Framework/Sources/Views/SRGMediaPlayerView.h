@@ -12,11 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  @name Supported view modes.
  */
-typedef NSString * SRGMediaPlayerViewMode NS_STRING_ENUM;
-
-OBJC_EXPORT SRGMediaPlayerViewMode const SRGMediaPlayerViewModeFlat;
-OBJC_EXPORT SRGMediaPlayerViewMode const SRGMediaPlayerViewModeMonoscopic;
-OBJC_EXPORT SRGMediaPlayerViewMode const SRGMediaPlayerViewModeStereoscopic;
+typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
+    SRGMediaPlayerViewModeFlat = 0,                         // Standard "flat" playback.
+    SRGMediaPlayerViewModeMonoscopic,                       // 360 monoscopic playback.
+    SRGMediaPlayerViewModeStereoscopic                      // 360 stereoscopic playback (cardboard).
+};
 
 /**
  *  The view used by the player to display its media. You can instantiate such views in storyboards or xib files
@@ -40,7 +40,7 @@ OBJC_EXPORT SRGMediaPlayerViewMode const SRGMediaPlayerViewModeStereoscopic;
 /**
  *  Retrieve or change the current view mode, if any.
  */
-@property (nonatomic, copy) SRGMediaPlayerViewMode viewMode;
+@property (nonatomic) SRGMediaPlayerViewMode viewMode;
 
 @end
 

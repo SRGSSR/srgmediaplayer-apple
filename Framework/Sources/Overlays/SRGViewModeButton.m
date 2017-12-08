@@ -115,11 +115,11 @@ static void commonInit(SRGViewModeButton *self);
     if (self.alwaysHidden) {
         self.hidden = YES;
     }
-    else if ([mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeMonoscopic]) {
+    else if (mediaPlayerView.viewMode == SRGMediaPlayerViewModeMonoscopic) {
         [self.button setImage:self.viewModeStereoscopicImage forState:UIControlStateNormal];
         self.hidden = NO;
     }
-    else if ([mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeStereoscopic]) {
+    else if (mediaPlayerView.viewMode == SRGMediaPlayerViewModeStereoscopic) {
         [self.button setImage:self.viewModeMonoscopicImage forState:UIControlStateNormal];
         self.hidden = NO;
         
@@ -136,10 +136,10 @@ static void commonInit(SRGViewModeButton *self);
 
 - (void)srg_viewModeButton_toggleViewMode:(id)sender
 {
-    if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeMonoscopic]) {
+    if (self.mediaPlayerView.viewMode == SRGMediaPlayerViewModeMonoscopic) {
         self.mediaPlayerView.viewMode = SRGMediaPlayerViewModeStereoscopic;
     }
-    else if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeStereoscopic]) {
+    else if (self.mediaPlayerView.viewMode == SRGMediaPlayerViewModeStereoscopic) {
         self.mediaPlayerView.viewMode = SRGMediaPlayerViewModeMonoscopic;
     }
 }
@@ -169,15 +169,21 @@ static void commonInit(SRGViewModeButton *self);
 
 - (NSString *)accessibilityLabel
 {
-    // The label corresponds to the other mode which can be enabled by tapping on the button
-    if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeMonoscopic]) {
-        return SRGMediaPlayerAccessibilityLocalizedString(@"Stereoscopic", @"Stereoscopic video display");
-    }
-    else if ([self.mediaPlayerView.viewMode isEqualToString:SRGMediaPlayerViewModeStereoscopic]) {
-        return SRGMediaPlayerAccessibilityLocalizedString(@"360 degrees", @"360° video display");
-    }
-    else {
-        return nil;
+    switch (self.mediaPlayerView.viewMode) {
+        case SRGMediaPlayerViewModeMonoscopic: {
+            return SRGMediaPlayerAccessibilityLocalizedString(@"Stereoscopic", @"Stereoscopic video display");
+            break;
+        }
+            
+        case SRGMediaPlayerViewModeStereoscopic: {
+            return SRGMediaPlayerAccessibilityLocalizedString(@"360 degrees", @"360° video display");
+            break;
+        }
+            
+        default: {
+            return nil;
+            break;
+        }
     }
 }
 
