@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGMediaPlayerSceneView.h"
+#import "SRGMediaPlaybackSceneView.h"
 
 #import "AVPlayer+SRGMediaPlayer.h"
 #import "SRGMotionManager.h"
@@ -15,9 +15,15 @@
 #import <libextobjc/libextobjc.h>
 #import <SpriteKit/SpriteKit.h>
 
-static void commonInit(SRGMediaPlayerSceneView *self);
+/**
+ *  To manipulate node orientation, use quaternions only. Those are more robust against singularities than Euler
+ *  angles. For a quick introduction, see e.g.
+ *    http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/.
+ */
 
-@interface SRGMediaPlayerSceneView ()
+static void commonInit(SRGMediaPlaybackSceneView *self);
+
+@interface SRGMediaPlaybackSceneView ()
 
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic, weak) SCNNode *cameraNode;
@@ -31,7 +37,7 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 
 @end
 
-@implementation SRGMediaPlayerSceneView
+@implementation SRGMediaPlaybackSceneView
 
 #pragma mark Object lifecycle
 
@@ -74,7 +80,7 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 
 #pragma mark Subclassing hooks
 
-- (void)setupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode
+- (void)didSetupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode
 {}
 
 #pragma marm SCNSceneRendererDelegate protocol
@@ -100,7 +106,8 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 {
     self.player = player;
     
-    // TODO: Reset cached values
+    // Reset stored values set by user interaction.
+    self.angularOffsets = CGPointZero;
     
     if (player) {
         SCNScene *scene = [SCNScene scene];
@@ -126,10 +133,10 @@ static void commonInit(SRGMediaPlayerSceneView *self);
         sphereNode.position = SCNVector3Make(0.f, 0.f, 0.f);
         [scene.rootNode addChildNode:sphereNode];
         
-        [self setupScene:scene withCameraNode:cameraNode];
+        [self didSetupScene:scene withCameraNode:cameraNode];
     }
     else {
-        [self setupScene:nil withCameraNode:nil];
+        [self didSetupScene:nil withCameraNode:nil];
     }
 }
 
@@ -156,13 +163,19 @@ static void commonInit(SRGMediaPlayerSceneView *self);
             // Similarly for the y-axis. The angle is normalized so that a full gesture across the view would lead to a full
             // rotation in this direction.
             // Also see http://nshipster.com/cmdevicemotion/
-            // TODO: Lock up and down
             float wx = 2 * M_PI * translation.y / CGRectGetWidth(self.frame);
             float wy = 2 * M_PI * translation.x / CGRectGetHeight(self.frame);
             
             CGPoint angularOffsets = CGPointMake(wx + self.initialAngularOffsets.x, wy + self.initialAngularOffsets.y);
             self.angularOffsets = angularOffsets;
             self.cameraNode.orientation = SRGRotateQuaternion(self.deviceBasedCameraOrientation, angularOffsets.x,  angularOffsets.y);
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStateCancelled: {
+            self.initialAngularOffsets = CGPointZero;
             break;
         }
             
@@ -188,7 +201,7 @@ static void commonInit(SRGMediaPlayerSceneView *self);
 
 @end
 
-static void commonInit(SRGMediaPlayerSceneView *self)
+static void commonInit(SRGMediaPlaybackSceneView *self)
 {
     self.backgroundColor = [UIColor clearColor];
     

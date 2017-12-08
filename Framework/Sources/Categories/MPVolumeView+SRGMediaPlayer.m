@@ -10,7 +10,7 @@
 
 - (UIButton *)srg_airplayButton
 {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [evaluatedObject isKindOfClass:[UIButton class]];
     }];
     return [self.subviews filteredArrayUsingPredicate:predicate].firstObject;

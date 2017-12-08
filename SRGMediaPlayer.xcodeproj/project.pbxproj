@@ -45,7 +45,7 @@
 		6F5CA4151FD919CD00CF175F /* SRGMediaPlayerSharedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3DF1FD919CD00CF175F /* SRGMediaPlayerSharedController.m */; };
 		6F5CA4161FD919CD00CF175F /* SRGMediaPlaybackFlatView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3E11FD919CD00CF175F /* SRGMediaPlaybackFlatView.h */; };
 		6F5CA4171FD919CD00CF175F /* SRGMediaPlaybackMonoscopicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3E21FD919CD00CF175F /* SRGMediaPlaybackMonoscopicView.m */; };
-		6F5CA4181FD919CD00CF175F /* SRGMediaPlayerSceneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3E31FD919CD00CF175F /* SRGMediaPlayerSceneView.m */; };
+		6F5CA4181FD919CD00CF175F /* SRGMediaPlaybackSceneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3E31FD919CD00CF175F /* SRGMediaPlaybackSceneView.m */; };
 		6F5CA4191FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3E41FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.h */; };
 		6F5CA41A1FD919CD00CF175F /* SRGMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3E51FD919CD00CF175F /* SRGMediaPlayerView.m */; };
 		6F5CA41B1FD919CD00CF175F /* SRGMediaPlaybackFlatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3E61FD919CD00CF175F /* SRGMediaPlaybackFlatView.m */; };
@@ -53,7 +53,7 @@
 		6F5CA41D1FD919CD00CF175F /* SRGMediaPlayerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3E81FD919CD00CF175F /* SRGMediaPlayerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F5CA41E1FD919CD00CF175F /* SRGMediaPlayerView+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3E91FD919CD00CF175F /* SRGMediaPlayerView+Private.h */; };
 		6F5CA41F1FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3EA1FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.m */; };
-		6F5CA4201FD919CD00CF175F /* SRGMediaPlayerSceneView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3EB1FD919CD00CF175F /* SRGMediaPlayerSceneView.h */; };
+		6F5CA4201FD919CD00CF175F /* SRGMediaPlaybackSceneView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3EB1FD919CD00CF175F /* SRGMediaPlaybackSceneView.h */; };
 		6F5CA4321FD91A1D00CF175F /* SRGVideoNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4221FD91A1D00CF175F /* SRGVideoNode.m */; };
 		6F5CA4331FD91A1D00CF175F /* SRGMediaPlayerError.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4231FD91A1D00CF175F /* SRGMediaPlayerError.m */; };
 		6F5CA4341FD91A1D00CF175F /* SRGMediaPlayerIconTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4241FD91A1D00CF175F /* SRGMediaPlayerIconTemplate.m */; };
@@ -268,7 +268,7 @@
 		6F5CA3DF1FD919CD00CF175F /* SRGMediaPlayerSharedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerSharedController.m; sourceTree = "<group>"; };
 		6F5CA3E11FD919CD00CF175F /* SRGMediaPlaybackFlatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackFlatView.h; sourceTree = "<group>"; };
 		6F5CA3E21FD919CD00CF175F /* SRGMediaPlaybackMonoscopicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlaybackMonoscopicView.m; sourceTree = "<group>"; };
-		6F5CA3E31FD919CD00CF175F /* SRGMediaPlayerSceneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerSceneView.m; sourceTree = "<group>"; };
+		6F5CA3E31FD919CD00CF175F /* SRGMediaPlaybackSceneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlaybackSceneView.m; sourceTree = "<group>"; };
 		6F5CA3E41FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackStereoscopicView.h; sourceTree = "<group>"; };
 		6F5CA3E51FD919CD00CF175F /* SRGMediaPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerView.m; sourceTree = "<group>"; };
 		6F5CA3E61FD919CD00CF175F /* SRGMediaPlaybackFlatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlaybackFlatView.m; sourceTree = "<group>"; };
@@ -276,7 +276,7 @@
 		6F5CA3E81FD919CD00CF175F /* SRGMediaPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerView.h; sourceTree = "<group>"; };
 		6F5CA3E91FD919CD00CF175F /* SRGMediaPlayerView+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMediaPlayerView+Private.h"; sourceTree = "<group>"; };
 		6F5CA3EA1FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlaybackStereoscopicView.m; sourceTree = "<group>"; };
-		6F5CA3EB1FD919CD00CF175F /* SRGMediaPlayerSceneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerSceneView.h; sourceTree = "<group>"; };
+		6F5CA3EB1FD919CD00CF175F /* SRGMediaPlaybackSceneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackSceneView.h; sourceTree = "<group>"; };
 		6F5CA4221FD91A1D00CF175F /* SRGVideoNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGVideoNode.m; sourceTree = "<group>"; };
 		6F5CA4231FD91A1D00CF175F /* SRGMediaPlayerError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerError.m; sourceTree = "<group>"; };
 		6F5CA4241FD91A1D00CF175F /* SRGMediaPlayerIconTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerIconTemplate.m; sourceTree = "<group>"; };
@@ -480,8 +480,8 @@
 				6F5CA3E21FD919CD00CF175F /* SRGMediaPlaybackMonoscopicView.m */,
 				6F5CA3E41FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.h */,
 				6F5CA3EA1FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.m */,
-				6F5CA3EB1FD919CD00CF175F /* SRGMediaPlayerSceneView.h */,
-				6F5CA3E31FD919CD00CF175F /* SRGMediaPlayerSceneView.m */,
+				6F5CA3EB1FD919CD00CF175F /* SRGMediaPlaybackSceneView.h */,
+				6F5CA3E31FD919CD00CF175F /* SRGMediaPlaybackSceneView.m */,
 				6F5CA3E81FD919CD00CF175F /* SRGMediaPlayerView.h */,
 				6F5CA3E51FD919CD00CF175F /* SRGMediaPlayerView.m */,
 				6F5CA3E91FD919CD00CF175F /* SRGMediaPlayerView+Private.h */,
@@ -814,7 +814,7 @@
 				6F5CA3FB1FD919CD00CF175F /* UIBezierPath+SRGMediaPlayer.h in Headers */,
 				E67799321D75AE2600E58331 /* SRGTimelineView.h in Headers */,
 				6F5CA4161FD919CD00CF175F /* SRGMediaPlaybackFlatView.h in Headers */,
-				6F5CA4201FD919CD00CF175F /* SRGMediaPlayerSceneView.h in Headers */,
+				6F5CA4201FD919CD00CF175F /* SRGMediaPlaybackSceneView.h in Headers */,
 				6F5CA3EF1FD919CD00CF175F /* AVPlayerItem+SRGMediaPlayer.h in Headers */,
 				6F5CA4131FD919CD00CF175F /* SRGMediaPlayerViewController.h in Headers */,
 				6F5CA43D1FD91A1D00CF175F /* SRGSegment.h in Headers */,
@@ -1055,7 +1055,7 @@
 				E6C9860F1D6F458900C45C7A /* SRGTimeSlider.m in Sources */,
 				E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */,
 				6F5CA3F71FD919CD00CF175F /* MAKVONotificationCenter+SRGMediaPlayer.m in Sources */,
-				6F5CA4181FD919CD00CF175F /* SRGMediaPlayerSceneView.m in Sources */,
+				6F5CA4181FD919CD00CF175F /* SRGMediaPlaybackSceneView.m in Sources */,
 				6F5CA4331FD91A1D00CF175F /* SRGMediaPlayerError.m in Sources */,
 				6F5CA3F01FD919CD00CF175F /* UIBezierPath+SRGMediaPlayer.m in Sources */,
 				E6C986121D70149E00C45C7A /* SRGAirplayView.m in Sources */,

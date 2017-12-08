@@ -6,9 +6,6 @@
 
 #import <UIKit/UIKit.h>
 
-/**
- *  Extensions to `UIScreen`.
- */
 @interface UIScreen (SRGMediaPlayer)
 
 /**

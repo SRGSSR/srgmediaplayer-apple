@@ -40,13 +40,17 @@ static void commonInit(SRGMediaPlaybackMonoscopicView *self);
 
 #pragma mark Overrides
 
-- (void)setupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode
+- (void)didSetupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode
 {
+    [super didSetupScene:scene withCameraNode:cameraNode];
+    
     self.sceneView.scene = scene;
     self.sceneView.hidden = (scene == nil);
 }
 
 @end
+
+#pragma mark Functions
 
 static void commonInit(SRGMediaPlaybackMonoscopicView *self)
 {

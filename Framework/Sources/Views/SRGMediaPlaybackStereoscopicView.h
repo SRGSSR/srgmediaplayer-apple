@@ -4,11 +4,14 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGMediaPlayerSceneView.h"
+#import "SRGMediaPlaybackSceneView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SRGMediaPlaybackStereoscopicView : SRGMediaPlayerSceneView
+/**
+ *  The view used for 360° stereoscopic video playback (cardboard).
+ */
+@interface SRGMediaPlaybackStereoscopicView : SRGMediaPlaybackSceneView
 
 @end
 

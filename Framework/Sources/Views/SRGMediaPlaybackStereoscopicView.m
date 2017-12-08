@@ -50,8 +50,10 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self);
     self.rightEyeSceneView.frame = CGRectMake(eyeWidth, 0.f, eyeWidth, eyeHeight);
 }
 
-- (void)setupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode
+- (void)didSetupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode
 {
+    [super didSetupScene:scene withCameraNode:cameraNode];
+    
     self.leftEyeSceneView.scene = scene;
     self.leftEyeSceneView.hidden = (scene == nil);
     
@@ -78,6 +80,8 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self);
 }
 
 @end
+
+#pragma mark Functions
 
 static void commonInit(SRGMediaPlaybackStereoscopicView *self)
 {

@@ -15,18 +15,26 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  `SRGMediaPlayerController` is inspired by the `AVPlayerViewController` class. It manages the playback of a media 
- *  from a file or a network stream, but provides only core player functionality. As such, it is intended for custom
- *  media player implementation. If you need a player with limited customization abilities but which you can readily 
- *  use, you should have a look at `SRGMediaPlayerViewController` instead.
+ *  The SRG Media Player library is a mid-level playback library based on `AVPlayer`. It is intended to lower the
+ *  implementation costs usually associated with `AVPlayer`, while adding advanced capabilities and extensive
+ *  support for all kinds of medias.
  *
- *  ## Functionalities
+ *  The library provides the following components:
+ *    - A controller, `SRGMediaPlayerController`, to perform playback.
+ *    - A view, `SRGMediaPlayerView`, with which content playbed by a controller can be displayed.
+ *    - A set of overlays to create custom player user interfaces.
+ *    - `SRGMediaPlayerViewController`, a view controller with a default user interface for simple playback needs.
  *
- * `SRGMediaPlayerController` provides standard player features:
+ *  ## Controller
+ *
+ *  `SRGMediaPlayerController` manages the playback of a media from a network stream or a file. Unlike `AVPlayer`
+ *  which can be quite tricky to use, `SRGMediaPlayerController` is intended to provide basic and advanced
+ *  playback capabilities with low implementation cost:
  *    - Audio and video playback for all kinds of streams (on-demand, live, DVR).
- *    - Support for 360° and cardboard playback (@see `SRGMediaPlayerView`).
  *    - Playback status information (mostly through notifications or KVO).
  *    - Media information extraction.
+ *    - Background playback.
+ *    - Simultaneous playback.
  *
  *  In addition, `SRGMediaPlayerController` optionally supports segments. A segment is part of a media, defined by a
  *  start time and a duration. Segments make it possible to add a logical structure on top of a media, e.g. topics
@@ -35,17 +43,26 @@ NS_ASSUME_NONNULL_BEGIN
  *    - Report transitions between segments when they occur (through notifications).
  *    - Skip segments which must must not be played (blocked segments).
  *
- *  ## Basic usage
+ *  ## View
  *
  *  `SRGMediaPlayerController` is a raw media player and is usually not used as is (though it could, for example
- *  when you only need to play audio files).
+ *  when you only need to play audio files). Most of the time you need to display the content being played. This
+ *  is the role of `SRGMediaPlayerView`.
+ *
+ *  By default, a controller provides a lazily instantiated view which can be installed in a view hierarchy. You
+ *  can also instantiate an `SRGMediaPlayerView` in a xib or storyboard and bind it to a controller if you prefer.
+ *
+ *  `SRGMediaPlayerView` supports standard video playback, as well as 360° video playback (with carboard support).
+ *  The `viewMode` property can be used to choose how a video should be displayed.
+ *
+ *  ## Basic usage
  *
  *  To implement your own custom media player, you must create your own player class (most probably a view controller),
  *  and delegate playback to an `SRGMediaPlayerController` instance:
  *    - Instantiate `SRGMediaPlayerController` in your player implementation file. If you are using a storyboard or 
  *      a xib to define your player layout, you can also drop a plain object with Interface Builder and assign it the
- *      `SRGMediaPlayerController` class. Be sure to connect an outlet to it if you need to later refer to it from
- *      witin your code.
+ *      `SRGMediaPlayerController` class. Be sure to connect an outlet if you need to later refer to it from within
+ *      your code.
  *    - When creating a video player, you must add the `view` property somewhere within your view hierarchy so that
  *      the content can be properly displayed:
  *        - If you are instantiating the controller in a storyboard or a nib, this is easily achieved by adding a view 
@@ -81,26 +98,26 @@ NS_ASSUME_NONNULL_BEGIN
  *                        current route..
  *    - `SRGTimelineView`: A linear collection to display the segments associated with a media.
  *
- *  To switch between available modes available for a content (e.g. between 360° and cardboard modes), the library
- *  also provides `SRGViewModeButton`, which must be connected to a media player view directly.
- *
  *  Customizing your player layout using the overlays above is straightforward:
  *    - Drop instances of the views you need onto your player layout (or instantiate them in code) and tweak their
  *      appearance.
  *    - Set their `mediaPlayerController` property to point at the underlying controller. If your controller was
  *      instantiated in a storyboard or a xib file, this can be entirely done in Interface Builder via ctrl-dragging.
  *
+ *  To switch between available view modes available for a content (e.g. between 360° and cardboard modes), the library
+ *  also provides `SRGViewModeButton`, which must be connected to a media player view directly.
+ *
  *  Usually, you want to hide overlays after some user inactivity delay. While showing or hiding overlays is something
  *  your implementation is responsible of, the `SRGMediaPlayer` library provides the `SRGActivityGestureRecognizer`
  *  class to easily detect any kind of user activity. Just add this gesture recognizer on the view where you want
- *  to track user activity, and associate a corresponding action to show or hide the interface, as you need.
+ *  to track user activity, and associate a corresponding action to show or hide the interface.
  *
  *  ## Player lifecycle
  *
  *  `SRGMediaPlayerController` is based around `AVPlayer`, which is publicly exposed as a `player` property. You should
  *  avoid controlling playback by acting on this `AVPlayer` instance directly, but you can still use it for any other
  *  purpose:
- *    - Information extraction (e.g. current `AVPlayerItem`, subtitle and audio channels).
+ *    - Information extraction (e.g. current `AVPlayerItem`, subtitles and audio channels).
  *    - Key-value observation of some other changes you might be interested in (e.g. IceCast / SHOUTcast information).
  *    - Airplay setup.
  *    - Muting the player.
@@ -122,9 +139,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Some controller properties (e.g. the `playbackState` property) are key-value observable. If not stated explicitly,
  *  KVO might be possible but is not guaranteed. You should in general listen to notifications, though, as they may
- *  convey additional useful information.
+ *  convey additional useful information in their associated dictionary.
  *
- *  Notifications and KVO changes are reported on the main thread.
+ *  All notifications and KVO changes are reported on the main thread.
  *
  *  ## Playback management
  *
@@ -157,8 +174,9 @@ NS_ASSUME_NONNULL_BEGIN
  *    - `AVPlayer` periodic time observers only trigger when the player actually plays. In some cases, you still want to
  *      perform periodic updates even when playback is paused (e.g. updating the user interface while a DVR stream is paused).
  *      For such use cases, `SRGMediaPlayerController` provides the `-addPeriodicTimeObserverForInterval:queue:usingBlock:`
- *      method, with which such observers can be defined. Since such observers are bound to the controller, you can set
- *      them up right after controller creation if you like.
+ *      method, with which such observers can be defined. These observers being managed by the controller, you can set them
+ *      up right after controller creation if you like.
+ *
  *  For more information about `AVPlayer` observers, please refer to the official Apple documentation.
  */
 @interface SRGMediaPlayerController : NSObject

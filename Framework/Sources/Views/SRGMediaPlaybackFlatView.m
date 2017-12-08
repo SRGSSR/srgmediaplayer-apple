@@ -6,6 +6,8 @@
 
 #import "SRGMediaPlaybackFlatView.h"
 
+#import <AVFoundation/AVFoundation.h>
+
 @implementation SRGMediaPlaybackFlatView
 
 #pragma mark Overrides

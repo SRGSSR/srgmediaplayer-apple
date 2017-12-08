@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AVPlayer (SRGMediaPlayer)
 
 /**
- *  Attempt to play the media immediately if possible (iOS 10), otherwise normally.
+ *  Attempt to play the media immediately if possible (iOS 10 and greater), otherwise normally.
  */
 - (void)srg_playImmediatelyIfPossible;
 

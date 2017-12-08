@@ -11,7 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  A button to change between view modes for the associated player view. This class is not meant to be subclassed.
+ *  A button to change between view modes for the associated player view (@see `SRGMediaPlayerView`), e.g. between
+ *  360° and cardboard displays. This class is not meant to be subclassed.
  *
  *  Simply install an instance somewhere onto your custom player interface and bind to the media player view which
  *  the button must be associated with. The button will be hidden automatically if no view mode switch is available.

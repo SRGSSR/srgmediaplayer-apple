@@ -16,9 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification;
 
-/**
- *  Extensions to `AVAudioSession`.
- */
 @interface AVAudioSession (SRGMediaPlayer)
 
 /**

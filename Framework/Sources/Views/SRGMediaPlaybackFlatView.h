@@ -6,11 +6,13 @@
 
 #import "SRGMediaPlayerView+Private.h"
 
-#import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  The view used for standard "flat" video playback.
+ */
 @interface SRGMediaPlaybackFlatView : UIView <SRGMediaPlaybackView>
 
 @end

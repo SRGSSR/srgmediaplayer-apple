@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Media : NSObject
 
-+ (nullable NSArray<Media *> *)mediasFromFileAtPath:(NSString *)filePath;
++ (NSArray<Media *> *)mediasFromFileAtPath:(NSString *)filePath;
 
 @property (nonatomic, readonly, copy) NSString *name;
 @property (nonatomic, readonly) NSURL *URL;
