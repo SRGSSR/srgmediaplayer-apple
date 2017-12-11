@@ -169,7 +169,7 @@ static void commonInit(SRGViewModeButton *self);
 {
     switch (self.mediaPlayerView.viewMode) {
         case SRGMediaPlayerViewModeMonoscopic: {
-            return SRGMediaPlayerAccessibilityLocalizedString(@"Headset", @"Button label to enable 360° video playback with a headset");
+            return SRGMediaPlayerAccessibilityLocalizedString(@"Headset", @"Button label to enable 360° video playback with a VR headset");
             break;
         }
             
