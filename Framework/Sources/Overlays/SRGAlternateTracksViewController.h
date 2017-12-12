@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The view controller delegate.
  */
-@property (weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
 
 @end
 

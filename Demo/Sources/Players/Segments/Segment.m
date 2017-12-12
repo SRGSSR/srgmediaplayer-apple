@@ -6,8 +6,6 @@
 
 #import "Segment.h"
 
-#pragma mark - Functions
-
 @interface Segment ()
 
 @property (nonatomic, copy) NSString *name;

@@ -22,7 +22,6 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 @synthesize startImage = _startImage;
 @synthesize stopImage = _stopImage;
-@synthesize alwaysHidden = _alwaysHidden;
 
 #pragma mark Object lifecycle
 

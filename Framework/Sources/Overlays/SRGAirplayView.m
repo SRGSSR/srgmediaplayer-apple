@@ -7,12 +7,12 @@
 #import "SRGAirplayView.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "UIScreen+SRGMediaPlayer.h"
 #import "SRGMediaPlayerLogger.h"
 
 #import <libextobjc/libextobjc.h>
-#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 @interface SRGAirplayView ()
 
@@ -78,8 +78,8 @@ static void commonInit(SRGAirplayView *self);
             [self updateAppearance];
         };
         
-        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:observationBlock];
-        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:observationBlock];
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:observationBlock];
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:observationBlock];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(srg_airplayView_wirelessRouteActiveDidChange:)

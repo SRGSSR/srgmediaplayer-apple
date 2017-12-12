@@ -7,6 +7,12 @@
 /* Label on slider for time remaining */
 "%@ remaining" = "%@ restante";
 
+/* Button label to enable 360° video playback */
+"360 degrees" = "360 gradi";
+
+/* Button label to enable 360° video playback with a headset */
+"Headset" = "Visore VR";
+
 /* Slider label when playing live */
 "Live playback" = "Riproduzione live";
 
