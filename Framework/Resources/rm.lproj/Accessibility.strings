@@ -11,7 +11,7 @@
 "360 degrees" = "360 grads";
 
 /* Button label to enable 360° video playback with a headset */
-"Headset" = "Vr headset";
+"Headset" = "VR headset";
 
 /* Slider label when playing live */
 "Live playback" = "Reproducziun live";
