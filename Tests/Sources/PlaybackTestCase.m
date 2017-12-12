@@ -83,13 +83,25 @@ static NSURL *AudioOverHTTPTestURL(void)
     // be automatically discarded
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-unsafe-retained-assign"
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
     // When no reference retains the player, playback must gracefully stop. Deallocation will occur right afterwards.
     [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
     }];
     
-    __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
-    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    // Ensure the player is correctly deallocated
+    __weak AVPlayer *weakPlayer = self.mediaPlayerController.player;
+    [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(id _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return weakPlayer == nil;
+    }] evaluatedWithObject:self /* unused, but a non-nil argument is required  */ handler:nil];
     
     // Do not retain the controller anymore, and force an autorelease pool collection. The weak reference must be nilled
     // automatically if the controller is correctly deallocated
@@ -1349,6 +1361,12 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withSegments:@[] userInfo:@{}];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Ensure the player is correctly deallocated
+    __weak AVPlayer *weakPlayer = self.mediaPlayerController.player;
+    [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(id _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return weakPlayer == nil;
+    }] evaluatedWithObject:self /* unused, but a non-nil argument is required */ handler:nil];
     
     // Reset the player and check its status
     [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
