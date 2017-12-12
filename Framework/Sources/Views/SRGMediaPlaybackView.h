@@ -18,9 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  Called when the provided `AVPlayer` must be associated with the view.
  *
  *  @param assetDimensions The dimensions of the asset played. Might be `CGSizeZero`, e.g. if the asset has no
- *                         video tracks.
+ *                         video tracks or when player is `nil`.
  */
-- (void)setPlayer:(AVPlayer *)player withAssetDimensions:(CGSize)assetDimensions;
+- (void)setPlayer:(nullable AVPlayer *)player withAssetDimensions:(CGSize)assetDimensions;
 
 /**
  *  The `AVPlayer` associated with the view.

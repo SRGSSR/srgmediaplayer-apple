@@ -119,6 +119,7 @@ static void commonInit(SRGMediaPlayerView *self);
             
             Class playbackViewClass = s_viewClasses[@(self.viewMode)];
             if (! [self.playbackView isKindOfClass:playbackViewClass]) {
+                [self.playbackView setPlayer:nil withAssetDimensions:CGSizeZero];
                 [self.playbackView removeFromSuperview];
                 
                 UIView<SRGMediaPlaybackView> *playbackView = [[playbackViewClass alloc] initWithFrame:self.bounds];
@@ -139,10 +140,12 @@ static void commonInit(SRGMediaPlayerView *self);
             }
             
             // Audio-only
+            [self.playbackView setPlayer:nil withAssetDimensions:CGSizeZero];
             [self.playbackView removeFromSuperview];
         }
     }
     else {
+        [self.playbackView setPlayer:nil withAssetDimensions:CGSizeZero];
         [self.playbackView removeFromSuperview];
     }
 }
