@@ -54,6 +54,12 @@
 		</dict>
 		<dict>
 			<key>name</key>
+			<string>19h30</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd.net/i/tj/2017/tj_20171011_full_f_1040162-,301k,101k,701k,1201k,2001k,.mp4.csmil/master.m3u8?__b__=800</string>
+		</dict>
+		<dict>
+			<key>name</key>
 			<string>Gotthard 360 video</string>
 			<key>url</key>
 			<string>https://rtsvodww-vh.akamaihd-staging.net/i/360/2017/Gothard_360_full_f_8414077-,301k,701k,1201k,2001k,.mp4.csmil/master.m3u8?__b__=2000</string>
