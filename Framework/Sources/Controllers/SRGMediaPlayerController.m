@@ -54,8 +54,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
 @property (nonatomic, weak) id<SRGSegment> currentSegment;
 
-@property (nonatomic, getter=isTogglingAirplay) BOOL togglingAirplay;
-
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
 @property (nonatomic) NSValue *startTimeValue;                      // Will be nilled when reached
@@ -185,14 +183,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
             @strongify(self)
             @strongify(player)
             
-            // Inhibit rate changes due to Airplay being enabled or disabled, until the original rate has been restored
-            if (self.togglingAirplay) {
-                if (player.rate != 0.f) {
-                    self.togglingAirplay = NO;
-                }
-                return;
-            }
-            
             AVPlayerItem *playerItem = player.currentItem;
             
             // Only respond to rate changes when the item is ready to play 
@@ -223,16 +213,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
-            @strongify(player)
             
             [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
-            
-            // When entering or exiting Airplay, the player rate will temporarily be set to 0 if it wasn't. To avoid generating
-            // incorrect controller state transitions, we inhibit player rate change observations until the rate has been
-            // restored
-            if (player.rate != 0.f) {
-                self.togglingAirplay = YES;
-            }
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
@@ -354,7 +336,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     
     if (! firstSeekableTimeRangeValue || CMTIMERANGE_IS_INVALID(firstSeekableTimeRange)
             || ! lastSeekableTimeRangeValue || CMTIMERANGE_IS_INVALID(lastSeekableTimeRange)) {
-        return playerItem.loadedTimeRanges ? kCMTimeRangeZero : kCMTimeRangeInvalid;
+        return (playerItem.loadedTimeRanges.count != 0) ? kCMTimeRangeZero : kCMTimeRangeInvalid;
     }
     
     CMTimeRange timeRange = CMTimeRangeFromTimeToTime(firstSeekableTimeRange.start, CMTimeRangeGetEnd(lastSeekableTimeRange));

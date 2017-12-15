@@ -63,10 +63,14 @@ static void commonInit(SRGMediaPlayerView *self);
 - (void)setPlayer:(AVPlayer *)player
 {
     [_player removeObserver:self keyPath:@keypath(_player.currentItem.tracks)];
+    [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
     
     _player = player;
     
     [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.tracks) options:0 block:^(MAKVONotification *notification) {
+        [self updateSubviews];
+    }];
+    [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
         [self updateSubviews];
     }];
     
@@ -99,6 +103,8 @@ static void commonInit(SRGMediaPlayerView *self);
 - (void)updateSubviewsWithPlayer:(AVPlayer *)player
 {
     if (player) {
+        self.playbackView.hidden = player.externalPlaybackActive;
+        
         AVAssetTrack *videoAssetTrack = [player.currentItem srg_assetTracksWithMediaType:AVMediaTypeVideo].firstObject;
         if (videoAssetTrack) {
             CGSize assetDimensions = CGSizeApplyAffineTransform(videoAssetTrack.naturalSize, videoAssetTrack.preferredTransform);
