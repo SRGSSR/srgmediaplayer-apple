@@ -752,23 +752,27 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
-- (void)testMediaInformationAvailabilityAfterPrepare
+- (void)testMediaInformationWhenPreparingToPlay
 {
-    XCTestExpectation *preparationExpectation = [self expectationWithDescription:@"Prepared"];
+    XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeUnknown);
+    XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeUnknown);
+    
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
+        XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeUnknown);
+        XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeUnknown);
+        return YES;
+    }];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Prepared"];
     
     [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil completionHandler:^{
         XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeVideo);
         XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeOnDemand);
-        [preparationExpectation fulfill];
+        [expectation fulfill];
     }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
-}
-
-- (void)testMediaInformationAvailabilityBeforePrepare
-{
-    XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeUnknown);
-    XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeUnknown);
 }
 
 - (void)testOnDemandProperties
