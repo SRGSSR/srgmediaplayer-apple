@@ -284,6 +284,25 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)setSegments:(NSArray<id<SRGSegment>> *)segments
 {
+    if (segments && self.previousSegment) {
+        NSUInteger index = [segments indexOfObject:self.previousSegment];
+        if (index != NSNotFound) {
+            self.previousSegment = segments[index];
+        }
+    }
+    if (segments && self.targetSegment) {
+        NSUInteger index = [segments indexOfObject:self.targetSegment];
+        if (index != NSNotFound) {
+            self.targetSegment = segments[index];
+        }
+    }
+    if (segments && self.currentSegment) {
+        NSUInteger index = [segments indexOfObject:self.currentSegment];
+        if (index != NSNotFound) {
+            self.currentSegment = segments[index];
+        }
+    }
+    
     _segments = segments;
     
     // Reset the cached visible segment list
