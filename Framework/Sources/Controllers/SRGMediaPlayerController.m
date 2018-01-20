@@ -17,6 +17,7 @@
 #import "SRGMediaPlayerView.h"
 #import "SRGMediaPlayerView+Private.h"
 #import "SRGPeriodicTimeObserver.h"
+#import "SRGSegment+Private.h"
 #import "UIScreen+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
@@ -285,21 +286,30 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 - (void)setSegments:(NSArray<id<SRGSegment>> *)segments
 {
     if (segments && self.previousSegment) {
-        NSUInteger index = [segments indexOfObject:self.previousSegment];
-        if (index != NSNotFound) {
-            self.previousSegment = segments[index];
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
+            return SRGMediaPlayerAreEqualSegments(segment, self.previousSegment);
+        }];
+        id<SRGSegment> segment = [segments filteredArrayUsingPredicate:predicate].firstObject;
+        if (segment) {
+            self.previousSegment = segment;
         }
     }
     if (segments && self.targetSegment) {
-        NSUInteger index = [segments indexOfObject:self.targetSegment];
-        if (index != NSNotFound) {
-            self.targetSegment = segments[index];
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
+            return SRGMediaPlayerAreEqualSegments(segment, self.targetSegment);
+        }];
+        id<SRGSegment> segment = [segments filteredArrayUsingPredicate:predicate].firstObject;
+        if (segment) {
+            self.targetSegment = segment;
         }
     }
     if (segments && self.currentSegment) {
-        NSUInteger index = [segments indexOfObject:self.currentSegment];
-        if (index != NSNotFound) {
-            self.currentSegment = segments[index];
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
+            return SRGMediaPlayerAreEqualSegments(segment, self.currentSegment);
+        }];
+        id<SRGSegment> segment = [segments filteredArrayUsingPredicate:predicate].firstObject;
+        if (segment) {
+            self.currentSegment = segment;
         }
     }
     
