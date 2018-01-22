@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		08293A4B1EDC62FC008CE02E /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08293A4D1EDC62FC008CE02E /* Accessibility.strings */; };
+		089026D42013ECEF00C0688E /* SRGSegment+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 089026D22013ECEF00C0688E /* SRGSegment+Private.m */; };
+		089026D52013ECEF00C0688E /* SRGSegment+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 089026D32013ECEF00C0688E /* SRGSegment+Private.h */; };
 		08D3BEB01DE6EAB100AE1368 /* SRGTracksButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3BEAE1DE6EAB100AE1368 /* SRGTracksButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08D3BEB11DE6EAB100AE1368 /* SRGTracksButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3BEAF1DE6EAB100AE1368 /* SRGTracksButton.m */; };
 		08D3BEC01DE8756500AE1368 /* SRGAlternateTracksViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */; };
@@ -228,6 +230,8 @@
 		08293A4F1EDC6305008CE02E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Accessibility.strings; sourceTree = "<group>"; };
 		08293A501EDC6306008CE02E /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Accessibility.strings; sourceTree = "<group>"; };
 		08293A511EDC6307008CE02E /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Accessibility.strings; sourceTree = "<group>"; };
+		089026D22013ECEF00C0688E /* SRGSegment+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRGSegment+Private.m"; sourceTree = "<group>"; };
+		089026D32013ECEF00C0688E /* SRGSegment+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGSegment+Private.h"; sourceTree = "<group>"; };
 		08D3BEAE1DE6EAB100AE1368 /* SRGTracksButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGTracksButton.h; sourceTree = "<group>"; };
 		08D3BEAF1DE6EAB100AE1368 /* SRGTracksButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGTracksButton.m; sourceTree = "<group>"; };
 		08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAlternateTracksViewController.h; sourceTree = "<group>"; };
@@ -510,6 +514,8 @@
 				6FD312281FD9AB0100EC0C42 /* SRGQuaternion.h */,
 				6FD312291FD9AB0100EC0C42 /* SRGQuaternion.m */,
 				6F5CA42D1FD91A1D00CF175F /* SRGSegment.h */,
+				089026D32013ECEF00C0688E /* SRGSegment+Private.h */,
+				089026D22013ECEF00C0688E /* SRGSegment+Private.m */,
 				6F5CA42B1FD91A1D00CF175F /* SRGVideoNode.h */,
 				6F5CA4221FD91A1D00CF175F /* SRGVideoNode.m */,
 			);
@@ -841,6 +847,7 @@
 				6F5CA4191FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.h in Headers */,
 				6F5CA41E1FD919CD00CF175F /* SRGMediaPlayerView+Private.h in Headers */,
 				E6C986131D7014A000C45C7A /* SRGAirplayView.h in Headers */,
+				089026D52013ECEF00C0688E /* SRGSegment+Private.h in Headers */,
 				E6C9860E1D6F458900C45C7A /* SRGTimeSlider.h in Headers */,
 				6F5CA4111FD919CD00CF175F /* SRGMediaPlayerSharedController.h in Headers */,
 				6F5CA41C1FD919CD00CF175F /* SRGMediaPlaybackMonoscopicView.h in Headers */,
@@ -1035,6 +1042,7 @@
 				6F5CA4361FD91A1D00CF175F /* SRGActivityGestureRecognizer.m in Sources */,
 				6F5CA3F11FD919CD00CF175F /* AVPlayer+SRGMediaPlayer.m in Sources */,
 				6F5CA41F1FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.m in Sources */,
+				089026D42013ECEF00C0688E /* SRGSegment+Private.m in Sources */,
 				6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton.m in Sources */,
 				E6C986171D7015F600C45C7A /* SRGVolumeView.m in Sources */,
 				6F5CA41B1FD919CD00CF175F /* SRGMediaPlaybackFlatView.m in Sources */,
