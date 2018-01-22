@@ -289,6 +289,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
             return SRGMediaPlayerAreEqualSegments(segment, self.previousSegment);
         }];
+        
+        // Only update if a segment equivalent to the previous one was found (segment transition processing will update
+        // the previous segment otherwise)
         id<SRGSegment> segment = [segments filteredArrayUsingPredicate:predicate].firstObject;
         if (segment) {
             self.previousSegment = segment;
@@ -298,6 +301,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
             return SRGMediaPlayerAreEqualSegments(segment, self.targetSegment);
         }];
+        
+        // Similar to comment above
         id<SRGSegment> segment = [segments filteredArrayUsingPredicate:predicate].firstObject;
         if (segment) {
             self.targetSegment = segment;
@@ -307,6 +312,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
             return SRGMediaPlayerAreEqualSegments(segment, self.currentSegment);
         }];
+        
+        // Similar to comment above
         id<SRGSegment> segment = [segments filteredArrayUsingPredicate:predicate].firstObject;
         if (segment) {
             self.currentSegment = segment;

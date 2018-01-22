@@ -9,7 +9,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  This function takes two segments as input, and returns YES if there are equals.
+ *  This function takes two segments as input, and returns `YES` if they are equal.
  */
 OBJC_EXTERN BOOL SRGMediaPlayerAreEqualSegments(id<SRGSegment> segment1, id<SRGSegment> segment2);
 
