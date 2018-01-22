@@ -259,9 +259,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  call `-play` from the completion handler (in which case the player will immediately reach the playing state).
  *
  *  @param URL               The URL to play.
- *  @param time              The time to start at.
- *                           If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
- *                           actual media time range will seek to the nearest location (either zero or the end time).
+ *  @param time              The time to start at. Use `kCMTimeZero` to start at the default location (see discussion
+ *                           below). This value is also used as fallback if the provided time is invalid. Note that setting
+ *                           a start time outside the actual media time range will seek to the nearest location (either zero
+ *                           or the end time).
  *  @param segments          A segment list.
  *  @param userInfo          A dictionary to associate arbitrary information with the media being played (for later retrieval).
  *                           This information stays associated with the player controller until it is reset.

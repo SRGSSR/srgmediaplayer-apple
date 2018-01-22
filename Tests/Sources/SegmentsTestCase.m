@@ -6,6 +6,7 @@
 
 #import "MediaPlayerBaseTestCase.h"
 #import "Segment.h"
+#import "SRGSegment+Private.h"
 #import "TestMacros.h"
 #import "XCTestCase+MediaPlayerTests.h"
 
@@ -40,6 +41,34 @@ static NSURL *SegmentsTestURL(void)
 }
 
 #pragma mark Tests
+
+- (void)testEquality
+{
+    Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    Segment *segment2 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    Segment *segment3 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
+    
+    Segment *blockedSegment1 = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    Segment *blockedSegment2 = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    Segment *blockedSegment3 = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
+    
+    Segment *hiddenSegment1 = [Segment hiddenSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    Segment *hiddenSegment2 = [Segment hiddenSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    Segment *hiddenSegment3 = [Segment hiddenSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
+    
+    XCTAssertTrue(SRGMediaPlayerAreEqualSegments(segment1, segment2));
+    XCTAssertFalse(SRGMediaPlayerAreEqualSegments(segment1, segment3));
+    
+    XCTAssertTrue(SRGMediaPlayerAreEqualSegments(blockedSegment1, blockedSegment2));
+    XCTAssertFalse(SRGMediaPlayerAreEqualSegments(blockedSegment1, blockedSegment3));
+    
+    XCTAssertTrue(SRGMediaPlayerAreEqualSegments(hiddenSegment1, hiddenSegment2));
+    XCTAssertFalse(SRGMediaPlayerAreEqualSegments(hiddenSegment1, hiddenSegment3));
+    
+    XCTAssertFalse(SRGMediaPlayerAreEqualSegments(segment1, blockedSegment1));
+    XCTAssertFalse(SRGMediaPlayerAreEqualSegments(segment1, hiddenSegment1));
+    XCTAssertFalse(SRGMediaPlayerAreEqualSegments(blockedSegment1, hiddenSegment1));
+}
 
 - (void)testVisibleSegments
 {
