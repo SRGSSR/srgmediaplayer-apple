@@ -6,8 +6,6 @@
 
 #import "XCTestCase+MediaPlayerTests.h"
 
-static void *s_observerKey = &s_observerKey;
-
 @implementation XCTestCase (MediaPlayerTests)
 
 - (XCTestExpectation *)mpt_expectationForNotification:(NSNotificationName)notificationName object:(id)objectToObserve handler:(XCNotificationExpectationHandler)handler
