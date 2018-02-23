@@ -48,12 +48,6 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>SWI sample with strange behavior if seeking to the end (consistent between iOS and SRG players)</string>
-			<key>url</key>
-			<string>http://srgplayerswivod-vh.akamaihd.net/i/2016/09/13/,Hoechstgelegener_Windpark-42441158-360k,Hoechstgelegener_Windpark-42441158-720k,.mp4.csmil/master.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
 			<string>19h30</string>
 			<key>url</key>
 			<string>https://rtsvodww-vh.akamaihd.net/i/journ-12h45/2018/journ-12h45_20180220_full_555600-,301k,101k,701k,1201k,2001k,3501k,6001k,.mp4.csmil/master.m3u8?__b__=800</string>
