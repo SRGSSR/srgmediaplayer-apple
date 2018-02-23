@@ -1276,51 +1276,6 @@ static NSURL *SegmentsTestURL(void)
     XCTAssertNil(self.mediaPlayerController.selectedSegment);
 }
 
-- (void)testPlayOutOfRangeSegment
-{
-    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(10000000., NSEC_PER_SEC), CMTimeMakeWithSeconds(50., NSEC_PER_SEC))];
-    
-    // Playback will start at the end of the stream. Start and end notifications for the segment are still expected (the
-    // segment is there but has no overlap with the stream) and the segment is considered as being selected. In effect,
-    // this is like trying to play a zero-length segment at the end of the stream
-    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        SRGMediaPlayerPlaybackState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
-        if (playbackState == SRGMediaPlayerPlaybackStatePlaying) {
-            XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectionKey] boolValue]);
-            return NO;
-        }
-        else if (playbackState == SRGMediaPlayerPlaybackStateEnded) {
-            XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectionKey] boolValue]);
-            return YES;
-        }
-        else {
-            return NO;
-        }
-    }];
-    [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
-        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectionKey] boolValue]);
-        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        XCTAssertTrue(CMTimeGetSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue]) > 1795);      // Playback start near the end
-        return YES;
-    }];
-    [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
-        XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectionKey] boolValue]);
-        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        XCTAssertFalse([notification.userInfo[SRGMediaPlayerInterruptionKey] boolValue]);
-        XCTAssertTrue(CMTimeGetSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue]) > 1795);      // Playback start near the end
-        return YES;
-    }];
-    
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
-    
-    [self waitForExpectationsWithTimeout:20. handler:nil];
-    
-    XCTAssertNil(self.mediaPlayerController.currentSegment);
-    XCTAssertNil(self.mediaPlayerController.selectedSegment);
-}
-
 - (void)testSelectedSegmentAtStreamEnd
 {
     // Precise timing information gathered from the stream itself
