@@ -260,9 +260,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param URL               The URL to play.
  *  @param time              The time to start at. Use `kCMTimeZero` to start at the default location (see discussion
- *                           below). This value is also used as fallback if the provided time is invalid. Note that setting
- *                           a start time outside the actual media time range will seek to the nearest location (either zero
- *                           or the end time).
+ *                           below). This value is also used as fallback if the provided time is invalid. If the specified
+ *                           time lies outside the media time range, the location at which playback actually begins is
+ *                           undefined (depends on iOS versions).
  *  @param segments          A segment list.
  *  @param userInfo          A dictionary to associate arbitrary information with the media being played (for later retrieval).
  *                           This information stays associated with the player controller until it is reset.
@@ -278,9 +278,6 @@ NS_ASSUME_NONNULL_BEGIN
  *              Use `kCMTimeZero` to start at the beginning of an on-demand stream. For DVR streams, using `kCMTimeZero` will
  *              start the stream at its end. For times smaller than the chunk size, playback might start at the end of the stream
  *              (iOS 11 and above) or at the specified location (older iOS versions).
- *
- *              If the specified time lies outside the media time range, the location at which playback actually begins is
- *              undefined.
  */
 - (void)prepareToPlayURL:(NSURL *)URL
                   atTime:(CMTime)time
@@ -327,7 +324,7 @@ NS_ASSUME_NONNULL_BEGIN
  *              won't take place, and the completion handler won't be called.
  *
  *              If the specified time lies outside the media time range, the location at which playback actually begins is
- *              undefined.
+ *              undefined (depends on iOS versions).
  *
  *              Refer to `-[AVPlayer seekToTime:toleranceBefore:toleranceAfter:completionHandler:]` documentation
  *              for more information about seek tolerances. Attempting to seek to a blocked segment will skip the segment
