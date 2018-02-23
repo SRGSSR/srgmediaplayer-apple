@@ -1181,33 +1181,6 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-- (void)testSeekOutsideValidRangeRobustness
-{
-    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    
-    [self.mediaPlayerController playURL:OnDemandTestURL()];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateEnded;
-    }];
-    
-    for (NSInteger i = 0; i < 10; ++i) {
-        [self.mediaPlayerController seekEfficientlyToTime:CMTimeMakeWithSeconds(10. * i, NSEC_PER_SEC) withCompletionHandler:^(BOOL finished) {
-            XCTAssertFalse(finished);
-        }];
-        [NSThread sleepForTimeInterval:0.1];
-    }
-    [self.mediaPlayerController seekEfficientlyToTime:CMTimeMakeWithSeconds(9999999999., NSEC_PER_SEC) withCompletionHandler:^(BOOL finished) {
-        XCTAssertTrue(finished);
-    }];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-}
-
 - (void)testPlaySeekAndPlayWhileSeeking
 {
     [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
