@@ -13,8 +13,6 @@
 
 static void commonInit(SRGTimeSlider *self);
 
-// Cannot sadly use NSDateComponentsFormatter, impossible to get compact strings with different components if hours must
-// be displayed or not
 static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 {
     if (isnan(seconds)) {
@@ -24,18 +22,25 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
         return seconds >= 0 ? @"∞" : @"-∞";
     }
     
-    div_t qr = div((int)round(ABS(seconds)), 60);
-    int second = qr.rem;
-    qr = div(qr.quot, 60);
-    int minute = qr.rem;
-    int hour = qr.quot;
-    
-    BOOL negative = seconds < 0;
-    if (hour > 0) {
-        return [NSString stringWithFormat:@"%@%02d:%02d:%02d", negative ? @"-" : @"", hour, minute, second];
+    if (fabs(seconds) < 60. * 60) {
+        static NSDateComponentsFormatter *s_dateComponentsFormatter;
+        static dispatch_once_t s_onceToken;
+        dispatch_once(&s_onceToken, ^{
+            s_dateComponentsFormatter = [[NSDateComponentsFormatter alloc] init];
+            s_dateComponentsFormatter.allowedUnits = NSCalendarUnitSecond | NSCalendarUnitMinute;
+            s_dateComponentsFormatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorPad;
+        });
+        return [s_dateComponentsFormatter stringFromTimeInterval:seconds];
     }
     else {
-        return [NSString stringWithFormat:@"%@%02d:%02d", negative ? @"-" : @"", minute, second];
+        static NSDateComponentsFormatter *s_dateComponentsFormatter;
+        static dispatch_once_t s_onceToken;
+        dispatch_once(&s_onceToken, ^{
+            s_dateComponentsFormatter = [[NSDateComponentsFormatter alloc] init];
+            s_dateComponentsFormatter.allowedUnits = NSCalendarUnitSecond | NSCalendarUnitMinute | NSCalendarUnitHour;
+            s_dateComponentsFormatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorPad;
+        });
+        return [s_dateComponentsFormatter stringFromTimeInterval:seconds];
     }
 }
 
