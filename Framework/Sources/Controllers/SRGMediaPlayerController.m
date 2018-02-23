@@ -783,6 +783,17 @@ withToleranceBefore:(CMTime)toleranceBefore
         return;
     }
     
+    // Ensure valid times are used only. Starting with iOS 11, attempting to seek far enough after the end of a media
+    // fails. We never want seek requests to fail, except if another seek request is made, therefore times must be
+    // valid
+    CMTimeRange timeRange = self.timeRange;
+    if (CMTIMERANGE_IS_INVALID(timeRange) || CMTIMERANGE_IS_EMPTY(timeRange)) {
+        time = kCMTimeZero;
+    }
+    else {
+        time = CMTimeClampToRange(time, timeRange);
+    }
+    
     self.targetSegment = targetSegment;
     
     // Trap attempts to seek to blocked segments early. We cannot only rely on playback time observers to detect a blocked segment
