@@ -1164,26 +1164,21 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testSeekOutsideValidRange
 {
-    if (@available(iOS 11, *)) {
-        NSLog(@"[INFO] The %@ test has been disabled on iOS 11", NSStringFromSelector(_cmd));
-    }
-    else {
-        [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-            return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-        }];
-        
-        [self.mediaPlayerController playURL:OnDemandTestURL()];
-        
-        [self waitForExpectationsWithTimeout:30. handler:nil];
-        
-        [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-            return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateEnded;
-        }];
-        
-        [self.mediaPlayerController seekPreciselyToTime:CMTimeMakeWithSeconds(9999999999., NSEC_PER_SEC) withCompletionHandler:nil];
-        
-        [self waitForExpectationsWithTimeout:30. handler:nil];
-    }
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateEnded;
+    }];
+    
+    [self.mediaPlayerController seekPreciselyToTime:CMTimeMakeWithSeconds(9999999999., NSEC_PER_SEC) withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testPlaySeekAndPlayWhileSeeking
