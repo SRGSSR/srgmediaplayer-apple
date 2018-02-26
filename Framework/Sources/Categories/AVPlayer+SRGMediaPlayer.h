@@ -15,6 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)srg_playImmediatelyIfPossible;
 
+/**
+ *  Same as `-seekToTime:toleranceBefore:toleranceAfter:completionHandler:`, but counting the number of seek requests still
+ *  pending.
+ */
+- (void)srg_countedSeekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL finished, NSInteger pendingSeekCount))completionHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END

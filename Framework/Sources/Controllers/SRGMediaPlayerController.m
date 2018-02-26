@@ -802,8 +802,15 @@ withToleranceBefore:(CMTime)toleranceBefore
         }
         self.seekTargetTime = time;
         
-        [self.player seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
-            if (finished) {
+        // Starting with iOS 11, there is no guarantee that the last seek succeeds (there was no formal documentation for this
+        // behavior on iOS 10 and below, but this was generally working). Starting with iOS 11, the following is unreliable,
+        // as the state might not be updated if the last seek gets cancelled. This is especially the case if multiple seeks
+        // are made in sequence (with some small delay between them), the last seek occuring at the end of the stream.
+        //
+        // To be able to reset the state no matter the last seek finished, we use a special category method which keeps count
+        // of the count of seek requests still pending.
+        [self.player srg_countedSeekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished, NSInteger pendingSeekCount) {
+            if (pendingSeekCount == 0) {
                 [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                 
                 self.seekStartTime = kCMTimeIndefinite;
