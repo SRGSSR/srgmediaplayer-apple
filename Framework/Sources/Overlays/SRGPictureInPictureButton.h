@@ -38,8 +38,8 @@ IB_DESIGNABLE
 /**
  *  Image customization (a default image is used if not set).
  */
-@property (nonatomic, null_resettable) IBInspectable UIImage *startImage;
-@property (nonatomic, null_resettable) IBInspectable UIImage *stopImage;
+@property (nonatomic, null_resettable) UIImage *startImage;
+@property (nonatomic, null_resettable) UIImage *stopImage;
 
 /**
  *  When set to `YES`, force the button to be always hidden, even if subtitles are available.

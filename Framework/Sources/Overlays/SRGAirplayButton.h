@@ -34,7 +34,7 @@ IB_DESIGNABLE
 /**
  *  Image customization (a default image is used if not set).
  */
-@property (nonatomic, null_resettable) IBInspectable UIImage *image;
+@property (nonatomic, null_resettable) UIImage *image;
 
 /**
  *  The tint color to apply when Airplay is active (if nil, then the usual blue tint color is applied).

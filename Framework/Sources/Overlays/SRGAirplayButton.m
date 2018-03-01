@@ -148,6 +148,17 @@ static void commonInit(SRGAirplayButton *self);
     }
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+ 
+    // Ensure proper resizing behavior of the volume view AirPlay button.
+    self.volumeView.frame = self.bounds;
+    
+    UIButton *airplayButton = self.volumeView.srg_airplayButton;
+    airplayButton.frame = self.volumeView.bounds;
+}
+
 - (CGSize)intrinsicContentSize
 {
     if (self.fakeInterfaceBuilderButton) {
@@ -260,7 +271,6 @@ static void commonInit(SRGAirplayButton *self)
 {
     MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:self.bounds];
     volumeView.showsVolumeSlider = NO;
-    volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:volumeView];
     self.volumeView = volumeView;
     
