@@ -293,7 +293,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     
     // Value label
     if ([self.delegate respondsToSelector:@selector(timeSlider:labelForValue:time:)]) {
-        self.valueLabel.text = [self.delegate timeSlider:self labelForValue:self.value time:time];
+        self.valueLabel.attributedText = [self.delegate timeSlider:self labelForValue:self.value time:time];
         
         if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityLabelForValue:time:)]) {
             self.valueLabel.accessibilityLabel = [self.delegate timeSlider:self accessibilityLabelForValue:self.value time:time];
@@ -321,7 +321,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     
     // Time left label
     if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftLabelForValue:time:)]) {
-        self.timeLeftValueLabel.text = [self.delegate timeSlider:self timeLeftLabelForValue:self.value time:time];
+        self.timeLeftValueLabel.attributedText = [self.delegate timeSlider:self timeLeftLabelForValue:self.value time:time];
         
         if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftAccessibilityLabelForValue:time:)]) {
             self.timeLeftValueLabel.accessibilityLabel = [self.delegate timeSlider:self timeLeftAccessibilityLabelForValue:self.value time:time];

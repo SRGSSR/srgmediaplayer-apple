@@ -143,7 +143,7 @@ IB_DESIGNABLE
  *  @param value  The corresponding slider value (in seconds).
  *  @param time   The corresponding time.
  */
-- (nullable NSString *)timeSlider:(SRGTimeSlider *)slider labelForValue:(float)value time:(CMTime)time;
+- (nullable NSAttributedString *)timeSlider:(SRGTimeSlider *)slider labelForValue:(float)value time:(CMTime)time;
 
 /**
  *  Implement to customise the accessibility label attached to `valueLabel`. If this method is not implemented,
@@ -165,7 +165,7 @@ IB_DESIGNABLE
  *  @param value  The corresponding slider value (in seconds).
  *  @param time   The corresponding time.
  */
-- (nullable NSString *)timeSlider:(SRGTimeSlider *)slider timeLeftLabelForValue:(float)value time:(CMTime)time;
+- (nullable NSAttributedString *)timeSlider:(SRGTimeSlider *)slider timeLeftLabelForValue:(float)value time:(CMTime)time;
 
 /**
  *  Implement to customise the accessibility label attached to `timeLeftValueLabel`. If this method is not implemented,
