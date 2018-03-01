@@ -58,19 +58,9 @@ IB_DESIGNABLE
 @property (nonatomic, weak, nullable) IBOutlet UILabel *timeLeftValueLabel;
 
 /**
- *  The remaining time string displayed in the corresponding label.
- */
-@property (nonatomic, readonly, copy, nullable) NSString *timeLeftValueString;
-
-/**
  *  Outlet which must be bound to the label displaying the current time.
  */
 @property (nonatomic, weak, nullable) IBOutlet UILabel *valueLabel;
-
-/**
- *  The current time string displayed in the corresponding label.
- */
-@property (nonatomic, readonly, copy, nullable) NSString *valueString;
 
 /**
  *  Bar border color (defaults to black).
