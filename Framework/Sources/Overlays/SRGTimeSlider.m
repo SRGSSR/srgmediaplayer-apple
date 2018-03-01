@@ -228,7 +228,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         self.userInteractionEnabled = NO;
     }
     
-    [self.delegate timeSlider:self isMovingToPlaybackTime:time withValue:self.value interactive:NO];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToPlaybackTime:withValue:interactive:)]) {
+        [self.delegate timeSlider:self isMovingToPlaybackTime:time withValue:self.value interactive:NO];
+    }
     
     [self setNeedsDisplay];
     [self updateTimeRangeLabels];
@@ -338,7 +340,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         [self.mediaPlayerController seekEfficientlyToTime:time withCompletionHandler:nil];
     }
     
-    [self.delegate timeSlider:self isMovingToPlaybackTime:time withValue:self.value interactive:YES];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToPlaybackTime:withValue:interactive:)]) {
+        [self.delegate timeSlider:self isMovingToPlaybackTime:time withValue:self.value interactive:YES];
+    }
     
     return continueTracking;
 }
@@ -473,7 +477,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         self.value = value;
         self.maximumValue = value;
         
-        [self.delegate timeSlider:self isMovingToPlaybackTime:self.time withValue:self.value interactive:NO];
+        if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToPlaybackTime:withValue:interactive:)]) {
+            [self.delegate timeSlider:self isMovingToPlaybackTime:self.time withValue:self.value interactive:NO];
+        }
         
         [self setNeedsDisplay];
         [self updateTimeRangeLabels];

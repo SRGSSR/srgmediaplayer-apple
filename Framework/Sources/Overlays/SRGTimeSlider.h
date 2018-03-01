@@ -123,6 +123,8 @@ IB_DESIGNABLE
  */
 @protocol SRGTimeSliderDelegate <NSObject>
 
+@optional
+
 /**
  *  Called when the slider is moved, either interactively or as the result of normal playback.
  *
