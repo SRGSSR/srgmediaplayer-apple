@@ -233,7 +233,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
     
     [self setNeedsDisplay];
-    [self updateTimeRangeLabels];
+    [self updateTimeRangeLabelsWithTime:time];
 }
 
 - (CMTime)time
@@ -277,39 +277,74 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         || (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR && (self.maximumValue - self.value < self.mediaPlayerController.liveTolerance));
 }
 
-- (BOOL)isNotReadyToDisplayValues
+- (BOOL)isReadyToDisplayValues
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
 
-    return (! playerItem || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle
-            || self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded
-            || playerItem.status != AVPlayerItemStatusReadyToPlay
-            || self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeUnknown);
+    return (playerItem && self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateIdle
+            && self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateEnded
+            && playerItem.status == AVPlayerItemStatusReadyToPlay
+            && self.mediaPlayerController.streamType != SRGMediaPlayerStreamTypeUnknown);
 }
 
-- (void)updateTimeRangeLabels
+- (void)updateTimeRangeLabelsWithTime:(CMTime)time
 {
-    if ([self isNotReadyToDisplayValues]) {
-        self.valueLabel.text = @"--:--";
-        self.valueLabel.accessibilityLabel = nil;
-        
-        self.timeLeftValueLabel.text = @"--:--";
-        self.timeLeftValueLabel.accessibilityLabel = nil;
-        return;
-    }
+    BOOL isReady = [self isReadyToDisplayValues];
     
-    if (self.live) {
-        self.valueLabel.text = @"--:--";
-        self.valueLabel.accessibilityLabel = nil;
+    // Value label
+    if ([self.delegate respondsToSelector:@selector(timeSlider:labelForValue:time:)]) {
+        self.valueLabel.text = [self.delegate timeSlider:self labelForValue:self.value time:time];
         
-        self.timeLeftValueLabel.text = SRGMediaPlayerLocalizedString(@"Live", @"Very short text on left time label when playing a live stream");
+        if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityLabelForValue:time:)]) {
+            self.valueLabel.accessibilityLabel = [self.delegate timeSlider:self accessibilityLabelForValue:self.value time:time];
+        }
+        else {
+            self.valueLabel.accessibilityLabel = nil;
+        }
     }
     else {
-        self.valueLabel.text = SRGTimeSliderFormatter(self.value);
-        self.valueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time elapsed"), SRGTimeSliderAccessibilityFormatter(self.value)];
+        if (isReady) {
+            if (self.live) {
+                self.valueLabel.text = @"--:--";
+                self.valueLabel.accessibilityLabel = nil;
+            }
+            else {
+                self.valueLabel.text = SRGTimeSliderFormatter(self.value);
+                self.valueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time elapsed"), SRGTimeSliderAccessibilityFormatter(self.value)];
+            }
+        }
+        else {
+            self.valueLabel.text = @"--:--";
+            self.valueLabel.accessibilityLabel = nil;
+        }
+    }
+    
+    // Time left label
+    if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftLabelForValue:time:)]) {
+        self.timeLeftValueLabel.text = [self.delegate timeSlider:self timeLeftLabelForValue:self.value time:time];
         
-        self.timeLeftValueLabel.text = SRGTimeSliderFormatter(self.value - self.maximumValue);
-        self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
+        if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftAccessibilityLabelForValue:time:)]) {
+            self.timeLeftValueLabel.accessibilityLabel = [self.delegate timeSlider:self timeLeftAccessibilityLabelForValue:self.value time:time];
+        }
+        else {
+            self.timeLeftValueLabel.accessibilityLabel = nil;
+        }
+    }
+    else {
+        if (isReady) {
+            if (self.live) {
+                self.timeLeftValueLabel.text = SRGMediaPlayerLocalizedString(@"Live", @"Very short text on left time label when playing a live stream");
+                self.timeLeftValueLabel.accessibilityLabel = nil;
+            }
+            else {
+                self.timeLeftValueLabel.text = SRGTimeSliderFormatter(self.value - self.maximumValue);
+                self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
+            }
+        }
+        else {
+            self.timeLeftValueLabel.text = @"--:--";
+            self.timeLeftValueLabel.accessibilityLabel = nil;
+        }
     }
 }
 
@@ -329,12 +364,12 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     BOOL continueTracking = [super continueTrackingWithTouch:touch withEvent:event];
     
+    CMTime time = self.time;
+    
     if (continueTracking && [self isDraggable]) {
-        [self updateTimeRangeLabels];
+        [self updateTimeRangeLabelsWithTime:time];
         [self setNeedsDisplay];
     }
-    
-    CMTime time = self.time;
     
     if (self.seekingDuringTracking) {
         [self.mediaPlayerController seekEfficientlyToTime:time withCompletionHandler:nil];
@@ -482,7 +517,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         }
         
         [self setNeedsDisplay];
-        [self updateTimeRangeLabels];
+        [self updateTimeRangeLabelsWithTime:self.time];
     }
 }
 
@@ -502,7 +537,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 - (NSString *)accessibilityLabel
 {
-    if ([self isNotReadyToDisplayValues]) {
+    if (! [self isReadyToDisplayValues]) {
         return SRGMediaPlayerAccessibilityLocalizedString(@"No playback", @"Slider label when nothing to play");
     }
     else if (self.live) {
