@@ -22,7 +22,7 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
         return seconds >= 0 ? @"∞" : @"-∞";
     }
     
-    if (fabs(seconds) < 60. * 60) {
+    if (fabs(seconds) < 60. * 60.) {
         static NSDateComponentsFormatter *s_dateComponentsFormatter;
         static dispatch_once_t s_onceToken;
         dispatch_once(&s_onceToken, ^{
@@ -204,6 +204,17 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
                       CGRectGetMinY(trackFrame),
                       CGRectGetMaxX(trackFrame) - CGRectGetMidX(thumbRect),
                       CGRectGetHeight(trackFrame));
+}
+
+#pragma mark Overrides
+
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
+    [super willMoveToWindow:newWindow];
+    
+    if (newWindow) {
+        [self updateDisplayWithTime:self.time];
+    }
 }
 
 #pragma mark Information display
