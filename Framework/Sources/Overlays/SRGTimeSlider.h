@@ -136,7 +136,7 @@ IB_DESIGNABLE
 - (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(float)value interactive:(BOOL)interactive;
 
 /**
- *  Implement to customise the value displayed by the slider `valueLabel`. If not implemented, a default presentation.
+ *  Implement to customise the value displayed by the slider `valueLabel`. If not implemented, a default presentation
  *  is used.
  *
  *  @param slider The slider for which the call is made.
@@ -158,7 +158,7 @@ IB_DESIGNABLE
 - (nullable NSString *)timeSlider:(SRGTimeSlider *)slider accessibilityLabelForValue:(float)value time:(CMTime)time;
 
 /**
- *  Implement to customise the value displayed by the slider `timeLeftValueLabel`. If not implemented, a default presentation.
+ *  Implement to customise the value displayed by the slider `timeLeftValueLabel`. If not implemented, a default presentation
  *  is used.
  *
  *  @param slider The slider for which the call is made.
