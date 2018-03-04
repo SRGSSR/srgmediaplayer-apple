@@ -310,28 +310,23 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
             self.valueLabel.accessibilityLabel = [self.delegate timeSlider:self accessibilityLabelForValue:self.value time:time];
         }
         else {
-            self.valueLabel.accessibilityLabel = self.valueLabel.attributedText.string;
+            self.valueLabel.accessibilityLabel = nil;
         }
     }
     else {
-        NSString *accessibilityLabel = nil;
-        if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityLabelForValue:time:)]) {
-            accessibilityLabel = [self.delegate timeSlider:self accessibilityLabelForValue:self.value time:time];
-        }
-        
         if (isReady) {
             if (self.live) {
                 self.valueLabel.text = @"--:--";
-                self.valueLabel.accessibilityLabel = accessibilityLabel ?: nil;
+                self.valueLabel.accessibilityLabel = nil;
             }
             else {
                 self.valueLabel.text = SRGTimeSliderFormatter(self.value);
-                self.valueLabel.accessibilityLabel = accessibilityLabel ?: [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time elapsed"), SRGTimeSliderAccessibilityFormatter(self.value)];
+                self.valueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ played", @"Label on slider for time elapsed"), SRGTimeSliderAccessibilityFormatter(self.value)];
             }
         }
         else {
             self.valueLabel.text = @"--:--";
-            self.valueLabel.accessibilityLabel = accessibilityLabel ?: nil;
+            self.valueLabel.accessibilityLabel = nil;
         }
     }
     
@@ -343,28 +338,23 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
             self.timeLeftValueLabel.accessibilityLabel = [self.delegate timeSlider:self timeLeftAccessibilityLabelForValue:self.value time:time];
         }
         else {
-            self.timeLeftValueLabel.accessibilityLabel = self.timeLeftValueLabel.attributedText.string;
+            self.timeLeftValueLabel.accessibilityLabel = nil;
         }
     }
     else {
-        NSString *accessibilityLabel = nil;
-        if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftAccessibilityLabelForValue:time:)]) {
-            accessibilityLabel = [self.delegate timeSlider:self timeLeftAccessibilityLabelForValue:self.value time:time];
-        }
-        
         if (isReady) {
             if (self.live) {
                 self.timeLeftValueLabel.text = SRGMediaPlayerLocalizedString(@"Live", @"Very short text on left time label when playing a live stream");
-                self.timeLeftValueLabel.accessibilityLabel = accessibilityLabel ?: nil;
+                self.timeLeftValueLabel.accessibilityLabel = nil;
             }
             else {
                 self.timeLeftValueLabel.text = SRGTimeSliderFormatter(self.value - self.maximumValue);
-                self.timeLeftValueLabel.accessibilityLabel = accessibilityLabel ?: [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
+                self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
             }
         }
         else {
             self.timeLeftValueLabel.text = @"--:--";
-            self.timeLeftValueLabel.accessibilityLabel = accessibilityLabel ?: nil;
+            self.timeLeftValueLabel.accessibilityLabel = nil;
         }
     }
 }
