@@ -241,7 +241,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Optional block which gets called right before player destruction (player changes from not `nil` to `nil`).
  */
-@property (nonatomic, copy, nullable) void (^playerDestructionBlock)(void);
+@property (nonatomic, copy, nullable) void (^playerDestructionBlock)(AVPlayer *player);
 
 /**
  *  Ask the player to reload its configuration by calling the associated configuration block, if any. Does nothing if
