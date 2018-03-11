@@ -116,6 +116,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemFailedToPlayToEndTimeNotification
                                                       object:_player.currentItem];
+                                                      
+        self.playerDestructionBlock ? self.playerDestructionBlock(_player) : nil;
     }
     
     _player = player;
@@ -242,9 +244,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
     }
-    else if (hadPlayer) {
-        self.playerDestructionBlock ? self.playerDestructionBlock() : nil;
-    }
+    
 }
 
 - (AVPlayerLayer *)playerLayer
