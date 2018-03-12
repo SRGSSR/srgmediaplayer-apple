@@ -244,7 +244,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
     }
-    
 }
 
 - (AVPlayerLayer *)playerLayer
