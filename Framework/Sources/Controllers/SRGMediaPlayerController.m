@@ -571,9 +571,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                    atTime:(CMTime)time
-             withSegments:(nullable NSArray<id<SRGSegment>> *)segments
-                 userInfo:(nullable NSDictionary *)userInfo
-        completionHandler:(nullable void (^)(void))completionHandler
+             withSegments:(NSArray<id<SRGSegment>> *)segments
+                 userInfo:(NSDictionary *)userInfo
+        completionHandler:(void (^)(void))completionHandler
 {
     [self prepareToPlayItem:item URL:nil atTime:time withSegments:segments targetSegment:nil userInfo:userInfo completionHandler:completionHandler];
 }
@@ -724,8 +724,8 @@ withToleranceBefore:(CMTime)toleranceBefore
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                   atIndex:(NSInteger)index
                inSegments:(NSArray<id<SRGSegment>> *)segments
-             withUserInfo:(nullable NSDictionary *)userInfo
-        completionHandler:(nullable void (^)(void))completionHandler
+             withUserInfo:(NSDictionary *)userInfo
+        completionHandler:(void (^)(void))completionHandler
 {
     id<SRGSegment> targetSegment = (index >= 0 && index < segments.count) ? segments[index] : nil;
     [self prepareToPlayItem:item URL:nil atTime:kCMTimeZero withSegments:segments targetSegment:targetSegment userInfo:userInfo completionHandler:completionHandler];
