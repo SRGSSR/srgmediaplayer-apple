@@ -292,6 +292,15 @@ NS_ASSUME_NONNULL_BEGIN
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
+ *  Same as `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`, but with a player item.
+ */
+- (void)prepareToPlayItem:(AVPlayerItem *)item
+                   atTime:(CMTime)time
+             withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+                 userInfo:(nullable NSDictionary *)userInfo
+        completionHandler:(nullable void (^)(void))completionHandler;
+
+/**
  *  Start playback. Does nothing if no content URL is attached to the controller.
  */
 - (void)play;
@@ -360,9 +369,16 @@ withToleranceBefore:(CMTime)toleranceBefore
 @property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
 
 /**
- *  The URL of the content currently being loaded into the player.
+ *  The URL of the content currently loaded into the player.
+ *
+ *  @discussion `nil` when playback has been started from an `AVPlayerItem`.
  */
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
+
+/**
+ *  The item currently loaded into the player.
+ */
+@property (nonatomic, readonly, nullable) AVPlayerItem *playerItem;
 
 /**
  *  The segments which have been loaded into the player.
@@ -469,14 +485,21 @@ withToleranceBefore:(CMTime)toleranceBefore
 @interface SRGMediaPlayerController (Convenience)
 
 /**
- *  Prepare to play the media, starting at its default location.
+ *  Prepare to play a URL, starting at its default location.
  *
  *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
  */
 - (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Play a media, starting from the specified time. Segments and user info can be optionally provided.
+ *  Prepare to play the an item, starting at its default location.
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ */
+- (void)prepareToPlayItem:(AVPlayerItem *)item withCompletionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Play a URL, starting from the specified time. Segments and user info can be optionally provided.
  *
  *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
  *
@@ -488,11 +511,30 @@ withToleranceBefore:(CMTime)toleranceBefore
        userInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Play a media, starting at its default location.
+ *  Play an item, starting from the specified time. Segments and user info can be optionally provided.
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *
+ *  @discussion The player immediately reaches the playing state.
+ */
+- (void)playItem:(AVPlayerItem *)item
+          atTime:(CMTime)time
+    withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+        userInfo:(nullable NSDictionary *)userInfo;
+
+/**
+ *  Play a URL, starting at its default location.
  *
  *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
  */
 - (void)playURL:(NSURL *)URL;
+
+/**
+ *  Play an item, starting at its default location.
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
+ */
+- (void)playItem:(AVPlayerItem *)item;
 
 /**
  *  Ask the player to change its status from pause to play or conversely, depending on the state it is in.
@@ -524,7 +566,7 @@ withToleranceBefore:(CMTime)toleranceBefore
 @interface SRGMediaPlayerController (SegmentSelection)
 
 /**
- *  Prepare to play the media, starting at the beginning of the segment specified by `index`. User info can be optionally provided.
+ *  Prepare to play a URL, starting at the beginning of the segment specified by `index`. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
  *
@@ -539,7 +581,22 @@ withToleranceBefore:(CMTime)toleranceBefore
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Play a media, starting at the specified segment. User info can be optionally provided.
+ *  Prepare to play an item, starting at the beginning of the segment specified by `index`. User info can be optionally provided.
+ *
+ *  @param index The index of the segment at which playback will start.
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *
+ *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ */
+- (void)prepareToPlayItem:(AVPlayerItem *)item
+                  atIndex:(NSInteger)index
+               inSegments:(NSArray<id<SRGSegment>> *)segments
+             withUserInfo:(nullable NSDictionary *)userInfo
+        completionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Play a URL, starting at the specified segment. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
  *
@@ -551,6 +608,20 @@ withToleranceBefore:(CMTime)toleranceBefore
         atIndex:(NSInteger)index
      inSegments:(NSArray<id<SRGSegment>> *)segments
    withUserInfo:(nullable NSDictionary *)userInfo;
+
+/**
+ *  Play an item, starting at the specified segment. User info can be optionally provided.
+ *
+ *  @param index The index of the segment at which playback will start.
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
+ *
+ *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ */
+- (void)playItem:(AVPlayerItem *)item
+         atIndex:(NSInteger)index
+      inSegments:(NSArray<id<SRGSegment>> *)segments
+    withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Seek to the beginning of the specified segment.

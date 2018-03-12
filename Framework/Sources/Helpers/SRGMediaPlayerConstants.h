@@ -148,6 +148,7 @@ OBJC_EXTERN NSString * const SRGMediaPlayerDidSkipBlockedSegmentNotification;   
 OBJC_EXTERN NSString * const SRGMediaPlayerPlaybackStateKey;                                // Key to access the current playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value).
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousPlaybackStateKey;                        // Key to access the previous playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value).
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousContentURLKey;                           // Key to access the previously played URL.
+OBJC_EXTERN NSString * const SRGMediaPlayerPreviousPlayerItemKey;                           // Key to access the previously played `AVPlayerItem`.
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousTimeRangeKey;                            // Key to access the previous time range as an `NSValue` (wrapping an `CMTimeRange` value).
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousMediaTypeKey;                            // Key to access the previous media type as an `NSNumber` (wrapping an `SRGMediaPlayerMediaType` value).
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousStreamTypeKey;                           // Key to access the previous stream type as an `NSNumber` (wrapping an `SRGMediaPlayerStreamType` value).
