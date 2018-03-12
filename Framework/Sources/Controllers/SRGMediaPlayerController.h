@@ -123,12 +123,14 @@ NS_ASSUME_NONNULL_BEGIN
  *    - Muting the player.
  *    - etc.
  *
- *  Since the lifecycle of the `AVPlayer` instance is managed by `SRGMediaPlayerController`, specific customization
- *  points have been exposed. Those take the form of optional blocks to which the player is provided as parameter:
+ *  In the course of a controller lifetime, the `player` property might change several times, e.g. when a new media is
+ *  played or when playback is stopped. Consequently, `SRGMediaPlayerController` provides lifecycle hooks so that you
+ *  can reliably perform additional setup when the internal `AVPlayer` instance is created or destroyed. Those take the
+ *  form of optional blocks to which the player is provided as parameter:
  *    - `playerCreationBlock`: This block is called right after player creation.
  *    - `playerDestructionBlock`: This block is called right before player destruction.
- *    - `playerConfigurationBlock`: This block is called right after player creation, and each time you call the
- *                                  `-reloadPlayerConfiguration` method.
+ *    - `playerConfigurationBlock`: Specific configuration block called when `-reloadPlayerConfiguration` is called. For
+ *                                  consistency, this block is also called right after player creation as well.
  *
  *  ## Player events
  *
@@ -207,7 +209,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The instance of the player. You should not control playback directly on this instance, otherwise the behavior is undefined.
  *  You can still use if for any other purposes, e.g. getting information about the player, setting observers, etc. If you need
- *  to alter properties of the player, you should use the lifecycle blocks hooks instead (see below).
+ *  to alter properties of the player reliably, you should use the lifecycle blocks hooks instead (see below).
  */
 @property (nonatomic, readonly, nullable) AVPlayer *player;
 
@@ -228,18 +230,22 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 /**
- *  Optional block which gets called right after player creation (player changes from `nil` to not `nil`).
+ *  Optional block which gets called right after internal player creation (player changes from `nil` to not `nil`).
+ *
+ *  @discussion This block can be called several times over a controller lifetime.
  */
 @property (nonatomic, copy, nullable) void (^playerCreationBlock)(AVPlayer *player);
 
 /**
- *  Optional block which gets called right after player creation, when the player changes, or when the configuration is 
- *  reloaded by calling `-reloadPlayerConfiguration`. Does not get called when the player is set to `nil`.
+ *  Optional block which gets called right after internal player creation, when the player changes, or when the
+ *  configuration is reloaded by calling `-reloadPlayerConfiguration`. Does not get called when the player is set to `nil`.
  */
 @property (nonatomic, copy, nullable) void (^playerConfigurationBlock)(AVPlayer *player);
 
 /**
  *  Optional block which gets called right before player destruction (player changes from not `nil` to `nil`).
+ *
+ *  @discussion This block can be called several times over a controller lifetime.
  */
 @property (nonatomic, copy, nullable) void (^playerDestructionBlock)(AVPlayer *player);
 
