@@ -8,6 +8,7 @@
 #import "TestMacros.h"
 #import "XCTestCase+MediaPlayerTests.h"
 
+#import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <XCTest/XCTest.h>
@@ -1768,12 +1769,19 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     XCTestExpectation *creationExpectation = [self expectationWithDescription:@"Player created"];
+    
+    @weakify(self)
     self.mediaPlayerController.playerCreationBlock = ^(AVPlayer *player) {
+        @strongify(self)
+        XCTAssertEqual(self.mediaPlayerController.player, player);
         [creationExpectation fulfill];
     };
     
     XCTestExpectation *configurationReloadExpectation = [self expectationWithDescription:@"Configuration reloaded"];
+    
     self.mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
+        @strongify(self)
+        XCTAssertEqual(self.mediaPlayerController.player, player);
         [configurationReloadExpectation fulfill];
     };
     
@@ -1787,7 +1795,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     XCTestExpectation *destructionExpectation = [self expectationWithDescription:@"Player destroyed"];
-    self.mediaPlayerController.playerDestructionBlock = ^{
+    
+    self.mediaPlayerController.playerDestructionBlock = ^(AVPlayer *player) {
+        @strongify(self)
+        XCTAssertEqual(self.mediaPlayerController.player, player);
         [destructionExpectation fulfill];
     };
     
@@ -1830,9 +1841,10 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testConfigurationReloadBeforePlayerIsAvailable
 {
-    __weak __typeof(self) weakSelf = self;
+    @weakify(self)
     self.mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
-        _XCTPrimitiveFail(weakSelf, @"Player configuration must not be called if no player is available");
+        @strongify(self)
+        XCTFail(@"Player configuration must not be called if no player is available");
     };
     
     [self.mediaPlayerController reloadPlayerConfiguration];
@@ -1872,12 +1884,13 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     XCTestExpectation *observerExpectation = [self expectationWithDescription:@"Periodic time observer fired"];
     
-    __weak __typeof(self) weakSelf = self;
+    @weakify(self)
     __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        @strongify(self)
         [observerExpectation fulfill];
         
         // Do not fulfill the expectation more than once
-        [weakSelf.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
+        [self.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
     }];
     
     // Periodic time observers fire only when the player has been created
@@ -1892,12 +1905,13 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     
-    __weak __typeof(self) weakSelf = self;
+    @weakify(self)
     __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        @strongify(self)
         [observerExpectation fulfill];
         
         // Do not fulfill the expectation more than once
-        [weakSelf.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
+        [self.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
     }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -1907,9 +1921,10 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     [self expectationForElapsedTimeInterval:3. withHandler:nil];
     
-    __weak __typeof(self) weakSelf = self;
+    @weakify(self)
     __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
-        _XCTPrimitiveFail(weakSelf, @"Periodic time observers are not fired when the player is idle");
+        @strongify(self)
+        XCTFail(@"Periodic time observers are not fired when the player is idle");
     }];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
@@ -1924,9 +1939,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     [self.mediaPlayerController reset];
     
-    __weak __typeof(self) weakSelf = self;
+    @weakify(self)
     __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
-        _XCTPrimitiveFail(weakSelf, @"Periodic time observers are not fired when the player is idle");
+        @strongify(self)
+        XCTFail(@"Periodic time observers are not fired when the player is idle");
     }];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
