@@ -15,12 +15,7 @@ static void commonInit(SRGTimeSlider *self);
 
 static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 {
-    if (isnan(seconds)) {
-        return @"NaN";
-    }
-    else if (isinf(seconds)) {
-        return seconds >= 0 ? @"∞" : @"-∞";
-    }
+    NSCAssert(seconds >= 0, @"A non-negative number of seconds is expected");
     
     if (fabs(seconds) < 60. * 60.) {
         static NSDateComponentsFormatter *s_dateComponentsFormatter;
@@ -348,7 +343,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
                 self.timeLeftValueLabel.accessibilityLabel = nil;
             }
             else {
-                self.timeLeftValueLabel.text = SRGTimeSliderFormatter(self.value - self.maximumValue);
+                self.timeLeftValueLabel.text = [NSString stringWithFormat:@"-%@", SRGTimeSliderFormatter(self.maximumValue - self.value)];
                 self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
             }
         }
