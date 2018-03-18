@@ -282,11 +282,17 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)resetInactivityTimer
 {
-    self.inactivityTimer = (! UIAccessibilityIsVoiceOverRunning()) ? [NSTimer scheduledTimerWithTimeInterval:5.
-                                                                                                      target:self
-                                                                                                    selector:@selector(updateForInactivity:)
-                                                                                                    userInfo:nil
-                                                                                                     repeats:NO] : nil;
+    if (! UIAccessibilityIsVoiceOverRunning()) {
+        self.inactivityTimer = [NSTimer timerWithTimeInterval:5.
+                                                       target:self
+                                                     selector:@selector(updateForInactivity:)
+                                                     userInfo:nil
+                                                      repeats:NO];
+        [[NSRunLoop mainRunLoop] addTimer:self.inactivityTimer forMode:NSRunLoopCommonModes];
+    }
+    else {
+        self.inactivityTimer = nil;
+    }
 }
 
 - (void)setUserInterfaceHidden:(BOOL)hidden animated:(BOOL)animated

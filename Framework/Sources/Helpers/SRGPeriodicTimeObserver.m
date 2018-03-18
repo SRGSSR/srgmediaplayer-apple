@@ -97,11 +97,12 @@
         return;
     }
     
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:CMTimeGetSeconds(self.interval)
-                                                  target:self
-                                                selector:@selector(timerTick:)
-                                                userInfo:nil
-                                                 repeats:YES];
+    self.timer = [NSTimer timerWithTimeInterval:CMTimeGetSeconds(self.interval)
+                                         target:self
+                                       selector:@selector(timerTick:)
+                                       userInfo:nil
+                                        repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)removeObserver
