@@ -2,15 +2,19 @@
 >
 > You might also want to remove these instruction in the process, or simply remove sections which might not be relevant in your case (e.g. if you have no code sample)
 
-### Issue overview
+### Issue type
 
-> Check the correct option below
+> Only keep the relevant line below
 
-* [X] Incorrect behavior
-* [ ] Feature request
-* [ ] Crash
-* [ ] Help / documentation
-* [ ] Other: _classification_
+Incorrect behavior
+
+Feature request
+
+Crash
+
+Help / documentation
+
+Other: _classification_
 
 ### Description of the problem
 
@@ -30,10 +34,11 @@ Stack trace or log information
 
 ### Reproducibility
 
-> Check the correct option below
+> Only keep the relevant line below
 
-* [X] Always reproducible
-* [ ] Difficult to reproduce
+Always reproducible
+
+Difficult to reproduce
 
 ### Code sample
 

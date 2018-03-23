@@ -58,19 +58,9 @@ IB_DESIGNABLE
 @property (nonatomic, weak, nullable) IBOutlet UILabel *timeLeftValueLabel;
 
 /**
- *  The remaining time string displayed in the corresponding label.
- */
-@property (nonatomic, readonly, copy, nullable) NSString *timeLeftValueString;
-
-/**
  *  Outlet which must be bound to the label displaying the current time.
  */
 @property (nonatomic, weak, nullable) IBOutlet UILabel *valueLabel;
-
-/**
- *  The current time string displayed in the corresponding label.
- */
-@property (nonatomic, readonly, copy, nullable) NSString *valueString;
 
 /**
  *  Bar border color (defaults to black).
@@ -133,15 +123,60 @@ IB_DESIGNABLE
  */
 @protocol SRGTimeSliderDelegate <NSObject>
 
+@optional
+
 /**
  *  Called when the slider is moved, either interactively or as the result of normal playback.
  *
- *  @param slider      The slider for which the event is received.
+ *  @param slider      The slider for which the call is made.
  *  @param time        The time at which the slider was moved.
- *  @param value       The corresponding slider value.
+ *  @param value       The corresponding slider value (in seconds).
  *  @param interactive Whether the change is a result of a user interfaction (`YES`) or not.
  */
-- (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(CGFloat)value interactive:(BOOL)interactive;
+- (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(float)value interactive:(BOOL)interactive;
+
+/**
+ *  Implement to customise the value displayed by the slider `valueLabel`. If not implemented, a default presentation
+ *  is used.
+ *
+ *  @param slider The slider for which the call is made.
+ *  @param value  The corresponding slider value (in seconds).
+ *  @param time   The corresponding time.
+ */
+- (nullable NSAttributedString *)timeSlider:(SRGTimeSlider *)slider labelForValue:(float)value time:(CMTime)time;
+
+/**
+ *  Implement to customise the accessibility label attached to `valueLabel`. If this method is not implemented,
+ *  the `-timeSlider:labelForValue:time:` label is used, otherwise a default label.
+ *
+ *  @param slider The slider for which the call is made.
+ *  @param value  The corresponding slider value (in seconds).
+ *  @param time   The corresponding time.
+ *
+ *  @discussion This method is only called if `-timeSlider:labelForValue:time:` has been implemented.
+ */
+- (nullable NSString *)timeSlider:(SRGTimeSlider *)slider accessibilityLabelForValue:(float)value time:(CMTime)time;
+
+/**
+ *  Implement to customise the value displayed by the slider `timeLeftValueLabel`. If not implemented, a default presentation
+ *  is used.
+ *
+ *  @param slider The slider for which the call is made.
+ *  @param value  The corresponding slider value (in seconds).
+ *  @param time   The corresponding time.
+ */
+- (nullable NSAttributedString *)timeSlider:(SRGTimeSlider *)slider timeLeftLabelForValue:(float)value time:(CMTime)time;
+
+/**
+ *  Implement to customise the accessibility label attached to `timeLeftValueLabel`. If this method is not implemented,
+ *  the `-timeSlider:timeLeftLabelForValue:time:` label is used, otherwise a default label.
+ *
+ *  @param slider The slider for which the call is made.
+ *  @param value  The corresponding slider value (in seconds).
+ *
+ *  @discussion This method is only called if `-timeSlider:timeLeftAccessibilityLabelForValue:time:` has been implemented.
+ */
+- (nullable NSString *)timeSlider:(SRGTimeSlider *)slider timeLeftAccessibilityLabelForValue:(float)value time:(CMTime)time;
 
 @end
 

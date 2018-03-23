@@ -43,8 +43,8 @@ IB_DESIGNABLE
 /**
  *  Image customization (a default image is used if not set).
  */
-@property (nonatomic, null_resettable) IBInspectable UIImage *playImage;
-@property (nonatomic, null_resettable) IBInspectable UIImage *pauseImage;
+@property (nonatomic, null_resettable) UIImage *playImage;
+@property (nonatomic, null_resettable) UIImage *pauseImage;
 
 /**
  *  The tint color to apply when the button is highlighted (if nil, then the tint color is applied).

@@ -123,12 +123,14 @@ NS_ASSUME_NONNULL_BEGIN
  *    - Muting the player.
  *    - etc.
  *
- *  Since the lifecycle of the `AVPlayer` instance is managed by `SRGMediaPlayerController`, specific customization
- *  points have been exposed. Those take the form of optional blocks to which the player is provided as parameter:
+ *  In the course of a controller lifetime, the `player` property might change several times, e.g. when a new media is
+ *  played or when playback is stopped. Consequently, `SRGMediaPlayerController` provides lifecycle hooks so that you
+ *  can reliably perform additional setup when the internal `AVPlayer` instance is created or destroyed. Those take the
+ *  form of optional blocks to which the player is provided as parameter:
  *    - `playerCreationBlock`: This block is called right after player creation.
  *    - `playerDestructionBlock`: This block is called right before player destruction.
- *    - `playerConfigurationBlock`: This block is called right after player creation, and each time you call the
- *                                  `-reloadPlayerConfiguration` method.
+ *    - `playerConfigurationBlock`: Specific configuration block called when `-reloadPlayerConfiguration` is called. For
+ *                                  consistency, this block is also called right after player creation as well.
  *
  *  ## Player events
  *
@@ -207,7 +209,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The instance of the player. You should not control playback directly on this instance, otherwise the behavior is undefined.
  *  You can still use if for any other purposes, e.g. getting information about the player, setting observers, etc. If you need
- *  to alter properties of the player, you should use the lifecycle blocks hooks instead (see below).
+ *  to alter properties of the player reliably, you should use the lifecycle blocks hooks instead (see below).
  */
 @property (nonatomic, readonly, nullable) AVPlayer *player;
 
@@ -228,20 +230,24 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 /**
- *  Optional block which gets called right after player creation (player changes from `nil` to not `nil`).
+ *  Optional block which gets called right after internal player creation (player changes from `nil` to not `nil`).
+ *
+ *  @discussion This block can be called several times over a controller lifetime.
  */
 @property (nonatomic, copy, nullable) void (^playerCreationBlock)(AVPlayer *player);
 
 /**
- *  Optional block which gets called right after player creation, when the player changes, or when the configuration is 
- *  reloaded by calling `-reloadPlayerConfiguration`. Does not get called when the player is set to `nil`.
+ *  Optional block which gets called right after internal player creation, when the player changes, or when the
+ *  configuration is reloaded by calling `-reloadPlayerConfiguration`. Does not get called when the player is set to `nil`.
  */
 @property (nonatomic, copy, nullable) void (^playerConfigurationBlock)(AVPlayer *player);
 
 /**
  *  Optional block which gets called right before player destruction (player changes from not `nil` to `nil`).
+ *
+ *  @discussion This block can be called several times over a controller lifetime.
  */
-@property (nonatomic, copy, nullable) void (^playerDestructionBlock)(void);
+@property (nonatomic, copy, nullable) void (^playerDestructionBlock)(AVPlayer *player);
 
 /**
  *  Ask the player to reload its configuration by calling the associated configuration block, if any. Does nothing if
@@ -260,9 +266,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param URL               The URL to play.
  *  @param time              The time to start at. Use `kCMTimeZero` to start at the default location (see discussion
- *                           below). This value is also used as fallback if the provided time is invalid. Note that setting
- *                           a start time outside the actual media time range will seek to the nearest location (either zero
- *                           or the end time).
+ *                           below). This value is also used as fallback if the provided time is invalid. If the specified
+ *                           time lies outside the media time range, the location at which playback actually begins is
+ *                           undefined (depends on iOS versions).
  *  @param segments          A segment list.
  *  @param userInfo          A dictionary to associate arbitrary information with the media being played (for later retrieval).
  *                           This information stays associated with the player controller until it is reset.
@@ -278,15 +284,21 @@ NS_ASSUME_NONNULL_BEGIN
  *              Use `kCMTimeZero` to start at the beginning of an on-demand stream. For DVR streams, using `kCMTimeZero` will
  *              start the stream at its end. For times smaller than the chunk size, playback might start at the end of the stream
  *              (iOS 11 and above) or at the specified location (older iOS versions).
- *
- *              If the specified time lies outside the media time range, the location at which playback actually begins is
- *              undefined.
  */
 - (void)prepareToPlayURL:(NSURL *)URL
                   atTime:(CMTime)time
             withSegments:(nullable NSArray<id<SRGSegment>> *)segments
                 userInfo:(nullable NSDictionary *)userInfo
        completionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Same as `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`, but with a player item.
+ */
+- (void)prepareToPlayItem:(AVPlayerItem *)item
+                   atTime:(CMTime)time
+             withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+                 userInfo:(nullable NSDictionary *)userInfo
+        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Start playback. Does nothing if no content URL is attached to the controller.
@@ -327,7 +339,7 @@ NS_ASSUME_NONNULL_BEGIN
  *              won't take place, and the completion handler won't be called.
  *
  *              If the specified time lies outside the media time range, the location at which playback actually begins is
- *              undefined.
+ *              undefined (depends on iOS versions).
  *
  *              Refer to `-[AVPlayer seekToTime:toleranceBefore:toleranceAfter:completionHandler:]` documentation
  *              for more information about seek tolerances. Attempting to seek to a blocked segment will skip the segment
@@ -357,9 +369,16 @@ withToleranceBefore:(CMTime)toleranceBefore
 @property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
 
 /**
- *  The URL of the content currently being loaded into the player.
+ *  The URL of the content currently loaded into the player.
+ *
+ *  @discussion `nil` when playback has been started from an `AVPlayerItem`.
  */
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
+
+/**
+ *  The item currently loaded into the player.
+ */
+@property (nonatomic, readonly, nullable) AVPlayerItem *playerItem;
 
 /**
  *  The segments which have been loaded into the player.
@@ -466,14 +485,21 @@ withToleranceBefore:(CMTime)toleranceBefore
 @interface SRGMediaPlayerController (Convenience)
 
 /**
- *  Prepare to play the media, starting at its default location.
+ *  Prepare to play a URL, starting at its default location.
  *
  *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
  */
 - (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Play a media, starting from the specified time. Segments and user info can be optionally provided.
+ *  Prepare to play the an item, starting at its default location.
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ */
+- (void)prepareToPlayItem:(AVPlayerItem *)item withCompletionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Play a URL, starting from the specified time. Segments and user info can be optionally provided.
  *
  *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
  *
@@ -485,11 +511,30 @@ withToleranceBefore:(CMTime)toleranceBefore
        userInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Play a media, starting at its default location.
+ *  Play an item, starting from the specified time. Segments and user info can be optionally provided.
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *
+ *  @discussion The player immediately reaches the playing state.
+ */
+- (void)playItem:(AVPlayerItem *)item
+          atTime:(CMTime)time
+    withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+        userInfo:(nullable NSDictionary *)userInfo;
+
+/**
+ *  Play a URL, starting at its default location.
  *
  *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
  */
 - (void)playURL:(NSURL *)URL;
+
+/**
+ *  Play an item, starting at its default location.
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
+ */
+- (void)playItem:(AVPlayerItem *)item;
 
 /**
  *  Ask the player to change its status from pause to play or conversely, depending on the state it is in.
@@ -521,7 +566,7 @@ withToleranceBefore:(CMTime)toleranceBefore
 @interface SRGMediaPlayerController (SegmentSelection)
 
 /**
- *  Prepare to play the media, starting at the beginning of the segment specified by `index`. User info can be optionally provided.
+ *  Prepare to play a URL, starting at the beginning of the segment specified by `index`. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
  *
@@ -536,7 +581,22 @@ withToleranceBefore:(CMTime)toleranceBefore
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Play a media, starting at the specified segment. User info can be optionally provided.
+ *  Prepare to play an item, starting at the beginning of the segment specified by `index`. User info can be optionally provided.
+ *
+ *  @param index The index of the segment at which playback will start.
+ *
+ *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *
+ *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ */
+- (void)prepareToPlayItem:(AVPlayerItem *)item
+                  atIndex:(NSInteger)index
+               inSegments:(NSArray<id<SRGSegment>> *)segments
+             withUserInfo:(nullable NSDictionary *)userInfo
+        completionHandler:(nullable void (^)(void))completionHandler;
+
+/**
+ *  Play a URL, starting at the specified segment. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
  *
@@ -548,6 +608,20 @@ withToleranceBefore:(CMTime)toleranceBefore
         atIndex:(NSInteger)index
      inSegments:(NSArray<id<SRGSegment>> *)segments
    withUserInfo:(nullable NSDictionary *)userInfo;
+
+/**
+ *  Play an item, starting at the specified segment. User info can be optionally provided.
+ *
+ *  @param index The index of the segment at which playback will start.
+ *
+ *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
+ *
+ *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ */
+- (void)playItem:(AVPlayerItem *)item
+         atIndex:(NSInteger)index
+      inSegments:(NSArray<id<SRGSegment>> *)segments
+    withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Seek to the beginning of the specified segment.
