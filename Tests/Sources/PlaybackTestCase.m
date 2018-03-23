@@ -1415,7 +1415,11 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertNotNil(self.mediaPlayerController.segments);
     XCTAssertNotNil(self.mediaPlayerController.userInfo);
     
-    [self.mediaPlayerController reset];
+    // Force an autorelease pool collection. The weak reference must be nilled automatically if the controller is correctly
+    // deallocated
+    @autoreleasepool {
+        [self.mediaPlayerController reset];
+    }
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
