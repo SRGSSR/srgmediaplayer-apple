@@ -64,7 +64,7 @@ To start playback, bind your media player controller to a `mediaPlayerController
     [super viewWillAppear:animated];
 
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
-        NSURL *mediaURL = [NSURL URLWithString:@"http://..."]:
+        NSURL *mediaURL = [NSURL URLWithString:@"http://..."];
         [self.mediaPlayerController playURL:mediaURL];
     }
 }
