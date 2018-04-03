@@ -37,7 +37,7 @@
 {
     self.mediaPlayerController.view.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
     [self.mediaPlayerController prepareToPlayURL:self.media.URL atTime:kCMTimeZero withSegments:nil userInfo:nil completionHandler:^{
-        _ready = YES;
+        self->_ready = YES;
     }];
 }
 
