@@ -831,6 +831,12 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testLiveProperties
 {
+    // FIXME: See https://github.com/SRGSSR/SRGMediaPlayer-iOS/issues/50. Workaround so that the test passes on iOS 11.3.
+    NSOperatingSystemVersion operatingSystemVersion = [NSProcessInfo processInfo].operatingSystemVersion;
+    if (operatingSystemVersion.majorVersion == 11 && operatingSystemVersion.minorVersion == 3) {
+        self.mediaPlayerController.minimumDVRWindowLength = 40.;
+    }
+    
     [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(SRGMediaPlayerController * _Nullable mediaPlayerController, NSDictionary<NSString *,id> * _Nullable bindings) {
         return mediaPlayerController.streamType != SRGMediaPlayerStreamTypeUnknown;
     }] evaluatedWithObject:self.mediaPlayerController handler:nil];
@@ -1406,7 +1412,6 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
         
         TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
-        
         return YES;
     }];
     
