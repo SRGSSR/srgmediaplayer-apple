@@ -80,16 +80,18 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testDeallocationWhilePlaying
 {
-    // If the player controller is not retained, its player and all associated resources (including the player layer) must
-    // be automatically discarded
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-unsafe-retained-assign"
-    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    
+    // If the player controller is not retained, its player and all associated resources (including the player layer) must
+    // be automatically discarded
     __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
+    __weak AVPlayer *weakPlayer = self.mediaPlayerController.player;
+    
     @autoreleasepool {
+        [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+        }];
+        
         [self.mediaPlayerController playURL:OnDemandTestURL()];
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -100,15 +102,14 @@ static NSURL *AudioOverHTTPTestURL(void)
         }];
         
         // Ensure the player is correctly deallocated
-        __weak AVPlayer *weakPlayer = self.mediaPlayerController.player;
         [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(id _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
             return weakPlayer == nil;
         }] evaluatedWithObject:self /* unused, but a non-nil argument is required  */ handler:nil];
         
         self.mediaPlayerController = nil;
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
     }
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
     
     XCTAssertNil(weakMediaPlayerController);
 #pragma clang diagnostic pop
