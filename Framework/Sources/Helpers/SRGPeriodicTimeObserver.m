@@ -20,10 +20,15 @@
 
 #pragma mark Object lifecycle
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
 - (instancetype)init
 {
     return [self initWithInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL];
 }
+
+#pragma clang diagnostic pop
 
 - (instancetype)initWithInterval:(CMTime)interval queue:(dispatch_queue_t)queue
 {

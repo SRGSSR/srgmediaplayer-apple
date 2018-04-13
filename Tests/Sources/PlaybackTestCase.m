@@ -80,37 +80,36 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testDeallocationWhilePlaying
 {
-    // If the player controller is not retained, its player and all associated resources (including the player layer) must
-    // be automatically discarded
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-unsafe-retained-assign"
-    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    
+    // If the player controller is not retained, its player and all associated resources (including the player layer) must
+    // be automatically discarded
     __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
-    [self.mediaPlayerController playURL:OnDemandTestURL()];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    // When no reference retains the player, playback must gracefully stop. Deallocation will occur right afterwards.
-    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
-    }];
-    
-    // Ensure the player is correctly deallocated
     __weak AVPlayer *weakPlayer = self.mediaPlayerController.player;
-    [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(id _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return weakPlayer == nil;
-    }] evaluatedWithObject:self /* unused, but a non-nil argument is required  */ handler:nil];
     
-    // Do not retain the controller anymore, and force an autorelease pool collection. The weak reference must be nilled
-    // automatically if the controller is correctly deallocated
     @autoreleasepool {
+        [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+        }];
+        
+        [self.mediaPlayerController playURL:OnDemandTestURL()];
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
+        
+        // When no reference retains the player, playback must gracefully stop. Deallocation will occur right afterwards.
+        [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
+        }];
+        
+        // Ensure the player is correctly deallocated
+        [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(id _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return weakPlayer == nil;
+        }] evaluatedWithObject:self /* unused, but a non-nil argument is required  */ handler:nil];
+        
         self.mediaPlayerController = nil;
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
     }
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
     
     XCTAssertNil(weakMediaPlayerController);
 #pragma clang diagnostic pop
@@ -831,6 +830,12 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testLiveProperties
 {
+    // FIXME: See https://github.com/SRGSSR/SRGMediaPlayer-iOS/issues/50. Workaround so that the test passes on iOS 11.3.
+    NSOperatingSystemVersion operatingSystemVersion = [NSProcessInfo processInfo].operatingSystemVersion;
+    if (operatingSystemVersion.majorVersion == 11 && operatingSystemVersion.minorVersion == 3) {
+        self.mediaPlayerController.minimumDVRWindowLength = 40.;
+    }
+    
     [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(SRGMediaPlayerController * _Nullable mediaPlayerController, NSDictionary<NSString *,id> * _Nullable bindings) {
         return mediaPlayerController.streamType != SRGMediaPlayerStreamTypeUnknown;
     }] evaluatedWithObject:self.mediaPlayerController handler:nil];
@@ -1371,53 +1376,50 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testReset
 {
-    // Wait until playing
-    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    
-    // Pass empty collections as parameters
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withSegments:@[] userInfo:@{}];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    // Ensure the player is correctly deallocated
-    __weak AVPlayer *weakPlayer = self.mediaPlayerController.player;
-    [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(id _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return weakPlayer == nil;
-    }] evaluatedWithObject:self /* unused, but a non-nil argument is required */ handler:nil];
-    
-    // Reset the player and check its status
-    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateIdle);
-        XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        
-        XCTAssertNil(self.mediaPlayerController.contentURL);
-        XCTAssertNil(self.mediaPlayerController.playerItem);
-        XCTAssertNil(self.mediaPlayerController.segments);
-        XCTAssertNil(self.mediaPlayerController.userInfo);
-        
-        // Receive previous playback information since it has changed
-        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
-        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousPlayerItemKey]);
-        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousTimeRangeKey]);
-        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey]);
-        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey]);
-        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
-        
-        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
-        
-        return YES;
-    }];
-    
-    XCTAssertNotNil(self.mediaPlayerController.contentURL);
-    XCTAssertNotNil(self.mediaPlayerController.playerItem);
-    XCTAssertNotNil(self.mediaPlayerController.segments);
-    XCTAssertNotNil(self.mediaPlayerController.userInfo);
-    
-    // Force an autorelease pool collection. The weak reference must be nilled automatically if the controller is correctly
-    // deallocated
     @autoreleasepool {
+        // Wait until playing
+        [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+        }];
+        
+        // Pass empty collections as parameters
+        [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) withSegments:@[] userInfo:@{}];
+        
+        [self waitForExpectationsWithTimeout:30. handler:nil];
+        
+        // Ensure the player is correctly deallocated
+        __weak AVPlayer *weakPlayer = self.mediaPlayerController.player;
+        [self expectationForPredicate:[NSPredicate predicateWithBlock:^BOOL(id _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return weakPlayer == nil;
+        }] evaluatedWithObject:self /* unused, but a non-nil argument is required */ handler:nil];
+        
+        // Reset the player and check its status
+        [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+            XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateIdle);
+            XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
+            
+            XCTAssertNil(self.mediaPlayerController.contentURL);
+            XCTAssertNil(self.mediaPlayerController.playerItem);
+            XCTAssertNil(self.mediaPlayerController.segments);
+            XCTAssertNil(self.mediaPlayerController.userInfo);
+            
+            // Receive previous playback information since it has changed
+            XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
+            XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousPlayerItemKey]);
+            XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousTimeRangeKey]);
+            XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey]);
+            XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey]);
+            XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+            
+            TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
+            return YES;
+        }];
+        
+        XCTAssertNotNil(self.mediaPlayerController.contentURL);
+        XCTAssertNotNil(self.mediaPlayerController.playerItem);
+        XCTAssertNotNil(self.mediaPlayerController.segments);
+        XCTAssertNotNil(self.mediaPlayerController.userInfo);
+        
         [self.mediaPlayerController reset];
     }
     
