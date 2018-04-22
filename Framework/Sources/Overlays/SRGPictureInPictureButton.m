@@ -112,7 +112,7 @@ static void commonInit(SRGPictureInPictureButton *self);
         return self.fakeInterfaceBuilderButton.intrinsicContentSize;
     }
     else {
-        return super.intrinsicContentSize;
+        return self.button.intrinsicContentSize;
     }
 }
 

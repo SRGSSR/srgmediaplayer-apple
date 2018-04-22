@@ -97,7 +97,7 @@ static void commonInit(SRGViewModeButton *self);
         return self.fakeInterfaceBuilderButton.intrinsicContentSize;
     }
     else {
-        return super.intrinsicContentSize;
+        return self.button.intrinsicContentSize;
     }
 }
 

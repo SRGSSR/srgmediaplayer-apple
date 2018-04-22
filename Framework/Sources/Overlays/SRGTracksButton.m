@@ -113,7 +113,7 @@ static void commonInit(SRGTracksButton *self);
         return self.fakeInterfaceBuilderButton.intrinsicContentSize;
     }
     else {
-        return super.intrinsicContentSize;
+        return self.button.intrinsicContentSize;
     }
 }
 

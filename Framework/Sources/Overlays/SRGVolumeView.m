@@ -31,6 +31,11 @@
     self.volumeView = volumeView;
 }
 
+- (CGSize)intrinsicContentSize
+{
+    return self.volumeView.intrinsicContentSize;
+}
+
 #pragma mark Getters and setters
 
 - (void)setHidden:(BOOL)hidden
