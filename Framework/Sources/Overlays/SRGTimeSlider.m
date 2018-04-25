@@ -311,7 +311,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     else {
         if (isReady) {
             if (self.live) {
-                self.valueLabel.text = @"--:--";
+                self.valueLabel.text = SRGMediaPlayerNonLocalizedString(@"--:--");
                 self.valueLabel.accessibilityLabel = nil;
             }
             else {
@@ -320,7 +320,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
             }
         }
         else {
-            self.valueLabel.text = @"--:--";
+            self.valueLabel.text = SRGMediaPlayerNonLocalizedString(@"--:--");
             self.valueLabel.accessibilityLabel = nil;
         }
     }
@@ -348,7 +348,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
             }
         }
         else {
-            self.timeLeftValueLabel.text = @"--:--";
+            self.timeLeftValueLabel.text = SRGMediaPlayerNonLocalizedString(@"--:--");
             self.timeLeftValueLabel.accessibilityLabel = nil;
         }
     }
