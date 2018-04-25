@@ -165,7 +165,7 @@ static void commonInit(SRGAirplayButton *self);
         return self.fakeInterfaceBuilderButton.intrinsicContentSize;
     }
     else {
-        return super.intrinsicContentSize;
+        return self.volumeView.srg_airplayButton.intrinsicContentSize;
     }
 }
 

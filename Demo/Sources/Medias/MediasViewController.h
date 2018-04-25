@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, MediaPlayerType) {
     MediaPlayerTypeMulti
 };
 
-@interface MediasViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
+@interface MediasViewController : UITableViewController
 
 - (instancetype)initWithConfigurationFileName:(NSString *)configurationFileName mediaPlayerType:(MediaPlayerType)mediaPlayerType;
 
