@@ -10,7 +10,6 @@
 #import "SRGMotionManager.h"
 #import "SRGQuaternion.h"
 #import "SRGVideoNode.h"
-#import "UIDevice+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
 #import <SpriteKit/SpriteKit.h>
@@ -211,9 +210,7 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
     // usual `AVPlayerLayer`-based playback, `SKVideoNode`-based playback is not automatically paused. To determine
     // whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (! [UIDevice srg_mediaPlayer_isLocked]) {
-            [self.player pause];
-        }
+        [self.player pause];
     });
 }
 
