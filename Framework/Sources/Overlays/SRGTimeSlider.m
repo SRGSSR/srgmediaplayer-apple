@@ -436,9 +436,11 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     [self drawMaximumTrack:context];
     [self drawMinimumTrack:context];
     
-    for (NSValue *value in self.mediaPlayerController.player.currentItem.loadedTimeRanges) {
-        CMTimeRange timeRange = [value CMTimeRangeValue];
-        [self drawBufferringTrackForRange:timeRange context:context];
+    if (self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
+        for (NSValue *value in self.mediaPlayerController.player.currentItem.loadedTimeRanges) {
+            CMTimeRange timeRange = [value CMTimeRangeValue];
+            [self drawBufferringTrackForRange:timeRange context:context];
+        }
     }
 }
 
