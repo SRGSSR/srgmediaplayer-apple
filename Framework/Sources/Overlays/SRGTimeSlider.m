@@ -463,8 +463,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     
     CGRect trackFrame = [self trackRectForBounds:self.bounds];
     
-    CGFloat minX = CGRectGetWidth(trackFrame) / duration * CMTimeGetSeconds(timeRange.start);
-    CGFloat maxX = CGRectGetWidth(trackFrame) / duration * (CMTimeGetSeconds(timeRange.start) + CMTimeGetSeconds(timeRange.duration));
+    CGFloat minX = CGRectGetMinX(trackFrame) + CGRectGetWidth(trackFrame) / duration * CMTimeGetSeconds(timeRange.start);
+    CGFloat maxX = CGRectGetMinX(trackFrame) + CGRectGetWidth(trackFrame) / duration * CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange));
     
     CGContextSetLineWidth(context, self.trackThickness);
     CGContextSetLineCap(context, kCGLineCapRound);
