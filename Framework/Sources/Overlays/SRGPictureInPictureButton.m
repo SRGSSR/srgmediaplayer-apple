@@ -156,11 +156,9 @@ static void commonInit(SRGPictureInPictureButton *self);
 
     if (pictureInPictureController.pictureInPictureActive) {
         [pictureInPictureController stopPictureInPicture];
-        [self.button setImage:self.startImage forState:UIControlStateNormal];
     }
     else {
         [pictureInPictureController startPictureInPicture];
-        [self.button setImage:self.stopImage forState:UIControlStateNormal];
     }
 }
 
