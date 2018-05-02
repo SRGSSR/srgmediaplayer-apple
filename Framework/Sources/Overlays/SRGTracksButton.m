@@ -216,6 +216,7 @@ static void commonInit(SRGTracksButton *self);
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [fakeInterfaceBuilderButton setImage:self.image forState:UIControlStateNormal];
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
@@ -255,6 +256,7 @@ static void commonInit(SRGTracksButton *self)
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = self.bounds;
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    button.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [button addTarget:self action:@selector(showSubtitlesMenu:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
     self.button = button;
