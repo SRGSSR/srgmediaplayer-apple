@@ -43,7 +43,7 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     if (isnan(seconds) || isinf(seconds)) {
-       return nil;
+        return nil;
     }
     
     static NSDateComponentsFormatter *s_dateComponentsFormatter;
@@ -63,6 +63,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 @property (nonatomic) UIColor *overriddenThumbTintColor;
 @property (nonatomic) UIColor *overriddenMaximumTrackTintColor;
 @property (nonatomic) UIColor *overriddenMinimumTrackTintColor;
+
+@property (nonatomic) NSArray<NSValue *> *previousLoadedTimeRanges;
 
 @end
 
@@ -291,7 +293,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 - (BOOL)isReadyToDisplayValues
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-
     return (playerItem && self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateIdle
             && self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateEnded
             && playerItem.status == AVPlayerItemStatusReadyToPlay
@@ -436,9 +437,29 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     [self drawMaximumTrack:context];
     [self drawMinimumTrack:context];
     
-    for (NSValue *value in self.mediaPlayerController.player.currentItem.loadedTimeRanges) {
-        CMTimeRange timeRange = [value CMTimeRangeValue];
-        [self drawBufferringTrackForRange:timeRange context:context];
+    void (^drawTimeRanges)(NSArray<NSValue *> *) = ^(NSArray<NSValue *> *timeRanges) {
+        for (NSValue *value in timeRanges) {
+            CMTimeRange timeRange = [value CMTimeRangeValue];
+            [self drawBufferingTrackForRange:timeRange context:context];
+        }
+    };
+    
+    // In general, draw all loaded time ranges
+    if (self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
+        NSArray<NSValue *> *loadedTimeRanges = self.mediaPlayerController.player.currentItem.loadedTimeRanges;
+        drawTimeRanges(loadedTimeRanges);
+        self.previousLoadedTimeRanges = loadedTimeRanges;
+    }
+    // If the player is seeking, find whether the player is seeking within one of the previous time ranges we
+    // were displaying (though it might change during the seek). While this remains true, display the same ranges
+    // as before (even if they are not perfectly up to date), so that the track never jumps erratically.
+    else {
+        for (NSValue *timeRange in self.previousLoadedTimeRanges) {
+            if (CMTimeRangeContainsTime(timeRange.CMTimeRangeValue, self.time)) {
+                drawTimeRanges(self.previousLoadedTimeRanges);
+                return;
+            }
+        }
     }
 }
 
@@ -454,7 +475,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     CGContextStrokePath(context);
 }
 
-- (void)drawBufferringTrackForRange:(CMTimeRange)timeRange context:(CGContextRef)context
+- (void)drawBufferingTrackForRange:(CMTimeRange)timeRange context:(CGContextRef)context
 {
     CGFloat duration = CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.duration);
     if (isnan(duration)) {
@@ -498,6 +519,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 - (void)srg_timeSlider_playbackStateDidChange:(NSNotification *)notification
 {
     if (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
+        self.previousLoadedTimeRanges = nil;
+        
         float value = [self resetValue];
         self.value = value;
         self.maximumValue = value;
