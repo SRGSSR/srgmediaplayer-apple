@@ -449,7 +449,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     CGRect trackFrame = [self maximumValueImageRectForBounds:self.bounds];
     
     CGContextSetLineWidth(context, self.trackThickness);
-    CGContextSetLineCap(context, kCGLineCapButt);
+    CGContextSetLineCap(context, kCGLineCapRound);
     CGContextMoveToPoint(context, CGRectGetMinX(trackFrame), CGRectGetMidY(self.bounds));
     CGContextAddLineToPoint(context, CGRectGetMaxX(trackFrame), CGRectGetMidY(self.bounds));
     CGContextSetStrokeColorWithColor(context, self.maximumTrackTintColor.CGColor);
