@@ -156,11 +156,9 @@ static void commonInit(SRGPictureInPictureButton *self);
 
     if (pictureInPictureController.pictureInPictureActive) {
         [pictureInPictureController stopPictureInPicture];
-        [self.button setImage:self.startImage forState:UIControlStateNormal];
     }
     else {
         [pictureInPictureController startPictureInPicture];
-        [self.button setImage:self.stopImage forState:UIControlStateNormal];
     }
 }
 
@@ -185,6 +183,7 @@ static void commonInit(SRGPictureInPictureButton *self);
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [fakeInterfaceBuilderButton setImage:self.startImage forState:UIControlStateNormal];
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
@@ -231,6 +230,7 @@ static void commonInit(SRGPictureInPictureButton *self)
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = self.bounds;
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    button.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [button addTarget:self action:@selector(srg_pictureInPictureButton_togglePictureInPicture:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
     self.button = button;
