@@ -43,7 +43,7 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     if (isnan(seconds) || isinf(seconds)) {
-       return nil;
+        return nil;
     }
     
     static NSDateComponentsFormatter *s_dateComponentsFormatter;
@@ -63,6 +63,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 @property (nonatomic) UIColor *overriddenThumbTintColor;
 @property (nonatomic) UIColor *overriddenMaximumTrackTintColor;
 @property (nonatomic) UIColor *overriddenMinimumTrackTintColor;
+
+@property (nonatomic) NSArray<NSValue *> *previousLoadedTimeRanges;
 
 @end
 
@@ -136,9 +138,14 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     return self.minimumValue != self.maximumValue;
 }
 
-- (void)setBorderColor:(UIColor *)borderColor
+- (void)setTrackThickness:(CGFloat)trackThickness
 {
-    _borderColor = borderColor ?: [UIColor blackColor];
+    if (trackThickness >= 1.f) {
+        _trackThickness = trackThickness;
+    }
+    else {
+        _trackThickness = 1.f;
+    }
 }
 
 - (void)setBufferingTrackColor:(UIColor *)bufferingTrackColor
@@ -286,7 +293,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 - (BOOL)isReadyToDisplayValues
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-
     return (playerItem && self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateIdle
             && self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateEnded
             && playerItem.status == AVPlayerItemStatusReadyToPlay
@@ -428,48 +434,49 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     [super drawRect:rect];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    [self drawBar:context];
     [self drawMaximumTrack:context];
     [self drawMinimumTrack:context];
-}
-
-- (void)drawBar:(CGContextRef)context
-{
-    CGRect trackFrame = [self trackRectForBounds:self.bounds];
     
-    CGFloat lineWidth = 3.f;
+    void (^drawTimeRanges)(NSArray<NSValue *> *) = ^(NSArray<NSValue *> *timeRanges) {
+        for (NSValue *value in timeRanges) {
+            CMTimeRange timeRange = [value CMTimeRangeValue];
+            [self drawBufferingTrackForRange:timeRange context:context];
+        }
+    };
     
-    CGContextSetLineWidth(context, lineWidth);
-    CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, CGRectGetMinX(trackFrame), CGRectGetMidY(self.bounds));
-    CGContextAddLineToPoint(context, CGRectGetWidth(trackFrame), CGRectGetMidY(self.bounds));
-    CGContextSetStrokeColorWithColor(context, self.borderColor.CGColor);
-    CGContextStrokePath(context);
+    // In general, draw all loaded time ranges
+    if (self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
+        NSArray<NSValue *> *loadedTimeRanges = self.mediaPlayerController.player.currentItem.loadedTimeRanges;
+        drawTimeRanges(loadedTimeRanges);
+        self.previousLoadedTimeRanges = loadedTimeRanges;
+    }
+    // If the player is seeking, find whether the player is seeking within one of the previous time ranges we
+    // were displaying (though it might change during the seek). While this remains true, display the same ranges
+    // as before (even if they are not perfectly up to date), so that the track never jumps erratically.
+    else {
+        for (NSValue *timeRange in self.previousLoadedTimeRanges) {
+            if (CMTimeRangeContainsTime(timeRange.CMTimeRangeValue, self.time)) {
+                drawTimeRanges(self.previousLoadedTimeRanges);
+                return;
+            }
+        }
+    }
 }
 
 - (void)drawMaximumTrack:(CGContextRef)context
 {
-    CGRect trackFrame = [self trackRectForBounds:self.bounds];
+    CGRect trackFrame = [self maximumValueImageRectForBounds:self.bounds];
     
-    CGFloat lineWidth = 1.f;
-    
-    CGContextSetLineWidth(context, lineWidth);
-    CGContextSetLineCap(context, kCGLineCapButt);
-    CGContextMoveToPoint(context, CGRectGetMinX(trackFrame) + 2.f, CGRectGetMidY(self.bounds));
-    CGContextAddLineToPoint(context, CGRectGetMaxX(trackFrame) - 2.f, CGRectGetMidY(self.bounds));
+    CGContextSetLineWidth(context, self.trackThickness);
+    CGContextSetLineCap(context, kCGLineCapRound);
+    CGContextMoveToPoint(context, CGRectGetMinX(trackFrame), CGRectGetMidY(self.bounds));
+    CGContextAddLineToPoint(context, CGRectGetMaxX(trackFrame), CGRectGetMidY(self.bounds));
     CGContextSetStrokeColorWithColor(context, self.maximumTrackTintColor.CGColor);
     CGContextStrokePath(context);
-    
-    for (NSValue *value in self.mediaPlayerController.player.currentItem.loadedTimeRanges) {
-        CMTimeRange timeRange = [value CMTimeRangeValue];
-        [self drawBuferringTrackForRange:timeRange context:context];
-    }
 }
 
-- (void)drawBuferringTrackForRange:(CMTimeRange)timeRange context:(CGContextRef)context
+- (void)drawBufferingTrackForRange:(CMTimeRange)timeRange context:(CGContextRef)context
 {
-    CGFloat lineWidth = 1.f;
-    
     CGFloat duration = CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.duration);
     if (isnan(duration)) {
         return;
@@ -477,11 +484,11 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     
     CGRect trackFrame = [self trackRectForBounds:self.bounds];
     
-    CGFloat minX = CGRectGetWidth(trackFrame) / duration * CMTimeGetSeconds(timeRange.start);
-    CGFloat maxX = CGRectGetWidth(trackFrame) / duration * (CMTimeGetSeconds(timeRange.start) + CMTimeGetSeconds(timeRange.duration));
+    CGFloat minX = CGRectGetMinX(trackFrame) + CGRectGetWidth(trackFrame) / duration * CMTimeGetSeconds(timeRange.start);
+    CGFloat maxX = CGRectGetMinX(trackFrame) + CGRectGetWidth(trackFrame) / duration * CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange));
     
-    CGContextSetLineWidth(context, lineWidth);
-    CGContextSetLineCap(context, kCGLineCapButt);
+    CGContextSetLineWidth(context, self.trackThickness);
+    CGContextSetLineCap(context, kCGLineCapRound);
     CGContextMoveToPoint(context, minX, CGRectGetMidY(self.bounds));
     CGContextAddLineToPoint(context, maxX, CGRectGetMidY(self.bounds));
     CGContextSetStrokeColorWithColor(context, self.bufferingTrackColor.CGColor);
@@ -492,11 +499,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     CGRect barFrame = [self minimumValueImageRectForBounds:self.bounds];
     
-    CGFloat lineWidth = 3.f;
-    
-    CGContextSetLineWidth(context, lineWidth);
+    CGContextSetLineWidth(context, self.trackThickness);
     CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, CGRectGetMinX(barFrame) - 0.5f, CGRectGetMidY(self.bounds));
+    CGContextMoveToPoint(context, CGRectGetMinX(barFrame), CGRectGetMidY(self.bounds));
     CGContextAddLineToPoint(context, CGRectGetWidth(barFrame), CGRectGetMidY(self.bounds));
     CGContextSetStrokeColorWithColor(context, self.minimumTrackTintColor.CGColor);
     CGContextStrokePath(context);
@@ -514,6 +519,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 - (void)srg_timeSlider_playbackStateDidChange:(NSNotification *)notification
 {
     if (self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
+        self.previousLoadedTimeRanges = nil;
+        
         float value = [self resetValue];
         self.value = value;
         self.maximumValue = value;
@@ -584,12 +591,13 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 static void commonInit(SRGTimeSlider *self)
 {
     // Apply default colors
-    self.borderColor = nil;
     self.bufferingTrackColor = nil;
     
     self.minimumValue = 0.f;                    // Always 0
     self.maximumValue = 0.f;
     self.value = 0.f;
+    
+    self.trackThickness = 3.f;
     
     UIImage *triangle = [self emptyImage];
     UIImage *image = [triangle resizableImageWithCapInsets:UIEdgeInsetsMake(1.f, 1.f, 1.f, 1.f)];
