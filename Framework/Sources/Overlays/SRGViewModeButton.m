@@ -150,6 +150,7 @@ static void commonInit(SRGViewModeButton *self);
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [fakeInterfaceBuilderButton setImage:self.viewModeMonoscopicImage forState:UIControlStateNormal];
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
@@ -202,6 +203,7 @@ static void commonInit(SRGViewModeButton *self)
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = self.bounds;
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    button.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [button addTarget:self action:@selector(srg_viewModeButton_toggleViewMode:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
     self.button = button;

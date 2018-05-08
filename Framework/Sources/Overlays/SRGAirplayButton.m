@@ -236,6 +236,7 @@ static void commonInit(SRGAirplayButton *self);
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [fakeInterfaceBuilderButton setImage:self.image forState:UIControlStateNormal];
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
