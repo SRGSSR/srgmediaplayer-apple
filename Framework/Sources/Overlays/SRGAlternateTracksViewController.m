@@ -7,6 +7,8 @@
 
 #import "NSBundle+SRGMediaPlayer.h"
 
+static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
+
 @interface SRGAlternateTracksViewController ()
 
 @property (nonatomic) NSArray<NSString *> *characteristics;
@@ -169,7 +171,7 @@
     }
     else {
         AVMediaSelectionOption *option = (characteristic == AVMediaCharacteristicLegible) ? group.options[indexPath.row - 1] : group.options[indexPath.row];
-        cell.textLabel.text = option.displayName;
+        cell.textLabel.text = SRGTitleForMediaOption(option);
         
         AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
         cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
@@ -208,3 +210,18 @@
 }
 
 @end
+
+static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option)
+{
+    // Retrieve title metadata if available (use preferred language settings to present the best one to the user)
+    NSArray<AVMetadataItem *> *titleItems = [AVMetadataItem metadataItemsFromArray:option.commonMetadata withKey:AVMetadataCommonKeyTitle keySpace:AVMetadataKeySpaceCommon];
+    if (titleItems) {
+        titleItems = [AVMetadataItem metadataItemsFromArray:titleItems filteredAndSortedAccordingToPreferredLanguages:NSLocale.preferredLanguages];
+        
+        NSString *title = titleItems.firstObject.stringValue;
+        if (title) {
+            return title;
+        }
+    }
+    return option.displayName;
+}
