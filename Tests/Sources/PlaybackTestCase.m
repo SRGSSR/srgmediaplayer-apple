@@ -830,9 +830,9 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testLiveProperties
 {
-    // FIXME: See https://github.com/SRGSSR/SRGMediaPlayer-iOS/issues/50. Workaround so that the test passes on iOS 11.3.
+    // FIXME: See https://github.com/SRGSSR/SRGMediaPlayer-iOS/issues/50. Workaround so that the test passes on iOS >= 11.3.
     NSOperatingSystemVersion operatingSystemVersion = [NSProcessInfo processInfo].operatingSystemVersion;
-    if (operatingSystemVersion.majorVersion == 11 && operatingSystemVersion.minorVersion == 3) {
+    if (operatingSystemVersion.majorVersion == 11 && operatingSystemVersion.minorVersion >= 3) {
         self.mediaPlayerController.minimumDVRWindowLength = 40.;
     }
     
