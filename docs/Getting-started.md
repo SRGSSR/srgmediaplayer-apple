@@ -131,6 +131,21 @@ For proper integration into the control center and the lock screen, use the `MPR
 
 Note that control center integration does not work in the iOS simulator, you will need a real device for tests.
 
+## Custom resource loading and FairPlay support
+
+If you need to customize the resource loading process (e.g. to unencrypt stream chunks on-the-fly or to optimize the way they are retrieved), create a dedicated `AVAssetResourceLoaderDelegate` class. Then play an `AVPlayerItem` built from an asset which this delegate has been assigned to:
+
+```objective-c
+AVURLAsset *asset = ...;
+[asset.resourceLoader setDelegate:resourceLoaderDelegate queue:queue];
+AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
+[self.mediaPlayerController playItem:playerItem];
+```
+
+where `resourceLoaderDelegate` is an instance of your custom resource loader delegate class, and `queue` is the queue on which events must be dispatched.
+
+In particular, FairPlay requires the use of a custom resource loader delegate for license retrieval. Please refer to the [official FairPlay documentation](https://developer.apple.com/streaming/fps) for more information.
+
 ## Thread-safety
 
 The library is intended to be used from the main thread only.
