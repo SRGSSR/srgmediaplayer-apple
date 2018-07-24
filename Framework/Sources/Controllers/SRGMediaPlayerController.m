@@ -784,6 +784,7 @@ withToleranceBefore:(CMTime)toleranceBefore
         completionHandler:(void (^)(void))completionHandler
 {
     NSAssert(! targetSegment || [segments containsObject:targetSegment], @"Segment must be valid");
+    NSAssert(item || URL, @"An item or a URL must be provided");
     
     if (targetSegment) {
         // Do not seek to the very beginning, seek slightly after with zero tolerance to be sure to end within the segment
@@ -793,7 +794,11 @@ withToleranceBefore:(CMTime)toleranceBefore
         time = kCMTimeZero;
     }
     
-    if (URL) {
+    if ([item.asset isKindOfClass:[AVURLAsset class]]) {
+        AVURLAsset *asset = (AVURLAsset *)item.asset;
+        URL = asset.URL;
+    }
+    else {
         item = [AVPlayerItem playerItemWithURL:URL];
     }
     
