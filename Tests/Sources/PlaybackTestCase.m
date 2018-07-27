@@ -171,7 +171,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
     }];
     
-    XCTAssertNil(self.mediaPlayerController.contentURL);
+    XCTAssertEqualObjects(self.mediaPlayerController.contentURL, OnDemandTestURL());
     XCTAssertEqualObjects(self.mediaPlayerController.playerItem, playerItem);
     
     TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
