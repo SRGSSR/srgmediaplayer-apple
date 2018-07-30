@@ -889,6 +889,7 @@
 				E69A1DA51D61B9380064E6C1 /* Frameworks */,
 				E69A1DA61D61B9380064E6C1 /* Headers */,
 				E69A1DA71D61B9380064E6C1 /* Resources */,
+				6F44486B210F24CD009FDB70 /* Copy Framework Dependencies for Xcode View Rendering */,
 			);
 			buildRules = (
 			);
@@ -1055,6 +1056,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6F44486B210F24CD009FDB70 /* Copy Framework Dependencies for Xcode View Rendering */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Framework Dependencies for Xcode View Rendering";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "// Could be achieved with a Copy Files phase. Must only be made in a dynamic setup,\n// though, thus the need for a script to check the configuration first\nif [ \"${CONFIGURATION}\" == \"Debug\" || \"${CONFIGURATION}\" == \"Release\" ]; then\n  cp -R \"${PROJECT_DIR}/Carthage/Build/iOS/libextobjc.framework\" \"${BUILT_PRODUCTS_DIR}\"\n  cp -R \"${PROJECT_DIR}/Carthage/Build/iOS/MAKVONotificationCenter.framework\" \"${BUILT_PRODUCTS_DIR}\"\n  cp -R \"${PROJECT_DIR}/Carthage/Build/iOS/SRGLogger.framework\" \"${BUILT_PRODUCTS_DIR}\"\nfi\n\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6F444848210F1387009FDB70 /* Sources */ = {
