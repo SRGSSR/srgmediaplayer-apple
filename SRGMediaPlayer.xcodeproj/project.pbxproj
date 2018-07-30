@@ -14,8 +14,6 @@
 		08D3BEC01DE8756500AE1368 /* SRGAlternateTracksViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */; };
 		08D3BEC11DE8756500AE1368 /* SRGAlternateTracksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3BEBF1DE8756500AE1368 /* SRGAlternateTracksViewController.m */; };
 		08F4E53F1E7FE76900C9E8FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08F4E5411E7FE76900C9E8FD /* Localizable.strings */; };
-		6F1D6D021DAF50050072C107 /* SRGLogger.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
-		6F1D6D031DAF50050072C107 /* libextobjc.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; };
 		6F3C6DE01F738173007FB56B /* XCTestCase+MediaPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C6DDF1F738173007FB56B /* XCTestCase+MediaPlayerTests.m */; };
 		6F444856210F1479009FDB70 /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08293A4D1EDC62FC008CE02E /* Accessibility.strings */; };
 		6F444857210F147B009FDB70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E001D61BAFD0064E6C1 /* Localizable.strings */; };
@@ -91,7 +89,6 @@
 		6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FB97FE11E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FB97FE21E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6FB97FF81E4B13CC0014C4C2 /* MAKVONotificationCenter.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FC57B1A1FD6A5BE00451B6B /* SRGViewModeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC57B191FD6A5BE00451B6B /* SRGViewModeButton.m */; };
 		6FD312271FD92FAB00EC0C42 /* MediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD312261FD92FAB00EC0C42 /* MediaPlayer.m */; };
@@ -190,19 +187,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		6F1D6D011DAF4FF10072C107 /* Copy Framework Dependencies For Xcode View Rendering */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 16;
-			files = (
-				6FB97FF81E4B13CC0014C4C2 /* MAKVONotificationCenter.framework in Copy Framework Dependencies For Xcode View Rendering */,
-				6F1D6D021DAF50050072C107 /* SRGLogger.framework in Copy Framework Dependencies For Xcode View Rendering */,
-				6F1D6D031DAF50050072C107 /* libextobjc.framework in Copy Framework Dependencies For Xcode View Rendering */,
-			);
-			name = "Copy Framework Dependencies For Xcode View Rendering";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E65490981D7F2E9B007D96E7 /* Copy Frameworks Into Test Bundle */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -905,7 +889,6 @@
 				E69A1DA51D61B9380064E6C1 /* Frameworks */,
 				E69A1DA61D61B9380064E6C1 /* Headers */,
 				E69A1DA71D61B9380064E6C1 /* Resources */,
-				6F1D6D011DAF4FF10072C107 /* Copy Framework Dependencies For Xcode View Rendering */,
 			);
 			buildRules = (
 			);
