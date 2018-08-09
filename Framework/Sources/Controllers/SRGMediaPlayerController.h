@@ -285,8 +285,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param URL               The URL to play.
  *  @param time              The time to start at. Use `kCMTimeZero` to start at the default location (see discussion
  *                           below). This value is also used as fallback if the provided time is invalid. If the specified
- *                           time lies outside the media time range, the location at which playback actually begins is
- *                           undefined (depends on iOS versions).
+ *                           time lies outside the media time range, playback starts at the default location.
  *  @param segments          A segment list.
  *  @param userInfo          A dictionary to associate arbitrary information with the media being played (for later retrieval).
  *                           This information stays associated with the player controller until it is reset.
@@ -342,7 +341,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  resume playback after a seek has been performed on a paused player.
  *
  *  @param time              The time to seek to. If the time is invalid it will be set to `kCMTimeZero`. Setting a 
- *                           start time outside the actual media time range will seek to the nearest location (either 
+ *                           start time outside the actual media time range will seek to the nearest location (either
  *                           zero or the end time).
  *  @param toleranceBefore   The tolerance allowed before `time`. Use `kCMTimePositiveInfinity` for no tolerance
  *                           requirements.
@@ -609,8 +608,8 @@ withToleranceBefore:(CMTime)toleranceBefore
  *  to start at the segment beginning. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
- *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
- *               actual segment time range will seek to the nearest location (either zero or the segment end time).
+ *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
+ *               actual segment time range is set, playback will start at the segment beginning.
  *
  *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
  *
@@ -628,8 +627,8 @@ withToleranceBefore:(CMTime)toleranceBefore
  *  segment beginning. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
- *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
- *               actual segment time range will seek to the nearest location (either zero or the segment end time).
+ *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
+ *               actual segment time range is set, playback will start at the segment beginning.
  *
  *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
  *
@@ -646,8 +645,8 @@ withToleranceBefore:(CMTime)toleranceBefore
  *  segment beginning. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
- *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
- *               actual segment time range will seek to the nearest location (either zero or the segment end time).
+ *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
+ *               actual segment time range is set, playback will start at the segment beginning.
  *
  *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
  *
@@ -662,8 +661,8 @@ withToleranceBefore:(CMTime)toleranceBefore
 /**
  *  Seek to a specific time in a segment specified by its index. Use `kCMTimeZero` to seek to the segment beginning.
  *
- *  @param time  The time to seek to. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
- *               actual segment time range will seek to the nearest location (either zero or the segment end time).
+ *  @param time  The time to seek to. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
+ *               actual segment time range is set, playback will start at the segment beginning.
  *  @param index The index of the segment to seek to.
  *
  *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
