@@ -713,48 +713,50 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)prepareToPlayURL:(NSURL *)URL
                  atIndex:(NSInteger)index
+                    time:(CMTime)time
               inSegments:(NSArray<id<SRGSegment>> *)segments
             withUserInfo:(NSDictionary *)userInfo
        completionHandler:(void (^)(void))completionHandler
 {
     id<SRGSegment> targetSegment = (index >= 0 && index < segments.count) ? segments[index] : nil;
-    [self prepareToPlayItem:nil URL:URL atTime:kCMTimeZero withSegments:segments targetSegment:targetSegment userInfo:userInfo completionHandler:completionHandler];
+    [self prepareToPlayItem:nil URL:URL atTime:time withSegments:segments targetSegment:targetSegment userInfo:userInfo completionHandler:completionHandler];
 }
 
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                   atIndex:(NSInteger)index
+                     time:(CMTime)time
                inSegments:(NSArray<id<SRGSegment>> *)segments
              withUserInfo:(NSDictionary *)userInfo
         completionHandler:(void (^)(void))completionHandler
 {
     id<SRGSegment> targetSegment = (index >= 0 && index < segments.count) ? segments[index] : nil;
-    [self prepareToPlayItem:item URL:nil atTime:kCMTimeZero withSegments:segments targetSegment:targetSegment userInfo:userInfo completionHandler:completionHandler];
+    [self prepareToPlayItem:item URL:nil atTime:time withSegments:segments targetSegment:targetSegment userInfo:userInfo completionHandler:completionHandler];
 }
 
-- (void)playURL:(NSURL *)URL atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo
+- (void)playURL:(NSURL *)URL atIndex:(NSInteger)index time:(CMTime)time inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo
 {
-    [self prepareToPlayURL:URL atIndex:index inSegments:segments withUserInfo:userInfo completionHandler:^{
+    [self prepareToPlayURL:URL atIndex:index time:time inSegments:segments withUserInfo:userInfo completionHandler:^{
         [self play];
     }];
 }
 
-- (void)playItem:(AVPlayerItem *)item atIndex:(NSInteger)index inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo
+- (void)playItem:(AVPlayerItem *)item atIndex:(NSInteger)index time:(CMTime)time inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo
 {
-    [self prepareToPlayItem:item atIndex:index inSegments:segments withUserInfo:userInfo completionHandler:^{
+    [self prepareToPlayItem:item atIndex:index time:time inSegments:segments withUserInfo:userInfo completionHandler:^{
         [self play];
     }];
 }
 
-- (void)seekToSegmentAtIndex:(NSInteger)index withCompletionHandler:(void (^)(BOOL finished))completionHandler
+- (void)seekToTime:(CMTime)time inSegmentAtIndex:(NSInteger)index withCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
     if (index < 0 || index >= self.segments.count) {
         return;
     }
     
-    [self seekToSegment:self.segments[index] withCompletionHandler:completionHandler];
+    [self seekToTime:time inSegment:self.segments[index] withCompletionHandler:completionHandler];
 }
 
-- (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToTime:(CMTime)time inSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
 {
     if (! [self.segments containsObject:segment]) {
         return;

@@ -844,7 +844,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController seekToSegment:segment withCompletionHandler:nil];
+    [self.mediaPlayerController seekToTime:kCMTimeZero inSegment:segment withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -913,7 +913,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController seekToSegment:segment1 withCompletionHandler:nil];
+    [self.mediaPlayerController seekToTime:kCMTimeZero inSegment:segment1 withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -943,7 +943,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController seekToSegment:segment2 withCompletionHandler:nil];
+    [self.mediaPlayerController seekToTime:kCMTimeZero inSegment:segment2 withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -977,7 +977,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController seekToSegment:segment withCompletionHandler:nil];
+    [self.mediaPlayerController seekToTime:kCMTimeZero inSegment:segment withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1007,7 +1007,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController seekToSegment:segment withCompletionHandler:nil];
+    [self.mediaPlayerController seekToTime:kCMTimeZero inSegment:segment withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1053,7 +1053,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController seekToSegment:segment withCompletionHandler:nil];
+    [self.mediaPlayerController seekToTime:kCMTimeZero inSegment:segment withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1118,7 +1118,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController prepareToPlayURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil completionHandler:nil];
+    [self.mediaPlayerController prepareToPlayURL:SegmentsTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1161,7 +1161,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:seekObserver];
@@ -1190,7 +1190,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController prepareToPlayURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil completionHandler:nil];
+    [self.mediaPlayerController prepareToPlayURL:SegmentsTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1217,7 +1217,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1240,7 +1240,7 @@ static NSURL *SegmentsTestURL(void)
     }];
     
     // Incorrect. Playback will start at the default location.
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[] withUserInfo:nil];
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 time:kCMTimeZero inSegments:@[] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:startObserver];
@@ -1266,7 +1266,7 @@ static NSURL *SegmentsTestURL(void)
     
     // Incorrect. Playback will start at the default location. Check that nothing
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(20., NSEC_PER_SEC), CMTimeMakeWithSeconds(50., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:10 inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:10 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] removeObserver:startObserver];
@@ -1300,7 +1300,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1320,7 +1320,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1351,7 +1351,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     

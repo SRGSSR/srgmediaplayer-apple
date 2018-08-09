@@ -566,9 +566,12 @@ withToleranceBefore:(CMTime)toleranceBefore
 @interface SRGMediaPlayerController (SegmentSelection)
 
 /**
- *  Prepare to play a URL, starting at the beginning of the segment specified by `index`. User info can be optionally provided.
+ *  Prepare to play a URL, starting at a specific time within the segment specified by `index`. Use `kCMTimeZero` to
+ *  to start at the segment beginning. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
+ *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
+ *               actual segment time range will seek to the nearest location (either zero or the segment end time).
  *
  *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
  *
@@ -576,14 +579,18 @@ withToleranceBefore:(CMTime)toleranceBefore
  */
 - (void)prepareToPlayURL:(NSURL *)URL
                  atIndex:(NSInteger)index
+                    time:(CMTime)time
               inSegments:(NSArray<id<SRGSegment>> *)segments
             withUserInfo:(nullable NSDictionary *)userInfo
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Prepare to play an item, starting at the beginning of the segment specified by `index`. User info can be optionally provided.
+ *  Prepare to play an item, starting at a specific time within the segment specified by `index`. Use `kCMTimeZero` to
+ *  to start at the segment beginning. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
+ *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
+ *               actual segment time range will seek to the nearest location (either zero or the segment end time).
  *
  *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
  *
@@ -591,14 +598,18 @@ withToleranceBefore:(CMTime)toleranceBefore
  */
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                   atIndex:(NSInteger)index
+                     time:(CMTime)time
                inSegments:(NSArray<id<SRGSegment>> *)segments
              withUserInfo:(nullable NSDictionary *)userInfo
         completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Play a URL, starting at the specified segment. User info can be optionally provided.
+ *  Play a URL, starting at a specific time within the segment specified by `index`. Use `kCMTimeZero` to start at the
+ *  segment beginning. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
+ *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
+ *               actual segment time range will seek to the nearest location (either zero or the segment end time).
  *
  *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
  *
@@ -606,13 +617,17 @@ withToleranceBefore:(CMTime)toleranceBefore
  */
 - (void)playURL:(NSURL *)URL
         atIndex:(NSInteger)index
+           time:(CMTime)time
      inSegments:(NSArray<id<SRGSegment>> *)segments
    withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Play an item, starting at the specified segment. User info can be optionally provided.
+ *  Play an item, starting at a specific time within the segment specified by `index`. Use `kCMTimeZero` to start at the
+ *  segment beginning. User info can be optionally provided.
  *
  *  @param index The index of the segment at which playback will start.
+ *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
+ *               actual segment time range will seek to the nearest location (either zero or the segment end time).
  *
  *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
  *
@@ -620,12 +635,15 @@ withToleranceBefore:(CMTime)toleranceBefore
  */
 - (void)playItem:(AVPlayerItem *)item
          atIndex:(NSInteger)index
+            time:(CMTime)time
       inSegments:(NSArray<id<SRGSegment>> *)segments
     withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Seek to the beginning of the specified segment.
+ *  Seek to a specific time in a segment specified by its index. Use `kCMTimeZero` to seek to the segment beginning.
  *
+ *  @param time  The time to seek to. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
+ *               actual segment time range will seek to the nearest location (either zero or the segment end time).
  *  @param index The index of the segment to seek to.
  *
  *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
@@ -633,18 +651,20 @@ withToleranceBefore:(CMTime)toleranceBefore
  *  @discussion If the segment index is invalid, this method does nothing. If the segment is already the one being played,
  *              playback will be restarted at its beginning.
  */
-- (void)seekToSegmentAtIndex:(NSInteger)index withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)seekToTime:(CMTime)time inSegmentAtIndex:(NSInteger)index withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
- *  Seek to the beginning of the specified segment.
+ *  Seek to a specific time in a segment. Use `kCMTimeZero` to seek to the segment beginning.
  *
+ *  @param time    The time to seek to. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
+ *                 actual segment time range will seek to the nearest location (either zero or the segment end time).
  *  @param segment The segment to seek to.
  *
  *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
  *
  *  @discussion If the segment does not belong to the registered segments, this method does nothing.
  */
-- (void)seekToSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)seekToTime:(CMTime)time inSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
  *  Return the currently selected segment if any, `nil` if none.
