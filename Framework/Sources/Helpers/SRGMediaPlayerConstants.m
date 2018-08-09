@@ -6,8 +6,6 @@
 
 #import "SRGMediaPlayerConstants.h"
 
-NSTimeInterval const SRGMediaPlayerLiveDefaultTolerance = 30.;                // Same tolerance as the built-in iOS player
-
 NSString * const SRGMediaPlayerPlaybackStateDidChangeNotification = @"SRGMediaPlayerPlaybackStateDidChangeNotification";
 
 NSString * const SRGMediaPlayerPlaybackDidFailNotification = @"SRGMediaPlayerPlaybackDidFailNotification";

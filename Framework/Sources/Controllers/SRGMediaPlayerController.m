@@ -80,7 +80,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     if (self = [super init]) {
         _playbackState = SRGMediaPlayerPlaybackStateIdle;
         
-        self.liveTolerance = SRGMediaPlayerLiveDefaultTolerance;
+        self.liveTolerance = SRGMediaPlayerDefaultLiveTolerance;
+        self.endTolerance = SRGMediaPlayerDefaultEndTolerance;
+        self.endToleranceRatio = SRGMediaPlayerDefaultEndToleranceRatio;
+        
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
         
         self.seekStartTime = kCMTimeIndefinite;
@@ -159,6 +162,15 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                     };
                     
                     CMTime startTime = self.startTimeValue.CMTimeValue;
+                    
+                    // If the start position does not fulfill tolerance settings, start at the default location
+                    CMTimeRange timeRange = self.targetSegment ? self.targetSegment.srg_timeRange : self.timeRange;
+                    CMTime relativeStartTime = CMTimeSubtract(startTime, timeRange.start);
+                    CMTime tolerance = CMTimeMaximum(CMTimeMakeWithSeconds(self.endTolerance, NSEC_PER_SEC),
+                                                     CMTimeMakeWithSeconds(self.endToleranceRatio * CMTimeGetSeconds(timeRange.duration), NSEC_PER_SEC));
+                    if (CMTIME_COMPARE_INLINE(relativeStartTime, >=, CMTimeSubtract(CMTimeRangeGetEnd(timeRange), tolerance))) {
+                        startTime = kCMTimeZero;
+                    }
                     
                     if (CMTIME_COMPARE_INLINE(startTime, ==, kCMTimeZero)) {
                         completionBlock(YES);
@@ -452,6 +464,32 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     else {
         _liveTolerance = liveTolerance;
+    }
+}
+
+- (void)setEndTolerance:(NSTimeInterval)endTolerance
+{
+    if (endTolerance < 0.) {
+        SRGMediaPlayerLogWarning(@"Controller", @"End tolerance cannot be negative. Set to 0");
+        _endTolerance = 0.;
+    }
+    else {
+        _endTolerance = endTolerance;
+    }
+}
+
+- (void)setEndToleranceRatio:(float)endToleranceRatio
+{
+    if (endToleranceRatio < 0.) {
+        SRGMediaPlayerLogWarning(@"Controller", @"End tolerance ratio cannot be negative. Set to 0");
+        _endToleranceRatio = 0.f;
+    }
+    else if (endToleranceRatio > 1.) {
+        SRGMediaPlayerLogWarning(@"Controller", @"End tolerance ratio cannot be larger than 1. Set to 1");
+        _endToleranceRatio = 1.f;
+    }
+    else {
+        _endToleranceRatio = endToleranceRatio;
     }
 }
 

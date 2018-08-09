@@ -203,6 +203,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSTimeInterval liveTolerance;
 
 /**
+ *  The absolute tolerance (in seconds) applied when attempting to start playback near the end of a stream (or segment
+ *  thereof). Default is 0 seconds.
+ *
+ *  @discussion If the distance between the desired playback position and the end is smaller than the maximum tolerated
+ *              value (largest of the absolute / relative tolerances), playback will start at the default position.
+ */
+@property (nonatomic) NSTimeInterval endTolerance;
+
+/**
+ *  The tolerance ratio applied when attempting to start playback near the end of a stream (or segment thereof). The
+ *  ratio is multiplied with the stream (or segment) duration to calculate the Default is 0.
+ *
+ *  @discussion If the distance between the desired playback position and the end is smaller than the maximum tolerated
+ *              value (largetst of the absolute / relative tolerances), playback will start at the default position.
+ */
+@property (nonatomic) float endToleranceRatio;
+
+/**
  *  @name Player
  */
 
