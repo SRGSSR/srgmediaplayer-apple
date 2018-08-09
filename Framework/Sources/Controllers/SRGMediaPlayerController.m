@@ -50,7 +50,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 // Saved values supplied when playback is started
 @property (nonatomic, weak) id<SRGSegment> initialTargetSegment;
-@property (nonatomic) NSValue *initialStartTimeValue;
+@property (nonatomic) CMTime initialStartTime;
 
 @property (nonatomic, weak) id<SRGSegment> previousSegment;
 @property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
@@ -597,12 +597,12 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     // Player has been removed (e.g. after a -stop). Restart playback with the same conditions (if not cleared)
     else if (self.contentURL) {
-        [self prepareToPlayItem:nil URL:self.contentURL atTime:self.initialStartTimeValue.CMTimeValue withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
+        [self prepareToPlayItem:nil URL:self.contentURL atTime:self.initialStartTime withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
             [self play];
         }];
     }
     else if (self.playerItem) {
-        [self prepareToPlayItem:[self.playerItem copy] URL:nil atTime:self.initialStartTimeValue.CMTimeValue withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
+        [self prepareToPlayItem:[self.playerItem copy] URL:nil atTime:self.initialStartTime withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
             [self play];
         }];
     }
@@ -648,7 +648,7 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.userInfo = nil;
     
     self.initialTargetSegment = nil;
-    self.initialStartTimeValue = nil;
+    self.initialStartTime = kCMTimeZero;
     
     [self stopWithUserInfo:[userInfo copy]];
 }
@@ -820,7 +820,7 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     // Save initial values for restart after a stop
     self.initialTargetSegment = targetSegment;
-    self.initialStartTimeValue = self.startTimeValue;
+    self.initialStartTime = time;
     
     self.player = [AVPlayer playerWithPlayerItem:item];
     
