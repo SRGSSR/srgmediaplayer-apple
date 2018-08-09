@@ -843,7 +843,7 @@ static NSURL *SegmentsTestURL(void)
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectionKey] boolValue]);
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 80);
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 20);
         return YES;
     }];
     
