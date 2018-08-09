@@ -762,12 +762,7 @@ withToleranceBefore:(CMTime)toleranceBefore
         return;
     }
     
-    // Do not seek to the very beginning, seek slightly after with zero tolerance to be sure to end within the segment
-    [self seekToTime:CMTimeAdd(segment.srg_timeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))
- withToleranceBefore:kCMTimeZero
-      toleranceAfter:kCMTimeZero
-       targetSegment:segment
-   completionHandler:completionHandler];
+    [self seekToTime:time withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero targetSegment:segment completionHandler:completionHandler];
 }
 
 - (id<SRGSegment>)selectedSegment
@@ -788,14 +783,13 @@ withToleranceBefore:(CMTime)toleranceBefore
     NSAssert(! targetSegment || [segments containsObject:targetSegment], @"Segment must be valid");
     NSAssert(item || URL, @"An item or a URL must be provided");
     
-    if (targetSegment) {
-        // Do not seek to the very beginning, seek slightly after with zero tolerance to be sure to end within the segment
-        time = CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC));
-    }
-    else if (CMTIME_IS_INVALID(time)) {
+    if (CMTIME_IS_INVALID(time)) {
         time = kCMTimeZero;
     }
     
+    // When a target segment is specified, add a small tolerance so that we reliably end within the segment
+    CMTime startTime = targetSegment ? CMTimeMinimum(CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMaximum(time, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))),
+                                                     CMTimeRangeGetEnd(targetSegment.srg_timeRange)) : time;
     if ([item.asset isKindOfClass:[AVURLAsset class]]) {
         AVURLAsset *asset = (AVURLAsset *)item.asset;
         URL = asset.URL;
@@ -817,7 +811,7 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.userInfo = userInfo;
     self.targetSegment = targetSegment;
     
-    self.startTimeValue = [NSValue valueWithCMTime:time];
+    self.startTimeValue = [NSValue valueWithCMTime:startTime];
     self.startCompletionHandler = completionHandler;
     
     // Save initial values for restart after a stop
@@ -838,9 +832,16 @@ withToleranceBefore:(CMTime)toleranceBefore
  completionHandler:(void (^)(BOOL))completionHandler
 {
     NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Segment must be valid");
+    NSAssert(! targetSegment || (CMTIME_COMPARE_INLINE(toleranceBefore, ==, kCMTimeZero) && CMTIME_COMPARE_INLINE(toleranceAfter, ==, kCMTimeZero)), @"Seeking to a segment must be sharp");
     
     if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
         return;
+    }
+        
+    if (targetSegment) {
+        // Add a small tolerance so that we reliably end within the segment (no seek tolerance is allowed, see asserts above)
+        time = CMTimeMinimum(CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMaximum(time, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))),
+                             CMTimeRangeGetEnd(targetSegment.srg_timeRange));
     }
     
     self.targetSegment = targetSegment;
