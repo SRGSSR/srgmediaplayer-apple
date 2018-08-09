@@ -665,7 +665,7 @@ static NSURL *SegmentsTestURL(void)
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectionKey] boolValue]);
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);        // Seek was made from 0
-        TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, 220);
+        TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, 200);
         return YES;
     }];
     
