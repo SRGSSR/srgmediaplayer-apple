@@ -503,7 +503,8 @@ withToleranceBefore:(CMTime)toleranceBefore
  *
  *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
  *
- *  @discussion The player immediately reaches the playing state.
+ *  @discussion The player immediately reaches the playing state. No segment selection occurs (use methods from the
+ *              `SegmentSelection` category if you need to select a segment).
  */
 - (void)playURL:(NSURL *)URL
          atTime:(CMTime)time
@@ -515,7 +516,8 @@ withToleranceBefore:(CMTime)toleranceBefore
  *
  *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
  *
- *  @discussion The player immediately reaches the playing state.
+ *  @discussion The player immediately reaches the playing state. No segment selection occurs (use methods from the
+ *              `SegmentSelection` category if you need to select a segment).
  */
 - (void)playItem:(AVPlayerItem *)item
           atTime:(CMTime)time
