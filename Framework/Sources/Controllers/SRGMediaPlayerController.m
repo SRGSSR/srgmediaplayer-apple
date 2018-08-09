@@ -168,8 +168,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                     CMTime relativeStartTime = CMTimeSubtract(startTime, timeRange.start);
                     CMTime tolerance = CMTimeMaximum(CMTimeMakeWithSeconds(self.endTolerance, NSEC_PER_SEC),
                                                      CMTimeMakeWithSeconds(self.endToleranceRatio * CMTimeGetSeconds(timeRange.duration), NSEC_PER_SEC));
-                    if (CMTIME_COMPARE_INLINE(relativeStartTime, >=, CMTimeSubtract(CMTimeRangeGetEnd(timeRange), tolerance))) {
-                        startTime = kCMTimeZero;
+                    if (CMTIME_COMPARE_INLINE(relativeStartTime, >=, CMTimeSubtract(timeRange.duration, tolerance))) {
+                        startTime = timeRange.start;
                     }
                     
                     if (CMTIME_COMPARE_INLINE(startTime, ==, kCMTimeZero)) {
