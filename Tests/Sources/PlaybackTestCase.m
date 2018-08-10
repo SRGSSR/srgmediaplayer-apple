@@ -11,7 +11,6 @@
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
-#import <XCTest/XCTest.h>
 
 static NSURL *OnDemandTestURL(void)
 {

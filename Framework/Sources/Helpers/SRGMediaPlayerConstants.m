@@ -47,3 +47,20 @@ NSString * const SRGMediaPlayerInterruptionKey = @"SRGMediaPlayerInterruptionKey
 NSString * const SRGMediaPlayerSelectionKey = @"SRGMediaPlayerSelectionKey";
 
 NSString * const SRGMediaPlayerLastPlaybackTimeKey = @"SRGMediaPlayerLastPlaybackTimeKey";
+
+CMTime SRGMediaPlayerEffectiveEndTolerance(NSTimeInterval endTolerance, float endToleranceRatio, NSTimeInterval contentDuration)
+{
+    if (endTolerance != 0. && endToleranceRatio != 0.f) {
+        return CMTimeMinimum(CMTimeMakeWithSeconds(endTolerance, NSEC_PER_SEC),
+                             CMTimeMakeWithSeconds(endToleranceRatio * contentDuration, NSEC_PER_SEC));
+    }
+    else if (endTolerance != 0.) {
+        return CMTimeMakeWithSeconds(endTolerance, NSEC_PER_SEC);
+    }
+    else if (endToleranceRatio != 0.f) {
+        return CMTimeMakeWithSeconds(endToleranceRatio * contentDuration, NSEC_PER_SEC);
+    }
+    else {
+        return kCMTimeZero;
+    }
+}

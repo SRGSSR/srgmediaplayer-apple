@@ -30,7 +30,6 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError);
 static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlaybackState playbackState);
 static NSString *SRGMediaPlayerControllerNameForMediaType(SRGMediaPlayerMediaType mediaType);
 static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamType streamType);
-static CMTime SRGMediaPlayerEndTolerance(SRGMediaPlayerController *controller, CMTime duration);
 
 @interface SRGMediaPlayerController () {
 @private
@@ -167,7 +166,7 @@ static CMTime SRGMediaPlayerEndTolerance(SRGMediaPlayerController *controller, C
                     // If the start position does not fulfill tolerance settings, start at the default location
                     CMTimeRange timeRange = self.targetSegment ? self.targetSegment.srg_timeRange : self.timeRange;
                     CMTime relativeStartTime = CMTimeSubtract(startTime, timeRange.start);
-                    CMTime tolerance = SRGMediaPlayerEndTolerance(self, timeRange.duration);
+                    CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(timeRange.duration));
                     if (CMTIME_COMPARE_INLINE(relativeStartTime, >=, CMTimeSubtract(timeRange.duration, tolerance))) {
                         startTime = timeRange.start;
                     }
@@ -1294,21 +1293,4 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                      @(SRGMediaPlayerStreamTypeDVR) : @"DVR" };
     });
     return s_names[@(streamType)] ?: @"unknown";
-}
-
-static CMTime SRGMediaPlayerEndTolerance(SRGMediaPlayerController *controller, CMTime duration)
-{
-    if (controller.endTolerance != 0. && controller.endToleranceRatio != 0.f) {
-        return CMTimeMinimum(CMTimeMakeWithSeconds(controller.endTolerance, NSEC_PER_SEC),
-                             CMTimeMakeWithSeconds(controller.endToleranceRatio * CMTimeGetSeconds(duration), NSEC_PER_SEC));
-    }
-    else if (controller.endTolerance != 0.) {
-        return CMTimeMakeWithSeconds(controller.endTolerance, NSEC_PER_SEC);
-    }
-    else if (controller.endToleranceRatio != 0.f) {
-        return CMTimeMakeWithSeconds(controller.endToleranceRatio * CMTimeGetSeconds(duration), NSEC_PER_SEC);
-    }
-    else {
-        return kCMTimeZero;
-    }
 }

@@ -11,7 +11,6 @@
 #import "XCTestCase+MediaPlayerTests.h"
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
-#import <XCTest/XCTest.h>
 
 static NSURL *SegmentsTestURL(void)
 {
