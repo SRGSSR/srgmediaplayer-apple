@@ -213,7 +213,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The tolerance ratio applied when attempting to start playback near the end of a stream (or segment thereof). The
- *  ratio is multiplied with the stream (or segment) duration to calculate the Default is 0.
+ *  ratio is multiplied with the stream (or segment) duration to calculate the tolerance in seconds. Default is 0.
  *
  *  @discussion If the distance between the desired playback position and the end is smaller than the maximum tolerated
  *              value according to `endTolerance` and / or `endToleranceRatio`, playback will start at the default position.
