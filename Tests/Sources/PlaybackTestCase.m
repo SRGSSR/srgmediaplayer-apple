@@ -2063,7 +2063,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, <, CMTimeMakeWithSeconds(1., NSEC_PER_SEC)));
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, <, CMTimeMakeWithSeconds(2., NSEC_PER_SEC)));
 }
 
 - (void)testDVRStreamEndAbsoluteTolerance
