@@ -23,6 +23,7 @@ static void commonInit(SRGMediaPlayerView *self);
 
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic, weak) UIView<SRGMediaPlaybackView> *playbackView;
+@property (nonatomic, getter=isPlaybackViewHidden) BOOL playbackViewHidden;
 
 @end
 
@@ -93,6 +94,12 @@ static void commonInit(SRGMediaPlayerView *self);
     return self.playbackView.playerLayer;
 }
 
+- (void)setPlaybackViewHidden:(BOOL)playbackViewHidden
+{
+    _playbackViewHidden = playbackViewHidden;
+    self.playbackView.hidden = [self isPlaybackViewHiddenWithPlayer:self.player];
+}
+
 #pragma mark Updates
 
 - (void)updateSubviews
@@ -103,8 +110,6 @@ static void commonInit(SRGMediaPlayerView *self);
 - (void)updateSubviewsWithPlayer:(AVPlayer *)player
 {
     if (player) {
-        self.playbackView.hidden = player.externalPlaybackActive;
-        
         AVAssetTrack *videoAssetTrack = [player.currentItem srg_assetTracksWithMediaType:AVMediaTypeVideo].firstObject;
         if (videoAssetTrack) {
             CGSize assetDimensions = CGSizeApplyAffineTransform(videoAssetTrack.naturalSize, videoAssetTrack.preferredTransform);
@@ -137,6 +142,8 @@ static void commonInit(SRGMediaPlayerView *self);
             if (self.playbackView.player != player) {
                 [self.playbackView setPlayer:player withAssetDimensions:assetDimensions];
             }
+            
+            self.playbackView.hidden = [self isPlaybackViewHiddenWithPlayer:player];
         }
         else {
             // During seeks, we might have no tracks at all. Skip updates until tracks are available.
@@ -154,6 +161,11 @@ static void commonInit(SRGMediaPlayerView *self);
         [self.playbackView setPlayer:nil withAssetDimensions:CGSizeZero];
         [self.playbackView removeFromSuperview];
     }
+}
+
+- (BOOL)isPlaybackViewHiddenWithPlayer:(AVPlayer *)player
+{
+    return player.externalPlaybackActive || self.playbackViewHidden;
 }
 
 @end

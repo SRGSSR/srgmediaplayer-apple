@@ -184,13 +184,14 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                     }
                     else {
                         // Hide the view until the seek is finished to avoid briefly displaying the frame which the player
-                        // was loaded into first (default playback position).
-                        self.view.hidden = YES;
+                        // was loaded into first (default playback position). Hide the internal view since visibility of
+                        // the media player view can be controlled by clients.
+                        self.view.playbackViewHidden = YES;
                         
                         // Call system method to avoid unwanted seek state in this special case
                         [player seekToTime:startTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
                             if (finished) {
-                                self.view.hidden = NO;
+                                self.view.playbackViewHidden = NO;
                             }
                             completionBlock(finished);
                         }];

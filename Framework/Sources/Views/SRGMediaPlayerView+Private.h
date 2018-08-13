@@ -30,6 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, nullable) AVPlayerLayer *playerLayer;
 
+/**
+ *  Set to `YES` to hide the internal view used for playback. Default is `NO`.
+ */
+@property (nonatomic, getter=isPlaybackViewHidden) BOOL playbackViewHidden;
+
 @end
 
 NS_ASSUME_NONNULL_END
