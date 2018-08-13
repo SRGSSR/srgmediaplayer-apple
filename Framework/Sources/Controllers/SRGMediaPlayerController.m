@@ -167,10 +167,12 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                     
                     // If the start position does not fulfill tolerance settings, start at the default location
                     CMTimeRange timeRange = self.targetSegment ? self.targetSegment.srg_timeRange : self.timeRange;
-                    CMTime relativeStartTime = CMTimeSubtract(startTime, timeRange.start);
-                    CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(timeRange.duration));
-                    if (CMTIME_COMPARE_INLINE(relativeStartTime, >=, CMTimeSubtract(timeRange.duration, tolerance))) {
-                        startTime = timeRange.start;
+                    if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
+                        CMTime relativeStartTime = CMTimeSubtract(startTime, timeRange.start);
+                        CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(timeRange.duration));
+                        if (CMTIME_COMPARE_INLINE(relativeStartTime, >=, CMTimeSubtract(timeRange.duration, tolerance))) {
+                            startTime = timeRange.start;
+                        }
                     }
                     
                     if (CMTIME_COMPARE_INLINE(startTime, ==, kCMTimeZero)) {
