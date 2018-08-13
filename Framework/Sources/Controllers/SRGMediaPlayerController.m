@@ -149,6 +149,10 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                 // completion handler has been executed (since it might immediately start playback)
                 if (self.startTimeValue) {
                     void (^completionBlock)(BOOL) = ^(BOOL finished) {
+                        if (! finished) {
+                            return;
+                        }
+                        
                         // Reset start time first so that playback state induced change made in the completion handler
                         // does not loop back here
                         self.startTimeValue = nil;
@@ -179,8 +183,15 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                         completionBlock(YES);
                     }
                     else {
+                        // Hide the view until the seek is finished to avoid briefly displaying the frame which the player
+                        // was loaded into first (default playback position).
+                        self.view.hidden = YES;
+                        
                         // Call system method to avoid unwanted seek state in this special case
                         [player seekToTime:startTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+                            if (finished) {
+                                self.view.hidden = NO;
+                            }
                             completionBlock(finished);
                         }];
                     }
