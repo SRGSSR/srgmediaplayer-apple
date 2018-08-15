@@ -16,8 +16,6 @@
 		08F4E53F1E7FE76900C9E8FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08F4E5411E7FE76900C9E8FD /* Localizable.strings */; };
 		6F0C98B5212162BC00073AB6 /* CMTime+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B421215F9000073AB6 /* CMTime+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F0C98B6212162BC00073AB6 /* CMTimeRange+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6F1D6D021DAF50050072C107 /* SRGLogger.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
-		6F1D6D031DAF50050072C107 /* libextobjc.framework in Copy Framework Dependencies For Xcode View Rendering */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; };
 		6F3C6DE01F738173007FB56B /* XCTestCase+MediaPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C6DDF1F738173007FB56B /* XCTestCase+MediaPlayerTests.m */; };
 		6F444856210F1479009FDB70 /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08293A4D1EDC62FC008CE02E /* Accessibility.strings */; };
 		6F444857210F147B009FDB70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E001D61BAFD0064E6C1 /* Localizable.strings */; };
@@ -1508,7 +1506,6 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1539,7 +1536,6 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1570,7 +1566,6 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
@@ -1597,7 +1592,6 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_BITCODE = NO;
