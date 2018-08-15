@@ -52,7 +52,7 @@ If your target is building an application, a few more steps are required:
 
 1. Run `carthage update --configuration Release-static` to update the dependencies. 
 2. Add the frameworks listed above and generated in the `Carthage/Build/iOS/Static` folder to the _Linked frameworks and libraries_ list of your target.
-3. Also add any resource bundle `.bundle` found within the `.framework` folders to your project directly.
+3. Also add any resource bundle `.bundle` found within the `.framework` folders to your target directly.
 4. Add the `-all_load` flag to your target _Other linker flags_.
 
 ## Usage
