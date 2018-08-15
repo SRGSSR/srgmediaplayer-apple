@@ -6,6 +6,8 @@
 
 #import "SegmentCollectionViewCell.h"
 
+#import "CMTimeRange+SRGMediaPlayer.h"
+
 static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 {
     static NSDateComponentsFormatter *s_dateComponentsFormatter;
@@ -38,7 +40,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
     self.titleLabel.text = segment.name;
 
-    if (! CMTIMERANGE_IS_EMPTY(segment.srg_timeRange)) {
+    if (SRG_CMTIMERANGE_IS_NOT_EMPTY(segment.srg_timeRange)) {
         self.durationLabel.hidden = NO;
         self.durationLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.duration)];
     }

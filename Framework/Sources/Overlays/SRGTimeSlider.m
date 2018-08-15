@@ -6,6 +6,7 @@
 
 #import "SRGTimeSlider.h"
 
+#import "CMTimeRange+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "UIBezierPath+SRGMediaPlayer.h"
 
@@ -229,7 +230,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         self.value = 0.f;
         self.userInteractionEnabled = YES;
     }
-    else if (! CMTIMERANGE_IS_EMPTY(timeRange) && ! CMTIMERANGE_IS_INDEFINITE(timeRange) && ! CMTIMERANGE_IS_INVALID(timeRange)) {
+    else if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange) && SRG_CMTIMERANGE_IS_DEFINITE(timeRange)) {
         self.maximumValue = CMTimeGetSeconds(timeRange.duration);
         self.value = CMTimeGetSeconds(CMTimeSubtract(time, timeRange.start));
         self.userInteractionEnabled = YES;

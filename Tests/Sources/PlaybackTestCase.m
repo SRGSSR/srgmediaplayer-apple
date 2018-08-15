@@ -11,7 +11,6 @@
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
-#import <XCTest/XCTest.h>
 
 static NSURL *OnDemandTestURL(void)
 {
@@ -2007,6 +2006,96 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
         [self.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
     }];
+}
+
+- (void)testOnDemandStreamEndDefaultTolerance
+{
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(1793., NSEC_PER_SEC) withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, ==, CMTimeMakeWithSeconds(1793., NSEC_PER_SEC)));
+}
+
+- (void)testOnDemandStreamEndAbsoluteTolerance
+{
+    self.mediaPlayerController.endTolerance = 10.;
+    
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(1793., NSEC_PER_SEC) withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, <, CMTimeMakeWithSeconds(1., NSEC_PER_SEC)));
+}
+
+- (void)testOnDemandStreamEndRelativeTolerance
+{
+    self.mediaPlayerController.endToleranceRatio = 0.1;         // 10% of the total length
+    
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(1700., NSEC_PER_SEC) withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, <, CMTimeMakeWithSeconds(1., NSEC_PER_SEC)));
+}
+
+- (void)testLivestreamEndAbsoluteTolerance
+{
+    self.mediaPlayerController.endTolerance = 10.;
+    
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:LiveTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, <, CMTimeMakeWithSeconds(2., NSEC_PER_SEC)));
+}
+
+- (void)testDVRStreamEndAbsoluteTolerance
+{
+    self.mediaPlayerController.endTolerance = 10.;
+    
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, >, CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(1., NSEC_PER_SEC))));
+}
+
+- (void)testDVRStreamEndSmallestTolerance
+{
+    self.mediaPlayerController.endTolerance = 10.;
+    self.mediaPlayerController.endToleranceRatio = 0.1;         // 10% of the total length 1800 seconds = 180 seconds
+    
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    // Smallest must win, i.e if we seek ~100 seconds from the end, playback should start at the desired location
+    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(1700., NSEC_PER_SEC) withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, ==, CMTimeMakeWithSeconds(1700., NSEC_PER_SEC)));
 }
 
 @end
