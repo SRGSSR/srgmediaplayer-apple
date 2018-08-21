@@ -286,6 +286,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param time              The time to start at. Use `kCMTimeZero` to start at the default location (see discussion
  *                           below). This value is also used as fallback if the provided time is invalid. If the specified
  *                           time lies outside the media time range, playback starts at the default location.
+ *  @param toleranceBefore   The tolerance allowed before `time`. Use `kCMTimePositiveInfinity` for no tolerance
+ *                           requirements.
+ *  @param toleranceAfter    The tolerance allowed after `time`. Use `kCMTimePositiveInfinity` for no tolerance
+ *                           requirements.
  *  @param segments          A segment list.
  *  @param userInfo          A dictionary to associate arbitrary information with the media being played (for later retrieval).
  *                           This information stays associated with the player controller until it is reset.
@@ -304,16 +308,21 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)prepareToPlayURL:(NSURL *)URL
                   atTime:(CMTime)time
-            withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+     withToleranceBefore:(CMTime)toleranceBefore
+          toleranceAfter:(CMTime)toleranceAfter
+                segments:(nullable NSArray<id<SRGSegment>> *)segments
                 userInfo:(nullable NSDictionary *)userInfo
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Same as `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`, but with a player item.
+ *  Same as `-prepareToPlayURL:atTime:withToleranceBefore:toleranceAfter:segments:userInfo:completionHandler:`, but with
+ *  a player item.
  */
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                    atTime:(CMTime)time
-             withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+      withToleranceBefore:(CMTime)toleranceBefore
+           toleranceAfter:(CMTime)toleranceAfter
+                 segments:(nullable NSArray<id<SRGSegment>> *)segments
                  userInfo:(nullable NSDictionary *)userInfo
         completionHandler:(nullable void (^)(void))completionHandler;
 
@@ -518,27 +527,31 @@ withToleranceBefore:(CMTime)toleranceBefore
 /**
  *  Play a URL, starting from the specified time. Segments and user info can be optionally provided.
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURL:atTime:withToleranceBefore:toleranceAfter:segments:userInfo:completionHandler:`.
  *
  *  @discussion The player immediately reaches the playing state. No segment selection occurs (use methods from the
  *              `SegmentSelection` category if you need to select a segment).
  */
 - (void)playURL:(NSURL *)URL
          atTime:(CMTime)time
-   withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+withToleranceBefore:(CMTime)toleranceBefore
+ toleranceAfter:(CMTime)toleranceAfter
+       segments:(nullable NSArray<id<SRGSegment>> *)segments
        userInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Play an item, starting from the specified time. Segments and user info can be optionally provided.
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURL:atTime:withToleranceBefore:toleranceAfter:segments:userInfo:completionHandler:`.
  *
  *  @discussion The player immediately reaches the playing state. No segment selection occurs (use methods from the
  *              `SegmentSelection` category if you need to select a segment).
  */
 - (void)playItem:(AVPlayerItem *)item
           atTime:(CMTime)time
-    withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+withToleranceBefore:(CMTime)toleranceBefore
+  toleranceAfter:(CMTime)toleranceAfter
+        segments:(nullable NSArray<id<SRGSegment>> *)segments
         userInfo:(nullable NSDictionary *)userInfo;
 
 /**
@@ -592,15 +605,18 @@ withToleranceBefore:(CMTime)toleranceBefore
  *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
  *               actual segment time range will seek to the nearest location (either zero or the segment end time).
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURL:atTime:withToleranceBefore:toleranceAfter:segments:userInfo:completionHandler:`.
  *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ *              Tolerances will be adjusted if needed to keep the start time within the designated segment.
  */
 - (void)prepareToPlayURL:(NSURL *)URL
                  atIndex:(NSInteger)index
                     time:(CMTime)time
               inSegments:(NSArray<id<SRGSegment>> *)segments
-            withUserInfo:(nullable NSDictionary *)userInfo
+     withToleranceBefore:(CMTime)toleranceBefore
+          toleranceAfter:(CMTime)toleranceAfter
+                userInfo:(nullable NSDictionary *)userInfo
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
@@ -611,15 +627,18 @@ withToleranceBefore:(CMTime)toleranceBefore
  *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
  *               actual segment time range is set, playback will start at the segment beginning.
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURL:atTime:withToleranceBefore:toleranceAfter:segments:userInfo:completionHandler:`.
  *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ *              Tolerances will be adjusted if needed to keep the start time within the designated segment.
  */
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                   atIndex:(NSInteger)index
                      time:(CMTime)time
                inSegments:(NSArray<id<SRGSegment>> *)segments
-             withUserInfo:(nullable NSDictionary *)userInfo
+      withToleranceBefore:(CMTime)toleranceBefore
+           toleranceAfter:(CMTime)toleranceAfter
+                 userInfo:(nullable NSDictionary *)userInfo
         completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
@@ -630,15 +649,18 @@ withToleranceBefore:(CMTime)toleranceBefore
  *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
  *               actual segment time range is set, playback will start at the segment beginning.
  *
- *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
+ *  For more information, @see `-playURL:atTime:withToleranceBefore:toleranceAfter:segments:userInfo:`.
  *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ *              Tolerances will be adjusted if needed to keep the start time within the designated segment.
  */
 - (void)playURL:(NSURL *)URL
         atIndex:(NSInteger)index
            time:(CMTime)time
-     inSegments:(NSArray<id<SRGSegment>> *)segments
-   withUserInfo:(nullable NSDictionary *)userInfo;
+inSegments:(NSArray<id<SRGSegment>> *)segments
+withToleranceBefore:(CMTime)toleranceBefore
+ toleranceAfter:(CMTime)toleranceAfter
+       userInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Play an item, starting at a specific time within the segment specified by `index`. Use `kCMTimeZero` to start at the
@@ -648,15 +670,18 @@ withToleranceBefore:(CMTime)toleranceBefore
  *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
  *               actual segment time range is set, playback will start at the segment beginning.
  *
- *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
+ *  For more information, @see `-playURL:atTime:withToleranceBefore:toleranceAfter:segments:userInfo:`.
  *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ *              Tolerances will be adjusted if needed to keep the start time within the designated segment.
  */
 - (void)playItem:(AVPlayerItem *)item
          atIndex:(NSInteger)index
             time:(CMTime)time
       inSegments:(NSArray<id<SRGSegment>> *)segments
-    withUserInfo:(nullable NSDictionary *)userInfo;
+withToleranceBefore:(CMTime)toleranceBefore
+  toleranceAfter:(CMTime)toleranceAfter
+        segments:(nullable NSDictionary *)userInfo;
 
 /**
  *  Seek to a specific time in a segment specified by its index. Use `kCMTimeZero` to seek to the segment beginning.
@@ -670,7 +695,11 @@ withToleranceBefore:(CMTime)toleranceBefore
  *  @discussion If the segment index is invalid, this method does nothing. If the segment is already the one being played,
  *              playback will be restarted at its beginning.
  */
-- (void)seekToTime:(CMTime)time inSegmentAtIndex:(NSInteger)index withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)seekToTime:(CMTime)time
+  inSegmentAtIndex:(NSInteger)index
+withToleranceBefore:(CMTime)toleranceBefore
+    toleranceAfter:(CMTime)toleranceAfter
+ completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
  *  Seek to a specific time in a segment. Use `kCMTimeZero` to seek to the segment beginning.
@@ -683,7 +712,11 @@ withToleranceBefore:(CMTime)toleranceBefore
  *
  *  @discussion If the segment does not belong to the registered segments, this method does nothing.
  */
-- (void)seekToTime:(CMTime)time inSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)seekToTime:(CMTime)time
+         inSegment:(id<SRGSegment>)segment
+withToleranceBefore:(CMTime)toleranceBefore
+    toleranceAfter:(CMTime)toleranceAfter
+ completionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
  *  Return the currently selected segment if any, `nil` if none.

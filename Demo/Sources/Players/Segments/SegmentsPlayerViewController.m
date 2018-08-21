@@ -76,7 +76,12 @@
     self.externalPlaybackSwitch.on = self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive;
     
     self.mediaPlayerController.view.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
-    [self.mediaPlayerController playURL:self.media.URL atTime:kCMTimeZero withSegments:self.media.segments userInfo:@{ @"test_field" : @"test_value" }];
+    [self.mediaPlayerController playURL:self.media.URL
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:self.media.segments
+                               userInfo:@{ @"test_field" : @"test_value" }];
 }
 
 #pragma mark UI

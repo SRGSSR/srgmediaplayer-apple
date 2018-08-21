@@ -54,6 +54,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 @property (nonatomic, weak) id<SRGSegment> initialTargetSegment;
 @property (nonatomic) CMTime initialStartTime;
 
+@property (nonatomic) CMTime toleranceBefore;
+@property (nonatomic) CMTime toleranceAfter;
+
 @property (nonatomic, weak) id<SRGSegment> previousSegment;
 @property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
 @property (nonatomic, weak) id<SRGSegment> currentSegment;
@@ -169,6 +172,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                     
                     CMTime startTime = self.startTimeValue.CMTimeValue;
                     
+                    // TODO: Fix tolerances so that playback starts in the correct range
+                    
                     // If the start position does not fulfill tolerance settings, start at the default location
                     CMTimeRange timeRange = self.targetSegment ? self.targetSegment.srg_timeRange : self.timeRange;
                     if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
@@ -189,7 +194,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                         self.view.playbackViewHidden = YES;
                         
                         // Call system method to avoid unwanted seek state in this special case
-                        [player seekToTime:startTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+                        [player seekToTime:startTime toleranceBefore:self.toleranceBefore toleranceAfter:self.toleranceAfter completionHandler:^(BOOL finished) {
                             if (finished) {
                                 self.view.playbackViewHidden = NO;
                             }
@@ -615,20 +620,24 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 - (void)prepareToPlayURL:(NSURL *)URL
                   atTime:(CMTime)time
-            withSegments:(NSArray<id<SRGSegment>> *)segments
+     withToleranceBefore:(CMTime)toleranceBefore
+          toleranceAfter:(CMTime)toleranceAfter
+                segments:(nullable NSArray<id<SRGSegment>> *)segments
                 userInfo:(NSDictionary *)userInfo
        completionHandler:(void (^)(void))completionHandler
 {
-    [self prepareToPlayItem:nil URL:URL atTime:time withSegments:segments targetSegment:nil userInfo:userInfo completionHandler:completionHandler];
+    [self prepareToPlayItem:nil URL:URL atTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter segments:segments targetSegment:nil userInfo:userInfo completionHandler:completionHandler];
 }
 
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                    atTime:(CMTime)time
-             withSegments:(NSArray<id<SRGSegment>> *)segments
+      withToleranceBefore:(CMTime)toleranceBefore
+           toleranceAfter:(CMTime)toleranceAfter
+                 segments:(nullable NSArray<id<SRGSegment>> *)segments
                  userInfo:(NSDictionary *)userInfo
         completionHandler:(void (^)(void))completionHandler
 {
-    [self prepareToPlayItem:item URL:nil atTime:time withSegments:segments targetSegment:nil userInfo:userInfo completionHandler:completionHandler];
+    [self prepareToPlayItem:item URL:nil atTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter segments:segments targetSegment:nil userInfo:userInfo completionHandler:completionHandler];
 }
 
 - (void)play
@@ -641,7 +650,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
         }
         // Playback ended. Restart at the beginning. Use low-level API to avoid sending seek events
         else {
-            [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
+            [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
                 if (finished) {
                     [self.player srg_playImmediatelyIfPossible];
                 }
@@ -650,12 +659,12 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     }
     // Player has been removed (e.g. after a -stop). Restart playback with the same conditions (if not cleared)
     else if (self.contentURL) {
-        [self prepareToPlayItem:nil URL:self.contentURL atTime:self.initialStartTime withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
+        [self prepareToPlayItem:nil URL:self.contentURL atTime:self.initialStartTime withToleranceBefore:self.toleranceBefore toleranceAfter:self.toleranceAfter segments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
             [self play];
         }];
     }
     else if (self.playerItem) {
-        [self prepareToPlayItem:[self.playerItem copy] URL:nil atTime:self.initialStartTime withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
+        [self prepareToPlayItem:[self.playerItem copy] URL:nil atTime:self.initialStartTime withToleranceBefore:self.toleranceBefore toleranceAfter:self.toleranceAfter segments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
             [self play];
         }];
     }
@@ -710,36 +719,48 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(void (^)(void))completionHandler
 {
-    [self prepareToPlayURL:URL atTime:kCMTimeZero withSegments:nil userInfo:nil completionHandler:completionHandler];
+    [self prepareToPlayURL:URL
+                    atTime:kCMTimeZero
+       withToleranceBefore:kCMTimePositiveInfinity
+            toleranceAfter:kCMTimePositiveInfinity
+                  segments:nil
+                  userInfo:nil
+         completionHandler:completionHandler];
 }
 
 - (void)prepareToPlayItem:(AVPlayerItem *)item withCompletionHandler:(void (^)(void))completionHandler
 {
-    [self prepareToPlayItem:item atTime:kCMTimeZero withSegments:nil userInfo:nil completionHandler:completionHandler];
+    [self prepareToPlayItem:item
+                     atTime:kCMTimeZero
+        withToleranceBefore:kCMTimePositiveInfinity
+             toleranceAfter:kCMTimePositiveInfinity
+                   segments:nil
+                   userInfo:nil
+          completionHandler:completionHandler];
 }
 
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time withSegments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo
+- (void)playURL:(NSURL *)URL atTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter segments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo
 {
-    [self prepareToPlayURL:URL atTime:time withSegments:segments userInfo:userInfo completionHandler:^{
+    [self prepareToPlayURL:URL atTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter segments:segments userInfo:userInfo completionHandler:^{
         [self play];
     }];
 }
 
-- (void)playItem:(AVPlayerItem *)item atTime:(CMTime)time withSegments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo
+- (void)playItem:(AVPlayerItem *)item atTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter segments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo
 {
-    [self prepareToPlayItem:item atTime:time withSegments:segments userInfo:userInfo completionHandler:^{
+    [self prepareToPlayItem:item atTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter segments:segments userInfo:userInfo completionHandler:^{
         [self play];
     }];
 }
 
 - (void)playURL:(NSURL *)URL
 {
-    [self playURL:URL atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    [self playURL:URL atTime:kCMTimeZero withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity segments:nil userInfo:nil];
 }
 
 - (void)playItem:(AVPlayerItem *)item
 {
-    [self playItem:item atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    [self playItem:item atTime:kCMTimeZero withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity segments:nil userInfo:nil];
 }
 
 - (void)togglePlayPause
@@ -768,54 +789,94 @@ withToleranceBefore:(CMTime)toleranceBefore
                  atIndex:(NSInteger)index
                     time:(CMTime)time
               inSegments:(NSArray<id<SRGSegment>> *)segments
-            withUserInfo:(NSDictionary *)userInfo
+     withToleranceBefore:(CMTime)toleranceBefore
+          toleranceAfter:(CMTime)toleranceAfter
+                userInfo:(NSDictionary *)userInfo
        completionHandler:(void (^)(void))completionHandler
 {
     id<SRGSegment> targetSegment = (index >= 0 && index < segments.count) ? segments[index] : nil;
-    [self prepareToPlayItem:nil URL:URL atTime:time withSegments:segments targetSegment:targetSegment userInfo:userInfo completionHandler:completionHandler];
+    [self prepareToPlayItem:nil
+                        URL:URL
+                     atTime:time
+        withToleranceBefore:toleranceBefore
+             toleranceAfter:toleranceAfter
+                   segments:segments
+              targetSegment:targetSegment
+                   userInfo:userInfo
+          completionHandler:completionHandler];
 }
 
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                   atIndex:(NSInteger)index
                      time:(CMTime)time
                inSegments:(NSArray<id<SRGSegment>> *)segments
-             withUserInfo:(NSDictionary *)userInfo
+      withToleranceBefore:(CMTime)toleranceBefore
+           toleranceAfter:(CMTime)toleranceAfter
+                 userInfo:(NSDictionary *)userInfo
         completionHandler:(void (^)(void))completionHandler
 {
     id<SRGSegment> targetSegment = (index >= 0 && index < segments.count) ? segments[index] : nil;
-    [self prepareToPlayItem:item URL:nil atTime:time withSegments:segments targetSegment:targetSegment userInfo:userInfo completionHandler:completionHandler];
+    [self prepareToPlayItem:item
+                        URL:nil
+                     atTime:time
+        withToleranceBefore:toleranceBefore
+             toleranceAfter:toleranceAfter
+                   segments:segments
+              targetSegment:targetSegment
+                   userInfo:userInfo
+          completionHandler:completionHandler];
 }
 
-- (void)playURL:(NSURL *)URL atIndex:(NSInteger)index time:(CMTime)time inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo
+- (void)playURL:(NSURL *)URL
+        atIndex:(NSInteger)index
+           time:(CMTime)time
+     inSegments:(NSArray<id<SRGSegment>> *)segments
+withToleranceBefore:(CMTime)toleranceBefore
+ toleranceAfter:(CMTime)toleranceAfter
+       userInfo:(NSDictionary *)userInfo
 {
-    [self prepareToPlayURL:URL atIndex:index time:time inSegments:segments withUserInfo:userInfo completionHandler:^{
+    [self prepareToPlayURL:URL atIndex:index time:time inSegments:segments withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter userInfo:userInfo completionHandler:^{
         [self play];
     }];
 }
 
-- (void)playItem:(AVPlayerItem *)item atIndex:(NSInteger)index time:(CMTime)time inSegments:(NSArray<id<SRGSegment>> *)segments withUserInfo:(NSDictionary *)userInfo
+- (void)playItem:(AVPlayerItem *)item
+         atIndex:(NSInteger)index
+            time:(CMTime)time
+      inSegments:(NSArray<id<SRGSegment>> *)segments
+withToleranceBefore:(CMTime)toleranceBefore
+  toleranceAfter:(CMTime)toleranceAfter
+        segments:(NSDictionary *)userInfo
 {
-    [self prepareToPlayItem:item atIndex:index time:time inSegments:segments withUserInfo:userInfo completionHandler:^{
+    [self prepareToPlayItem:item atIndex:index time:time inSegments:segments withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter userInfo:userInfo completionHandler:^{
         [self play];
     }];
 }
 
-- (void)seekToTime:(CMTime)time inSegmentAtIndex:(NSInteger)index withCompletionHandler:(void (^)(BOOL finished))completionHandler
+- (void)seekToTime:(CMTime)time
+  inSegmentAtIndex:(NSInteger)index
+withToleranceBefore:(CMTime)toleranceBefore
+    toleranceAfter:(CMTime)toleranceAfter
+ completionHandler:(void (^)(BOOL))completionHandler
 {
     if (index < 0 || index >= self.segments.count) {
         return;
     }
     
-    [self seekToTime:time inSegment:self.segments[index] withCompletionHandler:completionHandler];
+    [self seekToTime:time inSegment:self.segments[index] withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:completionHandler];
 }
 
-- (void)seekToTime:(CMTime)time inSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToTime:(CMTime)time
+         inSegment:(id<SRGSegment>)segment
+withToleranceBefore:(CMTime)toleranceBefore
+    toleranceAfter:(CMTime)toleranceAfter
+ completionHandler:(void (^)(BOOL))completionHandler
 {
     if (! [self.segments containsObject:segment]) {
         return;
     }
     
-    [self seekToTime:time withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero targetSegment:segment completionHandler:completionHandler];
+    [self seekToTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter targetSegment:segment completionHandler:completionHandler];
 }
 
 - (id<SRGSegment>)selectedSegment
@@ -828,7 +889,9 @@ withToleranceBefore:(CMTime)toleranceBefore
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                       URL:(NSURL *)URL
                    atTime:(CMTime)time
-             withSegments:(NSArray<id<SRGSegment>> *)segments
+      withToleranceBefore:(CMTime)toleranceBefore
+           toleranceAfter:(CMTime)toleranceAfter
+                 segments:(NSArray<id<SRGSegment>> *)segments
             targetSegment:(id<SRGSegment>)targetSegment
                  userInfo:(NSDictionary *)userInfo
         completionHandler:(void (^)(void))completionHandler
@@ -866,6 +929,9 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     self.startTimeValue = [NSValue valueWithCMTime:startTime];
     self.startCompletionHandler = completionHandler;
+    
+    self.toleranceBefore = toleranceBefore;
+    self.toleranceAfter = toleranceAfter;
     
     // Save initial values for restart after a stop
     self.initialTargetSegment = targetSegment;
