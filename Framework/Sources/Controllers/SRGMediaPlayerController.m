@@ -156,6 +156,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                             return;
                         }
                         
+                        self.view.playbackViewHidden = NO;
+                        
                         // Reset start time first so that playback state induced change made in the completion handler
                         // does not loop back here
                         self.startTimeValue = nil;
@@ -188,16 +190,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                         completionBlock(YES);
                     }
                     else {
-                        // Hide the view until the seek is finished to avoid briefly displaying the frame which the player
-                        // was loaded into first (default playback position). Hide the internal view since visibility of
-                        // the media player view can be controlled by clients.
-                        self.view.playbackViewHidden = YES;
-                        
                         // Call system method to avoid unwanted seek state in this special case
                         [player seekToTime:startTime toleranceBefore:self.toleranceBefore toleranceAfter:self.toleranceAfter completionHandler:^(BOOL finished) {
-                            if (finished) {
-                                self.view.playbackViewHidden = NO;
-                            }
                             completionBlock(finished);
                         }];
                     }
@@ -936,6 +930,11 @@ withToleranceBefore:(CMTime)toleranceBefore
     // Save initial values for restart after a stop
     self.initialTargetSegment = targetSegment;
     self.initialStartTime = time;
+    
+    // Hide the view until playback starts to avoid briefly displaying the frame which the player was loaded into first
+    // (default playback position). Hide the internal view since visibility of the media player view can be controlled
+    // by clients.
+    self.view.playbackViewHidden = YES;
     
     self.player = [AVPlayer playerWithPlayerItem:item];
     
