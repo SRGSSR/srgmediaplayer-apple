@@ -349,7 +349,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     [self.mediaPlayerController playURL:OnDemandTestURL()
-                                 atTime:CMTimeMakeWithSeconds(20., NSEC_PER_SEC)
+                                 atTime:CMTimeMakeWithSeconds(22., NSEC_PER_SEC)
                     withToleranceBefore:kCMTimePositiveInfinity
                          toleranceAfter:kCMTimePositiveInfinity
                                segments:nil
@@ -358,7 +358,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     // Check we started near the specified location
-    TestAssertAlmostButNotEqual(self.mediaPlayerController.currentTime, 20, 4);
+    TestAssertAlmostButNotEqual(self.mediaPlayerController.currentTime, 22, 4);
 }
 
 - (void)testVideoTrackInLastPosition
