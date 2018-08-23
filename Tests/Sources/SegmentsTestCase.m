@@ -713,8 +713,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(20., NSEC_PER_SEC)
                           inSegmentAtIndex:0
-                       withToleranceBefore:kCMTimePositiveInfinity
-                            toleranceAfter:kCMTimePositiveInfinity
+                       withToleranceBefore:kCMTimeZero
+                            toleranceAfter:kCMTimeZero
                          completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
@@ -754,8 +754,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(-20., NSEC_PER_SEC)
                           inSegmentAtIndex:0
-                       withToleranceBefore:kCMTimePositiveInfinity
-                            toleranceAfter:kCMTimePositiveInfinity
+                       withToleranceBefore:kCMTimeZero
+                            toleranceAfter:kCMTimeZero
                          completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
@@ -795,8 +795,8 @@ static NSURL *SegmentsTestURL(void)
     
     [self.mediaPlayerController seekToTime:CMTimeMakeWithSeconds(300., NSEC_PER_SEC)
                           inSegmentAtIndex:0
-                       withToleranceBefore:kCMTimePositiveInfinity
-                            toleranceAfter:kCMTimePositiveInfinity
+                       withToleranceBefore:kCMTimeZero
+                            toleranceAfter:kCMTimeZero
                          completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
@@ -997,8 +997,8 @@ static NSURL *SegmentsTestURL(void)
                                 atIndex:0
                                    time:CMTimeMakeWithSeconds(59., NSEC_PER_SEC)
                              inSegments:@[segment]
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                userInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];

@@ -951,12 +951,14 @@ withToleranceBefore:(CMTime)toleranceBefore
  completionHandler:(void (^)(BOOL))completionHandler
 {
     NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Segment must be valid");
-    NSAssert(! targetSegment || (CMTIME_COMPARE_INLINE(toleranceBefore, ==, kCMTimeZero) && CMTIME_COMPARE_INLINE(toleranceAfter, ==, kCMTimeZero)), @"Seeking to a segment must be sharp");
     
     if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
         return;
     }
-        
+    
+    // TODO: Fix tolerances so that playback starts in the correct range. Moreover, for a segment with start time at zero, the
+    //       seek must be exact
+    
     if (targetSegment) {
         // Add a small tolerance so that we reliably end within the segment (no seek tolerance is allowed, see asserts above)
         time = CMTimeMinimum(CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMaximum(time, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))),

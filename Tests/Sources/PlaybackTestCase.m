@@ -293,8 +293,8 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:CMTimeMakeWithSeconds(20., NSEC_PER_SEC)
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:nil
                                userInfo:nil];
     
@@ -331,8 +331,8 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController playURL:DVRTestURL()
                                  atTime:CMTimeMakeWithSeconds(20., NSEC_PER_SEC)
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:nil
                                userInfo:nil];
     
@@ -2133,8 +2133,8 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:CMTimeMakeWithSeconds(1793., NSEC_PER_SEC)
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:nil
                                userInfo:nil];
     
@@ -2235,8 +2235,8 @@ static NSURL *AudioOverHTTPTestURL(void)
     // Smallest must win, i.e if we seek ~100 seconds from the end, playback should start at the desired location
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:CMTimeMakeWithSeconds(1700., NSEC_PER_SEC)
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:nil
                                userInfo:nil];
     
