@@ -48,8 +48,8 @@ static NSURL *OnDemandTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC)
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:nil
                                userInfo:nil];
     
@@ -79,8 +79,8 @@ static NSURL *OnDemandTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC)
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:nil
                                userInfo:nil];
     
@@ -118,8 +118,8 @@ static NSURL *OnDemandTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:nil
                                userInfo:nil];
     
@@ -156,8 +156,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment]
                                userInfo:nil];
     
@@ -185,8 +185,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment]
                                userInfo:nil];
     
@@ -224,8 +224,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment]
                                userInfo:nil];
     
@@ -263,8 +263,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment]
                                userInfo:nil];
     
@@ -300,8 +300,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment]
                                userInfo:nil];
     
@@ -339,8 +339,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL()
                                           atTime:kCMTimeZero
-                             withToleranceBefore:kCMTimePositiveInfinity
-                                  toleranceAfter:kCMTimePositiveInfinity
+                             withToleranceBefore:kCMTimeZero
+                                  toleranceAfter:kCMTimeZero
                                         segments:@[segment1]
                                         userInfo:nil
                                completionHandler:nil];
@@ -371,8 +371,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment1]
                                userInfo:nil];
     
@@ -410,8 +410,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment1]
                                userInfo:nil];
     
@@ -459,8 +459,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment1]
                                userInfo:nil];
     
@@ -503,8 +503,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment1]
                                userInfo:nil];
     
@@ -552,8 +552,8 @@ static NSURL *OnDemandTestURL(void)
                                 atIndex:0
                                    time:kCMTimeZero
                              inSegments:@[segment]
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -582,8 +582,8 @@ static NSURL *OnDemandTestURL(void)
                                 atIndex:0
                                    time:kCMTimeZero
                              inSegments:@[segment]
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -620,8 +620,8 @@ static NSURL *OnDemandTestURL(void)
                                 atIndex:0
                                    time:kCMTimeZero
                              inSegments:@[segment]
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -658,8 +658,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment]
                                userInfo:nil];
     
@@ -671,8 +671,8 @@ static NSURL *OnDemandTestURL(void)
     
     [self.mediaPlayerController seekToTime:kCMTimeZero
                                  inSegment:segment
-                       withToleranceBefore:kCMTimePositiveInfinity
-                            toleranceAfter:kCMTimePositiveInfinity
+                       withToleranceBefore:kCMTimeZero
+                            toleranceAfter:kCMTimeZero
                          completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -709,8 +709,8 @@ static NSURL *OnDemandTestURL(void)
                                 atIndex:0
                                    time:kCMTimeZero
                              inSegments:@[segment]
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -747,8 +747,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL()
                                           atTime:kCMTimeZero
-                             withToleranceBefore:kCMTimePositiveInfinity
-                                  toleranceAfter:kCMTimePositiveInfinity
+                             withToleranceBefore:kCMTimeZero
+                                  toleranceAfter:kCMTimeZero
                                         segments:@[segment1]
                                         userInfo:nil
                                completionHandler:nil];
@@ -780,8 +780,8 @@ static NSURL *OnDemandTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC)
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:nil
                                userInfo:nil];
     
@@ -819,8 +819,8 @@ static NSURL *OnDemandTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC)
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:nil
                                userInfo:nil];
     
@@ -866,8 +866,8 @@ static NSURL *OnDemandTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:nil
                                userInfo:nil];
     
@@ -914,8 +914,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment]
                                userInfo:nil];
     
@@ -953,8 +953,8 @@ static NSURL *OnDemandTestURL(void)
     Segment *segment = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment]
                                userInfo:nil];
     
@@ -995,8 +995,8 @@ static NSURL *OnDemandTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()
                                  atTime:kCMTimeZero
-                    withToleranceBefore:kCMTimePositiveInfinity
-                         toleranceAfter:kCMTimePositiveInfinity
+                    withToleranceBefore:kCMTimeZero
+                         toleranceAfter:kCMTimeZero
                                segments:@[segment]
                                userInfo:nil];
     
