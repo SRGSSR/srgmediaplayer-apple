@@ -342,6 +342,25 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, ==, CMTimeMakeWithSeconds(20., NSEC_PER_SEC)));
 }
 
+- (void)testOnDemandPlaybackStartAtTimeWithTolerances
+{
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:CMTimeMakeWithSeconds(20., NSEC_PER_SEC)
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:nil
+                               userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Check we started near the specified location
+    TestAssertAlmostButNotEqual(self.mediaPlayerController.currentTime, 20, 4);
+}
+
 - (void)testVideoTrackInLastPosition
 {
     // The video track is not always located first in the tracks list.
@@ -2160,7 +2179,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, <, CMTimeMakeWithSeconds(1., NSEC_PER_SEC)));
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, 0., 1.);
 }
 
 - (void)testOnDemandStreamEndRelativeTolerance
@@ -2180,7 +2199,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, <, CMTimeMakeWithSeconds(1., NSEC_PER_SEC)));
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, 0., 1.);
 }
 
 - (void)testLivestreamEndAbsoluteTolerance
@@ -2200,7 +2219,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, <, CMTimeMakeWithSeconds(2., NSEC_PER_SEC)));
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, 0., 2.);
 }
 
 - (void)testDVRStreamEndAbsoluteTolerance
