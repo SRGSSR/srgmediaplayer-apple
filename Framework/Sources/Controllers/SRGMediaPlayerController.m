@@ -174,7 +174,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                     
                     CMTime startTime = self.startTimeValue.CMTimeValue;
                     
-                    // TODO: Fix tolerances so that playback starts in the correct range
+                    // TODO: Fix tolerances so that playback starts in the correct range. Moreover, for a segment with start time at zero, the
+                    //       seek must be exact
                     
                     // If the start position does not fulfill tolerance settings, start at the default location
                     CMTimeRange timeRange = self.targetSegment ? self.targetSegment.srg_timeRange : self.timeRange;

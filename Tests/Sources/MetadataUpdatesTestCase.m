@@ -46,7 +46,12 @@ static NSURL *OnDemandTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC) withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC)
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:nil
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -72,7 +77,12 @@ static NSURL *OnDemandTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC) withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC)
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:nil
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -106,7 +116,12 @@ static NSURL *OnDemandTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:nil
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -139,7 +154,12 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -163,7 +183,12 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -197,7 +222,12 @@ static NSURL *OnDemandTestURL(void)
     }];
     
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -231,7 +261,12 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -263,7 +298,12 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -297,7 +337,13 @@ static NSURL *OnDemandTestURL(void)
     }];
     
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment1] userInfo:nil completionHandler:nil];
+    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL()
+                                          atTime:kCMTimeZero
+                             withToleranceBefore:kCMTimePositiveInfinity
+                                  toleranceAfter:kCMTimePositiveInfinity
+                                        segments:@[segment1]
+                                        userInfo:nil
+                               completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -323,7 +369,12 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment1] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment1]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -357,7 +408,12 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment1] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment1]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -401,7 +457,12 @@ static NSURL *OnDemandTestURL(void)
     }];
     
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment1] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment1]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -440,7 +501,12 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment1] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment1]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -482,7 +548,13 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                atIndex:0
+                                   time:kCMTimeZero
+                             inSegments:@[segment]
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -506,7 +578,13 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                atIndex:0
+                                   time:kCMTimeZero
+                             inSegments:@[segment]
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -538,7 +616,13 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                atIndex:0
+                                   time:kCMTimeZero
+                             inSegments:@[segment]
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -572,7 +656,12 @@ static NSURL *OnDemandTestURL(void)
     }];
     
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -580,7 +669,11 @@ static NSURL *OnDemandTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateSeeking;
     }];
     
-    [self.mediaPlayerController seekToTime:kCMTimeZero inSegment:segment withCompletionHandler:nil];
+    [self.mediaPlayerController seekToTime:kCMTimeZero
+                                 inSegment:segment
+                       withToleranceBefore:kCMTimePositiveInfinity
+                            toleranceAfter:kCMTimePositiveInfinity
+                         completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -612,7 +705,13 @@ static NSURL *OnDemandTestURL(void)
     [self mpt_expectationForNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:nil];
     
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atIndex:0 time:kCMTimeZero inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                atIndex:0
+                                   time:kCMTimeZero
+                             inSegments:@[segment]
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -646,7 +745,13 @@ static NSURL *OnDemandTestURL(void)
     }];
     
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment1] userInfo:nil completionHandler:nil];
+    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL()
+                                          atTime:kCMTimeZero
+                             withToleranceBefore:kCMTimePositiveInfinity
+                                  toleranceAfter:kCMTimePositiveInfinity
+                                        segments:@[segment1]
+                                        userInfo:nil
+                               completionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -673,7 +778,12 @@ static NSURL *OnDemandTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC) withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC)
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:nil
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -707,7 +817,12 @@ static NSURL *OnDemandTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC) withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:CMTimeMakeWithSeconds(3., NSEC_PER_SEC)
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:nil
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -749,7 +864,12 @@ static NSURL *OnDemandTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:nil
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -792,7 +912,12 @@ static NSURL *OnDemandTestURL(void)
     }];
     
     Segment *segment = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -826,7 +951,12 @@ static NSURL *OnDemandTestURL(void)
     }];
     
     Segment *segment = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -863,7 +993,12 @@ static NSURL *OnDemandTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL() atTime:kCMTimeZero withSegments:@[segment] userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                                 atTime:kCMTimeZero
+                    withToleranceBefore:kCMTimePositiveInfinity
+                         toleranceAfter:kCMTimePositiveInfinity
+                               segments:@[segment]
+                               userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
