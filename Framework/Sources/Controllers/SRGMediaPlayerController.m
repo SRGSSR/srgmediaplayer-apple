@@ -32,6 +32,8 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError);
 static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlaybackState playbackState);
 static NSString *SRGMediaPlayerControllerNameForMediaType(SRGMediaPlayerMediaType mediaType);
 static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamType streamType);
+static CMTime SRGMediaPlayerControllerTimeRangeToleranceBefore(CMTime toleranceBefore, CMTime time, CMTimeRange timeRange);
+static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAfter, CMTime time, CMTimeRange timeRange);
 
 @interface SRGMediaPlayerController () {
 @private
@@ -174,9 +176,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                     
                     CMTime startTime = self.startTimeValue.CMTimeValue;
                     
-                    // TODO: Fix tolerances so that playback starts in the correct range. Moreover, for a segment with start time at zero, the
-                    //       seek must be exact
-                    
                     // If the start position does not fulfill tolerance settings, start at the default location
                     CMTimeRange timeRange = self.targetSegment ? self.targetSegment.srg_timeRange : self.timeRange;
                     if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
@@ -192,7 +191,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                     }
                     else {
                         // Call system method to avoid unwanted seek state in this special case
-                        [player seekToTime:startTime toleranceBefore:self.toleranceBefore toleranceAfter:self.toleranceAfter completionHandler:^(BOOL finished) {
+                        CMTime toleranceBefore = SRGMediaPlayerControllerTimeRangeToleranceBefore(self.toleranceBefore, startTime, timeRange);
+                        CMTime toleranceAfter = SRGMediaPlayerControllerTimeRangeToleranceAfter(self.toleranceAfter, startTime, timeRange);
+                        [player seekToTime:startTime toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
                             completionBlock(finished);
                         }];
                     }
@@ -956,13 +957,13 @@ withToleranceBefore:(CMTime)toleranceBefore
         return;
     }
     
-    // TODO: Fix tolerances so that playback starts in the correct range. Moreover, for a segment with start time at zero, the
-    //       seek must be exact
-    
     if (targetSegment) {
-        // Add a small tolerance so that we reliably end within the segment (no seek tolerance is allowed, see asserts above)
-        time = CMTimeMinimum(CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMaximum(time, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))),
-                             CMTimeRangeGetEnd(targetSegment.srg_timeRange));
+        // Add a small tolerance to the target value so that we reliably end within the segment
+        CMTimeRange timeRange = targetSegment.srg_timeRange;
+        time = CMTimeMinimum(CMTimeAdd(timeRange.start, CMTimeMaximum(time, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))),
+                             CMTimeRangeGetEnd(timeRange));
+        toleranceBefore = SRGMediaPlayerControllerTimeRangeToleranceBefore(toleranceBefore, time, timeRange);
+        toleranceAfter = SRGMediaPlayerControllerTimeRangeToleranceAfter(toleranceAfter, time, timeRange);
     }
     
     self.targetSegment = targetSegment;
@@ -1377,4 +1378,26 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                      @(SRGMediaPlayerStreamTypeDVR) : @"DVR" };
     });
     return s_names[@(streamType)] ?: @"unknown";
+}
+
+// Ensure that tolerance settings are properly set so that a time (including the tolerance) is guaranteed to fall within a
+// given range
+static CMTime SRGMediaPlayerControllerTimeRangeToleranceBefore(CMTime toleranceBefore, CMTime time, CMTimeRange timeRange)
+{
+    if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
+        return CMTimeMaximum(CMTimeMinimum(toleranceBefore, CMTimeSubtract(time, timeRange.start)), kCMTimeZero);
+    }
+    else {
+        return toleranceBefore;
+    }
+}
+
+static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAfter, CMTime time, CMTimeRange timeRange)
+{
+    if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
+        return CMTimeMaximum(CMTimeMinimum(toleranceAfter, CMTimeSubtract(CMTimeRangeGetEnd(timeRange), time)), kCMTimeZero);
+    }
+    else {
+        return toleranceAfter;
+    }
 }
