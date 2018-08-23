@@ -842,7 +842,7 @@ withToleranceBefore:(CMTime)toleranceBefore
       inSegments:(NSArray<id<SRGSegment>> *)segments
 withToleranceBefore:(CMTime)toleranceBefore
   toleranceAfter:(CMTime)toleranceAfter
-        segments:(NSDictionary *)userInfo
+        userInfo:(NSDictionary *)userInfo
 {
     [self prepareToPlayItem:item atIndex:index time:time inSegments:segments withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter userInfo:userInfo completionHandler:^{
         [self play];

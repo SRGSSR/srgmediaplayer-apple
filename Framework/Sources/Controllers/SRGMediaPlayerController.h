@@ -683,7 +683,7 @@ withToleranceBefore:(CMTime)toleranceBefore
       inSegments:(NSArray<id<SRGSegment>> *)segments
 withToleranceBefore:(CMTime)toleranceBefore
   toleranceAfter:(CMTime)toleranceAfter
-        segments:(nullable NSDictionary *)userInfo;
+        userInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Seek to a specific time in a segment specified by its index. Use `kCMTimeZero` to seek to the segment beginning.
