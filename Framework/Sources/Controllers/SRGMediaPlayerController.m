@@ -708,6 +708,9 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.initialTargetSegment = nil;
     self.initialStartTime = kCMTimeZero;
     
+    self.toleranceBefore = kCMTimeZero;
+    self.toleranceAfter = kCMTimeZero;
+    
     [self stopWithUserInfo:[userInfo copy]];
 }
 
