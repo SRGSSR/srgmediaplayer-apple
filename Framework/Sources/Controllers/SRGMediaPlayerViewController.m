@@ -384,7 +384,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     
     CMTime targetTime = CMTimeSubtract(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerBackwardSkipInterval, NSEC_PER_SEC));
-    [self.controller seekToTime:targetTime withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
+    [self.controller seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
             [self.controller play];
         }
@@ -400,7 +400,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     
     CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerForwardSkipInterval, NSEC_PER_SEC));
-    [self.controller seekToTime:targetTime withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
+    [self.controller seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
             [self.controller play];
         }

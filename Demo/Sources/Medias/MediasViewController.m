@@ -11,7 +11,6 @@
 #import "MediaPlayer.h"
 #import "MultiPlayerViewController.h"
 #import "NSBundle+Demo.h"
-#import "Segment.h"
 #import "SegmentsPlayerViewController.h"
 #import "TimeshiftPlayerViewController.h"
 

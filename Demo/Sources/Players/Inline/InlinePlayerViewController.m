@@ -36,7 +36,7 @@
 - (IBAction)prepareToPlay:(id)sender
 {
     self.mediaPlayerController.view.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
-    [self.mediaPlayerController prepareToPlayURL:self.media.URL atTime:kCMTimeZero withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity segments:nil userInfo:nil completionHandler:^{
+    [self.mediaPlayerController prepareToPlayURL:self.media.URL atPosition:nil withSegments:nil userInfo:nil completionHandler:^{
         self->_ready = YES;
     }];
 }

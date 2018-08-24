@@ -124,11 +124,7 @@ static void commonInit(SRGTimelineView *self);
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     id<SRGSegment> segment = self.mediaPlayerController.visibleSegments[indexPath.row];
-    [self.mediaPlayerController seekToTime:kCMTimeZero
-                                 inSegment:segment
-                       withToleranceBefore:kCMTimeZero
-                            toleranceAfter:kCMTimeZero
-                         completionHandler:nil];
+    [self.mediaPlayerController seekToPosition:nil inSegment:segment withCompletionHandler:nil];
     
     if ([self.delegate respondsToSelector:@selector(timelineView:didSelectSegmentAtIndexPath:)]) {
         [self.delegate timelineView:self didSelectSegmentAtIndexPath:indexPath];

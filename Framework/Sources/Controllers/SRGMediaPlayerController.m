@@ -32,8 +32,7 @@ static NSError *SRGMediaPlayerControllerError(NSError *underlyingError);
 static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlaybackState playbackState);
 static NSString *SRGMediaPlayerControllerNameForMediaType(SRGMediaPlayerMediaType mediaType);
 static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamType streamType);
-static CMTime SRGMediaPlayerControllerTimeRangeToleranceBefore(CMTime toleranceBefore, CMTime time, CMTimeRange timeRange);
-static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAfter, CMTime time, CMTimeRange timeRange);
+static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
 
 @interface SRGMediaPlayerController () {
 @private
@@ -54,10 +53,7 @@ static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAf
 
 // Saved values supplied when playback is started
 @property (nonatomic, weak) id<SRGSegment> initialTargetSegment;
-@property (nonatomic) CMTime initialStartTime;
-
-@property (nonatomic) CMTime toleranceBefore;
-@property (nonatomic) CMTime toleranceAfter;
+@property (nonatomic) SRGPosition *initialPosition;
 
 @property (nonatomic, weak) id<SRGSegment> previousSegment;
 @property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
@@ -65,7 +61,7 @@ static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAf
 
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
-@property (nonatomic) NSValue *startTimeValue;                      // Will be nilled when reached
+@property (nonatomic) SRGPosition *startPosition;                  // Will be nilled when reached
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
 
 @property (nonatomic) CMTime seekStartTime;
@@ -152,7 +148,7 @@ static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAf
             if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
                 // Playback start. Use received start parameters, do not update the playback state yet, wait until the
                 // completion handler has been executed (since it might immediately start playback)
-                if (self.startTimeValue) {
+                if (self.startPosition) {
                     void (^completionBlock)(BOOL) = ^(BOOL finished) {
                         if (! finished) {
                             return;
@@ -160,9 +156,9 @@ static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAf
                         
                         self.view.playbackViewHidden = NO;
                         
-                        // Reset start time first so that playback state induced change made in the completion handler
+                        // Reset start time first so that the playback state induced change made in the completion handler
                         // does not loop back here
-                        self.startTimeValue = nil;
+                        self.startPosition = nil;
                         
                         self.startCompletionHandler ? self.startCompletionHandler() : nil;
                         self.startCompletionHandler = nil;
@@ -174,26 +170,18 @@ static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAf
                         }
                     };
                     
-                    CMTime startTime = self.startTimeValue.CMTimeValue;
-                    
-                    // If the start position does not fulfill tolerance settings, start at the default location
                     CMTimeRange timeRange = self.targetSegment ? self.targetSegment.srg_timeRange : self.timeRange;
-                    if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
-                        CMTime relativeStartTime = CMTimeSubtract(startTime, timeRange.start);
-                        CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(timeRange.duration));
-                        if (CMTIME_COMPARE_INLINE(relativeStartTime, >=, CMTimeSubtract(timeRange.duration, tolerance))) {
-                            startTime = timeRange.start;
-                        }
-                    }
+                    CMTime relativeTime = CMTimeSubtract(self.startPosition.time, timeRange.start);
+                    CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(timeRange.duration));
+                    CMTime startTime = CMTIME_COMPARE_INLINE(relativeTime, >=, CMTimeSubtract(timeRange.duration, tolerance)) ? timeRange.start : self.startPosition.time;
+                    SRGPosition *startPosition = SRGMediaPlayerControllerPositionInTimeRange([SRGPosition positionWithTime:startTime toleranceBefore:self.startPosition.toleranceBefore toleranceAfter:self.startPosition.toleranceAfter], timeRange);
                     
-                    if (CMTIME_COMPARE_INLINE(startTime, ==, kCMTimeZero)) {
+                    if (CMTIME_COMPARE_INLINE(startPosition.time, ==, kCMTimeZero)) {
                         completionBlock(YES);
                     }
                     else {
                         // Call system method to avoid unwanted seek state in this special case
-                        CMTime toleranceBefore = SRGMediaPlayerControllerTimeRangeToleranceBefore(self.toleranceBefore, startTime, timeRange);
-                        CMTime toleranceAfter = SRGMediaPlayerControllerTimeRangeToleranceAfter(self.toleranceAfter, startTime, timeRange);
-                        [player seekToTime:startTime toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
+                        [player seekToTime:startPosition.time toleranceBefore:startPosition.toleranceBefore toleranceAfter:startPosition.toleranceAfter completionHandler:^(BOOL finished) {
                             completionBlock(finished);
                         }];
                     }
@@ -615,25 +603,21 @@ static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAf
 #pragma mark Playback
 
 - (void)prepareToPlayURL:(NSURL *)URL
-                  atTime:(CMTime)time
-     withToleranceBefore:(CMTime)toleranceBefore
-          toleranceAfter:(CMTime)toleranceAfter
-                segments:(nullable NSArray<id<SRGSegment>> *)segments
+              atPosition:(SRGPosition *)position
+            withSegments:(NSArray<id<SRGSegment>> *)segments
                 userInfo:(NSDictionary *)userInfo
        completionHandler:(void (^)(void))completionHandler
 {
-    [self prepareToPlayItem:nil URL:URL atTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter segments:segments targetSegment:nil userInfo:userInfo completionHandler:completionHandler];
+    [self prepareToPlayItem:nil URL:URL atPosition:position withSegments:segments targetSegment:nil userInfo:userInfo completionHandler:completionHandler];
 }
 
 - (void)prepareToPlayItem:(AVPlayerItem *)item
-                   atTime:(CMTime)time
-      withToleranceBefore:(CMTime)toleranceBefore
-           toleranceAfter:(CMTime)toleranceAfter
-                 segments:(nullable NSArray<id<SRGSegment>> *)segments
+               atPosition:(SRGPosition *)position
+             withSegments:(NSArray<id<SRGSegment>> *)segments
                  userInfo:(NSDictionary *)userInfo
         completionHandler:(void (^)(void))completionHandler
 {
-    [self prepareToPlayItem:item URL:nil atTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter segments:segments targetSegment:nil userInfo:userInfo completionHandler:completionHandler];
+    [self prepareToPlayItem:item URL:nil atPosition:position withSegments:segments targetSegment:nil userInfo:userInfo completionHandler:completionHandler];
 }
 
 - (void)play
@@ -655,12 +639,12 @@ static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAf
     }
     // Player has been removed (e.g. after a -stop). Restart playback with the same conditions (if not cleared)
     else if (self.contentURL) {
-        [self prepareToPlayItem:nil URL:self.contentURL atTime:self.initialStartTime withToleranceBefore:self.toleranceBefore toleranceAfter:self.toleranceAfter segments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
+        [self prepareToPlayItem:nil URL:self.contentURL atPosition:self.initialPosition withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
             [self play];
         }];
     }
     else if (self.playerItem) {
-        [self prepareToPlayItem:[self.playerItem copy] URL:nil atTime:self.initialStartTime withToleranceBefore:self.toleranceBefore toleranceAfter:self.toleranceAfter segments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
+        [self prepareToPlayItem:[self.playerItem copy] URL:nil atPosition:self.initialPosition withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
             [self play];
         }];
     }
@@ -677,12 +661,9 @@ static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAf
     [self stopWithUserInfo:nil];
 }
 
-- (void)seekToTime:(CMTime)time
-withToleranceBefore:(CMTime)toleranceBefore
-    toleranceAfter:(CMTime)toleranceAfter
- completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToPosition:(SRGPosition *)position withCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    [self seekToTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter targetSegment:nil completionHandler:completionHandler];
+    [self seekToPosition:position withTargetSegment:nil completionHandler:completionHandler];
 }
 
 - (void)reset
@@ -706,10 +687,7 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.userInfo = nil;
     
     self.initialTargetSegment = nil;
-    self.initialStartTime = kCMTimeZero;
-    
-    self.toleranceBefore = kCMTimePositiveInfinity;
-    self.toleranceAfter = kCMTimePositiveInfinity;
+    self.initialPosition = nil;
     
     [self stopWithUserInfo:[userInfo copy]];
 }
@@ -718,48 +696,36 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(void (^)(void))completionHandler
 {
-    [self prepareToPlayURL:URL
-                    atTime:kCMTimeZero
-       withToleranceBefore:kCMTimePositiveInfinity
-            toleranceAfter:kCMTimePositiveInfinity
-                  segments:nil
-                  userInfo:nil
-         completionHandler:completionHandler];
+    [self prepareToPlayURL:URL atPosition:nil withSegments:nil userInfo:nil completionHandler:completionHandler];
 }
 
 - (void)prepareToPlayItem:(AVPlayerItem *)item withCompletionHandler:(void (^)(void))completionHandler
 {
-    [self prepareToPlayItem:item
-                     atTime:kCMTimeZero
-        withToleranceBefore:kCMTimePositiveInfinity
-             toleranceAfter:kCMTimePositiveInfinity
-                   segments:nil
-                   userInfo:nil
-          completionHandler:completionHandler];
+    [self prepareToPlayItem:item atPosition:nil withSegments:nil userInfo:nil completionHandler:completionHandler];
 }
 
-- (void)playURL:(NSURL *)URL atTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter segments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo
+- (void)playURL:(NSURL *)URL atPosition:(SRGPosition *)position withSegments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo
 {
-    [self prepareToPlayURL:URL atTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter segments:segments userInfo:userInfo completionHandler:^{
+    [self prepareToPlayURL:URL atPosition:position withSegments:segments userInfo:userInfo completionHandler:^{
         [self play];
     }];
 }
 
-- (void)playItem:(AVPlayerItem *)item atTime:(CMTime)time withToleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter segments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo
+- (void)playItem:(AVPlayerItem *)item atPosition:(SRGPosition *)position withSegments:(NSArray<id<SRGSegment>> *)segments userInfo:(NSDictionary *)userInfo
 {
-    [self prepareToPlayItem:item atTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter segments:segments userInfo:userInfo completionHandler:^{
+    [self prepareToPlayItem:item atPosition:position withSegments:segments userInfo:userInfo completionHandler:^{
         [self play];
     }];
 }
 
 - (void)playURL:(NSURL *)URL
 {
-    [self playURL:URL atTime:kCMTimeZero withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity segments:nil userInfo:nil];
+    [self playURL:URL atPosition:nil withSegments:nil userInfo:nil];
 }
 
 - (void)playItem:(AVPlayerItem *)item
 {
-    [self playItem:item atTime:kCMTimeZero withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity segments:nil userInfo:nil];
+    [self playItem:item atPosition:nil withSegments:nil userInfo:nil];
 }
 
 - (void)togglePlayPause
@@ -772,110 +738,68 @@ withToleranceBefore:(CMTime)toleranceBefore
     }
 }
 
-- (void)seekEfficientlyToTime:(CMTime)time withCompletionHandler:(void (^)(BOOL))completionHandler
-{
-    [self seekToTime:time withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:completionHandler];
-}
-
-- (void)seekPreciselyToTime:(CMTime)time withCompletionHandler:(void (^)(BOOL))completionHandler
-{
-    [self seekToTime:time withToleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:completionHandler];
-}
-
 #pragma mark Segment playback
 
 - (void)prepareToPlayURL:(NSURL *)URL
                  atIndex:(NSInteger)index
-                    time:(CMTime)time
+                position:(SRGPosition *)position
               inSegments:(NSArray<id<SRGSegment>> *)segments
-     withToleranceBefore:(CMTime)toleranceBefore
-          toleranceAfter:(CMTime)toleranceAfter
-                userInfo:(NSDictionary *)userInfo
+            withUserInfo:(NSDictionary *)userInfo
        completionHandler:(void (^)(void))completionHandler
 {
     id<SRGSegment> targetSegment = (index >= 0 && index < segments.count) ? segments[index] : nil;
-    [self prepareToPlayItem:nil
-                        URL:URL
-                     atTime:time
-        withToleranceBefore:toleranceBefore
-             toleranceAfter:toleranceAfter
-                   segments:segments
-              targetSegment:targetSegment
-                   userInfo:userInfo
-          completionHandler:completionHandler];
+    [self prepareToPlayItem:nil URL:URL atPosition:position withSegments:segments targetSegment:targetSegment userInfo:userInfo completionHandler:completionHandler];
 }
 
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                   atIndex:(NSInteger)index
-                     time:(CMTime)time
+                 position:(SRGPosition *)position
                inSegments:(NSArray<id<SRGSegment>> *)segments
-      withToleranceBefore:(CMTime)toleranceBefore
-           toleranceAfter:(CMTime)toleranceAfter
-                 userInfo:(NSDictionary *)userInfo
+             withUserInfo:(NSDictionary *)userInfo
         completionHandler:(void (^)(void))completionHandler
 {
     id<SRGSegment> targetSegment = (index >= 0 && index < segments.count) ? segments[index] : nil;
-    [self prepareToPlayItem:item
-                        URL:nil
-                     atTime:time
-        withToleranceBefore:toleranceBefore
-             toleranceAfter:toleranceAfter
-                   segments:segments
-              targetSegment:targetSegment
-                   userInfo:userInfo
-          completionHandler:completionHandler];
+    [self prepareToPlayItem:item URL:nil atPosition:position withSegments:segments targetSegment:targetSegment userInfo:userInfo completionHandler:completionHandler];
 }
 
 - (void)playURL:(NSURL *)URL
         atIndex:(NSInteger)index
-           time:(CMTime)time
+       position:(SRGPosition *)position
      inSegments:(NSArray<id<SRGSegment>> *)segments
-withToleranceBefore:(CMTime)toleranceBefore
- toleranceAfter:(CMTime)toleranceAfter
-       userInfo:(NSDictionary *)userInfo
+   withUserInfo:(NSDictionary *)userInfo
 {
-    [self prepareToPlayURL:URL atIndex:index time:time inSegments:segments withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter userInfo:userInfo completionHandler:^{
+    [self prepareToPlayURL:URL atIndex:index position:position inSegments:segments withUserInfo:userInfo completionHandler:^{
         [self play];
     }];
 }
 
 - (void)playItem:(AVPlayerItem *)item
          atIndex:(NSInteger)index
-            time:(CMTime)time
+        position:(SRGPosition *)position
       inSegments:(NSArray<id<SRGSegment>> *)segments
-withToleranceBefore:(CMTime)toleranceBefore
-  toleranceAfter:(CMTime)toleranceAfter
-        userInfo:(NSDictionary *)userInfo
+    withUserInfo:(NSDictionary *)userInfo
 {
-    [self prepareToPlayItem:item atIndex:index time:time inSegments:segments withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter userInfo:userInfo completionHandler:^{
+    [self prepareToPlayItem:item atIndex:index position:position inSegments:segments withUserInfo:userInfo completionHandler:^{
         [self play];
     }];
 }
 
-- (void)seekToTime:(CMTime)time
-  inSegmentAtIndex:(NSInteger)index
-withToleranceBefore:(CMTime)toleranceBefore
-    toleranceAfter:(CMTime)toleranceAfter
- completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToPosition:(SRGPosition *)position inSegmentAtIndex:(NSInteger)index withCompletionHandler:(void (^)(BOOL))completionHandler
 {
     if (index < 0 || index >= self.segments.count) {
         return;
     }
     
-    [self seekToTime:time inSegment:self.segments[index] withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:completionHandler];
+    [self seekToPosition:position inSegment:self.segments[index] withCompletionHandler:completionHandler];
 }
 
-- (void)seekToTime:(CMTime)time
-         inSegment:(id<SRGSegment>)segment
-withToleranceBefore:(CMTime)toleranceBefore
-    toleranceAfter:(CMTime)toleranceAfter
- completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToPosition:(SRGPosition *)position inSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL))completionHandler
 {
     if (! [self.segments containsObject:segment]) {
         return;
     }
     
-    [self seekToTime:time withToleranceBefore:toleranceBefore toleranceAfter:toleranceAfter targetSegment:segment completionHandler:completionHandler];
+    [self seekToPosition:position withTargetSegment:segment completionHandler:completionHandler];
 }
 
 - (id<SRGSegment>)selectedSegment
@@ -887,10 +811,8 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                       URL:(NSURL *)URL
-                   atTime:(CMTime)time
-      withToleranceBefore:(CMTime)toleranceBefore
-           toleranceAfter:(CMTime)toleranceAfter
-                 segments:(NSArray<id<SRGSegment>> *)segments
+               atPosition:(SRGPosition *)position
+             withSegments:(NSArray<id<SRGSegment>> *)segments
             targetSegment:(id<SRGSegment>)targetSegment
                  userInfo:(NSDictionary *)userInfo
         completionHandler:(void (^)(void))completionHandler
@@ -898,13 +820,10 @@ withToleranceBefore:(CMTime)toleranceBefore
     NSAssert(! targetSegment || [segments containsObject:targetSegment], @"Segment must be valid");
     NSAssert(item || URL, @"An item or a URL must be provided");
     
-    if (CMTIME_IS_INVALID(time)) {
-        time = kCMTimeZero;
+    if (! position) {
+        position = [SRGPosition defaultPosition];
     }
     
-    // When a target segment is specified, add a small tolerance so that we reliably end within the segment
-    CMTime startTime = targetSegment ? CMTimeMinimum(CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMaximum(time, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))),
-                                                     CMTimeRangeGetEnd(targetSegment.srg_timeRange)) : time;
     if ([item.asset isKindOfClass:[AVURLAsset class]]) {
         AVURLAsset *asset = (AVURLAsset *)item.asset;
         URL = asset.URL;
@@ -926,15 +845,19 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.userInfo = userInfo;
     self.targetSegment = targetSegment;
     
-    self.startTimeValue = [NSValue valueWithCMTime:startTime];
-    self.startCompletionHandler = completionHandler;
-    
-    self.toleranceBefore = toleranceBefore;
-    self.toleranceAfter = toleranceAfter;
-    
     // Save initial values for restart after a stop
     self.initialTargetSegment = targetSegment;
-    self.initialStartTime = time;
+    self.initialPosition = position;
+    
+    CMTime startTime = CMTIME_IS_VALID(position.time) ? position.time : kCMTimeZero;
+    if (targetSegment) {
+        // When a target segment is specified, add a small tolerance so that we reliably end within the segment
+        startTime = CMTimeMinimum(CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMaximum(startTime, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))),
+                                  CMTimeRangeGetEnd(targetSegment.srg_timeRange));
+    }
+    
+    self.startPosition = [SRGPosition positionWithTime:startTime toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
+    self.startCompletionHandler = completionHandler;
     
     // Hide the view until playback starts to avoid briefly displaying the frame which the player was loaded into first
     // (default playback position). Hide the internal view since visibility of the media player view can be controlled
@@ -948,45 +871,35 @@ withToleranceBefore:(CMTime)toleranceBefore
     [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
 }
 
-- (void)seekToTime:(CMTime)time
-withToleranceBefore:(CMTime)toleranceBefore
-    toleranceAfter:(CMTime)toleranceAfter
-     targetSegment:(id<SRGSegment>)targetSegment
- completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToPosition:(SRGPosition *)position withTargetSegment:(id<SRGSegment>)targetSegment completionHandler:(void (^)(BOOL))completionHandler
 {
     NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Segment must be valid");
     
-    if (CMTIME_IS_INVALID(time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
+    if (CMTIME_IS_INVALID(position.time) || self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
         return;
     }
     
-    if (targetSegment) {
-        // Add a small tolerance to the target value so that we reliably end within the segment
-        CMTimeRange timeRange = targetSegment.srg_timeRange;
-        time = CMTimeMinimum(CMTimeAdd(timeRange.start, CMTimeMaximum(time, CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))),
-                             CMTimeRangeGetEnd(timeRange));
-        toleranceBefore = SRGMediaPlayerControllerTimeRangeToleranceBefore(toleranceBefore, time, timeRange);
-        toleranceAfter = SRGMediaPlayerControllerTimeRangeToleranceAfter(toleranceAfter, time, timeRange);
-    }
+    CMTimeRange timeRange = targetSegment ? targetSegment.srg_timeRange : self.timeRange;
+    SRGPosition *seekPosition = SRGMediaPlayerControllerPositionInTimeRange(position, timeRange);
     
     self.targetSegment = targetSegment;
     
     // Trap attempts to seek to blocked segments early. We cannot only rely on playback time observers to detect a blocked segment
     // for direct seeks, otherwise blocked segment detection would occur after the segment has been entered, which is too late
-    id<SRGSegment> segment = targetSegment ?: [self segmentForTime:time];
+    id<SRGSegment> segment = targetSegment ?: [self segmentForTime:seekPosition.time];
     if (! segment || ! segment.srg_blocked) {
         [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSeekNotification
                                                             object:self
-                                                          userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:time],
+                                                          userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:seekPosition.time],
                                                                       SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:self.player.currentTime] }];
         
         // Only store the origin in case of multiple seeks, but update the target
         if (CMTIME_IS_INDEFINITE(self.seekStartTime)) {
             self.seekStartTime = self.player.currentTime;
         }
-        self.seekTargetTime = time;
+        self.seekTargetTime = seekPosition.time;
         
         // Starting with iOS 11, there is no guarantee that the last seek succeeds (there was no formal documentation for this
         // behavior on iOS 10 and below, but this was generally working). Starting with iOS 11, the following is unreliable,
@@ -995,7 +908,7 @@ withToleranceBefore:(CMTime)toleranceBefore
         //
         // To be able to reset the state no matter the last seek finished, we use a special category method which keeps count
         // of the count of seek requests still pending.
-        [self.player srg_countedSeekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished, NSInteger pendingSeekCount) {
+        [self.player srg_countedSeekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter completionHandler:^(BOOL finished, NSInteger pendingSeekCount) {
             if (pendingSeekCount == 0) {
                 [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                 
@@ -1036,7 +949,7 @@ withToleranceBefore:(CMTime)toleranceBefore
     self.targetSegment = nil;
     self.currentSegment = nil;
     
-    self.startTimeValue = nil;
+    self.startPosition = nil;
     self.startCompletionHandler = nil;
     
     self.seekTargetTime = kCMTimeIndefinite;
@@ -1167,10 +1080,8 @@ withToleranceBefore:(CMTime)toleranceBefore
     
     // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
     // would trigger skips recursively)
-    [self seekToTime:CMTimeAdd(CMTimeRangeGetEnd(segment.srg_timeRange), CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC))
- withToleranceBefore:kCMTimeZero
-      toleranceAfter:kCMTimeZero
-   completionHandler:^(BOOL finished) {
+    SRGPosition *position = [SRGPosition positionAtTime:CMTimeMakeWithSeconds(SRGSegmentSeekToleranceInSeconds, NSEC_PER_SEC)];
+    [self seekToPosition:position withCompletionHandler:^(BOOL finished) {
        // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
        // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
        // so that consecutive notifications are received in the correct order
@@ -1383,24 +1294,15 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     return s_names[@(streamType)] ?: @"unknown";
 }
 
-// Ensure that tolerance settings are properly set so that a time (including the tolerance) is guaranteed to fall within a
-// given range
-static CMTime SRGMediaPlayerControllerTimeRangeToleranceBefore(CMTime toleranceBefore, CMTime time, CMTimeRange timeRange)
+// Return an absolute position, whose tolerancecs are adjusted so that they stay within the given range
+static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange)
 {
     if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
-        return CMTimeMaximum(CMTimeMinimum(toleranceBefore, CMTimeSubtract(time, timeRange.start)), kCMTimeZero);
+        CMTime toleranceBefore = CMTimeMaximum(CMTimeMinimum(position.toleranceBefore, CMTimeSubtract(position.time, timeRange.start)), kCMTimeZero);
+        CMTime toleranceAfter = CMTimeMaximum(CMTimeMinimum(position.toleranceAfter, CMTimeSubtract(CMTimeRangeGetEnd(timeRange), position.time)), kCMTimeZero);
+        return [SRGPosition positionWithTime:position.time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
     }
     else {
-        return toleranceBefore;
-    }
-}
-
-static CMTime SRGMediaPlayerControllerTimeRangeToleranceAfter(CMTime toleranceAfter, CMTime time, CMTimeRange timeRange)
-{
-    if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
-        return CMTimeMaximum(CMTimeMinimum(toleranceAfter, CMTimeSubtract(CMTimeRangeGetEnd(timeRange), time)), kCMTimeZero);
-    }
-    else {
-        return toleranceAfter;
+        return position;
     }
 }

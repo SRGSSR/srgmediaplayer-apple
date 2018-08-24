@@ -385,7 +385,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
     
     if (self.seekingDuringTracking) {
-        [self.mediaPlayerController seekEfficientlyToTime:time withCompletionHandler:nil];
+        [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:time] withCompletionHandler:nil];
     }
     
     if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToPlaybackTime:withValue:interactive:)]) {
@@ -398,7 +398,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 - (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if ([self isDraggable]) {
-        [self.mediaPlayerController seekEfficientlyToTime:self.time withCompletionHandler:^(BOOL finished) {
+        [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:self.time] withCompletionHandler:^(BOOL finished) {
             if (self.resumingAfterSeek) {
                 [self.mediaPlayerController play];
             }

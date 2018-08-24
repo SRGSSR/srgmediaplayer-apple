@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  precision, at the expense of efficiency (reaching a position precisely may require more buffering). Conversely,
  *  a large tolerance means less precision, but more efficiency (an acceptable position might require less buffering
  *  to be reached).
+ *
+ *  Remark: When designating a position to within a segment, there is no need to adjust tolerances based on the segment
+ *          time range. In such cases, SRG Media Player ensures that the position stays within the desired segment.
  */
 @interface SRGPosition : NSObject
 
@@ -23,14 +26,24 @@ NS_ASSUME_NONNULL_BEGIN
 + (SRGPosition *)defaultPosition;
 
 /**
- *  Precise position at the specified time.
+ *  Exact position at the specified time.
  */
-+ (SRGPosition *)precisePositionAtTime:(CMTime)time;
++ (SRGPosition *)positionAtTime:(CMTime)time;
 
 /**
- *  Imprecise position around the specified time.
+ *  Exact position at the specified time (in seconds).
  */
-+ (SRGPosition *)imprecisePositionAroundTime:(CMTime)time;
++ (SRGPosition *)positionAtTimeInSeconds:(NSTimeInterval)timeInSeconds;
+
+/**
+ *  Position around the specified time with maximum tolerance.
+ */
++ (SRGPosition *)positionAroundTime:(CMTime)time;
+
+/**
+ *  Position around the specified time with maximum tolerance.
+ */
++ (SRGPosition *)positionAroundTimeInSeconds:(NSTimeInterval)timeInSeconds;
 
 /**
  *  Position for the specified time with custom tolerance settings.

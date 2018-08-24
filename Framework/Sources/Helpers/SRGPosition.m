@@ -23,14 +23,24 @@
     return [self positionWithTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
-+ (SRGPosition *)precisePositionAtTime:(CMTime)time
++ (SRGPosition *)positionAtTime:(CMTime)time
 {
     return [self positionWithTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
-+ (SRGPosition *)imprecisePositionAroundTime:(CMTime)time
++ (SRGPosition *)positionAtTimeInSeconds:(NSTimeInterval)timeInSeconds
+{
+    return [self positionAtTime:CMTimeMakeWithSeconds(timeInSeconds, NSEC_PER_SEC)];
+}
+
++ (SRGPosition *)positionAroundTime:(CMTime)time
 {
     return [self positionWithTime:time toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity];
+}
+
++ (SRGPosition *)positionAroundTimeInSeconds:(NSTimeInterval)timeInSeconds
+{
+    return [self positionAroundTime:CMTimeMakeWithSeconds(timeInSeconds, NSEC_PER_SEC)];
 }
 
 + (SRGPosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
