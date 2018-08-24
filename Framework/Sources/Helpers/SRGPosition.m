@@ -60,6 +60,11 @@
     return self;
 }
 
+- (instancetype)init
+{
+    return [[SRGPosition alloc] initWithTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
 #pragma mark Description
 
 - (NSString *)description
