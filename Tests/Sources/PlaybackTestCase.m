@@ -331,7 +331,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:OnDemandTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:22.] withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:OnDemandTestURL() atPosition:[SRGPosition positionAroundTimeInSeconds:22.] withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -622,7 +622,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return seekReceived && pauseReceived;
     }];
     
-    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTimeInSeconds:2.] withCompletionHandler:nil];
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTimeInSeconds:2.] withCompletionHandler:nil];
     
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekStartTime, 0);
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 2);
@@ -677,7 +677,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTimeInSeconds:3.] withCompletionHandler:nil];
+    SRGPosition *position = [SRGPosition positionAtTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMake(3., NSEC_PER_SEC))];
+    [self.mediaPlayerController seekToPosition:position withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     

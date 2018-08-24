@@ -53,9 +53,9 @@
 - (instancetype)initWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
 {
     if (self = [super init]) {
-        self.time = time;
-        self.toleranceBefore = toleranceBefore;
-        self.toleranceAfter = toleranceAfter;
+        self.time = CMTIME_IS_VALID(time) ? time : kCMTimeZero;
+        self.toleranceBefore = CMTIME_IS_VALID(toleranceBefore) ? toleranceBefore : kCMTimeZero;
+        self.toleranceAfter = CMTIME_IS_VALID(toleranceAfter) ? toleranceAfter : kCMTimeZero;
     }
     return self;
 }

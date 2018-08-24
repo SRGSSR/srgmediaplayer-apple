@@ -850,7 +850,7 @@ static NSURL *SegmentsTestURL(void)
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 position:[SRGPosition positionAtTimeInSeconds:59.] inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 position:[SRGPosition positionAroundTimeInSeconds:59.] inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     

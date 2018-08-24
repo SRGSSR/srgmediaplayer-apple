@@ -58,16 +58,18 @@ NS_ASSUME_NONNULL_BEGIN
  *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
  *  @param toleranceBefore The tolerance (after `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
  *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
+ *
+ *  @discussion Invalid times are set to `kCMTimeZero`.
  */
 - (instancetype)initWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
 
 /**
- *  The time to reach.
+ *  The time to reach. Guaranteed to be valid.
  */
 @property (nonatomic, readonly) CMTime time;
 
 /**
- *  The tolerances applied when reaching `time`.
+ *  The tolerances applied when reaching `time`. Guaranteed to be valid.
  */
 @property (nonatomic, readonly) CMTime toleranceBefore;
 @property (nonatomic, readonly) CMTime toleranceAfter;
