@@ -16,6 +16,8 @@
 		08F4E53F1E7FE76900C9E8FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08F4E5411E7FE76900C9E8FD /* Localizable.strings */; };
 		6F0C98B5212162BC00073AB6 /* CMTime+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B421215F9000073AB6 /* CMTime+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F0C98B6212162BC00073AB6 /* CMTimeRange+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F2556D2212FBF63004C8F9A /* SRGPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F2556D0212FBF63004C8F9A /* SRGPosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F2556D3212FBF63004C8F9A /* SRGPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2556D1212FBF63004C8F9A /* SRGPosition.m */; };
 		6F3C6DE01F738173007FB56B /* XCTestCase+MediaPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C6DDF1F738173007FB56B /* XCTestCase+MediaPlayerTests.m */; };
 		6F444856210F1479009FDB70 /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08293A4D1EDC62FC008CE02E /* Accessibility.strings */; };
 		6F444857210F147B009FDB70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E001D61BAFD0064E6C1 /* Localizable.strings */; };
@@ -238,6 +240,8 @@
 		08F4E5451E7FE77100C9E8FD /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CMTimeRange+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F0C98B421215F9000073AB6 /* CMTime+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CMTime+SRGMediaPlayer.h"; sourceTree = "<group>"; };
+		6F2556D0212FBF63004C8F9A /* SRGPosition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGPosition.h; sourceTree = "<group>"; };
+		6F2556D1212FBF63004C8F9A /* SRGPosition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGPosition.m; sourceTree = "<group>"; };
 		6F3C6DDE1F738173007FB56B /* XCTestCase+MediaPlayerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCTestCase+MediaPlayerTests.h"; sourceTree = "<group>"; };
 		6F3C6DDF1F738173007FB56B /* XCTestCase+MediaPlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "XCTestCase+MediaPlayerTests.m"; sourceTree = "<group>"; };
 		6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -508,6 +512,8 @@
 			children = (
 				6F5CA42F1FD91A1D00CF175F /* SRGActivityGestureRecognizer.h */,
 				6F5CA4261FD91A1D00CF175F /* SRGActivityGestureRecognizer.m */,
+				6F2556D0212FBF63004C8F9A /* SRGPosition.h */,
+				6F2556D1212FBF63004C8F9A /* SRGPosition.m */,
 				6F5CA4281FD91A1D00CF175F /* SRGMediaPlayerConstants.h */,
 				6F5CA4311FD91A1D00CF175F /* SRGMediaPlayerConstants.m */,
 				6F5CA42A1FD91A1D00CF175F /* SRGMediaPlayerError.h */,
@@ -838,6 +844,7 @@
 				6F5CA43D1FD91A1D00CF175F /* SRGSegment.h in Headers */,
 				6F5CA40F1FD919CD00CF175F /* SRGMediaPlayerController.h in Headers */,
 				6F5CA4381FD91A1D00CF175F /* SRGMediaPlayerConstants.h in Headers */,
+				6F2556D2212FBF63004C8F9A /* SRGPosition.h in Headers */,
 				6F5CA41D1FD919CD00CF175F /* SRGMediaPlayerView.h in Headers */,
 				6F5CA43A1FD91A1D00CF175F /* SRGMediaPlayerError.h in Headers */,
 				6F5CA3FE1FD919CD00CF175F /* AVAudioSession+SRGMediaPlayer.h in Headers */,
@@ -1136,6 +1143,7 @@
 				E6FC7F9D1D62097E00A55085 /* SRGMediaPlayer.m in Sources */,
 				6F5CA3F71FD919CD00CF175F /* MAKVONotificationCenter+SRGMediaPlayer.m in Sources */,
 				6F5CA4181FD919CD00CF175F /* SRGMediaPlaybackSceneView.m in Sources */,
+				6F2556D3212FBF63004C8F9A /* SRGPosition.m in Sources */,
 				6F5CA4331FD91A1D00CF175F /* SRGMediaPlayerError.m in Sources */,
 				6F5CA3F01FD919CD00CF175F /* UIBezierPath+SRGMediaPlayer.m in Sources */,
 				E6C986121D70149E00C45C7A /* SRGAirplayView.m in Sources */,
