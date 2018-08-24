@@ -407,7 +407,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         timeRange = CMTimeRangeMake(timeRange.start, kCMTimeZero);
     }
     
-    // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when Airplay is
+    // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when AirPlay is
     // connected or disconnected)
     if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
         _timeRange = timeRange;
@@ -585,7 +585,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
 
 - (BOOL)isExternalNonMirroredPlaybackActive
 {
-    if (! [AVAudioSession srg_isAirplayActive]) {
+    if (! [AVAudioSession srg_isAirPlayActive]) {
         return NO;
     }
     
@@ -594,9 +594,9 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         return NO;
     }
     
-    // We do not test the `externalPlaybackActive` property here, on purpose: The fact that Airplay is active was
-    // tested just above, and the `externalPlaybackActive` property is less reliable in some cases where Airplay
-    // settings are changed, but Airplay is still active
+    // We do not test the `externalPlaybackActive` property here, on purpose: The fact that AirPlay is active was
+    // tested just above, and the `externalPlaybackActive` property is less reliable in some cases where AirPlay
+    // settings are changed, but AirPlay is still active
     if (! player.allowsExternalPlayback) {
         return NO;
     }

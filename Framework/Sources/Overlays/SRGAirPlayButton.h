@@ -11,20 +11,20 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Button which is automatically shown when Airplay is active, hidden otherwise. If your controls are stacked using a
+ *  Button which is automatically shown when AirPlay is active, hidden otherwise. If your controls are stacked using a
  *  `UIStackView`, the layout will automatically adjust when the button appears or disappears.
  *
- *  A media player controller can be optionally attached. If Airplay playback mirroring is used (the `AVPlayer`
+ *  A media player controller can be optionally attached. If AirPlay playback mirroring is used (the `AVPlayer`
  *  `usesExternalPlaybackWhileExternalScreenIsActive` property has been set to `NO`), no button will be displayed
- *  (Airplay can still be enabled from the control center). If no media player controller is attached, the button will 
- *  be displayed for any kind of Airplay usage.
+ *  (AirPlay can still be enabled from the control center). If no media player controller is attached, the button will 
+ *  be displayed for any kind of AirPlay usage.
  *
  *  The button is automatically shown or hidden by having its `hidden` property automatically adjusted. Attempting
  *  to manually alter this property leads to undefined behavior. You can force the button to always be hidden by
  *  setting its `alwaysHidden` property to `YES` if needed.
  */
 IB_DESIGNABLE
-@interface SRGAirplayButton : UIView
+@interface SRGAirPlayButton : UIView
 
 /**
  *  The media player which the button must be associated with.
@@ -37,7 +37,7 @@ IB_DESIGNABLE
 @property (nonatomic, null_resettable) UIImage *image;
 
 /**
- *  The tint color to apply when Airplay is active (if nil, then the usual blue tint color is applied).
+ *  The tint color to apply when AirPlay is active (if nil, then the usual blue tint color is applied).
  */
 @property (nonatomic, null_resettable) IBInspectable UIColor *activeTintColor;
 

@@ -30,7 +30,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CNH-y9-cf6" customClass="SRGAirplayView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CNH-y9-cf6" userLabel="AirPlay View" customClass="SRGAirPlayView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -95,7 +95,7 @@
                                 <rect key="frame" x="6" y="567" width="363" height="94"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="EKV-Dg-mkD" customClass="SRGTimeSlider">
-                                        <rect key="frame" x="14" y="10" width="335" height="17"/>
+                                        <rect key="frame" x="14" y="10" width="335" height="31"/>
                                         <color key="minimumTrackTintColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="maximumTrackTintColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                         <userDefinedRuntimeAttributes>
@@ -108,8 +108,8 @@
                                             <outlet property="valueLabel" destination="cyE-ky-Dbl" id="r0i-6M-RFv"/>
                                         </connections>
                                     </slider>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I3E-bM-bxI" customClass="SRGAirplayButton">
-                                        <rect key="frame" x="4" y="46.5" width="40" height="40"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I3E-bM-bxI" userLabel="AirPlay Button" customClass="SRGAirPlayButton">
+                                        <rect key="frame" x="4" y="43" width="40" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -118,7 +118,7 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRy-c9-UCc" userLabel="Skip Backward Button">
-                                        <rect key="frame" x="106.5" y="46.5" width="40" height="40"/>
+                                        <rect key="frame" x="106.5" y="43" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="ZuJ-hh-dcV"/>
                                             <constraint firstAttribute="height" constant="40" id="eE0-aI-DSc"/>
@@ -130,7 +130,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gL8-ry-Lc7" userLabel="Playback Button" customClass="SRGPlaybackButton">
-                                        <rect key="frame" x="166.5" y="53" width="30" height="27"/>
+                                        <rect key="frame" x="166.5" y="46" width="30" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="mFJ-mP-3tP"/>
                                         </constraints>
@@ -141,7 +141,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3vg-6i-6jj" userLabel="Skip Forward Button">
-                                        <rect key="frame" x="216.5" y="46.5" width="40" height="40"/>
+                                        <rect key="frame" x="216.5" y="43" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="gG2-Rr-OLL"/>
                                             <constraint firstAttribute="height" constant="40" id="zCj-XB-K3G"/>
@@ -153,22 +153,22 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99:99" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyE-ky-Dbl">
-                                        <rect key="frame" x="16" y="32" width="32" height="13.5"/>
+                                        <rect key="frame" x="16" y="46" width="32" height="13.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99:99" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Erw-ST-7Yg">
-                                        <rect key="frame" x="315" y="32" width="32" height="13.5"/>
+                                        <rect key="frame" x="315" y="46" width="32" height="13.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="omh-tb-D23">
-                                        <rect key="frame" x="10" y="28" width="20" height="20"/>
+                                        <rect key="frame" x="10" y="42" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xRb-AE-54i" customClass="SRGTracksButton">
-                                        <rect key="frame" x="317" y="46" width="40" height="40"/>
+                                        <rect key="frame" x="317" y="42.5" width="40" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -231,8 +231,8 @@
                         <viewLayoutGuide key="safeArea" id="MoS-P5-AUe"/>
                     </view>
                     <connections>
-                        <outlet property="airplayButton" destination="I3E-bM-bxI" id="7sa-Ki-nw8"/>
-                        <outlet property="airplayView" destination="CNH-y9-cf6" id="q11-ht-YP6"/>
+                        <outlet property="airPlayButton" destination="I3E-bM-bxI" id="4dU-p2-2PA"/>
+                        <outlet property="airPlayView" destination="CNH-y9-cf6" id="LT0-R2-cCJ"/>
                         <outlet property="audioOnlyImageView" destination="2kU-EO-gil" id="v5i-Bc-rBG"/>
                         <outlet property="errorImageView" destination="Nio-gG-HwI" id="6Ne-TZ-sMg"/>
                         <outlet property="loadingActivityIndicatorView" destination="omh-tb-D23" id="0RR-Fj-jAA"/>

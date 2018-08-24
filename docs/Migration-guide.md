@@ -15,7 +15,7 @@ For historical reasons, all classes were prefixed with `RTS`, which was misleadi
 
 For consistency (and beside the prefix change), some classe, protocols and notifications were also renamed:
 
-* `RTSAirplayOverviewView` is now `SRGAirplayView`.
+* `RTSAirplayOverviewView` is now `SRGAirPlayView`.
 * `RTSMediaPlayerPlaybackButton` is now `SRGPlaybackButton`.
 * `RTSMediaSegment` is now `SRGSegment`.
 * Notifications in `SRGMediaPlayerConstants.h` have been made more consistent.
