@@ -693,8 +693,8 @@
 		E69A1FDC1D61C6D20064E6C1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				6FA98E14211D68AE00969089 /* ConstantsTestCase.m */,
 				6FA1D6071F42C11600C85D15 /* Helpers */,
+				6FA98E14211D68AE00969089 /* ConstantsTestCase.m */,
 				6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */,
 				E69A1FDE1D61C6D20064E6C1 /* PlaybackTestCase.m */,
 				6FBDD1A621308242001E4398 /* PositionTestCase.m */,
