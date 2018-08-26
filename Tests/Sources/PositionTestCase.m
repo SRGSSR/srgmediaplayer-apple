@@ -70,6 +70,38 @@
     XCTAssertTrue(CMTIME_COMPARE_INLINE(position.toleranceAfter, ==, kCMTimePositiveInfinity));
 }
 
+- (void)testPositionBeforeTime
+{
+    SRGPosition *position = [SRGPosition positionBeforeTime:CMTimeMakeWithSeconds(11., NSEC_PER_SEC)];
+    TestAssertEqualTimeInSeconds(position.time, 11.);
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(position.toleranceBefore, ==, kCMTimePositiveInfinity));
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(position.toleranceAfter, ==, kCMTimeZero));
+}
+
+- (void)testPositionBeforeTimeInSeconds
+{
+    SRGPosition *position = [SRGPosition positionBeforeTimeInSeconds:5.];
+    TestAssertEqualTimeInSeconds(position.time, 5.);
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(position.toleranceBefore, ==, kCMTimePositiveInfinity));
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(position.toleranceAfter, ==, kCMTimeZero));
+}
+
+- (void)testPositionAfterTime
+{
+    SRGPosition *position = [SRGPosition positionAfterTime:CMTimeMakeWithSeconds(11., NSEC_PER_SEC)];
+    TestAssertEqualTimeInSeconds(position.time, 11.);
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(position.toleranceBefore, ==, kCMTimeZero));
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(position.toleranceAfter, ==, kCMTimePositiveInfinity));
+}
+
+- (void)testPositionAfterTimeInSeconds
+{
+    SRGPosition *position = [SRGPosition positionAfterTimeInSeconds:5.];
+    TestAssertEqualTimeInSeconds(position.time, 5.);
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(position.toleranceBefore, ==, kCMTimeZero));
+    XCTAssertTrue(CMTIME_COMPARE_INLINE(position.toleranceAfter, ==, kCMTimePositiveInfinity));
+}
+
 - (void)testCustomPosition
 {
     SRGPosition *position = [SRGPosition positionWithTime:CMTimeMakeWithSeconds(17., NSEC_PER_SEC) toleranceBefore:CMTimeMakeWithSeconds(19., NSEC_PER_SEC) toleranceAfter:CMTimeMakeWithSeconds(18., NSEC_PER_SEC)];

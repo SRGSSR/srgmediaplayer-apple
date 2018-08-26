@@ -43,6 +43,26 @@
     return [self positionAroundTime:CMTimeMakeWithSeconds(timeInSeconds, NSEC_PER_SEC)];
 }
 
++ (SRGPosition *)positionBeforeTime:(CMTime)time
+{
+    return [self positionWithTime:time toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimeZero];
+}
+
++ (SRGPosition *)positionBeforeTimeInSeconds:(NSTimeInterval)timeInSeconds
+{
+    return [self positionBeforeTime:CMTimeMakeWithSeconds(timeInSeconds, NSEC_PER_SEC)];
+}
+
++ (SRGPosition *)positionAfterTime:(CMTime)time
+{
+    return [self positionWithTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimePositiveInfinity];
+}
+
++ (SRGPosition *)positionAfterTimeInSeconds:(NSTimeInterval)timeInSeconds
+{
+    return [self positionAfterTime:CMTimeMakeWithSeconds(timeInSeconds, NSEC_PER_SEC)];
+}
+
 + (SRGPosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
 {
     return [[[self class] alloc] initWithTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];

@@ -46,6 +46,26 @@ NS_ASSUME_NONNULL_BEGIN
 + (SRGPosition *)positionAroundTimeInSeconds:(NSTimeInterval)timeInSeconds;
 
 /**
+ *  Position earlier than the specified time.
+ */
++ (SRGPosition *)positionBeforeTime:(CMTime)time;
+
+/**
+ *  Position earlier than the specified time (in seconds).
+ */
++ (SRGPosition *)positionBeforeTimeInSeconds:(NSTimeInterval)timeInSeconds;
+
+/**
+ *  Position later than the specified time.
+ */
++ (SRGPosition *)positionAfterTime:(CMTime)time;
+
+/**
+ *  Position earlier than the specified time (in seconds).
+ */
++ (SRGPosition *)positionAfterTimeInSeconds:(NSTimeInterval)timeInSeconds;
+
+/**
  *  Position for the specified time with custom tolerance settings.
  */
 + (SRGPosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
