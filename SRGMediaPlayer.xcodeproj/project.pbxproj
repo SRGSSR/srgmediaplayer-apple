@@ -1075,13 +1075,16 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/libextobjc.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/MAKVONotificationCenter.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SRGLogger.framework",
 			);
 			name = "Copy Framework Dependencies for Xcode View Rendering";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Could be achieved with a Copy Files phase. Must only be made in a dynamic setup,\n# though, thus the need for a script to check the configuration first\nif [[ \"${CONFIGURATION}\" = \"Debug\" || \"${CONFIGURATION}\" = \"Release\" ]]; then\n  cp -R \"${PROJECT_DIR}/Carthage/Build/iOS/libextobjc.framework\" \"${BUILT_PRODUCTS_DIR}\"\n  cp -R \"${PROJECT_DIR}/Carthage/Build/iOS/MAKVONotificationCenter.framework\" \"${BUILT_PRODUCTS_DIR}\"\n  cp -R \"${PROJECT_DIR}/Carthage/Build/iOS/SRGLogger.framework\" \"${BUILT_PRODUCTS_DIR}\"\nfi\n";
+			shellScript = "if [ \"$CONFIGURATION\" == \"Debug\" ] || [ \"$CONFIGURATION\" == \"Release\" ] ]; then\n  /usr/local/bin/carthage copy-frameworks\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
