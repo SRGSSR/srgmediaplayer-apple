@@ -84,12 +84,12 @@
 		6F5D66461DAFCDF1009AD6DD /* SRGAirplayButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D66441DAFCDF1009AD6DD /* SRGAirplayButton.m */; };
 		6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */; };
 		6F97C7981E7A89C5001AD9B3 /* ModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F97C7971E7A89C5001AD9B3 /* ModalTransition.m */; };
-		6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FA09D7D1D9E9C4400EDCA64 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6FA09D7E1D9E9D1400EDCA64 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FA98E15211D68AF00969089 /* ConstantsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA98E14211D68AE00969089 /* ConstantsTestCase.m */; };
 		6FB97FDE1E4A0E080014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
-		6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FB97FE11E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FB97FE21E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FC57B1A1FD6A5BE00451B6B /* SRGViewModeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -99,7 +99,7 @@
 		6FD3122B1FD9AB0100EC0C42 /* SRGQuaternion.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD312291FD9AB0100EC0C42 /* SRGQuaternion.m */; };
 		6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */; };
 		6FE7D5EB1F86237D00817E89 /* MetadataUpdatesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */; };
-		E654909C1D7F33AE007D96E7 /* libextobjc.framework in Copy Frameworks Into Test Bundle */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E654909C1D7F33AE007D96E7 /* libextobjc.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E67799321D75AE2600E58331 /* SRGTimelineView.h in Headers */ = {isa = PBXBuildFile; fileRef = E67799301D75AE2500E58331 /* SRGTimelineView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E67799331D75AE2600E58331 /* SRGTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67799311D75AE2500E58331 /* SRGTimelineView.m */; };
 		E67799341D75B0E300E58331 /* SRGTimelineSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F511D62072400A55085 /* SRGTimelineSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -190,17 +190,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		E65490981D7F2E9B007D96E7 /* Copy Frameworks Into Test Bundle */ = {
+		E65490981D7F2E9B007D96E7 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Copy Frameworks Into Test Bundle */,
-				6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Copy Frameworks Into Test Bundle */,
-				E654909C1D7F33AE007D96E7 /* libextobjc.framework in Copy Frameworks Into Test Bundle */,
+				6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */,
+				6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Embed Frameworks */,
+				E654909C1D7F33AE007D96E7 /* libextobjc.framework in Embed Frameworks */,
 			);
-			name = "Copy Frameworks Into Test Bundle";
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E69A1FC31D61C0180064E6C1 /* Embed Frameworks */ = {
@@ -938,7 +938,7 @@
 				E69A1FCD1D61C6830064E6C1 /* Sources */,
 				E69A1FCE1D61C6830064E6C1 /* Frameworks */,
 				E69A1FCF1D61C6830064E6C1 /* Resources */,
-				E65490981D7F2E9B007D96E7 /* Copy Frameworks Into Test Bundle */,
+				E65490981D7F2E9B007D96E7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
