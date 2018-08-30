@@ -1,3 +1,9 @@
-Carthage
-xcuserdata
 .DS_Store
+
+*.xcscmblueprint
+xcuserdata
+
+archive
+build
+
+Carthage
