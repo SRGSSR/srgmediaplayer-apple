@@ -63,7 +63,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
 
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
-@property (nonatomic) SRGPosition *startPosition;                  // Will be nilled when reached
+@property (nonatomic) SRGPosition *startPosition;                   // Will be nilled when reached
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
 
 @property (nonatomic) CMTime seekStartTime;

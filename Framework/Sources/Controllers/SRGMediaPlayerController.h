@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  `SRGMediaPlayerView` supports standard video playback, as well as 360° video playback (with carboard support).
  *  The `viewMode` property can be used to choose how a video should be displayed.
  *
- *  ## Implementing a media player use rinterface
+ *  ## Implementing a media player user interface
  *
  *  To implement your own custom media player user interface, you must create your own player class (most probably a view
  *  controller), and delegate playback to an `SRGMediaPlayerController` instance:
