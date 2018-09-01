@@ -8,8 +8,8 @@
 
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
-#import "SRGAirplayButton.h"
-#import "SRGAirplayView.h"
+#import "SRGAirPlayButton.h"
+#import "SRGAirPlayView.h"
 #import "SRGMediaPlayerController.h"
 #import "SRGPlaybackButton.h"
 #import "SRGPictureInPictureButton.h"
@@ -36,8 +36,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 @property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
 @property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
-@property (nonatomic, weak) IBOutlet SRGAirplayButton *airplayButton;
-@property (nonatomic, weak) IBOutlet SRGAirplayView *airplayView;
+@property (nonatomic, weak) IBOutlet SRGAirPlayButton *airPlayButton;
+@property (nonatomic, weak) IBOutlet SRGAirPlayView *airPlayView;
 @property (nonatomic, weak) IBOutlet UIButton *skipBackwardButton;
 @property (nonatomic, weak) IBOutlet UIButton *skipForwardButton;
 
@@ -156,8 +156,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.tracksButton.mediaPlayerController = s_mediaPlayerController;
     self.timeSlider.mediaPlayerController = s_mediaPlayerController;
     self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
-    self.airplayButton.mediaPlayerController = s_mediaPlayerController;
-    self.airplayView.mediaPlayerController = s_mediaPlayerController;
+    self.airPlayButton.mediaPlayerController = s_mediaPlayerController;
+    self.airPlayView.mediaPlayerController = s_mediaPlayerController;
     
     self.viewModeButton.mediaPlayerView = s_mediaPlayerController.view;
     
@@ -384,7 +384,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     
     CMTime targetTime = CMTimeSubtract(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerBackwardSkipInterval, NSEC_PER_SEC));
-    [self.controller seekToTime:targetTime withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
+    [self.controller seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
             [self.controller play];
         }
@@ -400,7 +400,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     
     CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerForwardSkipInterval, NSEC_PER_SEC));
-    [self.controller seekToTime:targetTime withToleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
+    [self.controller seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
             [self.controller play];
         }

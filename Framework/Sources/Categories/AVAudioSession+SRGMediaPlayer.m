@@ -18,7 +18,7 @@ NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification = @"SRGMediaPl
 
 #pragma mark Class methods
 
-+ (BOOL)srg_isAirplayActive
++ (BOOL)srg_isAirPlayActive
 {
     AVAudioSession *audioSession = [self sharedInstance];
     AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
@@ -32,7 +32,7 @@ NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification = @"SRGMediaPl
     return NO;
 }
 
-+ (NSString *)srg_activeAirplayRouteName
++ (NSString *)srg_activeAirPlayRouteName
 {
     AVAudioSession *audioSession = [self sharedInstance];
     AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;

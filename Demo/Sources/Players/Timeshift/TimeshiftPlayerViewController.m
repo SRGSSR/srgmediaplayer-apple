@@ -101,8 +101,8 @@
     if (CMTIMERANGE_IS_INDEFINITE(timeRange) || CMTIMERANGE_IS_EMPTY(timeRange)) {
         return;
     }
-
-    [self.mediaPlayerController seekEfficientlyToTime:CMTimeRangeGetEnd(timeRange) withCompletionHandler:nil];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeRangeGetEnd(timeRange)] withCompletionHandler:nil];
 }
 
 - (IBAction)seek:(id)sender

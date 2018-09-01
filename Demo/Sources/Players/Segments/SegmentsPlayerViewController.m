@@ -13,7 +13,7 @@
 
 @property (nonatomic) Media *media;
 
-@property (nonatomic, weak) Segment *selectedSegment;
+@property (nonatomic, weak) DemoSegment *selectedSegment;
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
 
@@ -76,7 +76,7 @@
     self.externalPlaybackSwitch.on = self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive;
     
     self.mediaPlayerController.view.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
-    [self.mediaPlayerController playURL:self.media.URL atTime:kCMTimeZero withSegments:self.media.segments userInfo:@{ @"test_field" : @"test_value" }];
+    [self.mediaPlayerController playURL:self.media.URL atPosition:nil withSegments:self.media.segments userInfo:@{ @"test_field" : @"test_value" }];
 }
 
 #pragma mark UI
@@ -117,7 +117,7 @@
 - (UICollectionViewCell *)timelineView:(SRGTimelineView *)timelineView cellForSegment:(id<SRGSegment>)segment
 {
     SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SegmentCollectionViewCell class]) forSegment:segment];
-    segmentCell.segment = (Segment *)segment;
+    segmentCell.segment = (DemoSegment *)segment;
     return segmentCell;
 }
 
@@ -228,7 +228,7 @@
 {
     NSLog(@"Segment did start: %@", notification.userInfo);
     
-    Segment *segment = notification.userInfo[SRGMediaPlayerSegmentKey];
+    DemoSegment *segment = notification.userInfo[SRGMediaPlayerSegmentKey];
     if (segment == self.selectedSegment) {
         self.selectedSegment = nil;
     }

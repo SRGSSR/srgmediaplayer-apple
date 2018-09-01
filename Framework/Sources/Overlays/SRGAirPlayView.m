@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGAirplayView.h"
+#import "SRGAirPlayView.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
@@ -14,16 +14,16 @@
 
 #import <libextobjc/libextobjc.h>
 
-@interface SRGAirplayView ()
+@interface SRGAirPlayView ()
 
 @property (nonatomic) MPVolumeView *volumeView;
 @property (nonatomic, getter=isFakedForInterfaceBuilder) BOOL fakedForInterfaceBuilder;
 
 @end
 
-static void commonInit(SRGAirplayView *self);
+static void commonInit(SRGAirPlayView *self);
 
-@implementation SRGAirplayView
+@implementation SRGAirPlayView
 
 #pragma mark Object lifecycle
 
@@ -82,15 +82,15 @@ static void commonInit(SRGAirplayView *self);
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:observationBlock];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airplayView_wirelessRouteActiveDidChange:)
+                                                 selector:@selector(srg_airPlayView_wirelessRouteActiveDidChange:)
                                                      name:MPVolumeViewWirelessRouteActiveDidChangeNotification
                                                    object:self.volumeView];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airplayView_screenDidConnect:)
+                                                 selector:@selector(srg_airPlayView_screenDidConnect:)
                                                      name:UIScreenDidConnectNotification
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airplayView_screenDidDisconnect:)
+                                                 selector:@selector(srg_airPlayView_screenDidDisconnect:)
                                                      name:UIScreenDidDisconnectNotification
                                                    object:nil];
     }
@@ -164,9 +164,9 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)drawTitleInRect:(CGRect)rect
 {
-    NSDictionary<NSString *, id> *attributes = [self airplayViewTitleAttributedDictionary:self];
-    if ([self.delegate respondsToSelector:@selector(airplayViewTitleAttributedDictionary:)]) {
-        attributes = [self.delegate airplayViewTitleAttributedDictionary:self];
+    NSDictionary<NSString *, id> *attributes = [self airPlayViewTitleAttributedDictionary:self];
+    if ([self.delegate respondsToSelector:@selector(airPlayViewTitleAttributedDictionary:)]) {
+        attributes = [self.delegate airPlayViewTitleAttributedDictionary:self];
     }
 
     NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
@@ -177,15 +177,15 @@ static void commonInit(SRGAirplayView *self);
 
 - (void)drawSubtitleInRect:(CGRect)rect
 {
-    NSString *subtitle = [self airplayViewSubtitle:self];
-    if ([self.delegate respondsToSelector:@selector(airplayViewSubtitle:)]) {
-        subtitle = [self.delegate airplayViewSubtitle:self];
+    NSString *subtitle = [self airPlayViewSubtitle:self];
+    if ([self.delegate respondsToSelector:@selector(airPlayViewSubtitle:)]) {
+        subtitle = [self.delegate airPlayViewSubtitle:self];
     }
 
     if (subtitle.length > 0) {
-        NSDictionary<NSString *, id> *attributes = [self airplayViewSubtitleAttributedDictionary:self];
-        if ([self.delegate respondsToSelector:@selector(airplayViewSubtitleAttributedDictionary:)]) {
-            attributes = [self.delegate airplayViewSubtitleAttributedDictionary:self];
+        NSDictionary<NSString *, id> *attributes = [self airPlayViewSubtitleAttributedDictionary:self];
+        if ([self.delegate respondsToSelector:@selector(airPlayViewSubtitleAttributedDictionary:)]) {
+            attributes = [self.delegate airPlayViewSubtitleAttributedDictionary:self];
         }
 
         NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
@@ -215,27 +215,27 @@ static void commonInit(SRGAirplayView *self);
     
     if (mediaPlayerController) {
         if (mediaPlayerController.externalNonMirroredPlaybackActive) {
-            self.hidden = ! [AVAudioSession srg_isAirplayActive];
+            self.hidden = ! [AVAudioSession srg_isAirPlayActive];
         }
         else {
             self.hidden = YES;
         }
     }
     else {
-        self.hidden = ! self.fakedForInterfaceBuilder && ! [AVAudioSession srg_isAirplayActive];
+        self.hidden = ! self.fakedForInterfaceBuilder && ! [AVAudioSession srg_isAirPlayActive];
     }
     
-    if (wasHidden && ! self.hidden && [self.delegate respondsToSelector:@selector(airplayView:didShowWithAirplayRouteName:)]) {
-        [self.delegate airplayView:self didShowWithAirplayRouteName:[AVAudioSession srg_activeAirplayRouteName]];
+    if (wasHidden && ! self.hidden && [self.delegate respondsToSelector:@selector(airPlayView:didShowWithAirPlayRouteName:)]) {
+        [self.delegate airPlayView:self didShowWithAirPlayRouteName:[AVAudioSession srg_activeAirPlayRouteName]];
     }
-    else if (! wasHidden && self.hidden && [self.delegate respondsToSelector:@selector(airplayViewDidHide:)]) {
-        [self.delegate airplayViewDidHide:self];
+    else if (! wasHidden && self.hidden && [self.delegate respondsToSelector:@selector(airPlayViewDidHide:)]) {
+        [self.delegate airPlayViewDidHide:self];
     }
 }
 
-#pragma mark SRGAirplayViewDataSource protocol
+#pragma mark SRGAirPlayViewDataSource protocol
 
-- (NSDictionary<NSString *, id> *)airplayViewTitleAttributedDictionary:(SRGAirplayView *)airplayView
+- (NSDictionary<NSString *, id> *)airPlayViewTitleAttributedDictionary:(SRGAirPlayView *)airPlayView
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.alignment = NSTextAlignmentCenter;
@@ -245,12 +245,12 @@ static void commonInit(SRGAirplayView *self);
               NSParagraphStyleAttributeName: style };
 }
 
-- (NSString *)airplayViewSubtitle:(SRGAirplayView *)airplayView
+- (NSString *)airPlayViewSubtitle:(SRGAirPlayView *)airPlayView
 {
-    return SRGAirplayRouteDescription();
+    return SRGAirPlayRouteDescription();
 }
 
-- (NSDictionary<NSString *, id> *)airplayViewSubtitleAttributedDictionary:(SRGAirplayView *)airplayView
+- (NSDictionary<NSString *, id> *)airPlayViewSubtitleAttributedDictionary:(SRGAirPlayView *)airPlayView
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.alignment = NSTextAlignmentCenter;
@@ -263,17 +263,17 @@ static void commonInit(SRGAirplayView *self);
 
 #pragma mark Notifications
 
-- (void)srg_airplayView_wirelessRouteActiveDidChange:(NSNotification *)notification
+- (void)srg_airPlayView_wirelessRouteActiveDidChange:(NSNotification *)notification
 {
     [self updateAppearance];
 }
 
-- (void)srg_airplayView_screenDidConnect:(NSNotification *)notification
+- (void)srg_airPlayView_screenDidConnect:(NSNotification *)notification
 {
     [self updateAppearance];
 }
 
-- (void)srg_airplayView_screenDidDisconnect:(NSNotification *)notification
+- (void)srg_airPlayView_screenDidDisconnect:(NSNotification *)notification
 {
     [self updateAppearance];
 }
@@ -292,7 +292,7 @@ static void commonInit(SRGAirplayView *self);
 
 #pragma mark Functions
 
-static void commonInit(SRGAirplayView *self)
+static void commonInit(SRGAirPlayView *self)
 {
     self.contentMode = UIViewContentModeRedraw;
     self.userInteractionEnabled = NO;
@@ -300,9 +300,9 @@ static void commonInit(SRGAirplayView *self)
     self.volumeView = [[MPVolumeView alloc] init];
 }
 
-NSString * SRGAirplayRouteDescription(void)
+NSString * SRGAirPlayRouteDescription(void)
 {
-    NSString *routeName = [AVAudioSession srg_activeAirplayRouteName];
+    NSString *routeName = [AVAudioSession srg_activeAirPlayRouteName];
     if (routeName) {
         return [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"Playback on «%@»", @"AirPlay description on which device the media is played."), routeName];
     }

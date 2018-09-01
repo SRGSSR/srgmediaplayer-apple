@@ -6,7 +6,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Segment.h"
+#import "DemoSegment.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSURL *URL;
 @property (nonatomic, readonly) BOOL is360;
 
-@property (nonatomic, readonly, nullable) NSArray<Segment *> *segments;
+@property (nonatomic, readonly, nullable) NSArray<DemoSegment *> *segments;
 
 @end
 

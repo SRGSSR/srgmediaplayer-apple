@@ -10,6 +10,7 @@
 
 #import "SRGMediaPlayerConstants.h"
 #import "SRGMediaPlayerView.h"
+#import "SRGPosition.h"
 #import "SRGSegment.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -21,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  The library provides the following components:
  *    - A controller, `SRGMediaPlayerController`, to perform playback.
- *    - A view, `SRGMediaPlayerView`, with which content playbed by a controller can be displayed.
+ *    - A view, `SRGMediaPlayerView`, with which content played by a controller can be displayed.
  *    - A set of overlays to create custom player user interfaces.
  *    - `SRGMediaPlayerViewController`, a view controller with a default user interface for simple playback needs.
  *
@@ -36,8 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
  *    - Background playback.
  *    - Simultaneous playback.
  *
- *  In addition, `SRGMediaPlayerController` optionally supports segments. A segment is part of a media, defined by a
- *  start time and a duration. Segments make it possible to add a logical structure on top of a media, e.g. topics
+ *  In addition, `SRGMediaPlayerController` optionally supports segments. A segment defined as part of a media, specified
+ *  by a start time and a duration. Segments make it possible to add a logical structure on top of a media, e.g. topics
  *  in a news show, chapters in a movie, and so on. If segments are associated with the media being played, 
  *  `SRGMediaPlayerController` will:
  *    - Report transitions between segments when they occur (through notifications).
@@ -46,8 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  ## View
  *
  *  `SRGMediaPlayerController` is a raw media player and is usually not used as is (though it could, for example
- *  when you only need to play audio files). Most of the time you need to display the content being played. This
- *  is the role of `SRGMediaPlayerView`.
+ *  when you only need to play audio files). Most of the time, though, you need to display the content being played.
+ *  This is the role of `SRGMediaPlayerView`.
  *
  *  By default, a controller provides a lazily instantiated view which can be installed in a view hierarchy. You
  *  can also instantiate an `SRGMediaPlayerView` in a xib or storyboard and bind it to a controller if you prefer.
@@ -55,10 +56,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  `SRGMediaPlayerView` supports standard video playback, as well as 360° video playback (with carboard support).
  *  The `viewMode` property can be used to choose how a video should be displayed.
  *
- *  ## Basic usage
+ *  ## Implementing a media player user interface
  *
- *  To implement your own custom media player, you must create your own player class (most probably a view controller),
- *  and delegate playback to an `SRGMediaPlayerController` instance:
+ *  To implement your own custom media player user interface, you must create your own player class (most probably a view
+ *  controller), and delegate playback to an `SRGMediaPlayerController` instance:
  *    - Instantiate `SRGMediaPlayerController` in your player implementation file. If you are using a storyboard or 
  *      a xib to define your player layout, you can also drop a plain object with Interface Builder and assign it the
  *      `SRGMediaPlayerController` class. Be sure to connect an outlet if you need to later refer to it from within
@@ -66,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    - When creating a video player, you must add the `view` property somewhere within your view hierarchy so that
  *      the content can be properly displayed:
  *        - If you are instantiating the controller in a storyboard or a nib, this is easily achieved by adding a view 
- *          with the `SRGMediaPlayerView` to your layout, and binding it to the `view` property right from Interface 
+ *          with the `SRGMediaPlayerView` class to your layout, and binding it to the `view` property right from Interface
  *          Builder.
  *        - If you have instantiated `SRGMediaPlayerController` in code, then you must add the `view` property manually
  *          to your view hierarchy by calling `-[UIView addSubview:]` or one of the similar `UIView` methods. Be sure 
@@ -74,9 +75,9 @@ NS_ASSUME_NONNULL_BEGIN
  *      If you only need to implement an audio player, you can skip this step.
  *    - Call one of the play methods to start playing your media.
  *
- *  You should now have a working implementation able to play audios or videos. There is no way to pause playback or to 
- *  seek within the media, though. The `SRGMediaPlayer` library provides a few standard controls and overlays with which 
- *  you can easily add such functionalities to your custom player.
+ *  You should now have a working implementation able to play audios or videos. There is no way for the user to pause
+ *  playback or to seek within the media, though. The `SRGMediaPlayer` library provides a few standard controls and
+*   overlays with which you can easily add such functionalities to your custom player.
  *
  *  ## Controls and overlays
  *
@@ -93,9 +94,9 @@ NS_ASSUME_NONNULL_BEGIN
  *    - `SRGVolumeView`: A slider to adjust the volume.
  *  - Miscellaneous:
  *    - `SRGPlaybackActivityIndicatorView`: An activity indicator displayed when the player is buffering or seeking.
- *    - `SRGAirplayButton`: A button which is visible when Airplay is available.
- *    - `SRGAirplayView`: An overlay which is visible when external Airplay playback is active, and which displays the
- *                        current route..
+ *    - `SRGAirPlayButton`: A button which is visible when AirPlay is available.
+ *    - `SRGAirPlayView`: An overlay which is visible when external AirPlay playback is active, and which displays the
+ *                        current route.
  *    - `SRGTimelineView`: A linear collection to display the segments associated with a media.
  *
  *  Customizing your player layout using the overlays above is straightforward:
@@ -119,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  purpose:
  *    - Information extraction (e.g. current `AVPlayerItem`, subtitles and audio channels).
  *    - Key-value observation of some other changes you might be interested in (e.g. IceCast / SHOUTcast information).
- *    - Airplay setup.
+ *    - AirPlay setup.
  *    - Muting the player.
  *    - etc.
  *
@@ -135,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  ## Player events
  *
  *  The player emits notifications when important changes are detected:
- *    - Playback state changes and errors. Errors are defined in the `SRGMediaPlayerError.h` header file
+ *    - Playback state changes and errors. Errors are defined in the `SRGMediaPlayerError.h` header file.
  *    - Segment changes and blocked segment skipping.
  *  For more information about the available notifications, have a look at the `SRGMediaPlayerConstants.h` header file.
  *
@@ -143,7 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  KVO might be possible but is not guaranteed. You should in general listen to notifications, though, as they may
  *  convey additional useful information in their associated dictionary.
  *
- *  All notifications and KVO changes are reported on the main thread.
+ *  Note that all notifications and KVO changes are reported on the main thread.
  *
  *  ## Playback management
  *
@@ -206,8 +207,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  The absolute tolerance (in seconds) applied when attempting to start playback near the end of a stream (or segment
  *  thereof). Default is 0 seconds.
  *
- *  @discussion If the distance between the desired playback position and the end is smaller than the maximum tolerated
- *              value according to `endTolerance` and / or `endToleranceRatio`, playback will start at the default position.
+ *  @discussion If the distance between the desired playback position and the end is small according to `endTolerance`
+ *              and / or `endToleranceRatio` (the smallest value wins), playback will start at the default position.
  */
 @property (nonatomic) NSTimeInterval endTolerance;
 
@@ -215,8 +216,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  The tolerance ratio applied when attempting to start playback near the end of a stream (or segment thereof). The
  *  ratio is multiplied with the stream (or segment) duration to calculate the tolerance in seconds. Default is 0.
  *
- *  @discussion If the distance between the desired playback position and the end is smaller than the maximum tolerated
- *              value according to `endTolerance` and / or `endToleranceRatio`, playback will start at the default position.
+ *  @discussion If the distance between the desired playback position and the end is small according to `endTolerance`
+ *              and / or `endToleranceRatio` (the smallest value wins), playback will start at the default position.
  */
 @property (nonatomic) float endToleranceRatio;
 
@@ -278,14 +279,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 
 /**
- *  Prepare to play the media, starting from the specified time, but with the player paused (if playback is not started
+ *  Prepare to play the media, starting at the specified position, but with the player paused (if playback is not started
  *  in the completion handler). Segments can be optionally provided. If you want playback to start right after preparation, 
  *  call `-play` from the completion handler (in which case the player will immediately reach the playing state).
  *
  *  @param URL               The URL to play.
- *  @param time              The time to start at. Use `kCMTimeZero` to start at the default location (see discussion
- *                           below). This value is also used as fallback if the provided time is invalid. If the specified
- *                           time lies outside the media time range, playback starts at the default location.
+ *  @param position          The position to start at. If `nil` or if the specified position lies outside the media time
+ *                           range, playback starts at the default position.
  *  @param segments          A segment list.
  *  @param userInfo          A dictionary to associate arbitrary information with the media being played (for later retrieval).
  *                           This information stays associated with the player controller until it is reset.
@@ -296,23 +296,23 @@ NS_ASSUME_NONNULL_BEGIN
  *              handler entry). The player state is not updated to paused until the completion handler has been executed.
  *              This way, any change to the player state in the completion handler (e.g. because of a `-play` request) will 
  *              only be reflected after the completion handler has been executed, so that the player transitions from preparing
- *              to this state without transitioning through the paused state.
+ *              to this state without going through the paused state.
  *
- *              Use `kCMTimeZero` to start at the beginning of an on-demand stream. For DVR streams, using `kCMTimeZero` will
- *              start the stream at its end. For times smaller than the chunk size, playback might start at the end of the stream
- *              (iOS 11 and above) or at the specified location (older iOS versions).
+ *              For an on-demand stream, the default position is its start, for DVR streams its end. When playing a DVR
+ *              stream and the position is contained within the first chunk, playback might start at the end of the stream
+ *              (iOS 11 and above) or at the specified position (older iOS versions).
  */
 - (void)prepareToPlayURL:(NSURL *)URL
-                  atTime:(CMTime)time
+              atPosition:(nullable SRGPosition *)position
             withSegments:(nullable NSArray<id<SRGSegment>> *)segments
                 userInfo:(nullable NSDictionary *)userInfo
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Same as `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`, but with a player item.
+ *  Same as `-prepareToPlayURL:atPosition:withSegments:userInfo:completionHandler:`, but with a player item.
  */
 - (void)prepareToPlayItem:(AVPlayerItem *)item
-                   atTime:(CMTime)time
+               atPosition:(nullable SRGPosition *)position
              withSegments:(nullable NSArray<id<SRGSegment>> *)segments
                  userInfo:(nullable NSDictionary *)userInfo
         completionHandler:(nullable void (^)(void))completionHandler;
@@ -336,17 +336,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)stop;
 
 /**
- *  Ask the player to seek to a given location. A paused player remains paused, while a playing player remains
+ *  Ask the player to seek to a given position. A paused player remains paused, while a playing player remains
  *  playing. You can use the completion handler to change the player state if needed, e.g. to automatically
  *  resume playback after a seek has been performed on a paused player.
  *
- *  @param time              The time to seek to. If the time is invalid it will be set to `kCMTimeZero`. Setting a 
- *                           start time outside the actual media time range will seek to the nearest location (either
- *                           zero or the end time).
- *  @param toleranceBefore   The tolerance allowed before `time`. Use `kCMTimePositiveInfinity` for no tolerance
- *                           requirements.
- *  @param toleranceAfter    The tolerance allowed after `time`. Use `kCMTimePositiveInfinity` for no tolerance
- *                           requirements.
+ *  @param position          The position to seek to. If `nil` or if the specified position lies outside the media time
+ *                           range, seeking will be made to the nearest valid position.
  *  @param completionHandler The completion block called when the seek ends. If the seek has been interrupted by
  *                           another seek, the completion handler will be called with `finished` set to `NO`, otherwise 
  *                           with `finished` set to `YES`.
@@ -355,17 +350,14 @@ NS_ASSUME_NONNULL_BEGIN
  *              the player will still be in the seeking state. Note that if the media was not ready to play, seeking
  *              won't take place, and the completion handler won't be called.
  *
- *              If the specified time lies outside the media time range, the location at which playback actually begins is
- *              undefined (depends on iOS versions).
+ *              If the specified position lies outside the media time range, the location at which playback actually
+ *              resumes is undefined (depends on iOS versions).
  *
  *              Refer to `-[AVPlayer seekToTime:toleranceBefore:toleranceAfter:completionHandler:]` documentation
  *              for more information about seek tolerances. Attempting to seek to a blocked segment will skip the segment
  *              and resume after it.
  */
-- (void)seekToTime:(CMTime)time
-withToleranceBefore:(CMTime)toleranceBefore
-    toleranceAfter:(CMTime)toleranceAfter
- completionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)seekToPosition:(nullable SRGPosition *)position withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
  *  Reset the player to its original idle state with no media URL, segments or user info.
@@ -387,8 +379,6 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 /**
  *  The URL of the content currently loaded into the player.
- *
- *  @discussion `nil` when playback has been started from an `AVPlayerItem`.
  */
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
 
@@ -424,22 +414,24 @@ withToleranceBefore:(CMTime)toleranceBefore
 /**
  *  The current media time range (might be empty or indefinite).
  *
- *  @discussion Use `CMTimeRange` macros for checking time ranges.
+ *  @discussion Use `CMTimeRange` macros for checking time ranges. Also see `CMTimeRange+SRGMediaPlayer.h`.
  */
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
  *  The current playback position.
+ *
+ *  @discussion Use `CMTime` macros for checking times. Also see `CMTime+SRGMediaPlayer.h`.
  */
 @property (nonatomic, readonly) CMTime currentTime;
 
 /**
- *  The original time at which the player started seeking, `kCMTimeIndefinite` if none.
+ *  The time at which the player started seeking, `kCMTimeIndefinite` if none.
  */
 @property (nonatomic, readonly) CMTime seekStartTime;
 
 /**
- *  The current time at which the player is seeking, `kCMTimeIndefinite` if none.
+ *  The current time to which the player is seeking, `kCMTimeIndefinite` if none.
  */
 @property (nonatomic, readonly) CMTime seekTargetTime;
 
@@ -455,7 +447,7 @@ withToleranceBefore:(CMTime)toleranceBefore
 
 /**
  *  For DVR and live streams, returns the date corresponding to the current playback time. If the date cannot be
- *  determined or for on-demand streams, the method returns `nil`.
+ *  determined or for an on-demand stream, the method returns `nil`.
  */
 @property (nonatomic, readonly, nullable) NSDate *date;
 
@@ -502,56 +494,56 @@ withToleranceBefore:(CMTime)toleranceBefore
 @interface SRGMediaPlayerController (Convenience)
 
 /**
- *  Prepare to play a URL, starting at its default location.
+ *  Prepare to play a URL, starting at the default position.
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURL:atPosition:withSegments:userInfo:completionHandler:`.
  */
 - (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Prepare to play the an item, starting at its default location.
+ *  Prepare to play the an item, starting at the default position.
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayItem:atPosition:withSegments:userInfo:completionHandler:`.
  */
 - (void)prepareToPlayItem:(AVPlayerItem *)item withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Play a URL, starting from the specified time. Segments and user info can be optionally provided.
+ *  Play a URL, starting at the specified position. Segments and user info can be optionally provided.
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURL:atPosition:withSegments:userInfo:completionHandler:`.
  *
  *  @discussion The player immediately reaches the playing state. No segment selection occurs (use methods from the
  *              `SegmentSelection` category if you need to select a segment).
  */
 - (void)playURL:(NSURL *)URL
-         atTime:(CMTime)time
+     atPosition:(nullable SRGPosition *)position
    withSegments:(nullable NSArray<id<SRGSegment>> *)segments
        userInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Play an item, starting from the specified time. Segments and user info can be optionally provided.
+ *  Play an item, starting at the specified position. Segments and user info can be optionally provided.
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayItem:atPosition:withSegments:userInfo:completionHandler:`.
  *
  *  @discussion The player immediately reaches the playing state. No segment selection occurs (use methods from the
  *              `SegmentSelection` category if you need to select a segment).
  */
 - (void)playItem:(AVPlayerItem *)item
-          atTime:(CMTime)time
+      atPosition:(nullable SRGPosition *)position
     withSegments:(nullable NSArray<id<SRGSegment>> *)segments
         userInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Play a URL, starting at its default location.
+ *  Play a URL, starting at the default position.
  *
- *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
+ *  For more information, @see `-playURL:atPosition:withSegments:userInfo:`.
  */
 - (void)playURL:(NSURL *)URL;
 
 /**
- *  Play an item, starting at its default location.
+ *  Play an item, starting at the default position.
  *
- *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
+ *  For more information, @see `-playURL:atPosition:withSegments:userInfo:`.
  */
 - (void)playItem:(AVPlayerItem *)item;
 
@@ -562,128 +554,119 @@ withToleranceBefore:(CMTime)toleranceBefore
  */
 - (void)togglePlayPause;
 
-/**
- *  Ask the player to seek to a given location efficiently (the seek might be not perfeclty accurate but will be faster).
- *
- *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
- */
-- (void)seekEfficientlyToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
-
-/**
- *  Ask the player to seek to a given location with no tolerance (this might incur some decoding overhead).
- *
- *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
- */
-- (void)seekPreciselyToTime:(CMTime)time withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
-
 @end
 
 /**
- *  @name Segment selection (notifications resulting from selection will have the `SRGMediaPlayerSelectionKey` set to YES)
+ *  @name Segment selection (notifications resulting from selection will have the `SRGMediaPlayerSelectionKey` set to `YES`)
  */
 
 @interface SRGMediaPlayerController (SegmentSelection)
 
 /**
- *  Prepare to play a URL, starting at a specific time within the segment specified by `index`. Use `kCMTimeZero` to
- *  to start at the segment beginning. User info can be optionally provided.
+ *  Prepare to play a URL, starting at a specific position within the segment specified by `index`. User info can be
+ *  optionally provided.
  *
- *  @param index The index of the segment at which playback will start.
- *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
- *               actual segment time range will seek to the nearest location (either zero or the segment end time).
+ *  @param index    The index of the segment at which playback will start.
+ *  @param position The position to start at. If `nil` or if the specified position lies outside the segment time
+ *                  range, playback starts at the default position.
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURL:atPosition:withSegments:userInfo:completionHandler:`.
  *
- *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default position.
  */
 - (void)prepareToPlayURL:(NSURL *)URL
                  atIndex:(NSInteger)index
-                    time:(CMTime)time
+                position:(nullable SRGPosition *)position
               inSegments:(NSArray<id<SRGSegment>> *)segments
             withUserInfo:(nullable NSDictionary *)userInfo
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Prepare to play an item, starting at a specific time within the segment specified by `index`. Use `kCMTimeZero` to
- *  to start at the segment beginning. User info can be optionally provided.
+ *  Prepare to play an item, starting at a specific position within the segment specified by `index`. User info can be
+ *  optionally provided.
  *
- *  @param index The index of the segment at which playback will start.
- *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
- *               actual segment time range is set, playback will start at the segment beginning.
+ *  @param index    The index of the segment at which playback will start.
+ *  @param position The position to start at. If `nil` or if the specified position lies outside the segment time
+ *                  range, playback starts at the default position.
  *
- *  For more information, @see `-prepareToPlayURL:atTime:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayItem:atPosition:withSegments:userInfo:completionHandler:`.
  *
- *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default position.
  */
 - (void)prepareToPlayItem:(AVPlayerItem *)item
                   atIndex:(NSInteger)index
-                     time:(CMTime)time
+                 position:(nullable SRGPosition *)position
                inSegments:(NSArray<id<SRGSegment>> *)segments
              withUserInfo:(nullable NSDictionary *)userInfo
         completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Play a URL, starting at a specific time within the segment specified by `index`. Use `kCMTimeZero` to start at the
- *  segment beginning. User info can be optionally provided.
+ *  Play a URL, starting at a specific position within the segment specified by `index`. User info can be optionally
+ *  provided.
  *
- *  @param index The index of the segment at which playback will start.
- *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
- *               actual segment time range is set, playback will start at the segment beginning.
+ *  @param index    The index of the segment at which playback will start.
+ *  @param position The position to start at. If `nil` or if the specified position lies outside the segment time
+ *                  range, playback starts at the default position.
  *
- *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
+ *  For more information, @see `-playURL:atPosition:withSegments:userInfo:`.
  *
- *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default position.
  */
 - (void)playURL:(NSURL *)URL
         atIndex:(NSInteger)index
-           time:(CMTime)time
+       position:(nullable SRGPosition *)position
      inSegments:(NSArray<id<SRGSegment>> *)segments
    withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Play an item, starting at a specific time within the segment specified by `index`. Use `kCMTimeZero` to start at the
- *  segment beginning. User info can be optionally provided.
+ *  Play an item, starting at a specific position within the segment specified by `index`. User info can be optionally
+ *  provided.
  *
- *  @param index The index of the segment at which playback will start.
- *  @param time  The time to start at. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
- *               actual segment time range is set, playback will start at the segment beginning.
+ *  @param index    The index of the segment at which playback will start.
+ *  @param position The position to start at. If `nil` or if the specified position lies outside the segment time
+ *                  range, playback starts at the default position.
  *
- *  For more information, @see `-playURL:atTime:withSegments:userInfo:`.
+ *  For more information, @see `-playItem:atPosition:withSegments:userInfo:`.
  *
- *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default location.
+ *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default position.
  */
 - (void)playItem:(AVPlayerItem *)item
          atIndex:(NSInteger)index
-            time:(CMTime)time
+        position:(nullable SRGPosition *)position
       inSegments:(NSArray<id<SRGSegment>> *)segments
     withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Seek to a specific time in a segment specified by its index. Use `kCMTimeZero` to seek to the segment beginning.
+ *  Seek to a specific time in a segment specified by its index.
  *
- *  @param time  The time to seek to. If the time is invalid it will be set to `kCMTimeZero`. If a start time outside the
- *               actual segment time range is set, playback will start at the segment beginning.
- *  @param index The index of the segment to seek to.
+ *  @param position The position to seek to. If `nil` or if the specified position lies outside the segment time
+ *                  range, playback starts at the default position.
+ *  @param index    The index of the segment to seek to.
  *
- *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
+ *  For more information, @see `-seekToPosition:withCompletionHandler:`.
  *
  *  @discussion If the segment index is invalid, this method does nothing. If the segment is already the one being played,
- *              playback will be restarted at its beginning.
+ *              playback will restart at its beginning.
  */
-- (void)seekToTime:(CMTime)time inSegmentAtIndex:(NSInteger)index withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)seekToPosition:(nullable SRGPosition *)position
+      inSegmentAtIndex:(NSInteger)index
+ withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
- *  Seek to a specific time in a segment. Use `kCMTimeZero` to seek to the segment beginning.
+ *  Seek to a specific time in a segment.
  *
- *  @param time    The time to seek to. If the time is invalid it will be set to `kCMTimeZero`. Setting a start time outside the
- *                 actual segment time range will seek to the nearest location (either zero or the segment end time).
+ *  @param position The position to seek to. If `nil` or if the specified position lies outside the segment time
+ *                  range, playback starts at the default position.
  *  @param segment The segment to seek to.
  *
- *  For more information, @see `-seekToTime:withToleranceBefore:toleranceAfter:completionHandler:`.
+ *  For more information, @see `-seekToPosition:withCompletionHandler:`.
  *
- *  @discussion If the segment does not belong to the registered segments, this method does nothing.
+ *  @discussion If the segment does not belong to the registered segments, this method does nothing. If the segment is
+ *              already the one being played, playback will restart at its beginning.
  */
-- (void)seekToTime:(CMTime)time inSegment:(id<SRGSegment>)segment withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
+- (void)seekToPosition:(nullable SRGPosition *)position
+         inSegment:(id<SRGSegment>)segment
+ withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**
  *  Return the currently selected segment if any, `nil` if none.
@@ -693,21 +676,21 @@ withToleranceBefore:(CMTime)toleranceBefore
 @end
 
 /**
- *  Airplay. Use player lifecycle blocks (see main `SRGMediaPlayerController` documentation) to setup Airplay behavior.
- *  Your audio session settings must be compatible with Airplay, see 
+ *  AirPlay. Use player lifecycle blocks (see main `SRGMediaPlayerController` documentation) to setup AirPlay behavior.
+ *  Your audio session settings must be compatible with AirPlay, see
  *      https://developer.apple.com/library/content/qa/qa1803/_index.html
  *
  *  Remark: Even if `allowsExternalPlayback` is set to `NO`, sound will still play on an external device if selected, only
- *          the visual tracks of a media won't be played. This is normal expected Airplay behavior, and this is also how
- *          audio-only medias must be played with Airplay (so that the screen displays media information notifications, 
+ *          the visual tracks of a media won't be played. This is normal expected AirPlay behavior, and this is also how
+ *          audio-only medias must be played with AirPlay (so that the screen displays media information notifications,
  *          that the user can control the audio volume from her device, and that the screen does not turn to black).
  *
- *          As a corollary, if you change the `allowsExternalPlayback` from `YES` to `NO` while playing with Airplay, the
- *          visual tracks will be restored on the device, while the sound will continue over Airplay. Though weird, this 
+ *          As a corollary, if you change the `allowsExternalPlayback` from `YES` to `NO` while playing with AirPlay, the
+ *          visual tracks will be restored on the device, while the sound will continue over AirPlay. Though weird, this
  *          is expected behavior as well. To restore the sound on the device, the user has to manually open the control
  *          center and choose to route audio through the device again.
  */
-@interface SRGMediaPlayerController (Airplay)
+@interface SRGMediaPlayerController (AirPlay)
 
 /**
  *  Return `YES` iff the player supports external non-mirrored playback (i.e. moving playback to the external display,
@@ -729,8 +712,8 @@ withToleranceBefore:(CMTime)toleranceBefore
  *          controller: If the managed player layer is the one of a view controller's root view ('full screen'), picture
  *          in picture is automatically enabled when switching to the background (provided the corresponding flag has been
  *          enabled in the system settings). This is the only case where switching to picture in picture can be made
- *          automatically. Picture in picture must otherwise always be user-triggered, otherwise you application might
- *          get rejected by Apple (@see `AVPictureInPictureController` documentation).
+ *          automatically. Picture in picture must always be user-triggered, otherwise you application might get rejected
+ *          by Apple (@see `AVPictureInPictureController` documentation).
  */
 @interface SRGMediaPlayerController (PictureInPicture)
 

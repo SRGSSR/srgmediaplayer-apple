@@ -12,7 +12,7 @@
 @property (nonatomic) NSURL *URL;
 @property (nonatomic) BOOL is360;
 
-@property (nonatomic) NSArray<Segment *> *segments;
+@property (nonatomic) NSArray<DemoSegment *> *segments;
 
 @end
 
@@ -48,9 +48,9 @@
         
         self.is360 = [dictionary[@"is360"] boolValue];
         
-        NSMutableArray<Segment *> *segments = [NSMutableArray array];
+        NSMutableArray<DemoSegment *> *segments = [NSMutableArray array];
         for (NSDictionary *segmentDictionary in dictionary[@"segments"]) {
-            Segment *segment = [[Segment alloc] initWithDictionary:segmentDictionary];
+            DemoSegment *segment = [[DemoSegment alloc] initWithDictionary:segmentDictionary];
             [segments addObject:segment];
         }
         self.segments = [segments copy];
