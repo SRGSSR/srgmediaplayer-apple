@@ -7,3 +7,6 @@ archive
 build
 
 Carthage
+
+report.xml
+test_output
