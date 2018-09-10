@@ -7,19 +7,19 @@ CARTHAGE_FLAGS=--platform iOS --cache-builds --new-resolver
 all: bootstrap
 	@echo "Building the project..."
 	@xcodebuild build
-	@echo ""
+	@echo "... done.\n"
 
 .PHONY: bootstrap
 bootstrap:
 	@echo "Bootstrapping dependencies..."
 	@carthage bootstrap $(CARTHAGE_FLAGS)
-	@echo ""
+	@echo "... done.\n"
 
 .PHONY: update
 update:
 	@echo "Updating dependencies..."
 	@carthage update $(CARTHAGE_FLAGS)
-	@echo ""
+	@echo "... done.\n"
 
 .PHONY: package
 package: bootstrap
@@ -27,14 +27,14 @@ package: bootstrap
 	@mkdir -p archive
 	@carthage build --no-skip-current
 	@carthage archive --output archive
-	@echo ""
+	@echo "... done.\n"
 
 .PHONY: clean
 clean:
 	@echo "Cleaning up build products..."
 	@xcodebuild clean
 	@rm -rf $(CARTHAGE_FOLDER)
-	@echo ""
+	@echo "... done.\n"
 
 .PHONY: help
 help:
