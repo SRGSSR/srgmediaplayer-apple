@@ -15,7 +15,7 @@ At the highest level, the library intends to provide a default player view contr
 This default player view controller is itself based on a set of lower-level components which you can combine to match your requirements:
 
 * A media player controller, which can be optionally attached to a view for playing videos.
-* A set of components (slider, play / pause button, timeline, message view, Airplay overlay, etc.) which can be connected to an underlying media player controller.
+* A set of components (slider, play / pause button, timeline, message view, AirPlay overlay, etc.) which can be connected to an underlying media player controller.
 
 Let us now discuss these components further and describe how they can be glued together.
 
@@ -96,31 +96,31 @@ You can display segments using dedicated built-in overlay classes you can drop o
 
 Both provide a `-reloadData` method to reload segments from the associated media player controller. Please refer to their respective header documentation to learn about the delegate protocols you need to implement to respond to reload requests.
 
-## Airplay support
+## AirPlay support
 
-Airplay configuration is entirely the responsibilty of client applications. `SRGMediaPlayerController` exposes three block hooks where you can easily configure Airplay playback settings as you see fit:
+AirPlay configuration is entirely the responsibilty of client applications. `SRGMediaPlayerController` exposes three block hooks where you can easily configure AirPlay playback settings as you see fit:
 
 * `playerCreationBlock`: Called when the `AVPlayer` is created.
 * `playerConfigurationBlock`: Called when the `AVPlayer` is created, and when a configuration reload is requested.
 * `playerDestructionBlock`: Called when the `AVPlayer` is released.
 
-To add basic Airplay support to your application, you can for example:
+To add basic AirPlay support to your application, you can for example:
 
 * Enable the corresponding background mode for your target.
 * Enable `allowsExternalPlayback` (which is the default) and `usesExternalPlaybackWhileExternalScreenIsActive` (to switch to full-screen playback when mirroring is active) in the `playerConfigurationBlock`.
 
-You can also drop an `SRGAirplayButton` onto your layout (displayed only when Airplay is available) or an `SRGAirplayView` (displaying the current route when Airplay is active).
+You can also drop an `SRGAirPlayButton` onto your layout (displayed only when AirPlay is available) or an `SRGAirPlayView` (displaying the current route when AirPlay is active).
 
 ## Audio session management
 
-No audio session specific management is provided by the library. Managing audio sessions is entirely the responsibility of the application, which gives you complete freedom over how playback happens, especially in the background or when switching between applications. As for Airplay setup (see above), you can use the various block hooks to setup and restore audio session settings as required by your application.
+No audio session specific management is provided by the library. Managing audio sessions is entirely the responsibility of the application, which gives you complete freedom over how playback happens, especially in the background or when switching between applications. As for AirPlay setup (see above), you can use the various block hooks to setup and restore audio session settings as required by your application.
 
 For more information, please refer to the [official documentation](https://developer.apple.com/library/ios/documentation/Audio/Conceptual/AudioSessionProgrammingGuide/Introduction/Introduction.html). Audio sessions are a somewhat tricky topic, you should therefore read the documentation well, experiment, and test the behavior of your application on a real device. 
 
 In particular, you should ask yourself:
 
 * What should happen when I was playing music with another app and my app is launched? Should the music continue? Maybe resume after my app stops playing?
-* Do I want to be able to control Airplay playback from the lock screen or the control center?
+* Do I want to be able to control AirPlay playback from the lock screen or the control center?
 * Do I want videos to be _listened to_ when the device is locked, maybe also when the application is in the background?
 
 Moreover, you should check that your application behaves well when receiving phone calls (in particular, audio playback should stop).

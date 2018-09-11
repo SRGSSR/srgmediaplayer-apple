@@ -11,9 +11,11 @@ FOUNDATION_EXPORT NSString *SRGMediaPlayerMarketingVersion(void);
 
 // Public headers.
 #import "AVAudioSession+SRGMediaPlayer.h"
+#import "CMTime+SRGMediaPlayer.h"
+#import "CMTimeRange+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
-#import "SRGAirplayButton.h"
-#import "SRGAirplayView.h"
+#import "SRGAirPlayButton.h"
+#import "SRGAirPlayView.h"
 #import "SRGMediaPlayerConstants.h"
 #import "SRGMediaPlayerController.h"
 #import "SRGMediaPlayerError.h"
@@ -23,6 +25,7 @@ FOUNDATION_EXPORT NSString *SRGMediaPlayerMarketingVersion(void);
 #import "SRGPlaybackActivityIndicatorView.h"
 #import "SRGPlaybackButton.h"
 #import "SRGSegment.h"
+#import "SRGPosition.h"
 #import "SRGTimelineSlider.h"
 #import "SRGTimelineView.h"
 #import "SRGTimeSlider.h"

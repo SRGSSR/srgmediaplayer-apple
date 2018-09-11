@@ -4,9 +4,9 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "Segment.h"
+#import "DemoSegment.h"
 
-@interface Segment ()
+@interface DemoSegment ()
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic) CMTimeRange srg_timeRange;
@@ -15,7 +15,7 @@
 
 @end
 
-@implementation Segment
+@implementation DemoSegment
 
 #pragma mark Object lifecycle
 

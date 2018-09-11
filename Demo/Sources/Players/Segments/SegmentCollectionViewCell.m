@@ -6,6 +6,8 @@
 
 #import "SegmentCollectionViewCell.h"
 
+#import "CMTimeRange+SRGMediaPlayer.h"
+
 static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 {
     static NSDateComponentsFormatter *s_dateComponentsFormatter;
@@ -32,13 +34,13 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 #pragma mark Getters and setters
 
-- (void)setSegment:(Segment *)segment
+- (void)setSegment:(DemoSegment *)segment
 {
     _segment = segment;
 
     self.titleLabel.text = segment.name;
 
-    if (! CMTIMERANGE_IS_EMPTY(segment.srg_timeRange)) {
+    if (SRG_CMTIMERANGE_IS_NOT_EMPTY(segment.srg_timeRange)) {
         self.durationLabel.hidden = NO;
         self.durationLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.duration)];
     }
@@ -61,7 +63,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 #pragma mark UI
 
-- (void)updateAppearanceWithTime:(CMTime)time selectedSegment:(Segment *)selectedSegment
+- (void)updateAppearanceWithTime:(CMTime)time selectedSegment:(DemoSegment *)selectedSegment
 {
     CMTimeRange r = self.segment.srg_timeRange;
     float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(r.start)) / (CMTimeGetSeconds(CMTimeAdd(r.start, r.duration)) - CMTimeGetSeconds(r.start));

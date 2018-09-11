@@ -4,12 +4,24 @@
 //  License information is available from the LICENSE file.
 //
 
+#import <CoreMedia/CoreMedia.h>
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-// Amount of seconds at the end of a DVR stream assumed to correspond to live conditions.
-OBJC_EXTERN NSTimeInterval const SRGMediaPlayerLiveDefaultTolerance;
+// Default amount of seconds at the end of a DVR stream assumed to correspond to live conditions (same tolerance as the built-in iOS player).
+static NSTimeInterval const SRGMediaPlayerDefaultLiveTolerance = 30.;
+
+// Default absolute tolerance applied when attempting to play a stream (or segment thereof) starting near its end.
+static NSTimeInterval const SRGMediaPlayerDefaultEndTolerance = 0.;
+
+// Default relative tolerance applied when attempting to play a stream (or segment thereof) starting near its end.
+static float const SRGMediaPlayerDefaultEndToleranceRatio = 0.f;
+
+/**
+ *  Calculate the effective end tolerance applied for an absolute and relative tolerance, for a content having the provided duration.
+ */
+OBJC_EXPORT CMTime SRGMediaPlayerEffectiveEndTolerance(NSTimeInterval endTolerance, float endToleranceRatio, NSTimeInterval contentDuration);
 
 /**
  *  @name Types

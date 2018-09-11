@@ -1,5 +1,12 @@
-Carthage
-xcuserdata
 .DS_Store
-report.xml
-test_output
+
+*.xcscmblueprint
+xcuserdata
+
+archive
+build
+
+Carthage
+
+fastlane/report.xml
+fastlane/test_output
