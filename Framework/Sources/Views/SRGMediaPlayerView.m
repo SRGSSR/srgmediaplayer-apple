@@ -151,10 +151,6 @@ static void commonInit(SRGMediaPlayerView *self);
             if (! audioAssetTrack) {
                 return;
             }
-            
-            // Audio-only
-            [self.playbackView setPlayer:nil withAssetDimensions:CGSizeZero];
-            [self.playbackView removeFromSuperview];
         }
     }
     else {
