@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The default position.
  */
-+ (SRGPosition *)defaultPosition;
+@property (class, nonatomic, readonly) SRGPosition *defaultPosition;
 
 /**
  *  Exact position at the specified time.

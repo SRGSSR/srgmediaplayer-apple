@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return YES when the device is locked.
  */
-+ (BOOL)srg_mediaPlayer_isLocked;
+@property (class, nonatomic, readonly) BOOL srg_mediaPlayer_isLocked;
 
 @end
 

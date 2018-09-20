@@ -31,7 +31,7 @@ OBJC_EXTERN NSString *SRGMediaPlayerNonLocalizedString(NSString *string);
 /**
  *  The media player resource bundle.
  */
-+ (NSBundle *)srg_mediaPlayerBundle;
+@property (class, nonatomic, readonly) NSBundle *srg_mediaPlayerBundle;
 
 @end
 

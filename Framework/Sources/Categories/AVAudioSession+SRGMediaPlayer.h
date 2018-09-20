@@ -19,16 +19,16 @@ OBJC_EXTERN NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification;
 @interface AVAudioSession (SRGMediaPlayer)
 
 /**
- *  Returns `YES` iff AirPlay is active (i.e. displaying on an external AirPlay device).
+ *  Return `YES` iff AirPlay is active (i.e. displaying on an external AirPlay device).
  *
  *  @discussion You can listen to the `SRGMediaPlayerWirelessRouteDidChangeNotification` notification to detect route changes.
  */
-+ (BOOL)srg_isAirPlayActive;
+@property (class, nonatomic, readonly) BOOL srg_isAirPlayActive;
 
 /**
- *  Return the active AirPlay route name if possible. If no route is active, the method returns `nil`.
+ *  Return the active AirPlay route name if possible, or `nil` when no route is active.
  */
-+ (nullable NSString *)srg_activeAirPlayRouteName;
+@property (class, nonatomic, readonly, copy, nullable) NSString *srg_activeAirPlayRouteName;
 
 @end
 
