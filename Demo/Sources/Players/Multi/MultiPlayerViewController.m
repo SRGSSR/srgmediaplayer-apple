@@ -83,7 +83,7 @@
         
         CGRect playerViewFrame = [self rectForPlayerViewAtIndex:self.playerViewsContainer.subviews.count];
         UIView *playerView = [[UIView alloc] initWithFrame:playerViewFrame];
-        playerView.backgroundColor = [UIColor blackColor];
+        playerView.backgroundColor = UIColor.blackColor;
         playerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         [self.playerViewsContainer addSubview:playerView];
         

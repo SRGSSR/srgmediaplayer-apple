@@ -51,7 +51,7 @@
     [super prepareForInterfaceBuilder];
     
     UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:self.bounds];
-    placeholderLabel.textColor = [UIColor whiteColor];
+    placeholderLabel.textColor = UIColor.whiteColor;
     placeholderLabel.textAlignment = NSTextAlignmentCenter;
     placeholderLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     placeholderLabel.text = SRGMediaPlayerNonLocalizedString(@"Volume view (only visible on a device)");

@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  You should now have a working implementation able to play audios or videos. There is no way for the user to pause
  *  playback or to seek within the media, though. The `SRGMediaPlayer` library provides a few standard controls and
-*   overlays with which you can easily add such functionalities to your custom player.
+ *   overlays with which you can easily add such functionalities to your custom player.
  *
  *  ## Controls and overlays
  *
@@ -665,7 +665,7 @@ NS_ASSUME_NONNULL_BEGIN
  *              already the one being played, playback will restart at its beginning.
  */
 - (void)seekToPosition:(nullable SRGPosition *)position
-         inSegment:(id<SRGSegment>)segment
+             inSegment:(id<SRGSegment>)segment
  withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**

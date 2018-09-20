@@ -101,12 +101,12 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     if (_mediaPlayerController) {
         [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
         
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                                      object:_mediaPlayerController];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:SRGMediaPlayerSeekNotification
-                                                      object:_mediaPlayerController];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                    object:_mediaPlayerController];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:SRGMediaPlayerSeekNotification
+                                                    object:_mediaPlayerController];
     }
     
     _mediaPlayerController = mediaPlayerController;
@@ -122,14 +122,14 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         }];
         [self updateDisplayWithTime:mediaPlayerController.player.currentTime];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_timeSlider_playbackStateDidChange:)
-                                                     name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                                   object:mediaPlayerController];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_timeSlider_seek:)
-                                                     name:SRGMediaPlayerSeekNotification
-                                                   object:mediaPlayerController];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_timeSlider_playbackStateDidChange:)
+                                                   name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                 object:mediaPlayerController];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_timeSlider_seek:)
+                                                   name:SRGMediaPlayerSeekNotification
+                                                 object:mediaPlayerController];
     }
 }
 
@@ -151,7 +151,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 - (void)setBufferingTrackColor:(UIColor *)bufferingTrackColor
 {
-    _bufferingTrackColor = bufferingTrackColor ?: [UIColor darkGrayColor];
+    _bufferingTrackColor = bufferingTrackColor ?: UIColor.darkGrayColor;
 }
 
 // Override color properties since the default superclass behavior is to remove corresponding images, which we here
@@ -159,7 +159,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 - (UIColor *)thumbTintColor
 {
-    return self.overriddenThumbTintColor ?: [UIColor whiteColor];
+    return self.overriddenThumbTintColor ?: UIColor.whiteColor;
 }
 
 - (void)setThumbTintColor:(UIColor *)thumbTintColor
@@ -169,7 +169,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 - (UIColor *)minimumTrackTintColor
 {
-    return self.overriddenMinimumTrackTintColor ?: [UIColor whiteColor];
+    return self.overriddenMinimumTrackTintColor ?: UIColor.whiteColor;
 }
 
 - (void)setMinimumTrackTintColor:(UIColor *)minimumTrackTintColor
@@ -179,7 +179,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 - (UIColor *)maximumTrackTintColor
 {
-    return self.overriddenMaximumTrackTintColor ?: [UIColor blackColor];
+    return self.overriddenMaximumTrackTintColor ?: UIColor.blackColor;
 }
 
 - (void)setMaximumTrackTintColor:(UIColor *)maximumTrackTintColor
@@ -270,7 +270,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
     
     if (mediaPlayerController.streamType == SRGMediaPlayerStreamTypeLive) {
-        return [NSDate date];
+        return NSDate.date;
     }
     else if (mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
         return [NSDate dateWithTimeIntervalSinceNow:-CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), self.time))];
@@ -415,7 +415,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, 2.f, 2.f)];
     UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, 0.f);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    [[UIColor clearColor] set];
+    [UIColor.clearColor set];
     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     

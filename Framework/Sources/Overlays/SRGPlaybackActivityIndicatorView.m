@@ -33,19 +33,19 @@ static void commonInit(SRGPlaybackActivityIndicatorView *self);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                                      object:_mediaPlayerController];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                    object:_mediaPlayerController];
     }
     
     _mediaPlayerController = mediaPlayerController;
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateUponPlaybackStateChange:)
-                                                     name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                                   object:mediaPlayerController];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(updateUponPlaybackStateChange:)
+                                                   name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                 object:mediaPlayerController];
     }
 }
 
@@ -54,7 +54,7 @@ static void commonInit(SRGPlaybackActivityIndicatorView *self);
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
     [super willMoveToWindow:newWindow];
-
+    
     if (newWindow) {
         [self updateAppearanceForMediaPlayerController:self.mediaPlayerController];
     }

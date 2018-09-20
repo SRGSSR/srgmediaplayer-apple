@@ -123,9 +123,9 @@ static void commonInit(SRGMediaPlayerView *self);
             static dispatch_once_t s_onceToken;
             static NSDictionary<NSNumber *, Class> *s_viewClasses;
             dispatch_once(&s_onceToken, ^{
-                s_viewClasses = @{ @(SRGMediaPlayerViewModeFlat) : [SRGMediaPlaybackFlatView class],
-                                   @(SRGMediaPlayerViewModeMonoscopic) : [SRGMediaPlaybackMonoscopicView class],
-                                   @(SRGMediaPlayerViewModeStereoscopic) : [SRGMediaPlaybackStereoscopicView class] };
+                s_viewClasses = @{ @(SRGMediaPlayerViewModeFlat) : SRGMediaPlaybackFlatView.class,
+                                   @(SRGMediaPlayerViewModeMonoscopic) : SRGMediaPlaybackMonoscopicView.class,
+                                   @(SRGMediaPlayerViewModeStereoscopic) : SRGMediaPlaybackStereoscopicView.class };
             });
             
             Class playbackViewClass = s_viewClasses[@(self.viewMode)];

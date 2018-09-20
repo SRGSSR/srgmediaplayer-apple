@@ -45,7 +45,7 @@
 
 - (NSURL *)thumbnailURL
 {
-    NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"thumbnail-placeholder" ofType:@"png"];
+    NSString *imageFilePath = [NSBundle.mainBundle pathForResource:@"thumbnail-placeholder" ofType:@"png"];
     return [NSURL fileURLWithPath:imageFilePath];
 }
 
@@ -54,7 +54,7 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@: %p; start: %@; duration: %@; name: %@; blocked: %@; hidden: %@>",
-            [self class],
+            self.class,
             self,
             @(CMTimeGetSeconds(self.srg_timeRange.start)),
             @(CMTimeGetSeconds(self.srg_timeRange.duration)),

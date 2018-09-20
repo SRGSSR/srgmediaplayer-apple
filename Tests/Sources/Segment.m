@@ -20,19 +20,19 @@
 
 + (Segment *)segmentWithTimeRange:(CMTimeRange)timeRange
 {
-    return [[[self class] alloc] initWithTimeRange:timeRange];
+    return [[self.class alloc] initWithTimeRange:timeRange];
 }
 
 + (Segment *)blockedSegmentWithTimeRange:(CMTimeRange)timeRange
 {
-    Segment *segment = [[[self class] alloc] initWithTimeRange:timeRange];
+    Segment *segment = [[self.class alloc] initWithTimeRange:timeRange];
     segment.srg_blocked = YES;
     return segment;
 }
 
 + (Segment *)hiddenSegmentWithTimeRange:(CMTimeRange)timeRange
 {
-    Segment *segment = [[[self class] alloc] initWithTimeRange:timeRange];
+    Segment *segment = [[self.class alloc] initWithTimeRange:timeRange];
     segment.srg_hidden = YES;
     return segment;
 }
@@ -52,7 +52,7 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@: %p; startTime: %@; duration: %@>",
-            [self class],
+            self.class,
             self,
             @(CMTimeGetSeconds(self.srg_timeRange.start)),
             @(CMTimeGetSeconds(self.srg_timeRange.duration))];

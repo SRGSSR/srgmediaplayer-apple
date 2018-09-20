@@ -60,18 +60,18 @@ static void commonInit(SRGAirPlayButton *self);
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
         [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
         
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                      object:self.volumeView];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
-                                                      object:self.volumeView];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIScreenDidConnectNotification
-                                                      object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIScreenDidDisconnectNotification
-                                                      object:nil];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:MPVolumeViewWirelessRouteActiveDidChangeNotification
+                                                    object:self.volumeView];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
+                                                    object:self.volumeView];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:UIScreenDidConnectNotification
+                                                    object:nil];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:UIScreenDidDisconnectNotification
+                                                    object:nil];
     }
     
     _mediaPlayerController = mediaPlayerController;
@@ -89,28 +89,28 @@ static void commonInit(SRGAirPlayButton *self);
             [self updateAppearance];
         }];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airPlayButton_wirelessRouteActiveDidChange:)
-                                                     name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                   object:self.volumeView];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airPlayButton_wirelessRoutesAvailableDidChange:)
-                                                     name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
-                                                   object:self.volumeView];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airPlayButton_screenDidConnect:)
-                                                     name:UIScreenDidConnectNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airPlayButton_screenDidDisconnect:)
-                                                     name:UIScreenDidDisconnectNotification
-                                                   object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_airPlayButton_wirelessRouteActiveDidChange:)
+                                                   name:MPVolumeViewWirelessRouteActiveDidChangeNotification
+                                                 object:self.volumeView];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_airPlayButton_wirelessRoutesAvailableDidChange:)
+                                                   name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
+                                                 object:self.volumeView];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_airPlayButton_screenDidConnect:)
+                                                   name:UIScreenDidConnectNotification
+                                                 object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_airPlayButton_screenDidDisconnect:)
+                                                   name:UIScreenDidDisconnectNotification
+                                                 object:nil];
     }
 }
 
 - (UIImage *)image
 {
-    return _image ?: [UIImage imageNamed:@"airplay" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
+    return _image ?: [UIImage imageNamed:@"airplay" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setImage:(UIImage *)image
@@ -151,7 +151,7 @@ static void commonInit(SRGAirPlayButton *self);
 - (void)layoutSubviews
 {
     [super layoutSubviews];
- 
+    
     // Ensure proper resizing behavior of the volume view AirPlay button.
     self.volumeView.frame = self.bounds;
     
@@ -191,7 +191,7 @@ static void commonInit(SRGAirPlayButton *self);
     else if (mediaPlayerController) {
         BOOL allowsAirPlayPlayback = mediaPlayerController.mediaType != SRGMediaPlayerMediaTypeVideo || mediaPlayerController.allowsExternalNonMirroredPlayback;
         if (self.volumeView.areWirelessRoutesAvailable && allowsAirPlayPlayback) {
-            airPlayButton.tintColor = [AVAudioSession srg_isAirPlayActive] ? self.activeTintColor : self.tintColor;
+            airPlayButton.tintColor = AVAudioSession.srg_isAirPlayActive ? self.activeTintColor : self.tintColor;
             self.hidden = NO;
         }
         else {

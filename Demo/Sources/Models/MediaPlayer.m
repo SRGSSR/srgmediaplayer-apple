@@ -17,7 +17,7 @@
 
 + (MediaPlayer *)mediaPlayerWithName:(NSString *)name class:(Class)playerClass
 {
-    return [[[self class] alloc] initWithName:name class:playerClass];
+    return [[self.class alloc] initWithName:name class:playerClass];
 }
 
 - (instancetype)initWithName:(NSString *)name class:(Class)playerClass

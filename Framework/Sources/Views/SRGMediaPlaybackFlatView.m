@@ -14,7 +14,7 @@
 
 + (Class)layerClass
 {
-    return [AVPlayerLayer class];
+    return AVPlayerLayer.class;
 }
 
 #pragma mark SRGMediaPlaybackView protocol
