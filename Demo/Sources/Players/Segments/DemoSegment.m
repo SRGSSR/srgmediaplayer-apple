@@ -53,7 +53,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@: %p; start: %@; duration: %@; name: %@; blocked: %@; hidden: %@>",
+    return [NSString stringWithFormat:@"<%@: %p; start = %@; duration = %@; name: %@; blocked = %@; hidden = %@>",
             self.class,
             self,
             @(CMTimeGetSeconds(self.srg_timeRange.start)),
