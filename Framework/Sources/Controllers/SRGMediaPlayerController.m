@@ -827,7 +827,6 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         completionHandler:(void (^)(void))completionHandler
 {
     NSAssert(! targetSegment || [segments containsObject:targetSegment], @"Segment must be valid");
-    NSAssert(item || URL, @"An item or a URL must be provided");
     
     if (! position) {
         position = [SRGPosition defaultPosition];
@@ -837,8 +836,12 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         AVURLAsset *asset = (AVURLAsset *)item.asset;
         URL = asset.URL;
     }
-    else {
+    else if (URL) {
         item = [AVPlayerItem playerItemWithURL:URL];
+    }
+    else {
+        NSAssert(NO, @"An item or URL must be provided");
+        return;
     }
     
     SRGMediaPlayerLogDebug(@"Controller", @"Playing %@", item);
