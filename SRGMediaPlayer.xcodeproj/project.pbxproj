@@ -1087,16 +1087,13 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/libextobjc.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/MAKVONotificationCenter.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SRGLogger.framework",
 			);
 			name = "Copy Framework Dependencies for Xcode View Rendering";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$CONFIGURATION\" == \"Debug\" ] || [ \"$CONFIGURATION\" == \"Release\" ] ]; then\n  /usr/local/bin/carthage copy-frameworks\nfi\n";
+			shellScript = "if [ \"$CONFIGURATION\" == \"Debug\" ] || [ \"$CONFIGURATION\" == \"Release\" ] ]; then\n  cp -R \"$SRCROOT/Carthage/Build/iOS/libextobjc.framework\" \"$BUILT_PRODUCTS_DIR\"\n  cp -R \"$SRCROOT/Carthage/Build/iOS/MAKVONotificationCenter.framework\" \"$BUILT_PRODUCTS_DIR\"\n  cp -R \"$SRCROOT/Carthage/Build/iOS/SRGLogger.framework\" \"$BUILT_PRODUCTS_DIR\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
