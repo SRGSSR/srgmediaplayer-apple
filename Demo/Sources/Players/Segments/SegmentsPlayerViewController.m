@@ -52,26 +52,26 @@
     // Use a custom transition, some subtle issues were discovered with incorrect implementations, when animated
     // view controllers have an AVPlayer somewhere.
     self.transitioningDelegate = self;
-
+    
     self.timelineSlider.delegate = self;
     self.blockingOverlayView.hidden = YES;
-
-    NSString *className = NSStringFromClass([SegmentCollectionViewCell class]);
+    
+    NSString *className = NSStringFromClass(SegmentCollectionViewCell.class);
     UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
     [self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didSkipSegment:)
-                                                 name:SRGMediaPlayerDidSkipBlockedSegmentNotification
-                                               object:self.mediaPlayerController];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(segmentDidStart:)
-                                                 name:SRGMediaPlayerSegmentDidStartNotification
-                                               object:self.mediaPlayerController];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(segmentDidEnd:)
-                                                 name:SRGMediaPlayerSegmentDidEndNotification
-                                               object:self.mediaPlayerController];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(didSkipSegment:)
+                                               name:SRGMediaPlayerDidSkipBlockedSegmentNotification
+                                             object:self.mediaPlayerController];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(segmentDidStart:)
+                                               name:SRGMediaPlayerSegmentDidStartNotification
+                                             object:self.mediaPlayerController];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(segmentDidEnd:)
+                                               name:SRGMediaPlayerSegmentDidEndNotification
+                                             object:self.mediaPlayerController];
     
     self.externalPlaybackSwitch.on = self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive;
     
@@ -97,7 +97,7 @@
 - (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(float)value interactive:(BOOL)interactive
 {
     [self updateAppearanceWithTime:time];
-
+    
     if (interactive) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
             return CMTimeRangeContainsTime(segment.srg_timeRange, time);
@@ -116,7 +116,7 @@
 
 - (UICollectionViewCell *)timelineView:(SRGTimelineView *)timelineView cellForSegment:(id<SRGSegment>)segment
 {
-    SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([SegmentCollectionViewCell class]) forSegment:segment];
+    SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(SegmentCollectionViewCell.class) forSegment:segment];
     segmentCell.segment = (DemoSegment *)segment;
     return segmentCell;
 }

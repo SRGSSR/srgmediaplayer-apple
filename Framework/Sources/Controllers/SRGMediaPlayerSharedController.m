@@ -26,10 +26,10 @@
             pictureInPictureController.delegate = weakSelf;
         };
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(playbackStateDidChange:)
-                                                     name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                                   object:self];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(playbackStateDidChange:)
+                                                   name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                 object:self];
     }
     return self;
 }
@@ -48,7 +48,7 @@
     UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.srg_topViewController;
     
     // If no SRGMediaPlayerViewController instance is currently displayed (always modally)
-    if (topViewController && ! [topViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
+    if (topViewController && ! [topViewController isKindOfClass:SRGMediaPlayerViewController.class]) {
         // FIXME: Init with controller
         SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
         [topViewController presentViewController:mediaPlayerViewController animated:YES completion:^{
@@ -63,7 +63,7 @@
     // Reset the status of the player when picture in picture is exited anywhere except from the SRGMediaPlayerViewController
     // itself
     UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.srg_topViewController;
-    if (! [topViewController isKindOfClass:[SRGMediaPlayerViewController class]]) {
+    if (! [topViewController isKindOfClass:SRGMediaPlayerViewController.class]) {
         [self reset];
     }
 }

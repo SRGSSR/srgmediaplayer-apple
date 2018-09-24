@@ -76,16 +76,16 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
     [super willMoveToWindow:newWindow];
     
     if (newWindow) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(applicationDidEnterBackground:)
-                                                     name:UIApplicationDidEnterBackgroundNotification
-                                                   object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(applicationDidEnterBackground:)
+                                                   name:UIApplicationDidEnterBackgroundNotification
+                                                 object:nil];
         [SRGMotionManager start];
     }
     else {
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIApplicationDidEnterBackgroundNotification
-                                                      object:nil];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:UIApplicationDidEnterBackgroundNotification
+                                                    object:nil];
         [SRGMotionManager stop];
     }
 }
@@ -101,7 +101,7 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
 {
     // CMMotionManager might deliver events to a background queue.
     dispatch_async(dispatch_get_main_queue(), ^{
-        CMMotionManager *motionManager = [SRGMotionManager motionManager];
+        CMMotionManager *motionManager = SRGMotionManager.motionManager;
         
         // Calculate the required camera orientation based on device orientation (if available), and apply additional
         // adjustements the user made with the pan gesture.
@@ -131,7 +131,7 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
         self.cameraNode = cameraNode;
         
         SKScene *videoScene = [SKScene sceneWithSize:assetDimensions];
-        videoScene.backgroundColor = [UIColor clearColor];
+        videoScene.backgroundColor = UIColor.clearColor;
         
         SRGVideoNode *videoNode = [[SRGVideoNode alloc] initWithAVPlayer:player];
         videoNode.size = assetDimensions;
@@ -211,7 +211,7 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
     // usual `AVPlayerLayer`-based playback, `SKVideoNode`-based playback is not automatically paused. To determine
     // whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (! [UIDevice srg_mediaPlayer_isLocked]) {
+        if (! UIDevice.srg_mediaPlayer_isLocked) {
             [self.player pause];
         }
     });
@@ -221,7 +221,7 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
 
 static void commonInit(SRGMediaPlaybackSceneView *self)
 {
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = UIColor.clearColor;
     
     // Let the camera be controlled by a pan gesture
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(rotateCamera:)];

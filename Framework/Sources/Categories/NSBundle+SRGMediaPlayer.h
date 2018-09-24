@@ -11,12 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return a localized string from the media player resource bundle.
  */
-#define SRGMediaPlayerLocalizedString(key, comment) [[NSBundle srg_mediaPlayerBundle] localizedStringForKey:(key) value:@"" table:nil]
+#define SRGMediaPlayerLocalizedString(key, comment) [NSBundle.srg_mediaPlayerBundle localizedStringForKey:(key) value:@"" table:nil]
 
 /**
  *  Return an accessibility-oriented localized string from the media player resource bundle.
  */
-#define SRGMediaPlayerAccessibilityLocalizedString(key, comment) [[NSBundle srg_mediaPlayerBundle] localizedStringForKey:(key) value:@"" table:@"Accessibility"]
+#define SRGMediaPlayerAccessibilityLocalizedString(key, comment) [NSBundle.srg_mediaPlayerBundle localizedStringForKey:(key) value:@"" table:@"Accessibility"]
 
 /**
  *  Use to avoid user-facing text analyzer warnings.
@@ -31,7 +31,7 @@ OBJC_EXTERN NSString *SRGMediaPlayerNonLocalizedString(NSString *string);
 /**
  *  The media player resource bundle.
  */
-+ (NSBundle *)srg_mediaPlayerBundle;
+@property (class, nonatomic, readonly) NSBundle *srg_mediaPlayerBundle;
 
 @end
 

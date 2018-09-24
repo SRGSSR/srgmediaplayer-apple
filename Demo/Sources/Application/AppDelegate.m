@@ -25,22 +25,22 @@
     if (! color) {
         return self;
     }
-
+    
     CGRect rect = CGRectMake(0.f, 0.f, self.size.width, self.size.height);
     UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.f);
     CGContextRef context = UIGraphicsGetCurrentContext();
-
+    
     CGContextTranslateCTM(context, 0.f, self.size.height);
     CGContextScaleCTM(context, 1.0f, -1.f);
-
+    
     CGContextDrawImage(context, rect, self.CGImage);
     CGContextSetBlendMode(context, kCGBlendModeSourceIn);
     CGContextSetFillColorWithColor(context, color.CGColor);
     CGContextFillRect(context, rect);
-
+    
     UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-
+    
     return tintedImage;
 }
 
@@ -50,10 +50,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.window.backgroundColor = [UIColor blackColor];
+    self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    self.window.backgroundColor = UIColor.blackColor;
     [self.window makeKeyAndVisible];
-
+    
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
@@ -92,7 +92,7 @@
         tabBarItem.image = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         tabBarItem.selectedImage = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }];
-
+    
     return YES;
 }
 

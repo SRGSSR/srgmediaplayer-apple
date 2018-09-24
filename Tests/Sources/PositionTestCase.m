@@ -32,7 +32,7 @@
 
 - (void)testDefaultPosition
 {
-    SRGPosition *position = [SRGPosition defaultPosition];
+    SRGPosition *position = SRGPosition.defaultPosition;
     TestAssertEqualTimeInSeconds(position.time, 0.);
     TestAssertEqualTimeInSeconds(position.toleranceBefore, 0.);
     TestAssertEqualTimeInSeconds(position.toleranceAfter, 0.);

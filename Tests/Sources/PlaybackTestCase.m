@@ -222,7 +222,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         [preparationExpectation fulfill];
     }];
     
-   [self waitForExpectationsWithTimeout:30. handler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testWithoutPrepare
@@ -393,7 +393,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     // Play the media. Two events expected: Preparing and playing
     __block NSInteger count1 = 0;
-    id eventObserver1 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver1 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         ++count1;
     }];
     
@@ -404,14 +404,14 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver1];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver1];
     }];
     
     // Two events expected: preparing and playing
     XCTAssertEqual(count1, 2);
-
+    
     __block NSInteger count2 = 0;
-    id eventObserver2 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver2 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         ++count2;
     }];
     
@@ -422,14 +422,14 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController pause];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver2];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver2];
     }];
     
     // One event expected: paused
     XCTAssertEqual(count2, 1);
     
     __block NSInteger count3 = 0;
-    id eventObserver3 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver3 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         ++count3;
     }];
     
@@ -440,7 +440,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController play];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver3];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver3];
     }];
     
     // One event expected: playing
@@ -448,7 +448,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self expectationForElapsedTimeInterval:3. withHandler:nil];
     
-    id eventObserver4 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver4 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         // Also see http://stackoverflow.com/questions/14565405/avplayer-pauses-for-no-obvious-reason and
         // the demo project https://github.com/defagos/radars/tree/master/unexpected-player-rate-changes
         NSLog(@"[AVPlayer probable bug]: Unexpected state change to %@. Fast play - pause sequences can induce unexpected rate changes "
@@ -456,7 +456,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver4];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver4];
     }];
 }
 
@@ -464,7 +464,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     // Play the media. Two events expected: Preparing and playing
     __block NSInteger count1 = 0;
-    id eventObserver1 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver1 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         ++count1;
     }];
     
@@ -481,7 +481,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver1];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver1];
     }];
     
     TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
@@ -491,7 +491,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertEqual(count1, 2);
     
     __block NSInteger count2 = 0;
-    id eventObserver2 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver2 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         ++count2;
     }];
     
@@ -520,7 +520,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 2);
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver2];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver2];
     }];
     
     TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
@@ -531,7 +531,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self expectationForElapsedTimeInterval:3. withHandler:nil];
     
-    id eventObserver3 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver3 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         // Also see http://stackoverflow.com/questions/14565405/avplayer-pauses-for-no-obvious-reason and
         // the demo project https://github.com/defagos/radars/tree/master/unexpected-player-rate-changes
         NSLog(@"[AVPlayer probable bug]: Unexpected state change to %@. Fast play - pause sequences can induce unexpected rate changes "
@@ -539,7 +539,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver3];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver3];
     }];
 }
 
@@ -547,7 +547,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     // Play the media. Two events expected: Preparing and playing
     __block NSInteger count1 = 0;
-    id eventObserver1 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver1 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         ++count1;
     }];
     
@@ -564,7 +564,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver1];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver1];
     }];
     
     TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
@@ -574,7 +574,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertEqual(count1, 2);
     
     __block NSInteger count2 = 0;
-    id eventObserver2 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver2 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         ++count2;
     }];
     
@@ -585,7 +585,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController pause];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver2];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver2];
     }];
     
     TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
@@ -595,7 +595,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertEqual(count2, 1);
     
     __block NSInteger count3 = 0;
-    id eventObserver3 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver3 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         ++count3;
     }];
     
@@ -628,7 +628,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.seekTargetTime, 2);
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver3];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver3];
     }];
     
     TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
@@ -639,7 +639,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self expectationForElapsedTimeInterval:3. withHandler:nil];
     
-    id eventObserver4 = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver4 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         // Also see http://stackoverflow.com/questions/14565405/avplayer-pauses-for-no-obvious-reason and
         // the demo project https://github.com/defagos/radars/tree/master/unexpected-player-rate-changes
         NSLog(@"[AVPlayer probable bug]: Unexpected state change to %@. Fast play - pause sequences can induce unexpected rate changes "
@@ -647,7 +647,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver4];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver4];
     }];
 }
 
@@ -773,7 +773,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    id eventObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"Pausing when the stream already ended must be a no-op");
     }];
     
@@ -783,7 +783,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController pause];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver];
     }];
 }
 
@@ -864,7 +864,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeLive);
     XCTAssertTrue(self.mediaPlayerController.live);
-    XCTAssertTrue([[NSDate date] timeIntervalSinceDate:self.mediaPlayerController.date] < 0.1);
+    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.date] < 0.1);
 }
 
 - (void)testDVRProperties
@@ -891,7 +891,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
     XCTAssertTrue(self.mediaPlayerController.live);
-    XCTAssertTrue([[NSDate date] timeIntervalSinceDate:self.mediaPlayerController.date] > 8);
+    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.date] > 8);
     
     // Seek 40 seconds in the past. We now are outside the tolerance and therefore not live anymore
     [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -903,7 +903,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
     XCTAssertFalse(self.mediaPlayerController.live);
-    XCTAssertTrue([[NSDate date] timeIntervalSinceDate:self.mediaPlayerController.date] > 38);
+    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.date] > 38);
 }
 
 - (void)testLiveTolerance
@@ -970,7 +970,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return YES;
     }];
-  
+    
     [self.mediaPlayerController playURL:[NSURL URLWithString:@"http://httpbin.org/status/403"]];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -1658,14 +1658,14 @@ static NSURL *AudioOverHTTPTestURL(void)
     // The player cannot be started by simply calling -play
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
-    id eventObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"The player cannot be restarted with a play after a reset. No event expected");
     }];
     
     [self.mediaPlayerController play];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver];
     }];
 }
 
@@ -1784,14 +1784,14 @@ static NSURL *AudioOverHTTPTestURL(void)
     // The player cannot be started by simply calling -play
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
-    id eventObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id eventObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"The player cannot be restarted with a togglePlayPause after a reset. No event expected");
     }];
     
     [self.mediaPlayerController togglePlayPause];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:eventObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:eventObserver];
     }];
 }
 

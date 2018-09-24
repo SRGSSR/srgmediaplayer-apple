@@ -40,24 +40,24 @@
     
     switch (mediaPlayerType) {
         case MediaPlayerTypeStandard: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG media player") class:[SRGMediaPlayerViewController class]],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"iOS media player") class:[AVPlayerViewController class]],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline SRG player") class:[InlinePlayerViewController class]] ];
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG media player") class:SRGMediaPlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"iOS media player") class:AVPlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline SRG player") class:InlinePlayerViewController.class] ];
             break;
         }
             
         case MediaPlayerTypeSegments: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG player with segments support") class:[SegmentsPlayerViewController class]] ];
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG player with segments support") class:SegmentsPlayerViewController.class] ];
             break;
         }
             
         case MediaPlayerTypeTimeshift: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG player with timeshift support") class:[TimeshiftPlayerViewController class]] ];
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG player with timeshift support") class:TimeshiftPlayerViewController.class] ];
             break;
         }
             
         case MediaPlayerTypeMulti: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Multi player") class:[MultiPlayerViewController class]] ];
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Multi player") class:MultiPlayerViewController.class] ];
             break;
         }
     }
@@ -145,13 +145,13 @@
         }
         
         MediaPlayer *mediaPlayer = self.mediaPlayers[indexPath.row];
-        if (mediaPlayer.playerClass == [SRGMediaPlayerViewController class]) {
+        if (mediaPlayer.playerClass == SRGMediaPlayerViewController.class) {
             SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
             mediaPlayerViewController.controller.view.viewMode = media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
             [mediaPlayerViewController.controller playURL:media.URL];
             [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
         }
-        else if (mediaPlayer.playerClass == [AVPlayerViewController class]) {
+        else if (mediaPlayer.playerClass == AVPlayerViewController.class) {
             AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
             AVPlayer *player = [AVPlayer playerWithURL:media.URL];
             playerViewController.player = player;
@@ -159,19 +159,19 @@
                 [player play];
             }];
         }
-        else if (mediaPlayer.playerClass == [InlinePlayerViewController class]) {
+        else if (mediaPlayer.playerClass == InlinePlayerViewController.class) {
             InlinePlayerViewController *inlinePlayerViewController = [[InlinePlayerViewController alloc] initWithMedia:media];
             [self.navigationController pushViewController:inlinePlayerViewController animated:YES];
         }
-        else if (mediaPlayer.playerClass == [TimeshiftPlayerViewController class]) {
+        else if (mediaPlayer.playerClass == TimeshiftPlayerViewController.class) {
             TimeshiftPlayerViewController *timeshiftPlayerViewController = [[TimeshiftPlayerViewController alloc] initWithMedia:media];
             [self presentViewController:timeshiftPlayerViewController animated:YES completion:nil];
         }
-        else if (mediaPlayer.playerClass == [SegmentsPlayerViewController class]) {
+        else if (mediaPlayer.playerClass == SegmentsPlayerViewController.class) {
             SegmentsPlayerViewController *segmentsPlayerViewController = [[SegmentsPlayerViewController alloc] initWithMedia:media];
             [self presentViewController:segmentsPlayerViewController animated:YES completion:nil];
         }
-        else if (mediaPlayer.playerClass == [MultiPlayerViewController class]) {
+        else if (mediaPlayer.playerClass == MultiPlayerViewController.class) {
             NSMutableArray *medias = [self.medias mutableCopy];
             [medias removeObject:media];
             [medias insertObject:media atIndex:0];

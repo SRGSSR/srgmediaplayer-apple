@@ -20,7 +20,7 @@ NSString *SRGMediaPlayerNonLocalizedString(NSString *string)
     static NSBundle *s_bundle;
     static dispatch_once_t s_onceToken;
     dispatch_once(&s_onceToken, ^{
-        NSString *bundlePath = [[NSBundle bundleForClass:[SRGMediaPlayerController class]].bundlePath stringByAppendingPathComponent:@"SRGMediaPlayer.bundle"];
+        NSString *bundlePath = [[NSBundle bundleForClass:SRGMediaPlayerController.class].bundlePath stringByAppendingPathComponent:@"SRGMediaPlayer.bundle"];
         s_bundle = [NSBundle bundleWithPath:bundlePath];
         NSAssert(s_bundle, @"Please add SRGMediaPlayer.bundle to your project resources");
     });

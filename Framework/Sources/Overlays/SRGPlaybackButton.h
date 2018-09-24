@@ -36,8 +36,8 @@ IB_DESIGNABLE
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
-*  The current button state.
-*/
+ *  The current button state.
+ */
 @property (nonatomic, readonly) SRGPlaybackButtonState playbackButtonState;
 
 /**

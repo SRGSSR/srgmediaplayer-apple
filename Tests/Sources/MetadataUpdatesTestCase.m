@@ -216,18 +216,18 @@ static NSURL *OnDemandTestURL(void)
     
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
-    id segmentStartObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id segmentStartObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"No segment start is expected");
     }];
-    id segmentEndObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id segmentEndObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"No segment end is expected");
     }];
     
     self.mediaPlayerController.segments = nil;
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:segmentStartObserver];
-        [[NSNotificationCenter defaultCenter] removeObserver:segmentEndObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:segmentStartObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:segmentEndObserver];
     }];
 }
 
@@ -420,7 +420,7 @@ static NSURL *OnDemandTestURL(void)
     
     Segment *segment2 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., NSEC_PER_SEC), CMTimeMakeWithSeconds(8., NSEC_PER_SEC))];
     
-    id segmentEndObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id segmentEndObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"No segment end is expected");
     }];
     
@@ -436,7 +436,7 @@ static NSURL *OnDemandTestURL(void)
     self.mediaPlayerController.segments = @[segment2];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:segmentEndObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:segmentEndObserver];
     }];
 }
 
@@ -877,10 +877,10 @@ static NSURL *OnDemandTestURL(void)
     
     [self expectationForElapsedTimeInterval:3. withHandler:nil];
     
-    id segmentStartObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id segmentStartObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"No segment start is expected");
     }];
-    id segmentEndObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    id segmentEndObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerSegmentDidEndNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         XCTFail(@"No segment end is expected");
     }];
     
@@ -889,8 +889,8 @@ static NSURL *OnDemandTestURL(void)
     self.mediaPlayerController.segments = @[equivalentSegment];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] removeObserver:segmentStartObserver];
-        [[NSNotificationCenter defaultCenter] removeObserver:segmentEndObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:segmentStartObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:segmentEndObserver];
     }];
 }
 

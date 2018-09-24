@@ -52,7 +52,7 @@
     if (self.player == player) {
         return;
     }
-
+    
     [self removeObserver];
     self.player = player;
     [self startObserver];
@@ -71,7 +71,7 @@
     if (self.blocks.count == 0) {
         [self startObserver];
     }
-
+    
     [self.blocks setObject:[block copy] forKey:identifier];
 }
 
@@ -83,7 +83,7 @@
 - (void)removeBlockWithIdentifier:(id)identifier
 {
     [self.blocks removeObjectForKey:identifier];
-
+    
     if (self.blocks.count == 0) {
         [self removeObserver];
     }
@@ -124,7 +124,7 @@
         [self removeObserver];
         return;
     }
-
+    
     for (void (^block)(CMTime) in [self.blocks allValues]) {
         dispatch_async(self.queue, ^{
             block(self.player.currentTime);

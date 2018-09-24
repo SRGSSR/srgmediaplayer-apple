@@ -116,16 +116,16 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.playbackLikelyToKeepUp)];
         
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:AVPlayerItemPlaybackStalledNotification
-                                                      object:_player.currentItem];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:AVPlayerItemDidPlayToEndTimeNotification
-                                                      object:_player.currentItem];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:AVPlayerItemFailedToPlayToEndTimeNotification
-                                                      object:_player.currentItem];
-                                                      
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:AVPlayerItemPlaybackStalledNotification
+                                                    object:_player.currentItem];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:AVPlayerItemDidPlayToEndTimeNotification
+                                                    object:_player.currentItem];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:AVPlayerItemFailedToPlayToEndTimeNotification
+                                                    object:_player.currentItem];
+        
         self.playerDestructionBlock ? self.playerDestructionBlock(_player) : nil;
     }
     
@@ -200,9 +200,9 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
                 [self stopWithUserInfo:nil];
                 
                 NSError *error = SRGMediaPlayerControllerError(playerItem.error);
-                [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
-                                                                    object:self
-                                                                  userInfo:@{ SRGMediaPlayerErrorKey: error }];
+                [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
+                                                                  object:self
+                                                                userInfo:@{ SRGMediaPlayerErrorKey: error }];
                 
                 SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
             }
@@ -243,7 +243,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
+            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
@@ -255,18 +255,18 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
             }
         }];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_mediaPlayerController_playerItemPlaybackStalled:)
-                                                     name:AVPlayerItemPlaybackStalledNotification
-                                                   object:player.currentItem];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_mediaPlayerController_playerItemDidPlayToEndTime:)
-                                                     name:AVPlayerItemDidPlayToEndTimeNotification
-                                                   object:player.currentItem];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_mediaPlayerController_playerItemFailedToPlayToEndTime:)
-                                                     name:AVPlayerItemFailedToPlayToEndTimeNotification
-                                                   object:player.currentItem];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_mediaPlayerController_playerItemPlaybackStalled:)
+                                                   name:AVPlayerItemPlaybackStalledNotification
+                                                 object:player.currentItem];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_mediaPlayerController_playerItemDidPlayToEndTime:)
+                                                   name:AVPlayerItemDidPlayToEndTimeNotification
+                                                 object:player.currentItem];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_mediaPlayerController_playerItemFailedToPlayToEndTime:)
+                                                   name:AVPlayerItemFailedToPlayToEndTimeNotification
+                                                 object:player.currentItem];
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
     }
@@ -301,9 +301,9 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
     // Ensure segment status is up to date
     [self updateSegmentStatusForPlaybackState:playbackState previousPlaybackState:previousPlaybackState time:self.player.currentTime];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                                        object:self
-                                                      userInfo:[fullUserInfo copy]];
+    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                      object:self
+                                                    userInfo:[fullUserInfo copy]];
     
     SRGMediaPlayerLogDebug(@"Controller", @"Playback state did change to %@ with info %@", SRGMediaPlayerControllerNameForPlaybackState(playbackState), fullUserInfo);
 }
@@ -514,7 +514,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
     }
     
     if (self.streamType == SRGMediaPlayerStreamTypeLive) {
-        return [NSDate date];
+        return NSDate.date;
     }
     else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
         return [NSDate dateWithTimeIntervalSinceNow:-CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), self.player.currentTime))];
@@ -550,13 +550,13 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
     }
     
     _pictureInPictureController = pictureInPictureController;
-    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
+    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
     
     if (pictureInPictureController) {
         @weakify(self)
         void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
             @strongify(self)
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
+            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
         };
         
         [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 block:observationBlock];
@@ -575,7 +575,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         return NO;
     }
     
-    if (! [UIScreen srg_isMirroring]) {
+    if (! UIScreen.srg_isMirroring) {
         return YES;
     }
     
@@ -585,7 +585,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
 
 - (BOOL)isExternalNonMirroredPlaybackActive
 {
-    if (! [AVAudioSession srg_isAirPlayActive]) {
+    if (! AVAudioSession.srg_isAirPlayActive) {
         return NO;
     }
     
@@ -601,7 +601,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         return NO;
     }
     
-    if (! [UIScreen srg_isMirroring]) {
+    if (! UIScreen.srg_isMirroring) {
         return player.externalPlaybackActive;
     }
     
@@ -827,18 +827,21 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         completionHandler:(void (^)(void))completionHandler
 {
     NSAssert(! targetSegment || [segments containsObject:targetSegment], @"Segment must be valid");
-    NSAssert(item || URL, @"An item or a URL must be provided");
     
     if (! position) {
-        position = [SRGPosition defaultPosition];
+        position = SRGPosition.defaultPosition;
     }
     
-    if ([item.asset isKindOfClass:[AVURLAsset class]]) {
+    if ([item.asset isKindOfClass:AVURLAsset.class]) {
         AVURLAsset *asset = (AVURLAsset *)item.asset;
         URL = asset.URL;
     }
-    else {
+    else if (URL) {
         item = [AVPlayerItem playerItemWithURL:URL];
+    }
+    else {
+        NSAssert(NO, @"An item or URL must be provided");
+        return;
     }
     
     SRGMediaPlayerLogDebug(@"Controller", @"Playing %@", item);
@@ -879,7 +882,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
     NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Segment must be valid");
     
     if (! position) {
-        position = [SRGPosition defaultPosition];
+        position = SRGPosition.defaultPosition;
     }
     
     if (self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
@@ -902,10 +905,10 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
     if (! segment || ! segment.srg_blocked) {
         [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSeekNotification
-                                                            object:self
-                                                          userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:seekPosition.time],
-                                                                      SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:self.player.currentTime] }];
+        [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSeekNotification
+                                                          object:self
+                                                        userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:seekPosition.time],
+                                                                    SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:self.player.currentTime] }];
         
         // Only store the origin in case of multiple seeks, but update the target
         if (CMTIME_IS_INDEFINITE(self.seekStartTime)) {
@@ -1026,9 +1029,9 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         if (! segment.srg_blocked) {
             userInfo[SRGMediaPlayerNextSegmentKey] = segment;
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidEndNotification
-                                                            object:self
-                                                          userInfo:[userInfo copy]];
+        [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSegmentDidEndNotification
+                                                          object:self
+                                                        userInfo:[userInfo copy]];
         _selected = NO;
         
         SRGMediaPlayerLogDebug(@"Controller", @"Segment did end with info %@", userInfo);
@@ -1047,9 +1050,9 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
             if (self.previousSegment && ! self.previousSegment.srg_blocked) {
                 userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerSegmentDidStartNotification
-                                                                object:self
-                                                              userInfo:[userInfo copy]];
+            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSegmentDidStartNotification
+                                                              object:self
+                                                            userInfo:[userInfo copy]];
             
             SRGMediaPlayerLogDebug(@"Controller", @"Segment did start with info %@", userInfo);
         }
@@ -1083,10 +1086,10 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
     NSAssert(segment.srg_blocked, @"Expect a blocked segment");
     
     NSValue *lastPlaybackTimeValue = [NSValue valueWithCMTime:self.player.currentTime];
-    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
-                                                        object:self
-                                                      userInfo:@{ SRGMediaPlayerSegmentKey : segment,
-                                                                  SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTimeValue }];
+    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
+                                                      object:self
+                                                    userInfo:@{ SRGMediaPlayerSegmentKey : segment,
+                                                                SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTimeValue }];
     
     SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ will be skipped", segment);
     
@@ -1094,18 +1097,18 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
     // would trigger skips recursively)
     SRGPosition *segmentEndPosition = [SRGPosition positionAtTime:CMTimeRangeGetEnd(segment.srg_timeRange)];
     [self seekToPosition:SRGMediaPlayerControllerOffset(segmentEndPosition, SRGSegmentSeekOffsetInSeconds) withCompletionHandler:^(BOOL finished) {
-       // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
-       // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
-       // so that consecutive notifications are received in the correct order
-       [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
-                                                           object:self
-                                                         userInfo:@{ SRGMediaPlayerSegmentKey : segment,
-                                                                     SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTimeValue}];
-       
-       SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ was skipped", segment);
-       
-       completionHandler ? completionHandler(finished) : nil;
-   }];
+        // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
+        // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
+        // so that consecutive notifications are received in the correct order
+        [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
+                                                          object:self
+                                                        userInfo:@{ SRGMediaPlayerSegmentKey : segment,
+                                                                    SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTimeValue}];
+        
+        SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ was skipped", segment);
+        
+        completionHandler ? completionHandler(finished) : nil;
+    }];
 }
 
 #pragma mark Time observers
@@ -1173,7 +1176,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
         if (! [periodicTimeObserver hasBlockWithIdentifier:observer]) {
             continue;
         }
-            
+        
         [periodicTimeObserver removeBlockWithIdentifier:observer];
         
         // Remove the periodic time observer if not used anymore
@@ -1214,9 +1217,9 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
     [self stopWithUserInfo:nil];
     
     NSError *error = SRGMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
-    [[NSNotificationCenter defaultCenter] postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
-                                                        object:self
-                                                      userInfo:@{ SRGMediaPlayerErrorKey: error }];
+    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
+                                                      object:self
+                                                    userInfo:@{ SRGMediaPlayerErrorKey: error }];
     
     SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
 }
@@ -1238,10 +1241,10 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
 - (NSString *)description
 {
     CMTimeRange timeRange = self.timeRange;
-    return [NSString stringWithFormat:@"<%@: %p; playbackState: %@; mediaType: %@; streamType: %@; live: %@; "
-                "playerItem: %@; segments: %@; userInfo: %@; minimumDVRWindowLength: %@; liveTolerance: %@; "
-                "timeRange: (%@, %@)>",
-            [self class],
+    return [NSString stringWithFormat:@"<%@: %p; playbackState = %@; mediaType = %@; streamType = %@; live = %@; "
+            "playerItem = %@; segments = %@; userInfo = %@; minimumDVRWindowLength = %@; liveTolerance = %@; "
+            "timeRange = (%@, %@)>",
+            self.class,
             self,
             SRGMediaPlayerControllerNameForPlaybackState(self.playbackState),
             SRGMediaPlayerControllerNameForMediaType(self.mediaType),

@@ -40,11 +40,7 @@ Custom player layouts can be designed entirely in Interface Builder, whether you
 
 ![Connecting outlets](Getting-started-images/outlets.jpg)
 
-Start by adding a view controller to a storyboard file, and drop a custom object from Xcode _Utilities_ panel:
-
-![Custom objects](Getting-started-images/custom-objects.jpg)
-
-Set its class to `SRGMediaPlayerController`. This controller object will manage playback of medias.
+Start by adding a view controller to a storyboard file. Drop a custom object from the library and set its class to `SRGMediaPlayerController`. This controller object will manage playback of medias.
 
 Creating the player layout is then a matter of dropping more views onto the layout, setting their constraints, and connecting them to the media player controller:
 
@@ -63,7 +59,7 @@ To start playback, bind your media player controller to a `mediaPlayerController
 {
     [super viewWillAppear:animated];
 
-    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+    if (self.movingToParentViewController || self.beingPresented) {
         NSURL *mediaURL = [NSURL URLWithString:@"http://..."];
         [self.mediaPlayerController playURL:mediaURL];
     }
@@ -127,7 +123,7 @@ Moreover, you should check that your application behaves well when receiving pho
 
 ## Control center integration
 
-For proper integration into the control center and the lock screen, use the `MPRemoteCommandCenter` class. For everything to work properly on a device, `[[UIApplication sharedApplication] beginReceivingRemoteControlEvents]` must have been called first (e.g. in your application delegate) and your audio session category should be set to `AVAudioSessionCategoryPlayback`. For more information, please refer to the `MPRemoteCommandCenter` documentation.
+For proper integration into the control center and the lock screen, use the `MPRemoteCommandCenter` class. For everything to work properly on a device, `[UIApplication.sharedApplication beginReceivingRemoteControlEvents]` must have been called first (e.g. in your application delegate) and your audio session category should be set to `AVAudioSessionCategoryPlayback`. For more information, please refer to the `MPRemoteCommandCenter` documentation.
 
 Note that control center integration does not work in the iOS simulator, you will need a real device for tests.
 
