@@ -1243,7 +1243,7 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
     CMTimeRange timeRange = self.timeRange;
     return [NSString stringWithFormat:@"<%@: %p; playbackState = %@; mediaType = %@; streamType = %@; live = %@; "
             "playerItem = %@; segments = %@; userInfo = %@; minimumDVRWindowLength = %@; liveTolerance = %@; "
-            "timeRange = (%@, %@)>",
+            "timeRange = (%@, %@); currentTime = %@>",
             self.class,
             self,
             SRGMediaPlayerControllerNameForPlaybackState(self.playbackState),
@@ -1256,7 +1256,8 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
             @(self.minimumDVRWindowLength),
             @(self.liveTolerance),
             @(CMTimeGetSeconds(timeRange.start)),
-            @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange)))];
+            @(CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange))),
+            @(CMTimeGetSeconds(self.currentTime))];
 }
 
 @end
