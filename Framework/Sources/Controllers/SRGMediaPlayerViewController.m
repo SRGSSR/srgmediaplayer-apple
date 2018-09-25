@@ -352,7 +352,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (CMTime)seekStartTime
 {
-    return CMTIME_IS_INDEFINITE(self.controller.seekTargetTime) ? self.controller.currentTime : self.controller.seekTargetTime;
+    return CMTIME_IS_INDEFINITE(self.controller.seekTargetTime) ? self.controller.currentRelativeTime : self.controller.seekTargetTime;
 }
 
 - (BOOL)canSkipBackwardFromTime:(CMTime)time

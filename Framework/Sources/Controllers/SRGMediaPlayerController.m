@@ -421,6 +421,19 @@ static SRGPosition *SRGMediaPlayerControllerAbsolutePositionInTimeRange(SRGPosit
     return self.player.currentTime;
 }
 
+- (CMTime)currentRelativeTime
+{
+    CMTime currentTime = self.currentTime;
+    CMTime start = self.timeRange.start;
+    
+    if (CMTIME_IS_VALID(currentTime) && CMTIME_IS_VALID(start)) {
+        return CMTimeSubtract(currentTime, start);
+    }
+    else {
+        return currentTime;
+    }
+}
+
 - (SRGMediaPlayerMediaType)mediaType
 {
     if (! self.player) {

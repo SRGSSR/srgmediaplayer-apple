@@ -1461,6 +1461,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
+    // FIXME: Incorrect! Must use relative time to create a valid position
     TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime1), 1.);
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
     
@@ -1473,6 +1474,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     // Seek forward
+    // FIXME: Incorrect! Must use relative time to create a valid position
     CMTime targetTime2 = CMTimeAdd(self.mediaPlayerController.currentTime, CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime2] withCompletionHandler:nil];
     

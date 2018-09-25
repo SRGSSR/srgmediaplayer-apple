@@ -414,16 +414,22 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The current media time range (might be empty or indefinite).
  *
- *  @discussion Use `CMTimeRange` macros for checking time ranges. Also see `CMTimeRange+SRGMediaPlayer.h`.
+ *  @discussion Use `CMTimeRange` macros for checking time ranges. Also see `CMTimeRange+SRGMediaPlayer.h`. For DVR
+ *              streams, the start time might be different from `kCMTimeZero` and changes as the stream is played.
  */
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
- *  The current playback position.
+ *  The current playback time (absolute). Use `currentRelativeTime` for a value relative to the current time range.
  *
  *  @discussion Use `CMTime` macros for checking times. Also see `CMTime+SRGMediaPlayer.h`.
  */
 @property (nonatomic, readonly) CMTime currentTime;
+
+/**
+ *  The current playback position (relative to the current time range).
+ */
+@property (nonatomic, readonly) CMTime currentRelativeTime;
 
 /**
  *  The time at which the player started seeking, `kCMTimeIndefinite` if none.
@@ -646,7 +652,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  For more information, @see `-seekToPosition:withCompletionHandler:`.
  *
  *  @discussion If the segment index is invalid, this method does nothing. If the segment is already the one being played,
- *              playback will restart at its beginning.
+ *              playback will restart at its beginning. When seeking relative to the current position, add an offset
+ *              to `relativeCurrentTime` when building the position to seek to.
  */
 - (void)seekToPosition:(nullable SRGPosition *)position
       inSegmentAtIndex:(NSInteger)index
