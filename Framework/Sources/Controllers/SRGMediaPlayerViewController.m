@@ -342,12 +342,12 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)skipBackwardWithCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
-    [self seekBackwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
+    [self skipBackwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
 }
 
 - (void)skipForwardWithCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
-    [self seekForwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
+    [self skipForwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
 }
 
 - (CMTime)seekStartTime
@@ -376,7 +376,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         || (controller.streamType == SRGMediaPlayerStreamTypeDVR && ! controller.live);
 }
 
-- (void)seekBackwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
+- (void)skipBackwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
     if (! [self canSkipBackwardFromTime:time]) {
         completionHandler ? completionHandler(NO) : nil;
@@ -392,7 +392,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }];
 }
 
-- (void)seekForwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
+- (void)skipForwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
     if (! [self canSkipForwardFromTime:time]) {
         completionHandler ? completionHandler(NO) : nil;
