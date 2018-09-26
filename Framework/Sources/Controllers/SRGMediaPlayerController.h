@@ -414,15 +414,16 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The current media time range (might be empty or indefinite).
  *
- *  @discussion Use `CMTimeRange` macros for checking time ranges. Also see `CMTimeRange+SRGMediaPlayer.h`. For DVR
- *              streams, the start time might be different from `kCMTimeZero` and changes as the stream is played.
+ *  @discussion Use `CMTimeRange` macros for checking time ranges, see `CMTimeRange+SRGMediaPlayer.h`. For DVR
+ *              streams with sliding windows, the range start can vary as the stream is played. For DVR streams
+ *              with fixed start, the duration will vary instead.
  */
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
- *  The current playback time (absolute).
+ *  The current playback time.
  *
- *  @discussion Use `CMTime` macros for checking times. Also see `CMTime+SRGMediaPlayer.h`.
+ *  @discussion Use `CMTime` macros for checking times, see `CMTime+SRGMediaPlayer.h`.
  */
 @property (nonatomic, readonly) CMTime currentTime;
 
