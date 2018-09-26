@@ -1409,13 +1409,13 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     // Seek to a past position relative to the current position
-    CMTime initialTime = self.mediaPlayerController.currentRelativeTime;
+    CMTime initialTime = self.mediaPlayerController.currentTime;
     CMTime targetTime1 = CMTimeSubtract(initialTime, CMTimeMakeWithSeconds(400., NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime1] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    TestAssertAlmostEqual(self.mediaPlayerController.currentRelativeTime, CMTimeGetSeconds(targetTime1), 1.);
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime1), 1.);
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
     
     // The stream chunk size is 10 seconds and the stream window is sliding. Play a little bit longer than the chunk size
@@ -1428,14 +1428,13 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     // Seek forward relative to the current position
-    CMTime targetTime2 = CMTimeAdd(self.mediaPlayerController.currentRelativeTime, CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
+    CMTime targetTime2 = CMTimeAdd(self.mediaPlayerController.currentTime, CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime2] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentRelativeTime, CMTimeGetSeconds(targetTime2));
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime2));
     TestAssertNotEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
-    TestAssertEqualTimeInSeconds(CMTimeAdd(self.mediaPlayerController.currentRelativeTime, self.mediaPlayerController.timeRange.start), CMTimeGetSeconds(self.mediaPlayerController.currentTime));
 }
 
 - (void)testReset

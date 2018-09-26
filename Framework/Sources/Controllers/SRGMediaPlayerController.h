@@ -420,16 +420,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
- *  The current playback time (absolute). Use `currentRelativeTime` for a value relative to the current time range.
+ *  The current playback time (absolute).
  *
  *  @discussion Use `CMTime` macros for checking times. Also see `CMTime+SRGMediaPlayer.h`.
  */
 @property (nonatomic, readonly) CMTime currentTime;
-
-/**
- *  The current playback position (relative to the current time range).
- */
-@property (nonatomic, readonly) CMTime currentRelativeTime;
 
 /**
  *  The time at which the player started seeking, `kCMTimeIndefinite` if none.
