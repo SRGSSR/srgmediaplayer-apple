@@ -1408,15 +1408,15 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    CMTime initialTime = self.mediaPlayerController.currentTime;
+    CMTime initialTime = self.mediaPlayerController.currentRelativeTime;
     
-    // Seek to the past
+    // Seek to a
     CMTime targetTime1 = CMTimeAdd(initialTime, CMTimeMakeWithSeconds(400., NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime1] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime1), 1.);
+    TestAssertAlmostEqual(self.mediaPlayerController.currentRelativeTime, CMTimeGetSeconds(targetTime1), 1.);
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
     
     // Play for a while
@@ -1428,13 +1428,14 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     // Seek forward
-    CMTime targetTime2 = CMTimeSubtract(self.mediaPlayerController.currentTime, CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
+    CMTime targetTime2 = CMTimeSubtract(self.mediaPlayerController.currentRelativeTime, CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime2] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime2), 1.);
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentRelativeTime, CMTimeGetSeconds(targetTime2));
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
+    TestAssertEqualTimeInSeconds(CMTimeAdd(self.mediaPlayerController.currentRelativeTime, self.mediaPlayerController.timeRange.start), CMTimeGetSeconds(self.mediaPlayerController.currentTime));
 }
 
 - (void)testDVRSeeks
@@ -1453,35 +1454,34 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    CMTime initialTime = self.mediaPlayerController.currentTime;
-    
-    // Seek to the past
+    // Seek to a past position relative to the current position
+    CMTime initialTime = self.mediaPlayerController.currentRelativeTime;
     CMTime targetTime1 = CMTimeSubtract(initialTime, CMTimeMakeWithSeconds(400., NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime1] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    // FIXME: Incorrect! Must use relative time to create a valid position
-    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime1), 1.);
+    TestAssertAlmostEqual(self.mediaPlayerController.currentRelativeTime, CMTimeGetSeconds(targetTime1), 1.);
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
     
-    // Play for a while
-    [self expectationForElapsedTimeInterval:10. withHandler:nil];
+    // The stream chunk size is 10 seconds and the stream window is sliding. Play a little bit longer than the chunk size
+    // so that a new chunk is pumped in at the end (and a chunk pumped out at the beginning).
+    [self expectationForElapsedTimeInterval:15. withHandler:nil];
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    // Seek forward
-    // FIXME: Incorrect! Must use relative time to create a valid position
-    CMTime targetTime2 = CMTimeAdd(self.mediaPlayerController.currentTime, CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
+    // Seek forward relative to the current position
+    CMTime targetTime2 = CMTimeAdd(self.mediaPlayerController.currentRelativeTime, CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime2] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime2), 1.);
-    TestAssertEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentRelativeTime, CMTimeGetSeconds(targetTime2));
+    TestAssertNotEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
+    TestAssertEqualTimeInSeconds(CMTimeAdd(self.mediaPlayerController.currentRelativeTime, self.mediaPlayerController.timeRange.start), CMTimeGetSeconds(self.mediaPlayerController.currentTime));
 }
 
 - (void)testReset
