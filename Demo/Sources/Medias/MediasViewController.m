@@ -40,19 +40,15 @@
     
     switch (mediaPlayerType) {
         case MediaPlayerTypeStandard: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG media player") class:SRGMediaPlayerViewController.class],
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG media player (built-in design)") class:SRGMediaPlayerViewController.class],
                                              [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"iOS media player") class:AVPlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline SRG player") class:InlinePlayerViewController.class] ];
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline player") class:InlinePlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Custom player") class:TimeshiftPlayerViewController.class] ];
             break;
         }
             
         case MediaPlayerTypeSegments: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG player with segments support") class:SegmentsPlayerViewController.class] ];
-            break;
-        }
-            
-        case MediaPlayerTypeTimeshift: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG player with timeshift support") class:TimeshiftPlayerViewController.class] ];
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Player with segments support") class:SegmentsPlayerViewController.class] ];
             break;
         }
             

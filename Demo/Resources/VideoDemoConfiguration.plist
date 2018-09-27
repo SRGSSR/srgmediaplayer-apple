@@ -12,6 +12,12 @@
 		</dict>
 		<dict>
 			<key>name</key>
+			<string>Livestream with DVR</string>
+			<key>url</key>
+			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
 			<string>Apple Basic Stream</string>
 			<key>url</key>
 			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
