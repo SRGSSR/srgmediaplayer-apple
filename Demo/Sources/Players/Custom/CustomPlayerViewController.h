@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TimeshiftPlayerViewController : UIViewController
+@interface CustomPlayerViewController : UIViewController
 
 - (instancetype)initWithMedia:(Media *)media;
 

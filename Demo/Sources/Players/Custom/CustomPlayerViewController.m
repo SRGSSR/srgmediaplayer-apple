@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "TimeshiftPlayerViewController.h"
+#import "CustomPlayerViewController.h"
 
 #import "NSBundle+Demo.h"
 #import "SegmentCollectionViewCell.h"
@@ -12,7 +12,7 @@
 #import <libextobjc/libextobjc.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface TimeshiftPlayerViewController ()
+@interface CustomPlayerViewController ()
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
@@ -26,14 +26,14 @@
 
 @end
 
-@implementation TimeshiftPlayerViewController
+@implementation CustomPlayerViewController
 
 #pragma mark Object lifecycle
 
 - (instancetype)initWithMedia:(Media *)media
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    TimeshiftPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    CustomPlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.media = media;
     return viewController;
 }
