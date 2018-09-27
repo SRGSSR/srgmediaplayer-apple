@@ -73,17 +73,12 @@
     multiPlayerViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
     UINavigationController *multiPlayerNavigationController = [[UINavigationController alloc] initWithRootViewController:multiPlayerViewController];
     
-    MediasViewController *timeshiftViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"TimeshiftDemoConfiguration" mediaPlayerType:MediaPlayerTypeTimeshift];
-    timeshiftViewController.title = DemoNonLocalizedString(@"Timeshift");
-    timeshiftViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
-    UINavigationController *timeshiftNavigationController = [[UINavigationController alloc] initWithRootViewController:timeshiftViewController];
-    
     MediasViewController *audiosViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"AudioDemoConfiguration" mediaPlayerType:MediaPlayerTypeStandard];
     audiosViewController.title = DemoNonLocalizedString(@"Audios");
     audiosViewController.tabBarItem.image = [UIImage imageNamed:@"audios"];
     UINavigationController *audiosNavigationController = [[UINavigationController alloc] initWithRootViewController:audiosViewController];
     
-    tabBarController.viewControllers = @[videosNavigationController, segmentsNavigationController, multiPlayerNavigationController, timeshiftNavigationController, audiosNavigationController];
+    tabBarController.viewControllers = @[videosNavigationController, segmentsNavigationController, multiPlayerNavigationController, audiosNavigationController];
     self.window.rootViewController = tabBarController;
     
     // Avoid applying tint color to tab bar images

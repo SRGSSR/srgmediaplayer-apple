@@ -1392,6 +1392,51 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testDVRSeeks
+{
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
+    
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    // Seek to a past position relative to the current position
+    CMTime initialTime = self.mediaPlayerController.currentTime;
+    CMTime targetTime1 = CMTimeSubtract(initialTime, CMTimeMakeWithSeconds(400., NSEC_PER_SEC));
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime1] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime1), 1.);
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
+    
+    // The stream chunk size is 10 seconds and the stream window is sliding. Play a little bit longer than the chunk size
+    // so that a new chunk is pumped in at the end (and a chunk pumped out at the beginning).
+    [self expectationForElapsedTimeInterval:15. withHandler:nil];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    // Seek forward relative to the current position
+    CMTime targetTime2 = CMTimeAdd(self.mediaPlayerController.currentTime, CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime2] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime2));
+    TestAssertNotEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
+}
+
 - (void)testReset
 {
     @autoreleasepool {

@@ -6,13 +6,13 @@
 
 #import "MediasViewController.h"
 
+#import "CustomPlayerViewController.h"
 #import "InlinePlayerViewController.h"
 #import "Media.h"
 #import "MediaPlayer.h"
 #import "MultiPlayerViewController.h"
 #import "NSBundle+Demo.h"
 #import "SegmentsPlayerViewController.h"
-#import "TimeshiftPlayerViewController.h"
 
 #import <AVKit/AVKit.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
@@ -40,19 +40,15 @@
     
     switch (mediaPlayerType) {
         case MediaPlayerTypeStandard: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG media player") class:SRGMediaPlayerViewController.class],
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG media player (built-in design)") class:SRGMediaPlayerViewController.class],
                                              [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"iOS media player") class:AVPlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline SRG player") class:InlinePlayerViewController.class] ];
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline player") class:InlinePlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Custom player") class:CustomPlayerViewController.class] ];
             break;
         }
             
         case MediaPlayerTypeSegments: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG player with segments support") class:SegmentsPlayerViewController.class] ];
-            break;
-        }
-            
-        case MediaPlayerTypeTimeshift: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG player with timeshift support") class:TimeshiftPlayerViewController.class] ];
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Player with segments support") class:SegmentsPlayerViewController.class] ];
             break;
         }
             
@@ -163,9 +159,9 @@
             InlinePlayerViewController *inlinePlayerViewController = [[InlinePlayerViewController alloc] initWithMedia:media];
             [self.navigationController pushViewController:inlinePlayerViewController animated:YES];
         }
-        else if (mediaPlayer.playerClass == TimeshiftPlayerViewController.class) {
-            TimeshiftPlayerViewController *timeshiftPlayerViewController = [[TimeshiftPlayerViewController alloc] initWithMedia:media];
-            [self presentViewController:timeshiftPlayerViewController animated:YES completion:nil];
+        else if (mediaPlayer.playerClass == CustomPlayerViewController.class) {
+            CustomPlayerViewController *customPlayerViewController = [[CustomPlayerViewController alloc] initWithMedia:media];
+            [self presentViewController:customPlayerViewController animated:YES completion:nil];
         }
         else if (mediaPlayer.playerClass == SegmentsPlayerViewController.class) {
             SegmentsPlayerViewController *segmentsPlayerViewController = [[SegmentsPlayerViewController alloc] initWithMedia:media];

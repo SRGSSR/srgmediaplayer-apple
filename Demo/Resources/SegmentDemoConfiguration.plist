@@ -321,6 +321,39 @@
 				</dict>
 			</array>
 		</dict>
+		<dict>
+			<key>name</key>
+			<string>Segments in DVR stream</string>
+			<key>url</key>
+			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>5000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #1</string>
+					<key>startTime</key>
+					<integer>30000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+				</dict>
+				<dict>
+					<key>name</key>
+					<string>Segment #2</string>
+					<key>startTime</key>
+					<integer>55000</integer>
+					<key>duration</key>
+					<integer>10000</integer>
+				</dict>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>
