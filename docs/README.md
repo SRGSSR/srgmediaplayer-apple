@@ -25,8 +25,6 @@ The library can be added to a project using [Carthage](https://github.com/Cartha
 github "SRGSSR/SRGMediaPlayer-iOS"
 ```
 
-Until Carthage 0.30, only dynamic frameworks could be integrated. Starting with Carthage 0.30, though, frameworks can be integrated statically as well, which avoids slow application startups usually associated with the use of too many dynamic frameworks.
-
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
 
 ### Dependencies
