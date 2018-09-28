@@ -808,9 +808,9 @@ static NSURL *SegmentsTestURL(void)
     XCTAssertEqualObjects(self.mediaPlayerController.selectedSegment, segment);
 }
 
-- (void)testStartTimeNearBeginningOfSegmentWithSelectionAndTolerances
+- (void)testStartTimeNearBeginningOfSegmentWithSelectionAndToleranceBefore
 {
-    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(20., NSEC_PER_SEC), CMTimeMakeWithSeconds(60., NSEC_PER_SEC))];
+    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(216., NSEC_PER_SEC), CMTimeMakeWithSeconds(110., NSEC_PER_SEC))];
     
     [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
@@ -821,11 +821,12 @@ static NSURL *SegmentsTestURL(void)
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         
         CMTime time = [notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue];
-        TestAssertAlmostButNotEqual(time, 22., 4.);
+        XCTAssertTrue(CMTimeRangeContainsTime(segment.srg_timeRange, time));
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 position:[SRGPosition positionAtTimeInSeconds:1.] inSegments:@[segment] withUserInfo:nil];
+    NSURL *URL = [NSURL URLWithString:@"http://stream-i.akamaihd.net/i/tj/2016/tj_20160905_full_f_965656-,101,301,701,1201,k.mp4.csmil/master.m3u8"];
+    [self.mediaPlayerController playURL:URL atIndex:0 position:[SRGPosition positionBeforeTimeInSeconds:0.5] inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -833,9 +834,9 @@ static NSURL *SegmentsTestURL(void)
     XCTAssertEqualObjects(self.mediaPlayerController.selectedSegment, segment);
 }
 
-- (void)testStartTimeNearEndOfSegmentWithSelectionAndTolerances
+- (void)testStartTimeNearEndOfSegmentWithSelectionAndToleranceAfter
 {
-    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(20., NSEC_PER_SEC), CMTimeMakeWithSeconds(60., NSEC_PER_SEC))];
+    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(216., NSEC_PER_SEC), CMTimeMakeWithSeconds(107., NSEC_PER_SEC))];
     
     [self mpt_expectationForNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
@@ -846,11 +847,12 @@ static NSURL *SegmentsTestURL(void)
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         
         CMTime time = [notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue];
-        TestAssertAlmostButNotEqual(time, 79., 4.);
+        XCTAssertTrue(CMTimeRangeContainsTime(segment.srg_timeRange, time));
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:SegmentsTestURL() atIndex:0 position:[SRGPosition positionAroundTimeInSeconds:59.] inSegments:@[segment] withUserInfo:nil];
+    NSURL *URL = [NSURL URLWithString:@"http://stream-i.akamaihd.net/i/tj/2016/tj_20160905_full_f_965656-,101,301,701,1201,k.mp4.csmil/master.m3u8"];
+    [self.mediaPlayerController playURL:URL atIndex:0 position:[SRGPosition positionAfterTimeInSeconds:106.5] inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
