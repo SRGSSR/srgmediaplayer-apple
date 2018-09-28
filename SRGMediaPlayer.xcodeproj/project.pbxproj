@@ -127,7 +127,6 @@
 		E69A1FA61D61BFAE0064E6C1 /* segments@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6A1D61BFAE0064E6C1 /* segments@2x.png */; };
 		E69A1FA71D61BFAE0064E6C1 /* thumbnail-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6B1D61BFAE0064E6C1 /* thumbnail-placeholder.png */; };
 		E69A1FA81D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6C1D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png */; };
-		E69A1FA91D61BFAE0064E6C1 /* TimeshiftDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6D1D61BFAE0064E6C1 /* TimeshiftDemoConfiguration.plist */; };
 		E69A1FAA1D61BFAE0064E6C1 /* videos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6E1D61BFAE0064E6C1 /* videos@2x.png */; };
 		E69A1FAB1D61BFAE0064E6C1 /* yellow_card.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6F1D61BFAE0064E6C1 /* yellow_card.png */; };
 		E69A1FAC1D61BFAE0064E6C1 /* yellow_card@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F701D61BFAE0064E6C1 /* yellow_card@2x.png */; };
@@ -146,8 +145,8 @@
 		E6BCE9531D76CB900021973D /* SegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BCE9461D76CB900021973D /* SegmentCollectionViewCell.m */; };
 		E6BCE9541D76CB900021973D /* SegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE9471D76CB900021973D /* SegmentCollectionViewCell.xib */; };
 		E6BCE9551D76CB900021973D /* SegmentsPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BCE9491D76CB900021973D /* SegmentsPlayerViewController.m */; };
-		E6BCE9561D76CB900021973D /* TimeshiftPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BCE94C1D76CB900021973D /* TimeshiftPlayerViewController.m */; };
-		E6BCE9571D76CB900021973D /* TimeshiftPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE94D1D76CB900021973D /* TimeshiftPlayerViewController.storyboard */; };
+		E6BCE9561D76CB900021973D /* CustomPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BCE94C1D76CB900021973D /* CustomPlayerViewController.m */; };
+		E6BCE9571D76CB900021973D /* CustomPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE94D1D76CB900021973D /* CustomPlayerViewController.storyboard */; };
 		E6BCE9591D76CBCE0021973D /* SegmentsPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE9581D76CBCE0021973D /* SegmentsPlayerViewController.storyboard */; };
 		E6BCE95B1D76CF7D0021973D /* SegmentDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE95A1D76CF7D0021973D /* SegmentDemoConfiguration.plist */; };
 		E6BCE95F1D77F1A50021973D /* PlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDE1D61C6D20064E6C1 /* PlaybackTestCase.m */; };
@@ -358,7 +357,6 @@
 		E69A1F6A1D61BFAE0064E6C1 /* segments@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "segments@2x.png"; sourceTree = "<group>"; };
 		E69A1F6B1D61BFAE0064E6C1 /* thumbnail-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder.png"; sourceTree = "<group>"; };
 		E69A1F6C1D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder@2x.png"; sourceTree = "<group>"; };
-		E69A1F6D1D61BFAE0064E6C1 /* TimeshiftDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TimeshiftDemoConfiguration.plist; sourceTree = "<group>"; };
 		E69A1F6E1D61BFAE0064E6C1 /* videos@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "videos@2x.png"; sourceTree = "<group>"; };
 		E69A1F6F1D61BFAE0064E6C1 /* yellow_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow_card.png; sourceTree = "<group>"; };
 		E69A1F701D61BFAE0064E6C1 /* yellow_card@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow_card@2x.png"; sourceTree = "<group>"; };
@@ -382,9 +380,9 @@
 		E6BCE9471D76CB900021973D /* SegmentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentCollectionViewCell.xib; sourceTree = "<group>"; };
 		E6BCE9481D76CB900021973D /* SegmentsPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentsPlayerViewController.h; sourceTree = "<group>"; };
 		E6BCE9491D76CB900021973D /* SegmentsPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentsPlayerViewController.m; sourceTree = "<group>"; };
-		E6BCE94B1D76CB900021973D /* TimeshiftPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeshiftPlayerViewController.h; sourceTree = "<group>"; };
-		E6BCE94C1D76CB900021973D /* TimeshiftPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeshiftPlayerViewController.m; sourceTree = "<group>"; };
-		E6BCE94D1D76CB900021973D /* TimeshiftPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TimeshiftPlayerViewController.storyboard; sourceTree = "<group>"; };
+		E6BCE94B1D76CB900021973D /* CustomPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPlayerViewController.h; sourceTree = "<group>"; };
+		E6BCE94C1D76CB900021973D /* CustomPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPlayerViewController.m; sourceTree = "<group>"; };
+		E6BCE94D1D76CB900021973D /* CustomPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CustomPlayerViewController.storyboard; sourceTree = "<group>"; };
 		E6BCE9581D76CBCE0021973D /* SegmentsPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SegmentsPlayerViewController.storyboard; sourceTree = "<group>"; };
 		E6BCE95A1D76CF7D0021973D /* SegmentDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SegmentDemoConfiguration.plist; sourceTree = "<group>"; };
 		E6C315661D76AB62001FC93A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
@@ -653,7 +651,6 @@
 				E6BCE95A1D76CF7D0021973D /* SegmentDemoConfiguration.plist */,
 				E69A1F6B1D61BFAE0064E6C1 /* thumbnail-placeholder.png */,
 				E69A1F6C1D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png */,
-				E69A1F6D1D61BFAE0064E6C1 /* TimeshiftDemoConfiguration.plist */,
 				E69A1F6E1D61BFAE0064E6C1 /* videos@2x.png */,
 				E69A1F6F1D61BFAE0064E6C1 /* yellow_card.png */,
 				E69A1F701D61BFAE0064E6C1 /* yellow_card@2x.png */,
@@ -713,7 +710,7 @@
 				E6BCE93A1D76CB900021973D /* Inline */,
 				E6BCE93E1D76CB900021973D /* Multi */,
 				E6BCE9421D76CB900021973D /* Segments */,
-				E6BCE94A1D76CB900021973D /* Timeshift */,
+				E6BCE94A1D76CB900021973D /* Custom */,
 			);
 			path = Players;
 			sourceTree = "<group>";
@@ -753,14 +750,14 @@
 			path = Segments;
 			sourceTree = "<group>";
 		};
-		E6BCE94A1D76CB900021973D /* Timeshift */ = {
+		E6BCE94A1D76CB900021973D /* Custom */ = {
 			isa = PBXGroup;
 			children = (
-				E6BCE94B1D76CB900021973D /* TimeshiftPlayerViewController.h */,
-				E6BCE94C1D76CB900021973D /* TimeshiftPlayerViewController.m */,
-				E6BCE94D1D76CB900021973D /* TimeshiftPlayerViewController.storyboard */,
+				E6BCE94B1D76CB900021973D /* CustomPlayerViewController.h */,
+				E6BCE94C1D76CB900021973D /* CustomPlayerViewController.m */,
+				E6BCE94D1D76CB900021973D /* CustomPlayerViewController.storyboard */,
 			);
-			path = Timeshift;
+			path = Custom;
 			sourceTree = "<group>";
 		};
 		E6D21D181D76A3F500B477F3 /* Application */ = {
@@ -1056,7 +1053,6 @@
 				E6BCE94F1D76CB900021973D /* InlinePlayerViewController.storyboard in Resources */,
 				E69A1FA21D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist in Resources */,
 				E69A1FAC1D61BFAE0064E6C1 /* yellow_card@2x.png in Resources */,
-				E69A1FA91D61BFAE0064E6C1 /* TimeshiftDemoConfiguration.plist in Resources */,
 				08F4E53F1E7FE76900C9E8FD /* Localizable.strings in Resources */,
 				E69A1FA51D61BFAE0064E6C1 /* screen@2x.png in Resources */,
 				E69A1F981D61BFAE0064E6C1 /* AudioDemoConfiguration.plist in Resources */,
@@ -1066,7 +1062,7 @@
 				E69A1F971D61BFAE0064E6C1 /* audios@2x.png in Resources */,
 				E69A1FA01D61BFAE0064E6C1 /* LaunchImage.png in Resources */,
 				E69A1FA11D61BFAE0064E6C1 /* VideoDemoConfiguration.plist in Resources */,
-				E6BCE9571D76CB900021973D /* TimeshiftPlayerViewController.storyboard in Resources */,
+				E6BCE9571D76CB900021973D /* CustomPlayerViewController.storyboard in Resources */,
 				E69A1FAB1D61BFAE0064E6C1 /* yellow_card.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1087,16 +1083,13 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/libextobjc.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/MAKVONotificationCenter.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SRGLogger.framework",
 			);
 			name = "Copy Framework Dependencies for Xcode View Rendering";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$CONFIGURATION\" == \"Debug\" ] || [ \"$CONFIGURATION\" == \"Release\" ] ]; then\n  /usr/local/bin/carthage copy-frameworks\nfi\n";
+			shellScript = "if [ \"$CONFIGURATION\" == \"Debug\" ] || [ \"$CONFIGURATION\" == \"Release\" ] ]; then\n  cp -R \"$SRCROOT/Carthage/Build/iOS/libextobjc.framework\" \"$BUILT_PRODUCTS_DIR\"\n  cp -R \"$SRCROOT/Carthage/Build/iOS/MAKVONotificationCenter.framework\" \"$BUILT_PRODUCTS_DIR\"\n  cp -R \"$SRCROOT/Carthage/Build/iOS/SRGLogger.framework\" \"$BUILT_PRODUCTS_DIR\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1162,7 +1155,7 @@
 			files = (
 				E6D21D221D76A3F500B477F3 /* AppDelegate.m in Sources */,
 				6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */,
-				E6BCE9561D76CB900021973D /* TimeshiftPlayerViewController.m in Sources */,
+				E6BCE9561D76CB900021973D /* CustomPlayerViewController.m in Sources */,
 				E6D21D241D76A3F500B477F3 /* MediasViewController.m in Sources */,
 				E6BCE94E1D76CB900021973D /* InlinePlayerViewController.m in Sources */,
 				6FD312271FD92FAB00EC0C42 /* MediaPlayer.m in Sources */,
@@ -1296,7 +1289,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 2.5.1;
+				MARKETING_VERSION = 2.5.2;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1433,7 +1426,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 2.5.1;
+				MARKETING_VERSION = 2.5.2;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1659,7 +1652,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 2.5.1;
+				MARKETING_VERSION = 2.5.2;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1710,7 +1703,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MARKETING_VERSION = 2.5.1;
+				MARKETING_VERSION = 2.5.2;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

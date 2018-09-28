@@ -34,21 +34,21 @@ static SRGMotionManager *s_motionManager = nil;
 
 + (void)start
 {
-    if (! [SRGMediaPlayerView motionManager]) {
+    if (! SRGMediaPlayerView.motionManager) {
         [[SRGMotionManager defaultMotionManager] start];
     }
 }
 
 + (void)stop
 {
-    if (! [SRGMediaPlayerView motionManager]) {
+    if (! SRGMediaPlayerView.motionManager) {
         [[SRGMotionManager defaultMotionManager] stop];
     }
 }
 
 + (CMMotionManager *)motionManager
 {
-    return [SRGMediaPlayerView motionManager] ?: [self defaultMotionManager].coreMotionManager;
+    return SRGMediaPlayerView.motionManager ?: [self defaultMotionManager].coreMotionManager;
 }
 
 - (instancetype)init

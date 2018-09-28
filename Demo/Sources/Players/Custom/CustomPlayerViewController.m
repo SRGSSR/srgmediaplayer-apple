@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "TimeshiftPlayerViewController.h"
+#import "CustomPlayerViewController.h"
 
 #import "NSBundle+Demo.h"
 #import "SegmentCollectionViewCell.h"
@@ -12,7 +12,7 @@
 #import <libextobjc/libextobjc.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface TimeshiftPlayerViewController ()
+@interface CustomPlayerViewController ()
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
@@ -26,14 +26,14 @@
 
 @end
 
-@implementation TimeshiftPlayerViewController
+@implementation CustomPlayerViewController
 
 #pragma mark Object lifecycle
 
 - (instancetype)initWithMedia:(Media *)media
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    TimeshiftPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    CustomPlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.media = media;
     return viewController;
 }
@@ -46,12 +46,12 @@
     
     [self.liveButton setTitle:DemoNonLocalizedString(@"Back to live") forState:UIControlStateNormal];
     self.liveButton.alpha = 0.f;
-
-    self.liveButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    
+    self.liveButton.layer.borderColor = UIColor.whiteColor.CGColor;
     self.liveButton.layer.borderWidth = 1.f;
     
     self.mediaPlayerController.view.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
-
+    
     @weakify(self)
     [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
@@ -64,7 +64,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         [self.mediaPlayerController playURL:self.media.URL];
     }
@@ -96,7 +96,7 @@
     [UIView animateWithDuration:0.2 animations:^{
         self.liveButton.alpha = 0.f;
     }];
-
+    
     CMTimeRange timeRange = self.mediaPlayerController.timeRange;
     if (CMTIMERANGE_IS_INDEFINITE(timeRange) || CMTIMERANGE_IS_EMPTY(timeRange)) {
         return;

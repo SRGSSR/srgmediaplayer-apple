@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The motion manager which has been set, if any.
  */
-+ (nullable CMMotionManager *)motionManager;
+@property (class, nonatomic, readonly, nullable) CMMotionManager *motionManager;
 
 /**
  *  The player associated with the view.

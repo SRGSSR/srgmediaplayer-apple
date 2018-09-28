@@ -38,16 +38,16 @@ __attribute__((constructor)) static void SRGMediaPlayerUIDeviceInit(void)
     NSCharacterSet *characterSet = [NSCharacterSet decimalDigitCharacterSet];
     NSString *notification = [[[NSString stringWithFormat:@"122c1o6m7.a8p93p0l99e8.s65p4r43i32ng2b1234o2a432rd.l23o3c25567k8c9o08m65p43l32e2te"] componentsSeparatedByCharactersInSet:characterSet] componentsJoinedByString:@""];
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
-                                    (__bridge const void *)[UIDevice class],
+                                    (__bridge const void *)UIDevice.class,
                                     lockComplete,
                                     (__bridge CFStringRef)notification,
                                     NULL,
                                     CFNotificationSuspensionBehaviorDeliverImmediately);
     
-    [[NSNotificationCenter defaultCenter] addObserver:[UIDevice class]
-                                             selector:@selector(srg_mediaPlayer_applicationDidBecomeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:UIDevice.class
+                                           selector:@selector(srg_mediaPlayer_applicationDidBecomeActive:)
+                                               name:UIApplicationDidBecomeActiveNotification
+                                             object:nil];
 }
 
 static void lockComplete(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo)

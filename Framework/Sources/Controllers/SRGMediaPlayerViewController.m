@@ -62,7 +62,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 + (void)initialize
 {
-    if (self != [SRGMediaPlayerViewController class]) {
+    if (self != SRGMediaPlayerViewController.class) {
         return;
     }
     
@@ -73,7 +73,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (instancetype)init
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:[NSBundle srg_mediaPlayerBundle]];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:NSBundle.srg_mediaPlayerBundle];
     return [storyboard instantiateInitialViewController];
 }
 
@@ -102,26 +102,26 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(srg_mediaPlayerViewController_playbackStateDidChange:)
-                                                 name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                               object:s_mediaPlayerController];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(srg_mediaPlayerViewController_playbackDidFail:)
-                                                 name:SRGMediaPlayerPlaybackDidFailNotification
-                                               object:s_mediaPlayerController];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(srg_mediaPlayerViewController_applicationDidBecomeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:)
-                                                 name:UIAccessibilityVoiceOverStatusChanged
-                                               object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(srg_mediaPlayerViewController_playbackStateDidChange:)
+                                               name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                             object:s_mediaPlayerController];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(srg_mediaPlayerViewController_playbackDidFail:)
+                                               name:SRGMediaPlayerPlaybackDidFailNotification
+                                             object:s_mediaPlayerController];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(srg_mediaPlayerViewController_applicationDidBecomeActive:)
+                                               name:UIApplicationDidBecomeActiveNotification
+                                             object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:)
+                                               name:UIAccessibilityVoiceOverStatusChanged
+                                             object:nil];
     
     self.playerView.isAccessibilityElement = YES;
     self.playerView.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Media", @"The player view label, where the audio / video is displayed");
-
+    
     self.errorImageView.hidden = YES;
     self.audioOnlyImageView.hidden = YES;
     
@@ -342,12 +342,12 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)skipBackwardWithCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
-    [self seekBackwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
+    [self skipBackwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
 }
 
 - (void)skipForwardWithCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
-    [self seekForwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
+    [self skipForwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
 }
 
 - (CMTime)seekStartTime
@@ -376,7 +376,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         || (controller.streamType == SRGMediaPlayerStreamTypeDVR && ! controller.live);
 }
 
-- (void)seekBackwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
+- (void)skipBackwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
     if (! [self canSkipBackwardFromTime:time]) {
         completionHandler ? completionHandler(NO) : nil;
@@ -392,7 +392,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }];
 }
 
-- (void)seekForwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
+- (void)skipForwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
     if (! [self canSkipForwardFromTime:time]) {
         completionHandler ? completionHandler(NO) : nil;
@@ -412,7 +412,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    return [gestureRecognizer isKindOfClass:[SRGActivityGestureRecognizer class]];
+    return [gestureRecognizer isKindOfClass:SRGActivityGestureRecognizer.class];
 }
 
 #pragma mark Notifications

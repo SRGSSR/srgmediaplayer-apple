@@ -25,22 +25,22 @@
     if (! color) {
         return self;
     }
-
+    
     CGRect rect = CGRectMake(0.f, 0.f, self.size.width, self.size.height);
     UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.f);
     CGContextRef context = UIGraphicsGetCurrentContext();
-
+    
     CGContextTranslateCTM(context, 0.f, self.size.height);
     CGContextScaleCTM(context, 1.0f, -1.f);
-
+    
     CGContextDrawImage(context, rect, self.CGImage);
     CGContextSetBlendMode(context, kCGBlendModeSourceIn);
     CGContextSetFillColorWithColor(context, color.CGColor);
     CGContextFillRect(context, rect);
-
+    
     UIImage *tintedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-
+    
     return tintedImage;
 }
 
@@ -50,10 +50,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.window.backgroundColor = [UIColor blackColor];
+    self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    self.window.backgroundColor = UIColor.blackColor;
     [self.window makeKeyAndVisible];
-
+    
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
@@ -73,17 +73,12 @@
     multiPlayerViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
     UINavigationController *multiPlayerNavigationController = [[UINavigationController alloc] initWithRootViewController:multiPlayerViewController];
     
-    MediasViewController *timeshiftViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"TimeshiftDemoConfiguration" mediaPlayerType:MediaPlayerTypeTimeshift];
-    timeshiftViewController.title = DemoNonLocalizedString(@"Timeshift");
-    timeshiftViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
-    UINavigationController *timeshiftNavigationController = [[UINavigationController alloc] initWithRootViewController:timeshiftViewController];
-    
     MediasViewController *audiosViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"AudioDemoConfiguration" mediaPlayerType:MediaPlayerTypeStandard];
     audiosViewController.title = DemoNonLocalizedString(@"Audios");
     audiosViewController.tabBarItem.image = [UIImage imageNamed:@"audios"];
     UINavigationController *audiosNavigationController = [[UINavigationController alloc] initWithRootViewController:audiosViewController];
     
-    tabBarController.viewControllers = @[videosNavigationController, segmentsNavigationController, multiPlayerNavigationController, timeshiftNavigationController, audiosNavigationController];
+    tabBarController.viewControllers = @[videosNavigationController, segmentsNavigationController, multiPlayerNavigationController, audiosNavigationController];
     self.window.rootViewController = tabBarController;
     
     // Avoid applying tint color to tab bar images
@@ -92,7 +87,7 @@
         tabBarItem.image = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         tabBarItem.selectedImage = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     }];
-
+    
     return YES;
 }
 

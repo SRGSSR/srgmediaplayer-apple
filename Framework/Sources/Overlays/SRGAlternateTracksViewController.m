@@ -125,7 +125,7 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
         return SRGMediaPlayerLocalizedString(@"Subtitles & CC", @"Section header title in the alternate tracks popup menu, for subtitles & CC tracks");
     }
     else {
-       return nil;
+        return nil;
     }
 }
 

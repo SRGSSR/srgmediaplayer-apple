@@ -37,9 +37,9 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 - (void)setSegment:(DemoSegment *)segment
 {
     _segment = segment;
-
+    
     self.titleLabel.text = segment.name;
-
+    
     if (SRG_CMTIMERANGE_IS_NOT_EMPTY(segment.srg_timeRange)) {
         self.durationLabel.hidden = NO;
         self.durationLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.duration)];
@@ -47,9 +47,9 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
     else {
         self.durationLabel.hidden = YES;
     }
-
+    
     self.timestampLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.start)];
-
+    
     self.alpha = segment.srg_isBlocked ? 0.5f : 1.f;
 }
 
@@ -73,10 +73,10 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
     
     UIColor *selectionColor = [UIColor colorWithRed:128.f / 255.f green:0.f / 255.f blue:0.f / 255.f alpha:1.f];
     if (selectedSegment) {
-        self.backgroundColor = (self.segment == selectedSegment) ? selectionColor : [UIColor blackColor];
+        self.backgroundColor = (self.segment == selectedSegment) ? selectionColor : UIColor.blackColor;
     }
     else {
-        self.backgroundColor = (progress != 0.f && progress != 1.f) ? selectionColor : [UIColor blackColor];
+        self.backgroundColor = (progress != 0.f && progress != 1.f) ? selectionColor : UIColor.blackColor;
     }
 }
 

@@ -65,7 +65,7 @@
 
 + (SRGPosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
 {
-    return [[[self class] alloc] initWithTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
+    return [[self.class alloc] initWithTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
 }
 
 #pragma mark Object lifecycle
@@ -90,7 +90,7 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@: %p; time = %@; toleranceBefore = %@; toleranceAfter = %@>",
-            [self class],
+            self.class,
             self,
             @(CMTimeGetSeconds(self.time)),
             @(CMTimeGetSeconds(self.toleranceBefore)),

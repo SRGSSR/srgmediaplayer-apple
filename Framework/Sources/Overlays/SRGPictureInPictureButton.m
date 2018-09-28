@@ -51,25 +51,25 @@ static void commonInit(SRGPictureInPictureButton *self);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:SRGMediaPlayerPictureInPictureStateDidChangeNotification
-                                                      object:_mediaPlayerController];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:SRGMediaPlayerPictureInPictureStateDidChangeNotification
+                                                    object:_mediaPlayerController];
     }
     
     _mediaPlayerController = mediaPlayerController;
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_pictureInPictureButton_pictureInPictureStateDidChange:)
-                                                     name:SRGMediaPlayerPictureInPictureStateDidChangeNotification
-                                                   object:mediaPlayerController];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_pictureInPictureButton_pictureInPictureStateDidChange:)
+                                                   name:SRGMediaPlayerPictureInPictureStateDidChangeNotification
+                                                 object:mediaPlayerController];
     }
 }
 
 - (UIImage *)startImage
 {
-    return _startImage ?: [UIImage imageNamed:@"picture_in_picture_start_button" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
+    return _startImage ?: [UIImage imageNamed:@"picture_in_picture_start_button" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setStartImage:(UIImage *)startImage
@@ -80,7 +80,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (UIImage *)stopImage
 {
-    return _stopImage ?: [UIImage imageNamed:@"picture_in_picture_stop_button" inBundle:[NSBundle srg_mediaPlayerBundle] compatibleWithTraitCollection:nil];
+    return _stopImage ?: [UIImage imageNamed:@"picture_in_picture_stop_button" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setStopImage:(UIImage *)stopImage
@@ -149,11 +149,11 @@ static void commonInit(SRGPictureInPictureButton *self);
 - (void)srg_pictureInPictureButton_togglePictureInPicture:(id)sender
 {
     AVPictureInPictureController *pictureInPictureController = self.mediaPlayerController.pictureInPictureController;
-
+    
     if (! pictureInPictureController.pictureInPicturePossible) {
         return;
     }
-
+    
     if (pictureInPictureController.pictureInPictureActive) {
         [pictureInPictureController stopPictureInPicture];
     }
@@ -202,7 +202,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 - (NSString *)accessibilityLabel
 {
     AVPictureInPictureController *pictureInPictureController = self.mediaPlayerController.pictureInPictureController;
-
+    
     if (pictureInPictureController.pictureInPictureActive) {
         return SRGMediaPlayerAccessibilityLocalizedString(@"Stop Picture in Picture", @"Picture In Picture button label, when PiP is active");
     }

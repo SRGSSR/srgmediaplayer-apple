@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The Core Motion manager to use. If one has been provided (@see `SRGMediaPlayerView.h`), it will be returned
  *  instead.
  */
-+ (CMMotionManager *)motionManager;
+@property (class, nonatomic, readonly) CMMotionManager *motionManager;
 
 @end
 

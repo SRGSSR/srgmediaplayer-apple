@@ -85,9 +85,9 @@ static void commonInit(SRGPlaybackButton *self);
 {
     if (_mediaPlayerController) {
         [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                                      object:_mediaPlayerController];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                    object:_mediaPlayerController];
     }
     
     _mediaPlayerController = mediaPlayerController;
@@ -100,10 +100,10 @@ static void commonInit(SRGPlaybackButton *self);
             
             [self refreshButton];
         }];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(mediaPlayerPlaybackStateDidChange:)
-                                                     name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                                   object:mediaPlayerController];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(mediaPlayerPlaybackStateDidChange:)
+                                                   name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                 object:mediaPlayerController];
     }
 }
 

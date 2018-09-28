@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  You should now have a working implementation able to play audios or videos. There is no way for the user to pause
  *  playback or to seek within the media, though. The `SRGMediaPlayer` library provides a few standard controls and
-*   overlays with which you can easily add such functionalities to your custom player.
+ *   overlays with which you can easily add such functionalities to your custom player.
  *
  *  ## Controls and overlays
  *
@@ -414,14 +414,16 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The current media time range (might be empty or indefinite).
  *
- *  @discussion Use `CMTimeRange` macros for checking time ranges. Also see `CMTimeRange+SRGMediaPlayer.h`.
+ *  @discussion Use `CMTimeRange` macros for checking time ranges, see `CMTimeRange+SRGMediaPlayer.h`. For DVR
+ *              streams with sliding windows, the range start can vary as the stream is played. For DVR streams
+ *              with fixed start, the duration will vary instead.
  */
 @property (nonatomic, readonly) CMTimeRange timeRange;
 
 /**
- *  The current playback position.
+ *  The current playback time.
  *
- *  @discussion Use `CMTime` macros for checking times. Also see `CMTime+SRGMediaPlayer.h`.
+ *  @discussion Use `CMTime` macros for checking times, see `CMTime+SRGMediaPlayer.h`.
  */
 @property (nonatomic, readonly) CMTime currentTime;
 
@@ -646,7 +648,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  For more information, @see `-seekToPosition:withCompletionHandler:`.
  *
  *  @discussion If the segment index is invalid, this method does nothing. If the segment is already the one being played,
- *              playback will restart at its beginning.
+ *              playback will restart at its beginning. When seeking relative to the current position, add an offset
+ *              to `relativeCurrentTime` when building the position to seek to.
  */
 - (void)seekToPosition:(nullable SRGPosition *)position
       inSegmentAtIndex:(NSInteger)index
@@ -665,7 +668,7 @@ NS_ASSUME_NONNULL_BEGIN
  *              already the one being played, playback will restart at its beginning.
  */
 - (void)seekToPosition:(nullable SRGPosition *)position
-         inSegment:(id<SRGSegment>)segment
+             inSegment:(id<SRGSegment>)segment
  withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
 /**

@@ -30,7 +30,7 @@ static void commonInit(SRGAirPlayView *self);
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = UIColor.clearColor;
         commonInit(self);
     }
     return self;
@@ -57,15 +57,15 @@ static void commonInit(SRGAirPlayView *self);
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
         
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                      object:self.volumeView];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIScreenDidConnectNotification
-                                                      object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIScreenDidDisconnectNotification
-                                                      object:nil];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:MPVolumeViewWirelessRouteActiveDidChangeNotification
+                                                    object:self.volumeView];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:UIScreenDidConnectNotification
+                                                    object:nil];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:UIScreenDidDisconnectNotification
+                                                    object:nil];
     }
     
     _mediaPlayerController = mediaPlayerController;
@@ -81,18 +81,18 @@ static void commonInit(SRGAirPlayView *self);
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:observationBlock];
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:observationBlock];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airPlayView_wirelessRouteActiveDidChange:)
-                                                     name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                   object:self.volumeView];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airPlayView_screenDidConnect:)
-                                                     name:UIScreenDidConnectNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(srg_airPlayView_screenDidDisconnect:)
-                                                     name:UIScreenDidDisconnectNotification
-                                                   object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_airPlayView_wirelessRouteActiveDidChange:)
+                                                   name:MPVolumeViewWirelessRouteActiveDidChangeNotification
+                                                 object:self.volumeView];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_airPlayView_screenDidConnect:)
+                                                   name:UIScreenDidConnectNotification
+                                                 object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_airPlayView_screenDidDisconnect:)
+                                                   name:UIScreenDidDisconnectNotification
+                                                 object:nil];
     }
 }
 
@@ -122,12 +122,12 @@ static void commonInit(SRGAirPlayView *self);
     CGFloat lineWidth = 4.f;
     CGFloat shapeSeparatorDelta = 5.f;
     CGFloat quadCurveHeight = 20.f;
-
+    
     static CGFloat kFillFactor = 0.6f;
     CGFloat maxWidth = CGRectGetWidth(self.bounds) * kFillFactor - 2.f * lineWidth;
     CGFloat maxHeight = CGRectGetHeight(self.bounds) * kFillFactor - stringRectHeight - quadCurveHeight - shapeSeparatorDelta - 10.f;
     CGFloat aspectRatio = 16.f / 10.f;
-
+    
     if (maxWidth < maxHeight * aspectRatio) {
         width = maxWidth;
         height = width / aspectRatio;
@@ -136,28 +136,28 @@ static void commonInit(SRGAirPlayView *self);
         height = maxHeight;
         width = height * aspectRatio;
     }
-
+    
     CGFloat midX = CGRectGetMidX(rect);
     CGFloat midY = CGRectGetMidY(rect);
-
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetAllowsAntialiasing(context, YES);
-
+    
     CGContextSetLineWidth(context, 4.f);
     CGContextSetStrokeColorWithColor(context, self.tintColor.CGColor);
-
+    
     CGRect rectangle = CGRectMake(midX - width / 2.f, midY - height / 2.f, width, height);
     CGContextAddRect(context, rectangle);
     CGContextStrokePath(context);
-
+    
     CGContextMoveToPoint(context, midX - width / 4.f, midY + height / 2.f + shapeSeparatorDelta);
     CGContextAddQuadCurveToPoint(context, midX, midY + height / 2.f + quadCurveHeight, midX + width / 4.f, midY + height / 2.f + shapeSeparatorDelta);
     CGContextSetFillColorWithColor(context, self.tintColor.CGColor);
     CGContextFillPath(context);
-
+    
     CGRect titleRect = CGRectInset(rectangle, 8.f, 10.f);
     [self drawTitleInRect:titleRect];
-
+    
     CGRect subtitleRect = CGRectMake(stringRectMargin, midY + height / 2.f + quadCurveHeight - 5.f, CGRectGetMaxX(rect) - 2.f * stringRectMargin, stringRectHeight);
     [self drawSubtitleInRect:subtitleRect];
 }
@@ -168,9 +168,9 @@ static void commonInit(SRGAirPlayView *self);
     if ([self.delegate respondsToSelector:@selector(airPlayViewTitleAttributedDictionary:)]) {
         attributes = [self.delegate airPlayViewTitleAttributedDictionary:self];
     }
-
+    
     NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
-
+    
     NSString *title = SRGMediaPlayerNonLocalizedString(@"AirPlay");
     [title drawWithRect:rect options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:drawingContext];
 }
@@ -181,16 +181,16 @@ static void commonInit(SRGAirPlayView *self);
     if ([self.delegate respondsToSelector:@selector(airPlayViewSubtitle:)]) {
         subtitle = [self.delegate airPlayViewSubtitle:self];
     }
-
+    
     if (subtitle.length > 0) {
         NSDictionary<NSString *, id> *attributes = [self airPlayViewSubtitleAttributedDictionary:self];
         if ([self.delegate respondsToSelector:@selector(airPlayViewSubtitleAttributedDictionary:)]) {
             attributes = [self.delegate airPlayViewSubtitleAttributedDictionary:self];
         }
-
+        
         NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
         drawingContext.minimumScaleFactor = 3.f / 4.f;
-
+        
         [subtitle drawWithRect:rect options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:drawingContext];
     }
 }
@@ -215,14 +215,14 @@ static void commonInit(SRGAirPlayView *self);
     
     if (mediaPlayerController) {
         if (mediaPlayerController.externalNonMirroredPlaybackActive) {
-            self.hidden = ! [AVAudioSession srg_isAirPlayActive];
+            self.hidden = ! AVAudioSession.srg_isAirPlayActive;
         }
         else {
             self.hidden = YES;
         }
     }
     else {
-        self.hidden = ! self.fakedForInterfaceBuilder && ! [AVAudioSession srg_isAirPlayActive];
+        self.hidden = ! self.fakedForInterfaceBuilder && ! AVAudioSession.srg_isAirPlayActive;
     }
     
     if (wasHidden && ! self.hidden && [self.delegate respondsToSelector:@selector(airPlayView:didShowWithAirPlayRouteName:)]) {
@@ -239,7 +239,7 @@ static void commonInit(SRGAirPlayView *self);
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.alignment = NSTextAlignmentCenter;
-
+    
     return @{ NSFontAttributeName: [UIFont boldSystemFontOfSize:14.f],
               NSForegroundColorAttributeName: self.tintColor,
               NSParagraphStyleAttributeName: style };
@@ -255,7 +255,7 @@ static void commonInit(SRGAirPlayView *self);
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.alignment = NSTextAlignmentCenter;
     style.lineBreakMode = NSLineBreakByTruncatingTail;
-
+    
     return @{ NSFontAttributeName: [UIFont systemFontOfSize:12.f],
               NSForegroundColorAttributeName: self.tintColor,
               NSParagraphStyleAttributeName: style };
