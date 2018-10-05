@@ -85,7 +85,7 @@ import SRGMediaPlayer
 
 ### Working with the library
 
-To learn about how the library can be used, have a look at the [getting started guide](Getting-started.md).
+To learn about how the library can be used, have a look at the [getting started guide](GETTING_STARTED.md).
 
 ### Logging
 
@@ -122,7 +122,7 @@ To test what the library is capable of, run the associated demo.
 
 ## Migration from versions 1.x
 
-For information about changes introduced with version 2 of the library, please read the [migration guide](Migration-guide.md).
+For information about changes introduced with version 2 of the library, please read the [migration guide](MIGRATION_GUIDE.md).
 
 ## License
 
