@@ -139,7 +139,7 @@ OBJC_EXTERN NSString * const SRGMediaPlayerExternalPlaybackStateDidChangeNotific
 
 /**
  *  Notification sent when the current segment changes. Use the keys available below to retrieve information from
- *  the notification `userInfo`dictionary.
+ *  the notification `userInfo` dictionary.
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidStartNotification;                     // Notification sent when a segment starts.
 OBJC_EXTERN NSString * const SRGMediaPlayerSegmentDidEndNotification;                       // Notification sent when a segment ends.
