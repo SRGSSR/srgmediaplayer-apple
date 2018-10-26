@@ -38,7 +38,7 @@ The `SRGMediaPlayerViewController` class natively supports all kind of audio and
 
 Custom player layouts can be designed entirely in Interface Builder, whether you are using xibs or storyboards. You can create your custom player entirely in code if you want, but using Interface Builder is recommended.
 
-![Connecting outlets](Getting-started-images/outlets.jpg)
+![Connecting outlets](GETTING_STARTED-images/outlets.jpg)
 
 Start by adding a view controller to a storyboard file. Drop a custom object from the library and set its class to `SRGMediaPlayerController`. This controller object will manage playback of medias.
 
