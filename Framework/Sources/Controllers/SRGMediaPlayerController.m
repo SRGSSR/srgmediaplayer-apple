@@ -1161,7 +1161,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         return nil;
     }
     
-    NSString *identifier = [[NSUUID UUID] UUIDString];
+    NSString *identifier = NSUUID.UUID.UUIDString;
     SRGPeriodicTimeObserver *periodicTimeObserver = [self periodicTimeObserverForInterval:interval queue:queue];
     [periodicTimeObserver setBlock:block forIdentifier:identifier];
     
