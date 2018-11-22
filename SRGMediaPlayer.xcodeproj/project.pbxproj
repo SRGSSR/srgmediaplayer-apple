@@ -929,6 +929,7 @@
 				E69A1E641D61BEFC0064E6C1 /* Frameworks */,
 				E69A1E651D61BEFC0064E6C1 /* Resources */,
 				E69A1FC31D61C0180064E6C1 /* Embed Frameworks */,
+				0805608821A75209000FA74E /* Copy Frameworks (Carthage) */,
 			);
 			buildRules = (
 			);
@@ -1077,6 +1078,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0805608821A75209000FA74E /* Copy Frameworks (Carthage) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/libextobjc.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/MAKVONotificationCenter.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SRGLogger.framework",
+			);
+			name = "Copy Frameworks (Carthage)";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
 		6F44486B210F24CD009FDB70 /* Copy Framework Dependencies for Xcode View Rendering */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
