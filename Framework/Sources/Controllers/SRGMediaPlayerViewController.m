@@ -361,7 +361,14 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         return NO;
     }
     
-    SRGMediaPlayerStreamType streamType = self.controller.streamType;
+    SRGMediaPlayerController *controller = self.controller;
+    SRGMediaPlayerPlaybackState playbackState = controller.playbackState;
+    
+    if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+        return NO;
+    }
+    
+    SRGMediaPlayerStreamType streamType = controller.streamType;
     return (streamType == SRGMediaPlayerStreamTypeOnDemand || streamType == SRGMediaPlayerStreamTypeDVR);
 }
 
@@ -372,8 +379,15 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     
     SRGMediaPlayerController *controller = self.controller;
-    return (controller.streamType == SRGMediaPlayerStreamTypeOnDemand && CMTimeGetSeconds(time) + SRGMediaPlayerViewControllerForwardSkipInterval < CMTimeGetSeconds(controller.player.currentItem.duration))
-        || (controller.streamType == SRGMediaPlayerStreamTypeDVR && ! controller.live);
+    SRGMediaPlayerPlaybackState playbackState = controller.playbackState;
+    
+    if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+        return NO;
+    }
+    
+    SRGMediaPlayerStreamType streamType = controller.streamType;
+    return (streamType == SRGMediaPlayerStreamTypeOnDemand && CMTimeGetSeconds(time) + SRGMediaPlayerViewControllerForwardSkipInterval < CMTimeGetSeconds(controller.player.currentItem.duration))
+        || (streamType == SRGMediaPlayerStreamTypeDVR && ! controller.live);
 }
 
 - (void)skipBackwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
