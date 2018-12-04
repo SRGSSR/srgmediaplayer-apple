@@ -172,30 +172,34 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                         }
                     };
                     
-                    // If a segment is targeted, add a small offset so that playback is guaranteed to start within the segment
                     SRGPosition *startPosition = self.startPosition;
-                    if (self.targetSegment) {
-                        startPosition = SRGMediaPlayerControllerOffset(startPosition, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC));
-                    }
                     
-                    // Take into account tolerance at the end of the content being played. If near the end enough, start
-                    // at the default position instead.
-                    CMTimeRange timeRange = self.targetSegment ? self.targetSegment.srg_timeRange : self.timeRange;
-                    CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(timeRange.duration));
-                    CMTime toleratedStartTime = CMTIME_COMPARE_INLINE(startPosition.time, >=, CMTimeSubtract(timeRange.duration, tolerance)) ? kCMTimeZero : startPosition.time;
-                    
-                    // Positions in segments are relative. If not within a segment, they are absolute (relative positions
-                    // are misleading for a DVR stream with a sliding window, and match the absolute position in other cases)
-                    if (self.targetSegment) {
-                        toleratedStartTime = CMTimeAdd(toleratedStartTime, timeRange.start);
-                    }
-                    SRGPosition *toleratedPosition = [SRGPosition positionWithTime:toleratedStartTime toleranceBefore:startPosition.toleranceBefore toleranceAfter:startPosition.toleranceAfter];
-                    
-                    SRGPosition *seekPosition = SRGMediaPlayerControllerPositionInTimeRange(toleratedPosition, timeRange);
-                    if (CMTIME_COMPARE_INLINE(seekPosition.time, ==, kCMTimeZero)) {
+                    // Default position. Nothing to do.
+                    if (CMTIME_COMPARE_INLINE(self.startPosition.time, ==, kCMTimeZero) && ! self.targetSegment) {
                         completionBlock(YES);
                     }
+                    // Non-default start position. Calculate a valid position to seek to.
                     else {
+                        // If a segment is targeted, add a small offset so that playback is guaranteed to start within the segment
+                        if (self.targetSegment) {
+                            startPosition = SRGMediaPlayerControllerOffset(startPosition, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC));
+                        }
+                        
+                        // Take into account tolerance at the end of the content being played. If near the end enough, start
+                        // at the default position instead.
+                        CMTimeRange timeRange = self.targetSegment ? self.targetSegment.srg_timeRange : self.timeRange;
+                        CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(timeRange.duration));
+                        CMTime toleratedStartTime = CMTIME_COMPARE_INLINE(startPosition.time, >=, CMTimeSubtract(timeRange.duration, tolerance)) ? kCMTimeZero : startPosition.time;
+                        
+                        // Positions in segments are relative. If not within a segment, they are absolute (relative positions
+                        // are misleading for a DVR stream with a sliding window, and match the absolute position in other cases)
+                        if (self.targetSegment) {
+                            toleratedStartTime = CMTimeAdd(toleratedStartTime, timeRange.start);
+                        }
+                        SRGPosition *toleratedPosition = [SRGPosition positionWithTime:toleratedStartTime toleranceBefore:startPosition.toleranceBefore toleranceAfter:startPosition.toleranceAfter];
+                        
+                        SRGPosition *seekPosition = SRGMediaPlayerControllerPositionInTimeRange(toleratedPosition, timeRange);
+                        
                         // Call system method to avoid unwanted seek state in this special case
                         [player seekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter completionHandler:^(BOOL finished) {
                             completionBlock(finished);
@@ -1161,7 +1165,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         return nil;
     }
     
-    NSString *identifier = [[NSUUID UUID] UUIDString];
+    NSString *identifier = NSUUID.UUID.UUIDString;
     SRGPeriodicTimeObserver *periodicTimeObserver = [self periodicTimeObserverForInterval:interval queue:queue];
     [periodicTimeObserver setBlock:block forIdentifier:identifier];
     
