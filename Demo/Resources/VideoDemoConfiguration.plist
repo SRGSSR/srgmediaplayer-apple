@@ -74,14 +74,6 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>FIFA 360 video</string>
-			<key>url</key>
-			<string>https://eu-west-1-content.c-cast-fcc.tv/FB8732BDE45F3D10BF6F65BE11A88B05/FB8732BDE45F3D10BF6F65BE11A88B05.m3u8</string>
-			<key>is360</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>name</key>
 			<string>Balloon 360</string>
 			<key>url</key>
 			<string>http://kolor.com/360-videos-files/kolor-balloon-icare-full-hd.mp4</string>
