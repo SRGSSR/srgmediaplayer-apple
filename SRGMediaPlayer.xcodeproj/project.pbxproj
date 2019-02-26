@@ -18,7 +18,6 @@
 		6F0C98B6212162BC00073AB6 /* CMTimeRange+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F2556D2212FBF63004C8F9A /* SRGPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F2556D0212FBF63004C8F9A /* SRGPosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F2556D3212FBF63004C8F9A /* SRGPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2556D1212FBF63004C8F9A /* SRGPosition.m */; };
-		6F3C6DE01F738173007FB56B /* XCTestCase+MediaPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C6DDF1F738173007FB56B /* XCTestCase+MediaPlayerTests.m */; };
 		6F3F1739212FE3F40091A260 /* SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F3F1737212FE3F30091A260 /* SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F3F173A212FE3F40091A260 /* SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3F1738212FE3F40091A260 /* SRGMediaPlayer.m */; };
 		6F444856210F1479009FDB70 /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08293A4D1EDC62FC008CE02E /* Accessibility.strings */; };
@@ -242,8 +241,6 @@
 		6F0C98B421215F9000073AB6 /* CMTime+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CMTime+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F2556D0212FBF63004C8F9A /* SRGPosition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGPosition.h; sourceTree = "<group>"; };
 		6F2556D1212FBF63004C8F9A /* SRGPosition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGPosition.m; sourceTree = "<group>"; };
-		6F3C6DDE1F738173007FB56B /* XCTestCase+MediaPlayerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCTestCase+MediaPlayerTests.h"; sourceTree = "<group>"; };
-		6F3C6DDF1F738173007FB56B /* XCTestCase+MediaPlayerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "XCTestCase+MediaPlayerTests.m"; sourceTree = "<group>"; };
 		6F3F1737212FE3F30091A260 /* SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayer.h; sourceTree = "<group>"; };
 		6F3F1738212FE3F40091A260 /* SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayer.m; sourceTree = "<group>"; };
 		6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -565,8 +562,6 @@
 				6FE7D5E61F85039000817E89 /* MediaPlayerBaseTestCase.h */,
 				6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */,
 				6FA1D6081F42C13E00C85D15 /* TestMacros.h */,
-				6F3C6DDE1F738173007FB56B /* XCTestCase+MediaPlayerTests.h */,
-				6F3C6DDF1F738173007FB56B /* XCTestCase+MediaPlayerTests.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1199,7 +1194,6 @@
 				E6BCE95F1D77F1A50021973D /* PlaybackTestCase.m in Sources */,
 				E6BCE9641D794D6A0021973D /* SegmentsTestCase.m in Sources */,
 				6FA98E15211D68AF00969089 /* ConstantsTestCase.m in Sources */,
-				6F3C6DE01F738173007FB56B /* XCTestCase+MediaPlayerTests.m in Sources */,
 				6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */,
 				6FBDD1A721308242001E4398 /* PositionTestCase.m in Sources */,
 				E69A1FE61D61C6D20064E6C1 /* Segment.m in Sources */,
