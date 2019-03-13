@@ -7,6 +7,8 @@
 
 #import "NSBundle+SRGMediaPlayer.h"
 
+#import <MediaAccessibility/MediaAccessibility.h>
+
 static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
 
 @interface SRGAlternateTracksViewController ()
@@ -191,6 +193,13 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
     }
     
     [self.player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
+    
+    // Save the subtitle language (system) so that it gets automatically applied again when instantiating a new `AVPlayer` with
+    // `appliesMediaSelectionCriteriaAutomatically` (default). For example `SRGMediaPlayerController` or `AVPlayerViewController`
+    // within the same app, or even Safari.
+    if (characteristic == AVMediaCharacteristicLegible) {
+        MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)option.locale.localeIdentifier);
+    }
     
     if ([self.delegate respondsToSelector:@selector(alternateTracksViewController:didSelectMediaOption:inGroup:)]) {
         [self.delegate alternateTracksViewController:self
