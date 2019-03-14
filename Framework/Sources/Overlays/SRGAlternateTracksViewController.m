@@ -60,7 +60,7 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
         if (legibleGroup) {
             [characteristics addObject:AVMediaCharacteristicLegible];
             groups[AVMediaCharacteristicLegible] = legibleGroup;
-            options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:legibleGroup.options withoutMediaCharacteristics:@[ AVMediaCharacteristicContainsOnlyForcedSubtitles ]];
+            options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:legibleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
         }
         
         self.characteristics = [characteristics copy];
@@ -247,15 +247,18 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
 
 static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option)
 {
-    // Retrieve title metadata if available (use preferred language settings to present the best one to the user)
+    // Retrieve title metadata if available. To extract the title defined with the stream, lookup is performed for the associated
+    // locale identifier.
     NSArray<AVMetadataItem *> *titleItems = [AVMetadataItem metadataItemsFromArray:option.commonMetadata withKey:AVMetadataCommonKeyTitle keySpace:AVMetadataKeySpaceCommon];
-    if (titleItems) {
-        titleItems = [AVMetadataItem metadataItemsFromArray:titleItems filteredAndSortedAccordingToPreferredLanguages:NSLocale.preferredLanguages];
-        
-        NSString *title = titleItems.firstObject.stringValue;
+    NSString *optionLanguage = option.locale.localeIdentifier;
+    
+    if (titleItems && optionLanguage) {
+        NSString *title = [AVMetadataItem metadataItemsFromArray:titleItems filteredAndSortedAccordingToPreferredLanguages:@[optionLanguage]].firstObject.stringValue;
         if (title) {
             return title;
         }
     }
+    
+    // Use the display name as fallback
     return option.displayName;
 }
