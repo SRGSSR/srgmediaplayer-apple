@@ -20,6 +20,8 @@ static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option);
 
 @property (nonatomic) AVPlayer *player;
 
+@property (nonatomic, weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
+
 @end
 
 @implementation SRGAlternateTracksViewController
@@ -28,10 +30,11 @@ static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option);
 
 #pragma mark Class methods
 
-+ (UINavigationController *)alternateTracksNavigationControllerForPlayer:(AVPlayer *)player
++ (UINavigationController *)alternateTracksNavigationControllerForPlayer:(AVPlayer *)player withDelegate:(id<SRGAlternateTracksViewControllerDelegate>)delegate
 {
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
     alternateTracksViewController.player = player;
+    alternateTracksViewController.delegate = delegate;
     return [[UINavigationController alloc] initWithRootViewController:alternateTracksViewController];
 }
 

@@ -15,7 +15,7 @@
 
 static void commonInit(SRGTracksButton *self);
 
-@interface SRGTracksButton ()
+@interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate>
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
@@ -165,6 +165,13 @@ static void commonInit(SRGTracksButton *self);
     }
 }
 
+#pragma mark SRGAlternateTracksViewControllerDelegate protocol
+
+- (void)alternateTracksViewControllerDidSelectMediaOption:(SRGAlternateTracksViewController *)alternateTracksViewController
+{
+    [self updateAppearance];
+}
+
 #pragma mark UIPopoverPresentationControllerDelegate protocol
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
@@ -188,7 +195,8 @@ static void commonInit(SRGTracksButton *self);
         [self.delegate tracksButtonWillShowSelectionPopopver:self];
     }
     
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForPlayer:self.mediaPlayerController.player];
+    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForPlayer:self.mediaPlayerController.player
+                                                                                                                     withDelegate:self];
     navigationController.modalPresentationStyle = UIModalPresentationPopover;
     
     navigationController.popoverPresentationController.delegate = self;
