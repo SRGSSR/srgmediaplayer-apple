@@ -15,7 +15,7 @@
 
 static void commonInit(SRGTracksButton *self);
 
-@interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate>
+@interface SRGTracksButton ()
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
@@ -165,17 +165,6 @@ static void commonInit(SRGTracksButton *self);
     }
 }
 
-#pragma mark SRGAlternateTracksViewControllerDelegate protocol
-
-- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController didSelectMediaOption:(AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group
-{
-    [self updateAppearance];
-    
-    UIViewController *presentedViewController = [UIApplication sharedApplication].delegate.window.rootViewController.presentedViewController ?: [UIApplication sharedApplication].delegate.window.rootViewController;
-    [presentedViewController.presentedViewController dismissViewControllerAnimated:YES
-                                                                        completion:nil];
-}
-
 #pragma mark UIPopoverPresentationControllerDelegate protocol
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
@@ -188,15 +177,14 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)showSubtitlesMenu:(id)sender
 {
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForPlayer:self.mediaPlayerController.player
-                                                                                                                     withDelegate:self];
+    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForPlayer:self.mediaPlayerController.player];
     navigationController.modalPresentationStyle = UIModalPresentationPopover;
     
     navigationController.popoverPresentationController.delegate = self;
     navigationController.popoverPresentationController.sourceView = self;
     navigationController.popoverPresentationController.sourceRect = self.bounds;
     
-    UIViewController *topViewController = [UIApplication sharedApplication].keyWindow.srg_topViewController;
+    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
     [topViewController presentViewController:navigationController
                                     animated:YES
                                   completion:nil];

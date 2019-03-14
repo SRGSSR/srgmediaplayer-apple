@@ -13,7 +13,7 @@ SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude)
     // Based on: https://gist.github.com/travisnewby/96ee1ac2bc2002f1d480
     CMQuaternion quaternion = attitude.quaternion;
     GLKQuaternion glkQuaternion = GLKQuaternionMake(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
-    switch ([UIApplication sharedApplication].statusBarOrientation) {
+    switch (UIApplication.sharedApplication.statusBarOrientation) {
         case UIInterfaceOrientationPortrait: {
             GLKQuaternion glkRotationQuaternion = GLKQuaternionMakeWithAngleAndAxis(M_PI_2, 1.f, 0.f, 0.f);
             glkQuaternion = GLKQuaternionMultiply(glkRotationQuaternion, glkQuaternion);
