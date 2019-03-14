@@ -173,10 +173,21 @@ static void commonInit(SRGTracksButton *self);
     return UIModalPresentationNone;
 }
 
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
+{
+    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideSelectionPopopver:)]) {
+        [self.delegate tracksButtonDidHideSelectionPopopver:self];
+    }
+}
+
 #pragma mark Actions
 
 - (void)showSubtitlesMenu:(id)sender
 {
+    if ([self.delegate respondsToSelector:@selector(tracksButtonWillShowSelectionPopopver:)]) {
+        [self.delegate tracksButtonWillShowSelectionPopopver:self];
+    }
+    
     UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForPlayer:self.mediaPlayerController.player];
     navigationController.modalPresentationStyle = UIModalPresentationPopover;
     

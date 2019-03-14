@@ -26,7 +26,7 @@ const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
 // Shared instance to manage picture in picture playback
 static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
-@interface SRGMediaPlayerViewController ()
+@interface SRGMediaPlayerViewController () <SRGTracksButtonDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *playerView;
 
@@ -101,6 +101,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tracksButton.delegate = self;
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(srg_mediaPlayerViewController_playbackStateDidChange:)
@@ -420,6 +422,18 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         }
         completionHandler ? completionHandler(finished) : nil;
     }];
+}
+
+#pragma mark SRGTracksButtonDelegate protocol
+
+- (void)tracksButtonWillShowSelectionPopopver:(SRGTracksButton *)tracksButton
+{
+    NSLog(@"--> Will show selection");
+}
+
+- (void)tracksButtonDidHideSelectionPopopver:(SRGTracksButton *)tracksButton
+{
+    NSLog(@"--> Did hide selection");
 }
 
 #pragma mark UIGestureRecognizerDelegate protocol

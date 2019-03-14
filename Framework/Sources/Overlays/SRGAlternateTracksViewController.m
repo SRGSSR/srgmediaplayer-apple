@@ -60,7 +60,7 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
         if (legibleGroup) {
             [characteristics addObject:AVMediaCharacteristicLegible];
             groups[AVMediaCharacteristicLegible] = legibleGroup;
-            options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:legibleGroup.options withMediaCharacteristics:@[ AVMediaCharacteristicContainsOnlyForcedSubtitles ]];
+            options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:legibleGroup.options withoutMediaCharacteristics:@[ AVMediaCharacteristicContainsOnlyForcedSubtitles ]];
         }
         
         self.characteristics = [characteristics copy];
@@ -139,7 +139,7 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
 {
     NSString *characteristic = self.characteristics[section];
     if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
-        return SRGMediaPlayerLocalizedString(@"You can adjust subtitle appearance and automatic selection in the Accessibility section of the Settings application.", @"Instructions for subtitles customization");
+        return SRGMediaPlayerLocalizedString(@"You can adjust subtitle appearance and automatic selection behavior in the Accessibility section of the Settings application.", @"Instructions for subtitles customization");
     }
     else {
         return nil;
@@ -167,26 +167,25 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
+ 
     NSString *characteristic = self.characteristics[indexPath.section];
-    AVMediaSelectionGroup *group = self.groups[characteristic];
-    NSArray<AVMediaSelectionOption *> *options = self.options[characteristic];
-    
     if (characteristic == AVMediaCharacteristicLegible && indexPath.row == 0) {
         cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Off", @"Option to disable subtitles");
-        AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-        cell.accessoryType = (currentOptionInGroup != nil) ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
+        cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     else if (characteristic == AVMediaCharacteristicLegible && indexPath.row == 1) {
         cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
-        AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-        cell.accessoryType = (currentOptionInGroup != nil && ! [options containsObject:currentOptionInGroup]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     else {
+        NSArray<AVMediaSelectionOption *> *options = self.options[characteristic];
         AVMediaSelectionOption *option = (characteristic == AVMediaCharacteristicLegible) ? options[indexPath.row - 2] : options[indexPath.row];
         cell.textLabel.text = SRGTitleForMediaOption(option);
         
+        AVMediaSelectionGroup *group = self.groups[characteristic];
         AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-        cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
 }
 
@@ -201,9 +200,13 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
     if (characteristic == AVMediaCharacteristicLegible) {
         if (indexPath.row == 0) {
             [self.player.currentItem selectMediaOption:nil inMediaSelectionGroup:group];
+            
+            MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
         }
         else if (indexPath.row == 1) {
             [self.player.currentItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
+            
+            MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
         }
         else {
             AVMediaSelectionOption *option = options[indexPath.row - 2];
@@ -213,6 +216,7 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
             // `appliesMediaSelectionCriteriaAutomatically` (default). For example `SRGMediaPlayerController` or `AVPlayerViewController`
             // within the same app, or even Safari.
             MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)option.locale.localeIdentifier);
+            MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
         }
     }
     else {
