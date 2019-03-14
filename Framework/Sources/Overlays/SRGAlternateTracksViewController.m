@@ -121,6 +121,30 @@ static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option);
     }
 }
 
+#pragma mark Cells
+
+- (UITableViewCell *)defaultCellForTableView:(UITableView *)tableView
+{
+    static NSString * const kCellIdentifier = @"DefaultCell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
+    if (! cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier];
+    }
+    return cell;
+}
+
+- (UITableViewCell *)subtitleCellForTableView:(UITableView *)tableView
+{
+    static NSString * const kCellIdentifier = @"SubtitleCell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
+    if (! cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kCellIdentifier];
+    }
+    return cell;
+}
+
 #pragma mark UITableViewDataSource protocol
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -162,67 +186,64 @@ static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *kCellIdentifier = NSStringFromClass([self class]);
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
-    if (! cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kCellIdentifier];
-    }
-    return cell;
-}
-
-#pragma mark UITableViewDelegate protocol
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
  
     NSString *characteristic = self.characteristics[indexPath.section];
-    
     if (characteristic == AVMediaCharacteristicLegible) {
         if (indexPath.row == 0) {
+            UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Off", @"Option to disable subtitles");
-            cell.detailTextLabel.text = nil;
             cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            return cell;
         }
         else if (indexPath.row == 1) {
+            UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
-            cell.detailTextLabel.text = nil;
             cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            return cell;
         }
         else {
-            AVMediaSelectionOption *option = self.options[characteristic][indexPath.row - 2];
+            UITableViewCell *cell = nil;
             
+            AVMediaSelectionOption *option = self.options[characteristic][indexPath.row - 2];
             NSString *title = SRGTitleForMediaOption(option);
             if (title) {
+                cell = [self subtitleCellForTableView:tableView];
                 cell.textLabel.text = title;
                 cell.detailTextLabel.text = SRGHintForMediaOption(option);
             }
             else {
+                cell = [self defaultCellForTableView:tableView];
                 cell.textLabel.text = SRGHintForMediaOption(option);
-                cell.detailTextLabel.text = nil;
             }
             
             AVMediaSelectionGroup *group = self.groups[characteristic];
             AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
             cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            
+            return cell;
         }
     }
     else {
-        AVMediaSelectionOption *option = self.options[characteristic][indexPath.row];
+        UITableViewCell *cell = nil;
         
+        AVMediaSelectionOption *option = self.options[characteristic][indexPath.row];
         NSString *title = SRGTitleForMediaOption(option);
         if (title) {
+            cell = [self subtitleCellForTableView:tableView];
             cell.textLabel.text = title;
             cell.detailTextLabel.text = SRGHintForMediaOption(option);
         }
         else {
+            cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGHintForMediaOption(option);
-            cell.detailTextLabel.text = nil;
         }
         
         AVMediaSelectionGroup *group = self.groups[characteristic];
         AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
         cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        
+        return cell;
     }
 }
 
