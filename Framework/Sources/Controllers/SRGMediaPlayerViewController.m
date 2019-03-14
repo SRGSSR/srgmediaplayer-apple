@@ -79,7 +79,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)dealloc
 {
-    self.inactivityTimer = nil;                 // Invalidate timer
     [s_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
 }
 
@@ -181,7 +180,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self updateUserInterface];
     
     [self updateInterfaceForControlsHidden:NO];
-    [self resetInactivityTimer];
+    [self restartInactivityTracker];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -204,7 +203,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [super viewDidDisappear:animated];
     
     if ([self isBeingDismissed]) {
-        self.inactivityTimer = nil;
+        [self stopInactivityTracker];
     }
 }
 
@@ -282,7 +281,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
-- (void)resetInactivityTimer
+- (void)restartInactivityTracker
 {
     if (! UIAccessibilityIsVoiceOverRunning()) {
         self.inactivityTimer = [NSTimer timerWithTimeInterval:5.
@@ -295,6 +294,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     else {
         self.inactivityTimer = nil;
     }
+}
+
+- (void)stopInactivityTracker
+{
+    self.inactivityTimer = nil;
 }
 
 - (void)setUserInterfaceHidden:(BOOL)hidden animated:(BOOL)animated
@@ -428,12 +432,12 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)tracksButtonWillShowSelectionPopopver:(SRGTracksButton *)tracksButton
 {
-    NSLog(@"--> Will show selection");
+    [self stopInactivityTracker];
 }
 
 - (void)tracksButtonDidHideSelectionPopopver:(SRGTracksButton *)tracksButton
 {
-    NSLog(@"--> Did hide selection");
+    [self restartInactivityTracker];
 }
 
 #pragma mark UIGestureRecognizerDelegate protocol
@@ -475,7 +479,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:(NSNotification *)notification
 {
-    [self resetInactivityTimer];
+    [self restartInactivityTracker];
 }
 
 #pragma mark Actions
@@ -503,7 +507,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)handleSingleTap:(UIGestureRecognizer *)gestureRecognizer
 {
-    [self resetInactivityTimer];
+    [self restartInactivityTracker];
     [self setUserInterfaceHidden:! _userInterfaceHidden animated:YES];
 }
 
@@ -521,7 +525,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)resetInactivityTimer:(UIGestureRecognizer *)gestureRecognizer
 {
-    [self resetInactivityTimer];
+    [self restartInactivityTracker];
 }
 
 #pragma mark Timers

@@ -240,8 +240,7 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
 
 - (void)done:(id)sender
 {
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
