@@ -10,7 +10,7 @@
 #import <MediaAccessibility/MediaAccessibility.h>
 
 static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
-static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option, BOOL mandatory);
+static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option);
 
 @interface SRGAlternateTracksViewController ()
 
@@ -192,10 +192,10 @@ static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option, BOOL mand
             NSString *title = SRGTitleForMediaOption(option);
             if (title) {
                 cell.textLabel.text = title;
-                cell.detailTextLabel.text = SRGHintForMediaOption(option, NO);
+                cell.detailTextLabel.text = SRGHintForMediaOption(option);
             }
             else {
-                cell.textLabel.text = SRGHintForMediaOption(option, YES);
+                cell.textLabel.text = SRGHintForMediaOption(option);
                 cell.detailTextLabel.text = nil;
             }
             
@@ -210,10 +210,10 @@ static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option, BOOL mand
         NSString *title = SRGTitleForMediaOption(option);
         if (title) {
             cell.textLabel.text = title;
-            cell.detailTextLabel.text = SRGHintForMediaOption(option, NO);
+            cell.detailTextLabel.text = SRGHintForMediaOption(option);
         }
         else {
-            cell.textLabel.text = SRGHintForMediaOption(option, YES);
+            cell.textLabel.text = SRGHintForMediaOption(option);
             cell.detailTextLabel.text = nil;
         }
         
@@ -269,33 +269,25 @@ static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option, BOOL mand
 
 @end
 
-// Extract the stream title if available
+// Extract the stream title if available. Return `nil` if the option display name suffices.
 static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option)
 {
-    // Use option locale to always extract the title from the stream if available, no matter which language the application
-    // is using.
+    // Use option locale to always extract the title from the stream if available, no matter which locale the application is using.
     NSArray<AVMetadataItem *> *titleItems = [AVMetadataItem metadataItemsFromArray:option.commonMetadata withKey:AVMetadataCommonKeyTitle keySpace:AVMetadataKeySpaceCommon];
     NSString *optionLanguage = option.locale.localeIdentifier;
     
     if (titleItems && optionLanguage) {
         NSString *title = [AVMetadataItem metadataItemsFromArray:titleItems filteredAndSortedAccordingToPreferredLanguages:@[optionLanguage]].firstObject.stringValue;
-        if (title) {
+        NSString *displayName = [option displayNameWithLocale:NSLocale.currentLocale];
+        if (! [title isEqualToString:displayName]) {
             return title;
         }
     }
     return nil;
 }
 
-static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option, BOOL mandatory)
+// Provide a hint for the option, suitable for display in the application locale. A value is always returned.
+static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option)
 {
-    NSString *displayName = [option displayNameWithLocale:NSLocale.currentLocale];
-    if (mandatory) {
-        return displayName;
-    }
-    
-    NSString *title = SRGTitleForMediaOption(option);
-    
-    // TODO: With iOS 10, we can use the languageCode property instead
-    BOOL isMachingCurrentLocale = [[option.locale objectForKey:NSLocaleLanguageCode] isEqual:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
-    return (! isMachingCurrentLocale && ! [displayName isEqualToString:title]) ? displayName : nil;
+    return [option displayNameWithLocale:NSLocale.currentLocale];
 }
