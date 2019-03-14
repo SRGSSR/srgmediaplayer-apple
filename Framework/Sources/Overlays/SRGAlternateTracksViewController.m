@@ -170,22 +170,32 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
  
     NSString *characteristic = self.characteristics[indexPath.section];
-    if (characteristic == AVMediaCharacteristicLegible && indexPath.row == 0) {
-        cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Off", @"Option to disable subtitles");
-        cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-    }
-    else if (characteristic == AVMediaCharacteristicLegible && indexPath.row == 1) {
-        cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
-        cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    
+    if (characteristic == AVMediaCharacteristicLegible) {
+        if (indexPath.row == 0) {
+            cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Off", @"Option to disable subtitles");
+            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        }
+        else if (indexPath.row == 1) {
+            cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
+            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        }
+        else {
+            AVMediaSelectionOption *option = self.options[characteristic][indexPath.row - 2];
+            cell.textLabel.text = SRGTitleForMediaOption(option);
+            
+            AVMediaSelectionGroup *group = self.groups[characteristic];
+            AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        }
     }
     else {
-        NSArray<AVMediaSelectionOption *> *options = self.options[characteristic];
-        AVMediaSelectionOption *option = (characteristic == AVMediaCharacteristicLegible) ? options[indexPath.row - 2] : options[indexPath.row];
+        AVMediaSelectionOption *option = self.options[characteristic][indexPath.row];
         cell.textLabel.text = SRGTitleForMediaOption(option);
         
         AVMediaSelectionGroup *group = self.groups[characteristic];
         AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-        cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
 }
 
