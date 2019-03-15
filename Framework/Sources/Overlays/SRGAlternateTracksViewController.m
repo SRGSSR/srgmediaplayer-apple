@@ -9,8 +9,8 @@
 
 #import <MediaAccessibility/MediaAccessibility.h>
 
-static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option);
-static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option);
+static NSString *SRGTitleForMediaSelectionOption(AVMediaSelectionOption *option);
+static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 
 @interface SRGAlternateTracksViewController ()
 
@@ -206,15 +206,15 @@ static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option);
             UITableViewCell *cell = nil;
             
             AVMediaSelectionOption *option = self.options[characteristic][indexPath.row - 2];
-            NSString *title = SRGTitleForMediaOption(option);
+            NSString *title = SRGTitleForMediaSelectionOption(option);
             if (title) {
                 cell = [self subtitleCellForTableView:tableView];
                 cell.textLabel.text = title;
-                cell.detailTextLabel.text = SRGHintForMediaOption(option);
+                cell.detailTextLabel.text = SRGHintForMediaSelectionOption(option);
             }
             else {
                 cell = [self defaultCellForTableView:tableView];
-                cell.textLabel.text = SRGHintForMediaOption(option);
+                cell.textLabel.text = SRGHintForMediaSelectionOption(option);
             }
             
             AVMediaSelectionGroup *group = self.groups[characteristic];
@@ -228,15 +228,15 @@ static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option);
         UITableViewCell *cell = nil;
         
         AVMediaSelectionOption *option = self.options[characteristic][indexPath.row];
-        NSString *title = SRGTitleForMediaOption(option);
+        NSString *title = SRGTitleForMediaSelectionOption(option);
         if (title) {
             cell = [self subtitleCellForTableView:tableView];
             cell.textLabel.text = title;
-            cell.detailTextLabel.text = SRGHintForMediaOption(option);
+            cell.detailTextLabel.text = SRGHintForMediaSelectionOption(option);
         }
         else {
             cell = [self defaultCellForTableView:tableView];
-            cell.textLabel.text = SRGHintForMediaOption(option);
+            cell.textLabel.text = SRGHintForMediaSelectionOption(option);
         }
         
         AVMediaSelectionGroup *group = self.groups[characteristic];
@@ -298,7 +298,7 @@ static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option);
 @end
 
 // Extract the stream title if available. Return `nil` if the option display name suffices.
-static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option)
+static NSString *SRGTitleForMediaSelectionOption(AVMediaSelectionOption *option)
 {
     // Use option locale to always extract the title from the stream if available, no matter which locale the application is using.
     NSArray<AVMetadataItem *> *titleItems = [AVMetadataItem metadataItemsFromArray:option.commonMetadata withKey:AVMetadataCommonKeyTitle keySpace:AVMetadataKeySpaceCommon];
@@ -306,7 +306,7 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option)
     
     if (titleItems && optionLanguage) {
         NSString *title = [AVMetadataItem metadataItemsFromArray:titleItems filteredAndSortedAccordingToPreferredLanguages:@[optionLanguage]].firstObject.stringValue;
-        NSString *displayName = [option displayNameWithLocale:NSLocale.currentLocale];
+        NSString *displayName = SRGHintForMediaSelectionOption(option);
         if (! [title isEqualToString:displayName]) {
             return title;
         }
@@ -315,7 +315,11 @@ static NSString *SRGTitleForMediaOption(AVMediaSelectionOption *option)
 }
 
 // Provide a hint for the option, suitable for display in the application locale. A value is always returned.
-static NSString *SRGHintForMediaOption(AVMediaSelectionOption *option)
+static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option)
 {
-    return [option displayNameWithLocale:NSLocale.currentLocale];
+    // If simply using the current locale to localize the display name, the result might vary depending on which
+    // languages the application supports. This can lead to different results, some of the redundant (e.g. if the
+    // app only supports French). To eliminate such issues, we recreate a simple locale from the current language code.
+    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
+    return [option displayNameWithLocale:locale];
 }
