@@ -10,6 +10,27 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class SRGTracksButton;
+
+/**
+ *  Tracks button delegate protocol.
+ */
+@protocol SRGTracksButtonDelegate <NSObject>
+
+@optional
+
+/**
+ *  The button is about to show the selection popover.
+ */
+- (void)tracksButtonWillShowSelectionPopover:(SRGTracksButton *)tracksButton;
+
+/**
+ *  The selection popover has been hidden.
+ */
+- (void)tracksButtonDidHideSelectionPopover:(SRGTracksButton *)tracksButton;
+
+@end
+
 /**
  *  Button which is automatically shown when subtitles are available, disappears otherwise by default. If your controls are
  *  stacked using a `UIStackView`, the layout will automatically adjust when the button appears or disappears.
@@ -42,6 +63,11 @@ IB_DESIGNABLE
  *  Default value is `NO`.
  */
 @property (nonatomic, getter=isAlwaysHidden) IBInspectable BOOL alwaysHidden;
+
+/**
+ *  The button delegate.
+ */
+@property (nonatomic, weak) id<SRGTracksButtonDelegate> delegate;
 
 @end
 

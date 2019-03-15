@@ -17,10 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SRGAlternateTracksViewControllerDelegate <NSObject>
 
 @optional
+
 /**
- *  Called when a media option has been selected within a group (subtitles or audio tracks).
+ *  Called when a media option has been selected (subtitles or audio tracks).
  */
-- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController didSelectMediaOption:(nullable AVMediaSelectionOption *)option inGroup:(AVMediaSelectionGroup *)group;
+- (void)alternateTracksViewControllerDidSelectMediaOption:(SRGAlternateTracksViewController *)alternateTracksViewController;
 
 @end
 
@@ -32,13 +33,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return an instance wrapped into a navigation controller.
  */
-+ (UINavigationController *)alternateTracksNavigationControllerForPlayer:(AVPlayer *)player
-                                                            withDelegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate;
++ (UINavigationController *)alternateTracksNavigationControllerForPlayer:(AVPlayer *)player withDelegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate;
 
 /**
  *  The view controller delegate.
  */
-@property (nonatomic, weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
+@property (nonatomic, readonly, weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
 
 @end
 
