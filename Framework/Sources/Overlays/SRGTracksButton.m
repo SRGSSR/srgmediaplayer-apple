@@ -182,8 +182,8 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideSelectionPopopver:)]) {
-        [self.delegate tracksButtonDidHideSelectionPopopver:self];
+    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideSelectionPopover:)]) {
+        [self.delegate tracksButtonDidHideSelectionPopover:self];
     }
 }
 
@@ -191,8 +191,8 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)showSubtitlesMenu:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonWillShowSelectionPopopver:)]) {
-        [self.delegate tracksButtonWillShowSelectionPopopver:self];
+    if ([self.delegate respondsToSelector:@selector(tracksButtonWillShowSelectionPopover:)]) {
+        [self.delegate tracksButtonWillShowSelectionPopover:self];
     }
     
     UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForPlayer:self.mediaPlayerController.player
