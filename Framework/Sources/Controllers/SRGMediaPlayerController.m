@@ -70,7 +70,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) CMTime seekTargetTime;
 
 @property (nonatomic) AVMediaSelectionOption *audioOption;
-@property (nonatomic) AVMediaSelectionOption *legibleOption;
+@property (nonatomic) AVMediaSelectionOption *subtitleOption;
 
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
 
@@ -155,7 +155,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                 // completion handler has been executed (since it might immediately start playback)
                 if (self.startPosition) {
                     self.audioOption = [self selectedAudioOptionForPlayer:player];
-                    self.legibleOption = [self selectedLegibleOptionForPlayer:player];
+                    self.subtitleOption = [self selectedSubtitleOptionForPlayer:player];
                     
                     void (^completionBlock)(BOOL) = ^(BOOL finished) {
                         if (! finished) {
@@ -988,7 +988,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.seekTargetTime = kCMTimeIndefinite;
     
     self.audioOption = nil;
-    self.legibleOption = nil;
+    self.subtitleOption = nil;
     
     self.pictureInPictureController = nil;
 }
@@ -1145,15 +1145,15 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     return [playerItem selectedMediaOptionInMediaSelectionGroup:audioGroup];
 }
 
-- (AVMediaSelectionOption *)selectedLegibleOptionForPlayer:(AVPlayer *)player
+- (AVMediaSelectionOption *)selectedSubtitleOptionForPlayer:(AVPlayer *)player
 {
     AVPlayerItem *playerItem = player.currentItem;
     if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
         return nil;
     }
     
-    AVMediaSelectionGroup *legibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-    return [playerItem selectedMediaOptionInMediaSelectionGroup:legibleGroup];
+    AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    return [playerItem selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
 }
 
 - (void)updateTracksForPlayer:(AVPlayer *)player
@@ -1175,17 +1175,17 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                         userInfo:[userInfo copy]];
     }
     
-    AVMediaSelectionOption *legibleOption = [self selectedLegibleOptionForPlayer:player];
-    if ((legibleOption || self.legibleOption) && ! [legibleOption isEqual:self.legibleOption]) {
+    AVMediaSelectionOption *subtitleOption = [self selectedSubtitleOptionForPlayer:player];
+    if ((subtitleOption || self.subtitleOption) && ! [subtitleOption isEqual:self.subtitleOption]) {
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-        if (self.legibleOption) {
-            userInfo[SRGMediaPlayerPreviousTrackKey] = self.legibleOption;
+        if (self.subtitleOption) {
+            userInfo[SRGMediaPlayerPreviousTrackKey] = self.subtitleOption;
         }
-        if (legibleOption) {
-            userInfo[SRGMediaPlayerTrackKey] = legibleOption;
+        if (subtitleOption) {
+            userInfo[SRGMediaPlayerTrackKey] = subtitleOption;
         }
         
-        self.legibleOption = legibleOption;
+        self.subtitleOption = subtitleOption;
         
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSubtitleTrackDidChangeNotification
                                                           object:self

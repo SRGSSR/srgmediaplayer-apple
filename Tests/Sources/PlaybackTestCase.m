@@ -2166,7 +2166,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, ==, CMTimeMakeWithSeconds(1700., NSEC_PER_SEC)));
 }
 
-- (void)testTrackNotificationsSentOnlyWhenTracksChange
+- (void)testNoTrackNotificationsAtStartupAndWhenReset
 {
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;

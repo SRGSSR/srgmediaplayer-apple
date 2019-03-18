@@ -138,8 +138,8 @@ OBJC_EXTERN NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotific
 OBJC_EXTERN NSString * const SRGMediaPlayerExternalPlaybackStateDidChangeNotification;
 
 /**
- *  Notification sent when the tracks changed. Use the keys available below to retrieve information from
- *  the notification `userInfo` dictionary.
+ *  Notification sent when tracks changed. Use the keys available below to retrieve information from the notification
+ *  `userInfo` dictionary.
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerAudioTrackDidChangeNotification;
 OBJC_EXTERN NSString * const SRGMediaPlayerSubtitleTrackDidChangeNotification;

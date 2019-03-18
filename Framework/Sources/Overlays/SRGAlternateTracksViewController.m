@@ -79,11 +79,11 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
             options[AVMediaCharacteristicAudible] = audioGroup.options;
         }
         
-        AVMediaSelectionGroup *legibleGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        if (legibleGroup) {
+        AVMediaSelectionGroup *subtitleGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        if (subtitleGroup) {
             [characteristics addObject:AVMediaCharacteristicLegible];
-            groups[AVMediaCharacteristicLegible] = legibleGroup;
-            options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:legibleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+            groups[AVMediaCharacteristicLegible] = subtitleGroup;
+            options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
         }
         
         self.characteristics = [characteristics copy];
