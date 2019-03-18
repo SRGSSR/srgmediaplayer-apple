@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#import "SRGMediaPlayerController.h"
+
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
@@ -33,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return an instance wrapped into a navigation controller.
  */
-+ (UINavigationController *)alternateTracksNavigationControllerForPlayer:(AVPlayer *)player withDelegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate;
++ (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController withDelegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate;
 
 /**
  *  The view controller delegate.

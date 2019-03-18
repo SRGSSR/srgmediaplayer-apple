@@ -195,8 +195,8 @@ static void commonInit(SRGTracksButton *self);
         [self.delegate tracksButtonWillShowSelectionPopover:self];
     }
     
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForPlayer:self.mediaPlayerController.player
-                                                                                                                     withDelegate:self];
+    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController
+                                                                                                                                    withDelegate:self];
     navigationController.modalPresentationStyle = UIModalPresentationPopover;
     
     navigationController.popoverPresentationController.delegate = self;

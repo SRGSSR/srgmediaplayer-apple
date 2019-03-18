@@ -18,49 +18,50 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 @property (nonatomic) NSDictionary<NSString *, AVMediaSelectionGroup *> *groups;
 @property (nonatomic) NSDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options;
 
-@property (nonatomic) AVPlayer *player;
+@property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
+
+@property (nonatomic, weak) id periodicTimeObserver;
 
 @end
 
 @implementation SRGAlternateTracksViewController
 
-@synthesize player = _player;
-
 #pragma mark Class methods
 
-+ (UINavigationController *)alternateTracksNavigationControllerForPlayer:(AVPlayer *)player withDelegate:(id<SRGAlternateTracksViewControllerDelegate>)delegate
++ (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController withDelegate:(id<SRGAlternateTracksViewControllerDelegate>)delegate
 {
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    alternateTracksViewController.player = player;
+    alternateTracksViewController.mediaPlayerController = mediaPlayerController;
     alternateTracksViewController.delegate = delegate;
     return [[UINavigationController alloc] initWithRootViewController:alternateTracksViewController];
 }
 
 #pragma mark Getters and setters
 
-- (void)setPlayer:(AVPlayer *)player
+- (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    _player = player;
+    _mediaPlayerController = mediaPlayerController;
     
-    AVPlayerItem *playerItem = _player.currentItem;
+    AVPlayer *player = mediaPlayerController.player;
+    AVPlayerItem *playerItem = player.currentItem;
     
     // Do not check tracks before the player item is ready to play (otherwise AVPlayer will internally wait on semaphores,
-    // locking the main thread).
+    // locking the main thread ). Also see `-[AVAsset allMediaSelections]` documentation.
     if (playerItem && playerItem.status == AVPlayerItemStatusReadyToPlay) {
         NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
         NSMutableDictionary<NSString *, AVMediaSelectionGroup *> *groups = [NSMutableDictionary dictionary];
         NSMutableDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options = [NSMutableDictionary dictionary];
         
-        AVMediaSelectionGroup *audioGroup = [_player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        AVMediaSelectionGroup *audioGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         if (audioGroup.options.count > 1) {
             [characteristics addObject:AVMediaCharacteristicAudible];
             groups[AVMediaCharacteristicAudible] = audioGroup;
             options[AVMediaCharacteristicAudible] = audioGroup.options;
         }
         
-        AVMediaSelectionGroup *legibleGroup = [_player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        AVMediaSelectionGroup *legibleGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         if (legibleGroup) {
             [characteristics addObject:AVMediaCharacteristicLegible];
             groups[AVMediaCharacteristicLegible] = legibleGroup;
@@ -80,11 +81,6 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     [self.tableView reloadData];
 }
 
-- (AVPlayer *)player
-{
-    return _player;
-}
-
 #pragma mark View lifecycle
 
 - (void)viewDidLoad
@@ -98,7 +94,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 {
     [super viewWillAppear:animated];
     
-    if (!self.navigationController.popoverPresentationController) {
+    if (! self.navigationController.popoverPresentationController) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                target:self
                                                                                                action:@selector(done:)];
@@ -218,7 +214,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
             }
             
             AVMediaSelectionGroup *group = self.groups[characteristic];
-            AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+            AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
             cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
@@ -240,7 +236,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         }
         
         AVMediaSelectionGroup *group = self.groups[characteristic];
-        AVMediaSelectionOption *currentOptionInGroup = [self.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+        AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
         cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         
         return cell;
@@ -251,24 +247,26 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    AVPlayer *player = self.mediaPlayerController.player;
+    
     NSString *characteristic = self.characteristics[indexPath.section];
     AVMediaSelectionGroup *group = self.groups[characteristic];
     NSArray<AVMediaSelectionOption *> *options = self.options[characteristic];
     
     if (characteristic == AVMediaCharacteristicLegible) {
         if (indexPath.row == 0) {
-            [self.player.currentItem selectMediaOption:nil inMediaSelectionGroup:group];
+            [player.currentItem selectMediaOption:nil inMediaSelectionGroup:group];
             
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
         }
         else if (indexPath.row == 1) {
-            [self.player.currentItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
+            [player.currentItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
             
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
         }
         else {
             AVMediaSelectionOption *option = options[indexPath.row - 2];
-            [self.player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
+            [player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
             
             // Save the subtitle language (system) so that it gets automatically applied again when instantiating a new `AVPlayer` with
             // `appliesMediaSelectionCriteriaAutomatically` (default). For example `SRGMediaPlayerController` or `AVPlayerViewController`
@@ -278,7 +276,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         }
     }
     else {
-        [self.player.currentItem selectMediaOption:options[indexPath.row] inMediaSelectionGroup:group];
+        [player.currentItem selectMediaOption:options[indexPath.row] inMediaSelectionGroup:group];
     }
     
     if ([self.delegate respondsToSelector:@selector(alternateTracksViewControllerDidSelectMediaOption:)]) {
