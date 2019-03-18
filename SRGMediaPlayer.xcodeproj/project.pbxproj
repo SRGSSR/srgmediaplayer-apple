@@ -117,7 +117,6 @@
 		E69A1F9B1D61BFAE0064E6C1 /* goal.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F5F1D61BFAE0064E6C1 /* goal.png */; };
 		E69A1F9C1D61BFAE0064E6C1 /* goal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F601D61BFAE0064E6C1 /* goal@2x.png */; };
 		E69A1F9D1D61BFAE0064E6C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F611D61BFAE0064E6C1 /* Images.xcassets */; };
-		E69A1FA01D61BFAE0064E6C1 /* LaunchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F641D61BFAE0064E6C1 /* LaunchImage.png */; };
 		E69A1FA11D61BFAE0064E6C1 /* VideoDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F651D61BFAE0064E6C1 /* VideoDemoConfiguration.plist */; };
 		E69A1FA21D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F661D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist */; };
 		E69A1FA31D61BFAE0064E6C1 /* red_card.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F671D61BFAE0064E6C1 /* red_card.png */; };
@@ -345,7 +344,6 @@
 		E69A1F5F1D61BFAE0064E6C1 /* goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goal.png; sourceTree = "<group>"; };
 		E69A1F601D61BFAE0064E6C1 /* goal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "goal@2x.png"; sourceTree = "<group>"; };
 		E69A1F611D61BFAE0064E6C1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		E69A1F641D61BFAE0064E6C1 /* LaunchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImage.png; sourceTree = "<group>"; };
 		E69A1F651D61BFAE0064E6C1 /* VideoDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = VideoDemoConfiguration.plist; sourceTree = "<group>"; };
 		E69A1F661D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MultiPlayerDemoConfiguration.plist; sourceTree = "<group>"; };
 		E69A1F671D61BFAE0064E6C1 /* red_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_card.png; sourceTree = "<group>"; };
@@ -634,7 +632,6 @@
 				E69A1F5F1D61BFAE0064E6C1 /* goal.png */,
 				E69A1F601D61BFAE0064E6C1 /* goal@2x.png */,
 				E69A1F611D61BFAE0064E6C1 /* Images.xcassets */,
-				E69A1F641D61BFAE0064E6C1 /* LaunchImage.png */,
 				E6C315661D76AB62001FC93A /* LaunchScreen.xib */,
 				08F4E5411E7FE76900C9E8FD /* Localizable.strings */,
 				E69A1F651D61BFAE0064E6C1 /* VideoDemoConfiguration.plist */,
@@ -1056,7 +1053,6 @@
 				E69A1FAA1D61BFAE0064E6C1 /* videos@2x.png in Resources */,
 				E69A1F9C1D61BFAE0064E6C1 /* goal@2x.png in Resources */,
 				E69A1F971D61BFAE0064E6C1 /* audios@2x.png in Resources */,
-				E69A1FA01D61BFAE0064E6C1 /* LaunchImage.png in Resources */,
 				E69A1FA11D61BFAE0064E6C1 /* VideoDemoConfiguration.plist in Resources */,
 				E6BCE9571D76CB900021973D /* CustomPlayerViewController.storyboard in Resources */,
 				E69A1FAB1D61BFAE0064E6C1 /* yellow_card.png in Resources */,
