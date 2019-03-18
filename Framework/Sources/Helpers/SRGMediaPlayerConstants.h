@@ -138,6 +138,13 @@ OBJC_EXTERN NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotific
 OBJC_EXTERN NSString * const SRGMediaPlayerExternalPlaybackStateDidChangeNotification;
 
 /**
+ *  Notification sent when the tracks changed. Use the keys available below to retrieve information from
+ *  the notification `userInfo` dictionary.
+ */
+OBJC_EXTERN NSString * const SRGMediaPlayerAudioTrackDidChangeNotification;
+OBJC_EXTERN NSString * const SRGMediaPlayerSubtitleTrackDidChangeNotification;
+
+/**
  *  Notification sent when the current segment changes. Use the keys available below to retrieve information from
  *  the notification `userInfo` dictionary.
  */
@@ -201,6 +208,12 @@ OBJC_EXTERN NSString * const SRGMediaPlayerInterruptionKey;                     
  *  Information available for `SRGMediaPlayerSegmentDidStartNotification`, `SRGMediaPlayerSegmentDidEndNotification` and `SRGMediaPlayerPlaybackStateDidChangeNotification`.
  */
 OBJC_EXTERN NSString * const SRGMediaPlayerSelectionKey;                                    // Key to an `NSNumber` wrapping a boolean, set to `YES` iff the notification results from a segment selection.
+
+/**
+ *  Information available for `SRGMediaPlayerAudioTrackDidChangeNotification` and `SRGMediaPlayerSubtitleTrackDidChangeNotification`.
+ */
+OBJC_EXPORT NSString * const SRGMediaPlayerTrackKey;                                       // Key to the current `AVMediaSelectionOption`.
+OBJC_EXPORT NSString * const SRGMediaPlayerPreviousTrackKey;                               // Key to the previous `AVMediaSelectionOption`.
 
 /**
  *  Information available for all notifications, except `SRGMediaPlayerPictureInPictureStateDidChangeNotification` and `SRGMediaPlayerExternalPlaybackStateDidChangeNotification`.

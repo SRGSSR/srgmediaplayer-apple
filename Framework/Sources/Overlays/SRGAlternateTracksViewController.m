@@ -42,14 +42,34 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
+    if (_mediaPlayerController) {
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:SRGMediaPlayerAudioTrackDidChangeNotification
+                                                    object:_mediaPlayerController];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:SRGMediaPlayerSubtitleTrackDidChangeNotification
+                                                    object:_mediaPlayerController];
+    }
+    
     _mediaPlayerController = mediaPlayerController;
+    
+    if (mediaPlayerController) {
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(audioTrackDidChange:)
+                                                   name:SRGMediaPlayerAudioTrackDidChangeNotification
+                                                 object:mediaPlayerController];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(subtitleTrackDidChange:)
+                                                   name:SRGMediaPlayerSubtitleTrackDidChangeNotification
+                                                 object:mediaPlayerController];
+    }
     
     AVPlayer *player = mediaPlayerController.player;
     AVPlayerItem *playerItem = player.currentItem;
     
     // Do not check tracks before the player item is ready to play (otherwise AVPlayer will internally wait on semaphores,
     // locking the main thread ). Also see `-[AVAsset allMediaSelections]` documentation.
-    if (playerItem && playerItem.status == AVPlayerItemStatusReadyToPlay) {
+    if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
         NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
         NSMutableDictionary<NSString *, AVMediaSelectionGroup *> *groups = [NSMutableDictionary dictionary];
         NSMutableDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options = [NSMutableDictionary dictionary];
@@ -291,6 +311,18 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 - (void)done:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark Notifications
+
+- (void)audioTrackDidChange:(NSNotification *)notification
+{
+    [self.tableView reloadData];
+}
+
+- (void)subtitleTrackDidChange:(NSNotification *)notification
+{
+    [self.tableView reloadData];
 }
 
 @end

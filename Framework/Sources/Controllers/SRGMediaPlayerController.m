@@ -69,6 +69,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) CMTime seekStartTime;
 @property (nonatomic) CMTime seekTargetTime;
 
+@property (nonatomic) AVMediaSelectionOption *audioOption;
+@property (nonatomic) AVMediaSelectionOption *legibleOption;
+
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
 
 @end
@@ -147,7 +150,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             
             AVPlayerItem *playerItem = player.currentItem;
             
-            if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+            if (playerItem.status == AVPlayerItemStatusReadyToPlay) {    
                 // Playback start. Use received start parameters, do not update the playback state yet, wait until the
                 // completion handler has been executed (since it might immediately start playback)
                 if (self.startPosition) {
@@ -981,6 +984,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     self.seekTargetTime = kCMTimeIndefinite;
     
+    self.audioOption = nil;
+    self.legibleOption = nil;
+    
     self.pictureInPictureController = nil;
 }
 
@@ -1123,6 +1129,50 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }];
 }
 
+#pragma mark Tracks
+
+- (void)updateTracksForPlayer:(AVPlayer *)player
+{
+    AVPlayerItem *playerItem = player.currentItem;
+    if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+        AVMediaSelectionGroup *audioGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        AVMediaSelectionOption *audioOption = [playerItem selectedMediaOptionInMediaSelectionGroup:audioGroup];
+        if ((audioOption || self.audioOption) && ! [audioOption isEqual:self.audioOption]) {
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+            if (self.audioOption) {
+                userInfo[SRGMediaPlayerPreviousTrackKey] = self.audioOption;
+            }
+            if (audioOption) {
+                userInfo[SRGMediaPlayerTrackKey] = audioOption;
+            }
+            
+            self.audioOption = audioOption;
+            
+            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerAudioTrackDidChangeNotification
+                                                              object:self
+                                                            userInfo:[userInfo copy]];
+        }
+        
+        AVMediaSelectionGroup *legibleGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        AVMediaSelectionOption *legibleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:legibleGroup];
+        if ((legibleOption || self.legibleOption) && ! [legibleOption isEqual:self.legibleOption]) {
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+            if (self.legibleOption) {
+                userInfo[SRGMediaPlayerPreviousTrackKey] = self.legibleOption;
+            }
+            if (legibleOption) {
+                userInfo[SRGMediaPlayerTrackKey] = legibleOption;
+            }
+            
+            self.legibleOption = legibleOption;
+            
+            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSubtitleTrackDidChangeNotification
+                                                              object:self
+                                                            userInfo:[userInfo copy]];
+        }
+    }
+}
+
 #pragma mark Time observers
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
@@ -1132,9 +1182,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     
     @weakify(self)
-    self.periodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    self.periodicTimeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
-        
         if (self.playerLayer.readyForDisplay) {
             if (self.pictureInPictureController.playerLayer != self.playerLayer) {
                 self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
@@ -1146,13 +1195,13 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         }
         
         [self updateSegmentStatusForPlaybackState:self.playbackState previousPlaybackState:self.playbackState time:time];
+        [self updateTracksForPlayer:player];
     }];
 }
 
 - (void)unregisterTimeObserversForPlayer:(AVPlayer *)player
 {
-    [player removeTimeObserver:self.periodicTimeObserver];
-    self.periodicTimeObserver = nil;
+    [self removePeriodicTimeObserver:self.periodicTimeObserver];
     
     for (SRGPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
         [periodicTimeObserver detachFromMediaPlayer];
