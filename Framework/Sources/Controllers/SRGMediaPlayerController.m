@@ -1141,7 +1141,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         return nil;
     }
     
-    AVMediaSelectionGroup *audioGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+    AVMediaSelectionGroup *audioGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
     return [playerItem selectedMediaOptionInMediaSelectionGroup:audioGroup];
 }
 
@@ -1152,7 +1152,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         return nil;
     }
     
-    AVMediaSelectionGroup *legibleGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    AVMediaSelectionGroup *legibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
     return [playerItem selectedMediaOptionInMediaSelectionGroup:legibleGroup];
 }
 

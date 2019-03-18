@@ -2207,9 +2207,137 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
 }
 
-- (void)testSubtitleTrackChange
+- (void)testAudioTrackChangeNotification
 {
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
     
+    [self.mediaPlayerController playURL:OnDemandWithMultipleTracksTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+    AVMediaSelectionGroup *selectionGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+    
+    AVMediaSelectionOption *previousOption = [playerItem selectedMediaOptionInMediaSelectionGroup:selectionGroup];
+    XCTAssertNotNil(previousOption);
+    
+    AVMediaSelectionOption *option = selectionGroup.options.lastObject;
+    XCTAssertNotNil(option);
+    
+    XCTAssertNotEqualObjects(previousOption, option);
+    
+    [self expectationForSingleNotification:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousTrackKey], previousOption);
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerTrackKey], option);
+        return YES;
+    }];
+    
+    [playerItem selectMediaOption:option inMediaSelectionGroup:selectionGroup];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testSubtitleTrackChangeNotification
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandWithMultipleTracksTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+    AVMediaSelectionGroup *selectionGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    
+    AVMediaSelectionOption *previousOption = [playerItem selectedMediaOptionInMediaSelectionGroup:selectionGroup];
+    XCTAssertNil(previousOption);
+    
+    AVMediaSelectionOption *option1 = selectionGroup.options.lastObject;
+    XCTAssertNotNil(option1);
+    
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerTrackKey], option1);
+        return YES;
+    }];
+    
+    XCTAssertNotEqualObjects(previousOption, option1);
+    [playerItem selectMediaOption:option1 inMediaSelectionGroup:selectionGroup];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    AVMediaSelectionOption *option2 = selectionGroup.options.firstObject;
+    XCTAssertNotNil(option2);
+    
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousTrackKey], option1);
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerTrackKey], option2);
+        return YES;
+    }];
+    
+    XCTAssertNotEqualObjects(option1, option2);
+    [playerItem selectMediaOption:option2 inMediaSelectionGroup:selectionGroup];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testNoAudioTrackChange
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandWithMultipleTracksTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+    AVMediaSelectionGroup *selectionGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+    AVMediaSelectionOption *option = [playerItem selectedMediaOptionInMediaSelectionGroup:selectionGroup];
+    XCTAssertNotNil(option);
+    
+    id trackChangeObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No track change notification is expected");
+    }];
+    
+    [self expectationForElapsedTimeInterval:5. withHandler:nil];
+    
+    [playerItem selectMediaOption:option inMediaSelectionGroup:selectionGroup];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:trackChangeObserver];
+    }];
+}
+
+- (void)testNoSubtitleTrackChange
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandWithMultipleTracksTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+    AVMediaSelectionGroup *selectionGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    AVMediaSelectionOption *option = [playerItem selectedMediaOptionInMediaSelectionGroup:selectionGroup];
+    XCTAssertNil(option);
+    
+    id trackChangeObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No track change notification is expected");
+    }];
+    
+    [self expectationForElapsedTimeInterval:5. withHandler:nil];
+    
+    [playerItem selectMediaOption:option inMediaSelectionGroup:selectionGroup];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:trackChangeObserver];
+    }];
 }
 
 @end
