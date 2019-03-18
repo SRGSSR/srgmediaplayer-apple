@@ -16,6 +16,11 @@ static NSURL *OnDemandTestURL(void)
     return [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
 }
 
+static NSURL *OnDemandWithMultipleTracksTestURL(void)
+{
+    return [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021-,301k,101k,701k,1201k,2001k,fra-ad,roh,deu,ita,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%C3%A7ais,5:fra:Fran%C3%A7ais%20(AD),6:roh:Rh%C3%A9to-roman,7:deu:Allemand,8:ita:Italien&caption=docfu/2017/docfu_20170728_full_f_1027021_fra.m3u8:fra:Fran%C3%A7ais,docfu/2017/docfu_20170728_full_f_1027021_ita.m3u8:ita:Italien,docfu/2017/docfu_20170728_full_f_1027021_gsw.m3u8:deu:Allemand"];
+}
+
 static NSURL *ShortNonStreamedTestURL(void)
 {
     return [NSURL URLWithString:@"http://techslides.com/demos/sample-videos/small.mp4"];
@@ -2159,6 +2164,52 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, ==, CMTimeMakeWithSeconds(1700., NSEC_PER_SEC)));
+}
+
+- (void)testTrackNotificationsSentOnlyWhenTracksChange
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    [self expectationForElapsedTimeInterval:5. withHandler:nil];
+    
+    id audioTrackChangeObserver1 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No audio track change at startup is expected");
+    }];
+    id subtitleTrackChangeObserver1 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No subtitle track change at startup is expected");
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandWithMultipleTracksTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:audioTrackChangeObserver1];
+        [NSNotificationCenter.defaultCenter removeObserver:subtitleTrackChangeObserver1];
+    }];
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
+    }];
+    [self expectationForElapsedTimeInterval:5. withHandler:nil];
+    
+    id audioTrackChangeObserver2 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No audio track change at reset is expected");
+    }];
+    id subtitleTrackChangeObserver2 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No subtitle track change at reset is expected");
+    }];
+    
+    [self.mediaPlayerController reset];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:audioTrackChangeObserver2];
+        [NSNotificationCenter.defaultCenter removeObserver:subtitleTrackChangeObserver2];
+    }];
+}
+
+- (void)testSubtitleTrackChange
+{
+    
 }
 
 @end

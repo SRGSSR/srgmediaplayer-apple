@@ -154,6 +154,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                 // Playback start. Use received start parameters, do not update the playback state yet, wait until the
                 // completion handler has been executed (since it might immediately start playback)
                 if (self.startPosition) {
+                    self.audioOption = [self selectedAudioOptionForPlayer:player];
+                    self.legibleOption = [self selectedLegibleOptionForPlayer:player];
+                    
                     void (^completionBlock)(BOOL) = ^(BOOL finished) {
                         if (! finished) {
                             return;
@@ -1131,45 +1134,62 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 #pragma mark Tracks
 
-- (void)updateTracksForPlayer:(AVPlayer *)player
+- (AVMediaSelectionOption *)selectedAudioOptionForPlayer:(AVPlayer *)player
 {
     AVPlayerItem *playerItem = player.currentItem;
-    if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
-        AVMediaSelectionGroup *audioGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-        AVMediaSelectionOption *audioOption = [playerItem selectedMediaOptionInMediaSelectionGroup:audioGroup];
-        if ((audioOption || self.audioOption) && ! [audioOption isEqual:self.audioOption]) {
-            NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-            if (self.audioOption) {
-                userInfo[SRGMediaPlayerPreviousTrackKey] = self.audioOption;
-            }
-            if (audioOption) {
-                userInfo[SRGMediaPlayerTrackKey] = audioOption;
-            }
-            
-            self.audioOption = audioOption;
-            
-            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerAudioTrackDidChangeNotification
-                                                              object:self
-                                                            userInfo:[userInfo copy]];
+    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+        return nil;
+    }
+    
+    AVMediaSelectionGroup *audioGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+    return [playerItem selectedMediaOptionInMediaSelectionGroup:audioGroup];
+}
+
+- (AVMediaSelectionOption *)selectedLegibleOptionForPlayer:(AVPlayer *)player
+{
+    AVPlayerItem *playerItem = player.currentItem;
+    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+        return nil;
+    }
+    
+    AVMediaSelectionGroup *legibleGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    return [playerItem selectedMediaOptionInMediaSelectionGroup:legibleGroup];
+}
+
+- (void)updateTracksForPlayer:(AVPlayer *)player
+{
+    AVMediaSelectionOption *audioOption = [self selectedAudioOptionForPlayer:player];
+    if ((audioOption || self.audioOption) && ! [audioOption isEqual:self.audioOption]) {
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+        if (self.audioOption) {
+            userInfo[SRGMediaPlayerPreviousTrackKey] = self.audioOption;
+        }
+        if (audioOption) {
+            userInfo[SRGMediaPlayerTrackKey] = audioOption;
         }
         
-        AVMediaSelectionGroup *legibleGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        AVMediaSelectionOption *legibleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:legibleGroup];
-        if ((legibleOption || self.legibleOption) && ! [legibleOption isEqual:self.legibleOption]) {
-            NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-            if (self.legibleOption) {
-                userInfo[SRGMediaPlayerPreviousTrackKey] = self.legibleOption;
-            }
-            if (legibleOption) {
-                userInfo[SRGMediaPlayerTrackKey] = legibleOption;
-            }
-            
-            self.legibleOption = legibleOption;
-            
-            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSubtitleTrackDidChangeNotification
-                                                              object:self
-                                                            userInfo:[userInfo copy]];
+        self.audioOption = audioOption;
+        
+        [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerAudioTrackDidChangeNotification
+                                                          object:self
+                                                        userInfo:[userInfo copy]];
+    }
+    
+    AVMediaSelectionOption *legibleOption = [self selectedLegibleOptionForPlayer:player];
+    if ((legibleOption || self.legibleOption) && ! [legibleOption isEqual:self.legibleOption]) {
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+        if (self.legibleOption) {
+            userInfo[SRGMediaPlayerPreviousTrackKey] = self.legibleOption;
         }
+        if (legibleOption) {
+            userInfo[SRGMediaPlayerTrackKey] = legibleOption;
+        }
+        
+        self.legibleOption = legibleOption;
+        
+        [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSubtitleTrackDidChangeNotification
+                                                          object:self
+                                                        userInfo:[userInfo copy]];
     }
 }
 
