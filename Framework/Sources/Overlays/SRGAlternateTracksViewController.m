@@ -21,8 +21,6 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 
 @property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
 
-@property (nonatomic, weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
-
 @property (nonatomic, weak) id periodicTimeObserver;
 
 @end
@@ -31,11 +29,10 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 
 #pragma mark Class methods
 
-+ (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController withDelegate:(id<SRGAlternateTracksViewControllerDelegate>)delegate
++ (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
     alternateTracksViewController.mediaPlayerController = mediaPlayerController;
-    alternateTracksViewController.delegate = delegate;
     return [[UINavigationController alloc] initWithRootViewController:alternateTracksViewController];
 }
 
@@ -337,10 +334,8 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         [player.currentItem selectMediaOption:options[indexPath.row] inMediaSelectionGroup:group];
     }
     
-    if ([self.delegate respondsToSelector:@selector(alternateTracksViewControllerDidSelectMediaOption:)]) {
-        [self.delegate alternateTracksViewControllerDidSelectMediaOption:self];
-    }
-    
+    // No track change notification is emitted when the setting (e.g. Automatic or Off) does not lead to another value
+    // being selected. We must therefore also fore a refresh to get correct cell state.
     [self.tableView reloadData];
 }
 

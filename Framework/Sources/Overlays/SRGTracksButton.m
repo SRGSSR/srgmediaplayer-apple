@@ -6,6 +6,7 @@
 
 #import "SRGTracksButton.h"
 
+#import "AVAudioSession+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGAlternateTracksViewController.h"
@@ -15,7 +16,7 @@
 
 static void commonInit(SRGTracksButton *self);
 
-@interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate>
+@interface SRGTracksButton ()
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
@@ -54,7 +55,13 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.playbackState)];
+    if (_mediaPlayerController) {
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.playbackState)];
+        
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:SRGMediaPlayerSubtitleTrackDidChangeNotification
+                                                    object:_mediaPlayerController];
+    }
     
     _mediaPlayerController = mediaPlayerController;
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
@@ -65,6 +72,11 @@ static void commonInit(SRGTracksButton *self);
             @strongify(self)
             [self updateAppearance];
         }];
+        
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(subtitleTrackDidChange:)
+                                                   name:SRGMediaPlayerSubtitleTrackDidChangeNotification
+                                                 object:mediaPlayerController];
     }
 }
 
@@ -137,8 +149,8 @@ static void commonInit(SRGTracksButton *self);
     // Do not check tracks before the player item is ready to play (otherwise AVPlayer will internally wait on semaphores,
     // locking the main thread).
     else if (playerItem && playerItem.status == AVPlayerItemStatusReadyToPlay) {
-        // Get available subtitles. If no one, the button disappears or disable. if one or more, display the button. If
-        // one of subtitles is displayed, set the button in the selected state.
+        // Get available subtitles. The button is only available if there are subtitles and / or audio tracks to choose from. If
+        // subtitles are set, display the button in a selected state.
         AVMediaSelectionGroup *legibleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         NSArray<AVMediaSelectionOption *> *legibleOptions = legibleGroup.options;
         
@@ -165,13 +177,6 @@ static void commonInit(SRGTracksButton *self);
     }
 }
 
-#pragma mark SRGAlternateTracksViewControllerDelegate protocol
-
-- (void)alternateTracksViewControllerDidSelectMediaOption:(SRGAlternateTracksViewController *)alternateTracksViewController
-{
-    [self updateAppearance];
-}
-
 #pragma mark UIPopoverPresentationControllerDelegate protocol
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
@@ -195,8 +200,7 @@ static void commonInit(SRGTracksButton *self);
         [self.delegate tracksButtonWillShowSelectionPopover:self];
     }
     
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController
-                                                                                                                                    withDelegate:self];
+    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController];
     navigationController.modalPresentationStyle = UIModalPresentationPopover;
     
     navigationController.popoverPresentationController.delegate = self;
@@ -252,6 +256,13 @@ static void commonInit(SRGTracksButton *self);
 - (NSArray *)accessibilityElements
 {
     return nil;
+}
+
+#pragma mark Notifications
+
+- (void)subtitleTrackDidChange:(NSNotification *)notification
+{
+    [self updateAppearance];
 }
 
 @end
