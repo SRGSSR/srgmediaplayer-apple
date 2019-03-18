@@ -9,7 +9,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Notification sent when the wireless route changes.
+ *  Notification sent when the wireless route changes (e.g. AirPlay enabled or disabled).
  *
  *  @discussion Exactly the same as `MPVolumeViewWirelessRouteActiveDidChangeNotification`, but without the need
  *              for a volume view.
