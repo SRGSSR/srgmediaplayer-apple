@@ -227,7 +227,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
                 AVMediaSelectionGroup *group = self.groups[characteristic];
                 AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
                 
-                cell.accessoryType = (currentOptionInGroup == nil) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+                cell.accessoryType = (currentOptionInGroup == nil || [currentOptionInGroup hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             }
             
             return cell;
