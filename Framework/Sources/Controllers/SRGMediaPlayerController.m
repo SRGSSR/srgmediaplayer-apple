@@ -51,7 +51,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) NSArray<id<SRGSegment>> *visibleSegments;
 
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
-@property (nonatomic) id periodicTimeObserver;
+@property (nonatomic) id playerPeriodicTimeObserver;
+@property (nonatomic, weak) id controllerPeriodicTimeObserver;
 
 // Saved values supplied when playback is started
 @property (nonatomic, weak) id<SRGSegment> initialTargetSegment;
@@ -1202,7 +1203,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     
     @weakify(self)
-    self.periodicTimeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    self.playerPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         if (self.playerLayer.readyForDisplay) {
             if (self.pictureInPictureController.playerLayer != self.playerLayer) {
@@ -1215,13 +1216,20 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         }
         
         [self updateSegmentStatusForPlaybackState:self.playbackState previousPlaybackState:self.playbackState time:time];
+    }];
+    
+    self.controllerPeriodicTimeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        @strongify(self)
         [self updateTracksForPlayer:player];
     }];
 }
 
 - (void)unregisterTimeObserversForPlayer:(AVPlayer *)player
 {
-    [self removePeriodicTimeObserver:self.periodicTimeObserver];
+    [player removeTimeObserver:self.playerPeriodicTimeObserver];
+    self.playerPeriodicTimeObserver = nil;
+    
+    [self removePeriodicTimeObserver:self.controllerPeriodicTimeObserver];
     
     for (SRGPeriodicTimeObserver *periodicTimeObserver in [self.periodicTimeObservers allValues]) {
         [periodicTimeObserver detachFromMediaPlayer];
