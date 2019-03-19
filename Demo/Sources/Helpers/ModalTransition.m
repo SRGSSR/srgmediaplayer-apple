@@ -15,6 +15,8 @@
 @property (nonatomic) id<UIViewControllerContextTransitioning> transitionContext;
 @property (nonatomic) CGFloat progress;
 
+@property (nonatomic, weak) UIView *dimmingView;
+
 @end
 
 @implementation ModalTransition
@@ -39,15 +41,24 @@
 {
     NSParameterAssert(transitionContext);
     
-    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
     UIView *containerView = [transitionContext containerView];
+    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+    NSAssert(fromView && toView, @"Do not use UIModalPresentationCustom for presentation");
+    
+    UIView *dimmingView = [[UIView alloc] initWithFrame:containerView.bounds];
+    dimmingView.frame = containerView.bounds;
+    dimmingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    dimmingView.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.5f];
+    self.dimmingView = dimmingView;
     
     if (self.presentation) {
         [containerView addSubview:toView];
+        [containerView insertSubview:dimmingView aboveSubview:fromView];
     }
     else {
-        UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
         [containerView insertSubview:toView belowSubview:fromView];
+        [containerView insertSubview:dimmingView aboveSubview:toView];
     }
     
     [self updateTransition:transitionContext withProgress:0.f];
@@ -64,27 +75,27 @@
     
     if (self.presentation) {
         UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        fromView.alpha = 1.f - progress;
         fromView.frame = containerView.bounds;
         
         UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-        toView.alpha = progress;
         toView.frame = CGRectMake(0.f,
                                   (1.f - progress) * CGRectGetMaxY(containerView.bounds),
                                   CGRectGetWidth(containerView.bounds),
                                   CGRectGetHeight(containerView.bounds));
+        
+        self.dimmingView.alpha = progress;
     }
     else {
         UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        fromView.alpha = 1.f - progress;
         fromView.frame = CGRectMake(0.f,
                                     progress * CGRectGetMaxY(containerView.bounds),
                                     CGRectGetWidth(containerView.bounds),
                                     CGRectGetHeight(containerView.bounds));
         
         UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-        toView.alpha = progress;
         toView.frame = containerView.bounds;
+        
+        self.dimmingView.alpha = 1.f - progress;
     }
 }
 
@@ -98,6 +109,8 @@
         [toView removeFromSuperview];
     }
     
+    [self.dimmingView removeFromSuperview];
+    
     [transitionContext completeTransition:success];
 }
 
@@ -109,7 +122,7 @@
         return;
     }
     
-    [self.transitionContext updateInteractiveTransition:progress];    
+    [self.transitionContext updateInteractiveTransition:progress];
     [self updateTransition:self.transitionContext withProgress:progress];
 }
 
@@ -149,7 +162,7 @@
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    return 0.4;
+    return 0.3;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
@@ -178,7 +191,7 @@
 
 - (UIViewAnimationCurve)completionCurve
 {
-    return UIViewAnimationCurveLinear;
+    return UIViewAnimationCurveEaseInOut;
 }
 
 @end

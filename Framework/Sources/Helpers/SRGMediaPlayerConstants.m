@@ -16,37 +16,43 @@ NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotification = @"SR
 
 NSString * const SRGMediaPlayerExternalPlaybackStateDidChangeNotification = @"SRGMediaPlayerExternalPlaybackStateDidChangeNotification";
 
+NSString * const SRGMediaPlayerAudioTrackDidChangeNotification = @"SRGMediaPlayerAudioTrackDidChangeNotification";
+NSString * const SRGMediaPlayerSubtitleTrackDidChangeNotification = @"SRGMediaPlayerSubtitleTrackDidChangeNotification";
+
 NSString * const SRGMediaPlayerSegmentDidStartNotification = @"SRGMediaPlayerSegmentDidStartNotification";
 NSString * const SRGMediaPlayerSegmentDidEndNotification = @"SRGMediaPlayerSegmentDidEndNotification";
 
 NSString * const SRGMediaPlayerWillSkipBlockedSegmentNotification = @"SRGMediaPlayerWillSkipBlockedSegmentNotification";
 NSString * const SRGMediaPlayerDidSkipBlockedSegmentNotification = @"SRGMediaPlayerDidSkipBlockedSegmentNotification";
 
-NSString * const SRGMediaPlayerPlaybackStateKey = @"SRGMediaPlayerPlaybackStateKey";
-NSString * const SRGMediaPlayerPreviousPlaybackStateKey = @"SRGMediaPlayerPreviousPlaybackStateKey";
-NSString * const SRGMediaPlayerPreviousContentURLKey = @"SRGMediaPlayerPreviousContentURLKey";
-NSString * const SRGMediaPlayerPreviousPlayerItemKey = @"SRGMediaPlayerPreviousPlayerItemKey";
-NSString * const SRGMediaPlayerPreviousTimeRangeKey = @"SRGMediaPlayerPreviousTimeRangeKey";
-NSString * const SRGMediaPlayerPreviousMediaTypeKey = @"SRGMediaPlayerPreviousMediaTypeKey";
-NSString * const SRGMediaPlayerPreviousStreamTypeKey = @"SRGMediaPlayerPreviousStreamTypeKey";
-NSString * const SRGMediaPlayerPreviousUserInfoKey = @"SRGMediaPlayerPreviousUserInfoKey";
+NSString * const SRGMediaPlayerPlaybackStateKey = @"SRGMediaPlayerPlaybackState";
+NSString * const SRGMediaPlayerPreviousPlaybackStateKey = @"SRGMediaPlayerPreviousPlaybackState";
+NSString * const SRGMediaPlayerPreviousContentURLKey = @"SRGMediaPlayerPreviousContentURL";
+NSString * const SRGMediaPlayerPreviousPlayerItemKey = @"SRGMediaPlayerPreviousPlayerItem";
+NSString * const SRGMediaPlayerPreviousTimeRangeKey = @"SRGMediaPlayerPreviousTimeRange";
+NSString * const SRGMediaPlayerPreviousMediaTypeKey = @"SRGMediaPlayerPreviousMediaType";
+NSString * const SRGMediaPlayerPreviousStreamTypeKey = @"SRGMediaPlayerPreviousStreamType";
+NSString * const SRGMediaPlayerPreviousUserInfoKey = @"SRGMediaPlayerPreviousUserInfo";
 
-NSString * const SRGMediaPlayerErrorKey = @"SRGMediaPlayerErrorKey";
+NSString * const SRGMediaPlayerErrorKey = @"SRGMediaPlayerError";
 
-NSString * const SRGMediaPlayerSeekTimeKey = @"SRGMediaPlayerSeekTimeKey";
+NSString * const SRGMediaPlayerSeekTimeKey = @"SRGMediaPlayerSeekTime";
 
-NSString * const SRGMediaPlayerSegmentKey = @"SRGMediaPlayerSegmentKey";
+NSString * const SRGMediaPlayerSegmentKey = @"SRGMediaPlayerSegment";
 
-NSString * const SRGMediaPlayerSelectedKey = @"SRGMediaPlayerSelectedKey";
+NSString * const SRGMediaPlayerSelectedKey = @"SRGMediaPlayerSelected";
 
-NSString * const SRGMediaPlayerPreviousSegmentKey = @"SRGMediaPlayerPreviousSegmentKey";
+NSString * const SRGMediaPlayerPreviousSegmentKey = @"SRGMediaPlayerPreviousSegment";
 
-NSString * const SRGMediaPlayerNextSegmentKey = @"SRGMediaPlayerNextSegmentKey";
-NSString * const SRGMediaPlayerInterruptionKey = @"SRGMediaPlayerInterruptionKey";
+NSString * const SRGMediaPlayerNextSegmentKey = @"SRGMediaPlayerNextSegment";
+NSString * const SRGMediaPlayerInterruptionKey = @"SRGMediaPlayerInterruption";
 
-NSString * const SRGMediaPlayerSelectionKey = @"SRGMediaPlayerSelectionKey";
+NSString * const SRGMediaPlayerSelectionKey = @"SRGMediaPlayerSelection";
 
-NSString * const SRGMediaPlayerLastPlaybackTimeKey = @"SRGMediaPlayerLastPlaybackTimeKey";
+NSString * const SRGMediaPlayerTrackKey = @"SRGMediaPlayerTrack";
+NSString * const SRGMediaPlayerPreviousTrackKey = @"SRGMediaPlayerPreviousTrack";
+
+NSString * const SRGMediaPlayerLastPlaybackTimeKey = @"SRGMediaPlayerLastPlaybackTime";
 
 CMTime SRGMediaPlayerEffectiveEndTolerance(NSTimeInterval endTolerance, float endToleranceRatio, NSTimeInterval contentDuration)
 {

@@ -43,15 +43,22 @@
     return viewController;
 }
 
+#pragma mark Overrides
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    // Use a custom transition, some subtle issues were discovered with incorrect implementations, when animated
+    // view controllers have an AVPlayer somewhere.
+    self.transitioningDelegate = self;
+}
+
 #pragma mark View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Use a custom transition, some subtle issues were discovered with incorrect implementations, when animated
-    // view controllers have an AVPlayer somewhere.
-    self.transitioningDelegate = self;
     
     self.timelineSlider.delegate = self;
     self.blockingOverlayView.hidden = YES;
@@ -196,7 +203,7 @@
         case UIGestureRecognizerStateEnded: {
             // Finish the transition if the view was dragged by 20% and the user is dragging downwards
             CGFloat velocity = [panGestureRecognizer velocityInView:self.view].y;
-            if (progress > 0.2f && velocity >= 0.f) {
+            if (velocity > 0.f || (velocity == 0.f && progress > 0.5f)) {
                 [self.interactiveTransition finishInteractiveTransition];
             }
             else {

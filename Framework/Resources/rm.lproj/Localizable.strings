@@ -8,11 +8,14 @@
    Title of the pop over view to select audio or subtitles */
 "Audio and Subtitles" = "Audio e suttitels";
 
+/* Recommended option to let subtitles be automatically selected based on user settings */
+"Auto (Recommended)" = "Automatisà (recumandà)";
+
 /* Very short text on left time label when playing a live stream */
 "Live" = "Live";
 
-/* Option to remove subtitles in alternate tracks popup menu */
-"No subtitles" = "Nagins suttitels";
+/* Option to disable subtitles */
+"Off" = "Deactivà";
 
 /* AirPlay description on which device the media is played. */
 "Playback on «%@»" = "Playback sin «%@»";
@@ -24,4 +27,4 @@
 "The media cannot be played" = "Quest cuntegn na sa betg vegnì laschà ir";
 
 /* Instructions for subtitles customization */
-"You can adjust the appearance of subtitles in the Accessibility section of the Settings application." = "Vus pudais adattar ils suttitels en la iOS App \"Configuraziun\" sut \"Agid d'applicaziun\".";
+"You can adjust subtitle appearance and automatic selection behavior in the Accessibility section of the Settings application." = "Vus pudais midar ils suttitels e la funcziunalitad da selecziunar automatic en la secziun \"accessibilitad\" en las opziuns da l'app.";

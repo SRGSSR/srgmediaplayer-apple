@@ -12,20 +12,31 @@ fastlane_version "1.95.0"
 default_platform :ios
 
 platform :ios do
-  before_all do
-    carthage(
-      command: "bootstrap",
-      platform: "iOS"
-      )
+  before_all do |lane|
+    ensure_git_status_clean
     
+    Dir.chdir("..") do
+      sh "make bootstrap"
+    end
   end
 
   desc "Run library tests"
-  lane :test do
+  lane :tests do
     scan(
-      scheme: "SRGMediaPlayer",
+      output_types: "",
+      fail_build: false,
       clean: true
-    ) 
+    )
+    trainer(output_directory: "./fastlane")
+  end
+
+  after_all do |lane|
+    reset_git_repo(skip_clean: true)
+  end
+
+  error do |lane, exception|
+    clean_build_artifacts
+    reset_git_repo(skip_clean: true, force: true)
   end
 end
 

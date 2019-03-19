@@ -26,7 +26,7 @@ const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
 // Shared instance to manage picture in picture playback
 static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
-@interface SRGMediaPlayerViewController ()
+@interface SRGMediaPlayerViewController () <SRGTracksButtonDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *playerView;
 
@@ -79,7 +79,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)dealloc
 {
-    self.inactivityTimer = nil;                 // Invalidate timer
     [s_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
 }
 
@@ -101,6 +100,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tracksButton.delegate = self;
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(srg_mediaPlayerViewController_playbackStateDidChange:)
@@ -179,7 +180,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self updateUserInterface];
     
     [self updateInterfaceForControlsHidden:NO];
-    [self resetInactivityTimer];
+    [self restartInactivityTracker];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -202,7 +203,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [super viewDidDisappear:animated];
     
     if ([self isBeingDismissed]) {
-        self.inactivityTimer = nil;
+        [self stopInactivityTracker];
     }
 }
 
@@ -280,7 +281,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
-- (void)resetInactivityTimer
+- (void)restartInactivityTracker
 {
     if (! UIAccessibilityIsVoiceOverRunning()) {
         self.inactivityTimer = [NSTimer timerWithTimeInterval:5.
@@ -293,6 +294,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     else {
         self.inactivityTimer = nil;
     }
+}
+
+- (void)stopInactivityTracker
+{
+    self.inactivityTimer = nil;
 }
 
 - (void)setUserInterfaceHidden:(BOOL)hidden animated:(BOOL)animated
@@ -422,6 +428,18 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }];
 }
 
+#pragma mark SRGTracksButtonDelegate protocol
+
+- (void)tracksButtonWillShowSelectionPopover:(SRGTracksButton *)tracksButton
+{
+    [self stopInactivityTracker];
+}
+
+- (void)tracksButtonDidHideSelectionPopover:(SRGTracksButton *)tracksButton
+{
+    [self restartInactivityTracker];
+}
+
 #pragma mark UIGestureRecognizerDelegate protocol
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
@@ -461,7 +479,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:(NSNotification *)notification
 {
-    [self resetInactivityTimer];
+    [self restartInactivityTracker];
 }
 
 #pragma mark Actions
@@ -489,7 +507,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)handleSingleTap:(UIGestureRecognizer *)gestureRecognizer
 {
-    [self resetInactivityTimer];
+    [self restartInactivityTracker];
     [self setUserInterfaceHidden:! _userInterfaceHidden animated:YES];
 }
 
@@ -507,7 +525,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)resetInactivityTimer:(UIGestureRecognizer *)gestureRecognizer
 {
-    [self resetInactivityTimer];
+    [self restartInactivityTracker];
 }
 
 #pragma mark Timers
