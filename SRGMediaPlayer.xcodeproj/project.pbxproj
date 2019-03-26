@@ -980,7 +980,7 @@
 			};
 			buildConfigurationList = C201D8F01A9DC1A40016C629 /* Build configuration list for PBXProject "SRGMediaPlayer" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
