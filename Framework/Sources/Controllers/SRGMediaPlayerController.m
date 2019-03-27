@@ -1279,6 +1279,18 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
+- (NSString *)subtitleLocalization
+{
+    AVPlayerItem *playerItem = self.playerItem;
+    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+        return nil;
+    }
+    
+    AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    AVMediaSelectionOption *subtitleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
+    return [subtitleOption.locale objectForKey:NSLocaleLanguageCode];
+}
+
 #pragma mark Time observers
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
