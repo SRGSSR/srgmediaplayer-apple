@@ -1218,7 +1218,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [localizations addObject:languageCode];
     }
     
-    return localizations.allObjects;
+    return [localizations.allObjects sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 }
 
 - (void)setPreferredSubtitleLocalization:(NSString *)preferredSubtitleLocalization

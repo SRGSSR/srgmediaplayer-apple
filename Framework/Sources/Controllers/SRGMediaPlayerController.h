@@ -708,7 +708,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *preferredSubtitleLocalization;
 
 /**
- *  Return the localization currently applied for subtitles, if any.
+ *  Return the localization of the currently applied subtitles, if any.
+ *
+ *  @discussion A value is returned as well when forced subtitles are being applied.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *subtitleLocalization;
 
