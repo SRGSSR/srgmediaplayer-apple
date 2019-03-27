@@ -688,7 +688,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @discussion Not known while playback is being prepared or if the player is idle.
  */
-@property (nonatomic) NSArray<NSString *> *availableSubtitleLocalizations;
+@property (nonatomic, readonly) NSArray<NSString *> *availableSubtitleLocalizations;
 
 /**
  *  The subtitle localization to use, if available. Use `nil` for the default behavior (depends on the previous subtitle
