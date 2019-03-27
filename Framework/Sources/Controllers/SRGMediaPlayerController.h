@@ -679,6 +679,20 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
+ *  Subtitle management.
+ */
+@interface SRGMediaPlayerController (Subtitles)
+
+/**
+ *  Returns the list of available subtitle localizations.
+ *
+ *  @discussion Empty while no media subtitle information is available, e.g. when preparing the player.
+ */
+@property (nonatomic) NSArray<NSString *> *availableSubtitleLocalizations;
+
+@end
+
+/**
  *  AirPlay. Use player lifecycle blocks (see main `SRGMediaPlayerController` documentation) to setup AirPlay behavior.
  *  Your audio session settings must be compatible with AirPlay, see
  *      https://developer.apple.com/library/content/qa/qa1803/_index.html

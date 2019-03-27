@@ -1194,6 +1194,27 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
+#pragma mark Subtitles
+
+- (NSArray<NSString *> *)availableSubtitleLocalizations
+{
+    AVPlayerItem *playerItem = self.playerItem;
+    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+        return @[];
+    }
+    
+    NSMutableSet<NSString *> *localizations = [NSMutableSet set];
+    
+    AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+    for (AVMediaSelectionOption *subtitleOption in subtitleOptions) {
+        NSString *languageCode = [subtitleOption.locale objectForKey:NSLocaleLanguageCode];
+        [localizations addObject:languageCode];
+    }
+    
+    return localizations.allObjects;
+}
+
 #pragma mark Time observers
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
