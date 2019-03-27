@@ -684,11 +684,28 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerController (Subtitles)
 
 /**
- *  Returns the list of available subtitle localizations.
+ *  The list of available subtitle localizations for the media being played.
  *
- *  @discussion Empty while no media subtitle information is available, e.g. when preparing the player.
+ *  @discussion Not known while playback is being prepared or if the player is idle.
  */
 @property (nonatomic) NSArray<NSString *> *availableSubtitleLocalizations;
+
+/**
+ *  The subtitle localization to use, if available. Use `nil` for the default behavior (depends on the previous subtitle
+ *  settings saved for the user).
+ *
+ *  Valid localizations can be retrieved from `availableSubtitleLocalizations` once a media has been prepared for playback.
+ *  If you know the value you want to to use beforehand, though, the preferred localization can be set earlier, even
+ *  right after controller creation.
+ *
+ *  Use `SRGMediaPlayerLocalizationDisabled` to disable subtitles (forced subtitles may still appear, though) or
+ *  `SRGMediaPlayerLocalizationAutomatic` to enable automatic selection based on accessibility settings, content and
+ *  application languages.
+ *
+ *  @discussion This setting only affects the receiver and is not reset between between media playbacks using the same
+ *              controller. If an invalid subtitle localization is provided, automatic selection is applied instead.
+ */
+@property (nonatomic, copy, nullable) NSString *preferredSubtitleLocalization;
 
 @end
 

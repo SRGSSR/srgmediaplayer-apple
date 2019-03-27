@@ -24,6 +24,7 @@
 
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
+#import <MediaAccessibility/MediaAccessibility.h>
 #import <objc/runtime.h>
 
 static const NSTimeInterval SRGSegmentSeekOffsetInSeconds = 0.1;
@@ -72,6 +73,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 @property (nonatomic) AVMediaSelectionOption *audioOption;
 @property (nonatomic) AVMediaSelectionOption *subtitleOption;
+
+@property (nonatomic, copy) NSString *preferredSubtitleLocalization;
 
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
 
@@ -150,7 +153,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             @strongify(player)
             
             AVPlayerItem *playerItem = player.currentItem;
-            
             if (playerItem.status == AVPlayerItemStatusReadyToPlay) {    
                 // Playback start. Use received start parameters, do not update the playback state yet, wait until the
                 // completion handler has been executed (since it might immediately start playback)
@@ -178,6 +180,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                             [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                         }
                     };
+                    
+                    if (self.preferredSubtitleLocalization) {
+                        [self applySubtitleLocalization:self.preferredSubtitleLocalization];
+                    }
                     
                     SRGPosition *startPosition = self.startPosition;
                     
@@ -1213,6 +1219,64 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     
     return localizations.allObjects;
+}
+
+- (void)setPreferredSubtitleLocalization:(NSString *)preferredSubtitleLocalization
+{
+    _preferredSubtitleLocalization = preferredSubtitleLocalization;
+    
+    [self applySubtitleLocalization:preferredSubtitleLocalization];
+}
+
+- (void)applySubtitleLocalization:(NSString *)subtitleLocalization
+{
+    AVPlayerItem *playerItem = self.playerItem;
+    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+        return;
+    }
+    
+    AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    
+    void (^applySubtitleLocalization)(NSString *) = ^(NSString *subtitleLocalization) {
+        if (subtitleLocalization) {
+            NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+            NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+                return [subtitleLocalization isEqualToString:[option.locale objectForKey:NSLocaleLanguageCode]];
+            }];
+            AVMediaSelectionOption *subtitleOption = [subtitleOptions filteredArrayUsingPredicate:predicate].firstObject;
+            if (subtitleOption) {
+                [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:subtitleGroup];
+                return;
+            }
+        }
+        
+        // Use automatic behavior instead
+        [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:subtitleGroup];
+    };
+    
+    // Revert to default behavior as obtained from MediaAccessibility settings
+    if (! subtitleLocalization) {
+        MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
+        if (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) {
+            [playerItem selectMediaOption:nil inMediaSelectionGroup:subtitleGroup];
+        }
+        else if (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn) {
+            NSArray<NSString *> *selectedLanguages = (__bridge NSArray<NSString *> *)(MACaptionAppearanceCopySelectedLanguages(kMACaptionAppearanceDomainUser));
+            applySubtitleLocalization(selectedLanguages.firstObject);
+        }
+        else {
+            [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:subtitleGroup];
+        };
+    }
+    else if ([subtitleLocalization isEqualToString:SRGMediaPlayerLocalizationDisabled]) {
+        [playerItem selectMediaOption:nil inMediaSelectionGroup:subtitleGroup];
+    }
+    else if ([subtitleLocalization isEqualToString:SRGMediaPlayerLocalizationAutomatic]) {
+        [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:subtitleGroup];
+    }
+    else {
+        applySubtitleLocalization(subtitleLocalization);
+    }
 }
 
 #pragma mark Time observers
