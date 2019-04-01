@@ -1472,6 +1472,7 @@ static NSURL *AudioOverHTTPTestURL(void)
             XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey]);
             XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey]);
             XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+            XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousSelectedSegmentKey]);
             
             TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
             return YES;
@@ -1542,6 +1543,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousPlayerItemKey]);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousSelectedSegmentKey]);
         
         // Previous playback information since it has changed
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey]);
@@ -1870,6 +1872,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey], @(mediaType));
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey], @(streamType));
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey], userInfo);
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousSelectedSegmentKey]);
         
         return YES;
     }];

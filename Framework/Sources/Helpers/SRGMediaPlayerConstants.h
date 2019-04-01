@@ -186,6 +186,7 @@ OBJC_EXTERN NSString * const SRGMediaPlayerPreviousTimeRangeKey;                
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousMediaTypeKey;                            // Key to access the previous media type as an `NSNumber` (wrapping an `SRGMediaPlayerMediaType` value).
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousStreamTypeKey;                           // Key to access the previous stream type as an `NSNumber` (wrapping an `SRGMediaPlayerStreamType` value).
 OBJC_EXTERN NSString * const SRGMediaPlayerPreviousUserInfoKey;                             // Key to access the previous user information.
+OBJC_EXTERN NSString * const SRGMediaPlayerPreviousSelectedSegmentKey;                      // Key to access the previously selected segment as an `id<SRGSegment>` object, if any.
 
 /**
  *  Information available for `SRGMediaPlayerPlaybackDidFailNotification`.

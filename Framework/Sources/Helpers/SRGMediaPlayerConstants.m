@@ -33,6 +33,7 @@ NSString * const SRGMediaPlayerPreviousTimeRangeKey = @"SRGMediaPlayerPreviousTi
 NSString * const SRGMediaPlayerPreviousMediaTypeKey = @"SRGMediaPlayerPreviousMediaType";
 NSString * const SRGMediaPlayerPreviousStreamTypeKey = @"SRGMediaPlayerPreviousStreamType";
 NSString * const SRGMediaPlayerPreviousUserInfoKey = @"SRGMediaPlayerPreviousUserInfo";
+NSString * const SRGMediaPlayerPreviousSelectedSegmentKey = @"SRGMediaPlayerPreviousSelectedSegment";
 
 NSString * const SRGMediaPlayerErrorKey = @"SRGMediaPlayerError";
 

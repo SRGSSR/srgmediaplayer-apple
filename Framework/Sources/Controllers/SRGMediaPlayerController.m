@@ -977,13 +977,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         fullUserInfo[SRGMediaPlayerPreviousTimeRangeKey] = [NSValue valueWithCMTimeRange:self.timeRange];
         fullUserInfo[SRGMediaPlayerPreviousMediaTypeKey] = @(self.mediaType);
         fullUserInfo[SRGMediaPlayerPreviousStreamTypeKey] = @(self.streamType);
+        if (_selected) {
+            fullUserInfo[SRGMediaPlayerPreviousSelectedSegmentKey] = self.currentSegment;
+        }
         self.player = nil;
     }
     
-    // The player is guaranteed to be nil when the idle notification is sent
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:[fullUserInfo copy]];
-    
     _timeRange = kCMTimeRangeInvalid;
+    _selected = NO;
     
     self.previousSegment = nil;
     self.targetSegment = nil;
@@ -998,6 +999,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.subtitleOption = nil;
     
     self.pictureInPictureController = nil;
+    
+    // Emit the notification once all state has been reset
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:[fullUserInfo copy]];
 }
 
 #pragma mark Configuration
