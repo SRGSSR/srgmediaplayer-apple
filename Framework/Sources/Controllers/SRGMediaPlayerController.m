@@ -1204,7 +1204,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (NSArray<NSString *> *)availableSubtitleLocalizations
 {
-    AVPlayerItem *playerItem = self.playerItem;
+    AVPlayerItem *playerItem = self.player.currentItem;
     if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
         return @[];
     }
@@ -1230,7 +1230,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)applySubtitleLocalization:(NSString *)subtitleLocalization
 {
-    AVPlayerItem *playerItem = self.playerItem;
+    AVPlayerItem *playerItem = self.player.currentItem;
     if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
         return;
     }
