@@ -9,6 +9,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  @name Tolerances
+ */
+
 // Default amount of seconds at the end of a DVR stream assumed to correspond to live conditions (same tolerance as the built-in iOS player).
 static NSTimeInterval const SRGMediaPlayerDefaultLiveTolerance = 30.;
 
@@ -22,6 +26,16 @@ static float const SRGMediaPlayerDefaultEndToleranceRatio = 0.f;
  *  Calculate the effective end tolerance applied for an absolute and relative tolerance, for a content having the provided duration.
  */
 OBJC_EXPORT CMTime SRGMediaPlayerEffectiveEndTolerance(NSTimeInterval endTolerance, float endToleranceRatio, NSTimeInterval contentDuration);
+
+/**
+ *  @name Miscellaneous constants
+ */
+
+// Disabled localization.
+OBJC_EXPORT NSString * const SRGMediaPlayerLocalizationDisabled;
+
+// Auomatic localization selection.
+OBJC_EXPORT NSString * const SRGMediaPlayerLocalizationAutomatic;
 
 /**
  *  @name Types

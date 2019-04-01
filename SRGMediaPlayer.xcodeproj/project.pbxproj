@@ -83,6 +83,7 @@
 		6F5CA4411FD91A1D00CF175F /* SRGMediaPlayerConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4311FD91A1D00CF175F /* SRGMediaPlayerConstants.m */; };
 		6F5CA4451FD91CE500CF175F /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4441FD91CE500CF175F /* Media.m */; };
 		6F5D662E1DAF50E3009AD6DD /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
+		6F7A78ED224B8032005054E8 /* SubtitleTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7A78EC224B8032005054E8 /* SubtitleTestCase.m */; };
 		6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */; };
 		6F9643D221307920003C6612 /* SRGAirPlayButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9643CE2130791F003C6612 /* SRGAirPlayButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F9643D321307920003C6612 /* SRGAirPlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9643CF2130791F003C6612 /* SRGAirPlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -299,6 +300,7 @@
 		6F5CA4311FD91A1D00CF175F /* SRGMediaPlayerConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerConstants.m; sourceTree = "<group>"; };
 		6F5CA4431FD91CE500CF175F /* Media.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Media.h; sourceTree = "<group>"; };
 		6F5CA4441FD91CE500CF175F /* Media.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Media.m; sourceTree = "<group>"; };
+		6F7A78EC224B8032005054E8 /* SubtitleTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubtitleTestCase.m; sourceTree = "<group>"; };
 		6F8F06E31FDA7631002DD457 /* SRGMediaPlaybackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackView.h; sourceTree = "<group>"; };
 		6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Demo.h"; sourceTree = "<group>"; };
 		6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Demo.m"; sourceTree = "<group>"; };
@@ -692,6 +694,7 @@
 				E69A1FE01D61C6D20064E6C1 /* Segment.h */,
 				E69A1FE11D61C6D20064E6C1 /* Segment.m */,
 				E69A1FDF1D61C6D20064E6C1 /* SegmentsTestCase.m */,
+				6F7A78EC224B8032005054E8 /* SubtitleTestCase.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1191,6 +1194,7 @@
 				E6BCE9641D794D6A0021973D /* SegmentsTestCase.m in Sources */,
 				6FA98E15211D68AF00969089 /* ConstantsTestCase.m in Sources */,
 				6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */,
+				6F7A78ED224B8032005054E8 /* SubtitleTestCase.m in Sources */,
 				6FBDD1A721308242001E4398 /* PositionTestCase.m in Sources */,
 				E69A1FE61D61C6D20064E6C1 /* Segment.m in Sources */,
 			);

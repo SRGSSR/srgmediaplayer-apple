@@ -54,6 +54,9 @@ NSString * const SRGMediaPlayerPreviousTrackKey = @"SRGMediaPlayerPreviousTrack"
 
 NSString * const SRGMediaPlayerLastPlaybackTimeKey = @"SRGMediaPlayerLastPlaybackTime";
 
+NSString * const SRGMediaPlayerLocalizationDisabled = @"disabled";
+NSString * const SRGMediaPlayerLocalizationAutomatic = @"automatic";
+
 CMTime SRGMediaPlayerEffectiveEndTolerance(NSTimeInterval endTolerance, float endToleranceRatio, NSTimeInterval contentDuration)
 {
     if (endTolerance != 0. && endToleranceRatio != 0.f) {
