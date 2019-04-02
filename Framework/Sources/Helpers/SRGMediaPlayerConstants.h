@@ -107,7 +107,7 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerPlaybackState) {
      */
     SRGMediaPlayerPlaybackStatePaused,
     /**
-     *  The player is stalled, i.e. waiting for media playback to restart (most probably because of poor networking
+     *  The player is stalled, i.e. waiting for media playback to resume (most probably because of poor networking
      *  conditions).
      */
     SRGMediaPlayerPlaybackStateStalled,
