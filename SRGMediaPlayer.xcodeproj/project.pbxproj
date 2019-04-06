@@ -304,6 +304,9 @@
 		6F5CA4311FD91A1D00CF175F /* SRGMediaPlayerConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerConstants.m; sourceTree = "<group>"; };
 		6F5CA4431FD91CE500CF175F /* Media.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Media.h; sourceTree = "<group>"; };
 		6F5CA4441FD91CE500CF175F /* Media.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Media.m; sourceTree = "<group>"; };
+		6F816C252258A93900A71401 /* SRGMediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGMediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F816C272258A93900A71401 /* SRGMediaPlayer_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayer_tvOS.h; sourceTree = "<group>"; };
+		6F816C282258A93900A71401 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6F8F06E31FDA7631002DD457 /* SRGMediaPlaybackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackView.h; sourceTree = "<group>"; };
 		6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Demo.h"; sourceTree = "<group>"; };
 		6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Demo.m"; sourceTree = "<group>"; };
@@ -413,6 +416,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		6F444849210F1387009FDB70 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F816C222258A93900A71401 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -561,6 +571,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		6F816C262258A93900A71401 /* SRGMediaPlayer-tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				6F816C272258A93900A71401 /* SRGMediaPlayer_tvOS.h */,
+				6F816C282258A93900A71401 /* Info.plist */,
+			);
+			path = "SRGMediaPlayer-tvOS";
+			sourceTree = "<group>";
+		};
 		6F97C7951E7A89C5001AD9B3 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -588,6 +607,7 @@
 				E69A1DB11D61BAFD0064E6C1 /* Framework */,
 				E69A1FD21D61C6830064E6C1 /* Tests */,
 				E69A1F571D61BFAE0064E6C1 /* Demo */,
+				6F816C262258A93900A71401 /* SRGMediaPlayer-tvOS */,
 				E69A1FCC1D61C32D0064E6C1 /* Frameworks */,
 				C201D8F61A9DC1A40016C629 /* Products */,
 			);
@@ -603,6 +623,7 @@
 				E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-demo.app */,
 				E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-tests.xctest */,
 				6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */,
+				6F816C252258A93900A71401 /* SRGMediaPlayer.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -835,6 +856,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		6F816C202258A93900A71401 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E69A1DA61D61B9380064E6C1 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -912,6 +940,24 @@
 			productReference = 6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
+		6F816C242258A93900A71401 /* SRGMediaPlayer-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F816C2E2258A93900A71401 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-tvOS" */;
+			buildPhases = (
+				6F816C202258A93900A71401 /* Headers */,
+				6F816C212258A93900A71401 /* Sources */,
+				6F816C222258A93900A71401 /* Frameworks */,
+				6F816C232258A93900A71401 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SRGMediaPlayer-tvOS";
+			productName = "SRGMediaPlayer-tvOS";
+			productReference = 6F816C252258A93900A71401 /* SRGMediaPlayer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E69A1DAE1D61B9380064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer" */;
@@ -985,6 +1031,10 @@
 						CreatedOnToolsVersion = 9.4;
 						ProvisioningStyle = Automatic;
 					};
+					6F816C242258A93900A71401 = {
+						CreatedOnToolsVersion = 10.2;
+						ProvisioningStyle = Automatic;
+					};
 					E69A1DA81D61B9380064E6C1 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
@@ -1018,6 +1068,7 @@
 				6F44484B210F1387009FDB70 /* SRGMediaPlayer-resources */,
 				E69A1FD01D61C6830064E6C1 /* SRGMediaPlayer-tests */,
 				E69A1E661D61BEFC0064E6C1 /* SRGMediaPlayer-demo */,
+				6F816C242258A93900A71401 /* SRGMediaPlayer-tvOS */,
 			);
 		};
 /* End PBXProject section */
@@ -1033,6 +1084,13 @@
 				6F444859210F1480009FDB70 /* thumb_timeline_slider@2x.png in Resources */,
 				6F444857210F147B009FDB70 /* Localizable.strings in Resources */,
 				6F444858210F147E009FDB70 /* thumb_timeline_slider.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F816C232258A93900A71401 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1123,6 +1181,13 @@
 
 /* Begin PBXSourcesBuildPhase section */
 		6F444848210F1387009FDB70 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F816C212258A93900A71401 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1639,6 +1704,150 @@
 			};
 			name = "Release-static";
 		};
+		6F816C2A2258A93900A71401 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6F816C2B2258A93900A71401 /* Debug-static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Debug-static";
+		};
+		6F816C2C2258A93900A71401 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		6F816C2D2258A93900A71401 /* Release-static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 12.2;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-static";
+		};
 		C201D9071A9DC1A40016C629 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1906,6 +2115,17 @@
 				6F444851210F1387009FDB70 /* Debug-static */,
 				6F444852210F1387009FDB70 /* Release */,
 				6F444853210F1387009FDB70 /* Release-static */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6F816C2E2258A93900A71401 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F816C2A2258A93900A71401 /* Debug */,
+				6F816C2B2258A93900A71401 /* Debug-static */,
+				6F816C2C2258A93900A71401 /* Release */,
+				6F816C2D2258A93900A71401 /* Release-static */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
