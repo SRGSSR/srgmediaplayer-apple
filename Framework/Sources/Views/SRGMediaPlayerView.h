@@ -4,7 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <CoreMotion/CoreMotion.h>
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -25,6 +24,19 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
 @interface SRGMediaPlayerView : UIView
 
 /**
+ *  Retrieve or change the current view mode, if any.
+ */
+@property (nonatomic) SRGMediaPlayerViewMode viewMode;
+
+@end
+
+#if TARGET_OS_IOS
+
+#import <CoreMotion/CoreMotion.h>
+
+@interface SRGMediaPlayerView (CoreMotion)
+
+/**
  *  Set the motion manager to use for device tracking when playing 360° videos. At most one motion manager should
  *  exist per app (see https://developer.apple.com/documentation/coremotion/cmmotionmanager). If your application
  *  already uses its own core motion manager, you can set it using this class method (not that you are then
@@ -37,11 +49,8 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
  */
 + (void)setMotionManager:(nullable CMMotionManager *)motionManager;
 
-/**
- *  Retrieve or change the current view mode, if any.
- */
-@property (nonatomic) SRGMediaPlayerViewMode viewMode;
-
 @end
+
+#endif
 
 NS_ASSUME_NONNULL_END
