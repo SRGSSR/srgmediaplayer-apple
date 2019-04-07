@@ -20,6 +20,9 @@
 		6F0C98B6212162BC00073AB6 /* CMTimeRange+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F2556D2212FBF63004C8F9A /* SRGPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F2556D0212FBF63004C8F9A /* SRGPosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F2556D3212FBF63004C8F9A /* SRGPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2556D1212FBF63004C8F9A /* SRGPosition.m */; };
+		6F2A9BE0225A4782006D0615 /* libextobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2A9BDD225A4782006D0615 /* libextobjc.framework */; };
+		6F2A9BE1225A4782006D0615 /* SRGLogger_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2A9BDE225A4782006D0615 /* SRGLogger_Swift.framework */; };
+		6F2A9BE2225A4782006D0615 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2A9BDF225A4782006D0615 /* SRGLogger.framework */; };
 		6F3F1739212FE3F40091A260 /* SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F3F1737212FE3F30091A260 /* SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F3F173A212FE3F40091A260 /* SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3F1738212FE3F40091A260 /* SRGMediaPlayer.m */; };
 		6F444856210F1479009FDB70 /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08293A4D1EDC62FC008CE02E /* Accessibility.strings */; };
@@ -336,6 +339,9 @@
 		6F0C98B421215F9000073AB6 /* CMTime+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CMTime+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F2556D0212FBF63004C8F9A /* SRGPosition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGPosition.h; sourceTree = "<group>"; };
 		6F2556D1212FBF63004C8F9A /* SRGPosition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGPosition.m; sourceTree = "<group>"; };
+		6F2A9BDD225A4782006D0615 /* libextobjc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libextobjc.framework; path = Carthage/Build/tvOS/libextobjc.framework; sourceTree = "<group>"; };
+		6F2A9BDE225A4782006D0615 /* SRGLogger_Swift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger_Swift.framework; path = Carthage/Build/tvOS/SRGLogger_Swift.framework; sourceTree = "<group>"; };
+		6F2A9BDF225A4782006D0615 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/tvOS/SRGLogger.framework; sourceTree = "<group>"; };
 		6F3F1737212FE3F30091A260 /* SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayer.h; sourceTree = "<group>"; };
 		6F3F1738212FE3F40091A260 /* SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayer.m; sourceTree = "<group>"; };
 		6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -515,6 +521,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F2A9BE0225A4782006D0615 /* libextobjc.framework in Frameworks */,
+				6F2A9BE1225A4782006D0615 /* SRGLogger_Swift.framework in Frameworks */,
+				6F2A9BE2225A4782006D0615 /* SRGLogger.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -790,6 +799,9 @@
 			isa = PBXGroup;
 			children = (
 				E6B0276E1D7EF76700012FDF /* libextobjc.framework */,
+				6F2A9BDD225A4782006D0615 /* libextobjc.framework */,
+				6F2A9BDE225A4782006D0615 /* SRGLogger_Swift.framework */,
+				6F2A9BDF225A4782006D0615 /* SRGLogger.framework */,
 				6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */,
 				6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */,
 			);
@@ -1897,6 +1909,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1935,6 +1951,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1974,6 +1994,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -2008,6 +2032,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Framework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
