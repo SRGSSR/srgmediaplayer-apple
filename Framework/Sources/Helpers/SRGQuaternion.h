@@ -4,22 +4,9 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <CoreMotion/CoreMotion.h>
 #import <SceneKit/SceneKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
-/**
- *  Return a quaternion describing the camera orientation which should be used when the device is held with a
- *  given attitude (orientation in space), so that it always faces the content in front of the device.
- *
- *  @param attitude The current device orientation in space, as returned by a `CMMotionManager` instance.
- *
- *  @return The quaternion for the camera orientation.
- *
- *  @see `CMAttitude` documentation for more information.
- */
-OBJC_EXPORT SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude);
 
 /**
  *  Rotate the specified quaternion around the x- and y-axis.
@@ -38,3 +25,25 @@ OBJC_EXPORT SCNQuaternion SRGRotateQuaternion(SCNQuaternion quaternion, float wx
 OBJC_EXPORT SCNQuaternion SRGQuaternionMakeWithAngleAndAxis(float radians, float x, float y, float z);
 
 NS_ASSUME_NONNULL_END
+
+#if TARGET_OS_IOS
+
+#import <CoreMotion/CoreMotion.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+/**
+ *  Return a quaternion describing the camera orientation which should be used when the device is held with a
+ *  given attitude (orientation in space), so that it always faces the content in front of the device.
+ *
+ *  @param attitude The current device orientation in space, as returned by a `CMMotionManager` instance.
+ *
+ *  @return The quaternion for the camera orientation.
+ *
+ *  @see `CMAttitude` documentation for more information.
+ */
+OBJC_EXTERN SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude);
+
+NS_ASSUME_NONNULL_END
+
+#endif
