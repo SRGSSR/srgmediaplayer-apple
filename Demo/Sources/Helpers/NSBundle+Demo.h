@@ -9,6 +9,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((annotate("returns_localized_nsstring")))
-OBJC_EXTERN NSString *DemoNonLocalizedString(NSString *string);
+OBJC_EXPORT NSString *DemoNonLocalizedString(NSString *string);
 
 NS_ASSUME_NONNULL_END

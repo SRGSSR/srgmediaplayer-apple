@@ -55,6 +55,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) id playerPeriodicTimeObserver;
 @property (nonatomic, weak) id controllerPeriodicTimeObserver;
 
+@property (nonatomic) NSTimer *stallDetectionTimer;
+@property (nonatomic) CMTime lastPlaybackTime;
+@property (nonatomic) NSDate *lastStallDetectionDate;
+
 // Saved values supplied when playback is started
 @property (nonatomic, weak) id<SRGSegment> initialTargetSegment;
 @property (nonatomic) SRGPosition *initialPosition;
@@ -100,6 +104,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         self.seekStartTime = kCMTimeIndefinite;
         self.seekTargetTime = kCMTimeIndefinite;
+        
+        self.lastPlaybackTime = kCMTimeIndefinite;
     }
     return self;
 }
@@ -123,9 +129,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.playbackLikelyToKeepUp)];
         
-        [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:AVPlayerItemPlaybackStalledNotification
-                                                    object:_player.currentItem];
+        self.stallDetectionTimer = nil;
+        
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:AVPlayerItemDidPlayToEndTimeNotification
                                                     object:_player.currentItem];
@@ -246,14 +251,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             CMTime currentTime = playerItem.currentTime;
             CMTimeRange timeRange = self.timeRange;
             
-            // Do not let playback pause when the player stalls, attempt to play again
-            if (player.rate == 0.f && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
-                [player srg_playImmediatelyIfPossible];
-            }
             // Update the playback state immediately, except when reaching the end or seeking. Non-streamed medias will namely reach the paused state right before
             // the item end notification is received. We can eliminate this pause by checking if we are at the end or not. Also update the state for
             // live streams (empty range)
-            else if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
+            if (self.playbackState != SRGMediaPlayerPlaybackStateEnded
                      && self.playbackState != SRGMediaPlayerPlaybackStateSeeking
                      && (CMTIMERANGE_IS_EMPTY(timeRange) || CMTIME_COMPARE_INLINE(currentTime, !=, CMTimeRangeGetEnd(timeRange)))) {
                 [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
@@ -279,10 +280,27 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             }
         }];
         
-        [NSNotificationCenter.defaultCenter addObserver:self
-                                               selector:@selector(srg_mediaPlayerController_playerItemPlaybackStalled:)
-                                                   name:AVPlayerItemPlaybackStalledNotification
-                                                 object:player.currentItem];
+        self.stallDetectionTimer = [NSTimer scheduledTimerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {
+            @strongify(self)
+            
+            AVPlayerItem *playerItem = player.currentItem;
+            CMTime currentTime = playerItem.currentTime;
+            if (self.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
+                if (CMTIME_COMPARE_INLINE(self.lastPlaybackTime, ==, currentTime)) {
+                    [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
+                    self.lastStallDetectionDate = NSDate.date;
+                }
+                else {
+                    self.lastStallDetectionDate = nil;
+                }
+            }
+            else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
+                [player srg_playImmediatelyIfPossible];
+            }
+            
+            self.lastPlaybackTime = currentTime;
+        }];
+        
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_mediaPlayerController_playerItemDidPlayToEndTime:)
                                                    name:AVPlayerItemDidPlayToEndTimeNotification
@@ -294,6 +312,12 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
     }
+}
+
+- (void)setstallDetectionTimer:(NSTimer *)stallDetectionTimer
+{
+    [_stallDetectionTimer invalidate];
+    _stallDetectionTimer = stallDetectionTimer;
 }
 
 - (AVPlayerLayer *)playerLayer
@@ -977,13 +1001,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         fullUserInfo[SRGMediaPlayerPreviousTimeRangeKey] = [NSValue valueWithCMTimeRange:self.timeRange];
         fullUserInfo[SRGMediaPlayerPreviousMediaTypeKey] = @(self.mediaType);
         fullUserInfo[SRGMediaPlayerPreviousStreamTypeKey] = @(self.streamType);
+        if (_selected) {
+            fullUserInfo[SRGMediaPlayerPreviousSelectedSegmentKey] = self.currentSegment;
+        }
         self.player = nil;
     }
     
-    // The player is guaranteed to be nil when the idle notification is sent
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:[fullUserInfo copy]];
-    
     _timeRange = kCMTimeRangeInvalid;
+    _selected = NO;
     
     self.previousSegment = nil;
     self.targetSegment = nil;
@@ -994,10 +1019,16 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     self.seekTargetTime = kCMTimeIndefinite;
     
+    self.lastPlaybackTime = kCMTimeIndefinite;
+    self.lastStallDetectionDate = nil;
+    
     self.audioOption = nil;
     self.subtitleOption = nil;
     
     self.pictureInPictureController = nil;
+    
+    // Emit the notification once all state has been reset
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:[fullUserInfo copy]];
 }
 
 #pragma mark Configuration
@@ -1387,11 +1418,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 }
 
 #pragma mark Notifications
-
-- (void)srg_mediaPlayerController_playerItemPlaybackStalled:(NSNotification *)notification
-{
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
-}
 
 - (void)srg_mediaPlayerController_playerItemDidPlayToEndTime:(NSNotification *)notification
 {

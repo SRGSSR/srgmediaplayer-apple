@@ -21,6 +21,6 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerError) {
 /**
  *  Domain for media player errors.
  */
-OBJC_EXTERN NSString * const SRGMediaPlayerErrorDomain;
+OBJC_EXPORT NSString * const SRGMediaPlayerErrorDomain;
 
 NS_ASSUME_NONNULL_END
