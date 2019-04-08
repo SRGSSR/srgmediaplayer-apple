@@ -55,7 +55,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) id playerPeriodicTimeObserver;
 @property (nonatomic, weak) id controllerPeriodicTimeObserver;
 
-@property (nonatomic) NSTimer *stallingDetectionTimer;
+@property (nonatomic) NSTimer *stallDetectionTimer;
 @property (nonatomic) CMTime lastPlaybackTime;
 @property (nonatomic) NSDate *lastStallDetectionDate;
 
@@ -129,7 +129,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.playbackLikelyToKeepUp)];
         
-        self.stallingDetectionTimer = nil;
+        self.stallDetectionTimer = nil;
         
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:AVPlayerItemDidPlayToEndTimeNotification
@@ -280,7 +280,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             }
         }];
         
-        self.stallingDetectionTimer = [NSTimer scheduledTimerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {
+        self.stallDetectionTimer = [NSTimer scheduledTimerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {
             @strongify(self)
             
             AVPlayerItem *playerItem = player.currentItem;
@@ -314,10 +314,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-- (void)setStallingDetectionTimer:(NSTimer *)stallingDetectionTimer
+- (void)setstallDetectionTimer:(NSTimer *)stallDetectionTimer
 {
-    [_stallingDetectionTimer invalidate];
-    _stallingDetectionTimer = stallingDetectionTimer;
+    [_stallDetectionTimer invalidate];
+    _stallDetectionTimer = stallDetectionTimer;
 }
 
 - (AVPlayerLayer *)playerLayer
