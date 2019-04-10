@@ -18,20 +18,34 @@
                         <viewControllerLayoutGuide type="top" id="Kd2-G2-YKk"/>
                         <viewControllerLayoutGuide type="bottom" id="fyy-2d-5FG"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Sdt-NG-h7U" customClass="SRGMediaPlayerView">
+                    <view key="view" contentMode="scaleToFill" id="Sdt-NG-h7U">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pCg-HL-ge8">
-                                <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pCg-HL-ge8" customClass="SRGMediaPlayerView">
+                                <rect key="frame" x="0.0" y="0.0" width="1920" height="874"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYG-YP-cFk" customClass="SRGPlaybackButton">
+                                <rect key="frame" x="863" y="934" width="195" height="86"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="195" id="CHg-2B-RRZ"/>
+                                    <constraint firstAttribute="height" constant="86" id="UVu-nL-Xy1"/>
+                                </constraints>
+                                <inset key="contentEdgeInsets" minX="40" minY="20" maxX="40" maxY="20"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <outlet property="mediaPlayerController" destination="bga-2r-tsO" id="LTf-fu-woJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="pCg-HL-ge8" firstAttribute="leading" secondItem="Sdt-NG-h7U" secondAttribute="leading" id="Nq7-Ng-nFw"/>
                             <constraint firstItem="pCg-HL-ge8" firstAttribute="top" secondItem="Sdt-NG-h7U" secondAttribute="top" id="SAG-NA-L6V"/>
+                            <constraint firstItem="58l-eV-lCI" firstAttribute="bottom" secondItem="pCg-HL-ge8" secondAttribute="bottom" constant="146" id="VEw-uy-bPS"/>
+                            <constraint firstItem="58l-eV-lCI" firstAttribute="bottom" secondItem="kYG-YP-cFk" secondAttribute="bottom" id="Vcg-Eb-Il6"/>
+                            <constraint firstItem="kYG-YP-cFk" firstAttribute="centerX" secondItem="58l-eV-lCI" secondAttribute="centerX" id="Y8o-gE-4JJ"/>
                             <constraint firstAttribute="trailing" secondItem="pCg-HL-ge8" secondAttribute="trailing" id="bf0-T5-B9N"/>
-                            <constraint firstAttribute="bottom" secondItem="pCg-HL-ge8" secondAttribute="bottom" id="pXh-Jk-Nnv"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="58l-eV-lCI"/>
                     </view>
@@ -42,7 +56,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PUd-tG-uuL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="bga-2r-tsO" customClass="SRGMediaPlayerController">
                     <connections>
-                        <outlet property="view" destination="Sdt-NG-h7U" id="zq7-RR-ITH"/>
+                        <outlet property="view" destination="pCg-HL-ge8" id="SHS-Xv-O3r"/>
                     </connections>
                 </customObject>
             </objects>

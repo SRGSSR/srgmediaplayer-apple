@@ -222,5 +222,9 @@ static void commonInit(SRGPlaybackButton *self);
 
 static void commonInit(SRGPlaybackButton *self)
 {
+#if TARGET_OS_IOS
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
+#else
+    [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventPrimaryActionTriggered];
+#endif
 }
