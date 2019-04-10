@@ -380,8 +380,6 @@
 		6F5CA4431FD91CE500CF175F /* Media.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Media.h; sourceTree = "<group>"; };
 		6F5CA4441FD91CE500CF175F /* Media.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Media.m; sourceTree = "<group>"; };
 		6F816C252258A93900A71401 /* SRGMediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGMediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6F816C272258A93900A71401 /* SRGMediaPlayer_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayer_tvOS.h; sourceTree = "<group>"; };
-		6F816C282258A93900A71401 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6F8F06E31FDA7631002DD457 /* SRGMediaPlaybackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackView.h; sourceTree = "<group>"; };
 		6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Demo.h"; sourceTree = "<group>"; };
 		6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Demo.m"; sourceTree = "<group>"; };
@@ -427,7 +425,7 @@
 		E69A1E091D61BAFD0064E6C1 /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E69A1E0A1D61BAFD0064E6C1 /* thumb_timeline_slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumb_timeline_slider.png; sourceTree = "<group>"; };
 		E69A1E0B1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumb_timeline_slider@2x.png"; sourceTree = "<group>"; };
-		E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGMediaPlayer-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-iOS-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGMediaPlayer-iOS-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69A1F581D61BFAE0064E6C1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E69A1F5C1D61BFAE0064E6C1 /* AudioDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AudioDemoConfiguration.plist; sourceTree = "<group>"; };
 		E69A1F5D1D61BFAE0064E6C1 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
@@ -443,7 +441,7 @@
 		E69A1F6C1D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder@2x.png"; sourceTree = "<group>"; };
 		E69A1F6F1D61BFAE0064E6C1 /* yellow_card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow_card.png; sourceTree = "<group>"; };
 		E69A1F701D61BFAE0064E6C1 /* yellow_card@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yellow_card@2x.png"; sourceTree = "<group>"; };
-		E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGMediaPlayer-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-iOS-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGMediaPlayer-iOS-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69A1FD51D61C6830064E6C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E69A1FDE1D61C6D20064E6C1 /* PlaybackTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackTestCase.m; sourceTree = "<group>"; };
 		E69A1FDF1D61C6D20064E6C1 /* SegmentsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentsTestCase.m; sourceTree = "<group>"; };
@@ -649,15 +647,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		6F816C262258A93900A71401 /* SRGMediaPlayer-tvOS */ = {
-			isa = PBXGroup;
-			children = (
-				6F816C272258A93900A71401 /* SRGMediaPlayer_tvOS.h */,
-				6F816C282258A93900A71401 /* Info.plist */,
-			);
-			path = "SRGMediaPlayer-tvOS";
-			sourceTree = "<group>";
-		};
 		6F97C7951E7A89C5001AD9B3 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -685,7 +674,6 @@
 				E69A1DB11D61BAFD0064E6C1 /* Framework */,
 				E69A1FD21D61C6830064E6C1 /* Tests */,
 				E69A1F571D61BFAE0064E6C1 /* Demo */,
-				6F816C262258A93900A71401 /* SRGMediaPlayer-tvOS */,
 				E69A1FCC1D61C32D0064E6C1 /* Frameworks */,
 				C201D8F61A9DC1A40016C629 /* Products */,
 			);
@@ -698,8 +686,8 @@
 			isa = PBXGroup;
 			children = (
 				E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */,
-				E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-demo.app */,
-				E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-tests.xctest */,
+				E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-iOS-demo.app */,
+				E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-iOS-tests.xctest */,
 				6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */,
 				6F816C252258A93900A71401 /* SRGMediaPlayer.framework */,
 			);
@@ -1076,9 +1064,9 @@
 			productReference = 6F816C252258A93900A71401 /* SRGMediaPlayer.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer */ = {
+		E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E69A1DAE1D61B9380064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer" */;
+			buildConfigurationList = E69A1DAE1D61B9380064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-iOS" */;
 			buildPhases = (
 				E69A1DA41D61B9380064E6C1 /* Sources */,
 				E69A1DA51D61B9380064E6C1 /* Frameworks */,
@@ -1091,14 +1079,14 @@
 			dependencies = (
 				6F444855210F144A009FDB70 /* PBXTargetDependency */,
 			);
-			name = SRGMediaPlayer;
+			name = "SRGMediaPlayer-iOS";
 			productName = SRGMediaPlayer;
 			productReference = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E69A1E661D61BEFC0064E6C1 /* SRGMediaPlayer-demo */ = {
+		E69A1E661D61BEFC0064E6C1 /* SRGMediaPlayer-iOS-demo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E69A1E7B1D61BEFC0064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-demo" */;
+			buildConfigurationList = E69A1E7B1D61BEFC0064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-iOS-demo" */;
 			buildPhases = (
 				E69A1E631D61BEFC0064E6C1 /* Sources */,
 				E69A1E641D61BEFC0064E6C1 /* Frameworks */,
@@ -1111,14 +1099,14 @@
 			dependencies = (
 				E69A1FC21D61C0180064E6C1 /* PBXTargetDependency */,
 			);
-			name = "SRGMediaPlayer-demo";
+			name = "SRGMediaPlayer-iOS-demo";
 			productName = "SRGMediaPlayer-demo";
-			productReference = E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-demo.app */;
+			productReference = E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-iOS-demo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E69A1FD01D61C6830064E6C1 /* SRGMediaPlayer-tests */ = {
+		E69A1FD01D61C6830064E6C1 /* SRGMediaPlayer-iOS-tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E69A1FD91D61C6830064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-tests" */;
+			buildConfigurationList = E69A1FD91D61C6830064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-iOS-tests" */;
 			buildPhases = (
 				E69A1FCD1D61C6830064E6C1 /* Sources */,
 				E69A1FCE1D61C6830064E6C1 /* Frameworks */,
@@ -1130,9 +1118,9 @@
 			dependencies = (
 				E69A1FD81D61C6830064E6C1 /* PBXTargetDependency */,
 			);
-			name = "SRGMediaPlayer-tests";
+			name = "SRGMediaPlayer-iOS-tests";
 			productName = "SRGMediaPlayer-tests";
-			productReference = E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-tests.xctest */;
+			productReference = E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-iOS-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1182,11 +1170,11 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer */,
-				6F44484B210F1387009FDB70 /* SRGMediaPlayer-resources */,
-				E69A1FD01D61C6830064E6C1 /* SRGMediaPlayer-tests */,
-				E69A1E661D61BEFC0064E6C1 /* SRGMediaPlayer-demo */,
+				E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer-iOS */,
+				E69A1FD01D61C6830064E6C1 /* SRGMediaPlayer-iOS-tests */,
+				E69A1E661D61BEFC0064E6C1 /* SRGMediaPlayer-iOS-demo */,
 				6F816C242258A93900A71401 /* SRGMediaPlayer-tvOS */,
+				6F44484B210F1387009FDB70 /* SRGMediaPlayer-resources */,
 			);
 		};
 /* End PBXProject section */
@@ -1440,12 +1428,12 @@
 		};
 		E69A1FC21D61C0180064E6C1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer */;
+			target = E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer-iOS */;
 			targetProxy = E69A1FC11D61C0180064E6C1 /* PBXContainerItemProxy */;
 		};
 		E69A1FD81D61C6830064E6C1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer */;
+			target = E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer-iOS */;
 			targetProxy = E69A1FD71D61C6830064E6C1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1569,7 +1557,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1702,7 +1690,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2140,7 +2128,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2167,7 +2155,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2306,7 +2294,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E69A1DAE1D61B9380064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer" */ = {
+		E69A1DAE1D61B9380064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E69A1DAF1D61B9380064E6C1 /* Debug */,
@@ -2317,7 +2305,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E69A1E7B1D61BEFC0064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-demo" */ = {
+		E69A1E7B1D61BEFC0064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-iOS-demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E69A1E7C1D61BEFC0064E6C1 /* Debug */,
@@ -2328,7 +2316,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E69A1FD91D61C6830064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-tests" */ = {
+		E69A1FD91D61C6830064E6C1 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-iOS-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E69A1FDA1D61C6830064E6C1 /* Debug */,

@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E69A1DA81D61B9380064E6C1"
                BuildableName = "SRGMediaPlayer.framework"
-               BlueprintName = "SRGMediaPlayer"
+               BlueprintName = "SRGMediaPlayer-iOS"
                ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -36,8 +36,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E69A1FD01D61C6830064E6C1"
-               BuildableName = "SRGMediaPlayer-tests.xctest"
-               BlueprintName = "SRGMediaPlayer-tests"
+               BuildableName = "SRGMediaPlayer-iOS-tests.xctest"
+               BlueprintName = "SRGMediaPlayer-iOS-tests"
                ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -47,7 +47,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E69A1DA81D61B9380064E6C1"
             BuildableName = "SRGMediaPlayer.framework"
-            BlueprintName = "SRGMediaPlayer"
+            BlueprintName = "SRGMediaPlayer-iOS"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -69,7 +69,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E69A1DA81D61B9380064E6C1"
             BuildableName = "SRGMediaPlayer.framework"
-            BlueprintName = "SRGMediaPlayer"
+            BlueprintName = "SRGMediaPlayer-iOS"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -87,7 +87,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E69A1DA81D61B9380064E6C1"
             BuildableName = "SRGMediaPlayer.framework"
-            BlueprintName = "SRGMediaPlayer"
+            BlueprintName = "SRGMediaPlayer-iOS"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
