@@ -4,7 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <CoreMotion/CoreMotion.h>
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -35,7 +34,6 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
  *  be used. You should set a motion manager before any playback occurs and not change it afterwards, otherwise the
  *  behavior is undefined.
  */
-+ (void)setMotionManager:(nullable CMMotionManager *)motionManager;
 
 /**
  *  Retrieve or change the current view mode, if any.

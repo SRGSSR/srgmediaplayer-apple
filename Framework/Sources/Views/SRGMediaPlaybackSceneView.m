@@ -7,8 +7,6 @@
 #import "SRGMediaPlaybackSceneView.h"
 
 #import "AVPlayer+SRGMediaPlayer.h"
-#import "SRGMotionManager.h"
-#import "SRGQuaternion.h"
 #import "SRGVideoNode.h"
 #import "UIDevice+SRGMediaPlayer.h"
 
@@ -80,13 +78,13 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
                                                selector:@selector(applicationDidEnterBackground:)
                                                    name:UIApplicationDidEnterBackgroundNotification
                                                  object:nil];
-        [SRGMotionManager start];
+        
     }
     else {
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:UIApplicationDidEnterBackgroundNotification
                                                     object:nil];
-        [SRGMotionManager stop];
+        
     }
 }
 
@@ -101,14 +99,25 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
 {
     // CMMotionManager might deliver events to a background queue.
     dispatch_async(dispatch_get_main_queue(), ^{
-        CMMotionManager *motionManager = SRGMotionManager.motionManager;
         
         // Calculate the required camera orientation based on device orientation (if available), and apply additional
         // adjustements the user made with the pan gesture.
-        CMDeviceMotion *deviceMotion = motionManager.deviceMotion;
-        SCNQuaternion deviceBasedCameraOrientation = deviceMotion ? SRGCameraOrientationForAttitude(deviceMotion.attitude) : SRGQuaternionMakeWithAngleAndAxis(M_PI, 1.f, 0.f, 0.f);
+        
+        GLKQuaternion glkQuaternion = GLKQuaternionMakeWithAngleAndAxis(M_PI, 1.f, 0.f, 0.f);
+        SCNQuaternion deviceBasedCameraOrientation = SCNVector4Make(glkQuaternion.x, glkQuaternion.y, glkQuaternion.z, glkQuaternion.w);
+        
         self.deviceBasedCameraOrientation = deviceBasedCameraOrientation;
-        self.cameraNode.orientation = SRGRotateQuaternion(deviceBasedCameraOrientation, self.angularOffsets.x, self.angularOffsets.y);
+        
+        glkQuaternion = GLKQuaternionMake(deviceBasedCameraOrientation.x, deviceBasedCameraOrientation.y, deviceBasedCameraOrientation.z, deviceBasedCameraOrientation.w);
+        
+        GLKQuaternion glkRotationAroundX = GLKQuaternionMakeWithAngleAndAxis(self.angularOffsets.x, 1.f, 0.f, 0.f);
+        glkQuaternion = GLKQuaternionMultiply(glkQuaternion, glkRotationAroundX);
+        
+        GLKQuaternion glkRotationAroundY = GLKQuaternionMakeWithAngleAndAxis(self.angularOffsets.y, 0.f, 1.f, 0.f);
+        glkQuaternion = GLKQuaternionMultiply(glkRotationAroundY, glkQuaternion);
+        
+        self.cameraNode.orientation = SCNVector4Make(glkQuaternion.x, glkQuaternion.y, glkQuaternion.z, glkQuaternion.w);
+        
     });
 }
 
@@ -186,7 +195,17 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
             
             CGPoint angularOffsets = CGPointMake(wx + self.initialAngularOffsets.x, wy + self.initialAngularOffsets.y);
             self.angularOffsets = angularOffsets;
-            self.cameraNode.orientation = SRGRotateQuaternion(self.deviceBasedCameraOrientation, angularOffsets.x, angularOffsets.y);
+            
+            GLKQuaternion glkQuaternion = GLKQuaternionMake(self.deviceBasedCameraOrientation.x, self.deviceBasedCameraOrientation.y, self.deviceBasedCameraOrientation.z, self.deviceBasedCameraOrientation.w);
+            
+            GLKQuaternion glkRotationAroundX = GLKQuaternionMakeWithAngleAndAxis(angularOffsets.x, 1.f, 0.f, 0.f);
+            glkQuaternion = GLKQuaternionMultiply(glkQuaternion, glkRotationAroundX);
+            
+            GLKQuaternion glkRotationAroundY = GLKQuaternionMakeWithAngleAndAxis(angularOffsets.y, 0.f, 1.f, 0.f);
+            glkQuaternion = GLKQuaternionMultiply(glkRotationAroundY, glkQuaternion);
+            
+            self.cameraNode.orientation = SCNVector4Make(glkQuaternion.x, glkQuaternion.y, glkQuaternion.z, glkQuaternion.w);
+            
             break;
         }
             

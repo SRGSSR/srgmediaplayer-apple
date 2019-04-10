@@ -22,9 +22,6 @@
         };
         
         __weak __typeof(self) weakSelf = self;
-        self.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
-            pictureInPictureController.delegate = weakSelf;
-        };
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(playbackStateDidChange:)
@@ -32,40 +29,6 @@
                                                  object:self];
     }
     return self;
-}
-
-#pragma mark AVPictureInPictureControllerDelegate protocol
-
-- (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
-{
-    // SRGMediaPlayerViewController is always displayed modally, the following therefore always works
-    UIViewController *rootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
-    [rootViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
-{
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
-    
-    // If no SRGMediaPlayerViewController instance is currently displayed (always modally)
-    if (topViewController && ! [topViewController isKindOfClass:SRGMediaPlayerViewController.class]) {
-        // FIXME: Init with controller
-        SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
-        [topViewController presentViewController:mediaPlayerViewController animated:YES completion:^{
-            // See comment above
-            completionHandler(YES);
-        }];
-    }
-}
-
-- (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
-{
-    // Reset the status of the player when picture in picture is exited anywhere except from the SRGMediaPlayerViewController
-    // itself
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
-    if (! [topViewController isKindOfClass:SRGMediaPlayerViewController.class]) {
-        [self reset];
-    }
 }
 
 #pragma mark Notifications

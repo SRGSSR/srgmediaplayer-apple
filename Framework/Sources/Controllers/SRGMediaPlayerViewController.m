@@ -14,7 +14,6 @@
 #import "SRGPlaybackButton.h"
 #import "SRGPictureInPictureButton.h"
 #import "SRGMediaPlayerSharedController.h"
-#import "SRGTimeSlider.h"
 #import "SRGTracksButton.h"
 #import "SRGViewModeButton.h"
 
@@ -35,7 +34,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (nonatomic, weak) IBOutlet SRGViewModeButton *viewModeButton;
 
 @property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
-@property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
 @property (nonatomic, weak) IBOutlet SRGAirPlayButton *airPlayButton;
 @property (nonatomic, weak) IBOutlet SRGAirPlayView *airPlayView;
 @property (nonatomic, weak) IBOutlet UIButton *skipBackwardButton;
@@ -155,7 +153,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     
     self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
     self.tracksButton.mediaPlayerController = s_mediaPlayerController;
-    self.timeSlider.mediaPlayerController = s_mediaPlayerController;
     self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
     self.airPlayButton.mediaPlayerController = s_mediaPlayerController;
     self.airPlayView.mediaPlayerController = s_mediaPlayerController;
@@ -188,9 +185,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [super viewDidAppear:animated];
     
     if ([self isBeingPresented]) {
-        if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
-            [s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
-        }
+        
     }
     
     if (@available(iOS 11, *)) {
@@ -238,29 +233,21 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     SRGMediaPlayerPlaybackState playbackState = s_mediaPlayerController.playbackState;
     switch (playbackState) {
         case SRGMediaPlayerPlaybackStateIdle: {
-            self.timeSlider.timeLeftValueLabel.hidden = YES;
-            self.timeSlider.valueLabel.hidden = YES;
             self.loadingActivityIndicatorView.hidden = YES;
             break;
         }
             
         case SRGMediaPlayerPlaybackStatePreparing: {
-            self.timeSlider.timeLeftValueLabel.hidden = YES;
-            self.timeSlider.valueLabel.hidden = YES;
             self.loadingActivityIndicatorView.hidden = NO;
             break;
         }
             
         case SRGMediaPlayerPlaybackStateSeeking: {
-            self.timeSlider.timeLeftValueLabel.hidden = NO;
-            self.timeSlider.valueLabel.hidden = YES;
             self.loadingActivityIndicatorView.hidden = NO;
             break;
         }
             
         default: {
-            self.timeSlider.timeLeftValueLabel.hidden = NO;
-            self.timeSlider.valueLabel.hidden = NO;
             self.loadingActivityIndicatorView.hidden = YES;
             break;
         }
@@ -470,11 +457,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)srg_mediaPlayerViewController_applicationDidBecomeActive:(NSNotification *)notification
 {
-    AVPictureInPictureController *pictureInPictureController = s_mediaPlayerController.pictureInPictureController;
-    
-    if (pictureInPictureController.isPictureInPictureActive) {
-        [pictureInPictureController stopPictureInPicture];
-    }
 }
 
 - (void)srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:(NSNotification *)notification
@@ -496,10 +478,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (IBAction)dismiss:(id)sender
 {
-    if (! s_mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
-        [s_mediaPlayerController reset];
-    }
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

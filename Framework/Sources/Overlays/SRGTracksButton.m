@@ -177,21 +177,6 @@ static void commonInit(SRGTracksButton *self);
     }
 }
 
-#pragma mark UIPopoverPresentationControllerDelegate protocol
-
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
-{
-    // Needed for the iPhone
-    return UIModalPresentationNone;
-}
-
-- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
-{
-    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideSelectionPopover:)]) {
-        [self.delegate tracksButtonDidHideSelectionPopover:self];
-    }
-}
-
 #pragma mark Actions
 
 - (void)showSubtitlesMenu:(id)sender

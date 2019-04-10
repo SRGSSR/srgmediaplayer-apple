@@ -62,7 +62,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
 @property (nonatomic, weak) id<SRGSegment> currentSegment;
 
-@property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 
 @property (nonatomic) SRGPosition *startPosition;                   // Will be nilled when reached
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
@@ -73,14 +72,12 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) AVMediaSelectionOption *audioOption;
 @property (nonatomic) AVMediaSelectionOption *subtitleOption;
 
-@property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
 
 @end
 
 @implementation SRGMediaPlayerController
 
 @synthesize view = _view;
-@synthesize pictureInPictureController = _pictureInPictureController;
 
 #pragma mark Object lifecycle
 
@@ -560,28 +557,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-- (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
-{
-    if (_pictureInPictureController) {
-        [_pictureInPictureController removeObserver:self keyPath:@keypath(_pictureInPictureController.pictureInPicturePossible)];
-        [_pictureInPictureController removeObserver:self keyPath:@keypath(_pictureInPictureController.pictureInPictureActive)];
-    }
-    
-    _pictureInPictureController = pictureInPictureController;
-    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
-    
-    if (pictureInPictureController) {
-        @weakify(self)
-        void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
-            @strongify(self)
-            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
-        };
-        
-        [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 block:observationBlock];
-        [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:observationBlock];
-    }
-}
-
 - (BOOL)allowsExternalNonMirroredPlayback
 {
     AVPlayer *player = self.player;
@@ -959,9 +934,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)stopWithUserInfo:(NSDictionary *)userInfo
 {
-    if (self.pictureInPictureController.isPictureInPictureActive) {
-        [self.pictureInPictureController stopPictureInPicture];
-    }
     
     NSMutableDictionary *fullUserInfo = [userInfo mutableCopy] ?: [NSMutableDictionary dictionary];
     
@@ -991,7 +963,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.audioOption = nil;
     self.subtitleOption = nil;
     
-    self.pictureInPictureController = nil;
+    
 }
 
 #pragma mark Configuration
@@ -1206,13 +1178,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.playerPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         if (self.playerLayer.readyForDisplay) {
-            if (self.pictureInPictureController.playerLayer != self.playerLayer) {
-                self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
-                self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
-            }
+            
         }
         else {
-            self.pictureInPictureController = nil;
+            
         }
         
         [self updateSegmentStatusForPlaybackState:self.playbackState previousPlaybackState:self.playbackState time:time];

@@ -15,7 +15,7 @@
 
 #import <libextobjc/libextobjc.h>
 
-static CMMotionManager *s_motionManager = nil;
+
 
 static void commonInit(SRGMediaPlayerView *self);
 
@@ -31,15 +31,7 @@ static void commonInit(SRGMediaPlayerView *self);
 
 #pragma mark Class methods
 
-+ (CMMotionManager *)motionManager
-{
-    return s_motionManager;
-}
 
-+ (void)setMotionManager:(CMMotionManager *)motionManager
-{
-    s_motionManager = motionManager;
-}
 
 #pragma mark Object lifecycle
 

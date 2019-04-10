@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  button is set to the selected state (with a corresponding image).
  */
 IB_DESIGNABLE
-@interface SRGTracksButton : UIView <UIPopoverPresentationControllerDelegate>
+@interface SRGTracksButton : UIView
 
 /**
  *  The media player which the button must be associated with.

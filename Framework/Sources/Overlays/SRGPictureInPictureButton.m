@@ -125,16 +125,8 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    AVPictureInPictureController *pictureInPictureController = mediaPlayerController.pictureInPictureController;
-    
     if (self.alwaysHidden) {
         self.hidden = YES;
-    }
-    else if (pictureInPictureController.pictureInPicturePossible) {
-        self.hidden = NO;
-        
-        UIImage *image = pictureInPictureController.pictureInPictureActive ? self.stopImage : self.startImage;
-        [self.button setImage:image forState:UIControlStateNormal];
     }
     else if (self.fakeInterfaceBuilderButton) {
         self.hidden = NO;
@@ -148,18 +140,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (void)srg_pictureInPictureButton_togglePictureInPicture:(id)sender
 {
-    AVPictureInPictureController *pictureInPictureController = self.mediaPlayerController.pictureInPictureController;
     
-    if (! pictureInPictureController.pictureInPicturePossible) {
-        return;
-    }
-    
-    if (pictureInPictureController.pictureInPictureActive) {
-        [pictureInPictureController stopPictureInPicture];
-    }
-    else {
-        [pictureInPictureController startPictureInPicture];
-    }
 }
 
 #pragma mark Notifications
@@ -201,14 +182,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (NSString *)accessibilityLabel
 {
-    AVPictureInPictureController *pictureInPictureController = self.mediaPlayerController.pictureInPictureController;
-    
-    if (pictureInPictureController.pictureInPictureActive) {
-        return SRGMediaPlayerAccessibilityLocalizedString(@"Stop Picture in Picture", @"Picture In Picture button label, when PiP is active");
-    }
-    else {
-        return SRGMediaPlayerAccessibilityLocalizedString(@"Start Picture in Picture", @"Picture In Picture button label, when PiP is available");
-    }
+    return SRGMediaPlayerAccessibilityLocalizedString(@"Start Picture in Picture", @"Picture In Picture button label, when PiP is available");
 }
 
 - (UIAccessibilityTraits)accessibilityTraits

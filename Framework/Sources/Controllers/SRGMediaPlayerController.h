@@ -723,12 +723,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return the picture in picture controller if picture in picture is available for the device, `nil` otherwise.
  */
-@property (nonatomic, readonly, nullable) AVPictureInPictureController *pictureInPictureController;
+
 
 /**
  *  Optional block which gets called right after picture in picture controller creation.
  */
-@property (nonatomic, copy, nullable) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
+
 
 @end
 
