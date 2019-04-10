@@ -4,17 +4,27 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "ViewController.h"
+#import "PlayerViewController.h"
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface ViewController ()
+@interface PlayerViewController ()
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 @end
 
-@implementation ViewController
+@implementation PlayerViewController
+
+#pragma mark Object lifecycle
+
+- (instancetype)init
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    return [storyboard instantiateInitialViewController];
+}
+
+#pragma mark View lifecycle
 
 - (void)viewDidLoad
 {

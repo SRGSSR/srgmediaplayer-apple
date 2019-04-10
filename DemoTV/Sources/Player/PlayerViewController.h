@@ -4,12 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "AppDelegate.h"
+#import <UIKit/UIKit.h>
 
-@interface AppDelegate ()
-
-@end
-
-@implementation AppDelegate
+@interface PlayerViewController : UIViewController
 
 @end

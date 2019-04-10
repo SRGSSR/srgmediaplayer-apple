@@ -95,6 +95,11 @@
 		6F7B81F9225E77D60002CD3A /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA39E1E225E665E00834AA7 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F7B81FA225E77E80002CD3A /* SRGMediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F816C252258A93900A71401 /* SRGMediaPlayer.framework */; };
 		6F7B81FB225E77E80002CD3A /* SRGMediaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F816C252258A93900A71401 /* SRGMediaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F7B820A225E79740002CD3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F7B8200225E79740002CD3A /* Assets.xcassets */; };
+		6F7B820B225E79740002CD3A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B8204225E79740002CD3A /* main.m */; };
+		6F7B820C225E79740002CD3A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B8205225E79740002CD3A /* AppDelegate.m */; };
+		6F7B820D225E79740002CD3A /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B8208225E79740002CD3A /* PlayerViewController.m */; };
+		6F7B8210225E7A2B0002CD3A /* PlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F7B820F225E7A2B0002CD3A /* PlayerViewController.storyboard */; };
 		6F816C312258AA1500A71401 /* AVPlayer+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3C21FD919CD00CF175F /* AVPlayer+SRGMediaPlayer.h */; };
 		6F816C322258AA1500A71401 /* AVPlayer+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3B91FD919CD00CF175F /* AVPlayer+SRGMediaPlayer.m */; };
 		6F816C332258AA1500A71401 /* AVPlayerItem+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3B71FD919CD00CF175F /* AVPlayerItem+SRGMediaPlayer.h */; };
@@ -172,11 +177,6 @@
 		6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FA09D7D1D9E9C4400EDCA64 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6FA09D7E1D9E9D1400EDCA64 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6FA39E01225E647700834AA7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA39E00225E647700834AA7 /* AppDelegate.m */; };
-		6FA39E04225E647700834AA7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA39E03225E647700834AA7 /* ViewController.m */; };
-		6FA39E07225E647700834AA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FA39E05225E647700834AA7 /* Main.storyboard */; };
-		6FA39E09225E647900834AA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FA39E08225E647900834AA7 /* Assets.xcassets */; };
-		6FA39E0C225E647900834AA7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA39E0B225E647900834AA7 /* main.m */; };
 		6FA39E28225E687100834AA7 /* SRGMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */; };
 		6FA98E15211D68AF00969089 /* ConstantsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA98E14211D68AE00969089 /* ConstantsTestCase.m */; };
 		6FB97FDE1E4A0E080014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
@@ -420,6 +420,15 @@
 		6F5CA4311FD91A1D00CF175F /* SRGMediaPlayerConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerConstants.m; sourceTree = "<group>"; };
 		6F5CA4431FD91CE500CF175F /* Media.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Media.h; sourceTree = "<group>"; };
 		6F5CA4441FD91CE500CF175F /* Media.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Media.m; sourceTree = "<group>"; };
+		6F7A78EC224B8032005054E8 /* SubtitleTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubtitleTestCase.m; sourceTree = "<group>"; };
+		6F7B8200225E79740002CD3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6F7B8203225E79740002CD3A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		6F7B8204225E79740002CD3A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6F7B8205225E79740002CD3A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		6F7B8207225E79740002CD3A /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
+		6F7B8208225E79740002CD3A /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
+		6F7B8209225E79740002CD3A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F7B820F225E7A2B0002CD3A /* PlayerViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlayerViewController.storyboard; sourceTree = "<group>"; };
 		6F816C252258A93900A71401 /* SRGMediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGMediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8F06E31FDA7631002DD457 /* SRGMediaPlaybackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackView.h; sourceTree = "<group>"; };
 		6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Demo.h"; sourceTree = "<group>"; };
@@ -434,14 +443,6 @@
 		6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
 		6FA1D6081F42C13E00C85D15 /* TestMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMacros.h; sourceTree = "<group>"; };
 		6FA39DFD225E647700834AA7 /* SRGMediaPlayer-tvOS-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGMediaPlayer-tvOS-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FA39DFF225E647700834AA7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		6FA39E00225E647700834AA7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		6FA39E02225E647700834AA7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		6FA39E03225E647700834AA7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		6FA39E06225E647700834AA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		6FA39E08225E647900834AA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		6FA39E0A225E647900834AA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6FA39E0B225E647900834AA7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6FA39E1D225E665E00834AA7 /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/tvOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
 		6FA39E1E225E665E00834AA7 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/tvOS/SRGLogger.framework; sourceTree = "<group>"; };
 		6FA98E14211D68AE00969089 /* ConstantsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstantsTestCase.m; sourceTree = "<group>"; };
@@ -710,6 +711,53 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		6F7B81FE225E79740002CD3A /* DemoTV */ = {
+			isa = PBXGroup;
+			children = (
+				6F7B81FF225E79740002CD3A /* Resources */,
+				6F7B8201225E79740002CD3A /* Sources */,
+				6F7B8209225E79740002CD3A /* Info.plist */,
+			);
+			path = DemoTV;
+			sourceTree = "<group>";
+		};
+		6F7B81FF225E79740002CD3A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6F7B8200225E79740002CD3A /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		6F7B8201225E79740002CD3A /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				6F7B8202225E79740002CD3A /* Application */,
+				6F7B8206225E79740002CD3A /* Player */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		6F7B8202225E79740002CD3A /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				6F7B8203225E79740002CD3A /* AppDelegate.h */,
+				6F7B8205225E79740002CD3A /* AppDelegate.m */,
+				6F7B8204225E79740002CD3A /* main.m */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		6F7B8206225E79740002CD3A /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				6F7B8207225E79740002CD3A /* PlayerViewController.h */,
+				6F7B8208225E79740002CD3A /* PlayerViewController.m */,
+				6F7B820F225E7A2B0002CD3A /* PlayerViewController.storyboard */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
 		6F97C7951E7A89C5001AD9B3 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -731,28 +779,13 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		6FA39DFE225E647700834AA7 /* SRGMediaPlayer-tvOS-demo */ = {
-			isa = PBXGroup;
-			children = (
-				6FA39DFF225E647700834AA7 /* AppDelegate.h */,
-				6FA39E00225E647700834AA7 /* AppDelegate.m */,
-				6FA39E02225E647700834AA7 /* ViewController.h */,
-				6FA39E03225E647700834AA7 /* ViewController.m */,
-				6FA39E05225E647700834AA7 /* Main.storyboard */,
-				6FA39E08225E647900834AA7 /* Assets.xcassets */,
-				6FA39E0A225E647900834AA7 /* Info.plist */,
-				6FA39E0B225E647900834AA7 /* main.m */,
-			);
-			path = "SRGMediaPlayer-tvOS-demo";
-			sourceTree = "<group>";
-		};
 		C201D8EC1A9DC1A40016C629 = {
 			isa = PBXGroup;
 			children = (
 				E69A1DB11D61BAFD0064E6C1 /* Framework */,
 				E69A1FD21D61C6830064E6C1 /* Tests */,
 				E69A1F571D61BFAE0064E6C1 /* Demo */,
-				6FA39DFE225E647700834AA7 /* SRGMediaPlayer-tvOS-demo */,
+				6F7B81FE225E79740002CD3A /* DemoTV */,
 				E69A1FCC1D61C32D0064E6C1 /* Frameworks */,
 				C201D8F61A9DC1A40016C629 /* Products */,
 			);
@@ -1311,8 +1344,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FA39E09225E647900834AA7 /* Assets.xcassets in Resources */,
-				6FA39E07225E647700834AA7 /* Main.storyboard in Resources */,
+				6F7B820A225E79740002CD3A /* Assets.xcassets in Resources */,
+				6F7B8210225E7A2B0002CD3A /* PlayerViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1451,9 +1484,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FA39E04225E647700834AA7 /* ViewController.m in Sources */,
-				6FA39E0C225E647900834AA7 /* main.m in Sources */,
-				6FA39E01225E647700834AA7 /* AppDelegate.m in Sources */,
+				6F7B820C225E79740002CD3A /* AppDelegate.m in Sources */,
+				6F7B820B225E79740002CD3A /* main.m in Sources */,
+				6F7B820D225E79740002CD3A /* PlayerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1597,14 +1630,6 @@
 				08F4E5451E7FE77100C9E8FD /* rm */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		6FA39E05225E647700834AA7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6FA39E06225E647700834AA7 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		E69A1E001D61BAFD0064E6C1 /* Localizable.strings */ = {
@@ -2168,7 +2193,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "SRGMediaPlayer-tvOS-demo/Info.plist";
+				INFOPLIST_FILE = DemoTV/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -2203,7 +2228,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "SRGMediaPlayer-tvOS-demo/Info.plist";
+				INFOPLIST_FILE = DemoTV/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -2234,7 +2259,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "SRGMediaPlayer-tvOS-demo/Info.plist";
+				INFOPLIST_FILE = DemoTV/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -2265,7 +2290,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "SRGMediaPlayer-tvOS-demo/Info.plist";
+				INFOPLIST_FILE = DemoTV/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
