@@ -283,7 +283,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         self.stallDetectionTimer = [NSTimer srgmediaplayer_timerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {
             @strongify(self)
-            @strongify(player)
             
             AVPlayerItem *playerItem = player.currentItem;
             CMTime currentTime = playerItem.currentTime;
