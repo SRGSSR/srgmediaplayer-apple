@@ -11,7 +11,6 @@
 @interface ViewController ()
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
-@property (nonatomic) IBOutlet SRGMediaPlayerView *mediaPlayerView;
 
 @end
 
@@ -21,9 +20,7 @@
 {
     [super viewDidLoad];
     
-    self.mediaPlayerView.viewMode = SRGMediaPlayerViewModeMonoscopic;
-    
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/360/2017/2_Gothard_360_full_f_8414077-,301k,701k,1201k,2001k,.mp4.csmil/master.m3u8"];
+    NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
     [self.mediaPlayerController playURL:URL];
 }
 
