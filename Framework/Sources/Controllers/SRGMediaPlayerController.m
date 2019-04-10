@@ -316,7 +316,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-- (void)setstallDetectionTimer:(NSTimer *)stallDetectionTimer
+- (void)setStallDetectionTimer:(NSTimer *)stallDetectionTimer
 {
     [_stallDetectionTimer invalidate];
     _stallDetectionTimer = stallDetectionTimer;
