@@ -759,6 +759,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+NS_ASSUME_NONNULL_END
+
+#if TARGET_OS_IOS
+
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  Picture in picture functionality (not available on all devices).
  *
@@ -784,3 +790,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

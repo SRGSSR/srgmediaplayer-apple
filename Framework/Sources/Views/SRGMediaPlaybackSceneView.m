@@ -6,12 +6,16 @@
 
 #import "SRGMediaPlaybackSceneView.h"
 
-#import "SRGMotionManager.h"
+#import "AVPlayer+SRGMediaPlayer.h"
 #import "SRGQuaternion.h"
 #import "SRGVideoNode.h"
 
 #import <libextobjc/libextobjc.h>
 #import <SpriteKit/SpriteKit.h>
+
+#if TARGET_OS_IOS
+#import "SRGMotionManager.h"
+#endif
 
 /**
  *  To manipulate node orientation, use quaternions only. Those are more robust against singularities than Euler
@@ -72,13 +76,15 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
     [super willMoveToWindow:newWindow];
-    
+
+#if TARGET_OS_IOS    
     if (newWindow) {
         [SRGMotionManager start];
     }
     else {
         [SRGMotionManager stop];
     }
+#endif
 }
 
 #pragma mark Subclassing hooks
@@ -90,6 +96,7 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
 
 - (void)renderer:(id<SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time
 {
+#if TARGET_OS_IOS
     // CMMotionManager might deliver events to a background queue.
     dispatch_async(dispatch_get_main_queue(), ^{
         CMMotionManager *motionManager = SRGMotionManager.motionManager;
@@ -101,6 +108,7 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
         self.deviceBasedCameraOrientation = deviceBasedCameraOrientation;
         self.cameraNode.orientation = SRGRotateQuaternion(deviceBasedCameraOrientation, self.angularOffsets.x, self.angularOffsets.y);
     });
+#endif
 }
 
 #pragma mark SRGMediaPlaybackView protocol

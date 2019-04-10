@@ -21,10 +21,12 @@
             player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
         };
         
+#if TARGET_OS_IOS
         __weak __typeof(self) weakSelf = self;
         self.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
             pictureInPictureController.delegate = weakSelf;
         };
+#endif
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(playbackStateDidChange:)
@@ -33,6 +35,8 @@
     }
     return self;
 }
+
+#if TARGET_OS_IOS
 
 #pragma mark AVPictureInPictureControllerDelegate protocol
 
@@ -68,6 +72,8 @@
         [self reset];
     }
 }
+
+#endif
 
 #pragma mark Notifications
 

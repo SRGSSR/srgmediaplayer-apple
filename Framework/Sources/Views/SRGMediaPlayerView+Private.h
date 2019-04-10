@@ -15,10 +15,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface SRGMediaPlayerView (Private)
 
+#if TARGET_OS_IOS
+
 /**
  *  The motion manager which has been set, if any.
  */
 @property (class, nonatomic, readonly, nullable) CMMotionManager *motionManager;
+
+#endif
 
 /**
  *  The player associated with the view.

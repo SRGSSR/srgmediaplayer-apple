@@ -15,7 +15,7 @@ static void *s_seekCountKey = &s_seekCountKey;
 // TODO: Remove when iOS 10 is the minimum required version.
 - (void)srg_playImmediatelyIfPossible
 {
-    if (@available(iOS 10, *)) {
+    if (@available(iOS 10, tvOS 10, *)) {
         [self playImmediatelyAtRate:1.f];
     }
     else {

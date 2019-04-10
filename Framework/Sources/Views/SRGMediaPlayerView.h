@@ -30,9 +30,13 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
 
 @end
 
+NS_ASSUME_NONNULL_END
+
 #if TARGET_OS_IOS
 
 #import <CoreMotion/CoreMotion.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface SRGMediaPlayerView (CoreMotion)
 
@@ -51,6 +55,6 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
 
 @end
 
-#endif
-
 NS_ASSUME_NONNULL_END
+
+#endif
