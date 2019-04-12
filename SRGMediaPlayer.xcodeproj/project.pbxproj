@@ -97,9 +97,9 @@
 		6F7B81FB225E77E80002CD3A /* SRGMediaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F816C252258A93900A71401 /* SRGMediaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F7B820A225E79740002CD3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F7B8200225E79740002CD3A /* Assets.xcassets */; };
 		6F7B820B225E79740002CD3A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B8204225E79740002CD3A /* main.m */; };
-		6F7B820C225E79740002CD3A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B8205225E79740002CD3A /* AppDelegate.m */; };
-		6F7B820D225E79740002CD3A /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B8208225E79740002CD3A /* PlayerViewController.m */; };
-		6F7B8210225E7A2B0002CD3A /* PlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F7B820F225E7A2B0002CD3A /* PlayerViewController.storyboard */; };
+		6F7B820C225E79740002CD3A /* TVAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B8205225E79740002CD3A /* TVAppDelegate.m */; };
+		6F7B820D225E79740002CD3A /* TVPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B8208225E79740002CD3A /* TVPlayerViewController.m */; };
+		6F7B8210225E7A2B0002CD3A /* TVPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F7B820F225E7A2B0002CD3A /* TVPlayerViewController.storyboard */; };
 		6F816C312258AA1500A71401 /* AVPlayer+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3C21FD919CD00CF175F /* AVPlayer+SRGMediaPlayer.h */; };
 		6F816C322258AA1500A71401 /* AVPlayer+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3B91FD919CD00CF175F /* AVPlayer+SRGMediaPlayer.m */; };
 		6F816C332258AA1500A71401 /* AVPlayerItem+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3B71FD919CD00CF175F /* AVPlayerItem+SRGMediaPlayer.h */; };
@@ -192,6 +192,7 @@
 		6FC1C75122BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC1C74D22BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.h */; };
 		6FC57B1A1FD6A5BE00451B6B /* SRGViewModeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC57B191FD6A5BE00451B6B /* SRGViewModeButton.m */; };
+		6FCE341422611AE000302D4B /* TVMediasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF849B022610C2A00CE2F71 /* TVMediasViewController.m */; };
 		6FD312271FD92FAB00EC0C42 /* MediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD312261FD92FAB00EC0C42 /* MediaPlayer.m */; };
 		6FD3122A1FD9AB0100EC0C42 /* SRGQuaternion.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FD312281FD9AB0100EC0C42 /* SRGQuaternion.h */; };
 		6FD3122B1FD9AB0100EC0C42 /* SRGQuaternion.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD312291FD9AB0100EC0C42 /* SRGQuaternion.m */; };
@@ -200,6 +201,9 @@
 		6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */; };
 		6FE7D5EB1F86237D00817E89 /* MetadataUpdatesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */; };
 		6FF702C22267B94C00C4E864 /* TracksTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF702C12267B94C00C4E864 /* TracksTestCase.m */; };
+		6FF849B322610C3700CE2F71 /* TVMediasViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF849B222610C3700CE2F71 /* TVMediasViewController.storyboard */; };
+		6FF849B62261118200CE2F71 /* TVPlayersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF849B52261118200CE2F71 /* TVPlayersViewController.m */; };
+		6FF849B82261118B00CE2F71 /* TVPlayersViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF849B72261118B00CE2F71 /* TVPlayersViewController.storyboard */; };
 		E654909C1D7F33AE007D96E7 /* libextobjc.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E67799321D75AE2600E58331 /* SRGTimelineView.h in Headers */ = {isa = PBXBuildFile; fileRef = E67799301D75AE2500E58331 /* SRGTimelineView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E67799331D75AE2600E58331 /* SRGTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67799311D75AE2500E58331 /* SRGTimelineView.m */; };
@@ -422,13 +426,13 @@
 		6F5CA4441FD91CE500CF175F /* Media.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Media.m; sourceTree = "<group>"; };
 		6F7A78EC224B8032005054E8 /* SubtitleTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubtitleTestCase.m; sourceTree = "<group>"; };
 		6F7B8200225E79740002CD3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		6F7B8203225E79740002CD3A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		6F7B8203225E79740002CD3A /* TVAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVAppDelegate.h; sourceTree = "<group>"; };
 		6F7B8204225E79740002CD3A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		6F7B8205225E79740002CD3A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		6F7B8207225E79740002CD3A /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
-		6F7B8208225E79740002CD3A /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
+		6F7B8205225E79740002CD3A /* TVAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVAppDelegate.m; sourceTree = "<group>"; };
+		6F7B8207225E79740002CD3A /* TVPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVPlayerViewController.h; sourceTree = "<group>"; };
+		6F7B8208225E79740002CD3A /* TVPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVPlayerViewController.m; sourceTree = "<group>"; };
 		6F7B8209225E79740002CD3A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6F7B820F225E7A2B0002CD3A /* PlayerViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlayerViewController.storyboard; sourceTree = "<group>"; };
+		6F7B820F225E7A2B0002CD3A /* TVPlayerViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TVPlayerViewController.storyboard; sourceTree = "<group>"; };
 		6F816C252258A93900A71401 /* SRGMediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGMediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8F06E31FDA7631002DD457 /* SRGMediaPlaybackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackView.h; sourceTree = "<group>"; };
 		6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Demo.h"; sourceTree = "<group>"; };
@@ -466,7 +470,16 @@
 		6FE7D5E61F85039000817E89 /* MediaPlayerBaseTestCase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPlayerBaseTestCase.h; sourceTree = "<group>"; };
 		6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerBaseTestCase.m; sourceTree = "<group>"; };
 		6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetadataUpdatesTestCase.m; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		6FF702C12267B94C00C4E864 /* TracksTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TracksTestCase.m; sourceTree = "<group>"; };
+=======
+		6FF849AF22610C2A00CE2F71 /* TVMediasViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TVMediasViewController.h; sourceTree = "<group>"; };
+		6FF849B022610C2A00CE2F71 /* TVMediasViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TVMediasViewController.m; sourceTree = "<group>"; };
+		6FF849B222610C3700CE2F71 /* TVMediasViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TVMediasViewController.storyboard; sourceTree = "<group>"; };
+		6FF849B42261118200CE2F71 /* TVPlayersViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TVPlayersViewController.h; sourceTree = "<group>"; };
+		6FF849B52261118200CE2F71 /* TVPlayersViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TVPlayersViewController.m; sourceTree = "<group>"; };
+		6FF849B72261118B00CE2F71 /* TVPlayersViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TVPlayersViewController.storyboard; sourceTree = "<group>"; };
+>>>>>>> Create main demo layout
 		E67799301D75AE2500E58331 /* SRGTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGTimelineView.h; sourceTree = "<group>"; };
 		E67799311D75AE2500E58331 /* SRGTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGTimelineView.m; sourceTree = "<group>"; };
 		E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGMediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -733,6 +746,7 @@
 			isa = PBXGroup;
 			children = (
 				6F7B8202225E79740002CD3A /* Application */,
+				6FF849AE22610C1000CE2F71 /* Demos */,
 				6F7B8206225E79740002CD3A /* Player */,
 			);
 			path = Sources;
@@ -741,8 +755,8 @@
 		6F7B8202225E79740002CD3A /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				6F7B8203225E79740002CD3A /* AppDelegate.h */,
-				6F7B8205225E79740002CD3A /* AppDelegate.m */,
+				6F7B8203225E79740002CD3A /* TVAppDelegate.h */,
+				6F7B8205225E79740002CD3A /* TVAppDelegate.m */,
 				6F7B8204225E79740002CD3A /* main.m */,
 			);
 			path = Application;
@@ -751,9 +765,9 @@
 		6F7B8206225E79740002CD3A /* Player */ = {
 			isa = PBXGroup;
 			children = (
-				6F7B8207225E79740002CD3A /* PlayerViewController.h */,
-				6F7B8208225E79740002CD3A /* PlayerViewController.m */,
-				6F7B820F225E7A2B0002CD3A /* PlayerViewController.storyboard */,
+				6F7B8207225E79740002CD3A /* TVPlayerViewController.h */,
+				6F7B8208225E79740002CD3A /* TVPlayerViewController.m */,
+				6F7B820F225E7A2B0002CD3A /* TVPlayerViewController.storyboard */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -777,6 +791,19 @@
 				6FA1D6081F42C13E00C85D15 /* TestMacros.h */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		6FF849AE22610C1000CE2F71 /* Demos */ = {
+			isa = PBXGroup;
+			children = (
+				6FF849AF22610C2A00CE2F71 /* TVMediasViewController.h */,
+				6FF849B022610C2A00CE2F71 /* TVMediasViewController.m */,
+				6FF849B222610C3700CE2F71 /* TVMediasViewController.storyboard */,
+				6FF849B42261118200CE2F71 /* TVPlayersViewController.h */,
+				6FF849B52261118200CE2F71 /* TVPlayersViewController.m */,
+				6FF849B72261118B00CE2F71 /* TVPlayersViewController.storyboard */,
+			);
+			path = Demos;
 			sourceTree = "<group>";
 		};
 		C201D8EC1A9DC1A40016C629 = {
@@ -1344,8 +1371,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FF849B82261118B00CE2F71 /* TVPlayersViewController.storyboard in Resources */,
 				6F7B820A225E79740002CD3A /* Assets.xcassets in Resources */,
-				6F7B8210225E7A2B0002CD3A /* PlayerViewController.storyboard in Resources */,
+				6FF849B322610C3700CE2F71 /* TVMediasViewController.storyboard in Resources */,
+				6F7B8210225E7A2B0002CD3A /* TVPlayerViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1484,9 +1513,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F7B820C225E79740002CD3A /* AppDelegate.m in Sources */,
+				6F7B820C225E79740002CD3A /* TVAppDelegate.m in Sources */,
+				6FCE341422611AE000302D4B /* TVMediasViewController.m in Sources */,
+				6FF849B62261118200CE2F71 /* TVPlayersViewController.m in Sources */,
 				6F7B820B225E79740002CD3A /* main.m in Sources */,
-				6F7B820D225E79740002CD3A /* PlayerViewController.m in Sources */,
+				6F7B820D225E79740002CD3A /* TVPlayerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,9 +6,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+NS_ASSUME_NONNULL_BEGIN
+
+@interface TVAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic) UIWindow *window;
 
 @end
 
+NS_ASSUME_NONNULL_END

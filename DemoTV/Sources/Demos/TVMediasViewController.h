@@ -6,6 +6,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PlayerViewController : UIViewController
+NS_ASSUME_NONNULL_BEGIN
+
+@interface TVMediasViewController : UICollectionViewController
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -13,7 +13,7 @@
         <!--Player View Controller-->
         <scene sceneID="b0B-5O-gqM">
             <objects>
-                <viewController id="UgO-KF-fG3" customClass="PlayerViewController" sceneMemberID="viewController">
+                <viewController id="UgO-KF-fG3" customClass="TVPlayerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Kd2-G2-YKk"/>
                         <viewControllerLayoutGuide type="bottom" id="fyy-2d-5FG"/>

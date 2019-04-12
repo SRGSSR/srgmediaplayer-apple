@@ -4,17 +4,17 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "PlayerViewController.h"
+#import "TVPlayerViewController.h"
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface PlayerViewController ()
+@interface TVPlayerViewController ()
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 @end
 
-@implementation PlayerViewController
+@implementation TVPlayerViewController
 
 #pragma mark Object lifecycle
 
