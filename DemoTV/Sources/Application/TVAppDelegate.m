@@ -6,7 +6,6 @@
 
 #import "TVAppDelegate.h"
 
-#import "TVMediasViewController.h"
 #import "TVPlayersViewController.h"
 
 @interface TVAppDelegate ()
@@ -21,10 +20,9 @@
     [self.window makeKeyAndVisible];
     
     TVPlayersViewController *playersViewController = [[TVPlayersViewController alloc] init];
-    TVMediasViewController *demosViewController = [[TVMediasViewController alloc] init];
     
     UISplitViewController *splitViewController = [[UISplitViewController alloc] init];
-    splitViewController.viewControllers = @[ playersViewController, demosViewController ];
+    splitViewController.viewControllers = @[ playersViewController ];
     
     self.window.rootViewController = splitViewController;
     

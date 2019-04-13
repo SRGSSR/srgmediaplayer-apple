@@ -8,7 +8,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TVMediasViewController : UICollectionViewController
+typedef NS_ENUM(NSInteger, TVMediaPlayerType) {
+    TVMediaPlayerTypeSystem,
+    TVMediaPlayerTypeStandard
+};
+
+@interface TVMediasViewController : UITableViewController
+
+- (instancetype)initWithConfigurationFileName:(NSString *)configurationFileName mediaPlayerType:(TVMediaPlayerType)mediaPlayerType;
+
+@end
+
+@interface TVMediasViewController (Unavailable)
+
+- (instancetype)init NS_UNAVAILABLE;
 
 @end
 

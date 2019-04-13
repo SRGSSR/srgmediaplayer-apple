@@ -6,18 +6,38 @@
 
 #import "TVPlayersViewController.h"
 
+#import "TVMediasViewController.h"
+
 @implementation TVPlayersViewController
+
+#pragma mark View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self displayMediasForPlayerWithType:TVMediaPlayerTypeSystem];
+}
+
+#pragma mark Helpers
+
+- (void)displayMediasForPlayerWithType:(TVMediaPlayerType)mediaPlayerType
+{
+    TVMediasViewController *mediasViewController = [[TVMediasViewController alloc] initWithConfigurationFileName:@"VideoDemoConfiguration" mediaPlayerType:mediaPlayerType];
+    [self.splitViewController showDetailViewController:mediasViewController sender:nil];
+}
 
 #pragma mark UITableViewDataSource protocol
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // UITableViewController on tvOS does not support static table views
     return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // UITableViewController on tvOS does not support static or dynamic table views defined in a storyboard,
+    // apparently
     static NSString * const kCellIdentifier = @"PlayerCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
@@ -44,7 +64,6 @@
         }
             
         default: {
-            
             break;
         }
     }
@@ -52,7 +71,24 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    switch (indexPath.row) {
+        case 0: {
+            [self displayMediasForPlayerWithType:TVMediaPlayerTypeSystem];
+            break;
+        }
+            
+        case 1: {
+            [self displayMediasForPlayerWithType:TVMediaPlayerTypeStandard];
+            break;
+        }
+            
+        default: {
+            
+            break;
+        }
+    }
 }
 
 @end

@@ -13,7 +13,7 @@
 
 @property (nonatomic) Media *media;
 
-@property (nonatomic, weak) DemoSegment *selectedSegment;
+@property (nonatomic, weak) MediaSegment *selectedSegment;
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
 
@@ -124,7 +124,7 @@
 - (UICollectionViewCell *)timelineView:(SRGTimelineView *)timelineView cellForSegment:(id<SRGSegment>)segment
 {
     SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(SegmentCollectionViewCell.class) forSegment:segment];
-    segmentCell.segment = (DemoSegment *)segment;
+    segmentCell.segment = (MediaSegment *)segment;
     return segmentCell;
 }
 
@@ -235,7 +235,7 @@
 {
     NSLog(@"Segment did start: %@", notification.userInfo);
     
-    DemoSegment *segment = notification.userInfo[SRGMediaPlayerSegmentKey];
+    MediaSegment *segment = notification.userInfo[SRGMediaPlayerSegmentKey];
     if (segment == self.selectedSegment) {
         self.selectedSegment = nil;
     }

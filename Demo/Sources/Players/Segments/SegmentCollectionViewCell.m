@@ -34,7 +34,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 #pragma mark Getters and setters
 
-- (void)setSegment:(DemoSegment *)segment
+- (void)setSegment:(MediaSegment *)segment
 {
     _segment = segment;
     
@@ -63,7 +63,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 #pragma mark UI
 
-- (void)updateAppearanceWithTime:(CMTime)time selectedSegment:(DemoSegment *)selectedSegment
+- (void)updateAppearanceWithTime:(CMTime)time selectedSegment:(MediaSegment *)selectedSegment
 {
     CMTimeRange r = self.segment.srg_timeRange;
     float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(r.start)) / (CMTimeGetSeconds(CMTimeAdd(r.start, r.duration)) - CMTimeGetSeconds(r.start));

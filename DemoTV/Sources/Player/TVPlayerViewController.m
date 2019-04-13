@@ -10,7 +10,10 @@
 
 @interface TVPlayerViewController ()
 
+@property (nonatomic) Media *media;
+
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
+@property (nonatomic, weak) IBOutlet SRGMediaPlayerView *mediaPlayerView;
 
 @end
 
@@ -18,10 +21,12 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)init
+- (instancetype)initWithMedia:(Media *)media
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    return [storyboard instantiateInitialViewController];
+    TVPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    viewController.media = media;
+    return viewController;
 }
 
 #pragma mark View lifecycle
@@ -30,8 +35,9 @@
 {
     [super viewDidLoad];
     
-    NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
-    [self.mediaPlayerController playURL:URL];
+    self.mediaPlayerView.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
+    
+    [self.mediaPlayerController playURL:self.media.URL];
 }
 
 @end
