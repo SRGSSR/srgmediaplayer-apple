@@ -8,14 +8,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, TVMediaPlayerType) {
-    TVMediaPlayerTypeSystem,
-    TVMediaPlayerTypeStandard
-};
-
 @interface TVMediasViewController : UITableViewController
 
-- (instancetype)initWithConfigurationFileName:(NSString *)configurationFileName mediaPlayerType:(TVMediaPlayerType)mediaPlayerType;
+- (instancetype)initWithConfigurationFileName:(NSString *)configurationFileName;
 
 @end
 

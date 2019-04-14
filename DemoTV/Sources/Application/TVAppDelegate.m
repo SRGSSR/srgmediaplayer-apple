@@ -6,7 +6,7 @@
 
 #import "TVAppDelegate.h"
 
-#import "TVPlayersViewController.h"
+#import "TVMediasViewController.h"
 
 @interface TVAppDelegate ()
 
@@ -19,12 +19,15 @@
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     [self.window makeKeyAndVisible];
     
-    TVPlayersViewController *playersViewController = [[TVPlayersViewController alloc] init];
+    TVMediasViewController *videosViewController = [[TVMediasViewController alloc] initWithConfigurationFileName:@"VideoDemoConfiguration"];
+    videosViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Videos", nil) image:nil tag:0];
     
-    UISplitViewController *splitViewController = [[UISplitViewController alloc] init];
-    splitViewController.viewControllers = @[ playersViewController ];
+    TVMediasViewController *audiosViewController = [[TVMediasViewController alloc] initWithConfigurationFileName:@"AudioDemoConfiguration"];
+    audiosViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Audios", nil) image:nil tag:0];
     
-    self.window.rootViewController = splitViewController;
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    tabBarController.viewControllers = @[ videosViewController, audiosViewController ];
+    self.window.rootViewController = tabBarController;
     
     return YES;
 }

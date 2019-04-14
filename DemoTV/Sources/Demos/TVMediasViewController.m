@@ -12,7 +12,6 @@
 @interface TVMediasViewController ()
 
 @property (nonatomic, copy) NSString *configurationFileName;
-@property (nonatomic) TVMediaPlayerType mediaPlayerType;
 
 @property (nonatomic) NSArray<Media *> *medias;
 
@@ -22,12 +21,11 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithConfigurationFileName:(NSString *)configurationFileName mediaPlayerType:(TVMediaPlayerType)mediaPlayerType
+- (instancetype)initWithConfigurationFileName:(NSString *)configurationFileName
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     TVMediasViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.configurationFileName = configurationFileName;
-    viewController.mediaPlayerType = mediaPlayerType;
     return viewController;
 }
 
@@ -76,28 +74,21 @@
     
     Media *media = self.medias[indexPath.row];
     
-    switch (self.mediaPlayerType) {
-        case TVMediaPlayerTypeSystem: {
-            AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
-            AVPlayer *player = [AVPlayer playerWithURL:media.URL];
-            playerViewController.player = player;
-            [self presentViewController:playerViewController animated:YES completion:^{
-                [player play];
-            }];
-            break;
-        }
-            
-        case TVMediaPlayerTypeStandard: {
-            TVPlayerViewController *playerViewController = [[TVPlayerViewController alloc] initWithMedia:media];
-            [self presentViewController:playerViewController animated:YES completion:nil];
-            break;
-        }
-            
-        default: {
-            break;
-        }
-    }
-
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Player", nil) message:NSLocalizedString(@"Choose the player to play the media with", nil) preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"System player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+        AVPlayer *player = [AVPlayer playerWithURL:media.URL];
+        playerViewController.player = player;
+        [self presentViewController:playerViewController animated:YES completion:^{
+            [player play];
+        }];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SRG Media Player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        TVPlayerViewController *playerViewController = [[TVPlayerViewController alloc] initWithMedia:media];
+        [self presentViewController:playerViewController animated:YES completion:nil];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end
