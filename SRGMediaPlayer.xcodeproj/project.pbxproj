@@ -1300,6 +1300,7 @@
 					};
 					6FA39DFC225E647700834AA7 = {
 						CreatedOnToolsVersion = 10.2;
+						DevelopmentTeam = VMGRRW6SG7;
 						ProvisioningStyle = Automatic;
 					};
 					E69A1DA81D61B9380064E6C1 = {
@@ -2211,6 +2212,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
@@ -2246,6 +2248,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
@@ -2282,6 +2285,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
@@ -2313,6 +2317,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
