@@ -129,13 +129,12 @@ Note that control center integration does not work in the iOS simulator, you wil
 
 ## Custom resource loading and FairPlay support
 
-If you need to customize the resource loading process (e.g. to unencrypt stream chunks on-the-fly or to optimize the way they are retrieved), create a dedicated `AVAssetResourceLoaderDelegate` class. Then play an `AVPlayerItem` built from an asset which this delegate has been assigned to:
+If you need to customize the resource loading process (e.g. to unencrypt stream chunks on-the-fly or to optimize the way they are retrieved), create a dedicated `AVAssetResourceLoaderDelegate` class. Then play an `AVURLAsset` which this delegate has been assigned to:
 
 ```objective-c
-AVURLAsset *asset = ...;
+AVURLAsset *URLAsset = ...;
 [asset.resourceLoader setDelegate:resourceLoaderDelegate queue:queue];
-AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
-[self.mediaPlayerController playItem:playerItem];
+[self.mediaPlayerController playURLAsset:URLAsset];
 ```
 
 where `resourceLoaderDelegate` is an instance of your custom resource loader delegate class, and `queue` is the queue on which events must be dispatched.

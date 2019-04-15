@@ -309,13 +309,13 @@ NS_ASSUME_NONNULL_BEGIN
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Same as `-prepareToPlayURL:atPosition:withSegments:userInfo:completionHandler:`, but with a player item.
+ *  Same as `-prepareToPlayURL:atPosition:withSegments:userInfo:completionHandler:`, but with a player asset.
  */
-- (void)prepareToPlayItem:(AVPlayerItem *)item
-               atPosition:(nullable SRGPosition *)position
-             withSegments:(nullable NSArray<id<SRGSegment>> *)segments
-                 userInfo:(nullable NSDictionary *)userInfo
-        completionHandler:(nullable void (^)(void))completionHandler;
+- (void)prepareToPlayURLAsset:(AVURLAsset *)URLAsset
+                   atPosition:(nullable SRGPosition *)position
+                 withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+                     userInfo:(nullable NSDictionary *)userInfo
+            completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Start playback. Does nothing if no content URL is attached to the controller.
@@ -383,9 +383,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
 
 /**
- *  The item currently loaded into the player.
+ *  The URL asset currently loaded into the player.
  */
-@property (nonatomic, readonly, nullable) AVPlayerItem *playerItem;
+@property (nonatomic, readonly, nullable) AVURLAsset *URLAsset;
 
 /**
  *  The segments which have been loaded into the player.
@@ -503,11 +503,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Prepare to play the an item, starting at the default position.
+ *  Prepare to play an asset, starting at the default position.
  *
- *  For more information, @see `-prepareToPlayItem:atPosition:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURLAsset:atPosition:withSegments:userInfo:completionHandler:`.
  */
-- (void)prepareToPlayItem:(AVPlayerItem *)item withCompletionHandler:(nullable void (^)(void))completionHandler;
+- (void)prepareToPlayURLAsset:(AVURLAsset *)URLAsset withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Play a URL, starting at the specified position. Segments and user info can be optionally provided.
@@ -523,17 +523,17 @@ NS_ASSUME_NONNULL_BEGIN
        userInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Play an item, starting at the specified position. Segments and user info can be optionally provided.
+ *  Play an asset, starting at the specified position. Segments and user info can be optionally provided.
  *
- *  For more information, @see `-prepareToPlayItem:atPosition:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURLAsset:atPosition:withSegments:userInfo:completionHandler:`.
  *
  *  @discussion The player immediately reaches the playing state. No segment selection occurs (use methods from the
  *              `SegmentSelection` category if you need to select a segment).
  */
-- (void)playItem:(AVPlayerItem *)item
-      atPosition:(nullable SRGPosition *)position
-    withSegments:(nullable NSArray<id<SRGSegment>> *)segments
-        userInfo:(nullable NSDictionary *)userInfo;
+- (void)playURLAsset:(AVURLAsset *)URLAsset
+          atPosition:(nullable SRGPosition *)position
+        withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+            userInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Play a URL, starting at the default position.
@@ -543,11 +543,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playURL:(NSURL *)URL;
 
 /**
- *  Play an item, starting at the default position.
+ *  Play an asset, starting at the default position.
  *
  *  For more information, @see `-playURL:atPosition:withSegments:userInfo:`.
  */
-- (void)playItem:(AVPlayerItem *)item;
+- (void)playURLAsset:(AVURLAsset *)URLAsset;
 
 /**
  *  Ask the player to change its status from pause to play or conversely, depending on the state it is in.
@@ -584,23 +584,23 @@ NS_ASSUME_NONNULL_BEGIN
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Prepare to play an item, starting at a specific position within the segment specified by `index`. User info can be
+ *  Prepare to play an asset, starting at a specific position within the segment specified by `index`. User info can be
  *  optionally provided.
  *
  *  @param index    The index of the segment at which playback will start.
  *  @param position The position to start at. If `nil` or if the specified position lies outside the segment time
  *                  range, playback starts at the default position.
  *
- *  For more information, @see `-prepareToPlayItem:atPosition:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURLAsset:atPosition:withSegments:userInfo:completionHandler:`.
  *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default position.
  */
-- (void)prepareToPlayItem:(AVPlayerItem *)item
-                  atIndex:(NSInteger)index
-                 position:(nullable SRGPosition *)position
-               inSegments:(NSArray<id<SRGSegment>> *)segments
-             withUserInfo:(nullable NSDictionary *)userInfo
-        completionHandler:(nullable void (^)(void))completionHandler;
+- (void)prepareToPlayURLAsset:(AVURLAsset *)URLAsset
+                      atIndex:(NSInteger)index
+                     position:(nullable SRGPosition *)position
+                   inSegments:(NSArray<id<SRGSegment>> *)segments
+                 withUserInfo:(nullable NSDictionary *)userInfo
+            completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Play a URL, starting at a specific position within the segment specified by `index`. User info can be optionally
@@ -621,22 +621,22 @@ NS_ASSUME_NONNULL_BEGIN
    withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Play an item, starting at a specific position within the segment specified by `index`. User info can be optionally
+ *  Play an asset, starting at a specific position within the segment specified by `index`. User info can be optionally
  *  provided.
  *
  *  @param index    The index of the segment at which playback will start.
  *  @param position The position to start at. If `nil` or if the specified position lies outside the segment time
  *                  range, playback starts at the default position.
  *
- *  For more information, @see `-playItem:atPosition:withSegments:userInfo:`.
+ *  For more information, @see `-playURLAsset:atPosition:withSegments:userInfo:`.
  *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default position.
  */
-- (void)playItem:(AVPlayerItem *)item
-         atIndex:(NSInteger)index
-        position:(nullable SRGPosition *)position
-      inSegments:(NSArray<id<SRGSegment>> *)segments
-    withUserInfo:(nullable NSDictionary *)userInfo;
+- (void)playURLAsset:(AVURLAsset *)URLAsset
+             atIndex:(NSInteger)index
+            position:(nullable SRGPosition *)position
+          inSegments:(NSArray<id<SRGSegment>> *)segments
+        withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Seek to a specific time in a segment specified by its index.
