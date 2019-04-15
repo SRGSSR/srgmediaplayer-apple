@@ -1436,6 +1436,69 @@ static NSURL *AudioOverHTTPTestURL(void)
     TestAssertNotEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
 }
 
+- (void)testNoStallsDuringNormalOnDemandPlayback
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:10. withHandler:nil];
+    
+    id stallObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        XCTAssertNotEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateStalled);
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:stallObserver];
+    }];
+}
+
+- (void)testNoStallsDuringNormalLivestreamPlayback
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:LiveTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:10. withHandler:nil];
+    
+    id stallObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        XCTAssertNotEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateStalled);
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:stallObserver];
+    }];
+}
+
+- (void)testNoStallsDuringNormalDVRPlayback
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:10. withHandler:nil];
+    
+    id stallObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        XCTAssertNotEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateStalled);
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:stallObserver];
+    }];
+}
+
 - (void)testReset
 {
     @autoreleasepool {
