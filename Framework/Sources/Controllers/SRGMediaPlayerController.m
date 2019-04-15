@@ -187,10 +187,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                         }
                     };
                     
-                    if (self.preferredSubtitleLocalization) {
-                        [self applySubtitleLocalization:self.preferredSubtitleLocalization];
-                    }
-                    
                     SRGPosition *startPosition = self.startPosition;
                     
                     // Default position. Nothing to do.
@@ -881,12 +877,25 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         position = SRGPosition.defaultPosition;
     }
     
+    // TODO: AVAsset-based API
     if ([item.asset isKindOfClass:AVURLAsset.class]) {
         AVURLAsset *asset = (AVURLAsset *)item.asset;
         URL = asset.URL;
     }
     else if (URL) {
-        item = [AVPlayerItem playerItemWithURL:URL];
+        AVURLAsset *asset = [AVURLAsset assetWithURL:URL];
+        
+        @weakify(self)
+        [asset loadValuesAsynchronouslyForKeys:@[ @keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) ] completionHandler:^{
+            @strongify(self)
+            
+            if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
+                if (self.preferredSubtitleLocalization) {
+                    [self applySubtitleLocalization:self.preferredSubtitleLocalization];
+                }
+            }
+        }];
+        item = [AVPlayerItem playerItemWithAsset:asset];
     }
     else {
         NSAssert(NO, @"An item or URL must be provided");
@@ -998,6 +1007,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     // Only reset if needed (this would otherwise lazily instantiate the view again and create potential issues)
     if (self.player) {
+        [self.player.currentItem.asset cancelLoading];
+        
         fullUserInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:self.player.currentTime];
         fullUserInfo[SRGMediaPlayerPreviousTimeRangeKey] = [NSValue valueWithCMTimeRange:self.timeRange];
         fullUserInfo[SRGMediaPlayerPreviousMediaTypeKey] = @(self.mediaType);
@@ -1176,7 +1187,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (AVMediaSelectionOption *)selectedAudioOptionForPlayer:(AVPlayer *)player
 {
     AVPlayerItem *playerItem = player.currentItem;
-    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+    if ([playerItem.asset statusOfValueForKey:@keypath(AVAsset.new, availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return nil;
     }
     
@@ -1187,7 +1198,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (AVMediaSelectionOption *)selectedSubtitleOptionForPlayer:(AVPlayer *)player
 {
     AVPlayerItem *playerItem = player.currentItem;
-    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+    if ([playerItem.asset statusOfValueForKey:@keypath(AVAsset.new, availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return nil;
     }
     
@@ -1237,7 +1248,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (NSArray<NSString *> *)availableSubtitleLocalizations
 {
     AVPlayerItem *playerItem = self.player.currentItem;
-    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+    if ([playerItem.asset statusOfValueForKey:@keypath(AVAsset.new, availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return @[];
     }
     
@@ -1263,7 +1274,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)applySubtitleLocalization:(NSString *)subtitleLocalization
 {
     AVPlayerItem *playerItem = self.player.currentItem;
-    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+    if ([playerItem.asset statusOfValueForKey:@keypath(AVAsset.new, availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return;
     }
     
@@ -1314,7 +1325,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (NSString *)subtitleLocalization
 {
     AVPlayerItem *playerItem = self.playerItem;
-    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
+    if (playerItem.asset.availableMediaCharacteristicsWithMediaSelectionOptions.count == 0) {
         return nil;
     }
     

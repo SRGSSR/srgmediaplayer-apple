@@ -18,6 +18,8 @@
         return [track.assetTrack.mediaType isEqualToString:mediaType];
     }];
     
+    // TODO: See https://github.com/SRGSSR/srgmediaplayer-ios/issues/63. Should do something else, and probably with the
+    //       asset
     NSArray<AVPlayerItemTrack *> *tracks = [self.tracks filteredArrayUsingPredicate:predicate];
     return [tracks valueForKeyPath:@keypath(AVPlayerItemTrack.new, assetTrack)] ?: @[];
 }

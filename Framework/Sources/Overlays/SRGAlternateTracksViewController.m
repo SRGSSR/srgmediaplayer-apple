@@ -8,6 +8,7 @@
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 
+#import <libextobjc/libextobjc.h>
 #import <MediaAccessibility/MediaAccessibility.h>
 
 static NSString *SRGTitleForMediaSelectionOption(AVMediaSelectionOption *option);
@@ -67,7 +68,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     
     // Do not check tracks before the player item is ready to play (otherwise AVPlayer will internally wait on semaphores,
     // locking the main thread ). Also see `-[AVAsset allMediaSelections]` documentation.
-    if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+    if ([playerItem.asset statusOfValueForKey:@keypath(AVAsset.new, availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
         NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
         NSMutableDictionary<NSString *, AVMediaSelectionGroup *> *groups = [NSMutableDictionary dictionary];
         NSMutableDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options = [NSMutableDictionary dictionary];
