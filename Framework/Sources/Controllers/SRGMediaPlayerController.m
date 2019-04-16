@@ -6,7 +6,6 @@
 
 #import "SRGMediaPlayerController.h"
 
-#import "AVPlayerItem+SRGMediaPlayer.h"
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "AVPlayer+SRGMediaPlayer.h"
 #import "CMTime+SRGMediaPlayer.h"
@@ -73,6 +72,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) SRGPosition *startPosition;                   // Will be nilled when reached
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
 
+@property (nonatomic) NSValue *presentationSizeValue;
+
 @property (nonatomic) CMTime seekStartTime;
 @property (nonatomic) CMTime seekTargetTime;
 
@@ -129,6 +130,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [_player removeObserver:self keyPath:@keypath(_player.rate)];
         [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.playbackLikelyToKeepUp)];
+        [_player removeObserver:self keyPath:@keypath(_player.currentItem.presentationSize)];
         
         self.stallDetectionTimer = nil;
         
@@ -275,6 +277,13 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             if (player.currentItem.playbackLikelyToKeepUp && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
                 [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
             }
+        }];
+        
+        [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.presentationSize) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
+            @strongify(player)
+            
+            self.presentationSizeValue = [NSValue valueWithCGSize:player.currentItem.presentationSize];
         }];
         
         self.stallDetectionTimer = [NSTimer srgmediaplayer_timerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {
@@ -468,21 +477,12 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (SRGMediaPlayerMediaType)mediaType
 {
-    if (! self.player) {
+    NSValue *presentationSizeValue = self.presentationSizeValue;
+    if (! presentationSizeValue) {
         return SRGMediaPlayerMediaTypeUnknown;
     }
     
-    NSArray<AVAssetTrack *> *videoAssetTracks = [self.player.currentItem srg_assetTracksWithMediaType:AVMediaTypeVideo];
-    if (videoAssetTracks.count != 0) {
-        return SRGMediaPlayerMediaTypeVideo;
-    }
-    
-    NSArray<AVAssetTrack *> *audioAssetTracks = [self.player.currentItem srg_assetTracksWithMediaType:AVMediaTypeAudio];
-    if (audioAssetTracks.count != 0) {
-        return SRGMediaPlayerMediaTypeAudio;
-    }
-    
-    return SRGMediaPlayerMediaTypeUnknown;
+    return CGSizeEqualToSize(presentationSizeValue.CGSizeValue, CGSizeZero) ? SRGMediaPlayerMediaTypeAudio : SRGMediaPlayerMediaTypeVideo;
 }
 
 - (SRGMediaPlayerStreamType)streamType
@@ -1024,6 +1024,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.startPosition = nil;
     self.startCompletionHandler = nil;
     
+    self.presentationSizeValue = nil;
+    
+    self.seekStartTime = kCMTimeIndefinite;
     self.seekTargetTime = kCMTimeIndefinite;
     
     self.lastPlaybackTime = kCMTimeIndefinite;
