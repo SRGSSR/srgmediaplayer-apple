@@ -1185,22 +1185,26 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (AVMediaSelectionOption *)selectedAudioOptionForPlayer:(AVPlayer *)player
 {
     AVPlayerItem *playerItem = player.currentItem;
-    if ([playerItem.asset statusOfValueForKey:@keypath(AVAsset.new, availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
+    AVAsset *asset = playerItem.asset;
+    
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return nil;
     }
     
-    AVMediaSelectionGroup *audioGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+    AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
     return [playerItem selectedMediaOptionInMediaSelectionGroup:audioGroup];
 }
 
 - (AVMediaSelectionOption *)selectedSubtitleOptionForPlayer:(AVPlayer *)player
 {
     AVPlayerItem *playerItem = player.currentItem;
-    if ([playerItem.asset statusOfValueForKey:@keypath(AVAsset.new, availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
+    AVAsset *asset = playerItem.asset;
+    
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return nil;
     }
     
-    AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
     return [playerItem selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
 }
 
@@ -1245,14 +1249,15 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (NSArray<NSString *> *)availableSubtitleLocalizations
 {
-    AVPlayerItem *playerItem = self.player.currentItem;
-    if ([playerItem.asset statusOfValueForKey:@keypath(AVAsset.new, availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
+    AVAsset *asset = self.player.currentItem.asset;
+    
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return @[];
     }
     
     NSMutableSet<NSString *> *localizations = [NSMutableSet set];
     
-    AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
     NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
     for (AVMediaSelectionOption *subtitleOption in subtitleOptions) {
         NSString *languageCode = [subtitleOption.locale objectForKey:NSLocaleLanguageCode];
@@ -1272,11 +1277,13 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)applySubtitleLocalization:(NSString *)subtitleLocalization
 {
     AVPlayerItem *playerItem = self.player.currentItem;
-    if ([playerItem.asset statusOfValueForKey:@keypath(AVAsset.new, availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
+    AVAsset *asset = playerItem.asset;
+    
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return;
     }
     
-    AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
     
     void (^applySubtitleLocalization)(NSString *) = ^(NSString *subtitleLocalization) {
         if (subtitleLocalization) {
@@ -1323,11 +1330,13 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (NSString *)subtitleLocalization
 {
     AVPlayerItem *playerItem = self.player.currentItem;
-    if (playerItem.asset.availableMediaCharacteristicsWithMediaSelectionOptions.count == 0) {
+    AVAsset *asset = playerItem.asset;
+    
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return nil;
     }
     
-    AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
     AVMediaSelectionOption *subtitleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
     return [subtitleOption.locale objectForKey:NSLocaleLanguageCode];
 }

@@ -63,24 +63,23 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
                                                  object:mediaPlayerController];
     }
     
-    AVPlayer *player = mediaPlayerController.player;
-    AVPlayerItem *playerItem = player.currentItem;
+    AVAsset *asset = mediaPlayerController.player.currentItem.asset;
     
     // Do not check tracks before the player item is ready to play (otherwise AVPlayer will internally wait on semaphores,
     // locking the main thread ). Also see `-[AVAsset allMediaSelections]` documentation.
-    if ([playerItem.asset statusOfValueForKey:@keypath(AVAsset.new, availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
         NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
         NSMutableDictionary<NSString *, AVMediaSelectionGroup *> *groups = [NSMutableDictionary dictionary];
         NSMutableDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options = [NSMutableDictionary dictionary];
         
-        AVMediaSelectionGroup *audioGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         if (audioGroup.options.count > 1) {
             [characteristics addObject:AVMediaCharacteristicAudible];
             groups[AVMediaCharacteristicAudible] = audioGroup;
             options[AVMediaCharacteristicAudible] = audioGroup.options;
         }
         
-        AVMediaSelectionGroup *subtitleGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         if (subtitleGroup) {
             [characteristics addObject:AVMediaCharacteristicLegible];
             groups[AVMediaCharacteristicLegible] = subtitleGroup;
