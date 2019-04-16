@@ -36,18 +36,20 @@
 
 #pragma mark Tests
 
-- (void)testTrackNotificationsWhenReset
+- (void)testTrackNotificationsAtPlaybackStartAndEnd
 {
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
     [self expectationForSingleNotification:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
-        XCTAssertEqualObjects([notification.userInfo[SRGMediaPlayerTrackKey] languageCode], @"fra");
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"en");
+        return YES;
+    }];
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"en");
         return YES;
     }];
     
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021-,301k,101k,701k,1201k,2001k,fra-ad,roh,deu,ita,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%C3%A7ais,5:fra:Fran%C3%A7ais%20(AD),6:roh:Rh%C3%A9to-roman,7:deu:Allemand,8:ita:Italien&caption=docfu/2017/docfu_20170728_full_f_1027021_fra.m3u8:fra:Fran%C3%A7ais,docfu/2017/docfu_20170728_full_f_1027021_ita.m3u8:ita:Italien,docfu/2017/docfu_20170728_full_f_1027021_gsw.m3u8:deu:Allemand"];
+    NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
     [self.mediaPlayerController playURL:URL];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -74,8 +76,10 @@
 
 - (void)testAudioTrackChangeNotification
 {
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    [self expectationForSingleNotification:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"fr");
+        return YES;
     }];
     
     NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021-,301k,101k,701k,1201k,2001k,fra-ad,roh,deu,ita,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%C3%A7ais,5:fra:Fran%C3%A7ais%20(AD),6:roh:Rh%C3%A9to-roman,7:deu:Allemand,8:ita:Italien&caption=docfu/2017/docfu_20170728_full_f_1027021_fra.m3u8:fra:Fran%C3%A7ais,docfu/2017/docfu_20170728_full_f_1027021_ita.m3u8:ita:Italien,docfu/2017/docfu_20170728_full_f_1027021_gsw.m3u8:deu:Allemand"];
@@ -83,73 +87,42 @@
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    AVMediaSelectionGroup *selectionGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-    
-    AVMediaSelectionOption *previousOption = [playerItem selectedMediaOptionInMediaSelectionGroup:selectionGroup];
-    XCTAssertNotNil(previousOption);
-    
-    AVMediaSelectionOption *option = selectionGroup.options.lastObject;
-    XCTAssertNotNil(option);
-    
-    XCTAssertNotEqualObjects(previousOption, option);
-    
     [self expectationForSingleNotification:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousTrackKey], previousOption);
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerTrackKey], option);
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"fr");
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"it");
         return YES;
     }];
     
-    [playerItem selectMediaOption:option inMediaSelectionGroup:selectionGroup];
+    self.mediaPlayerController.preferredAudioTrackLocalization = @"it";
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testSubtitleTrackChangeNotification
 {
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"en");
+        return YES;
     }];
     
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021-,301k,101k,701k,1201k,2001k,fra-ad,roh,deu,ita,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%C3%A7ais,5:fra:Fran%C3%A7ais%20(AD),6:roh:Rh%C3%A9to-roman,7:deu:Allemand,8:ita:Italien&caption=docfu/2017/docfu_20170728_full_f_1027021_fra.m3u8:fra:Fran%C3%A7ais,docfu/2017/docfu_20170728_full_f_1027021_ita.m3u8:ita:Italien,docfu/2017/docfu_20170728_full_f_1027021_gsw.m3u8:deu:Allemand"];
+    NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
     [self.mediaPlayerController playURL:URL];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    AVMediaSelectionGroup *selectionGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-    
-    AVMediaSelectionOption *previousOption = [playerItem selectedMediaOptionInMediaSelectionGroup:selectionGroup];
-    XCTAssertNil(previousOption);
-    
-    AVMediaSelectionOption *option1 = selectionGroup.options.lastObject;
-    XCTAssertNotNil(option1);
-    
     [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerTrackKey], option1);
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"en");
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"ja");
         return YES;
     }];
     
-    XCTAssertNotEqualObjects(previousOption, option1);
-    [playerItem selectMediaOption:option1 inMediaSelectionGroup:selectionGroup];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    AVMediaSelectionOption *option2 = selectionGroup.options.firstObject;
-    XCTAssertNotNil(option2);
-    
-    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousTrackKey], option1);
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerTrackKey], option2);
-        return YES;
-    }];
-    
-    XCTAssertNotEqualObjects(option1, option2);
-    [playerItem selectMediaOption:option2 inMediaSelectionGroup:selectionGroup];
+    self.mediaPlayerController.preferredSubtitleLocalization = @"ja";
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
+
+// TODO: Update tests below this line
 
 - (void)testNoAudioTrackChange
 {
@@ -178,6 +151,21 @@
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
         [NSNotificationCenter.defaultCenter removeObserver:trackChangeObserver];
     }];
+}
+
+- (void)testDisabledAudioTrack
+{
+    
+}
+
+- (void)testValidAudioTrack
+{
+    
+}
+
+- (void)testInvalidAudioTrack
+{
+    
 }
 
 - (void)testNoSubtitleTrackChange

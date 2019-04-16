@@ -679,14 +679,42 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
+ *  Audio track management.
+ */
+@interface SRGMediaPlayerController (AudioTracks)
+
+/**
+ *  The list of available audio track localizations for the media being played. KVO-observable.
+ */
+@property (nonatomic, readonly) NSArray<NSString *> *availableAudioTrackLocalizations;
+
+/**
+ *  The audio track localization to use, if available.
+ *
+ *  Valid localizations can be retrieved from `availableAudioTrackLocalizations`. If you know the value you want to to
+ *  use beforehand, though, the preferred localization can be set earlier, even right after controller creation.
+ **
+ *  @discussion This setting only affects the receiver and is not reset between between media playbacks using the same
+ *              controller. If an invalid audio track localization is provided, automatic selection is applied instead.
+ */
+@property (nonatomic, copy, nullable) NSString *preferredAudioTrackLocalization;
+
+/**
+ *  Return the localization of the currently applied audio track, if any. KVO-observable.
+ *
+ *  @discussion A value is returned as well when forced subtitles are being applied.
+ */
+@property (nonatomic, readonly, copy, nullable) NSString *audioTrackLocalization;
+
+@end
+
+/**
  *  Subtitle management.
  */
 @interface SRGMediaPlayerController (Subtitles)
 
 /**
- *  The list of available subtitle localizations for the media being played.
- *
- *  @discussion Not known while playback is being prepared or if the player is idle.
+ *  The list of available subtitle localizations for the media being played. KVO-observable.
  */
 @property (nonatomic, readonly) NSArray<NSString *> *availableSubtitleLocalizations;
 
@@ -708,7 +736,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *preferredSubtitleLocalization;
 
 /**
- *  Return the localization of the currently applied subtitles, if any.
+ *  Return the localization of the currently applied subtitles, if any. KVO-observable.
  *
  *  @discussion A value is returned as well when forced subtitles are being applied.
  */

@@ -77,10 +77,17 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) CMTime seekStartTime;
 @property (nonatomic) CMTime seekTargetTime;
 
-@property (nonatomic) AVMediaSelectionOption *audioOption;
+@property (nonatomic) NSArray<NSString *> *availableAudioTrackLocalizations;
+@property (nonatomic) NSArray<NSString *> *availableSubtitleLocalizations;
+
+@property (nonatomic, copy) NSString *preferredAudioTrackLocalization;
+@property (nonatomic, copy) NSString *preferredSubtitleLocalization;
+
+@property (nonatomic) AVMediaSelectionOption *audioTrackOption;
 @property (nonatomic) AVMediaSelectionOption *subtitleOption;
 
-@property (nonatomic, copy) NSString *preferredSubtitleLocalization;
+@property (nonatomic, copy) NSString *audioTrackLocalization;
+@property (nonatomic, copy) NSString *subtitleLocalization;
 
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
 
@@ -165,9 +172,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                 // Playback start. Use received start parameters, do not update the playback state yet, wait until the
                 // completion handler has been executed (since it might immediately start playback)
                 if (self.startPosition) {
-                    self.audioOption = [self selectedAudioOptionForPlayer:player];
-                    self.subtitleOption = [self selectedSubtitleOptionForPlayer:player];
-                    
                     void (^completionBlock)(BOOL) = ^(BOOL finished) {
                         if (! finished) {
                             return;
@@ -890,9 +894,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         @strongify(self)
         
         if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
+            self.availableAudioTrackLocalizations = [self availableTrackLocalizationsForAsset:URLAsset withMediaCharacteristic:AVMediaCharacteristicAudible];
+            self.availableSubtitleLocalizations = [self availableTrackLocalizationsForAsset:URLAsset withMediaCharacteristic:AVMediaCharacteristicLegible];
+            
             if (self.preferredSubtitleLocalization) {
                 [self applySubtitleLocalization:self.preferredSubtitleLocalization];
             }
+            
+            [self updateTracks];
         }
     }];
     
@@ -1032,8 +1041,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.lastPlaybackTime = kCMTimeIndefinite;
     self.lastStallDetectionDate = nil;
     
-    self.audioOption = nil;
+    self.availableAudioTrackLocalizations = nil;
+    self.availableSubtitleLocalizations = nil;
+    
+    self.audioTrackOption = nil;
     self.subtitleOption = nil;
+    
+    self.audioTrackLocalization = nil;
+    self.subtitleLocalization = nil;
     
     self.pictureInPictureController = nil;
     
@@ -1180,54 +1195,42 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }];
 }
 
-#pragma mark Tracks
+#pragma mark Current player track information
 
-- (AVMediaSelectionOption *)selectedAudioOptionForPlayer:(AVPlayer *)player
+- (AVMediaSelectionOption *)selectedTrackOptionForMediaCharacteristic:(AVMediaCharacteristic)characteristic
 {
-    AVPlayerItem *playerItem = player.currentItem;
+    AVPlayerItem *playerItem = self.player.currentItem;
     AVAsset *asset = playerItem.asset;
     
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return nil;
     }
     
-    AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-    return [playerItem selectedMediaOptionInMediaSelectionGroup:audioGroup];
+    AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
+    return [playerItem selectedMediaOptionInMediaSelectionGroup:group];
 }
 
-- (AVMediaSelectionOption *)selectedSubtitleOptionForPlayer:(AVPlayer *)player
+- (void)updateTracks
 {
-    AVPlayerItem *playerItem = player.currentItem;
-    AVAsset *asset = playerItem.asset;
-    
-    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
-        return nil;
-    }
-    
-    AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-    return [playerItem selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
-}
-
-- (void)updateTracksForPlayer:(AVPlayer *)player
-{
-    AVMediaSelectionOption *audioOption = [self selectedAudioOptionForPlayer:player];
-    if ((audioOption || self.audioOption) && ! [audioOption isEqual:self.audioOption]) {
+    AVMediaSelectionOption *audioTrackOption = [self selectedTrackOptionForMediaCharacteristic:AVMediaCharacteristicAudible];
+    if ((audioTrackOption || self.audioTrackOption) && ! [audioTrackOption isEqual:self.audioTrackOption]) {
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-        if (self.audioOption) {
-            userInfo[SRGMediaPlayerPreviousTrackKey] = self.audioOption;
+        if (self.audioTrackOption) {
+            userInfo[SRGMediaPlayerPreviousTrackKey] = self.audioTrackOption;
         }
-        if (audioOption) {
-            userInfo[SRGMediaPlayerTrackKey] = audioOption;
+        if (audioTrackOption) {
+            userInfo[SRGMediaPlayerTrackKey] = audioTrackOption;
         }
         
-        self.audioOption = audioOption;
+        self.audioTrackOption = audioTrackOption;
+        self.audioTrackLocalization = [audioTrackOption.locale objectForKey:NSLocaleLanguageCode];
         
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerAudioTrackDidChangeNotification
                                                           object:self
                                                         userInfo:[userInfo copy]];
     }
     
-    AVMediaSelectionOption *subtitleOption = [self selectedSubtitleOptionForPlayer:player];
+    AVMediaSelectionOption *subtitleOption = [self selectedTrackOptionForMediaCharacteristic:AVMediaCharacteristicLegible];
     if ((subtitleOption || self.subtitleOption) && ! [subtitleOption isEqual:self.subtitleOption]) {
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
         if (self.subtitleOption) {
@@ -1238,6 +1241,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         }
         
         self.subtitleOption = subtitleOption;
+        self.subtitleLocalization = [subtitleOption.locale objectForKey:NSLocaleLanguageCode];
         
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSubtitleTrackDidChangeNotification
                                                           object:self
@@ -1245,27 +1249,68 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-#pragma mark Subtitles
+#pragma mark Asset track information extraction
 
-- (NSArray<NSString *> *)availableSubtitleLocalizations
+- (NSArray<NSString *> *)availableTrackLocalizationsForAsset:(AVAsset *)asset withMediaCharacteristic:(AVMediaCharacteristic)characteristic
 {
-    AVAsset *asset = self.player.currentItem.asset;
-    
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return @[];
     }
     
     NSMutableSet<NSString *> *localizations = [NSMutableSet set];
     
-    AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-    NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-    for (AVMediaSelectionOption *subtitleOption in subtitleOptions) {
-        NSString *languageCode = [subtitleOption.locale objectForKey:NSLocaleLanguageCode];
+    AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
+    NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+    for (AVMediaSelectionOption *option in options) {
+        NSString *languageCode = [option.locale objectForKey:NSLocaleLanguageCode];
         [localizations addObject:languageCode];
     }
     
     return [localizations.allObjects sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
 }
+
+#pragma mark Audio tracks
+
+- (void)setPreferredAudioTrackLocalization:(NSString *)preferredAudioTrackLocalization
+{
+    _preferredAudioTrackLocalization = preferredAudioTrackLocalization;
+    
+    [self applyAudioTrackLocalization:preferredAudioTrackLocalization];
+}
+
+- (void)applyAudioTrackLocalization:(NSString *)audioTrackLocalization
+{
+    AVPlayerItem *playerItem = self.player.currentItem;
+    AVAsset *asset = playerItem.asset;
+    
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
+        return;
+    }
+    
+    AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+    
+    if (! audioTrackLocalization || [audioTrackLocalization isEqualToString:SRGMediaPlayerLocalizationAutomatic]) {
+        [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:audioGroup];
+    }
+    else if ([audioTrackLocalization isEqualToString:SRGMediaPlayerLocalizationDisabled]) {
+        [playerItem selectMediaOption:nil inMediaSelectionGroup:audioGroup];
+    }
+    else {
+        NSArray<AVMediaSelectionOption *> *audioOptions = [AVMediaSelectionGroup playableMediaSelectionOptionsFromArray:audioGroup.options];
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return [audioTrackLocalization isEqualToString:[option.locale objectForKey:NSLocaleLanguageCode]];
+        }];
+        AVMediaSelectionOption *audioOption = [audioOptions filteredArrayUsingPredicate:predicate].firstObject;
+        if (audioOption) {
+            [playerItem selectMediaOption:audioOption inMediaSelectionGroup:audioGroup];
+        }
+        else {
+            [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:audioGroup];
+        }
+    }
+}
+
+#pragma mark Subtitles
 
 - (void)setPreferredSubtitleLocalization:(NSString *)preferredSubtitleLocalization
 {
@@ -1327,20 +1372,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-- (NSString *)subtitleLocalization
-{
-    AVPlayerItem *playerItem = self.player.currentItem;
-    AVAsset *asset = playerItem.asset;
-    
-    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
-        return nil;
-    }
-    
-    AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-    AVMediaSelectionOption *subtitleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
-    return [subtitleOption.locale objectForKey:NSLocaleLanguageCode];
-}
-
 #pragma mark Time observers
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
@@ -1367,7 +1398,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     self.controllerPeriodicTimeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
-        [self updateTracksForPlayer:player];
+        [self updateTracks];
     }];
 }
 
