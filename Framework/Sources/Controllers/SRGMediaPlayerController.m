@@ -897,6 +897,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             self.availableAudioTrackLocalizations = [self availableTrackLocalizationsForAsset:URLAsset withMediaCharacteristic:AVMediaCharacteristicAudible];
             self.availableSubtitleLocalizations = [self availableTrackLocalizationsForAsset:URLAsset withMediaCharacteristic:AVMediaCharacteristicLegible];
             
+            if (self.preferredAudioTrackLocalization) {
+                [self applyAudioTrackLocalization:self.preferredAudioTrackLocalization];
+            }
             if (self.preferredSubtitleLocalization) {
                 [self applySubtitleLocalization:self.preferredSubtitleLocalization];
             }
@@ -1202,6 +1205,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     AVPlayerItem *playerItem = self.player.currentItem;
     AVAsset *asset = playerItem.asset;
     
+    // Never access track information without checking whether it has been loaded first (would lock the main thread)
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return nil;
     }
@@ -1253,6 +1257,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (NSArray<NSString *> *)availableTrackLocalizationsForAsset:(AVAsset *)asset withMediaCharacteristic:(AVMediaCharacteristic)characteristic
 {
+    // Never access track information without checking whether it has been loaded first (would lock the main thread)
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return @[];
     }
@@ -1283,6 +1288,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     AVPlayerItem *playerItem = self.player.currentItem;
     AVAsset *asset = playerItem.asset;
     
+    // Never access track information without checking whether it has been loaded first (would lock the main thread)
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return;
     }
@@ -1324,6 +1330,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     AVPlayerItem *playerItem = self.player.currentItem;
     AVAsset *asset = playerItem.asset;
     
+    // Never access track information without checking whether it has been loaded first (would lock the main thread)
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
         return;
     }

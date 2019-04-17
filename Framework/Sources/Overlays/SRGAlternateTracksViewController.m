@@ -65,8 +65,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     
     AVAsset *asset = mediaPlayerController.player.currentItem.asset;
     
-    // Do not check tracks before the player item is ready to play (otherwise AVPlayer will internally wait on semaphores,
-    // locking the main thread ). Also see `-[AVAsset allMediaSelections]` documentation.
+    // Never access track information without checking whether it has been loaded first (would lock the main thread)
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
         NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
         NSMutableDictionary<NSString *, AVMediaSelectionGroup *> *groups = [NSMutableDictionary dictionary];
