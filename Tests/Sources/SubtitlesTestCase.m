@@ -116,9 +116,45 @@
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-// FIXME:
+- (void)testSameSubtitleChangeFromDefaultAlwaysOn
+{
+    // Start with enabled English subtitles (otherwise, available forced subtitles will be available, leading to a
+    // subtitle transition)
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
+    MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)@"en");
+    
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, subtitleLocalization) handler:^BOOL(id  _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        return change[NSKeyValueChangeNewKey] != NSNull.null;
+    }];
+    
+    XCTAssertNil(self.mediaPlayerController.preferredSubtitleLocalization);
+    
+    NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
+    [self.mediaPlayerController playURL:URL];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    id trackChangeObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerSubtitlesDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No subtitle change notification is expected");
+    }];
+    
+    [self expectationForElapsedTimeInterval:5. withHandler:nil];
+    
+    self.mediaPlayerController.preferredSubtitleLocalization = @"en";
+    XCTAssertEqualObjects(self.mediaPlayerController.preferredSubtitleLocalization, @"en");
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:trackChangeObserver];
+    }];
+}
+
 - (void)testSameSubtitleChangeFromDefault
 {
+    // Start with enabled English subtitles (otherwise, available forced subtitles will be available, leading to a
+    // subtitle transition)
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
+    MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)@"en");
+    
     [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, subtitleLocalization) handler:^BOOL(id  _Nonnull observedObject, NSDictionary * _Nonnull change) {
         return change[NSKeyValueChangeNewKey] != NSNull.null;
     }];
