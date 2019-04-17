@@ -147,8 +147,7 @@ static void commonInit(SRGTracksButton *self);
     if (self.alwaysHidden) {
         self.hidden = YES;
     }
-    // Do not check tracks before the player item is ready to play
-    else if (playerItem && [asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
+    else if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
         // Get available tracks. The button is only available if there are subtitles and / or audio tracks to choose from. If
         // subtitles are set, display the button in a selected state.
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];

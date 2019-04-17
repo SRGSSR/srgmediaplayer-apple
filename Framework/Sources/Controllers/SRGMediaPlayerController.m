@@ -880,15 +880,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         URLAsset = [AVURLAsset assetWithURL:URL];
     }
     
-    @weakify(self)
-    [URLAsset loadValuesAsynchronouslyForKeys:@[ @keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) ] completionHandler:^{
-        @strongify(self)
-        
-        if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-            // TODO:
-        }
-    }];
-    
     SRGMediaPlayerLogDebug(@"Controller", @"Playing %@", URL);
     
     [self reset];
@@ -917,6 +908,15 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:URLAsset];
     self.player = [AVPlayer playerWithPlayerItem:playerItem];
+    
+    @weakify(self)
+    [URLAsset loadValuesAsynchronouslyForKeys:@[ @keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) ] completionHandler:^{
+        @strongify(self)
+        
+        if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
+            self.assetMediaSelectionBlock ? self.assetMediaSelectionBlock(playerItem, URLAsset) : nil;
+        }
+    }];
     
     // Notify the state change last. If clients repond to the preparing state change notification, the state need to
     // be fully consistent first.
