@@ -59,7 +59,7 @@ static void commonInit(SRGTracksButton *self);
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.playbackState)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:SRGMediaPlayerSubtitlesDidChangeNotification
+                                                      name:SRGMediaPlayerSubtitleTrackDidChangeNotification
                                                     object:_mediaPlayerController];
     }
     
@@ -75,7 +75,7 @@ static void commonInit(SRGTracksButton *self);
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(subtitleTrackDidChange:)
-                                                   name:SRGMediaPlayerSubtitlesDidChangeNotification
+                                                   name:SRGMediaPlayerSubtitleTrackDidChangeNotification
                                                  object:mediaPlayerController];
     }
 }

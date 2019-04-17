@@ -156,7 +156,7 @@ OBJC_EXPORT NSString * const SRGMediaPlayerExternalPlaybackStateDidChangeNotific
  *  `userInfo` dictionary.
  */
 OBJC_EXPORT NSString * const SRGMediaPlayerAudioTrackDidChangeNotification;
-OBJC_EXPORT NSString * const SRGMediaPlayerSubtitlesDidChangeNotification;
+OBJC_EXPORT NSString * const SRGMediaPlayerSubtitleTrackDidChangeNotification;
 
 /**
  *  Notification sent when the current segment changes. Use the keys available below to retrieve information from
