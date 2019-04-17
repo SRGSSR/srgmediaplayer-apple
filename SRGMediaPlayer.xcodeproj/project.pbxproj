@@ -107,6 +107,7 @@
 		6FD3122B1FD9AB0100EC0C42 /* SRGQuaternion.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD312291FD9AB0100EC0C42 /* SRGQuaternion.m */; };
 		6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */; };
 		6FE7D5EB1F86237D00817E89 /* MetadataUpdatesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */; };
+		6FF702C22267B94C00C4E864 /* TracksTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF702C12267B94C00C4E864 /* TracksTestCase.m */; };
 		E654909C1D7F33AE007D96E7 /* libextobjc.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E67799321D75AE2600E58331 /* SRGTimelineView.h in Headers */ = {isa = PBXBuildFile; fileRef = E67799301D75AE2500E58331 /* SRGTimelineView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E67799331D75AE2600E58331 /* SRGTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67799311D75AE2500E58331 /* SRGTimelineView.m */; };
@@ -328,6 +329,7 @@
 		6FE7D5E61F85039000817E89 /* MediaPlayerBaseTestCase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPlayerBaseTestCase.h; sourceTree = "<group>"; };
 		6FE7D5E71F85039000817E89 /* MediaPlayerBaseTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerBaseTestCase.m; sourceTree = "<group>"; };
 		6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetadataUpdatesTestCase.m; sourceTree = "<group>"; };
+		6FF702C12267B94C00C4E864 /* TracksTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TracksTestCase.m; sourceTree = "<group>"; };
 		E67799301D75AE2500E58331 /* SRGTimelineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGTimelineView.h; sourceTree = "<group>"; };
 		E67799311D75AE2500E58331 /* SRGTimelineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGTimelineView.m; sourceTree = "<group>"; };
 		E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGMediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -698,6 +700,7 @@
 				E69A1FE01D61C6D20064E6C1 /* Segment.h */,
 				E69A1FE11D61C6D20064E6C1 /* Segment.m */,
 				E69A1FDF1D61C6D20064E6C1 /* SegmentsTestCase.m */,
+				6FF702C12267B94C00C4E864 /* TracksTestCase.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -1201,6 +1204,7 @@
 				6FE7D5E81F85039000817E89 /* MediaPlayerBaseTestCase.m in Sources */,
 				6FBDD1A721308242001E4398 /* PositionTestCase.m in Sources */,
 				E69A1FE61D61C6D20064E6C1 /* Segment.m in Sources */,
+				6FF702C22267B94C00C4E864 /* TracksTestCase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

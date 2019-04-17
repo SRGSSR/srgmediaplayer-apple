@@ -1024,8 +1024,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.lastPlaybackTime = kCMTimeIndefinite;
     self.lastStallDetectionDate = nil;
     
-    self.audioOption = nil;
-    self.subtitleOption = nil;
+    [self updateTracksForPlayer:nil];
     
     self.pictureInPictureController = nil;
     
