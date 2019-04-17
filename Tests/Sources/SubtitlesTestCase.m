@@ -97,7 +97,7 @@
         return change[NSKeyValueChangeNewKey] != NSNull.null;
     }];
     
-    XCTAssertNil(self.mediaPlayerController.preferredAudioTrackLocalization);
+    XCTAssertNil(self.mediaPlayerController.preferredSubtitleLocalization);
     
     NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
     [self.mediaPlayerController playURL:URL];
@@ -123,7 +123,7 @@
         return change[NSKeyValueChangeNewKey] != NSNull.null;
     }];
     
-    XCTAssertNil(self.mediaPlayerController.preferredAudioTrackLocalization);
+    XCTAssertNil(self.mediaPlayerController.preferredSubtitleLocalization);
     
     NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
     [self.mediaPlayerController playURL:URL];
@@ -150,7 +150,7 @@
         return change[NSKeyValueChangeNewKey] != NSNull.null;
     }];
     
-    XCTAssertNil(self.mediaPlayerController.preferredAudioTrackLocalization);
+    XCTAssertNil(self.mediaPlayerController.preferredSubtitleLocalization);
     
     NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
     [self.mediaPlayerController playURL:URL];
@@ -177,7 +177,7 @@
         return change[NSKeyValueChangeNewKey] != NSNull.null;
     }];
     
-    XCTAssertNil(self.mediaPlayerController.preferredAudioTrackLocalization);
+    XCTAssertNil(self.mediaPlayerController.preferredSubtitleLocalization);
     
     NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
     [self.mediaPlayerController playURL:URL];
@@ -204,7 +204,7 @@
         return change[NSKeyValueChangeNewKey] != NSNull.null;
     }];
     
-    XCTAssertNil(self.mediaPlayerController.preferredAudioTrackLocalization);
+    XCTAssertNil(self.mediaPlayerController.preferredSubtitleLocalization);
     
     NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
     [self.mediaPlayerController playURL:URL];
@@ -229,7 +229,7 @@
         return change[NSKeyValueChangeNewKey] != NSNull.null;
     }];
     
-    XCTAssertNil(self.mediaPlayerController.preferredAudioTrackLocalization);
+    XCTAssertNil(self.mediaPlayerController.preferredSubtitleLocalization);
     
     NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
     [self.mediaPlayerController playURL:URL];
