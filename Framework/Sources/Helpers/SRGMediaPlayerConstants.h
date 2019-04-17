@@ -28,16 +28,6 @@ static float const SRGMediaPlayerDefaultEndToleranceRatio = 0.f;
 OBJC_EXPORT CMTime SRGMediaPlayerEffectiveEndTolerance(NSTimeInterval endTolerance, float endToleranceRatio, NSTimeInterval contentDuration);
 
 /**
- *  @name Miscellaneous constants
- */
-
-// Disabled localization.
-OBJC_EXPORT NSString * const SRGMediaPlayerLocalizationDisabled;
-
-// Auomatic localization selection.
-OBJC_EXPORT NSString * const SRGMediaPlayerLocalizationAutomatic;
-
-/**
  *  @name Types
  */
 
@@ -225,7 +215,7 @@ OBJC_EXPORT NSString * const SRGMediaPlayerInterruptionKey;                     
 OBJC_EXPORT NSString * const SRGMediaPlayerSelectionKey;                                    // Key to an `NSNumber` wrapping a boolean, set to `YES` iff the notification results from a segment selection.
 
 /**
- *  Information available for `SRGMediaPlayerAudioTrackDidChangeNotification` and `SRGMediaPlayerSubtitlesDidChangeNotification`.
+ *  Information available for `SRGMediaPlayerAudioTrackDidChangeNotification` and `SRGMediaPlayerSubtitleTrackDidChangeNotification`.
  */
 OBJC_EXPORT NSString * const SRGMediaPlayerTrackKey;                                       // Key to the current `AVMediaSelectionOption`.
 OBJC_EXPORT NSString * const SRGMediaPlayerPreviousTrackKey;                               // Key to the previous `AVMediaSelectionOption`.

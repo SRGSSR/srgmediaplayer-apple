@@ -24,7 +24,6 @@
 
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
-#import <MediaAccessibility/MediaAccessibility.h>
 #import <objc/runtime.h>
 
 static const NSTimeInterval SRGSegmentSeekOffsetInSeconds = 0.1;
