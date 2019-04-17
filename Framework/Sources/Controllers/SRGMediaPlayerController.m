@@ -1268,7 +1268,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
     for (AVMediaSelectionOption *option in options) {
         NSString *languageCode = [option.locale objectForKey:NSLocaleLanguageCode];
-        [localizations addObject:languageCode];
+        if (languageCode) {
+            [localizations addObject:languageCode];
+        }
     }
     
     return [localizations.allObjects sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
