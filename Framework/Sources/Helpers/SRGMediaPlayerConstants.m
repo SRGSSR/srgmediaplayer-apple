@@ -17,7 +17,7 @@ NSString * const SRGMediaPlayerPictureInPictureStateDidChangeNotification = @"SR
 NSString * const SRGMediaPlayerExternalPlaybackStateDidChangeNotification = @"SRGMediaPlayerExternalPlaybackStateDidChangeNotification";
 
 NSString * const SRGMediaPlayerAudioTrackDidChangeNotification = @"SRGMediaPlayerAudioTrackDidChangeNotification";
-NSString * const SRGMediaPlayerSubtitleTrackDidChangeNotification = @"SRGMediaPlayerSubtitleTrackDidChangeNotification";
+NSString * const SRGMediaPlayerSubtitlesDidChangeNotification = @"SRGMediaPlayerSubtitlesDidChangeNotification";
 
 NSString * const SRGMediaPlayerSegmentDidStartNotification = @"SRGMediaPlayerSegmentDidStartNotification";
 NSString * const SRGMediaPlayerSegmentDidEndNotification = @"SRGMediaPlayerSegmentDidEndNotification";

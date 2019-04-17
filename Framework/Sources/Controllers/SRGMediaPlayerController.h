@@ -693,7 +693,10 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Valid localizations can be retrieved from `availableAudioTrackLocalizations`. If you know the value you want to to
  *  use beforehand, though, the preferred localization can be set earlier, even right after controller creation.
- **
+ *
+ *  Use `SRGMediaPlayerLocalizationAutomatic` to enable automatic selection. The value `SRGMediaPlayerLocalizationDisabled`
+ *  is not supported.
+ *
  *  @discussion This setting only affects the receiver and is not reset between between media playbacks using the same
  *              controller. If an invalid audio track localization is provided, automatic selection is applied instead.
  */
@@ -702,7 +705,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return the localization of the currently applied audio track, if any. KVO-observable.
  *
- *  @discussion A value is returned as well when forced subtitles are being applied.
+ *  @discussion A value is returned as well when forced subtitles are being applied. This value might be different from
+ *              `preferredAudioTrackLocalization` when set, depending on whether the preference could be applied or not.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *audioTrackLocalization;
 
@@ -738,7 +742,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return the localization of the currently applied subtitles, if any. KVO-observable.
  *
- *  @discussion A value is returned as well when forced subtitles are being applied.
+ *  @discussion A value is returned as well when forced subtitles are being applied. This value might be different from
+ *              `preferredSubtitleLocalization` when set, depending on whether the preference could be applied or not.
  */
 @property (nonatomic, readonly, copy, nullable) NSString *subtitleLocalization;
 

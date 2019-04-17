@@ -33,7 +33,6 @@ static NSURL *SegmentsTestURL(void)
 
 - (void)tearDown
 {
-    // Always ensure the player gets deallocated between tests
     [self.mediaPlayerController reset];
     self.mediaPlayerController = nil;
 }

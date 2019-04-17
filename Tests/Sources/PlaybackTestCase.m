@@ -53,7 +53,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)tearDown
 {
-    // Always ensure the player gets deallocated between tests
     [self.mediaPlayerController reset];
     self.mediaPlayerController = nil;
 }
@@ -2053,7 +2052,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testPlaybackStateKeyValueObserving
 {
-    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@"playbackState" expectedValue:@(SRGMediaPlayerPlaybackStatePreparing)];
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, playbackState) expectedValue:@(SRGMediaPlayerPlaybackStatePreparing)];
     
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     

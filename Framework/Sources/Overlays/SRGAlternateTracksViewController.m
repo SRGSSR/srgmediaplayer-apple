@@ -46,7 +46,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
                                                       name:SRGMediaPlayerAudioTrackDidChangeNotification
                                                     object:_mediaPlayerController];
         [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:SRGMediaPlayerSubtitleTrackDidChangeNotification
+                                                      name:SRGMediaPlayerSubtitlesDidChangeNotification
                                                     object:_mediaPlayerController];
     }
     
@@ -59,7 +59,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
                                                  object:mediaPlayerController];
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(subtitleTrackDidChange:)
-                                                   name:SRGMediaPlayerSubtitleTrackDidChangeNotification
+                                                   name:SRGMediaPlayerSubtitlesDidChangeNotification
                                                  object:mediaPlayerController];
     }
     

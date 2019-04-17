@@ -337,7 +337,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)setPlaybackState:(SRGMediaPlayerPlaybackState)playbackState withUserInfo:(NSDictionary *)userInfo
 {
-    NSAssert([NSThread isMainThread], @"Not the main thread. Ensure important changes must be notified on the main thread. Fix");
+    NSAssert(NSThread.isMainThread, @"Not the main thread. Ensure important changes must be notified on the main thread. Fix");
     
     if (_playbackState == playbackState) {
         return;
@@ -894,8 +894,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         @strongify(self)
         
         if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-            self.availableAudioTrackLocalizations = [self availableTrackLocalizationsForAsset:URLAsset withMediaCharacteristic:AVMediaCharacteristicAudible];
-            self.availableSubtitleLocalizations = [self availableTrackLocalizationsForAsset:URLAsset withMediaCharacteristic:AVMediaCharacteristicLegible];
+            self.availableAudioTrackLocalizations = [self availableAudioTrackLocalizationsForAsset:URLAsset];
+            self.availableSubtitleLocalizations = [self availableSubtitleLocalizationsForAsset:URLAsset];
             
             if (self.preferredAudioTrackLocalization) {
                 [self applyAudioTrackLocalization:self.preferredAudioTrackLocalization];
@@ -1026,6 +1026,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         self.player = nil;
     }
     
+    [self updateTracks];
+    
     _timeRange = kCMTimeRangeInvalid;
     _selected = NO;
     
@@ -1046,12 +1048,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     self.availableAudioTrackLocalizations = nil;
     self.availableSubtitleLocalizations = nil;
-    
-    self.audioTrackOption = nil;
-    self.subtitleOption = nil;
-    
-    self.audioTrackLocalization = nil;
-    self.subtitleLocalization = nil;
     
     self.pictureInPictureController = nil;
     
@@ -1247,7 +1243,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         self.subtitleOption = subtitleOption;
         self.subtitleLocalization = [subtitleOption.locale objectForKey:NSLocaleLanguageCode];
         
-        [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSubtitleTrackDidChangeNotification
+        [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSubtitlesDidChangeNotification
                                                           object:self
                                                         userInfo:[userInfo copy]];
     }
@@ -1255,16 +1251,37 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 #pragma mark Asset track information extraction
 
-- (NSArray<NSString *> *)availableTrackLocalizationsForAsset:(AVAsset *)asset withMediaCharacteristic:(AVMediaCharacteristic)characteristic
+- (NSArray<NSString *> *)availableAudioTrackLocalizationsForAsset:(AVAsset *)asset
 {
     // Never access track information without checking whether it has been loaded first (would lock the main thread)
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
-        return @[];
+        return nil;
     }
     
     NSMutableSet<NSString *> *localizations = [NSMutableSet set];
     
-    AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
+    AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+    NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup playableMediaSelectionOptionsFromArray:group.options];
+    for (AVMediaSelectionOption *option in options) {
+        NSString *languageCode = [option.locale objectForKey:NSLocaleLanguageCode];
+        if (languageCode) {
+            [localizations addObject:languageCode];
+        }
+    }
+    
+    return [localizations.allObjects sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+}
+
+- (NSArray<NSString *> *)availableSubtitleLocalizationsForAsset:(AVAsset *)asset
+{
+    // Never access track information without checking whether it has been loaded first (would lock the main thread)
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
+        return nil;
+    }
+    
+    NSMutableSet<NSString *> *localizations = [NSMutableSet set];
+    
+    AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
     NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
     for (AVMediaSelectionOption *option in options) {
         NSString *languageCode = [option.locale objectForKey:NSLocaleLanguageCode];
@@ -1287,6 +1304,11 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)applyAudioTrackLocalization:(NSString *)audioTrackLocalization
 {
+    // Does nothing, audio tracks cannot be disabled
+    if ([audioTrackLocalization isEqualToString:SRGMediaPlayerLocalizationDisabled]) {
+        return;
+    }
+    
     AVPlayerItem *playerItem = self.player.currentItem;
     AVAsset *asset = playerItem.asset;
     
@@ -1299,9 +1321,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     if (! audioTrackLocalization || [audioTrackLocalization isEqualToString:SRGMediaPlayerLocalizationAutomatic]) {
         [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:audioGroup];
-    }
-    else if ([audioTrackLocalization isEqualToString:SRGMediaPlayerLocalizationDisabled]) {
-        [playerItem selectMediaOption:nil inMediaSelectionGroup:audioGroup];
     }
     else {
         NSArray<AVMediaSelectionOption *> *audioOptions = [AVMediaSelectionGroup playableMediaSelectionOptionsFromArray:audioGroup.options];

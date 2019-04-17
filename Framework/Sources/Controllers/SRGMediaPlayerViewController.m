@@ -67,6 +67,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     
     s_mediaPlayerController = [[SRGMediaPlayerSharedController alloc] init];
+    s_mediaPlayerController.preferredAudioTrackLocalization = SRGMediaPlayerLocalizationDisabled;
 }
 
 #pragma mark Object lifecycle
