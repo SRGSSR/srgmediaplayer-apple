@@ -269,15 +269,25 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) void (^playerDestructionBlock)(AVPlayer *player);
 
 /**
- *  Optional block which gets called once asset selection information is available (subtitles / audio tracks).
- */
-@property (nonatomic, copy, nullable) void (^assetMediaSelectionBlock)(AVPlayerItem *playerItem, AVAsset *asset);
-
-/**
  *  Ask the player to reload its configuration by calling the associated configuration block, if any. Does nothing if
  *  the player has not been created yet.
  */
 - (void)reloadPlayerConfiguration;
+
+/**
+ *  @name Asset media selection (subtitle / audio tracks).
+ */
+
+/**
+ *  Optional block which gets called once asset selection information is available.
+ */
+@property (nonatomic, copy, nullable) void (^assetMediaSelectionBlock)(AVPlayerItem *playerItem, AVAsset *asset);
+
+/**
+ *  Ask the player to reload its media selection by calling the associated configuration block, if any. Does nothing
+ *  if media selection information is not available.
+ */
+- (void)reloadAssetMediaSelection;
 
 /**
  *  @name Playback

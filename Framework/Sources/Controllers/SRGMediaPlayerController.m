@@ -1041,6 +1041,17 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
+#pragma mark Asset media selection
+
+- (void)reloadAssetMediaSelection
+{
+    AVPlayerItem *playerItem = self.player.currentItem;
+    AVAsset *asset = playerItem.asset;
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
+        self.assetMediaSelectionBlock ? self.assetMediaSelectionBlock(playerItem, asset) : nil;
+    }
+}
+
 #pragma mark Segments
 
 - (void)updateSegmentStatusForPlaybackState:(SRGMediaPlayerPlaybackState)playbackState
