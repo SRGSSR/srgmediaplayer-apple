@@ -913,7 +913,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         @strongify(self)
         
         if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-            self.assetMediaSelectionBlock ? self.assetMediaSelectionBlock(playerItem, URLAsset) : nil;
+            self.mediaConfigurationBlock ? self.mediaConfigurationBlock(playerItem, URLAsset) : nil;
         }
     }];
     
@@ -1041,14 +1041,12 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-#pragma mark Asset media selection
-
-- (void)reloadAssetMediaSelection
+- (void)reloadMediaConfiguration
 {
     AVPlayerItem *playerItem = self.player.currentItem;
     AVAsset *asset = playerItem.asset;
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-        self.assetMediaSelectionBlock ? self.assetMediaSelectionBlock(playerItem, asset) : nil;
+        self.mediaConfigurationBlock ? self.mediaConfigurationBlock(playerItem, asset) : nil;
     }
 }
 

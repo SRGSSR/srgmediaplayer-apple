@@ -275,19 +275,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reloadPlayerConfiguration;
 
 /**
- *  @name Asset media selection (subtitle / audio tracks).
+ *  @name Asset configuration (subtitles and audio tracks).
  */
 
 /**
- *  Optional block which gets called once asset selection information is available.
+ *  Optional block which gets called once media information has been loaded, and which can be used to customize
+ *  audio or subtitle selection, as well as subtitle appearance.
  */
-@property (nonatomic, copy, nullable) void (^assetMediaSelectionBlock)(AVPlayerItem *playerItem, AVAsset *asset);
+@property (nonatomic, copy, nullable) void (^mediaConfigurationBlock)(AVPlayerItem *playerItem, AVAsset *asset);
 
 /**
- *  Ask the player to reload its media selection by calling the associated configuration block, if any. Does nothing
- *  if media selection information is not available.
+ *  Reload media configuration by calling the associated block, if any. Does nothing if the media has not been loaded
+ *  yet.
  */
-- (void)reloadAssetMediaSelection;
+- (void)reloadMediaConfiguration;
 
 /**
  *  @name Playback

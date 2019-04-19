@@ -129,9 +129,11 @@ Note that control center integration does not work in the iOS simulator, you wil
 
 ## Subtitles and audio tracks
 
-SRG Media Player provides a built-in `SRGTracksButton` which, when added to a player layout and bound to a media player controller, is displayed when several audio or subtitle options are detected. Tapping on this button lets the user choose one of the available options. These options are persisted at the system level to be reapplied in another contexts (e.g. when playing another media with `SRGMediaPlayerController`, `AVPlayerViewController` or Safari). Please refer to the [official documentation](https://developer.apple.com/documentation/mediaaccessibility) for more information.
+SRG Media Player provides a built-in `SRGTracksButton` which, when added to a player layout and bound to a media player controller, is displayed when several audio or subtitle options are detected. Tapping on this button lets the user choose one of the options provided by the media being played. 
 
-You can also programmatically control subtitles and audio tracks by assigning an `assetMediaSelectionBlock` block to a controller. This block gets called at playback start when the asset is safe for media selection option inspection. When implementing the block, you can use the supplied `AVAsset` and `AVPlayerItem` objects to look for another legible or audible option and apply it. Here is for example how you would select French subtitles when available:
+Subtitle choice made by tapping this button is persisted at the system level, and will be reapplied in subsequent playback contexts, e.g. when playing another media with `SRGMediaPlayerController`, `AVPlayerViewController` or even Safari. Please refer to the [official documentation](https://developer.apple.com/documentation/mediaaccessibility) for more information.
+
+You can also programmatically control subtitles and audio tracks by assigning a `mediaConfigurationBlock` block to a controller. This block gets called when playback starts, once the media `AVAsset` is safe for media selection option inspection. When implementing this block, you can use the supplied `AVAsset` and `AVPlayerItem` objects to look for other legible and audible options, and to apply the ones you want. Here is for example how you would apply French subtitles if available:
 
 ```objective-c
 self.mediaPlayerController.assetMediaSelectionBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
@@ -149,7 +151,7 @@ self.mediaPlayerController.assetMediaSelectionBlock = ^(AVPlayerItem * _Nonnull 
 
 Please refer to the [official documentation](https://developer.apple.com/documentation/avfoundation/media_assets_playback_and_editing/adding_subtitles_and_alternative_audio_tracks) for more information about asset media selection options.
 
-You can also use the same block to apply subtitle styling, e.g.
+Note that you can use the same block to apply subtitle styling as well:
 
 ```objective-c
 self.mediaPlayerController.assetMediaSelectionBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
