@@ -286,7 +286,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Reload media configuration by calling the associated block, if any. Does nothing if the media has not been loaded
- *  yet.
+ *  yet. If there is no configuration block defined, calling this method applies the default selection options for
+ *  audio and subtitles, and removes any subtitle styling which might have been applied.
  */
 - (void)reloadMediaConfiguration;
 

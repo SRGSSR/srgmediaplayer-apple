@@ -1046,7 +1046,18 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     AVPlayerItem *playerItem = self.player.currentItem;
     AVAsset *asset = playerItem.asset;
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-        self.mediaConfigurationBlock ? self.mediaConfigurationBlock(playerItem, asset) : nil;
+        if (self.mediaConfigurationBlock) {
+            self.mediaConfigurationBlock(playerItem, asset);
+        }
+        else {
+            AVMediaSelectionGroup *audibleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+            [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:audibleGroup];
+            
+            AVMediaSelectionGroup *legibleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+            [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:legibleGroup];
+            
+            playerItem.textStyleRules = nil;
+        }
     }
 }
 
