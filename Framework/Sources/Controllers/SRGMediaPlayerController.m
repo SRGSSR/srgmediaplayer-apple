@@ -1041,6 +1041,12 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
+- (void)reloadPlayerConfigurationWithBlock:(void (^)(AVPlayer * _Nonnull))block
+{
+    self.playerConfigurationBlock = block;
+    [self reloadPlayerConfiguration];
+}
+
 - (void)reloadMediaConfiguration
 {
     AVPlayerItem *playerItem = self.player.currentItem;
@@ -1059,6 +1065,12 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             playerItem.textStyleRules = nil;
         }
     }
+}
+
+- (void)reloadMediaConfigurationWithBlock:(void (^)(AVPlayerItem * _Nonnull, AVAsset * _Nonnull))block
+{
+    self.mediaConfigurationBlock = block;
+    [self reloadMediaConfiguration];
 }
 
 #pragma mark Segments

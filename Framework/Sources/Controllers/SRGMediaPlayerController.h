@@ -275,6 +275,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reloadPlayerConfiguration;
 
 /**
+ *  Reload the player configuration with a new configuration block. Any previously existing configuration block is
+ *  replaced.
+ *
+ *  @discussion If the player has not been created yet, the block is set but not called.
+ */
+- (void)reloadPlayerConfigurationWithBlock:(nullable void (^)(AVPlayer *player))block;
+
+/**
  *  @name Asset configuration (subtitles and audio tracks).
  */
 
@@ -290,6 +298,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  audio and subtitles, and removes any subtitle styling which might have been applied.
  */
 - (void)reloadMediaConfiguration;
+
+/**
+ *  Reload the player configuration with a new configuration block. Any previously existing configuration block is
+ *  replaced.
+ *
+ *  @discussion If the media has not been loaded yet, the block is set but not called.
+ */
+- (void)reloadMediaConfigurationWithBlock:(nullable void (^)(AVPlayerItem *playerItem, AVAsset *asset))block;
 
 /**
  *  @name Playback
