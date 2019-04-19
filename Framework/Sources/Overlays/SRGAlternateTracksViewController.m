@@ -215,31 +215,28 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
  
     NSString *characteristic = self.characteristics[indexPath.section];
     if (characteristic == AVMediaCharacteristicLegible) {
+        AVMediaSelectionGroup *group = self.groups[characteristic];
+        AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+        
         if (indexPath.row == 0) {
             UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Off", @"Option to disable subtitles");
-            
-            if (! AVAudioSession.srg_isAirPlayActive) {
-                cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
-            else {
-                AVMediaSelectionGroup *group = self.groups[characteristic];
-                AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-                
-                cell.accessoryType = (currentOptionInGroup == nil || [currentOptionInGroup hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
-            
+            cell.accessoryType = (currentOptionInGroup == nil) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             return cell;
         }
         else if (indexPath.row == 1) {
-            UITableViewCell *cell = [self defaultCellForTableView:tableView];
+            UITableViewCell *cell = [self subtitleCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
             
             if (! AVAudioSession.srg_isAirPlayActive) {
-                cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+                BOOL isSelected = (displayType == kMACaptionAppearanceDisplayTypeAutomatic);
+                cell.accessoryType = isSelected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+                cell.detailTextLabel.text = (isSelected && ! [currentOptionInGroup hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]) ? SRGHintForMediaSelectionOption(currentOptionInGroup) : nil;
             }
             else {
                 cell.textLabel.enabled = NO;
+                cell.detailTextLabel.enabled = NO;
+                
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
@@ -263,13 +260,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
             
             AVMediaSelectionGroup *group = self.groups[characteristic];
             AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-            
-            if (! AVAudioSession.srg_isAirPlayActive) {
-                cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
-            else {
-                cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
+            cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
