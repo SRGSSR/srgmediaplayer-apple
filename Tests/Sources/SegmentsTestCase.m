@@ -1081,7 +1081,6 @@ static NSURL *SegmentsTestURL(void)
 
 - (void)testSelectedSegmentPlaythrough
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1149,7 +1148,6 @@ static NSURL *SegmentsTestURL(void)
 
 - (void)testConsecutiveSegmentSelection
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1214,7 +1212,6 @@ static NSURL *SegmentsTestURL(void)
 
 - (void)testRepeatedSegmentSelection
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];

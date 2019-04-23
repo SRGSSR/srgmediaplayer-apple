@@ -1501,7 +1501,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 - (void)testReset
 {
     @autoreleasepool {
-        // Wait until playing
         [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
             return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
         }];
@@ -1581,7 +1580,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testStop
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1681,7 +1679,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testPlayAfterStopWithURL
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1712,7 +1709,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testPlayAfterStopWithAsset
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1744,7 +1740,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testPlayAfterReset
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1779,7 +1774,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testOnDemandTogglePlayPause
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1809,7 +1803,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testDVRTogglePlayPause
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1839,7 +1832,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testTogglePlayPauseAfterStop
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1870,7 +1862,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testTogglePlayPauseAfterReset
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1905,7 +1896,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testConsecutiveMediaPlaybackInSamePlayer
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1949,7 +1939,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testPlayerLifecycle
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1995,7 +1984,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testConfigurationReload
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -2014,13 +2002,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    // Reload the configuration
     XCTestExpectation *configurationReloadExpectation = [self expectationWithDescription:@"Configuration reloaded"];
-    self.mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
+    [self.mediaPlayerController reloadPlayerConfigurationWithBlock:^(AVPlayer * _Nonnull player) {
         [configurationReloadExpectation fulfill];
-    };
-    
-    [self.mediaPlayerController reloadPlayerConfiguration];
+    }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }

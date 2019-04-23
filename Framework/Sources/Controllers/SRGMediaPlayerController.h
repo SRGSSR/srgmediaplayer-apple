@@ -283,7 +283,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reloadPlayerConfigurationWithBlock:(nullable void (^)(AVPlayer *player))block;
 
 /**
- *  @name Asset configuration (subtitles and audio tracks).
+ *  @name Media configurationn (audio track and subtitle customization).
  */
 
 /**

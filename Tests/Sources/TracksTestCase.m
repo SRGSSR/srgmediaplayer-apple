@@ -6,6 +6,7 @@
 
 #import "MediaPlayerBaseTestCase.h"
 
+#import <libextobjc/libextobjc.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface TracksTestCase : MediaPlayerBaseTestCase
@@ -154,6 +155,49 @@
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-// TODO: Test -reloadAssetConfiguration
+- (void)testConfigurationReload
+{
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"en");
+        return YES;
+    }];
+    
+    NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
+    [self.mediaPlayerController playURL:URL];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"en");
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"ja");
+        return YES;
+    }];
+    
+    [self.mediaPlayerController reloadMediaConfigurationWithBlock:^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
+        AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"ja"];
+        }];
+        NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+        AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
+        if (option) {
+            [playerItem selectMediaOption:option inMediaSelectionGroup:group];
+        }
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testConfigurationReloadBeforeMediaIsReady
+{
+    @weakify(self)
+    self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
+        @strongify(self)
+        XCTFail(@"Media configuration must not be called if the media is not ready");
+    };
+    
+    [self.mediaPlayerController reloadMediaConfiguration];
+}
 
 @end
