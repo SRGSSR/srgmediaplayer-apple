@@ -211,12 +211,13 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
  
     NSString *characteristic = self.characteristics[indexPath.section];
     if (characteristic == AVMediaCharacteristicLegible) {
         AVMediaSelectionGroup *group = self.groups[characteristic];
-        AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+        AVMediaSelectionOption *currentOptionInGroup = [playerItem selectedMediaOptionInMediaSelectionGroup:group];
         
         if (indexPath.row == 0) {
             UITableViewCell *cell = [self defaultCellForTableView:tableView];
@@ -256,7 +257,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
             }
             
             AVMediaSelectionGroup *group = self.groups[characteristic];
-            AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+            AVMediaSelectionOption *currentOptionInGroup = [playerItem selectedMediaOptionInMediaSelectionGroup:group];
             cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
@@ -278,7 +279,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         }
         
         AVMediaSelectionGroup *group = self.groups[characteristic];
-        AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+        AVMediaSelectionOption *currentOptionInGroup = [playerItem selectedMediaOptionInMediaSelectionGroup:group];
         cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         
         return cell;
@@ -290,6 +291,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     AVPlayer *player = self.mediaPlayerController.player;
+    AVPlayerItem *playerItem = player.currentItem;
     
     NSString *characteristic = self.characteristics[indexPath.section];
     AVMediaSelectionGroup *group = self.groups[characteristic];
@@ -297,18 +299,18 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     
     if (characteristic == AVMediaCharacteristicLegible) {
         if (indexPath.row == 0) {
-            [player.currentItem selectMediaOption:nil inMediaSelectionGroup:group];
+            [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
             
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
         }
         else if (indexPath.row == 1) {
-            [player.currentItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
+            [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
             
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
         }
         else {
             AVMediaSelectionOption *option = options[indexPath.row - 2];
-            [player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
+            [playerItem selectMediaOption:option inMediaSelectionGroup:group];
             
             // Save the subtitle language (system) so that it gets automatically applied again when instantiating a new `AVPlayer` with
             // `appliesMediaSelectionCriteriaAutomatically` (default). For example `SRGMediaPlayerController` or `AVPlayerViewController`
@@ -318,7 +320,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         }
     }
     else {
-        [player.currentItem selectMediaOption:options[indexPath.row] inMediaSelectionGroup:group];
+        [playerItem selectMediaOption:options[indexPath.row] inMediaSelectionGroup:group];
     }
     
     // No track change notification is emitted when the setting (e.g. Automatic or Off) does not lead to another value
