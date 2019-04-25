@@ -136,7 +136,7 @@ Subtitle choice made by tapping this button is persisted at the system level, an
 You can also programmatically control subtitles and audio tracks by assigning a `mediaConfigurationBlock` block to a controller. This block gets called when playback starts, once the media `AVAsset` is safe for media selection option inspection. When implementing this block, you can use the supplied `AVAsset` and `AVPlayerItem` objects to look for other legible and audible options, and to apply the ones you want. Here is for example how you would apply French subtitles if available:
 
 ```objective-c
-self.mediaPlayerController.assetMediaSelectionBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
+self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"fr"];
