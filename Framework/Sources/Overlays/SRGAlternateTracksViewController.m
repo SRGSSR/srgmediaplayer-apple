@@ -256,8 +256,6 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
                 cell.textLabel.text = SRGHintForMediaSelectionOption(option);
             }
             
-            AVMediaSelectionGroup *group = self.groups[characteristic];
-            AVMediaSelectionOption *currentOptionInGroup = [playerItem selectedMediaOptionInMediaSelectionGroup:group];
             cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
