@@ -127,15 +127,48 @@ For proper integration into the control center and the lock screen, use the `MPR
 
 Note that control center integration does not work in the iOS simulator, you will need a real device for tests.
 
-## Custom resource loading and FairPlay support
+## Subtitles and audio tracks
 
-If you need to customize the resource loading process (e.g. to unencrypt stream chunks on-the-fly or to optimize the way they are retrieved), create a dedicated `AVAssetResourceLoaderDelegate` class. Then play an `AVPlayerItem` built from an asset which this delegate has been assigned to:
+SRG Media Player provides a built-in `SRGTracksButton` which, when added to a player layout and bound to a media player controller, is displayed when several audio or subtitle options are detected. Tapping on this button lets the user choose one of the options provided by the media being played. 
+
+Subtitle choice made by tapping this button is persisted at the system level, and will be reapplied in subsequent playback contexts, e.g. when playing another media with `SRGMediaPlayerController`, `AVPlayerViewController` or even Safari. Please refer to the [official documentation](https://developer.apple.com/documentation/mediaaccessibility) for more information.
+
+You can also programmatically control subtitles and audio tracks by assigning a `mediaConfigurationBlock` block to a controller. This block gets called when playback starts, once the media `AVAsset` is safe for media selection option inspection. When implementing this block, you can use the supplied `AVAsset` and `AVPlayerItem` objects to look for other legible and audible options, and to apply the ones you want. Here is for example how you would apply French subtitles if available:
 
 ```objective-c
-AVURLAsset *asset = ...;
+self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
+    AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"fr"];
+    }];
+    NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+    AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
+    if (option) {
+        [playerItem selectMediaOption:option inMediaSelectionGroup:group];
+    }
+};
+``` 
+
+Please refer to the [official documentation](https://developer.apple.com/documentation/avfoundation/media_assets_playback_and_editing/adding_subtitles_and_alternative_audio_tracks) for more information about asset media selection options.
+
+Note that you can use the same block to apply subtitle styling as well:
+
+```objective-c
+self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
+    AVTextStyleRule *rule = [[AVTextStyleRule alloc] initWithTextMarkupAttributes:@{ (id)kCMTextMarkupAttribute_ForegroundColorARGB : @[ @1, @1, @0, @0 ],
+                                                                                     (id)kCMTextMarkupAttribute_ItalicStyle : @(YES)}]; 
+    playerItem.textStyleRules = @[rule];
+};
+``` 
+
+## Custom resource loading and FairPlay support
+
+If you need to customize the resource loading process (e.g. to unencrypt stream chunks on-the-fly or to optimize the way they are retrieved), create a dedicated `AVAssetResourceLoaderDelegate` class. Then play an `AVURLAsset` which this delegate has been assigned to:
+
+```objective-c
+AVURLAsset *URLAsset = ...;
 [asset.resourceLoader setDelegate:resourceLoaderDelegate queue:queue];
-AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
-[self.mediaPlayerController playItem:playerItem];
+[self.mediaPlayerController playURLAsset:URLAsset];
 ```
 
 where `resourceLoaderDelegate` is an instance of your custom resource loader delegate class, and `queue` is the queue on which events must be dispatched.

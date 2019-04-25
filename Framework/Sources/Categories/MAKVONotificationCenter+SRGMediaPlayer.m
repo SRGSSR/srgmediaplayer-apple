@@ -14,7 +14,7 @@
                                             block:(void (^)(MAKVONotification * _Nonnull))block
 {
     return [self addObserver:observer keyPath:keyPath options:options block:^(MAKVONotification *notification) {
-        if ([NSThread isMainThread]) {
+        if (NSThread.isMainThread) {
             block(notification);
         }
         else {

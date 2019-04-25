@@ -28,16 +28,6 @@ static float const SRGMediaPlayerDefaultEndToleranceRatio = 0.f;
 OBJC_EXPORT CMTime SRGMediaPlayerEffectiveEndTolerance(NSTimeInterval endTolerance, float endToleranceRatio, NSTimeInterval contentDuration);
 
 /**
- *  @name Miscellaneous constants
- */
-
-// Disabled localization.
-OBJC_EXPORT NSString * const SRGMediaPlayerLocalizationDisabled;
-
-// Auomatic localization selection.
-OBJC_EXPORT NSString * const SRGMediaPlayerLocalizationAutomatic;
-
-/**
  *  @name Types
  */
 
@@ -181,7 +171,7 @@ OBJC_EXPORT NSString * const SRGMediaPlayerDidSkipBlockedSegmentNotification;   
 OBJC_EXPORT NSString * const SRGMediaPlayerPlaybackStateKey;                                // Key to access the current playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value).
 OBJC_EXPORT NSString * const SRGMediaPlayerPreviousPlaybackStateKey;                        // Key to access the previous playback state as an `NSNumber` (wrapping an `SRGMediaPlayerPlaybackState` value).
 OBJC_EXPORT NSString * const SRGMediaPlayerPreviousContentURLKey;                           // Key to access the previously played URL.
-OBJC_EXPORT NSString * const SRGMediaPlayerPreviousPlayerItemKey;                           // Key to access the previously played `AVPlayerItem`.
+OBJC_EXPORT NSString * const SRGMediaPlayerPreviousURLAssetKey;                             // Key to access the previously played `AVURLAsset`.
 OBJC_EXPORT NSString * const SRGMediaPlayerPreviousTimeRangeKey;                            // Key to access the previous time range as an `NSValue` (wrapping an `CMTimeRange` value).
 OBJC_EXPORT NSString * const SRGMediaPlayerPreviousMediaTypeKey;                            // Key to access the previous media type as an `NSNumber` (wrapping an `SRGMediaPlayerMediaType` value).
 OBJC_EXPORT NSString * const SRGMediaPlayerPreviousStreamTypeKey;                           // Key to access the previous stream type as an `NSNumber` (wrapping an `SRGMediaPlayerStreamType` value).

@@ -8,6 +8,7 @@
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 
+#import <libextobjc/libextobjc.h>
 #import <MediaAccessibility/MediaAccessibility.h>
 
 static NSString *SRGTitleForMediaSelectionOption(AVMediaSelectionOption *option);
@@ -62,24 +63,22 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
                                                  object:mediaPlayerController];
     }
     
-    AVPlayer *player = mediaPlayerController.player;
-    AVPlayerItem *playerItem = player.currentItem;
+    AVAsset *asset = mediaPlayerController.player.currentItem.asset;
     
-    // Do not check tracks before the player item is ready to play (otherwise AVPlayer will internally wait on semaphores,
-    // locking the main thread ). Also see `-[AVAsset allMediaSelections]` documentation.
-    if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+    // Never access track information without checking whether it has been loaded first (would lock the main thread)
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
         NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
         NSMutableDictionary<NSString *, AVMediaSelectionGroup *> *groups = [NSMutableDictionary dictionary];
         NSMutableDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options = [NSMutableDictionary dictionary];
         
-        AVMediaSelectionGroup *audioGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         if (audioGroup.options.count > 1) {
             [characteristics addObject:AVMediaCharacteristicAudible];
             groups[AVMediaCharacteristicAudible] = audioGroup;
             options[AVMediaCharacteristicAudible] = audioGroup.options;
         }
         
-        AVMediaSelectionGroup *subtitleGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         if (subtitleGroup) {
             [characteristics addObject:AVMediaCharacteristicLegible];
             groups[AVMediaCharacteristicLegible] = subtitleGroup;
@@ -212,24 +211,18 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
  
     NSString *characteristic = self.characteristics[indexPath.section];
     if (characteristic == AVMediaCharacteristicLegible) {
+        AVMediaSelectionGroup *group = self.groups[characteristic];
+        AVMediaSelectionOption *currentOptionInGroup = [playerItem selectedMediaOptionInMediaSelectionGroup:group];
+        
         if (indexPath.row == 0) {
             UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Off", @"Option to disable subtitles");
-            
-            if (! AVAudioSession.srg_isAirPlayActive) {
-                cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
-            else {
-                AVMediaSelectionGroup *group = self.groups[characteristic];
-                AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-                
-                cell.accessoryType = (currentOptionInGroup == nil || [currentOptionInGroup hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
-            
+            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             return cell;
         }
         else if (indexPath.row == 1) {
@@ -241,6 +234,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
             }
             else {
                 cell.textLabel.enabled = NO;
+                
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
@@ -262,15 +256,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
                 cell.textLabel.text = SRGHintForMediaSelectionOption(option);
             }
             
-            AVMediaSelectionGroup *group = self.groups[characteristic];
-            AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-            
-            if (! AVAudioSession.srg_isAirPlayActive) {
-                cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
-            else {
-                cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
+            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
@@ -291,7 +277,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         }
         
         AVMediaSelectionGroup *group = self.groups[characteristic];
-        AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+        AVMediaSelectionOption *currentOptionInGroup = [playerItem selectedMediaOptionInMediaSelectionGroup:group];
         cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         
         return cell;
@@ -303,6 +289,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     AVPlayer *player = self.mediaPlayerController.player;
+    AVPlayerItem *playerItem = player.currentItem;
     
     NSString *characteristic = self.characteristics[indexPath.section];
     AVMediaSelectionGroup *group = self.groups[characteristic];
@@ -310,18 +297,18 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     
     if (characteristic == AVMediaCharacteristicLegible) {
         if (indexPath.row == 0) {
-            [player.currentItem selectMediaOption:nil inMediaSelectionGroup:group];
+            [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
             
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
         }
         else if (indexPath.row == 1) {
-            [player.currentItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
+            [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
             
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
         }
         else {
             AVMediaSelectionOption *option = options[indexPath.row - 2];
-            [player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
+            [playerItem selectMediaOption:option inMediaSelectionGroup:group];
             
             // Save the subtitle language (system) so that it gets automatically applied again when instantiating a new `AVPlayer` with
             // `appliesMediaSelectionCriteriaAutomatically` (default). For example `SRGMediaPlayerController` or `AVPlayerViewController`
@@ -331,7 +318,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         }
     }
     else {
-        [player.currentItem selectMediaOption:options[indexPath.row] inMediaSelectionGroup:group];
+        [playerItem selectMediaOption:options[indexPath.row] inMediaSelectionGroup:group];
     }
     
     // No track change notification is emitted when the setting (e.g. Automatic or Off) does not lead to another value

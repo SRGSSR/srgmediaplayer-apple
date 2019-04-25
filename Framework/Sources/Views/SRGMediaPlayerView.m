@@ -7,7 +7,6 @@
 #import "SRGMediaPlayerView.h"
 
 #import "AVPlayer+SRGMediaPlayer.h"
-#import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "SRGMediaPlaybackMonoscopicView.h"
 #import "SRGMediaPlaybackFlatView.h"
@@ -63,12 +62,12 @@ static void commonInit(SRGMediaPlayerView *self);
 
 - (void)setPlayer:(AVPlayer *)player
 {
-    [_player removeObserver:self keyPath:@keypath(_player.currentItem.tracks)];
+    [_player removeObserver:self keyPath:@keypath(_player.currentItem.presentationSize)];
     [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
     
     _player = player;
     
-    [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.tracks) options:0 block:^(MAKVONotification *notification) {
+    [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.presentationSize) options:0 block:^(MAKVONotification *notification) {
         [self updateSubviews];
     }];
     [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
@@ -110,16 +109,8 @@ static void commonInit(SRGMediaPlayerView *self);
 - (void)updateSubviewsWithPlayer:(AVPlayer *)player
 {
     if (player) {
-        AVAssetTrack *videoAssetTrack = [player.currentItem srg_assetTracksWithMediaType:AVMediaTypeVideo].firstObject;
-        if (videoAssetTrack) {
-            CGSize assetDimensions = CGSizeApplyAffineTransform(videoAssetTrack.naturalSize, videoAssetTrack.preferredTransform);
-            
-            // Asset dimension is not always immediately available from the asset track. Skip updates until this
-            // information is available
-            if (CGSizeEqualToSize(assetDimensions, CGSizeZero)) {
-                return;
-            }
-            
+        CGSize presentationSize = player.currentItem.presentationSize;
+        if (! CGSizeEqualToSize(presentationSize, CGSizeZero)) {
             static dispatch_once_t s_onceToken;
             static NSDictionary<NSNumber *, Class> *s_viewClasses;
             dispatch_once(&s_onceToken, ^{
@@ -140,17 +131,10 @@ static void commonInit(SRGMediaPlayerView *self);
             }
             
             if (self.playbackView.player != player) {
-                [self.playbackView setPlayer:player withAssetDimensions:assetDimensions];
+                [self.playbackView setPlayer:player withAssetDimensions:presentationSize];
             }
             
             self.playbackView.hidden = [self isPlaybackViewHiddenWithPlayer:player];
-        }
-        else {
-            // During seeks, we might have no tracks at all. Skip updates until tracks are available.
-            AVAssetTrack *audioAssetTrack = [player.currentItem srg_assetTracksWithMediaType:AVMediaTypeAudio].firstObject;
-            if (! audioAssetTrack) {
-                return;
-            }
         }
     }
     else {

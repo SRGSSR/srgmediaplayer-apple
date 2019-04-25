@@ -142,19 +142,18 @@ static void commonInit(SRGTracksButton *self);
     [self.button setImage:self.selectedImage forState:UIControlStateSelected];
     
     AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
+    AVAsset *asset = playerItem.asset;
     
     if (self.alwaysHidden) {
         self.hidden = YES;
     }
-    // Do not check tracks before the player item is ready to play (otherwise AVPlayer will internally wait on semaphores,
-    // locking the main thread).
-    else if (playerItem && playerItem.status == AVPlayerItemStatusReadyToPlay) {
+    else if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
         // Get available tracks. The button is only available if there are subtitles and / or audio tracks to choose from. If
         // subtitles are set, display the button in a selected state.
-        AVMediaSelectionGroup *audioGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
         
-        AVMediaSelectionGroup *subtitleGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         NSArray<AVMediaSelectionOption *> *subtitleOptions = subtitleGroup.options;
         
         if (audioOptions.count > 1 || subtitleOptions.count != 0) {

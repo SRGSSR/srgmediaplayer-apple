@@ -275,6 +275,39 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reloadPlayerConfiguration;
 
 /**
+ *  Reload the player configuration with a new configuration block. Any previously existing configuration block is
+ *  replaced.
+ *
+ *  @discussion If the player has not been created yet, the block is set but not called.
+ */
+- (void)reloadPlayerConfigurationWithBlock:(nullable void (^)(AVPlayer *player))block;
+
+/**
+ *  @name Media configurationn (audio track and subtitle customization).
+ */
+
+/**
+ *  Optional block which gets called once media information has been loaded, and which can be used to customize
+ *  audio or subtitle selection, as well as subtitle appearance.
+ */
+@property (nonatomic, copy, nullable) void (^mediaConfigurationBlock)(AVPlayerItem *playerItem, AVAsset *asset);
+
+/**
+ *  Reload media configuration by calling the associated block, if any. Does nothing if the media has not been loaded
+ *  yet. If there is no configuration block defined, calling this method applies the default selection options for
+ *  audio and subtitles, and removes any subtitle styling which might have been applied.
+ */
+- (void)reloadMediaConfiguration;
+
+/**
+ *  Reload the player configuration with a new configuration block. Any previously existing configuration block is
+ *  replaced.
+ *
+ *  @discussion If the media has not been loaded yet, the block is set but not called.
+ */
+- (void)reloadMediaConfigurationWithBlock:(nullable void (^)(AVPlayerItem *playerItem, AVAsset *asset))block;
+
+/**
  *  @name Playback
  */
 
@@ -309,13 +342,13 @@ NS_ASSUME_NONNULL_BEGIN
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Same as `-prepareToPlayURL:atPosition:withSegments:userInfo:completionHandler:`, but with a player item.
+ *  Same as `-prepareToPlayURL:atPosition:withSegments:userInfo:completionHandler:`, but with a player asset.
  */
-- (void)prepareToPlayItem:(AVPlayerItem *)item
-               atPosition:(nullable SRGPosition *)position
-             withSegments:(nullable NSArray<id<SRGSegment>> *)segments
-                 userInfo:(nullable NSDictionary *)userInfo
-        completionHandler:(nullable void (^)(void))completionHandler;
+- (void)prepareToPlayURLAsset:(AVURLAsset *)URLAsset
+                   atPosition:(nullable SRGPosition *)position
+                 withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+                     userInfo:(nullable NSDictionary *)userInfo
+            completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Start playback. Does nothing if no content URL is attached to the controller.
@@ -383,9 +416,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
 
 /**
- *  The item currently loaded into the player.
+ *  The URL asset currently loaded into the player.
  */
-@property (nonatomic, readonly, nullable) AVPlayerItem *playerItem;
+@property (nonatomic, readonly, nullable) AVURLAsset *URLAsset;
 
 /**
  *  The segments which have been loaded into the player.
@@ -503,11 +536,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)prepareToPlayURL:(NSURL *)URL withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Prepare to play the an item, starting at the default position.
+ *  Prepare to play an asset, starting at the default position.
  *
- *  For more information, @see `-prepareToPlayItem:atPosition:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURLAsset:atPosition:withSegments:userInfo:completionHandler:`.
  */
-- (void)prepareToPlayItem:(AVPlayerItem *)item withCompletionHandler:(nullable void (^)(void))completionHandler;
+- (void)prepareToPlayURLAsset:(AVURLAsset *)URLAsset withCompletionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Play a URL, starting at the specified position. Segments and user info can be optionally provided.
@@ -523,17 +556,17 @@ NS_ASSUME_NONNULL_BEGIN
        userInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Play an item, starting at the specified position. Segments and user info can be optionally provided.
+ *  Play an asset, starting at the specified position. Segments and user info can be optionally provided.
  *
- *  For more information, @see `-prepareToPlayItem:atPosition:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURLAsset:atPosition:withSegments:userInfo:completionHandler:`.
  *
  *  @discussion The player immediately reaches the playing state. No segment selection occurs (use methods from the
  *              `SegmentSelection` category if you need to select a segment).
  */
-- (void)playItem:(AVPlayerItem *)item
-      atPosition:(nullable SRGPosition *)position
-    withSegments:(nullable NSArray<id<SRGSegment>> *)segments
-        userInfo:(nullable NSDictionary *)userInfo;
+- (void)playURLAsset:(AVURLAsset *)URLAsset
+          atPosition:(nullable SRGPosition *)position
+        withSegments:(nullable NSArray<id<SRGSegment>> *)segments
+            userInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Play a URL, starting at the default position.
@@ -543,11 +576,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playURL:(NSURL *)URL;
 
 /**
- *  Play an item, starting at the default position.
+ *  Play an asset, starting at the default position.
  *
  *  For more information, @see `-playURL:atPosition:withSegments:userInfo:`.
  */
-- (void)playItem:(AVPlayerItem *)item;
+- (void)playURLAsset:(AVURLAsset *)URLAsset;
 
 /**
  *  Ask the player to change its status from pause to play or conversely, depending on the state it is in.
@@ -584,23 +617,23 @@ NS_ASSUME_NONNULL_BEGIN
        completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
- *  Prepare to play an item, starting at a specific position within the segment specified by `index`. User info can be
+ *  Prepare to play an asset, starting at a specific position within the segment specified by `index`. User info can be
  *  optionally provided.
  *
  *  @param index    The index of the segment at which playback will start.
  *  @param position The position to start at. If `nil` or if the specified position lies outside the segment time
  *                  range, playback starts at the default position.
  *
- *  For more information, @see `-prepareToPlayItem:atPosition:withSegments:userInfo:completionHandler:`.
+ *  For more information, @see `-prepareToPlayURLAsset:atPosition:withSegments:userInfo:completionHandler:`.
  *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default position.
  */
-- (void)prepareToPlayItem:(AVPlayerItem *)item
-                  atIndex:(NSInteger)index
-                 position:(nullable SRGPosition *)position
-               inSegments:(NSArray<id<SRGSegment>> *)segments
-             withUserInfo:(nullable NSDictionary *)userInfo
-        completionHandler:(nullable void (^)(void))completionHandler;
+- (void)prepareToPlayURLAsset:(AVURLAsset *)URLAsset
+                      atIndex:(NSInteger)index
+                     position:(nullable SRGPosition *)position
+                   inSegments:(NSArray<id<SRGSegment>> *)segments
+                 withUserInfo:(nullable NSDictionary *)userInfo
+            completionHandler:(nullable void (^)(void))completionHandler;
 
 /**
  *  Play a URL, starting at a specific position within the segment specified by `index`. User info can be optionally
@@ -621,22 +654,22 @@ NS_ASSUME_NONNULL_BEGIN
    withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
- *  Play an item, starting at a specific position within the segment specified by `index`. User info can be optionally
+ *  Play an asset, starting at a specific position within the segment specified by `index`. User info can be optionally
  *  provided.
  *
  *  @param index    The index of the segment at which playback will start.
  *  @param position The position to start at. If `nil` or if the specified position lies outside the segment time
  *                  range, playback starts at the default position.
  *
- *  For more information, @see `-playItem:atPosition:withSegments:userInfo:`.
+ *  For more information, @see `-playURLAsset:atPosition:withSegments:userInfo:`.
  *
  *  @discussion If the segment list is empty or if the index is invalid, playback will start at the default position.
  */
-- (void)playItem:(AVPlayerItem *)item
-         atIndex:(NSInteger)index
-        position:(nullable SRGPosition *)position
-      inSegments:(NSArray<id<SRGSegment>> *)segments
-    withUserInfo:(nullable NSDictionary *)userInfo;
+- (void)playURLAsset:(AVURLAsset *)URLAsset
+             atIndex:(NSInteger)index
+            position:(nullable SRGPosition *)position
+          inSegments:(NSArray<id<SRGSegment>> *)segments
+        withUserInfo:(nullable NSDictionary *)userInfo;
 
 /**
  *  Seek to a specific time in a segment specified by its index.
@@ -675,44 +708,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Return the currently selected segment if any, `nil` if none.
  */
 @property (nonatomic, readonly, weak, nullable) id<SRGSegment> selectedSegment;
-
-@end
-
-/**
- *  Subtitle management.
- */
-@interface SRGMediaPlayerController (Subtitles)
-
-/**
- *  The list of available subtitle localizations for the media being played.
- *
- *  @discussion Not known while playback is being prepared or if the player is idle.
- */
-@property (nonatomic, readonly) NSArray<NSString *> *availableSubtitleLocalizations;
-
-/**
- *  The subtitle localization to use, if available. Use `nil` for the default behavior (depends on the previous subtitle
- *  settings saved for the user).
- *
- *  Valid localizations can be retrieved from `availableSubtitleLocalizations` once a media has been prepared for playback.
- *  If you know the value you want to to use beforehand, though, the preferred localization can be set earlier, even
- *  right after controller creation.
- *
- *  Use `SRGMediaPlayerLocalizationDisabled` to disable subtitles (forced subtitles may still appear, though) or
- *  `SRGMediaPlayerLocalizationAutomatic` to enable automatic selection based on accessibility settings, content and
- *  application languages.
- *
- *  @discussion This setting only affects the receiver and is not reset between between media playbacks using the same
- *              controller. If an invalid subtitle localization is provided, automatic selection is applied instead.
- */
-@property (nonatomic, copy, nullable) NSString *preferredSubtitleLocalization;
-
-/**
- *  Return the localization of the currently applied subtitles, if any.
- *
- *  @discussion A value is returned as well when forced subtitles are being applied.
- */
-@property (nonatomic, readonly, copy, nullable) NSString *subtitleLocalization;
 
 @end
 
