@@ -154,7 +154,7 @@ Please refer to the [official documentation](https://developer.apple.com/documen
 Note that you can use the same block to apply subtitle styling as well:
 
 ```objective-c
-self.mediaPlayerController.assetMediaSelectionBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
+self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
     AVTextStyleRule *rule = [[AVTextStyleRule alloc] initWithTextMarkupAttributes:@{ (id)kCMTextMarkupAttribute_ForegroundColorARGB : @[ @1, @1, @0, @0 ],
                                                                                      (id)kCMTextMarkupAttribute_ItalicStyle : @(YES)}]; 
     playerItem.textStyleRules = @[rule];
