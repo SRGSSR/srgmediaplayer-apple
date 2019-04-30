@@ -106,6 +106,24 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     
     self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Title of the pop over view to select audio or subtitles");
     
+    // Force properties to avoid overrides with UIAppearance
+    UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
+    navigationBarAppearance.barStyle = UIBarStyleDefault;
+    navigationBarAppearance.barTintColor = nil;
+    navigationBarAppearance.tintColor = nil;
+    navigationBarAppearance.titleTextAttributes = nil;
+    navigationBarAppearance.translucent = YES;
+    navigationBarAppearance.shadowImage = nil;
+    navigationBarAppearance.backIndicatorImage = nil;
+    navigationBarAppearance.backIndicatorTransitionMaskImage = nil;
+    [navigationBarAppearance setTitleVerticalPositionAdjustment:0.f forBarMetrics:UIBarMetricsDefault];
+    [navigationBarAppearance setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    
+    if (@available(iOS 11, *)) {
+        navigationBarAppearance.prefersLargeTitles = NO;
+        navigationBarAppearance.largeTitleTextAttributes = nil;
+    }
+    
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(wirelessRouteDidChange:)
                                                name:SRGMediaPlayerWirelessRouteDidChangeNotification
