@@ -7,6 +7,7 @@
 
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "NSLocale+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
 #import <MediaAccessibility/MediaAccessibility.h>
@@ -231,7 +232,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
- 
+    
     NSString *characteristic = self.characteristics[indexPath.section];
     if (characteristic == AVMediaCharacteristicLegible) {
         AVMediaSelectionGroup *group = self.groups[characteristic];
@@ -317,10 +318,18 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         if (indexPath.row == 0) {
             [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
             
+            // Help the next "Closed Captions + SDH" accessibility setting change to find the right language.
+            // https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
+            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale srg_languageCode]);
+            
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
         }
         else if (indexPath.row == 1) {
             [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
+            
+            // Help the next "Closed Captions + SDH" accessibility setting change to find the right language.
+            // https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
+            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale srg_languageCode]);
             
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
         }
