@@ -13,8 +13,6 @@
 		081A1C1C225CF6E80006D446 /* SRGMediaPlayerTimerTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 081A1C1A225CF6E80006D446 /* SRGMediaPlayerTimerTarget.h */; };
 		089026D42013ECEF00C0688E /* SRGSegment+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 089026D22013ECEF00C0688E /* SRGSegment+Private.m */; };
 		089026D52013ECEF00C0688E /* SRGSegment+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 089026D32013ECEF00C0688E /* SRGSegment+Private.h */; };
-		0898D337227A4DF8002A2FB0 /* NSLocale+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0898D335227A4DF8002A2FB0 /* NSLocale+SRGMediaPlayer.h */; };
-		0898D338227A4DF8002A2FB0 /* NSLocale+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0898D336227A4DF8002A2FB0 /* NSLocale+SRGMediaPlayer.m */; };
 		08D3BEB01DE6EAB100AE1368 /* SRGTracksButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3BEAE1DE6EAB100AE1368 /* SRGTracksButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08D3BEB11DE6EAB100AE1368 /* SRGTracksButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3BEAF1DE6EAB100AE1368 /* SRGTracksButton.m */; };
 		08D3BEC01DE8756500AE1368 /* SRGAlternateTracksViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */; };
@@ -236,8 +234,6 @@
 		08293A511EDC6307008CE02E /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Accessibility.strings; sourceTree = "<group>"; };
 		089026D22013ECEF00C0688E /* SRGSegment+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRGSegment+Private.m"; sourceTree = "<group>"; };
 		089026D32013ECEF00C0688E /* SRGSegment+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGSegment+Private.h"; sourceTree = "<group>"; };
-		0898D335227A4DF8002A2FB0 /* NSLocale+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSLocale+SRGMediaPlayer.h"; path = "Framework/Sources/Categories/NSLocale+SRGMediaPlayer.h"; sourceTree = SOURCE_ROOT; };
-		0898D336227A4DF8002A2FB0 /* NSLocale+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSLocale+SRGMediaPlayer.m"; path = "Framework/Sources/Categories/NSLocale+SRGMediaPlayer.m"; sourceTree = SOURCE_ROOT; };
 		08D3BEAE1DE6EAB100AE1368 /* SRGTracksButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGTracksButton.h; sourceTree = "<group>"; };
 		08D3BEAF1DE6EAB100AE1368 /* SRGTracksButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGTracksButton.m; sourceTree = "<group>"; };
 		08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAlternateTracksViewController.h; sourceTree = "<group>"; };
@@ -466,8 +462,6 @@
 				6F5CA3C11FD919CD00CF175F /* MPVolumeView+SRGMediaPlayer.m */,
 				6F5CA3B41FD919CD00CF175F /* NSBundle+SRGMediaPlayer.h */,
 				6F5CA3C01FD919CD00CF175F /* NSBundle+SRGMediaPlayer.m */,
-				0898D335227A4DF8002A2FB0 /* NSLocale+SRGMediaPlayer.h */,
-				0898D336227A4DF8002A2FB0 /* NSLocale+SRGMediaPlayer.m */,
 				6F5CA3C31FD919CD00CF175F /* UIBezierPath+SRGMediaPlayer.h */,
 				6F5CA3B81FD919CD00CF175F /* UIBezierPath+SRGMediaPlayer.m */,
 				6F5CA3C51FD919CD00CF175F /* UIDevice+SRGMediaPlayer.h */,
@@ -859,7 +853,6 @@
 				6F5CA43A1FD91A1D00CF175F /* SRGMediaPlayerError.h in Headers */,
 				6F5CA3FE1FD919CD00CF175F /* AVAudioSession+SRGMediaPlayer.h in Headers */,
 				6F5CA3FF1FD919CD00CF175F /* UIScreen+SRGMediaPlayer.h in Headers */,
-				0898D337227A4DF8002A2FB0 /* NSLocale+SRGMediaPlayer.h in Headers */,
 				6F5CA43F1FD91A1D00CF175F /* SRGActivityGestureRecognizer.h in Headers */,
 				6F5CA3EC1FD919CD00CF175F /* NSBundle+SRGMediaPlayer.h in Headers */,
 				E67799341D75B0E300E58331 /* SRGTimelineSlider.h in Headers */,
@@ -1142,7 +1135,6 @@
 				6F5CA3F91FD919CD00CF175F /* MPVolumeView+SRGMediaPlayer.m in Sources */,
 				6F9643D421307920003C6612 /* SRGAirPlayView.m in Sources */,
 				6F5CA3F51FD919CD00CF175F /* UIScreen+SRGMediaPlayer.m in Sources */,
-				0898D338227A4DF8002A2FB0 /* NSLocale+SRGMediaPlayer.m in Sources */,
 				6F5CA4151FD919CD00CF175F /* SRGMediaPlayerSharedController.m in Sources */,
 				08D3BEB11DE6EAB100AE1368 /* SRGTracksButton.m in Sources */,
 				E6C9860B1D6F36C900C45C7A /* SRGPlaybackButton.m in Sources */,

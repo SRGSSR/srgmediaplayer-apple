@@ -7,7 +7,6 @@
 
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
-#import "NSLocale+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
 #import <MediaAccessibility/MediaAccessibility.h>
@@ -318,19 +317,17 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         if (indexPath.row == 0) {
             [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
             
-            // Help the next "Closed Captions + SDH" accessibility setting change to find the right language.
+            // This helps the next "Closed Captions + SDH" accessibility setting change to find a better match based on
+            // the system locale.
             // https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
-            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale srg_languageCode]);
-            
+            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]);
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
         }
         else if (indexPath.row == 1) {
             [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
             
-            // Help the next "Closed Captions + SDH" accessibility setting change to find the right language.
-            // https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
-            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale srg_languageCode]);
-            
+            // See above
+            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]);
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
         }
         else {

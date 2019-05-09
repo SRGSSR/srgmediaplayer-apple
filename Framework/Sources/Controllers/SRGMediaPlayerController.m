@@ -12,7 +12,6 @@
 #import "CMTimeRange+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
-#import "NSLocale+SRGMediaPlayer.h"
 #import "NSTimer+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
 #import "SRGMediaPlayerError.h"
@@ -37,6 +36,19 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 
 static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position,CMTime offset);
 static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
+
+__attribute__((constructor)) static void SRGMediaPlayerControllerInit(void)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
+        if  (displayType != kMACaptionAppearanceDisplayTypeAlwaysOn) {
+            // This helps the next "Closed Captions + SDH" accessibility setting change to find a better match based on
+            // the system locale.
+            // https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
+            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]);
+        }
+    });
+}
 
 @interface SRGMediaPlayerController () {
 @private
@@ -90,37 +102,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @synthesize view = _view;
 @synthesize pictureInPictureController = _pictureInPictureController;
 
-#pragma mark Class methods
-
-+ (void)subscribeCurrentLocaleNotificationOnce
-{
-    static dispatch_once_t s_onceToken;
-    dispatch_once(&s_onceToken, ^{
-        [self updateCaptionAppearanceSelectedLanguage];
-        
-        [NSNotificationCenter.defaultCenter addObserver:self
-                                                selector:@selector(srg_mediaPlayerController_currentLocaleDidChange:)
-                                                    name:NSCurrentLocaleDidChangeNotification
-                                                  object:nil];
-    });
-}
-
-+ (void)updateCaptionAppearanceSelectedLanguage
-{
-    MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
-    if  (displayType != kMACaptionAppearanceDisplayTypeAlwaysOn) {
-        // Help the next "Closed Captions + SDH" accessibility setting change to find the right language.
-        // https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
-        MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale srg_languageCode]);
-    }
-}
-
 #pragma mark Object lifecycle
 
 - (instancetype)init
 {
-    [self.class subscribeCurrentLocaleNotificationOnce];
-    
     if (self = [super init]) {
         _playbackState = SRGMediaPlayerPlaybackStateIdle;
         
@@ -1396,11 +1381,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                     userInfo:@{ SRGMediaPlayerErrorKey: error }];
     
     SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
-}
-
-+ (void)srg_mediaPlayerController_currentLocaleDidChange:(NSNotification *)notification
-{
-    [self updateCaptionAppearanceSelectedLanguage];
 }
 
 #pragma mark KVO
