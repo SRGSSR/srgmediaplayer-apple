@@ -231,7 +231,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 {
     AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
- 
+    
     NSString *characteristic = self.characteristics[indexPath.section];
     if (characteristic == AVMediaCharacteristicLegible) {
         AVMediaSelectionGroup *group = self.groups[characteristic];
@@ -317,11 +317,17 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         if (indexPath.row == 0) {
             [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
             
+            // This helps the next "Closed Captions + SDH" accessibility setting change to find a better match based on
+            // the system locale.
+            // https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
+            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]);
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
         }
         else if (indexPath.row == 1) {
             [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
             
+            // See above
+            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]);
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
         }
         else {
