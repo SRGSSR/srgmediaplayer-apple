@@ -37,19 +37,6 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position,CMTime offset);
 static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
 
-__attribute__((constructor)) static void SRGMediaPlayerControllerInit(void)
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
-        if  (displayType != kMACaptionAppearanceDisplayTypeAlwaysOn) {
-            // This helps the next "Closed Captions + SDH" accessibility setting change to find a better match based on
-            // the system locale.
-            // https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
-            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]);
-        }
-    });
-}
-
 @interface SRGMediaPlayerController () {
 @private
     SRGMediaPlayerPlaybackState _playbackState;
