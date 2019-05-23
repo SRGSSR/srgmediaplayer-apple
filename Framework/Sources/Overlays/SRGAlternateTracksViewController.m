@@ -335,8 +335,10 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
             [playerItem selectMediaOption:option inMediaSelectionGroup:group];
             
             NSString *languageCode = [option.locale objectForKey:NSLocaleLanguageCode];
-            MACaptionAppearanceAddSelectedLanguages(kMACaptionAppearanceDomainUser, @[languageCode]);
-            MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
+            if (languageCode) {
+                MACaptionAppearanceAddSelectedLanguages(kMACaptionAppearanceDomainUser, @[languageCode]);
+                MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
+            }
         }
     }
     else {
