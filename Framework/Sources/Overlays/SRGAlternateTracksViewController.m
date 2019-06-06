@@ -337,8 +337,8 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
             NSString *languageCode = [option.locale objectForKey:NSLocaleLanguageCode];
             if (languageCode) {
                 MACaptionAppearanceAddSelectedLanguages(kMACaptionAppearanceDomainUser, @[languageCode]);
-                MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
             }
+            MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
         }
     }
     else {
