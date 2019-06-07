@@ -1,3 +1,3 @@
-github "SRGSSR/MAKVONotificationCenter" "fb680a6ffa6880390d5a29470c82e122f3ee3dd0"
+github "SRGSSR/MAKVONotificationCenter" "1.0_srg3"
 github "SRGSSR/libextobjc" "0.6_srg1"
-github "SRGSSR/srglogger-ios" "ba81171dd6e1e4d207aecbe338c8b7f4e62efd3c"
+github "SRGSSR/srglogger-ios" "1.0.9"
