@@ -12,8 +12,6 @@
 
 @interface SRGVolumeView ()
 
-@property (nonatomic, weak) MPVolumeView *volumeView;
-
 @end
 
 @implementation SRGVolumeView
@@ -24,24 +22,15 @@
 {
     [super awakeFromNib];
     
-    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:self.bounds];
-    volumeView.showsRouteButton = NO;
-    volumeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self addSubview:volumeView];
-    self.volumeView = volumeView;
 }
 
-- (CGSize)intrinsicContentSize
-{
-    return self.volumeView.intrinsicContentSize;
-}
 
 #pragma mark Getters and setters
 
 - (void)setHidden:(BOOL)hidden
 {
     [super setHidden:hidden];
-    [self.volumeView setHidden:hidden];
+    
 }
 
 #pragma mark Interface Builder integration

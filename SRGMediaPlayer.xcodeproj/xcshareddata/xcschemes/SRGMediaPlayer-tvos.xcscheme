@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EB9E787E228C3B4F00727725"
-               BuildableName = "SRGMediaPlayer-tvos.framework"
+               BuildableName = "SRGMediaPlayer.framework"
                BlueprintName = "SRGMediaPlayer-tvos"
                ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EB9E787E228C3B4F00727725"
-            BuildableName = "SRGMediaPlayer-tvos.framework"
+            BuildableName = "SRGMediaPlayer.framework"
             BlueprintName = "SRGMediaPlayer-tvos"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EB9E787E228C3B4F00727725"
-            BuildableName = "SRGMediaPlayer-tvos.framework"
+            BuildableName = "SRGMediaPlayer.framework"
             BlueprintName = "SRGMediaPlayer-tvos"
             ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
          </BuildableReference>

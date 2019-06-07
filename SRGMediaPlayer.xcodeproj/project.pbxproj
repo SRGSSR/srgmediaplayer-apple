@@ -243,9 +243,9 @@
 		EB9E78D8228C3B4F00727725 /* CMTimeRange+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EB9E78D9228C3B4F00727725 /* SRGQuaternion.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FD312281FD9AB0100EC0C42 /* SRGQuaternion.h */; };
 		EB9E78DB228C3B4F00727725 /* SRGMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */; };
-		EB9E78E7228C3B7300727725 /* MAKVONotificationCenter-tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB9E78E4228C3B7300727725 /* MAKVONotificationCenter-tvOS.framework */; };
-		EB9E78E8228C3B7300727725 /* libextobjc-tvos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB9E78E5228C3B7300727725 /* libextobjc-tvos.framework */; };
-		EB9E78E9228C3B7300727725 /* SRGLogger-tvos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB9E78E6228C3B7300727725 /* SRGLogger-tvos.framework */; };
+		EBE52E52228C668200A100FF /* libextobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE52E4F228C668100A100FF /* libextobjc.framework */; };
+		EBE52E53228C668200A100FF /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE52E50228C668200A100FF /* MAKVONotificationCenter.framework */; };
+		EBE52E54228C668200A100FF /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE52E51228C668200A100FF /* SRGLogger.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -489,11 +489,17 @@
 		E6FC7F541D62072400A55085 /* SRGTimeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGTimeSlider.m; sourceTree = "<group>"; };
 		E6FC7F551D62072400A55085 /* SRGVolumeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGVolumeView.h; sourceTree = "<group>"; };
 		E6FC7F561D62072400A55085 /* SRGVolumeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGVolumeView.m; sourceTree = "<group>"; };
-		EB9E78E2228C3B4F00727725 /* SRGMediaPlayer-tvos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "SRGMediaPlayer-tvos.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB3B7136228C63DA00BB9F2D /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = "../play-apple-tv/Carthage/Build/tvOS/SRGLogger.framework"; sourceTree = "<group>"; };
+		EB3B7137228C63DA00BB9F2D /* libextobjc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libextobjc.framework; path = "../play-apple-tv/Carthage/Build/tvOS/libextobjc.framework"; sourceTree = "<group>"; };
+		EB3B7138228C63DA00BB9F2D /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = "../play-apple-tv/Carthage/Build/tvOS/MAKVONotificationCenter.framework"; sourceTree = "<group>"; };
+		EB9E78E2228C3B4F00727725 /* SRGMediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGMediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB9E78E3228C3B4F00727725 /* SRGMediaPlayer copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SRGMediaPlayer copy-Info.plist"; path = "/Users/tiziano/Documents/projects/Xcode/srgmediaplayer-ios/SRGMediaPlayer copy-Info.plist"; sourceTree = "<absolute>"; };
 		EB9E78E4228C3B7300727725 /* MAKVONotificationCenter-tvOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "MAKVONotificationCenter-tvOS.framework"; path = "Carthage/Build/tvOS/MAKVONotificationCenter-tvOS.framework"; sourceTree = "<group>"; };
 		EB9E78E5228C3B7300727725 /* libextobjc-tvos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "libextobjc-tvos.framework"; path = "Carthage/Build/tvOS/libextobjc-tvos.framework"; sourceTree = "<group>"; };
 		EB9E78E6228C3B7300727725 /* SRGLogger-tvos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "SRGLogger-tvos.framework"; path = "Carthage/Build/tvOS/SRGLogger-tvos.framework"; sourceTree = "<group>"; };
+		EBE52E4F228C668100A100FF /* libextobjc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libextobjc.framework; path = Carthage/Build/tvOS/libextobjc.framework; sourceTree = "<group>"; };
+		EBE52E50228C668200A100FF /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/tvOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
+		EBE52E51228C668200A100FF /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/tvOS/SRGLogger.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -537,9 +543,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB9E78E7228C3B7300727725 /* MAKVONotificationCenter-tvOS.framework in Frameworks */,
-				EB9E78E8228C3B7300727725 /* libextobjc-tvos.framework in Frameworks */,
-				EB9E78E9228C3B7300727725 /* SRGLogger-tvos.framework in Frameworks */,
+				EBE52E52228C668200A100FF /* libextobjc.framework in Frameworks */,
+				EBE52E53228C668200A100FF /* MAKVONotificationCenter.framework in Frameworks */,
+				EBE52E54228C668200A100FF /* SRGLogger.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,7 +697,7 @@
 				E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-demo.app */,
 				E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-tests.xctest */,
 				6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */,
-				EB9E78E2228C3B4F00727725 /* SRGMediaPlayer-tvos.framework */,
+				EB9E78E2228C3B4F00727725 /* SRGMediaPlayer.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -772,6 +778,12 @@
 		E69A1FCC1D61C32D0064E6C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EB3B7137228C63DA00BB9F2D /* libextobjc.framework */,
+				EB3B7138228C63DA00BB9F2D /* MAKVONotificationCenter.framework */,
+				EB3B7136228C63DA00BB9F2D /* SRGLogger.framework */,
+				EBE52E4F228C668100A100FF /* libextobjc.framework */,
+				EBE52E50228C668200A100FF /* MAKVONotificationCenter.framework */,
+				EBE52E51228C668200A100FF /* SRGLogger.framework */,
 				EB9E78E5228C3B7300727725 /* libextobjc-tvos.framework */,
 				EB9E78E4228C3B7300727725 /* MAKVONotificationCenter-tvOS.framework */,
 				EB9E78E6228C3B7300727725 /* SRGLogger-tvos.framework */,
@@ -1132,7 +1144,7 @@
 			);
 			name = "SRGMediaPlayer-tvos";
 			productName = SRGMediaPlayer;
-			productReference = EB9E78E2228C3B4F00727725 /* SRGMediaPlayer-tvos.framework */;
+			productReference = EB9E78E2228C3B4F00727725 /* SRGMediaPlayer.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -2140,7 +2152,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2153,8 +2164,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
 				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = 3;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2173,8 +2186,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2188,8 +2199,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
 				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = 3;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2208,7 +2221,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2216,8 +2228,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
 				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = 3;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2237,8 +2251,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2247,8 +2259,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.srgssr.SRGMediaPlayer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
 				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = 3;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};

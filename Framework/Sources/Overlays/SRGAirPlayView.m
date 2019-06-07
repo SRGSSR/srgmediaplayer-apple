@@ -16,7 +16,7 @@
 
 @interface SRGAirPlayView ()
 
-@property (nonatomic) MPVolumeView *volumeView;
+
 @property (nonatomic, getter=isFakedForInterfaceBuilder) BOOL fakedForInterfaceBuilder;
 
 @end
@@ -58,9 +58,6 @@ static void commonInit(SRGAirPlayView *self);
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                    object:self.volumeView];
-        [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:UIScreenDidConnectNotification
                                                     object:nil];
         [NSNotificationCenter.defaultCenter removeObserver:self
@@ -81,10 +78,6 @@ static void commonInit(SRGAirPlayView *self);
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:observationBlock];
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:observationBlock];
         
-        [NSNotificationCenter.defaultCenter addObserver:self
-                                               selector:@selector(srg_airPlayView_wirelessRouteActiveDidChange:)
-                                                   name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                 object:self.volumeView];
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_airPlayView_screenDidConnect:)
                                                    name:UIScreenDidConnectNotification
@@ -297,7 +290,7 @@ static void commonInit(SRGAirPlayView *self)
     self.contentMode = UIViewContentModeRedraw;
     self.userInteractionEnabled = NO;
     self.hidden = YES;
-    self.volumeView = [[MPVolumeView alloc] init];
+    
 }
 
 NSString * SRGAirPlayRouteDescription(void)

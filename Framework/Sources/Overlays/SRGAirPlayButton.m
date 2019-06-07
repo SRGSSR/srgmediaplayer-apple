@@ -18,7 +18,6 @@ static void commonInit(SRGAirPlayButton *self);
 
 @interface SRGAirPlayButton ()
 
-@property (nonatomic, weak) MPVolumeView *volumeView;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
 @property (nonatomic, weak) id periodicTimeObserver;
 
@@ -61,12 +60,6 @@ static void commonInit(SRGAirPlayButton *self);
         [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                    object:self.volumeView];
-        [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
-                                                    object:self.volumeView];
-        [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:UIScreenDidConnectNotification
                                                     object:nil];
         [NSNotificationCenter.defaultCenter removeObserver:self
@@ -89,14 +82,6 @@ static void commonInit(SRGAirPlayButton *self);
             [self updateAppearance];
         }];
         
-        [NSNotificationCenter.defaultCenter addObserver:self
-                                               selector:@selector(srg_airPlayButton_wirelessRouteActiveDidChange:)
-                                                   name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                 object:self.volumeView];
-        [NSNotificationCenter.defaultCenter addObserver:self
-                                               selector:@selector(srg_airPlayButton_wirelessRoutesAvailableDidChange:)
-                                                   name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
-                                                 object:self.volumeView];
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_airPlayButton_screenDidConnect:)
                                                    name:UIScreenDidConnectNotification
@@ -152,11 +137,6 @@ static void commonInit(SRGAirPlayButton *self);
 {
     [super layoutSubviews];
     
-    // Ensure proper resizing behavior of the volume view AirPlay button.
-    self.volumeView.frame = self.bounds;
-    
-    UIButton *airPlayButton = self.volumeView.srg_airPlayButton;
-    airPlayButton.frame = self.volumeView.bounds;
 }
 
 - (CGSize)intrinsicContentSize
@@ -165,7 +145,7 @@ static void commonInit(SRGAirPlayButton *self);
         return self.fakeInterfaceBuilderButton.intrinsicContentSize;
     }
     else {
-        return self.volumeView.srg_airPlayButton.intrinsicContentSize;
+        return CGSizeMake(0, 0);
     }
 }
 
@@ -180,26 +160,16 @@ static void commonInit(SRGAirPlayButton *self);
 {
     // Replace with custom image to be able to apply a tint color. The button color is automagically inherited from
     // the enclosing view (this works both at runtime and when rendering in Interface Builder)
-    UIButton *airPlayButton = self.volumeView.srg_airPlayButton;
-    airPlayButton.showsTouchWhenHighlighted = NO;
-    [airPlayButton setImage:self.image forState:UIControlStateNormal];
-    [airPlayButton setImage:self.image forState:UIControlStateSelected];
     
     if (self.alwaysHidden) {
         self.hidden = YES;
     }
     else if (mediaPlayerController) {
         BOOL allowsAirPlayPlayback = mediaPlayerController.mediaType != SRGMediaPlayerMediaTypeVideo || mediaPlayerController.allowsExternalNonMirroredPlayback;
-        if (self.volumeView.areWirelessRoutesAvailable && allowsAirPlayPlayback) {
-            airPlayButton.tintColor = AVAudioSession.srg_isAirPlayActive ? self.activeTintColor : self.tintColor;
-            self.hidden = NO;
-        }
-        else {
-            self.hidden = YES;
-        }
+        self.hidden = YES;
     }
     else {
-        self.hidden = ! self.fakeInterfaceBuilderButton && ! self.volumeView.areWirelessRoutesAvailable;
+        self.hidden = YES;
     }
 }
 
@@ -270,10 +240,6 @@ static void commonInit(SRGAirPlayButton *self);
 
 static void commonInit(SRGAirPlayButton *self)
 {
-    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:self.bounds];
-    volumeView.showsVolumeSlider = NO;
-    [self addSubview:volumeView];
-    self.volumeView = volumeView;
     
     self.hidden = YES;
 }

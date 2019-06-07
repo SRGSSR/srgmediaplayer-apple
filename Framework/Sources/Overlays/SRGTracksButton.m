@@ -181,21 +181,6 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)showSubtitlesMenu:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonWillShowSelectionPopover:)]) {
-        [self.delegate tracksButtonWillShowSelectionPopover:self];
-    }
-    
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController];
-    navigationController.modalPresentationStyle = UIModalPresentationPopover;
-    
-    navigationController.popoverPresentationController.delegate = self;
-    navigationController.popoverPresentationController.sourceView = self;
-    navigationController.popoverPresentationController.sourceRect = self.bounds;
-    
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
-    [topViewController presentViewController:navigationController
-                                    animated:YES
-                                  completion:nil];
 }
 
 #pragma mark Interface Builder integration

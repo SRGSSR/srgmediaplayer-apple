@@ -188,9 +188,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         
     }
     
-    if (@available(iOS 11, *)) {
-        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -303,7 +300,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
             [self.view layoutIfNeeded];
         } completion:^(BOOL finished) {
             if (@available(iOS 11, *)) {
-                [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+                
             }
         }];
     }
@@ -314,7 +311,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)updateInterfaceForControlsHidden:(BOOL)hidden
 {
-    [self setNeedsStatusBarAppearanceUpdate];
+    
     
     for (UIView *view in self.overlayViews) {
         view.alpha = hidden ? 0.f : 1.f;
