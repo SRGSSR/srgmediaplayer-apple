@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @see `CMAttitude` documentation for more information.
  */
-OBJC_EXTERN SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude);
+OBJC_EXPORT SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude);
 
 /**
  *  Rotate the specified quaternion around the x- and y-axis.
@@ -30,11 +30,11 @@ OBJC_EXTERN SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude);
  *
  *  @return The rotated quaternion.
  */
-OBJC_EXTERN SCNQuaternion SRGRotateQuaternion(SCNQuaternion quaternion, float wx, float wy);
+OBJC_EXPORT SCNQuaternion SRGRotateQuaternion(SCNQuaternion quaternion, float wx, float wy);
 
 /**
  *  Create a quaternion for a rotation around the specified axis.
  */
-OBJC_EXTERN SCNQuaternion SRGQuaternionMakeWithAngleAndAxis(float radians, float x, float y, float z);
+OBJC_EXPORT SCNQuaternion SRGQuaternionMakeWithAngleAndAxis(float radians, float x, float y, float z);
 
 NS_ASSUME_NONNULL_END

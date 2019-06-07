@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion Exactly the same as `MPVolumeViewWirelessRouteActiveDidChangeNotification`, but without the need
  *              for a volume view.
  */
-OBJC_EXTERN NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification;
+OBJC_EXPORT NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification;
 
 @interface AVAudioSession (SRGMediaPlayer)
 

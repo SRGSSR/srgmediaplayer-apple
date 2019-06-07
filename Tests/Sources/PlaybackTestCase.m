@@ -16,11 +16,6 @@ static NSURL *OnDemandTestURL(void)
     return [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
 }
 
-static NSURL *OnDemandWithMultipleTracksTestURL(void)
-{
-    return [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021-,301k,101k,701k,1201k,2001k,fra-ad,roh,deu,ita,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%C3%A7ais,5:fra:Fran%C3%A7ais%20(AD),6:roh:Rh%C3%A9to-roman,7:deu:Allemand,8:ita:Italien&caption=docfu/2017/docfu_20170728_full_f_1027021_fra.m3u8:fra:Fran%C3%A7ais,docfu/2017/docfu_20170728_full_f_1027021_ita.m3u8:ita:Italien,docfu/2017/docfu_20170728_full_f_1027021_gsw.m3u8:deu:Allemand"];
-}
-
 static NSURL *ShortNonStreamedTestURL(void)
 {
     return [NSURL URLWithString:@"http://techslides.com/demos/sample-videos/small.mp4"];
@@ -58,7 +53,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)tearDown
 {
-    // Always ensure the player gets deallocated between tests
     [self.mediaPlayerController reset];
     self.mediaPlayerController = nil;
 }
@@ -140,7 +134,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     XCTAssertEqualObjects(self.mediaPlayerController.contentURL, OnDemandTestURL());
-    XCTAssertNotNil(self.mediaPlayerController.playerItem);
+    XCTAssertNotNil(self.mediaPlayerController.URLAsset);
     
     TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
     TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
@@ -160,7 +154,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-- (void)testPrepareWithItem
+- (void)testPrepareWithAsset
 {
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
@@ -168,14 +162,14 @@ static NSURL *AudioOverHTTPTestURL(void)
         return YES;
     }];
     
-    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:OnDemandTestURL()];
-    [self.mediaPlayerController prepareToPlayItem:playerItem atPosition:nil withSegments:nil userInfo:nil completionHandler:^{
+    AVURLAsset *URLAsset = [AVURLAsset assetWithURL:OnDemandTestURL()];
+    [self.mediaPlayerController prepareToPlayURLAsset:URLAsset atPosition:nil withSegments:nil userInfo:nil completionHandler:^{
         // Upon completion handler entry, the state is always preparing
         XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStatePreparing);
     }];
     
     XCTAssertEqualObjects(self.mediaPlayerController.contentURL, OnDemandTestURL());
-    XCTAssertEqualObjects(self.mediaPlayerController.playerItem, playerItem);
+    XCTAssertEqualObjects(self.mediaPlayerController.URLAsset, URLAsset);
     
     TestAssertIndefiniteTime(self.mediaPlayerController.seekStartTime);
     TestAssertIndefiniteTime(self.mediaPlayerController.seekTargetTime);
@@ -718,7 +712,14 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateEnded);
+        SRGMediaPlayerPlaybackState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+        
+        // Playback is more likely to stall when playing this media. Ignore such events
+        if (playbackState == SRGMediaPlayerPlaybackStateStalled) {
+            return NO;
+        }
+        
+        XCTAssertEqual(playbackState, SRGMediaPlayerPlaybackStateEnded);
         XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePlaying);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         return YES;
@@ -1441,10 +1442,72 @@ static NSURL *AudioOverHTTPTestURL(void)
     TestAssertNotEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
 }
 
+- (void)testNoStallsDuringNormalOnDemandPlayback
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:10. withHandler:nil];
+    
+    id stallObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        XCTAssertNotEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateStalled);
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:stallObserver];
+    }];
+}
+
+- (void)testNoStallsDuringNormalLivestreamPlayback
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:LiveTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:10. withHandler:nil];
+    
+    id stallObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        XCTAssertNotEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateStalled);
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:stallObserver];
+    }];
+}
+
+- (void)testNoStallsDuringNormalDVRPlayback
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:10. withHandler:nil];
+    
+    id stallObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        XCTAssertNotEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStateStalled);
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:stallObserver];
+    }];
+}
+
 - (void)testReset
 {
     @autoreleasepool {
-        // Wait until playing
         [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
             return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
         }];
@@ -1466,24 +1529,25 @@ static NSURL *AudioOverHTTPTestURL(void)
             XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
             
             XCTAssertNil(self.mediaPlayerController.contentURL);
-            XCTAssertNil(self.mediaPlayerController.playerItem);
+            XCTAssertNil(self.mediaPlayerController.URLAsset);
             XCTAssertNil(self.mediaPlayerController.segments);
             XCTAssertNil(self.mediaPlayerController.userInfo);
             
             // Receive previous playback information since it has changed
             XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
-            XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousPlayerItemKey]);
+            XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousURLAssetKey]);
             XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousTimeRangeKey]);
             XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey]);
             XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey]);
             XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+            XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousSelectedSegmentKey]);
             
             TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
             return YES;
         }];
         
         XCTAssertNotNil(self.mediaPlayerController.contentURL);
-        XCTAssertNotNil(self.mediaPlayerController.playerItem);
+        XCTAssertNotNil(self.mediaPlayerController.URLAsset);
         XCTAssertNotNil(self.mediaPlayerController.segments);
         XCTAssertNotNil(self.mediaPlayerController.userInfo);
         
@@ -1523,7 +1587,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testStop
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1539,14 +1602,15 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         
         XCTAssertNotNil(self.mediaPlayerController.contentURL);
-        XCTAssertNotNil(self.mediaPlayerController.playerItem);
+        XCTAssertNotNil(self.mediaPlayerController.URLAsset);
         XCTAssertNotNil(self.mediaPlayerController.segments);
         XCTAssertNotNil(self.mediaPlayerController.userInfo);
         
         // No previous playback information since it has not changed
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousContentURLKey]);
-        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousPlayerItemKey]);
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousURLAssetKey]);
         XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey]);
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousSelectedSegmentKey]);
         
         // Previous playback information since it has changed
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey]);
@@ -1558,7 +1622,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     XCTAssertNotNil(self.mediaPlayerController.contentURL);
-    XCTAssertNotNil(self.mediaPlayerController.playerItem);
+    XCTAssertNotNil(self.mediaPlayerController.URLAsset);
     XCTAssertNotNil(self.mediaPlayerController.segments);
     XCTAssertNotNil(self.mediaPlayerController.userInfo);
     
@@ -1587,7 +1651,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     XCTAssertNil(self.mediaPlayerController.player);
     XCTAssertNotNil(self.mediaPlayerController.contentURL);
-    XCTAssertNotNil(self.mediaPlayerController.playerItem);
+    XCTAssertNotNil(self.mediaPlayerController.URLAsset);
     XCTAssertNotNil(self.mediaPlayerController.segments);
     XCTAssertNotNil(self.mediaPlayerController.userInfo);
 }
@@ -1622,7 +1686,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testPlayAfterStopWithURL
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1651,15 +1714,14 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-- (void)testPlayAfterStopWithItem
+- (void)testPlayAfterStopWithAsset
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:OnDemandTestURL()];
-    [self.mediaPlayerController playItem:playerItem atPosition:nil withSegments:nil userInfo:nil];
+    AVURLAsset *URLAsset = [AVURLAsset assetWithURL:OnDemandTestURL()];
+    [self.mediaPlayerController playURLAsset:URLAsset atPosition:nil withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1685,7 +1747,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testPlayAfterReset
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1720,7 +1781,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testOnDemandTogglePlayPause
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1750,7 +1810,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testDVRTogglePlayPause
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1780,7 +1839,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testTogglePlayPauseAfterStop
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1811,7 +1869,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testTogglePlayPauseAfterReset
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1846,7 +1903,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testConsecutiveMediaPlaybackInSamePlayer
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1875,6 +1931,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousMediaTypeKey], @(mediaType));
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey], @(streamType));
         XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousUserInfoKey], userInfo);
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousSelectedSegmentKey]);
         
         return YES;
     }];
@@ -1889,7 +1946,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testPlayerLifecycle
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1935,7 +1991,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testConfigurationReload
 {
-    // Wait until playing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1954,13 +2009,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
-    // Reload the configuration
     XCTestExpectation *configurationReloadExpectation = [self expectationWithDescription:@"Configuration reloaded"];
-    self.mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
+    [self.mediaPlayerController reloadPlayerConfigurationWithBlock:^(AVPlayer * _Nonnull player) {
         [configurationReloadExpectation fulfill];
-    };
-    
-    [self.mediaPlayerController reloadPlayerConfiguration];
+    }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -1992,7 +2044,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testPlaybackStateKeyValueObserving
 {
-    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@"playbackState" expectedValue:@(SRGMediaPlayerPlaybackStatePreparing)];
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, playbackState) expectedValue:@(SRGMediaPlayerPlaybackStatePreparing)];
     
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     
@@ -2164,180 +2216,6 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, ==, CMTimeMakeWithSeconds(1700., NSEC_PER_SEC)));
-}
-
-- (void)testNoTrackNotificationsAtStartupAndWhenReset
-{
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    [self expectationForElapsedTimeInterval:5. withHandler:nil];
-    
-    id audioTrackChangeObserver1 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No audio track change at startup is expected");
-    }];
-    id subtitleTrackChangeObserver1 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No subtitle track change at startup is expected");
-    }];
-    
-    [self.mediaPlayerController playURL:OnDemandWithMultipleTracksTestURL()];
-    
-    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [NSNotificationCenter.defaultCenter removeObserver:audioTrackChangeObserver1];
-        [NSNotificationCenter.defaultCenter removeObserver:subtitleTrackChangeObserver1];
-    }];
-    
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
-    }];
-    [self expectationForElapsedTimeInterval:5. withHandler:nil];
-    
-    id audioTrackChangeObserver2 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No audio track change at reset is expected");
-    }];
-    id subtitleTrackChangeObserver2 = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No subtitle track change at reset is expected");
-    }];
-    
-    [self.mediaPlayerController reset];
-    
-    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [NSNotificationCenter.defaultCenter removeObserver:audioTrackChangeObserver2];
-        [NSNotificationCenter.defaultCenter removeObserver:subtitleTrackChangeObserver2];
-    }];
-}
-
-- (void)testAudioTrackChangeNotification
-{
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    
-    [self.mediaPlayerController playURL:OnDemandWithMultipleTracksTestURL()];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    AVMediaSelectionGroup *selectionGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-    
-    AVMediaSelectionOption *previousOption = [playerItem selectedMediaOptionInMediaSelectionGroup:selectionGroup];
-    XCTAssertNotNil(previousOption);
-    
-    AVMediaSelectionOption *option = selectionGroup.options.lastObject;
-    XCTAssertNotNil(option);
-    
-    XCTAssertNotEqualObjects(previousOption, option);
-    
-    [self expectationForSingleNotification:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousTrackKey], previousOption);
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerTrackKey], option);
-        return YES;
-    }];
-    
-    [playerItem selectMediaOption:option inMediaSelectionGroup:selectionGroup];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-}
-
-- (void)testSubtitleTrackChangeNotification
-{
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    
-    [self.mediaPlayerController playURL:OnDemandWithMultipleTracksTestURL()];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    AVMediaSelectionGroup *selectionGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-    
-    AVMediaSelectionOption *previousOption = [playerItem selectedMediaOptionInMediaSelectionGroup:selectionGroup];
-    XCTAssertNil(previousOption);
-    
-    AVMediaSelectionOption *option1 = selectionGroup.options.lastObject;
-    XCTAssertNotNil(option1);
-    
-    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerTrackKey], option1);
-        return YES;
-    }];
-    
-    XCTAssertNotEqualObjects(previousOption, option1);
-    [playerItem selectMediaOption:option1 inMediaSelectionGroup:selectionGroup];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    AVMediaSelectionOption *option2 = selectionGroup.options.firstObject;
-    XCTAssertNotNil(option2);
-    
-    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerPreviousTrackKey], option1);
-        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerTrackKey], option2);
-        return YES;
-    }];
-    
-    XCTAssertNotEqualObjects(option1, option2);
-    [playerItem selectMediaOption:option2 inMediaSelectionGroup:selectionGroup];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-}
-
-- (void)testNoAudioTrackChange
-{
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    
-    [self.mediaPlayerController playURL:OnDemandWithMultipleTracksTestURL()];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    AVMediaSelectionGroup *selectionGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-    AVMediaSelectionOption *option = [playerItem selectedMediaOptionInMediaSelectionGroup:selectionGroup];
-    XCTAssertNotNil(option);
-    
-    id trackChangeObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No track change notification is expected");
-    }];
-    
-    [self expectationForElapsedTimeInterval:5. withHandler:nil];
-    
-    [playerItem selectMediaOption:option inMediaSelectionGroup:selectionGroup];
-    
-    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [NSNotificationCenter.defaultCenter removeObserver:trackChangeObserver];
-    }];
-}
-
-- (void)testNoSubtitleTrackChange
-{
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    
-    [self.mediaPlayerController playURL:OnDemandWithMultipleTracksTestURL()];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
-    AVMediaSelectionGroup *selectionGroup = [playerItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-    AVMediaSelectionOption *option = [playerItem selectedMediaOptionInMediaSelectionGroup:selectionGroup];
-    XCTAssertNil(option);
-    
-    id trackChangeObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        XCTFail(@"No track change notification is expected");
-    }];
-    
-    [self expectationForElapsedTimeInterval:5. withHandler:nil];
-    
-    [playerItem selectMediaOption:option inMediaSelectionGroup:selectionGroup];
-    
-    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [NSNotificationCenter.defaultCenter removeObserver:trackChangeObserver];
-    }];
 }
 
 @end

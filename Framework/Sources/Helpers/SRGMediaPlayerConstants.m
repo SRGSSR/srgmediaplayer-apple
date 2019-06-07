@@ -28,11 +28,12 @@ NSString * const SRGMediaPlayerDidSkipBlockedSegmentNotification = @"SRGMediaPla
 NSString * const SRGMediaPlayerPlaybackStateKey = @"SRGMediaPlayerPlaybackState";
 NSString * const SRGMediaPlayerPreviousPlaybackStateKey = @"SRGMediaPlayerPreviousPlaybackState";
 NSString * const SRGMediaPlayerPreviousContentURLKey = @"SRGMediaPlayerPreviousContentURL";
-NSString * const SRGMediaPlayerPreviousPlayerItemKey = @"SRGMediaPlayerPreviousPlayerItem";
+NSString * const SRGMediaPlayerPreviousURLAssetKey = @"SRGMediaPlayerPreviousPlayerItem";
 NSString * const SRGMediaPlayerPreviousTimeRangeKey = @"SRGMediaPlayerPreviousTimeRange";
 NSString * const SRGMediaPlayerPreviousMediaTypeKey = @"SRGMediaPlayerPreviousMediaType";
 NSString * const SRGMediaPlayerPreviousStreamTypeKey = @"SRGMediaPlayerPreviousStreamType";
 NSString * const SRGMediaPlayerPreviousUserInfoKey = @"SRGMediaPlayerPreviousUserInfo";
+NSString * const SRGMediaPlayerPreviousSelectedSegmentKey = @"SRGMediaPlayerPreviousSelectedSegment";
 
 NSString * const SRGMediaPlayerErrorKey = @"SRGMediaPlayerError";
 

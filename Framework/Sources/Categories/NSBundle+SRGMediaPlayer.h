@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  See https://clang-analyzer.llvm.org/faq.html.
  */
 __attribute__((annotate("returns_localized_nsstring")))
-OBJC_EXTERN NSString *SRGMediaPlayerNonLocalizedString(NSString *string);
+OBJC_EXPORT NSString *SRGMediaPlayerNonLocalizedString(NSString *string);
 
 @interface NSBundle (SRGMediaPlayer)
 

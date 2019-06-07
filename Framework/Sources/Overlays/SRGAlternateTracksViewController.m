@@ -8,10 +8,15 @@
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 
+#import <libextobjc/libextobjc.h>
 #import <MediaAccessibility/MediaAccessibility.h>
 
 static NSString *SRGTitleForMediaSelectionOption(AVMediaSelectionOption *option);
 static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
+static NSArray<NSString *> *SRGPreferredCaptionLanguageCodes(void);
+
+static void MACaptionAppearanceAddPreferredLanguages(MACaptionAppearanceDomain domain);
+static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain domain, NSArray<NSString *> *languageCodes);
 
 @interface SRGAlternateTracksViewController ()
 
@@ -62,24 +67,22 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
                                                  object:mediaPlayerController];
     }
     
-    AVPlayer *player = mediaPlayerController.player;
-    AVPlayerItem *playerItem = player.currentItem;
+    AVAsset *asset = mediaPlayerController.player.currentItem.asset;
     
-    // Do not check tracks before the player item is ready to play (otherwise AVPlayer will internally wait on semaphores,
-    // locking the main thread ). Also see `-[AVAsset allMediaSelections]` documentation.
-    if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+    // Never access track information without checking whether it has been loaded first (would lock the main thread)
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
         NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
         NSMutableDictionary<NSString *, AVMediaSelectionGroup *> *groups = [NSMutableDictionary dictionary];
         NSMutableDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options = [NSMutableDictionary dictionary];
         
-        AVMediaSelectionGroup *audioGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         if (audioGroup.options.count > 1) {
             [characteristics addObject:AVMediaCharacteristicAudible];
             groups[AVMediaCharacteristicAudible] = audioGroup;
             options[AVMediaCharacteristicAudible] = audioGroup.options;
         }
         
-        AVMediaSelectionGroup *subtitleGroup = [player.currentItem.asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         if (subtitleGroup) {
             [characteristics addObject:AVMediaCharacteristicLegible];
             groups[AVMediaCharacteristicLegible] = subtitleGroup;
@@ -106,6 +109,24 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     [super viewDidLoad];
     
     self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Title of the pop over view to select audio or subtitles");
+    
+    // Force properties to avoid overrides with UIAppearance
+    UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
+    navigationBarAppearance.barStyle = UIBarStyleDefault;
+    navigationBarAppearance.barTintColor = nil;
+    navigationBarAppearance.tintColor = nil;
+    navigationBarAppearance.titleTextAttributes = nil;
+    navigationBarAppearance.translucent = YES;
+    navigationBarAppearance.shadowImage = nil;
+    navigationBarAppearance.backIndicatorImage = nil;
+    navigationBarAppearance.backIndicatorTransitionMaskImage = nil;
+    [navigationBarAppearance setTitleVerticalPositionAdjustment:0.f forBarMetrics:UIBarMetricsDefault];
+    [navigationBarAppearance setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    
+    if (@available(iOS 11, *)) {
+        navigationBarAppearance.prefersLargeTitles = NO;
+        navigationBarAppearance.largeTitleTextAttributes = nil;
+    }
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(wirelessRouteDidChange:)
@@ -212,24 +233,18 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
- 
+    
     NSString *characteristic = self.characteristics[indexPath.section];
     if (characteristic == AVMediaCharacteristicLegible) {
+        AVMediaSelectionGroup *group = self.groups[characteristic];
+        AVMediaSelectionOption *currentOptionInGroup = [playerItem selectedMediaOptionInMediaSelectionGroup:group];
+        
         if (indexPath.row == 0) {
             UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Off", @"Option to disable subtitles");
-            
-            if (! AVAudioSession.srg_isAirPlayActive) {
-                cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
-            else {
-                AVMediaSelectionGroup *group = self.groups[characteristic];
-                AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-                
-                cell.accessoryType = (currentOptionInGroup == nil || [currentOptionInGroup hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
-            
+            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             return cell;
         }
         else if (indexPath.row == 1) {
@@ -241,6 +256,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
             }
             else {
                 cell.textLabel.enabled = NO;
+                
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
@@ -262,15 +278,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
                 cell.textLabel.text = SRGHintForMediaSelectionOption(option);
             }
             
-            AVMediaSelectionGroup *group = self.groups[characteristic];
-            AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
-            
-            if (! AVAudioSession.srg_isAirPlayActive) {
-                cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
-            else {
-                cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
+            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
@@ -291,7 +299,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
         }
         
         AVMediaSelectionGroup *group = self.groups[characteristic];
-        AVMediaSelectionOption *currentOptionInGroup = [self.mediaPlayerController.player.currentItem selectedMediaOptionInMediaSelectionGroup:group];
+        AVMediaSelectionOption *currentOptionInGroup = [playerItem selectedMediaOptionInMediaSelectionGroup:group];
         cell.accessoryType = [currentOptionInGroup isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         
         return cell;
@@ -303,6 +311,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     AVPlayer *player = self.mediaPlayerController.player;
+    AVPlayerItem *playerItem = player.currentItem;
     
     NSString *characteristic = self.characteristics[indexPath.section];
     AVMediaSelectionGroup *group = self.groups[characteristic];
@@ -310,28 +319,30 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     
     if (characteristic == AVMediaCharacteristicLegible) {
         if (indexPath.row == 0) {
-            [player.currentItem selectMediaOption:nil inMediaSelectionGroup:group];
+            [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
             
+            MACaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
         }
         else if (indexPath.row == 1) {
-            [player.currentItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
+            [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
             
+            MACaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
         }
         else {
             AVMediaSelectionOption *option = options[indexPath.row - 2];
-            [player.currentItem selectMediaOption:option inMediaSelectionGroup:group];
+            [playerItem selectMediaOption:option inMediaSelectionGroup:group];
             
-            // Save the subtitle language (system) so that it gets automatically applied again when instantiating a new `AVPlayer` with
-            // `appliesMediaSelectionCriteriaAutomatically` (default). For example `SRGMediaPlayerController` or `AVPlayerViewController`
-            // within the same app, or even Safari.
-            MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)[option.locale objectForKey:NSLocaleLanguageCode]);
+            NSString *languageCode = [option.locale objectForKey:NSLocaleLanguageCode];
+            if (languageCode) {
+                MACaptionAppearanceAddSelectedLanguages(kMACaptionAppearanceDomainUser, @[languageCode]);
+            }
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
         }
     }
     else {
-        [player.currentItem selectMediaOption:options[indexPath.row] inMediaSelectionGroup:group];
+        [playerItem selectMediaOption:options[indexPath.row] inMediaSelectionGroup:group];
     }
     
     // No track change notification is emitted when the setting (e.g. Automatic or Off) does not lead to another value
@@ -390,4 +401,51 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option)
     // app only supports French). To eliminate such issues, we recreate a simple locale from the current language code.
     NSLocale *locale = [NSLocale localeWithLocaleIdentifier:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
     return [option displayNameWithLocale:locale];
+}
+
+// List of preferred languages, from the most to the least preferred one
+static NSArray<NSString *> *SRGPreferredCaptionLanguageCodes(void)
+{
+    NSMutableArray<NSString *> *languageCodes = [NSMutableArray array];
+    
+    // List of preferred languages from the system settings.
+    NSArray<NSString *> *preferredLanguages = NSLocale.preferredLanguages;
+    for (NSString *language in preferredLanguages) {
+        NSLocale *locale = [NSLocale localeWithLocaleIdentifier:language];
+        [languageCodes addObject:[locale objectForKey:NSLocaleLanguageCode]];
+    }
+    
+    // Add current locale language code as last item. The current locale is the one of the app which best matches
+    // system settings (even if it does not appear in the preferred language list). Use it as fallback.
+    [languageCodes addObject:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
+    
+    return [languageCodes copy];
+}
+
+// Update the subtitle language selection stack to best match the current language preferences. This helps the "Closed
+// Captions + SDH" accessibility feature to find a better match for the user.
+//   https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
+static void MACaptionAppearanceAddPreferredLanguages(MACaptionAppearanceDomain domain)
+{
+    MACaptionAppearanceAddSelectedLanguages(kMACaptionAppearanceDomainUser, SRGPreferredCaptionLanguageCodes());
+}
+
+// Update the subtitle language selection stack with the provided language list. This list is saved at the system level,
+// and is shard by instances of `AVPlayer` with `appliesMediaSelectionCriteriaAutomatically` (default). This includes
+// `SRGMediaPlayerController`, but also `AVPlayerController` (within the same app) or Safari.
+static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain domain, NSArray<NSString *> *languageCodes)
+{
+    for (NSString *languageCode in [languageCodes reverseObjectEnumerator]) {
+        MACaptionAppearanceAddSelectedLanguage(domain, (__bridge CFStringRef _Nonnull)languageCode);
+    }
+}
+
+__attribute__((constructor)) static void SRGAlternateTracksViewControllerInit(void)
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
+        if  (displayType != kMACaptionAppearanceDisplayTypeAlwaysOn) {
+            MACaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
+        }
+    });
 }
