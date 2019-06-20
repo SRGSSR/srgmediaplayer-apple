@@ -1278,6 +1278,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         }
         
         [self updateSegmentStatusForPlaybackState:self.playbackState previousPlaybackState:self.playbackState time:time];
+        
+        // Akamai fix: When start and end parameters are used, the subtitles track is longer than the associated truncated
+        // stream. This incorrectly prevents the player from ending playback correctly (playback continues for the subtitles).
+        // This workaround emits the missing end event instead of letting playback continue.
+        // TODO: Remove when Akamai fixed this issue
+        if (self.streamType == SRGMediaPlayerStreamTypeOnDemand && CMTIME_COMPARE_INLINE(time, >, CMTimeRangeGetEnd(self.timeRange))) {
+            [self setPlaybackState:SRGMediaPlayerPlaybackStateEnded withUserInfo:nil];
+        }
     }];
     
     self.controllerPeriodicTimeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
