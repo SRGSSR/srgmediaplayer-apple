@@ -792,6 +792,39 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
 }
 
+- (void)testFixedStreamEndWithBuggyAkamaiStreamWithSubtitles
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
+        AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"fr"];
+        }];
+        NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+        AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
+        if (option) {
+            [playerItem selectMediaOption:option inMediaSelectionGroup:group];
+        }
+    };
+    
+    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2019/journ-19h30_20190603_full_ca7d9d68-58aa-4acd-b2e5-a6af7470bc8d-,301k,701k,1201k,2001k,3501k,6001k,.mp4.csmil/master.m3u8?caption=journ-19h30/2019/journ-19h30_20190603_full_500048834.m3u8:fra:Fran%C3%A7ais&start=267.36&end=387.36"];
+    [self.mediaPlayerController playURL:URL];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Seek to the end (media is too long to be entirely played through :) ) and wait until playback ends
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateEnded;
+    }];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:8. handler:nil];
+}
+
 - (void)testLivePause
 {
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
