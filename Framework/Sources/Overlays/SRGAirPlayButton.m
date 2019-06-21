@@ -221,7 +221,7 @@ static void commonInit(SRGAirPlayButton *self);
         self.hidden = YES;
     }
     else if (mediaPlayerController) {
-        BOOL allowsAirPlayPlayback = mediaPlayerController.mediaType != SRGMediaPlayerMediaTypeVideo || mediaPlayerController.allowsExternalNonMirroredPlayback;
+        BOOL allowsAirPlayPlayback = mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeAudio || mediaPlayerController.allowsExternalNonMirroredPlayback;
         if (AVAudioSession.srg_areWirelessRoutesAvailable && allowsAirPlayPlayback) {
             self.hidden = NO;
         }
