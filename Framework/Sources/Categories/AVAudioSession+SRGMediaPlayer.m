@@ -57,18 +57,7 @@ NSString * const SRGMediaPlayerWirelessRouteActiveDidChangeNotification = @"SRGM
     }
 }
 
-#pragma mark Notifications
-
-+ (void)srg_windowDidBecomeKey:(NSNotification *)notification
-{
-    // The volume view needs to be installed in a view hierarchy to correctly report routes (otherwise `-areWirelessRoutesAvailable`
-    // always returns `NO`)
-    s_volumeView = [[MPVolumeView alloc] init];
-    s_volumeView.hidden = YES;
-    
-    UIWindow *window = notification.object;
-    [window insertSubview:s_volumeView atIndex:0];
-}
+#pragma mark Notification
 
 + (void)srg_wirelessRouteAvailableDidChange:(NSNotification *)notification
 {
@@ -84,8 +73,16 @@ NSString * const SRGMediaPlayerWirelessRouteActiveDidChangeNotification = @"SRGM
 
 __attribute__((constructor)) static void AVAudioSessionInit(void)
 {
-    [NSNotificationCenter.defaultCenter addObserver:AVAudioSession.class
-                                           selector:@selector(srg_windowDidBecomeKey:)
-                                               name:UIWindowDidBecomeKeyNotification
-                                             object:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Costly at application startup. Defer slightly.
+        s_volumeView = [[MPVolumeView alloc] init];
+        [NSNotificationCenter.defaultCenter addObserver:AVAudioSession.class
+                                               selector:@selector(srg_wirelessRouteAvailableDidChange:)
+                                                   name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
+                                                 object:s_volumeView];
+        [NSNotificationCenter.defaultCenter addObserver:AVAudioSession.class
+                                               selector:@selector(srg_wirelessRouteActiveDidChange:)
+                                                   name:MPVolumeViewWirelessRouteActiveDidChangeNotification
+                                                 object:s_volumeView];
+    });
 }
