@@ -19,6 +19,8 @@ static void commonInit(SRGAirPlayButton *self);
 @interface SRGAirPlayButton ()
 
 @property (nonatomic, weak) MPVolumeView *volumeView;
+@property (nonatomic, weak) AVRoutePickerView *routePickerView API_AVAILABLE(ios(11.0));
+
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
 @property (nonatomic, weak) id periodicTimeObserver;
 
@@ -270,10 +272,16 @@ static void commonInit(SRGAirPlayButton *self);
 
 static void commonInit(SRGAirPlayButton *self)
 {
-    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:self.bounds];
-    volumeView.showsVolumeSlider = NO;
-    [self addSubview:volumeView];
-    self.volumeView = volumeView;
-    
+    if (@available(iOS 11, *)) {
+        AVRoutePickerView *routePickerView = [[AVRoutePickerView alloc] initWithFrame:self.bounds];
+        [self addSubview:routePickerView];
+        self.routePickerView = routePickerView;
+    }
+    else {
+        MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:self.bounds];
+        volumeView.showsVolumeSlider = NO;
+        [self addSubview:volumeView];
+        self.volumeView = volumeView;
+    }
     self.hidden = YES;
 }
