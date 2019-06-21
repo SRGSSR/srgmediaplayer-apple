@@ -162,11 +162,16 @@ static void commonInit(SRGAirPlayButton *self);
 {
     [super layoutSubviews];
     
-    // Ensure proper resizing behavior of the volume view AirPlay button.
-    self.volumeView.frame = self.bounds;
-    
-    UIButton *airPlayButton = self.volumeView.srg_airPlayButton;
-    airPlayButton.frame = self.volumeView.bounds;
+    if (@available(iOS 11, *)) {
+        self.routePickerView.frame = self.bounds;
+    }
+    else {
+        // Ensure proper resizing behavior of the volume view AirPlay button.
+        self.volumeView.frame = self.bounds;
+        
+        UIButton *airPlayButton = self.volumeView.srg_airPlayButton;
+        airPlayButton.frame = self.volumeView.bounds;
+    }
 }
 
 - (CGSize)intrinsicContentSize
@@ -193,9 +198,13 @@ static void commonInit(SRGAirPlayButton *self);
     // `AVRoutePickerView` is a button with no image, and layers representing the AirPlay icon instead. If we need
     // to display an image the original icon needs to be hidden first.
     if (@available(iOS 11, *)) {
+        BOOL hasImage = (self.image != nil);
+        
         airPlayButton = self.routePickerView.srg_airPlayButton;
+        airPlayButton.imageView.contentMode = hasImage ? UIViewContentModeCenter : UIViewContentModeScaleToFill;
+        
         self.routePickerView.activeTintColor = self.activeTintColor;
-        self.routePickerView.srg_isOriginalIconHidden = (self.image != nil);
+        self.routePickerView.srg_isOriginalIconHidden = hasImage;
     }
     // For `MPVolumeView` we must use a custom image to be able to apply a tint color. The button color is automagically
     // inherited from the enclosing view (this works both at runtime and when rendering in Interface Builder)
