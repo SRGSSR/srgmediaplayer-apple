@@ -130,7 +130,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(wirelessRouteDidChange:)
-                                               name:SRGMediaPlayerWirelessRouteDidChangeNotification
+                                               name:SRGMediaPlayerWirelessRouteActiveDidChangeNotification
                                              object:nil];
 }
 

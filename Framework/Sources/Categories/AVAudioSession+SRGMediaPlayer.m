@@ -12,11 +12,17 @@
 
 static MPVolumeView *s_volumeView = nil;
 
-NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification = @"SRGMediaPlayerWirelessRouteDidChangeNotification";
+NSString * const SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification = @"SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification";
+NSString * const SRGMediaPlayerWirelessRouteActiveDidChangeNotification = @"SRGMediaPlayerWirelessRouteActiveDidChangeNotification";
 
 @implementation AVAudioSession (SRGMediaPlayer)
 
 #pragma mark Class methods
+
++ (BOOL)srg_areWirelessRoutesAvailable
+{
+    return s_volumeView.areWirelessRoutesAvailable;
+}
 
 + (BOOL)srg_isAirPlayActive
 {
@@ -53,9 +59,14 @@ NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification = @"SRGMediaPl
 
 #pragma mark Notifications
 
++ (void)srg_wirelessRouteAvailableDidChange:(NSNotification *)notification
+{
+    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification object:nil];
+}
+
 + (void)srg_wirelessRouteActiveDidChange:(NSNotification *)notification
 {
-    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerWirelessRouteDidChangeNotification object:nil];
+    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerWirelessRouteActiveDidChangeNotification object:nil];
 }
 
 @end
@@ -65,6 +76,10 @@ __attribute__((constructor)) static void AVAudioSessionInit(void)
     dispatch_async(dispatch_get_main_queue(), ^{
         // Costly at application startup. Defer slightly.
         s_volumeView = [[MPVolumeView alloc] init];
+        [NSNotificationCenter.defaultCenter addObserver:AVAudioSession.class
+                                               selector:@selector(srg_wirelessRouteAvailableDidChange:)
+                                                   name:MPVolumeViewWirelessRoutesAvailableDidChangeNotification
+                                                 object:s_volumeView];
         [NSNotificationCenter.defaultCenter addObserver:AVAudioSession.class
                                                selector:@selector(srg_wirelessRouteActiveDidChange:)
                                                    name:MPVolumeViewWirelessRouteActiveDidChangeNotification
