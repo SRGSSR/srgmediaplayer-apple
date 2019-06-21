@@ -6,6 +6,7 @@
 
 #import "SRGAirPlayButton.h"
 
+#import "AVRoutePickerView+SRGMediaPlayer.h"
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "MPVolumeView+SRGMediaPlayer.h"
@@ -112,7 +113,14 @@ static void commonInit(SRGAirPlayButton *self);
 
 - (UIImage *)image
 {
-    return _image ?: [UIImage imageNamed:@"airplay" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    // `AVRoutePickerView`: Image is already the one we want if not specified (AirPlay audio)
+    if (@available(iOS 11, *)) {
+        return _image;
+    }
+    // `MPVolumeView`: Use AirPlay audio image as default.
+    else {
+        return _image ?: [UIImage imageNamed:@"airplay" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    }
 }
 
 - (void)setImage:(UIImage *)image
@@ -123,8 +131,8 @@ static void commonInit(SRGAirPlayButton *self);
 
 - (UIColor *)activeTintColor
 {
-    // If none, use standard blue tint color
-    return _activeTintColor ?: [UIColor colorWithRed:0.f / 255.f green:122.f / 255.f blue:255.f / 255.f alpha:1.f];
+    // Use standard blue tint color as default
+    return _activeTintColor ?: [UIColor colorWithRed:0.3629f green:0.7041f blue:1.f alpha:1.f];
 }
 
 - (void)setActiveTintColor:(UIColor *)activeTintColor
@@ -180,10 +188,23 @@ static void commonInit(SRGAirPlayButton *self);
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    // Replace with custom image to be able to apply a tint color. The button color is automagically inherited from
-    // the enclosing view (this works both at runtime and when rendering in Interface Builder)
-    UIButton *airPlayButton = self.volumeView.srg_airPlayButton;
-    airPlayButton.showsTouchWhenHighlighted = NO;
+    UIButton *airPlayButton = nil;
+    
+    // `AVRoutePickerView` is a button with no image, and layers representing the AirPlay icon instead. If we need
+    // to display an image the original icon needs to be hidden first.
+    if (@available(iOS 11, *)) {
+        airPlayButton = self.routePickerView.srg_airPlayButton;
+        self.routePickerView.activeTintColor = self.activeTintColor;
+        self.routePickerView.srg_isOriginalIconHidden = (self.image != nil);
+    }
+    // For `MPVolumeView` we must use a custom image to be able to apply a tint color. The button color is automagically
+    // inherited from the enclosing view (this works both at runtime and when rendering in Interface Builder)
+    else {
+        airPlayButton = self.volumeView.srg_airPlayButton;
+        airPlayButton.showsTouchWhenHighlighted = NO;
+        airPlayButton.tintColor = AVAudioSession.srg_isAirPlayActive ? self.activeTintColor : self.tintColor;
+    }
+    
     [airPlayButton setImage:self.image forState:UIControlStateNormal];
     [airPlayButton setImage:self.image forState:UIControlStateSelected];
     
@@ -193,7 +214,6 @@ static void commonInit(SRGAirPlayButton *self);
     else if (mediaPlayerController) {
         BOOL allowsAirPlayPlayback = mediaPlayerController.mediaType != SRGMediaPlayerMediaTypeVideo || mediaPlayerController.allowsExternalNonMirroredPlayback;
         if (AVAudioSession.srg_areWirelessRoutesAvailable && allowsAirPlayPlayback) {
-            airPlayButton.tintColor = AVAudioSession.srg_isAirPlayActive ? self.activeTintColor : self.tintColor;
             self.hidden = NO;
         }
         else {
