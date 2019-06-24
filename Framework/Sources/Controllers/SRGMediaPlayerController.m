@@ -145,6 +145,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:UIApplicationDidBecomeActiveNotification
                                                     object:nil];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:SRGMediaPlayerWirelessRouteDidChangeNotification
+                                                    object:nil];
         
         self.playerDestructionBlock ? self.playerDestructionBlock(_player) : nil;
     }
@@ -324,6 +327,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_mediaPlayerController_applicationDidBecomeActive:)
                                                    name:UIApplicationDidBecomeActiveNotification
+                                                 object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_mediaPlayerController_wirelessRouteActiveDidChangeNotification:)
+                                                   name:SRGMediaPlayerWirelessRouteDidChangeNotification
                                                  object:nil];
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
@@ -1428,6 +1435,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)srg_mediaPlayerController_applicationDidBecomeActive:(NSNotification *)notification
 {
     self.view.player = self.player;
+}
+
+- (void)srg_mediaPlayerController_wirelessRouteActiveDidChangeNotification:(NSNotification *)notification
+{
+    // Pause playback when switching routes in background, e.g. AirPlay or bluetooth headset.
+    if (UIApplication.sharedApplication.applicationState == UIApplicationStateBackground) {
+        [self.player pause];
+    }
 }
 
 #pragma mark KVO
