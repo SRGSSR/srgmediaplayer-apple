@@ -1396,7 +1396,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     // The video layer must be detached in the background if we want playback not to be paused automatically.
     // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
-    self.view.player = nil;
+    if (! self.pictureInPictureController.pictureInPictureActive) {
+        self.view.player = nil;
+    }
 }
 
 - (void)srg_mediaPlayerController_applicationDidBecomeActive:(NSNotification *)notification
