@@ -325,8 +325,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                    name:UIApplicationDidEnterBackgroundNotification
                                                  object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self
-                                               selector:@selector(srg_mediaPlayerController_applicationDidBecomeActive:)
-                                                   name:UIApplicationDidBecomeActiveNotification
+                                               selector:@selector(srg_mediaPlayerController_applicationWillEnterForeground:)
+                                                   name:UIApplicationWillEnterForegroundNotification
                                                  object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_mediaPlayerController_wirelessRouteActiveDidChangeNotification:)
@@ -1432,7 +1432,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-- (void)srg_mediaPlayerController_applicationDidBecomeActive:(NSNotification *)notification
+- (void)srg_mediaPlayerController_applicationWillEnterForeground:(NSNotification *)notification
 {
     self.view.player = self.player;
 }
