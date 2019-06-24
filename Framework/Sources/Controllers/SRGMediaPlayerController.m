@@ -20,6 +20,7 @@
 #import "SRGMediaPlayerView+Private.h"
 #import "SRGPeriodicTimeObserver.h"
 #import "SRGSegment+Private.h"
+#import "UIDevice+SRGMediaPlayer.h"
 #import "UIScreen+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
@@ -1394,10 +1395,33 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
-    // The video layer must be detached in the background if we want playback not to be paused automatically.
-    // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
-    if (! self.pictureInPictureController.pictureInPictureActive) {
-        self.view.player = nil;
+    if (self.mediaType == SRGMediaPlayerMediaTypeVideo && ! self.pictureInPictureController.pictureInPictureActive && ! AVAudioSession.srg_isAirPlayActive) {
+        switch (self.viewBackgroundBehavior) {
+            case SRGMediaPlayerViewBackgroundBehaviorAttached: {
+                [self.player pause];
+                break;
+            }
+                
+            case SRGMediaPlayerViewBackgroundBehaviorDetachedIfLocked: {
+                // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if (UIDevice.srg_mediaPlayer_isLocked) {
+                        self.view.player = nil;
+                    }
+                    else {
+                        [self.player pause];
+                    }
+                });
+                break;
+            }
+                
+            case SRGMediaPlayerViewBackgroundBehaviorDetached: {
+                // The video layer must be detached in the background if we want playback not to be paused automatically.
+                // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
+                self.view.player = nil;
+                break;
+            }
+        }
     }
 }
 

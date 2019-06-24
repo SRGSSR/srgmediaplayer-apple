@@ -239,10 +239,28 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) AVPlayerLayer *playerLayer;
 
 /**
+ *  @name View
+ */
+
+/**
  *  The view where the player displays its content. Either install in your own view hierarchy, or bind a corresponding view
  *  with the `SRGMediaPlayerView` class in Interface Builder.
  */
 @property (nonatomic, readonly, nullable) IBOutlet SRGMediaPlayerView *view;
+
+/**
+ *  Behavior of the associated view when the application is moved to the background. Use detached behaviors to avoid video
+ *  playback being automatically paused.
+ *
+ *  This setting does not affect picture in picture or AirPlay playbacks, audio playback (allowed in background) or 360°
+ *  playback (always paused during the transition).
+ *
+ *  Default is `SRGMediaPlayerViewBackgroundBehaviorAttached`, i.e. the view remains attached to its controller while in
+ *  background, pausing video playback automatically.
+ *
+ *  @discussion The behavior can be changed at any time but will not affect playback if already performed in background.
+ */
+@property (nonatomic) SRGMediaPlayerViewBackgroundBehavior viewBackgroundBehavior;
 
 /**
  *  @name Player lifecycle
