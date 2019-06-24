@@ -9,19 +9,23 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Notification sent when the wireless route changes (e.g. AirPlay enabled or disabled).
- *
- *  @discussion Exactly the same as `MPVolumeViewWirelessRouteActiveDidChangeNotification`, but without the need
- *              for a volume view.
+ *  Notification sent when wireless routes change (e.g. AirPlay enabled or disabled). Same as `MPVolumeView` equivalent
+ *  notifications, but without the need for a volume view.
  */
-OBJC_EXPORT NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification;
+OBJC_EXPORT NSString * const SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification;
+OBJC_EXPORT NSString * const SRGMediaPlayerWirelessRouteActiveDidChangeNotification;
 
 @interface AVAudioSession (SRGMediaPlayer)
 
 /**
+ *  Returns `YES` iff wireless routes are available.
+ */
+@property (class, nonatomic, readonly) BOOL srg_areWirelessRoutesAvailable;
+
+/**
  *  Return `YES` iff AirPlay is active (i.e. displaying on an external AirPlay device).
  *
- *  @discussion You can listen to the `SRGMediaPlayerWirelessRouteDidChangeNotification` notification to detect route changes.
+ *  @discussion You can listen to the `SRGMediaPlayerWirelessRouteActiveDidChangeNotification` notification to detect route changes.
  */
 @property (class, nonatomic, readonly) BOOL srg_isAirPlayActive;
 
