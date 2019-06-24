@@ -129,7 +129,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     }
     
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(wirelessRouteDidChange:)
+                                           selector:@selector(wirelessRouteActiveDidChange:)
                                                name:SRGMediaPlayerWirelessRouteActiveDidChangeNotification
                                              object:nil];
 }
@@ -369,7 +369,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     [self.tableView reloadData];
 }
 
-- (void)wirelessRouteDidChange:(NSNotification *)notification
+- (void)wirelessRouteActiveDidChange:(NSNotification *)notification
 {
     [self.tableView reloadData];
 }

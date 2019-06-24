@@ -24,6 +24,8 @@ static CALayer *SRGAirPlayIconLayerInLayer(CALayer *layer)
 
 @implementation AVRoutePickerView (SRGMediaPlayer)
 
+#pragma mark Getters and setters
+
 - (UIButton *)srg_airPlayButton
 {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(UIView * _Nullable view, NSDictionary<NSString *,id> * _Nullable bindings) {

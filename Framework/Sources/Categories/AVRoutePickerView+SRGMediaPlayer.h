@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AVRoutePickerView (SRGMediaPlayer)
 
 /**
- *  Return the AirPlay button within the volume view.
+ *  Return the AirPlay button within the picker view button.
  */
 @property (nonatomic, readonly) UIButton *srg_airPlayButton;
 

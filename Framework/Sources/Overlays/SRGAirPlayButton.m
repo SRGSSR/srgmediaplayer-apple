@@ -117,7 +117,7 @@ static void commonInit(SRGAirPlayButton *self);
     if (@available(iOS 11, *)) {
         return _image;
     }
-    // `MPVolumeView`: Use AirPlay audio image as default.
+    // `MPVolumeView`: Use bundled AirPlay audio icon when no image is specified.
     else {
         return _image ?: [UIImage imageNamed:@"airplay" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
     }
@@ -195,8 +195,8 @@ static void commonInit(SRGAirPlayButton *self);
 {
     UIButton *airPlayButton = nil;
     
-    // `AVRoutePickerView` is a button with no image, and layers representing the AirPlay icon instead. If we need
-    // to display an image the original icon needs to be hidden first.
+    // `AVRoutePickerView` is a button with no image, with layers representing the AirPlay icon instead. If we need
+    // to display an image the original icon layers needs to be hidden first.
     if (@available(iOS 11, *)) {
         BOOL hasImage = (self.image != nil);
         
