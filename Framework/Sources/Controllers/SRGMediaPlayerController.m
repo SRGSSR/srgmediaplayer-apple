@@ -138,6 +138,12 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:AVPlayerItemFailedToPlayToEndTimeNotification
                                                     object:_player.currentItem];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:UIApplicationDidEnterBackgroundNotification
+                                                    object:nil];
+        [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:UIApplicationDidBecomeActiveNotification
+                                                    object:nil];
         
         self.playerDestructionBlock ? self.playerDestructionBlock(_player) : nil;
     }
@@ -310,6 +316,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                selector:@selector(srg_mediaPlayerController_playerItemFailedToPlayToEndTime:)
                                                    name:AVPlayerItemFailedToPlayToEndTimeNotification
                                                  object:player.currentItem];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_mediaPlayerController_applicationDidEnterBackground:)
+                                                   name:UIApplicationDidEnterBackgroundNotification
+                                                 object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_mediaPlayerController_applicationDidBecomeActive:)
+                                                   name:UIApplicationDidBecomeActiveNotification
+                                                 object:nil];
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
     }
@@ -1376,6 +1390,18 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                     userInfo:@{ SRGMediaPlayerErrorKey: error }];
     
     SRGMediaPlayerLogDebug(@"Controller", @"Playback did fail with error: %@", error);
+}
+
+- (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
+{
+    // The video layer must be detached in the background if we want playback not to be paused automatically.
+    // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
+    self.view.player = nil;
+}
+
+- (void)srg_mediaPlayerController_applicationDidBecomeActive:(NSNotification *)notification
+{
+    self.view.player = self.player;
 }
 
 #pragma mark KVO
