@@ -146,7 +146,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                       name:UIApplicationDidBecomeActiveNotification
                                                     object:nil];
         [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:SRGMediaPlayerWirelessRouteDidChangeNotification
+                                                      name:SRGMediaPlayerWirelessRouteActiveDidChangeNotification
                                                     object:nil];
         
         self.playerDestructionBlock ? self.playerDestructionBlock(_player) : nil;
@@ -330,7 +330,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                  object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_mediaPlayerController_wirelessRouteActiveDidChangeNotification:)
-                                                   name:SRGMediaPlayerWirelessRouteDidChangeNotification
+                                                   name:SRGMediaPlayerWirelessRouteActiveDidChangeNotification
                                                  object:nil];
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
