@@ -8,7 +8,7 @@
 
 static CALayer *SRGAirPlayIconLayerInLayer(CALayer *layer)
 {
-    if ([layer.name containsString:@"AirPlay"]) {
+    if ([layer.name isEqualToString:@"Root Layer"]) {
         return layer;
     }
     
