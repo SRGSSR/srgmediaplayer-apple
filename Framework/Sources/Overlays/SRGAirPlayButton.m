@@ -11,6 +11,7 @@
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "MPVolumeView+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGRouteDetector.h"
 #import "UIScreen+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
@@ -60,14 +61,12 @@ static void commonInit(SRGAirPlayButton *self);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
         [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification
-                                                    object:nil];
-        [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:SRGMediaPlayerWirelessRouteActiveDidChangeNotification
                                                     object:nil];
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:UIScreenDidConnectNotification
@@ -82,6 +81,11 @@ static void commonInit(SRGAirPlayButton *self);
     
     if (mediaPlayerController) {
         @weakify(self)
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
+            [self updateAppearance];
+        }];
+        
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
             [self updateAppearance];
@@ -95,10 +99,6 @@ static void commonInit(SRGAirPlayButton *self);
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_airPlayButton_wirelessRoutesAvailableDidChange:)
                                                    name:SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification
-                                                 object:nil];
-        [NSNotificationCenter.defaultCenter addObserver:self
-                                               selector:@selector(srg_airPlayButton_wirelessRouteActiveDidChange:)
-                                                   name:SRGMediaPlayerWirelessRouteActiveDidChangeNotification
                                                  object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_airPlayButton_screenDidConnect:)
@@ -217,12 +217,23 @@ static void commonInit(SRGAirPlayButton *self);
     [airPlayButton setImage:self.image forState:UIControlStateNormal];
     [airPlayButton setImage:self.image forState:UIControlStateSelected];
     
+    BOOL (^multipleRoutesDetected)(void) = ^{
+        if (@available(iOS 11, *)) {
+            return SRGRouteDetector.sharedRouteDetector.multipleRoutesDetected;
+        }
+        else {
+            // For `MPVolumeView` to return correct route availability information, it must be installed in a view
+            // hierarchy.
+            return self.volumeView.areWirelessRoutesAvailable;
+        }
+    };
+    
     if (self.alwaysHidden) {
         self.hidden = YES;
     }
     else if (mediaPlayerController) {
         BOOL allowsAirPlayPlayback = mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeAudio || mediaPlayerController.allowsExternalNonMirroredPlayback;
-        if (AVAudioSession.srg_areWirelessRoutesAvailable && allowsAirPlayPlayback) {
+        if (multipleRoutesDetected() && allowsAirPlayPlayback) {
             self.hidden = NO;
         }
         else {
@@ -230,18 +241,13 @@ static void commonInit(SRGAirPlayButton *self);
         }
     }
     else {
-        self.hidden = ! self.fakeInterfaceBuilderButton && ! AVAudioSession.srg_areWirelessRoutesAvailable;
+        self.hidden = ! self.fakeInterfaceBuilderButton && ! multipleRoutesDetected();
     }
 }
 
 #pragma mark Notifications
 
 - (void)srg_airPlayButton_wirelessRoutesAvailableDidChange:(NSNotification *)notification
-{
-    [self updateAppearance];
-}
-
-- (void)srg_airPlayButton_wirelessRouteActiveDidChange:(NSNotification *)notification
 {
     [self updateAppearance];
 }

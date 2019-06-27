@@ -97,6 +97,8 @@
 		6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FB97FE11E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FB97FE21E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6FBA837B22C4909300AFAF8B /* SRGRouteDetector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBA837922C4909300AFAF8B /* SRGRouteDetector.h */; };
+		6FBA837C22C4909300AFAF8B /* SRGRouteDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA837A22C4909300AFAF8B /* SRGRouteDetector.m */; };
 		6FBDD1A721308242001E4398 /* PositionTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBDD1A621308242001E4398 /* PositionTestCase.m */; };
 		6FC1C74E22BCD29D00D55625 /* NSTimer+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1C74A22BCD29B00D55625 /* NSTimer+SRGMediaPlayer.m */; };
 		6FC1C74F22BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1C74B22BCD29B00D55625 /* AVRoutePickerView+SRGMediaPlayer.m */; };
@@ -318,6 +320,8 @@
 		6FA1D6081F42C13E00C85D15 /* TestMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMacros.h; sourceTree = "<group>"; };
 		6FA98E14211D68AE00969089 /* ConstantsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstantsTestCase.m; sourceTree = "<group>"; };
 		6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/iOS/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
+		6FBA837922C4909300AFAF8B /* SRGRouteDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGRouteDetector.h; sourceTree = "<group>"; };
+		6FBA837A22C4909300AFAF8B /* SRGRouteDetector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGRouteDetector.m; sourceTree = "<group>"; };
 		6FBDD1A621308242001E4398 /* PositionTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PositionTestCase.m; sourceTree = "<group>"; };
 		6FC1C74A22BCD29B00D55625 /* NSTimer+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		6FC1C74B22BCD29B00D55625 /* AVRoutePickerView+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVRoutePickerView+SRGMediaPlayer.m"; sourceTree = "<group>"; };
@@ -542,6 +546,8 @@
 				089026D22013ECEF00C0688E /* SRGSegment+Private.m */,
 				6F5CA42B1FD91A1D00CF175F /* SRGVideoNode.h */,
 				6F5CA4221FD91A1D00CF175F /* SRGVideoNode.m */,
+				6FBA837922C4909300AFAF8B /* SRGRouteDetector.h */,
+				6FBA837A22C4909300AFAF8B /* SRGRouteDetector.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -848,6 +854,7 @@
 				E67799321D75AE2600E58331 /* SRGTimelineView.h in Headers */,
 				6F5CA4161FD919CD00CF175F /* SRGMediaPlaybackFlatView.h in Headers */,
 				6F5CA4201FD919CD00CF175F /* SRGMediaPlaybackSceneView.h in Headers */,
+				6FBA837B22C4909300AFAF8B /* SRGRouteDetector.h in Headers */,
 				6F5CA4131FD919CD00CF175F /* SRGMediaPlayerViewController.h in Headers */,
 				6F5CA43D1FD91A1D00CF175F /* SRGSegment.h in Headers */,
 				6F5CA40F1FD919CD00CF175F /* SRGMediaPlayerController.h in Headers */,
@@ -1153,6 +1160,7 @@
 				E6C986171D7015F600C45C7A /* SRGVolumeView.m in Sources */,
 				6F5CA41B1FD919CD00CF175F /* SRGMediaPlaybackFlatView.m in Sources */,
 				E6C9860D1D6F42CB00C45C7A /* SRGPlaybackActivityIndicatorView.m in Sources */,
+				6FBA837C22C4909300AFAF8B /* SRGRouteDetector.m in Sources */,
 				6F5CA4411FD91A1D00CF175F /* SRGMediaPlayerConstants.m in Sources */,
 				6F5CA4371FD91A1D00CF175F /* SRGPeriodicTimeObserver.m in Sources */,
 				08D3BEC11DE8756500AE1368 /* SRGAlternateTracksViewController.m in Sources */,

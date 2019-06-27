@@ -145,9 +145,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:UIApplicationDidBecomeActiveNotification
                                                     object:nil];
-        [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:SRGMediaPlayerWirelessRouteActiveDidChangeNotification
-                                                    object:nil];
         
         self.playerDestructionBlock ? self.playerDestructionBlock(_player) : nil;
     }
@@ -273,6 +270,11 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             @strongify(self)
             
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
+            
+            // Pause playback when switching routes in background, e.g. AirPlay or bluetooth headset.
+            if (UIApplication.sharedApplication.applicationState == UIApplicationStateBackground) {
+                [self.player pause];
+            }
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
@@ -327,10 +329,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_mediaPlayerController_applicationWillEnterForeground:)
                                                    name:UIApplicationWillEnterForegroundNotification
-                                                 object:nil];
-        [NSNotificationCenter.defaultCenter addObserver:self
-                                               selector:@selector(srg_mediaPlayerController_wirelessRouteActiveDidChangeNotification:)
-                                                   name:SRGMediaPlayerWirelessRouteActiveDidChangeNotification
                                                  object:nil];
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
@@ -1435,14 +1433,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)srg_mediaPlayerController_applicationWillEnterForeground:(NSNotification *)notification
 {
     self.view.player = self.player;
-}
-
-- (void)srg_mediaPlayerController_wirelessRouteActiveDidChangeNotification:(NSNotification *)notification
-{
-    // Pause playback when switching routes in background, e.g. AirPlay or bluetooth headset.
-    if (UIApplication.sharedApplication.applicationState == UIApplicationStateBackground) {
-        [self.player pause];
-    }
 }
 
 #pragma mark KVO

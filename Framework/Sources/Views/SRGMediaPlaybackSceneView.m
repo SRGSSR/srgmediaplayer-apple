@@ -6,7 +6,6 @@
 
 #import "SRGMediaPlaybackSceneView.h"
 
-#import "AVPlayer+SRGMediaPlayer.h"
 #import "SRGMotionManager.h"
 #import "SRGQuaternion.h"
 #import "SRGVideoNode.h"
