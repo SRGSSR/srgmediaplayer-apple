@@ -51,9 +51,14 @@ static SRGRouteDetector *s_routeDetector;
             }
             [self updateRouteAvailability];
             
-            self.timer = [NSTimer srgmediaplayer_timerWithTimeInterval:5. repeats:YES block:^(NSTimer * _Nonnull timer) {
+            self.timer = [NSTimer srgmediaplayer_timerWithTimeInterval:30. repeats:YES block:^(NSTimer * _Nonnull timer) {
                 [self updateRouteAvailability];
             }];
+            
+            [NSNotificationCenter.defaultCenter addObserver:self
+                                                   selector:@selector(applicationWillEnterForeground:)
+                                                       name:UIApplicationWillEnterForegroundNotification
+                                                     object:nil];
         });
     }
     return self;
@@ -80,13 +85,15 @@ static SRGRouteDetector *s_routeDetector;
 - (void)updateRouteAvailability
 {
     if (@available(iOS 11, *)) {
-        // Register for the next route update before enabling detection for a short amount of time. After it has
-        // been determined, the current status is received with this notification.
-        [NSNotificationCenter.defaultCenter addObserver:self
-                                               selector:@selector(multipleRoutesDetectedDidChange:)
-                                                   name:AVRouteDetectorMultipleRoutesDetectedDidChangeNotification
-                                                 object:self.routeDetector];
-        self.routeDetector.routeDetectionEnabled = YES;
+        if (! self.routeDetector.routeDetectionEnabled) {
+            // Register for the next route update before enabling detection for a short amount of time. After it has
+            // been determined, the current status is received with this notification.
+            [NSNotificationCenter.defaultCenter addObserver:self
+                                                   selector:@selector(multipleRoutesDetectedDidChange:)
+                                                       name:AVRouteDetectorMultipleRoutesDetectedDidChangeNotification
+                                                     object:self.routeDetector];
+            self.routeDetector.routeDetectionEnabled = YES;
+        }
     }
     else {
         // For certain routes to be detected (e.g. AirPlay), the view must be installed in a hiearchy, see
@@ -118,6 +125,11 @@ static SRGRouteDetector *s_routeDetector;
 }
 
 #pragma mark Notification
+
+- (void)applicationWillEnterForeground:(NSNotification *)notification
+{
+    [self updateRouteAvailability];
+}
 
 - (void)multipleRoutesDetectedDidChange:(NSNotification *)notification
 {
