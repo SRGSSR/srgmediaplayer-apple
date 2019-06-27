@@ -97,7 +97,7 @@
 		6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FB97FE11E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FB97FE21E4A0E740014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6FBA837B22C4909300AFAF8B /* SRGRouteDetector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBA837922C4909300AFAF8B /* SRGRouteDetector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6FBA837B22C4909300AFAF8B /* SRGRouteDetector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBA837922C4909300AFAF8B /* SRGRouteDetector.h */; };
 		6FBA837C22C4909300AFAF8B /* SRGRouteDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA837A22C4909300AFAF8B /* SRGRouteDetector.m */; };
 		6FBDD1A721308242001E4398 /* PositionTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBDD1A621308242001E4398 /* PositionTestCase.m */; };
 		6FC1C74E22BCD29D00D55625 /* NSTimer+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1C74A22BCD29B00D55625 /* NSTimer+SRGMediaPlayer.m */; };

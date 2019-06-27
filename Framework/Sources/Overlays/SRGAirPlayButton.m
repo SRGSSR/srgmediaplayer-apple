@@ -217,12 +217,23 @@ static void commonInit(SRGAirPlayButton *self);
     [airPlayButton setImage:self.image forState:UIControlStateNormal];
     [airPlayButton setImage:self.image forState:UIControlStateSelected];
     
+    BOOL (^multipleRoutesDetected)(void) = ^{
+        if (@available(iOS 11, *)) {
+            return SRGRouteDetector.sharedRouteDetector.multipleRoutesDetected;
+        }
+        else {
+            // For `MPVolumeView` to return correct route availability information, it must be installed in a view
+            // hierarchy.
+            return self.volumeView.areWirelessRoutesAvailable;
+        }
+    };
+    
     if (self.alwaysHidden) {
         self.hidden = YES;
     }
     else if (mediaPlayerController) {
         BOOL allowsAirPlayPlayback = mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeAudio || mediaPlayerController.allowsExternalNonMirroredPlayback;
-        if (SRGRouteDetector.sharedRouteDetector.multipleRoutesDetected && allowsAirPlayPlayback) {
+        if (multipleRoutesDetected() && allowsAirPlayPlayback) {
             self.hidden = NO;
         }
         else {
@@ -230,7 +241,7 @@ static void commonInit(SRGAirPlayButton *self);
         }
     }
     else {
-        self.hidden = ! self.fakeInterfaceBuilderButton && ! SRGRouteDetector.sharedRouteDetector.multipleRoutesDetected;
+        self.hidden = ! self.fakeInterfaceBuilderButton && ! multipleRoutesDetected();
     }
 }
 

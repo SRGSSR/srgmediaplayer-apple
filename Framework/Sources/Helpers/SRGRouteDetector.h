@@ -14,9 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT NSString * const SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification;
 
 /**
- *  Detect route availability (e.g. Bluetooth or AirPlay). Similar to `AVRouteDetector`, but available for iOS 10
- *  and below as well.
+ *  Detect route availability (e.g. Bluetooth or AirPlay). Implements `AVRouteDetector` in a way that avoids
+ *  enabling it unnecessarily.
  */
+API_AVAILABLE(ios(11.0))
 @interface SRGRouteDetector : NSObject
 
 /**
