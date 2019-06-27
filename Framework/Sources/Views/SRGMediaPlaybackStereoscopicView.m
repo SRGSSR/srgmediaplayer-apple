@@ -6,8 +6,6 @@
 
 #import "SRGMediaPlaybackStereoscopicView.h"
 
-#import "AVPlayer+SRGMediaPlayer.h"
-
 static void commonInit(SRGMediaPlaybackStereoscopicView *self);
 
 @interface SRGMediaPlaybackStereoscopicView ()

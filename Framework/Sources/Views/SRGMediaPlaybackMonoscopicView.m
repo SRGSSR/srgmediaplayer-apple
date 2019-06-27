@@ -6,8 +6,6 @@
 
 #import "SRGMediaPlaybackMonoscopicView.h"
 
-#import "AVPlayer+SRGMediaPlayer.h"
-
 #import <SpriteKit/SpriteKit.h>
 
 static void commonInit(SRGMediaPlaybackMonoscopicView *self);
