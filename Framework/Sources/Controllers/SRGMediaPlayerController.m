@@ -268,13 +268,18 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
+            @strongify(player)
+            
+            // Pause playback when toggling off external playback with the app in background, if settings prevent playback to continue in background
+            if (! player.externalPlaybackActive && self.mediaType == SRGMediaPlayerMediaTypeVideo && UIApplication.sharedApplication.applicationState == UIApplicationStateBackground) {
+                BOOL supportsBackgroundVideoPlayback = self.viewBackgroundBehavior == SRGMediaPlayerViewBackgroundBehaviorDetached
+                    || (self.viewBackgroundBehavior == SRGMediaPlayerViewBackgroundBehaviorDetachedIfLocked && UIDevice.srg_mediaPlayer_isLocked);
+                if (! supportsBackgroundVideoPlayback) {
+                    [player pause];
+                }
+            }
             
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
-            
-            // Pause playback when switching routes in background, e.g. AirPlay or bluetooth headset.
-            if (UIApplication.sharedApplication.applicationState == UIApplicationStateBackground) {
-                [self.player pause];
-            }
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
