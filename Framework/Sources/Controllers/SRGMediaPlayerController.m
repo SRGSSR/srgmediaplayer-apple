@@ -268,13 +268,18 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
+            @strongify(player)
+            
+            // Pause playback when toggling off external playback with the app in background, if settings prevent playback to continue in background
+            if (! player.externalPlaybackActive && self.mediaType == SRGMediaPlayerMediaTypeVideo && UIApplication.sharedApplication.applicationState == UIApplicationStateBackground) {
+                BOOL supportsBackgroundVideoPlayback = self.viewBackgroundBehavior == SRGMediaPlayerViewBackgroundBehaviorDetached
+                    || (self.viewBackgroundBehavior == SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked && UIDevice.srg_mediaPlayer_isLocked);
+                if (! supportsBackgroundVideoPlayback) {
+                    [player pause];
+                }
+            }
             
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
-            
-            // Pause playback when switching routes in background, e.g. AirPlay or bluetooth headset.
-            if (UIApplication.sharedApplication.applicationState == UIApplicationStateBackground) {
-                [self.player pause];
-            }
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
@@ -1400,14 +1405,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
-    if (self.mediaType == SRGMediaPlayerMediaTypeVideo && ! self.pictureInPictureController.pictureInPictureActive && ! AVAudioSession.srg_isAirPlayActive) {
+    if (self.mediaType == SRGMediaPlayerMediaTypeVideo && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive) {
         switch (self.viewBackgroundBehavior) {
             case SRGMediaPlayerViewBackgroundBehaviorAttached: {
                 [self.player pause];
                 break;
             }
                 
-            case SRGMediaPlayerViewBackgroundBehaviorDetachedIfLocked: {
+            case SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked: {
                 // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (UIDevice.srg_mediaPlayer_isLocked) {

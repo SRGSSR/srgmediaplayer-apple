@@ -44,9 +44,9 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewBackgroundBehavior) {
      */
     SRGMediaPlayerViewBackgroundBehaviorDetached,
     /**
-     *  Detach the player view from the controller if the device is locked with the application active.
+     *  Detach the player view from the controller when the device is locked while the application is still open.
      */
-    SRGMediaPlayerViewBackgroundBehaviorDetachedIfLocked,
+    SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked
 };
 
 /**
