@@ -273,7 +273,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             // Pause playback when toggling off external playback with the app in background, if settings prevent playback to continue in background
             if (! player.externalPlaybackActive && self.mediaType == SRGMediaPlayerMediaTypeVideo && UIApplication.sharedApplication.applicationState == UIApplicationStateBackground) {
                 BOOL supportsBackgroundVideoPlayback = self.viewBackgroundBehavior == SRGMediaPlayerViewBackgroundBehaviorDetached
-                    || (self.viewBackgroundBehavior == SRGMediaPlayerViewBackgroundBehaviorDetachedIfLocked && UIDevice.srg_mediaPlayer_isLocked);
+                    || (self.viewBackgroundBehavior == SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked && UIDevice.srg_mediaPlayer_isLocked);
                 if (! supportsBackgroundVideoPlayback) {
                     [player pause];
                 }
@@ -1412,7 +1412,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                 break;
             }
                 
-            case SRGMediaPlayerViewBackgroundBehaviorDetachedIfLocked: {
+            case SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked: {
                 // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (UIDevice.srg_mediaPlayer_isLocked) {
