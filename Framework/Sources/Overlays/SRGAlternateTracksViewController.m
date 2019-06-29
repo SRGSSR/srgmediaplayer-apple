@@ -60,7 +60,9 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     _mediaPlayerController = mediaPlayerController;
     
     if (mediaPlayerController) {
+        @weakify(self)
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
             [self.tableView reloadData];
         }];
         
