@@ -8,12 +8,6 @@
 
 #import "NSBundle+SRGMediaPlayer.h"
 
-#import <MediaPlayer/MediaPlayer.h>
-
-static MPVolumeView *s_volumeView = nil;
-
-NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification = @"SRGMediaPlayerWirelessRouteDidChangeNotification";
-
 @implementation AVAudioSession (SRGMediaPlayer)
 
 #pragma mark Class methods
@@ -51,24 +45,6 @@ NSString * const SRGMediaPlayerWirelessRouteDidChangeNotification = @"SRGMediaPl
     }
 }
 
-#pragma mark Notifications
-
-+ (void)srg_wirelessRouteActiveDidChange:(NSNotification *)notification
-{
-    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerWirelessRouteDidChangeNotification object:nil];
-}
 
 @end
-
-__attribute__((constructor)) static void AVAudioSessionInit(void)
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // Costly at application startup. Defer slightly.
-        s_volumeView = [[MPVolumeView alloc] init];
-        [NSNotificationCenter.defaultCenter addObserver:AVAudioSession.class
-                                               selector:@selector(srg_wirelessRouteActiveDidChange:)
-                                                   name:MPVolumeViewWirelessRouteActiveDidChangeNotification
-                                                 object:s_volumeView];
-    });
-}
 

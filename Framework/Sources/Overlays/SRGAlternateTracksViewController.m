@@ -5,8 +5,9 @@
 //
 #import "SRGAlternateTracksViewController.h"
 
-#import "AVAudioSession+SRGMediaPlayer.h"
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGRouteDetector.h"
 
 #import <libextobjc/libextobjc.h>
 #import <MediaAccessibility/MediaAccessibility.h>
@@ -46,6 +47,8 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive)];
+        
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerAudioTrackDidChangeNotification
                                                     object:_mediaPlayerController];
@@ -57,6 +60,12 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     _mediaPlayerController = mediaPlayerController;
     
     if (mediaPlayerController) {
+        @weakify(self)
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
+            [self.tableView reloadData];
+        }];
+        
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(audioTrackDidChange:)
                                                    name:SRGMediaPlayerAudioTrackDidChangeNotification
@@ -127,11 +136,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         navigationBarAppearance.prefersLargeTitles = NO;
         navigationBarAppearance.largeTitleTextAttributes = nil;
     }
-    
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(wirelessRouteDidChange:)
-                                               name:SRGMediaPlayerWirelessRouteDidChangeNotification
-                                             object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -233,7 +237,8 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AVPlayerItem *playerItem = self.mediaPlayerController.player.currentItem;
+    AVPlayer *player = self.mediaPlayerController.player;
+    AVPlayerItem *playerItem = player.currentItem;
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
     
     NSString *characteristic = self.characteristics[indexPath.section];
@@ -251,7 +256,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
             UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
             
-            if (! AVAudioSession.srg_isAirPlayActive) {
+            if (! player.externalPlaybackActive) {
                 cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             }
             else {
@@ -369,7 +374,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     [self.tableView reloadData];
 }
 
-- (void)wirelessRouteDidChange:(NSNotification *)notification
+- (void)wirelessRouteActiveDidChange:(NSNotification *)notification
 {
     [self.tableView reloadData];
 }

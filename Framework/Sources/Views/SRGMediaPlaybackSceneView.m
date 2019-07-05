@@ -6,11 +6,9 @@
 
 #import "SRGMediaPlaybackSceneView.h"
 
-#import "AVPlayer+SRGMediaPlayer.h"
 #import "SRGMotionManager.h"
 #import "SRGQuaternion.h"
 #import "SRGVideoNode.h"
-#import "UIDevice+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
 #import <SpriteKit/SpriteKit.h>
@@ -76,16 +74,9 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
     [super willMoveToWindow:newWindow];
     
     if (newWindow) {
-        [NSNotificationCenter.defaultCenter addObserver:self
-                                               selector:@selector(applicationDidEnterBackground:)
-                                                   name:UIApplicationDidEnterBackgroundNotification
-                                                 object:nil];
         [SRGMotionManager start];
     }
     else {
-        [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:UIApplicationDidEnterBackgroundNotification
-                                                    object:nil];
         [SRGMotionManager stop];
     }
 }
@@ -201,20 +192,6 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
             break;
         }
     }
-}
-
-#pragma mark Notifications
-
-- (void)applicationDidEnterBackground:(NSNotification *)notification
-{
-    // Pause the player in background, but not when locking the device, as for `AVPlayerLayer`-based playback. Unlike
-    // usual `AVPlayerLayer`-based playback, `SKVideoNode`-based playback is not automatically paused. To determine
-    // whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (! UIDevice.srg_mediaPlayer_isLocked) {
-            [self.player pause];
-        }
-    });
 }
 
 @end

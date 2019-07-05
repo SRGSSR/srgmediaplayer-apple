@@ -32,9 +32,6 @@
 
 #pragma mark Tests
 
-// TODO: - Meaningful tests (also with asset config block)
-//       - Add track documentation to getting started guide (+ styling)
-
 - (void)testAudioTrackNotifications
 {
     [self expectationForSingleNotification:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
