@@ -32,10 +32,11 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithConfigurationFileName:(NSString *)configurationFileName mediaPlayerType:(MediaPlayerType)mediaPlayerType
+- (instancetype)initWithTitle:(NSString *)title configurationFileName:(NSString *)configurationFileName mediaPlayerType:(MediaPlayerType)mediaPlayerType
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     MediasViewController *viewController = [storyboard instantiateInitialViewController];
+    viewController.title = title;
     viewController.configurationFileName = configurationFileName;
     
     switch (mediaPlayerType) {
