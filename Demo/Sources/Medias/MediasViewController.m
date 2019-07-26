@@ -144,6 +144,7 @@
         if (mediaPlayer.playerClass == SRGMediaPlayerViewController.class) {
             SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
             mediaPlayerViewController.controller.view.viewMode = media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
+            mediaPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [mediaPlayerViewController.controller playURL:media.URL];
             [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
         }
@@ -157,14 +158,17 @@
         }
         else if (mediaPlayer.playerClass == InlinePlayerViewController.class) {
             InlinePlayerViewController *inlinePlayerViewController = [[InlinePlayerViewController alloc] initWithMedia:media];
+            inlinePlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self.navigationController pushViewController:inlinePlayerViewController animated:YES];
         }
         else if (mediaPlayer.playerClass == CustomPlayerViewController.class) {
             CustomPlayerViewController *customPlayerViewController = [[CustomPlayerViewController alloc] initWithMedia:media];
+            customPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:customPlayerViewController animated:YES completion:nil];
         }
         else if (mediaPlayer.playerClass == SegmentsPlayerViewController.class) {
             SegmentsPlayerViewController *segmentsPlayerViewController = [[SegmentsPlayerViewController alloc] initWithMedia:media];
+            segmentsPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:segmentsPlayerViewController animated:YES completion:nil];
         }
         else if (mediaPlayer.playerClass == MultiPlayerViewController.class) {
@@ -173,6 +177,7 @@
             [medias insertObject:media atIndex:0];
             
             MultiPlayerViewController *segmentsPlayerViewController = [[MultiPlayerViewController alloc] initWithMedias:[medias copy]];
+            segmentsPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:segmentsPlayerViewController animated:YES completion:nil];
         }
     }
