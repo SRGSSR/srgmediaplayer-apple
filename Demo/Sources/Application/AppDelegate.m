@@ -77,13 +77,6 @@
     tabBarController.viewControllers = @[videosNavigationController, segmentsNavigationController, multiPlayerNavigationController, audiosNavigationController];
     self.window.rootViewController = tabBarController;
     
-    // Avoid applying tint color to tab bar images
-    [tabBarController.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull viewController, NSUInteger idx, BOOL * _Nonnull stop) {
-        UITabBarItem *tabBarItem = viewController.tabBarItem;
-        tabBarItem.image = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        tabBarItem.selectedImage = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    }];
-    
     return YES;
 }
 
