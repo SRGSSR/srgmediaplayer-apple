@@ -44,6 +44,11 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 #pragma mark Getters and setters
 
+- (NSString *)title
+{
+    return SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Title of the pop over view to select audio or subtitles"); 
+}
+
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
@@ -117,7 +122,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     [super viewDidLoad];
     
-    self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Title of the pop over view to select audio or subtitles");
+    self.view.backgroundColor = UIColor.clearColor;
     
     // Force properties to avoid overrides with UIAppearance
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
@@ -136,20 +141,10 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         navigationBarAppearance.prefersLargeTitles = NO;
         navigationBarAppearance.largeTitleTextAttributes = nil;
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     
-    if (! self.navigationController.popoverPresentationController) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                               target:self
-                                                                                               action:@selector(done:)];
-    }
-    else {
-        self.view.backgroundColor = [UIColor clearColor];
-    }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                                   target:self
+                                                                                                   action:@selector(done:)];
 }
 
 #pragma mark Responsiveness
