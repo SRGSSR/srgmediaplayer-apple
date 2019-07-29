@@ -136,22 +136,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         userInterfaceStyle = s_styles[@(self.traitCollection.userInterfaceStyle)].integerValue;
     }
     
-    switch (userInterfaceStyle) {
-        case SRGMediaPlayerUserInterfaceStyleLight: {
-            return NO;
-            break;
-        }
-        
-        case SRGMediaPlayerUserInterfaceStyleDark: {
-            return YES;
-            break;
-        }
-        
-        default: {
-            return NO;
-            break;
-        }
-    }
+    return userInterfaceStyle != SRGMediaPlayerUserInterfaceStyleLight;
 }
 
 - (UIColor *)cellBackgroundColor
@@ -222,7 +207,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     }];
 }
 
-#pragma mark Dark mode support
+#pragma mark Traits
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
