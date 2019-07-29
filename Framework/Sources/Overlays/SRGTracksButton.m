@@ -206,6 +206,12 @@ static void commonInit(SRGTracksButton *self);
     UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController];
     navigationController.modalPresentationStyle = UIModalPresentationPopover;
     
+#ifdef __IPHONE_13_0
+    if (@available(iOS 13, *)) {
+        navigationController.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
+    }
+#endif
+    
     navigationController.popoverPresentationController.delegate = self;
     navigationController.popoverPresentationController.sourceView = self;
     navigationController.popoverPresentationController.sourceRect = self.bounds;
