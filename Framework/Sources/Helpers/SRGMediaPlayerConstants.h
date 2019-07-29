@@ -126,6 +126,15 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerPlaybackState) {
 };
 
 /**
+ *  User interface styles, for compatibility with `UIUserInterfaceStyle` on iOS 11 and below.
+ */
+typedef NS_ENUM(NSInteger, SRGMediaPlayerUserInterfaceStyle) {
+    SRGMediaPlayerUserInterfaceStyleUnspecified = 0,           // Automatic
+    SRGMediaPlayerUserInterfaceStyleLight,                     // Light
+    SRGMediaPlayerUserInterfaceStyleDark                       // Dark
+};
+
+/**
  *  @name Notifications
  */
 

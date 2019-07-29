@@ -21,11 +21,12 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 @interface SRGAlternateTracksViewController ()
 
+@property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
+@property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
+
 @property (nonatomic) NSArray<NSString *> *characteristics;
 @property (nonatomic) NSDictionary<NSString *, AVMediaSelectionGroup *> *groups;
 @property (nonatomic) NSDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options;
-
-@property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
 
 @property (nonatomic, weak) id periodicTimeObserver;
 
@@ -36,9 +37,11 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 #pragma mark Class methods
 
 + (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
+                                                                 withUserInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle
 {
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
     alternateTracksViewController.mediaPlayerController = mediaPlayerController;
+    alternateTracksViewController.userInterfaceStyle = userInterfaceStyle;
     return [[UINavigationController alloc] initWithRootViewController:alternateTracksViewController];
 }
 
@@ -142,9 +145,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         navigationBarAppearance.largeTitleTextAttributes = nil;
     }
     
-    UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-    self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                    target:self
                                                                                                    action:@selector(done:)];
@@ -168,6 +168,45 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
         self.popoverPresentationController.sourceRect = self.popoverPresentationController.sourceView.bounds;
     }];
+}
+
+#pragma mark Dark mode support
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    
+    SRGMediaPlayerUserInterfaceStyle userInterfaceStyle = self.userInterfaceStyle;
+    if (@available(iOS 13, *)) {
+        static dispatch_once_t s_onceToken;
+        static NSDictionary<NSNumber *, NSNumber *> *s_styles;
+        dispatch_once(&s_onceToken, ^{
+            s_styles = @{ @(UIUserInterfaceStyleUnspecified) : @(SRGMediaPlayerUserInterfaceStyleUnspecified),
+                          @(UIUserInterfaceStyleLight) : @(SRGMediaPlayerUserInterfaceStyleLight),
+                          @(UIUserInterfaceStyleDark) : @(SRGMediaPlayerUserInterfaceStyleDark) };
+        });
+        userInterfaceStyle = s_styles[@(self.traitCollection.userInterfaceStyle)].integerValue;
+    }
+    
+    UIBlurEffectStyle blurStyle = UIBlurEffectStyleLight;
+    switch (userInterfaceStyle) {
+        case SRGMediaPlayerUserInterfaceStyleLight: {
+            blurStyle = UIBlurEffectStyleLight;
+            break;
+        }
+        
+        case SRGMediaPlayerUserInterfaceStyleDark: {
+            blurStyle = UIBlurEffectStyleDark;
+            break;
+        }
+        
+        default: {
+            break;
+        }
+    }
+    
+    UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
+    self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
 }
 
 #pragma mark Accessibility

@@ -5,6 +5,7 @@
 //
 
 #import "SRGMediaPlayerController.h"
+#import "SRGMediaPlayerConstants.h"
 
 #import <UIKit/UIKit.h>
 
@@ -56,6 +57,13 @@ IB_DESIGNABLE
  */
 @property (nonatomic, null_resettable) UIImage *image;
 @property (nonatomic, null_resettable) UIImage *selectedImage;
+
+/**
+ *  The style to be applied to the selection popover.
+ *
+ *  @discussion Is applied the next time the popover is opened.
+ */
+@property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
 
 /**
  *  When set to `YES`, force the button to be always hidden, even if subtitles are available.

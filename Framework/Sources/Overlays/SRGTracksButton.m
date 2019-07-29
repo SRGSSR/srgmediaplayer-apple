@@ -203,14 +203,21 @@ static void commonInit(SRGTracksButton *self);
         [self.delegate tracksButtonWillShowSelectionPopover:self];
     }
     
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController];
+    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController
+                                                                                                                          withUserInterfaceStyle:self.userInterfaceStyle];
     navigationController.modalPresentationStyle = UIModalPresentationPopover;
     
-#ifdef __IPHONE_13_0
+    // TODO: Remove SRGMediaPlayerUserInterfaceStyle once SRG Media Player is requiring iOS 12 and above.
     if (@available(iOS 13, *)) {
-        navigationController.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
+        static dispatch_once_t s_onceToken;
+        static NSDictionary<NSNumber *, NSNumber *> *s_styles;
+        dispatch_once(&s_onceToken, ^{
+            s_styles = @{ @(SRGMediaPlayerUserInterfaceStyleUnspecified) : @(UIUserInterfaceStyleUnspecified),
+                          @(SRGMediaPlayerUserInterfaceStyleLight) : @(UIUserInterfaceStyleLight),
+                          @(SRGMediaPlayerUserInterfaceStyleDark) : @(UIUserInterfaceStyleDark) };
+        });
+        navigationController.overrideUserInterfaceStyle = s_styles[@(self.userInterfaceStyle)].integerValue;
     }
-#endif
     
     navigationController.popoverPresentationController.delegate = self;
     navigationController.popoverPresentationController.sourceView = self;
