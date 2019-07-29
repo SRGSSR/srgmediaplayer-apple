@@ -178,10 +178,14 @@ static void commonInit(SRGTracksButton *self);
 
 #pragma mark UIPopoverPresentationControllerDelegate protocol
 
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection
 {
-    // Needed for the iPhone
-    return UIModalPresentationNone;
+    if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+        return UIModalPresentationOverFullScreen;
+    }
+    else {
+        return UIModalPresentationPopover;
+    }
 }
 
 - (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
