@@ -124,6 +124,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (BOOL)isDark
 {
+    // TODO: Remove SRGMediaPlayerUserInterfaceStyle once SRG Media Player is requiring iOS 12 and above.
     SRGMediaPlayerUserInterfaceStyle userInterfaceStyle = self.userInterfaceStyle;
     if (@available(iOS 13, *)) {
         static dispatch_once_t s_onceToken;
@@ -155,11 +156,10 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = UIColor.clearColor;
-    
     // Force properties to avoid overrides with UIAppearance
+    // TODO: What about this?
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
-    navigationBarAppearance.barStyle = UIBarStyleDefault;
+    navigationBarAppearance.barStyle = UIBarStyleBlack;
     navigationBarAppearance.barTintColor = nil;
     navigationBarAppearance.tintColor = nil;
     navigationBarAppearance.titleTextAttributes = nil;
@@ -178,6 +178,8 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                    target:self
                                                                                                    action:@selector(done:)];
+    
+    [self updateTableViewAppearance];
 }
 
 #pragma mark Status bar
@@ -212,13 +214,20 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    
-    UIBlurEffectStyle blurStyle = self.dark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
-    UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
-    self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    
-    // Update table view appearance
-    [self.tableView reloadData];
+ 
+    // TODO: There is a current bug preventing this method from being called in some view controller hierarches like
+    //       ours (presentation controller + navigation controller). This should not be the case, as discussed in
+    //       https://developer.apple.com/videos/play/wwdc2019/214/ (~27 min). A bug report should be filed, but no
+    //       workaround should be made yet.
+    //
+    //       The result is that the associated view does not correctly update when toggling dark mode while the
+    //       tracks popover is on screen.
+    if (@available(iOS 13, *)) {
+        if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
+            self.overrideUserInterfaceStyle = self.dark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
+            [self updateTableViewAppearance];
+        }
+    }
 }
 
 #pragma mark Accessibility
@@ -232,6 +241,19 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     else {
         return NO;
     }
+}
+
+#pragma mark UI
+
+- (void)updateTableViewAppearance
+{
+    self.tableView.backgroundColor = UIColor.clearColor;
+    
+    UIBlurEffectStyle blurStyle = self.dark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
+    UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
+    self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark Cells
