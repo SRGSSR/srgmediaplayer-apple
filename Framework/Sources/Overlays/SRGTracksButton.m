@@ -206,6 +206,7 @@ static void commonInit(SRGTracksButton *self);
     UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController
                                                                                                                           withUserInterfaceStyle:self.userInterfaceStyle];
     navigationController.modalPresentationStyle = UIModalPresentationPopover;
+    navigationController.modalPresentationCapturesStatusBarAppearance = YES;
     
     // TODO: Remove SRGMediaPlayerUserInterfaceStyle once SRG Media Player is requiring iOS 12 and above.
     if (@available(iOS 13, *)) {
@@ -219,9 +220,10 @@ static void commonInit(SRGTracksButton *self);
         navigationController.overrideUserInterfaceStyle = s_styles[@(self.userInterfaceStyle)].integerValue;
     }
     
-    navigationController.popoverPresentationController.delegate = self;
-    navigationController.popoverPresentationController.sourceView = self;
-    navigationController.popoverPresentationController.sourceRect = self.bounds;
+    UIPopoverPresentationController *popoverPresentationController = navigationController.popoverPresentationController;
+    popoverPresentationController.delegate = self;
+    popoverPresentationController.sourceView = self;
+    popoverPresentationController.sourceRect = self.bounds;
     
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
     [topViewController presentViewController:navigationController

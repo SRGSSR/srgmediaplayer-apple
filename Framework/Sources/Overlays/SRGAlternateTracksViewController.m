@@ -7,6 +7,7 @@
 
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGMediaPlayerNavigationController.h"
 #import "SRGRouteDetector.h"
 
 #import <libextobjc/libextobjc.h>
@@ -30,6 +31,8 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 @property (nonatomic, weak) id periodicTimeObserver;
 
+@property (nonatomic, readonly, getter=isDark) BOOL dark;
+
 @end
 
 @implementation SRGAlternateTracksViewController
@@ -42,7 +45,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
     alternateTracksViewController.mediaPlayerController = mediaPlayerController;
     alternateTracksViewController.userInterfaceStyle = userInterfaceStyle;
-    return [[UINavigationController alloc] initWithRootViewController:alternateTracksViewController];
+    return [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:alternateTracksViewController];
 }
 
 #pragma mark Getters and setters
@@ -119,6 +122,48 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     [self.tableView reloadData];
 }
 
+- (BOOL)isDark
+{
+    SRGMediaPlayerUserInterfaceStyle userInterfaceStyle = self.userInterfaceStyle;
+    if (@available(iOS 13, *)) {
+        static dispatch_once_t s_onceToken;
+        static NSDictionary<NSNumber *, NSNumber *> *s_styles;
+        dispatch_once(&s_onceToken, ^{
+            s_styles = @{ @(UIUserInterfaceStyleUnspecified) : @(SRGMediaPlayerUserInterfaceStyleUnspecified),
+                          @(UIUserInterfaceStyleLight) : @(SRGMediaPlayerUserInterfaceStyleLight),
+                          @(UIUserInterfaceStyleDark) : @(SRGMediaPlayerUserInterfaceStyleDark) };
+        });
+        userInterfaceStyle = s_styles[@(self.traitCollection.userInterfaceStyle)].integerValue;
+    }
+    
+    switch (userInterfaceStyle) {
+        case SRGMediaPlayerUserInterfaceStyleLight: {
+            return NO;
+            break;
+        }
+        
+        case SRGMediaPlayerUserInterfaceStyleDark: {
+            return YES;
+            break;
+        }
+        
+        default: {
+            return NO;
+            break;
+        }
+    }
+}
+
+- (UIColor *)cellBackgroundColor
+{
+    if (self.dark) {
+        return [UIColor colorWithWhite:0.07f alpha:0.75f];
+    }
+    else {
+        return [UIColor colorWithWhite:0.94f alpha:0.75f];
+    }
+}
+
 #pragma mark View lifecycle
 
 - (void)viewDidLoad
@@ -150,6 +195,13 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
                                                                                                    action:@selector(done:)];
 }
 
+#pragma mark Status bar
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return self.dark ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;
+}
+
 #pragma mark Responsiveness
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -176,35 +228,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     [super traitCollectionDidChange:previousTraitCollection];
     
-    SRGMediaPlayerUserInterfaceStyle userInterfaceStyle = self.userInterfaceStyle;
-    if (@available(iOS 13, *)) {
-        static dispatch_once_t s_onceToken;
-        static NSDictionary<NSNumber *, NSNumber *> *s_styles;
-        dispatch_once(&s_onceToken, ^{
-            s_styles = @{ @(UIUserInterfaceStyleUnspecified) : @(SRGMediaPlayerUserInterfaceStyleUnspecified),
-                          @(UIUserInterfaceStyleLight) : @(SRGMediaPlayerUserInterfaceStyleLight),
-                          @(UIUserInterfaceStyleDark) : @(SRGMediaPlayerUserInterfaceStyleDark) };
-        });
-        userInterfaceStyle = s_styles[@(self.traitCollection.userInterfaceStyle)].integerValue;
-    }
-    
-    UIBlurEffectStyle blurStyle = UIBlurEffectStyleLight;
-    switch (userInterfaceStyle) {
-        case SRGMediaPlayerUserInterfaceStyleLight: {
-            blurStyle = UIBlurEffectStyleLight;
-            break;
-        }
-        
-        case SRGMediaPlayerUserInterfaceStyleDark: {
-            blurStyle = UIBlurEffectStyleDark;
-            break;
-        }
-        
-        default: {
-            break;
-        }
-    }
-    
+    UIBlurEffectStyle blurStyle = self.dark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
     UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
     self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
 }
@@ -231,6 +255,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     if (! cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier];
+        cell.backgroundColor = self.cellBackgroundColor;
     }
     
     cell.textLabel.enabled = YES;
@@ -245,6 +270,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     if (! cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kCellIdentifier];
+        cell.backgroundColor = self.cellBackgroundColor;
     }
     
     cell.textLabel.enabled = YES;
