@@ -6,12 +6,6 @@
 
 #import "SRGMediaPlayerNavigationController.h"
 
-@interface SRGMediaPlayerNavigationController ()
-
-@property (nonatomic) UIStatusBarStyle statusBarStyle;
-
-@end
-
 @implementation SRGMediaPlayerNavigationController
 
 #pragma mark Status bar

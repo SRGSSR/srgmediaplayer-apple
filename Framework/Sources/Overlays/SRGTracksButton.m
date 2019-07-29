@@ -227,6 +227,12 @@ static void commonInit(SRGTracksButton *self);
             popoverPresentationController.sourceView = self;
             popoverPresentationController.sourceRect = self.bounds;
     }
+    else if (@available(iOS 13, *)) {
+        // Default behavior leads to expected result
+    }
+    else {
+        navigationController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    }
     
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
         [topViewController presentViewController:navigationController
