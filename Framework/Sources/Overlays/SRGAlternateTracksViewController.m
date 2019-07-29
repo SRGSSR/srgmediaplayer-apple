@@ -231,6 +231,9 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     UIBlurEffectStyle blurStyle = self.dark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
     UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
     self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    
+    // Update table view appearance
+    [self.tableView reloadData];
 }
 
 #pragma mark Accessibility
@@ -255,10 +258,13 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     if (! cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier];
-        cell.backgroundColor = self.cellBackgroundColor;
     }
     
+    cell.backgroundColor = self.cellBackgroundColor;
+    
+    cell.textLabel.textColor = self.dark ? UIColor.whiteColor : UIColor.blackColor;
     cell.textLabel.enabled = YES;
+    
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     return cell;
 }
@@ -270,11 +276,17 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     if (! cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kCellIdentifier];
-        cell.backgroundColor = self.cellBackgroundColor;
     }
     
+    cell.backgroundColor = self.cellBackgroundColor;
+    
+    UIColor *textColor = self.dark ? UIColor.whiteColor : UIColor.blackColor;
+    cell.textLabel.textColor = textColor;
     cell.textLabel.enabled = YES;
+    
+    cell.detailTextLabel.textColor = textColor;
     cell.detailTextLabel.enabled = YES;
+    
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     return cell;
 }
@@ -394,6 +406,8 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     }
 }
 
+#pragma mark UITableViewDelegate protocol
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -436,6 +450,16 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     // No track change notification is emitted when the setting (e.g. Automatic or Off) does not lead to another value
     // being selected. We must therefore also fore a refresh to get correct cell state.
     [self.tableView reloadData];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
+{
+    view.textLabel.textColor = self.dark ? UIColor.whiteColor : UIColor.blackColor;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
+{
+    view.textLabel.textColor = self.dark ? UIColor.whiteColor : UIColor.blackColor;
 }
 
 #pragma mark Actions
