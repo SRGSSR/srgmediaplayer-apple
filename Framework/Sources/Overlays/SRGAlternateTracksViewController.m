@@ -154,12 +154,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (UIColor *)cellBackgroundColor
 {
-    if (self.dark) {
-        return [UIColor colorWithWhite:0.07f alpha:0.75f];
-    }
-    else {
-        return [UIColor colorWithWhite:0.94f alpha:0.75f];
-    }
+    return self.dark ? [UIColor colorWithWhite:0.07f alpha:0.75f] : UIColor.whiteColor;
 }
 
 - (UIColor *)cellTextColor
@@ -222,6 +217,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
+    // TODO: Not called on iOS 13 and above since presented not full screen
     return self.dark ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;
 }
 
@@ -283,23 +279,19 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (void)updateViewAppearance
 {
-    self.tableView.backgroundColor = UIColor.clearColor;
-    
     BOOL isDark = self.dark;
     
-    UIBlurEffectStyle blurStyle;
     if (@available(iOS 13, *)) {
-        blurStyle = isDark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
+        UIBlurEffectStyle blurStyle = isDark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
+        UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
+        self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        self.tableView.backgroundColor = UIColor.clearColor;
     }
     else {
         self.navigationController.navigationBar.barStyle = isDark ? UIBarStyleBlack : UIBarStyleDefault;
-        
-        blurStyle = isDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
         self.tableView.separatorColor = isDark ? [UIColor colorWithWhite:1.f alpha:0.08f] : UIColor.lightGrayColor;
+        self.tableView.backgroundColor = isDark ? UIColor.blackColor : [UIColor colorWithWhite:0.94f alpha:1.f];
     }
-    
-    UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
-    self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
     
     [self.tableView reloadData];
 }

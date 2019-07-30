@@ -218,7 +218,9 @@ static void commonInit(SRGTracksButton *self);
         // Default behavior leads to expected result
     }
     else {
-        navigationController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+        // UIModalPresentationFullScreen is required if we want the presented view controller to control the status
+        // bar appearance
+        navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
     }
     
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
