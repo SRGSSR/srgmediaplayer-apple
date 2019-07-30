@@ -255,8 +255,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     //       The result is that the associated view does not correctly update when toggling dark mode while the
     //       tracks popover is on screen.
     if (@available(iOS 13, *)) {
-        self.navigationController.overrideUserInterfaceStyle = self.dark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
-        
         if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
             [self updateViewAppearance];
         }
@@ -283,6 +281,8 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     BOOL isDark = self.dark;
     
     if (@available(iOS 13, *)) {
+        self.navigationController.overrideUserInterfaceStyle = self.dark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
+        
         UIBlurEffectStyle blurStyle = isDark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
         UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
         self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
