@@ -255,6 +255,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     }
     else {
         blurStyle = self.dark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
+        self.tableView.separatorColor = self.dark ? [UIColor colorWithWhite:1.f alpha:0.08f] : UIColor.lightGrayColor;
     }
     
     UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
@@ -468,12 +469,12 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
-    view.textLabel.textColor = self.dark ? UIColor.whiteColor : UIColor.blackColor;
+    view.textLabel.textColor = self.dark ? [UIColor colorWithWhite:0.5f alpha:1.f] : [UIColor colorWithWhite:0.5f alpha:1.f];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
-    view.textLabel.textColor = self.dark ? UIColor.whiteColor : UIColor.blackColor;
+    view.textLabel.textColor = self.dark ? [UIColor colorWithWhite:0.5f alpha:1.f] : [UIColor colorWithWhite:0.5f alpha:1.f];
 }
 
 #pragma mark Actions
