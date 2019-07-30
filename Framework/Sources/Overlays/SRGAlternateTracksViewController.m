@@ -194,9 +194,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     self.tableView.delegate = self;
     
     // Force properties to avoid overrides with UIAppearance
-    // TODO: What about this?
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
-    navigationBarAppearance.barStyle = UIBarStyleBlack;
     navigationBarAppearance.barTintColor = nil;
     navigationBarAppearance.tintColor = nil;
     navigationBarAppearance.titleTextAttributes = nil;
@@ -216,7 +214,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
                                                                                                    target:self
                                                                                                    action:@selector(done:)];
     
-    [self updateTableViewAppearance];
+    [self updateViewAppearance];
 }
 
 #pragma mark Status bar
@@ -262,7 +260,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     if (@available(iOS 13, *)) {
         if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
             self.overrideUserInterfaceStyle = self.dark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
-            [self updateTableViewAppearance];
+            [self updateViewAppearance];
         }
     }
 }
@@ -282,17 +280,21 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 #pragma mark UI
 
-- (void)updateTableViewAppearance
+- (void)updateViewAppearance
 {
     self.tableView.backgroundColor = UIColor.clearColor;
     
+    BOOL isDark = self.dark;
+    
     UIBlurEffectStyle blurStyle;
     if (@available(iOS 13, *)) {
-        blurStyle = self.dark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
+        blurStyle = isDark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
     }
     else {
-        blurStyle = self.dark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
-        self.tableView.separatorColor = self.dark ? [UIColor colorWithWhite:1.f alpha:0.08f] : UIColor.lightGrayColor;
+        self.navigationController.navigationBar.barStyle = isDark ? UIBarStyleBlack : UIBarStyleDefault;
+        
+        blurStyle = isDark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
+        self.tableView.separatorColor = isDark ? [UIColor colorWithWhite:1.f alpha:0.08f] : UIColor.lightGrayColor;
     }
     
     UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];

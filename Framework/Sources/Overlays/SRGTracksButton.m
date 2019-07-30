@@ -208,12 +208,11 @@ static void commonInit(SRGTracksButton *self);
     
     if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navigationController.modalPresentationStyle = UIModalPresentationPopover;
-        navigationController.modalPresentationCapturesStatusBarAppearance = YES;
         
         UIPopoverPresentationController *popoverPresentationController = navigationController.popoverPresentationController;
-            popoverPresentationController.delegate = self;
-            popoverPresentationController.sourceView = self;
-            popoverPresentationController.sourceRect = self.bounds;
+        popoverPresentationController.delegate = self;
+        popoverPresentationController.sourceView = self;
+        popoverPresentationController.sourceRect = self.bounds;
     }
     else if (@available(iOS 13, *)) {
         // Default behavior leads to expected result
