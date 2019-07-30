@@ -210,9 +210,10 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         navigationBarAppearance.largeTitleTextAttributes = nil;
     }
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                                   target:self
-                                                                                                   action:@selector(done:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:SRGMediaPlayerLocalizedString(@"OK", @"OK button title")
+                                                                              style:UIBarButtonItemStyleDone
+                                                                             target:self
+                                                                             action:@selector(done:)];
     
     [self updateViewAppearance];
 }
