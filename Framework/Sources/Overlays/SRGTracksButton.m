@@ -181,9 +181,11 @@ static void commonInit(SRGTracksButton *self);
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection
 {
     if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+        controller.presentedViewController.modalPresentationCapturesStatusBarAppearance = YES;
         return UIModalPresentationOverFullScreen;
     }
     else {
+        controller.presentedViewController.modalPresentationCapturesStatusBarAppearance = NO;
         return UIModalPresentationPopover;
     }
 }
@@ -218,15 +220,17 @@ static void commonInit(SRGTracksButton *self);
         // Default behavior leads to expected result
     }
     else {
-        // UIModalPresentationFullScreen is required if we want the presented view controller to control the status
-        // bar appearance
-        navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+        navigationController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+        
+        // Only `UIModalPresentationFullScreen` makes status bar control transferred to the presented view controller automatic.
+        // For other modes this has to be enabled explicitly.
+        navigationController.modalPresentationCapturesStatusBarAppearance = YES;
     }
     
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
-        [topViewController presentViewController:navigationController
-                                        animated:YES
-                                      completion:nil];
+    [topViewController presentViewController:navigationController
+                                    animated:YES
+                                  completion:nil];
 }
 
 #pragma mark Interface Builder integration
