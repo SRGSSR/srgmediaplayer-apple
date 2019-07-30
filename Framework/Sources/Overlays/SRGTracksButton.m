@@ -181,8 +181,13 @@ static void commonInit(SRGTracksButton *self);
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection
 {
     if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
-        controller.presentedViewController.modalPresentationCapturesStatusBarAppearance = YES;
-        return UIModalPresentationOverFullScreen;
+        if (@available(iOS 13, *)) {
+            return UIModalPresentationAutomatic;
+        }
+        else {
+            controller.presentedViewController.modalPresentationCapturesStatusBarAppearance = YES;
+            return UIModalPresentationOverFullScreen;
+        }
     }
     else {
         controller.presentedViewController.modalPresentationCapturesStatusBarAppearance = NO;
@@ -215,6 +220,9 @@ static void commonInit(SRGTracksButton *self);
         popoverPresentationController.delegate = self;
         popoverPresentationController.sourceView = self;
         popoverPresentationController.sourceRect = self.bounds;
+    }
+    else if (@available(iOS 13, *)) {
+        navigationController.modalPresentationStyle = UIModalPresentationAutomatic;
     }
     else {
         navigationController.modalPresentationStyle = UIModalPresentationOverFullScreen;
