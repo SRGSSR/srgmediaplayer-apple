@@ -25,6 +25,8 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 @property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
 @property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
 
+@property (nonatomic, weak) UITableView *tableView;
+
 @property (nonatomic) NSArray<NSString *> *characteristics;
 @property (nonatomic) NSDictionary<NSString *, AVMediaSelectionGroup *> *groups;
 @property (nonatomic) NSDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options;
@@ -42,10 +44,20 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 + (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
                                                                  withUserInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle
 {
-    SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    alternateTracksViewController.mediaPlayerController = mediaPlayerController;
-    alternateTracksViewController.userInterfaceStyle = userInterfaceStyle;
+    SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:mediaPlayerController
+                                                                                                                           userInterfaceStyle:userInterfaceStyle];
     return [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:alternateTracksViewController];
+}
+
+#pragma mark Object lifecycle
+
+- (instancetype)initWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController userInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle
+{
+    if (self = [super init]) {
+        self.mediaPlayerController = mediaPlayerController;
+        self.userInterfaceStyle = userInterfaceStyle;
+    }
+    return self;
 }
 
 #pragma mark Getters and setters
@@ -152,9 +164,24 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 #pragma mark View lifecycle
 
+- (void)loadView
+{
+    UIView *view = [[UIView alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    
+    UITableView *tableView = [[UITableView alloc] initWithFrame:view.bounds style:UITableViewStyleGrouped];
+    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [view addSubview:tableView];
+    self.tableView = tableView;
+    
+    self.view = view;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     
     // Force properties to avoid overrides with UIAppearance
     // TODO: What about this?
@@ -469,12 +496,22 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
-    view.textLabel.textColor = self.dark ? [UIColor colorWithWhite:0.5f alpha:1.f] : [UIColor colorWithWhite:0.5f alpha:1.f];
+    if (@available(iOS 13, *)) {
+        view.textLabel.textColor = self.dark ? [UIColor colorWithWhite:0.5f alpha:1.f] : [UIColor colorWithWhite:0.5f alpha:1.f];
+    }
+    else {
+        view.textLabel.textColor = self.dark ? UIColor.whiteColor : [UIColor colorWithWhite:0.5f alpha:1.f];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
-    view.textLabel.textColor = self.dark ? [UIColor colorWithWhite:0.5f alpha:1.f] : [UIColor colorWithWhite:0.5f alpha:1.f];
+    if (@available(iOS 13, *)) {
+        view.textLabel.textColor = self.dark ? [UIColor colorWithWhite:0.5f alpha:1.f] : [UIColor colorWithWhite:0.5f alpha:1.f];
+    }
+    else {
+        view.textLabel.textColor = self.dark ? UIColor.whiteColor : [UIColor colorWithWhite:0.5f alpha:1.f];
+    }
 }
 
 #pragma mark Actions
