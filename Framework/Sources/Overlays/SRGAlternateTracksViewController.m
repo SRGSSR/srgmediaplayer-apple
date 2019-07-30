@@ -136,20 +136,20 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (BOOL)isDark
 {
-    // TODO: Remove SRGMediaPlayerUserInterfaceStyle once SRG Media Player is requiring iOS 12 and above.
-    SRGMediaPlayerUserInterfaceStyle userInterfaceStyle = self.userInterfaceStyle;
-    if (@available(iOS 13, *)) {
-        static dispatch_once_t s_onceToken;
-        static NSDictionary<NSNumber *, NSNumber *> *s_styles;
-        dispatch_once(&s_onceToken, ^{
-            s_styles = @{ @(UIUserInterfaceStyleUnspecified) : @(SRGMediaPlayerUserInterfaceStyleUnspecified),
-                          @(UIUserInterfaceStyleLight) : @(SRGMediaPlayerUserInterfaceStyleLight),
-                          @(UIUserInterfaceStyleDark) : @(SRGMediaPlayerUserInterfaceStyleDark) };
-        });
-        userInterfaceStyle = s_styles[@(self.traitCollection.userInterfaceStyle)].integerValue;
+    // TODO: Remove SRGMediaPlayerUserInterfaceStyle once SRG Media Player is requiring iOS 12 and above, and
+    //       use UIUserInterfaceStyleLight instead.
+    if (self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleUnspecified) {
+        if (@available(iOS 13, *)) {
+            return self.traitCollection.userInterfaceStyle != UIUserInterfaceStyleLight;
+        }
+        else {
+            // Use dark as default below iOS 13 (this is the `AVPlayerViewController` default in iOS 11 and 12).
+            return YES;
+        }
     }
-    
-    return userInterfaceStyle != SRGMediaPlayerUserInterfaceStyleLight;
+    else {
+        return self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleDark;
+    }
 }
 
 - (UIColor *)cellBackgroundColor
@@ -255,8 +255,9 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     //       The result is that the associated view does not correctly update when toggling dark mode while the
     //       tracks popover is on screen.
     if (@available(iOS 13, *)) {
+        self.navigationController.overrideUserInterfaceStyle = self.dark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
+        
         if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
-            self.overrideUserInterfaceStyle = self.dark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
             [self updateViewAppearance];
         }
     }
