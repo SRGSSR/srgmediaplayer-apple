@@ -162,6 +162,16 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     }
 }
 
+- (UIColor *)cellTextColor
+{
+    if (@available(iOS 13, *)) {
+        return [UIColor colorWithWhite:0.5f alpha:1.f];
+    }
+    else {
+        return self.dark ? [UIColor colorWithWhite:0.5f alpha:1.f] : UIColor.blackColor;
+    }
+}
+
 #pragma mark View lifecycle
 
 - (void)loadView
@@ -496,22 +506,12 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
-    if (@available(iOS 13, *)) {
-        view.textLabel.textColor = self.dark ? [UIColor colorWithWhite:0.5f alpha:1.f] : [UIColor colorWithWhite:0.5f alpha:1.f];
-    }
-    else {
-        view.textLabel.textColor = self.dark ? UIColor.whiteColor : [UIColor colorWithWhite:0.5f alpha:1.f];
-    }
+    view.textLabel.textColor = self.cellTextColor;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
-    if (@available(iOS 13, *)) {
-        view.textLabel.textColor = self.dark ? [UIColor colorWithWhite:0.5f alpha:1.f] : [UIColor colorWithWhite:0.5f alpha:1.f];
-    }
-    else {
-        view.textLabel.textColor = self.dark ? UIColor.whiteColor : [UIColor colorWithWhite:0.5f alpha:1.f];
-    }
+    view.textLabel.textColor = self.cellTextColor;
 }
 
 #pragma mark Actions
