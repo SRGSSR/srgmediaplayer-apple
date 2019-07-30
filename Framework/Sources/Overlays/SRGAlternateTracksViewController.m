@@ -249,7 +249,14 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     self.tableView.backgroundColor = UIColor.clearColor;
     
-    UIBlurEffectStyle blurStyle = self.dark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
+    UIBlurEffectStyle blurStyle;
+    if (@available(iOS 13, *)) {
+        blurStyle = self.dark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
+    }
+    else {
+        blurStyle = self.dark ? UIBlurEffectStyleDark : UIBlurEffectStyleLight;
+    }
+    
     UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
     self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
     
