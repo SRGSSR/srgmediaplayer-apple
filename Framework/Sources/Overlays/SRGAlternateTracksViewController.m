@@ -216,7 +216,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    // TODO: Not called on iOS 13 and above since presented not full screen
     return self.dark ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;
 }
 
@@ -283,7 +282,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     
 #ifdef __IPHONE_13_0
     if (@available(iOS 13, *)) {
-        self.navigationController.overrideUserInterfaceStyle = self.dark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
+        self.navigationController.overrideUserInterfaceStyle = isDark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
         
         UIBlurEffectStyle blurStyle = isDark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
         UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
