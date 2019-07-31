@@ -82,7 +82,7 @@ static void commonInit(SRGTracksButton *self);
 
 - (UIImage *)image
 {
-    return _image ?: [UIImage imageNamed:@"alternate_tracks_button" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    return _image ?: [UIImage imageNamed:@"alternate_tracks" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setImage:(UIImage *)image
@@ -93,7 +93,7 @@ static void commonInit(SRGTracksButton *self);
 
 - (UIImage *)selectedImage
 {
-    return _selectedImage ?: [UIImage imageNamed:@"alternate_tracks_button_selected" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    return _selectedImage ?: [UIImage imageNamed:@"alternate_tracks_selected" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setSelectedImage:(UIImage *)selectedImage

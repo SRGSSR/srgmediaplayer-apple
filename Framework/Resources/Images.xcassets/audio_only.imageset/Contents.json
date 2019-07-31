@@ -2,18 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "audio_only.png",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "audio_only@2x.png",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "audio_only@3x.png",
-      "scale" : "3x"
+      "filename" : "audio_only.pdf"
     }
   ],
   "info" : {
