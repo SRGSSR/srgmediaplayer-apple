@@ -247,6 +247,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     [super traitCollectionDidChange:previousTraitCollection];
  
+#ifdef __IPHONE_13_0
     // TODO: There is a current bug preventing this method from being called in some view controller hierarches like
     //       ours (presentation controller + navigation controller). This should not be the case, as discussed in
     //       https://developer.apple.com/videos/play/wwdc2019/214/ (~27 min). A bug report should be filed, but no
@@ -259,6 +260,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
             [self updateViewAppearance];
         }
     }
+#endif
 }
 
 #pragma mark Accessibility
@@ -280,6 +282,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     BOOL isDark = self.dark;
     
+#ifdef __IPHONE_13_0
     if (@available(iOS 13, *)) {
         self.navigationController.overrideUserInterfaceStyle = self.dark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
         
@@ -289,10 +292,13 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         self.tableView.backgroundColor = UIColor.clearColor;
     }
     else {
+#endif
         self.navigationController.navigationBar.barStyle = isDark ? UIBarStyleBlack : UIBarStyleDefault;
         self.tableView.separatorColor = isDark ? [UIColor colorWithWhite:1.f alpha:0.08f] : UIColor.lightGrayColor;
         self.tableView.backgroundColor = isDark ? UIColor.blackColor : [UIColor colorWithWhite:0.94f alpha:1.f];
+#ifdef __IPHONE_13_0
     }
+#endif
     
     [self.tableView reloadData];
 }
