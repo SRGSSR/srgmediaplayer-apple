@@ -95,6 +95,7 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="DNG-or-44v" firstAttribute="centerX" secondItem="5GK-5L-sQL" secondAttribute="centerX" id="5wg-hP-RyW"/>
                             <constraint firstItem="mz4-3g-dMP" firstAttribute="width" secondItem="VxK-5u-5wr" secondAttribute="width" multiplier="3/4" id="FBl-Le-WAa"/>
