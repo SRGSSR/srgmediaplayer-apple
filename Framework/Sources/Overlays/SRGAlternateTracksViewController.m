@@ -34,6 +34,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 @property (nonatomic, weak) id periodicTimeObserver;
 
 @property (nonatomic, readonly, getter=isDark) BOOL dark;
+@property (nonatomic, readonly) UIPopoverPresentationController *parentPopoverPresentationController;
 
 @end
 
@@ -167,6 +168,11 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     }
 }
 
+- (UIPopoverPresentationController *)parentPopoverPresentationController
+{
+    return self.navigationController.popoverPresentationController;
+}
+
 #pragma mark View lifecycle
 
 - (void)loadView
@@ -239,7 +245,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     
     [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        self.popoverPresentationController.sourceRect = self.popoverPresentationController.sourceView.bounds;
+        self.parentPopoverPresentationController.sourceRect = self.parentPopoverPresentationController.sourceView.bounds;
     }];
 }
 
@@ -248,7 +254,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
     
     [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        self.popoverPresentationController.sourceRect = self.popoverPresentationController.sourceView.bounds;
+        self.parentPopoverPresentationController.sourceRect = self.parentPopoverPresentationController.sourceView.bounds;
     }];
 }
 
@@ -297,7 +303,10 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 #endif
         self.navigationController.navigationBar.barStyle = isDark ? UIBarStyleBlack : UIBarStyleDefault;
         self.tableView.separatorColor = isDark ? [UIColor colorWithWhite:1.f alpha:0.08f] : UIColor.lightGrayColor;
-        self.tableView.backgroundColor = isDark ? UIColor.blackColor : [UIColor colorWithWhite:0.94f alpha:1.f];
+        
+        UIColor *backgroundColor = isDark ? UIColor.blackColor : UIColor.groupTableViewBackgroundColor;
+        self.tableView.backgroundColor = backgroundColor;
+        self.parentPopoverPresentationController.backgroundColor = backgroundColor;
 #ifdef __IPHONE_13_0
     }
 #endif
