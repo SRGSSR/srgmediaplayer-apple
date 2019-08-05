@@ -137,7 +137,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 - (BOOL)isDark
 {
     // TODO: Remove SRGMediaPlayerUserInterfaceStyle once SRG Media Player is requiring iOS 12 and above, and
-    //       use UIUserInterfaceStyleLight instead.
+    //       use UIUserInterfaceStyle instead.
     if (self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleUnspecified) {
         if (@available(iOS 13, *)) {
             return self.traitCollection.userInterfaceStyle != UIUserInterfaceStyleLight;
@@ -184,6 +184,19 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+#ifdef __IPHONE_13_0
+    // The style must only be overridden when forced, otherwise no traits change will occur when dark mode is toggled
+    // in the system settings.
+    if (@available(iOS 13, *)) {
+        if (self.userInterfaceStyle != SRGMediaPlayerUserInterfaceStyleUnspecified) {
+            self.navigationController.overrideUserInterfaceStyle = (self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleDark) ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
+        }
+        else {
+            self.navigationController.overrideUserInterfaceStyle = SRGMediaPlayerUserInterfaceStyleUnspecified;
+        }
+    }
+#endif
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -246,13 +259,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     [super traitCollectionDidChange:previousTraitCollection];
  
 #ifdef __IPHONE_13_0
-    // TODO: There is a current bug preventing this method from being called in some view controller hierarches like
-    //       ours (presentation controller + navigation controller). This should not be the case, as discussed in
-    //       https://developer.apple.com/videos/play/wwdc2019/214/ (~27 min). A bug report should be filed, but no
-    //       workaround should be made yet.
-    //
-    //       The result is that the associated view does not correctly update when toggling dark mode while the
-    //       tracks popover is on screen.
     if (@available(iOS 13, *)) {
         if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
             [self updateViewAppearance];
@@ -282,8 +288,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     
 #ifdef __IPHONE_13_0
     if (@available(iOS 13, *)) {
-        self.navigationController.overrideUserInterfaceStyle = isDark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
-        
         UIBlurEffectStyle blurStyle = isDark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
         UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
         self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
