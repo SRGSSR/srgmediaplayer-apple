@@ -59,9 +59,10 @@ IB_DESIGNABLE
 @property (nonatomic, null_resettable) UIImage *selectedImage;
 
 /**
- *  The style to be applied to the selection popover.
+ *  The style to be applied to the selection popover. Default value is `SRGMediaPlayerUserInterfaceStyleUnspecified`
+ *  (default dark appearance prior to iOS 13, and based on dark mode settings for iOS 13 and above).
  *
- *  @discussion Is applied the next time the popover is opened.
+ *  @discussion The style will be applied the next time the popover is opened.
  */
 @property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
 
