@@ -158,14 +158,9 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     return self.dark ? [UIColor colorWithWhite:0.07f alpha:0.75f] : UIColor.whiteColor;
 }
 
-- (UIColor *)cellTextColor
+- (UIColor *)headerTextColor
 {
-    if (@available(iOS 13, *)) {
-        return [UIColor colorWithWhite:0.5f alpha:1.f];
-    }
-    else {
-        return self.dark ? [UIColor colorWithWhite:0.5f alpha:1.f] : UIColor.blackColor;
-    }
+    return [UIColor colorWithWhite:0.5f alpha:1.f];
 }
 
 - (UIPopoverPresentationController *)parentPopoverPresentationController
@@ -304,7 +299,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         self.navigationController.navigationBar.barStyle = isDark ? UIBarStyleBlack : UIBarStyleDefault;
         self.tableView.separatorColor = isDark ? [UIColor colorWithWhite:1.f alpha:0.08f] : UIColor.lightGrayColor;
         
-        UIColor *backgroundColor = isDark ? UIColor.blackColor : UIColor.groupTableViewBackgroundColor;
+        UIColor *backgroundColor = isDark ? [UIColor colorWithWhite:0.17f alpha:1.f] : UIColor.groupTableViewBackgroundColor;
         self.tableView.backgroundColor = backgroundColor;
         self.parentPopoverPresentationController.backgroundColor = backgroundColor;
 #ifdef __IPHONE_13_0
@@ -519,12 +514,12 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
-    view.textLabel.textColor = self.cellTextColor;
+    view.textLabel.textColor = self.headerTextColor;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
-    view.textLabel.textColor = self.cellTextColor;
+    view.textLabel.textColor = self.headerTextColor;
 }
 
 #pragma mark Actions
