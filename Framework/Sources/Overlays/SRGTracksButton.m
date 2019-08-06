@@ -82,7 +82,7 @@ static void commonInit(SRGTracksButton *self);
 
 - (UIImage *)image
 {
-    return _image ?: [UIImage imageNamed:@"alternate_tracks_button" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    return _image ?: [UIImage imageNamed:@"alternate_tracks" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setImage:(UIImage *)image
@@ -93,7 +93,7 @@ static void commonInit(SRGTracksButton *self);
 
 - (UIImage *)selectedImage
 {
-    return _selectedImage ?: [UIImage imageNamed:@"alternate_tracks_button_selected" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    return _selectedImage ?: [UIImage imageNamed:@"alternate_tracks_selected" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setSelectedImage:(UIImage *)selectedImage
@@ -178,10 +178,25 @@ static void commonInit(SRGTracksButton *self);
 
 #pragma mark UIPopoverPresentationControllerDelegate protocol
 
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection
 {
-    // Needed for the iPhone
-    return UIModalPresentationNone;
+    if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+#ifdef __IPHONE_13_0
+        if (@available(iOS 13, *)) {
+            return UIModalPresentationAutomatic;
+        }
+        else {
+#endif
+            controller.presentedViewController.modalPresentationCapturesStatusBarAppearance = YES;
+            return UIModalPresentationOverFullScreen;
+#ifdef __IPHONE_13_0
+        }
+#endif
+    }
+    else {
+        controller.presentedViewController.modalPresentationCapturesStatusBarAppearance = NO;
+        return UIModalPresentationPopover;
+    }
 }
 
 - (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
@@ -199,12 +214,29 @@ static void commonInit(SRGTracksButton *self);
         [self.delegate tracksButtonWillShowSelectionPopover:self];
     }
     
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController];
-    navigationController.modalPresentationStyle = UIModalPresentationPopover;
+    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController
+                                                                                                                          withUserInterfaceStyle:self.userInterfaceStyle];
     
-    navigationController.popoverPresentationController.delegate = self;
-    navigationController.popoverPresentationController.sourceView = self;
-    navigationController.popoverPresentationController.sourceRect = self.bounds;
+    if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        navigationController.modalPresentationStyle = UIModalPresentationPopover;
+        
+        UIPopoverPresentationController *popoverPresentationController = navigationController.popoverPresentationController;
+        popoverPresentationController.delegate = self;
+        popoverPresentationController.sourceView = self;
+        popoverPresentationController.sourceRect = self.bounds;
+    }
+#ifdef __IPHONE_13_0
+    else if (@available(iOS 13, *)) {
+        navigationController.modalPresentationStyle = UIModalPresentationAutomatic;
+    }
+#endif
+    else {
+        navigationController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+        
+        // Only `UIModalPresentationFullScreen` makes status bar control transferred to the presented view controller automatic.
+        // For other modes this has to be enabled explicitly.
+        navigationController.modalPresentationCapturesStatusBarAppearance = YES;
+    }
     
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
     [topViewController presentViewController:navigationController

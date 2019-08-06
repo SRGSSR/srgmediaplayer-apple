@@ -58,35 +58,24 @@
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     
-    MediasViewController *videosViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"VideoDemoConfiguration" mediaPlayerType:MediaPlayerTypeStandard];
-    videosViewController.title = DemoNonLocalizedString(@"Videos");
-    videosViewController.tabBarItem.image = [UIImage imageNamed:@"videos"];
+    MediasViewController *videosViewController = [[MediasViewController alloc] initWithTitle:DemoNonLocalizedString(@"Videos") configurationFileName:@"VideoDemoConfiguration" mediaPlayerType:MediaPlayerTypeStandard];
     UINavigationController *videosNavigationController = [[UINavigationController alloc] initWithRootViewController:videosViewController];
+    videosNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:DemoNonLocalizedString(@"Videos") image:[UIImage imageNamed:@"videos"] tag:0];
     
-    MediasViewController *segmentsViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"SegmentDemoConfiguration" mediaPlayerType:MediaPlayerTypeSegments];
-    segmentsViewController.title = DemoNonLocalizedString(@"Segments");
-    segmentsViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
+    MediasViewController *segmentsViewController = [[MediasViewController alloc] initWithTitle:DemoNonLocalizedString(@"Segments") configurationFileName:@"SegmentDemoConfiguration" mediaPlayerType:MediaPlayerTypeSegments];
     UINavigationController *segmentsNavigationController = [[UINavigationController alloc] initWithRootViewController:segmentsViewController];
+    segmentsNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:DemoNonLocalizedString(@"Segments") image:[UIImage imageNamed:@"segments"] tag:1];
     
-    MediasViewController *multiPlayerViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"MultiPlayerDemoConfiguration" mediaPlayerType:MediaPlayerTypeMulti];
-    multiPlayerViewController.title = DemoNonLocalizedString(@"Multi-stream");
-    multiPlayerViewController.tabBarItem.image = [UIImage imageNamed:@"screen"];
+    MediasViewController *multiPlayerViewController = [[MediasViewController alloc] initWithTitle:DemoNonLocalizedString(@"Multi-stream") configurationFileName:@"MultiPlayerDemoConfiguration" mediaPlayerType:MediaPlayerTypeMulti];
     UINavigationController *multiPlayerNavigationController = [[UINavigationController alloc] initWithRootViewController:multiPlayerViewController];
+    multiPlayerNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:DemoNonLocalizedString(@"Multi-stream") image:[UIImage imageNamed:@"multiplayer"] tag:2];
     
-    MediasViewController *audiosViewController = [[MediasViewController alloc] initWithConfigurationFileName:@"AudioDemoConfiguration" mediaPlayerType:MediaPlayerTypeStandard];
-    audiosViewController.title = DemoNonLocalizedString(@"Audios");
-    audiosViewController.tabBarItem.image = [UIImage imageNamed:@"audios"];
+    MediasViewController *audiosViewController = [[MediasViewController alloc] initWithTitle:DemoNonLocalizedString(@"Audios") configurationFileName:@"AudioDemoConfiguration" mediaPlayerType:MediaPlayerTypeStandard];
     UINavigationController *audiosNavigationController = [[UINavigationController alloc] initWithRootViewController:audiosViewController];
+    audiosNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:DemoNonLocalizedString(@"Audios") image:[UIImage imageNamed:@"audios"] tag:3];
     
     tabBarController.viewControllers = @[videosNavigationController, segmentsNavigationController, multiPlayerNavigationController, audiosNavigationController];
     self.window.rootViewController = tabBarController;
-    
-    // Avoid applying tint color to tab bar images
-    [tabBarController.viewControllers enumerateObjectsUsingBlock:^(UIViewController * _Nonnull viewController, NSUInteger idx, BOOL * _Nonnull stop) {
-        UITabBarItem *tabBarItem = viewController.tabBarItem;
-        tabBarItem.image = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        tabBarItem.selectedImage = [tabBarItem.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    }];
     
     return YES;
 }

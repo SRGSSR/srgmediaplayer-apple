@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="IH9-dj-2W7">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14845" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="IH9-dj-2W7">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14799.2"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,14 +17,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mz4-3g-dMP">
-                                <rect key="frame" x="47" y="40" width="281" height="158.5"/>
+                                <rect key="frame" x="47" y="20" width="281" height="158"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a0j-Wy-3w4" customClass="SRGMediaPlayerView">
-                                        <rect key="frame" x="0.0" y="0.0" width="281" height="158.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="281" height="158"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qKr-hy-Qhj">
-                                        <rect key="frame" x="0.0" y="114.5" width="281" height="44"/>
+                                        <rect key="frame" x="0.0" y="114" width="281" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ppv-Ye-ua0" customClass="SRGPlaybackButton">
                                                 <rect key="frame" x="5" y="5" width="30" height="34"/>
@@ -67,7 +63,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vPP-hu-p6g">
-                                <rect key="frame" x="135" y="206.5" width="105" height="30"/>
+                                <rect key="frame" x="135" y="186" width="105" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="105" id="qmW-F0-70e"/>
                                 </constraints>
@@ -79,7 +75,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="utS-HI-UsH">
-                                <rect key="frame" x="172.5" y="244.5" width="30" height="30"/>
+                                <rect key="frame" x="172.5" y="224" width="30" height="30"/>
                                 <state key="normal" title="Play">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -88,7 +84,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5GK-5L-sQL">
-                                <rect key="frame" x="168" y="282.5" width="39" height="30"/>
+                                <rect key="frame" x="168" y="262" width="39" height="30"/>
                                 <state key="normal" title="Reset">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -97,7 +93,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="DNG-or-44v" firstAttribute="centerX" secondItem="5GK-5L-sQL" secondAttribute="centerX" id="5wg-hP-RyW"/>
                             <constraint firstItem="mz4-3g-dMP" firstAttribute="width" secondItem="VxK-5u-5wr" secondAttribute="width" multiplier="3/4" id="FBl-Le-WAa"/>

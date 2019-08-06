@@ -69,7 +69,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (UIImage *)startImage
 {
-    return _startImage ?: [UIImage imageNamed:@"picture_in_picture_start_button" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    return _startImage ?: [UIImage imageNamed:@"picture_in_picture_start" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setStartImage:(UIImage *)startImage
@@ -80,7 +80,7 @@ static void commonInit(SRGPictureInPictureButton *self);
 
 - (UIImage *)stopImage
 {
-    return _stopImage ?: [UIImage imageNamed:@"picture_in_picture_stop_button" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    return _stopImage ?: [UIImage imageNamed:@"picture_in_picture_stop" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setStopImage:(UIImage *)stopImage

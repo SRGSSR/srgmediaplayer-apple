@@ -7,6 +7,7 @@
 
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGMediaPlayerNavigationController.h"
 #import "SRGRouteDetector.h"
 
 #import <libextobjc/libextobjc.h>
@@ -21,13 +22,19 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 @interface SRGAlternateTracksViewController ()
 
+@property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
+@property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
+
+@property (nonatomic, weak) UITableView *tableView;
+
 @property (nonatomic) NSArray<NSString *> *characteristics;
 @property (nonatomic) NSDictionary<NSString *, AVMediaSelectionGroup *> *groups;
 @property (nonatomic) NSDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options;
 
-@property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
-
 @property (nonatomic, weak) id periodicTimeObserver;
+
+@property (nonatomic, readonly, getter=isDark) BOOL dark;
+@property (nonatomic, readonly) UIPopoverPresentationController *parentPopoverPresentationController;
 
 @end
 
@@ -36,13 +43,30 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 #pragma mark Class methods
 
 + (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
+                                                                 withUserInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle
 {
-    SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    alternateTracksViewController.mediaPlayerController = mediaPlayerController;
-    return [[UINavigationController alloc] initWithRootViewController:alternateTracksViewController];
+    SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:mediaPlayerController
+                                                                                                                           userInterfaceStyle:userInterfaceStyle];
+    return [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:alternateTracksViewController];
+}
+
+#pragma mark Object lifecycle
+
+- (instancetype)initWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController userInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle
+{
+    if (self = [super init]) {
+        self.mediaPlayerController = mediaPlayerController;
+        self.userInterfaceStyle = userInterfaceStyle;
+    }
+    return self;
 }
 
 #pragma mark Getters and setters
+
+- (NSString *)title
+{
+    return SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Title of the pop over view to select audio or subtitles"); 
+}
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
@@ -111,17 +135,75 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     [self.tableView reloadData];
 }
 
+- (BOOL)isDark
+{
+    // TODO: Remove SRGMediaPlayerUserInterfaceStyle once SRG Media Player is requiring iOS 12 and above, and
+    //       use UIUserInterfaceStyle instead.
+    if (self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleUnspecified) {
+        if (@available(iOS 13, *)) {
+            return self.traitCollection.userInterfaceStyle != UIUserInterfaceStyleLight;
+        }
+        else {
+            // Use dark as default below iOS 13 (this is the `AVPlayerViewController` default in iOS 11 and 12).
+            return YES;
+        }
+    }
+    else {
+        return self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleDark;
+    }
+}
+
+- (UIColor *)cellBackgroundColor
+{
+    return self.dark ? [UIColor colorWithWhite:0.07f alpha:0.75f] : UIColor.whiteColor;
+}
+
+- (UIColor *)headerTextColor
+{
+    return [UIColor colorWithWhite:0.5f alpha:1.f];
+}
+
+- (UIPopoverPresentationController *)parentPopoverPresentationController
+{
+    return self.navigationController.popoverPresentationController;
+}
+
 #pragma mark View lifecycle
+
+- (void)loadView
+{
+    UIView *view = [[UIView alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    
+    UITableView *tableView = [[UITableView alloc] initWithFrame:view.bounds style:UITableViewStyleGrouped];
+    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [view addSubview:tableView];
+    self.tableView = tableView;
+    
+    self.view = view;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.title = SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Title of the pop over view to select audio or subtitles");
+#ifdef __IPHONE_13_0
+    // The style must only be overridden when forced, otherwise no traits change will occur when dark mode is toggled
+    // in the system settings.
+    if (@available(iOS 13, *)) {
+        if (self.userInterfaceStyle != SRGMediaPlayerUserInterfaceStyleUnspecified) {
+            self.navigationController.overrideUserInterfaceStyle = (self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleDark) ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
+        }
+        else {
+            self.navigationController.overrideUserInterfaceStyle = SRGMediaPlayerUserInterfaceStyleUnspecified;
+        }
+    }
+#endif
+    
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     
     // Force properties to avoid overrides with UIAppearance
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
-    navigationBarAppearance.barStyle = UIBarStyleDefault;
     navigationBarAppearance.barTintColor = nil;
     navigationBarAppearance.tintColor = nil;
     navigationBarAppearance.titleTextAttributes = nil;
@@ -136,20 +218,19 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         navigationBarAppearance.prefersLargeTitles = NO;
         navigationBarAppearance.largeTitleTextAttributes = nil;
     }
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                                   target:self
+                                                                                                   action:@selector(done:)];
+    
+    [self updateViewAppearance];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+#pragma mark Status bar
+
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-    [super viewWillAppear:animated];
-    
-    if (! self.navigationController.popoverPresentationController) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                               target:self
-                                                                                               action:@selector(done:)];
-    }
-    else {
-        self.view.backgroundColor = [UIColor clearColor];
-    }
+    return self.dark ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;
 }
 
 #pragma mark Responsiveness
@@ -159,7 +240,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     
     [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        self.popoverPresentationController.sourceRect = self.popoverPresentationController.sourceView.bounds;
+        self.parentPopoverPresentationController.sourceRect = self.parentPopoverPresentationController.sourceView.bounds;
     }];
 }
 
@@ -168,8 +249,23 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
     
     [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        self.popoverPresentationController.sourceRect = self.popoverPresentationController.sourceView.bounds;
+        self.parentPopoverPresentationController.sourceRect = self.parentPopoverPresentationController.sourceView.bounds;
     }];
+}
+
+#pragma mark Traits
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+ 
+#ifdef __IPHONE_13_0
+    if (@available(iOS 13, *)) {
+        if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
+            [self updateViewAppearance];
+        }
+    }
+#endif
 }
 
 #pragma mark Accessibility
@@ -185,6 +281,34 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     }
 }
 
+#pragma mark UI
+
+- (void)updateViewAppearance
+{
+    BOOL isDark = self.dark;
+    
+#ifdef __IPHONE_13_0
+    if (@available(iOS 13, *)) {
+        UIBlurEffectStyle blurStyle = isDark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
+        UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
+        self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        self.tableView.backgroundColor = UIColor.clearColor;
+    }
+    else {
+#endif
+        self.navigationController.navigationBar.barStyle = isDark ? UIBarStyleBlack : UIBarStyleDefault;
+        self.tableView.separatorColor = isDark ? [UIColor colorWithWhite:1.f alpha:0.08f] : UIColor.lightGrayColor;
+        
+        UIColor *backgroundColor = isDark ? [UIColor colorWithWhite:0.17f alpha:1.f] : UIColor.groupTableViewBackgroundColor;
+        self.tableView.backgroundColor = backgroundColor;
+        self.parentPopoverPresentationController.backgroundColor = backgroundColor;
+#ifdef __IPHONE_13_0
+    }
+#endif
+    
+    [self.tableView reloadData];
+}
+
 #pragma mark Cells
 
 - (UITableViewCell *)defaultCellForTableView:(UITableView *)tableView
@@ -196,7 +320,11 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier];
     }
     
+    cell.backgroundColor = self.cellBackgroundColor;
+    
+    cell.textLabel.textColor = self.dark ? UIColor.whiteColor : UIColor.blackColor;
     cell.textLabel.enabled = YES;
+    
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     return cell;
 }
@@ -210,8 +338,15 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kCellIdentifier];
     }
     
+    cell.backgroundColor = self.cellBackgroundColor;
+    
+    UIColor *textColor = self.dark ? UIColor.whiteColor : UIColor.blackColor;
+    cell.textLabel.textColor = textColor;
     cell.textLabel.enabled = YES;
+    
+    cell.detailTextLabel.textColor = textColor;
     cell.detailTextLabel.enabled = YES;
+    
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     return cell;
 }
@@ -331,6 +466,8 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     }
 }
 
+#pragma mark UITableViewDelegate protocol
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -373,6 +510,16 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     // No track change notification is emitted when the setting (e.g. Automatic or Off) does not lead to another value
     // being selected. We must therefore also fore a refresh to get correct cell state.
     [self.tableView reloadData];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
+{
+    view.textLabel.textColor = self.headerTextColor;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
+{
+    view.textLabel.textColor = self.headerTextColor;
 }
 
 #pragma mark Actions
