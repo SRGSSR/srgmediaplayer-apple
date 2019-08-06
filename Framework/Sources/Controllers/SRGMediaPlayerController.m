@@ -305,8 +305,19 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             CMTime currentTime = playerItem.currentTime;
             if (self.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
                 if (CMTIME_COMPARE_INLINE(self.lastPlaybackTime, ==, currentTime)) {
-                    [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
-                    self.lastStallDetectionDate = NSDate.date;
+                    // Akamai fix: When start and end parameters are used, the subtitles track is longer than the associated truncated
+                    // stream. This incorrectly prevents the player from ending playback correctly (playback continues for the subtitles).
+                    // This workaround emits the missing end event instead of letting playback continue.
+                    //  A tolerance between the last known position and the duration of 1 second ends the playback correctly.
+                    // TODO: Remove when Akamai fixed this issue
+                    if (self.streamType == SRGMediaPlayerStreamTypeOnDemand && CMTIME_COMPARE_INLINE(CMTimeMakeWithSeconds(1., NSEC_PER_SEC), >=, CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), currentTime))) {
+                        [self setPlaybackState:SRGMediaPlayerPlaybackStateEnded withUserInfo:nil];
+                        self.lastStallDetectionDate = nil;
+                    }
+                    else {
+                        [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
+                        self.lastStallDetectionDate = NSDate.date;
+                    }
                 }
                 else {
                     self.lastStallDetectionDate = nil;

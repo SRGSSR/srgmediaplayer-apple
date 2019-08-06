@@ -92,6 +92,12 @@
 		</dict>
 		<dict>
 			<key>name</key>
+			<string>Tagesschau subject with buggy subtitles (Akamai issue)</string>
+			<key>url</key>
+			<string>https://srfvodhd-vh.akamaihd-staging.net/i/vod/ts20/2019/07/ts20_20190718_193000_16816871_v_webcast_h264_,q40,q10,q20,q30,q50,q60,.mp4.csmil/master.m3u8?start=556.76&amp;end=689.0&amp;caption=srf/a7296faf-9a9a-441b-9e14-36c1eb8aecfa/episode/de/vod/vod.m3u8:de:Deutsch:sdh&amp;webvttbaseurl=www-stage.srf.ch/subtitles</string>
+		</dict>
+		<dict>
+			<key>name</key>
 			<string>403 error</string>
 			<key>url</key>
 			<string>http://httpbin.org/status/403</string>
