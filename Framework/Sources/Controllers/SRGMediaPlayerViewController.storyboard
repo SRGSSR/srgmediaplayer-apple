@@ -29,9 +29,13 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CNH-y9-cf6" userLabel="AirPlay View" customClass="SRGAirPlayView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="47.5" y="193.5" width="280" height="280"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="T7u-AN-F1G"/>
+                                    <constraint firstAttribute="height" constant="280" id="kAg-zI-VrS"/>
+                                </constraints>
                             </view>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nE5-wI-3P2" userLabel="Top Left Blur View">
                                 <rect key="frame" x="6" y="6" width="132" height="47"/>
@@ -198,8 +202,7 @@
                         <constraints>
                             <constraint firstItem="bHB-EG-K8u" firstAttribute="trailing" secondItem="bLY-wi-w8n" secondAttribute="trailing" id="0Wn-Wt-R7t"/>
                             <constraint firstItem="Nio-gG-HwI" firstAttribute="centerY" secondItem="CjI-bJ-s74" secondAttribute="centerY" id="0sc-Uj-PNk"/>
-                            <constraint firstItem="CNH-y9-cf6" firstAttribute="leading" secondItem="CjI-bJ-s74" secondAttribute="leading" id="2if-s8-7BH"/>
-                            <constraint firstItem="CNH-y9-cf6" firstAttribute="top" secondItem="CjI-bJ-s74" secondAttribute="top" id="2z6-vD-vtP"/>
+                            <constraint firstItem="CNH-y9-cf6" firstAttribute="centerX" secondItem="CjI-bJ-s74" secondAttribute="centerX" id="2d9-Te-QsV"/>
                             <constraint firstItem="nE5-wI-3P2" firstAttribute="bottom" secondItem="t46-Ek-i6i" secondAttribute="bottom" id="4Lr-J3-CDa"/>
                             <constraint firstItem="nE5-wI-3P2" firstAttribute="leading" secondItem="t46-Ek-i6i" secondAttribute="leading" id="4Zl-kf-IPH"/>
                             <constraint firstItem="2kU-EO-gil" firstAttribute="centerX" secondItem="CjI-bJ-s74" secondAttribute="centerX" id="6R9-T4-7an"/>
@@ -213,9 +216,8 @@
                             <constraint firstItem="nE5-wI-3P2" firstAttribute="top" secondItem="t46-Ek-i6i" secondAttribute="top" id="MP2-EX-b2o"/>
                             <constraint firstItem="bHB-EG-K8u" firstAttribute="bottom" secondItem="bLY-wi-w8n" secondAttribute="bottom" id="QiL-20-a9a"/>
                             <constraint firstItem="MoS-P5-AUe" firstAttribute="trailing" secondItem="bLY-wi-w8n" secondAttribute="trailing" constant="6" id="Rka-ri-mtZ"/>
-                            <constraint firstItem="CNH-y9-cf6" firstAttribute="bottom" secondItem="CjI-bJ-s74" secondAttribute="bottom" id="Xvb-J9-1rG"/>
                             <constraint firstItem="Nio-gG-HwI" firstAttribute="centerX" secondItem="CjI-bJ-s74" secondAttribute="centerX" id="ZEy-1Z-qj9"/>
-                            <constraint firstItem="CNH-y9-cf6" firstAttribute="trailing" secondItem="CjI-bJ-s74" secondAttribute="trailing" id="av2-jz-w5c"/>
+                            <constraint firstItem="CNH-y9-cf6" firstAttribute="centerY" secondItem="CjI-bJ-s74" secondAttribute="centerY" id="dJm-jV-mFd"/>
                             <constraint firstAttribute="trailing" secondItem="CjI-bJ-s74" secondAttribute="trailing" id="dOA-eT-QYB"/>
                             <constraint firstItem="MoS-P5-AUe" firstAttribute="bottom" secondItem="bLY-wi-w8n" secondAttribute="bottom" constant="6" id="kYE-Fq-6NS"/>
                             <constraint firstAttribute="bottom" secondItem="CjI-bJ-s74" secondAttribute="bottom" id="rN0-Dn-k5i"/>
