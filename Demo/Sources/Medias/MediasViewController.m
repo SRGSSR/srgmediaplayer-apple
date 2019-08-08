@@ -13,11 +13,12 @@
 #import "MultiPlayerViewController.h"
 #import "NSBundle+Demo.h"
 #import "SegmentsPlayerViewController.h"
+#import "UIWindow+SRGMediaPlayer.h"
 
 #import <AVKit/AVKit.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface MediasViewController ()
+@interface MediasViewController () <AVPlayerViewControllerDelegate>
 
 @property (nonatomic, copy) NSString *configurationFileName;
 
@@ -80,6 +81,16 @@
         _medias = [Media mediasFromFileAtPath:filePath];
     }
     return _medias;
+}
+
+#pragma mark AVPlayerViewControllerDelegate protocol
+
+- (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
+{
+    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
+    [topViewController presentViewController:playerViewController animated:YES completion:^{
+        completionHandler(YES);
+    }];
 }
 
 #pragma mark UITableViewDataSource protocol
@@ -151,6 +162,7 @@
         }
         else if (mediaPlayer.playerClass == AVPlayerViewController.class) {
             AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+            playerViewController.delegate = self;
             AVPlayer *player = [AVPlayer playerWithURL:media.URL];
             playerViewController.player = player;
             [self presentViewController:playerViewController animated:YES completion:^{
