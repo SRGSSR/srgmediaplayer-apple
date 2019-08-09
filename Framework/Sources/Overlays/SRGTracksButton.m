@@ -16,7 +16,7 @@
 
 static void commonInit(SRGTracksButton *self);
 
-@interface SRGTracksButton ()
+@interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate>
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
@@ -199,7 +199,9 @@ static void commonInit(SRGTracksButton *self);
     }
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
+#pragma mark SRGAlternateTracksViewControllerDelegate protocol
+
+- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController viewDidDisappear:(BOOL)animated
 {
     if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideSelectionPopover:)]) {
         [self.delegate tracksButtonDidHideSelectionPopover:self];
@@ -215,8 +217,8 @@ static void commonInit(SRGTracksButton *self);
     }
     
     UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController
-                                                                                                                          withUserInterfaceStyle:self.userInterfaceStyle];
-    
+                                                                                                                          withUserInterfaceStyle:self.userInterfaceStyle
+                                                                                                                                        delegate:self];
     if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navigationController.modalPresentationStyle = UIModalPresentationPopover;
         

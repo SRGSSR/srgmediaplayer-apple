@@ -24,6 +24,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 @property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
 @property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
+@property (nonatomic, weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
 
 @property (nonatomic, weak) UITableView *tableView;
 
@@ -44,9 +45,11 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 + (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
                                                                  withUserInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle
+                                                                               delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
 {
     SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:mediaPlayerController
                                                                                                                            userInterfaceStyle:userInterfaceStyle];
+    alternateTracksViewController.delegate = delegate;
     return [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:alternateTracksViewController];
 }
 
@@ -224,6 +227,15 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
                                                                                                    action:@selector(done:)];
     
     [self updateViewAppearance];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if (self.delegate) {
+        [self.delegate alternateTracksViewController:self viewDidDisappear:animated];
+    }
 }
 
 #pragma mark Status bar

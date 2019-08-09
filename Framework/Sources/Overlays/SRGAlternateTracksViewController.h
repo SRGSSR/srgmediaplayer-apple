@@ -12,6 +12,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class SRGAlternateTracksViewController;
+
+/**
+ *  Alternate tracks view controller delegate protocol.
+ */
+@protocol SRGAlternateTracksViewControllerDelegate <NSObject>
+
+/**
+ *  The view did disappear.
+ */
+- (void)alternateTracksViewController:(SRGAlternateTracksViewController *)alternateTracksViewController viewDidDisappear:(BOOL)animated;
+
+@end
+
 /**
  *  View controller displaying subtitles and audio tracks. For internal use.
  */
@@ -21,8 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  Return an instance wrapped into a navigation controller.
  */
 + (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
-                                                                 withUserInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle;
-
+                                                                 withUserInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle
+                                                                               delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate;
 @end
 
 
