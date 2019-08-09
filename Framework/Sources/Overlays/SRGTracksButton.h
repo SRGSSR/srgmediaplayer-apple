@@ -21,14 +21,14 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /**
- *  The button is about to show the selection popover.
+ *  The button is about to show the track selection.
  */
-- (void)tracksButtonWillShowSelectionPopover:(SRGTracksButton *)tracksButton;
+- (void)tracksButtonWillShowTrackSelection:(SRGTracksButton *)tracksButton;
 
 /**
- *  The selection popover has been hidden.
+ *  The track selection has been hidden.
  */
-- (void)tracksButtonDidHideSelectionPopover:(SRGTracksButton *)tracksButton;
+- (void)tracksButtonDidHideTrackSelection:(SRGTracksButton *)tracksButton;
 
 @end
 

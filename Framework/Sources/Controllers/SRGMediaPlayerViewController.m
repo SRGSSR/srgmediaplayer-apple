@@ -431,12 +431,12 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 #pragma mark SRGTracksButtonDelegate protocol
 
-- (void)tracksButtonWillShowSelectionPopover:(SRGTracksButton *)tracksButton
+- (void)tracksButtonWillShowTrackSelection:(SRGTracksButton *)tracksButton
 {
     [self stopInactivityTracker];
 }
 
-- (void)tracksButtonDidHideSelectionPopover:(SRGTracksButton *)tracksButton
+- (void)tracksButtonDidHideTrackSelection:(SRGTracksButton *)tracksButton
 {
     [self restartInactivityTracker];
 }
