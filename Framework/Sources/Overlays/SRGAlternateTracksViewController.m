@@ -7,7 +7,6 @@
 
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
-#import "SRGMediaPlayerNavigationController.h"
 #import "SRGRouteDetector.h"
 
 #import <libextobjc/libextobjc.h>
@@ -24,7 +23,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 @property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
 @property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
-@property (nonatomic, weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
 
 @property (nonatomic, weak) UITableView *tableView;
 
@@ -40,18 +38,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 @end
 
 @implementation SRGAlternateTracksViewController
-
-#pragma mark Class methods
-
-+ (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
-                                                                 withUserInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle
-                                                                               delegate:(nullable id<SRGAlternateTracksViewControllerDelegate>)delegate
-{
-    SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:mediaPlayerController
-                                                                                                                           userInterfaceStyle:userInterfaceStyle];
-    alternateTracksViewController.delegate = delegate;
-    return [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:alternateTracksViewController];
-}
 
 #pragma mark Object lifecycle
 
@@ -222,20 +208,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         navigationBarAppearance.largeTitleTextAttributes = nil;
     }
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                                   target:self
-                                                                                                   action:@selector(done:)];
-    
     [self updateViewAppearance];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    if (self.delegate) {
-        [self.delegate alternateTracksViewController:self viewDidDisappear:animated];
-    }
 }
 
 #pragma mark Status bar
@@ -532,13 +505,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
     view.textLabel.textColor = self.headerTextColor;
-}
-
-#pragma mark Actions
-
-- (void)done:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark Notifications
