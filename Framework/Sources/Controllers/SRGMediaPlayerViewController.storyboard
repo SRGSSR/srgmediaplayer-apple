@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14845" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="d9c-I7-8ft">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="d9c-I7-8ft">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14799.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -116,11 +116,7 @@
                                         <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRy-c9-UCc" userLabel="Skip Backward Button">
-                                        <rect key="frame" x="106.5" y="45" width="40" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="ZuJ-hh-dcV"/>
-                                            <constraint firstAttribute="height" constant="40" id="eE0-aI-DSc"/>
-                                        </constraints>
+                                        <rect key="frame" x="123.5" y="52.5" width="23" height="25"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="skip_backward_15"/>
                                         <connections>
@@ -129,9 +125,6 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gL8-ry-Lc7" userLabel="Playback Button" customClass="SRGPlaybackButton">
                                         <rect key="frame" x="166.5" y="50" width="30" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="30" id="mFJ-mP-3tP"/>
-                                        </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="image" keyPath="playImage" value="play"/>
@@ -139,11 +132,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3vg-6i-6jj" userLabel="Skip Forward Button">
-                                        <rect key="frame" x="216.5" y="45" width="40" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="gG2-Rr-OLL"/>
-                                            <constraint firstAttribute="height" constant="40" id="zCj-XB-K3G"/>
-                                        </constraints>
+                                        <rect key="frame" x="216.5" y="52.5" width="23" height="25"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="skip_forward_15"/>
                                         <connections>
@@ -166,13 +155,9 @@
                                         <rect key="frame" x="10" y="29" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xRb-AE-54i" customClass="SRGTracksButton">
-                                        <rect key="frame" x="317" y="45" width="40" height="40"/>
+                                        <rect key="frame" x="329" y="56" width="18" height="18"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="Ac0-zq-sNJ"/>
-                                            <constraint firstAttribute="height" constant="40" id="EGa-To-Iw2"/>
-                                        </constraints>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -188,7 +173,7 @@
                                     <constraint firstItem="gL8-ry-Lc7" firstAttribute="leading" secondItem="BRy-c9-UCc" secondAttribute="trailing" constant="20" id="dAP-iZ-fyW"/>
                                     <constraint firstItem="EKV-Dg-mkD" firstAttribute="leading" secondItem="bHB-EG-K8u" secondAttribute="leading" constant="16" id="eBz-0S-UKI"/>
                                     <constraint firstItem="cyE-ky-Dbl" firstAttribute="leading" secondItem="EKV-Dg-mkD" secondAttribute="leading" id="eD0-b1-CW7"/>
-                                    <constraint firstItem="xRb-AE-54i" firstAttribute="trailing" secondItem="EKV-Dg-mkD" secondAttribute="trailing" constant="10" id="fsm-PR-8lI"/>
+                                    <constraint firstItem="xRb-AE-54i" firstAttribute="trailing" secondItem="EKV-Dg-mkD" secondAttribute="trailing" id="fsm-PR-8lI"/>
                                     <constraint firstItem="BRy-c9-UCc" firstAttribute="centerY" secondItem="gL8-ry-Lc7" secondAttribute="centerY" id="kr2-ZI-yx5"/>
                                     <constraint firstAttribute="trailing" secondItem="EKV-Dg-mkD" secondAttribute="trailing" constant="16" id="oXu-CF-HFh"/>
                                     <constraint firstItem="Erw-ST-7Yg" firstAttribute="trailing" secondItem="EKV-Dg-mkD" secondAttribute="trailing" id="tBD-NY-UZ2"/>
