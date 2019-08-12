@@ -18,10 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGAlternateTracksViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 /**
- *  Return an instance wrapped into a navigation controller.
+ *  Create an instance displaying tracks for a controller and adjusted for the provided style.
  */
-+ (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
-                                                                 withUserInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle;
+- (instancetype)initWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController userInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle;
 
 @end
 

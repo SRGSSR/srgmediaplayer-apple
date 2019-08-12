@@ -21,14 +21,14 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /**
- *  The button is about to show the selection popover.
+ *  The button is about to show the track selection.
  */
-- (void)tracksButtonWillShowSelectionPopover:(SRGTracksButton *)tracksButton;
+- (void)tracksButtonWillShowTrackSelection:(SRGTracksButton *)tracksButton;
 
 /**
- *  The selection popover has been hidden.
+ *  The track selection has been hidden.
  */
-- (void)tracksButtonDidHideSelectionPopover:(SRGTracksButton *)tracksButton;
+- (void)tracksButtonDidHideTrackSelection:(SRGTracksButton *)tracksButton;
 
 @end
 
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  button is set to the selected state (with a corresponding image).
  */
 IB_DESIGNABLE
-@interface SRGTracksButton : UIView <UIPopoverPresentationControllerDelegate>
+@interface SRGTracksButton : UIView
 
 /**
  *  The media player which the button must be associated with.

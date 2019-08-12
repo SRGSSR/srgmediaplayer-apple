@@ -7,7 +7,6 @@
 
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
-#import "SRGMediaPlayerNavigationController.h"
 #import "SRGRouteDetector.h"
 
 #import <libextobjc/libextobjc.h>
@@ -39,16 +38,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 @end
 
 @implementation SRGAlternateTracksViewController
-
-#pragma mark Class methods
-
-+ (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
-                                                                 withUserInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle
-{
-    SRGAlternateTracksViewController *alternateTracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:mediaPlayerController
-                                                                                                                           userInterfaceStyle:userInterfaceStyle];
-    return [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:alternateTracksViewController];
-}
 
 #pragma mark Object lifecycle
 
@@ -218,10 +207,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         navigationBarAppearance.prefersLargeTitles = NO;
         navigationBarAppearance.largeTitleTextAttributes = nil;
     }
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                                   target:self
-                                                                                                   action:@selector(done:)];
     
     [self updateViewAppearance];
 }
@@ -520,13 +505,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
     view.textLabel.textColor = self.headerTextColor;
-}
-
-#pragma mark Actions
-
-- (void)done:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark Notifications

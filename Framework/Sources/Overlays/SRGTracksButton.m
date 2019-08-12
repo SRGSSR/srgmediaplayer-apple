@@ -10,13 +10,14 @@
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGAlternateTracksViewController.h"
+#import "SRGMediaPlayerNavigationController.h"
 #import "UIWindow+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
 
 static void commonInit(SRGTracksButton *self);
 
-@interface SRGTracksButton ()
+@interface SRGTracksButton () <UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
@@ -199,23 +200,35 @@ static void commonInit(SRGTracksButton *self);
     }
 }
 
+// TODO: Remove when SRG Media Player requires iOS 13 as minimum version
 - (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideSelectionPopover:)]) {
-        [self.delegate tracksButtonDidHideSelectionPopover:self];
+    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
+        [self.delegate tracksButtonDidHideTrackSelection:self];
+    }
+}
+
+- (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
+{
+    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
+        [self.delegate tracksButtonDidHideTrackSelection:self];
     }
 }
 
 #pragma mark Actions
 
-- (void)showSubtitlesMenu:(id)sender
+- (void)showTracks:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonWillShowSelectionPopover:)]) {
-        [self.delegate tracksButtonWillShowSelectionPopover:self];
+    if ([self.delegate respondsToSelector:@selector(tracksButtonWillShowTrackSelection:)]) {
+        [self.delegate tracksButtonWillShowTrackSelection:self];
     }
     
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController
-                                                                                                                          withUserInterfaceStyle:self.userInterfaceStyle];
+    SRGAlternateTracksViewController *tracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
+                                                                                                                  userInterfaceStyle:self.userInterfaceStyle];
+    tracksViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                                           target:self
+                                                                                                           action:@selector(hideTracks:)];
+    SRGMediaPlayerNavigationController *navigationController = [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:tracksViewController];
     
     if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navigationController.modalPresentationStyle = UIModalPresentationPopover;
@@ -242,6 +255,16 @@ static void commonInit(SRGTracksButton *self);
     [topViewController presentViewController:navigationController
                                     animated:YES
                                   completion:nil];
+}
+
+- (void)hideTracks:(id)sender
+{
+    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
+    [topViewController dismissViewControllerAnimated:YES completion:^{
+        if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
+            [self.delegate tracksButtonDidHideTrackSelection:self];
+        }
+    }];
 }
 
 #pragma mark Interface Builder integration
@@ -306,7 +329,7 @@ static void commonInit(SRGTracksButton *self)
     button.frame = self.bounds;
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     button.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [button addTarget:self action:@selector(showSubtitlesMenu:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(showTracks:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
     self.button = button;
     
