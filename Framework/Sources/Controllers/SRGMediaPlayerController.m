@@ -1414,7 +1414,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                 
             case SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked: {
                 // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (UIDevice.srg_mediaPlayer_isLocked) {
                         self.view.player = nil;
                     }
