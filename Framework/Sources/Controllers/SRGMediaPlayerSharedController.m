@@ -51,6 +51,7 @@
     if (topViewController && ! [topViewController isKindOfClass:SRGMediaPlayerViewController.class]) {
         // FIXME: Init with controller
         SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
+        mediaPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
         [topViewController presentViewController:mediaPlayerViewController animated:YES completion:^{
             // See comment above
             completionHandler(YES);

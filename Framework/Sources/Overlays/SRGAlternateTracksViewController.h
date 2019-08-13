@@ -5,6 +5,7 @@
 //
 
 #import "SRGMediaPlayerController.h"
+#import "SRGMediaPlayerConstants.h"
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
@@ -14,12 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  View controller displaying subtitles and audio tracks. For internal use.
  */
-@interface SRGAlternateTracksViewController : UITableViewController
+@interface SRGAlternateTracksViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 /**
- *  Return an instance wrapped into a navigation controller.
+ *  Create an instance displaying tracks for a controller and adjusted for the provided style.
  */
-+ (UINavigationController *)alternateTracksNavigationControllerForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController;
+- (instancetype)initWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController userInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle;
 
 @end
 

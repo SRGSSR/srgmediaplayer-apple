@@ -10,13 +10,14 @@
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGAlternateTracksViewController.h"
+#import "SRGMediaPlayerNavigationController.h"
 #import "UIWindow+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
 
 static void commonInit(SRGTracksButton *self);
 
-@interface SRGTracksButton ()
+@interface SRGTracksButton () <UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
@@ -82,7 +83,7 @@ static void commonInit(SRGTracksButton *self);
 
 - (UIImage *)image
 {
-    return _image ?: [UIImage imageNamed:@"alternate_tracks_button" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    return _image ?: [UIImage imageNamed:@"alternate_tracks" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setImage:(UIImage *)image
@@ -93,7 +94,7 @@ static void commonInit(SRGTracksButton *self);
 
 - (UIImage *)selectedImage
 {
-    return _selectedImage ?: [UIImage imageNamed:@"alternate_tracks_button_selected" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    return _selectedImage ?: [UIImage imageNamed:@"alternate_tracks_selected" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
 }
 
 - (void)setSelectedImage:(UIImage *)selectedImage
@@ -178,38 +179,92 @@ static void commonInit(SRGTracksButton *self);
 
 #pragma mark UIPopoverPresentationControllerDelegate protocol
 
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection
 {
-    // Needed for the iPhone
-    return UIModalPresentationNone;
+    if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+#ifdef __IPHONE_13_0
+        if (@available(iOS 13, *)) {
+            return UIModalPresentationAutomatic;
+        }
+        else {
+#endif
+            controller.presentedViewController.modalPresentationCapturesStatusBarAppearance = YES;
+            return UIModalPresentationOverFullScreen;
+#ifdef __IPHONE_13_0
+        }
+#endif
+    }
+    else {
+        controller.presentedViewController.modalPresentationCapturesStatusBarAppearance = NO;
+        return UIModalPresentationPopover;
+    }
 }
 
+// TODO: Remove when SRG Media Player requires iOS 13 as minimum version
 - (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideSelectionPopover:)]) {
-        [self.delegate tracksButtonDidHideSelectionPopover:self];
+    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
+        [self.delegate tracksButtonDidHideTrackSelection:self];
+    }
+}
+
+- (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
+{
+    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
+        [self.delegate tracksButtonDidHideTrackSelection:self];
     }
 }
 
 #pragma mark Actions
 
-- (void)showSubtitlesMenu:(id)sender
+- (void)showTracks:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonWillShowSelectionPopover:)]) {
-        [self.delegate tracksButtonWillShowSelectionPopover:self];
+    if ([self.delegate respondsToSelector:@selector(tracksButtonWillShowTrackSelection:)]) {
+        [self.delegate tracksButtonWillShowTrackSelection:self];
     }
     
-    UINavigationController *navigationController = [SRGAlternateTracksViewController alternateTracksNavigationControllerForMediaPlayerController:self.mediaPlayerController];
-    navigationController.modalPresentationStyle = UIModalPresentationPopover;
+    SRGAlternateTracksViewController *tracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
+                                                                                                                  userInterfaceStyle:self.userInterfaceStyle];
+    tracksViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                                           target:self
+                                                                                                           action:@selector(hideTracks:)];
+    SRGMediaPlayerNavigationController *navigationController = [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:tracksViewController];
     
-    navigationController.popoverPresentationController.delegate = self;
-    navigationController.popoverPresentationController.sourceView = self;
-    navigationController.popoverPresentationController.sourceRect = self.bounds;
+    if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        navigationController.modalPresentationStyle = UIModalPresentationPopover;
+        
+        UIPopoverPresentationController *popoverPresentationController = navigationController.popoverPresentationController;
+        popoverPresentationController.delegate = self;
+        popoverPresentationController.sourceView = self;
+        popoverPresentationController.sourceRect = self.bounds;
+    }
+#ifdef __IPHONE_13_0
+    else if (@available(iOS 13, *)) {
+        navigationController.modalPresentationStyle = UIModalPresentationAutomatic;
+    }
+#endif
+    else {
+        navigationController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+        
+        // Only `UIModalPresentationFullScreen` makes status bar control transferred to the presented view controller automatic.
+        // For other modes this has to be enabled explicitly.
+        navigationController.modalPresentationCapturesStatusBarAppearance = YES;
+    }
     
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
     [topViewController presentViewController:navigationController
                                     animated:YES
                                   completion:nil];
+}
+
+- (void)hideTracks:(id)sender
+{
+    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
+    [topViewController dismissViewControllerAnimated:YES completion:^{
+        if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
+            [self.delegate tracksButtonDidHideTrackSelection:self];
+        }
+    }];
 }
 
 #pragma mark Interface Builder integration
@@ -274,7 +329,7 @@ static void commonInit(SRGTracksButton *self)
     button.frame = self.bounds;
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     button.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [button addTarget:self action:@selector(showSubtitlesMenu:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(showTracks:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
     self.button = button;
     

@@ -13,11 +13,12 @@
 #import "MultiPlayerViewController.h"
 #import "NSBundle+Demo.h"
 #import "SegmentsPlayerViewController.h"
+#import "UIWindow+SRGMediaPlayer.h"
 
 #import <AVKit/AVKit.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface MediasViewController ()
+@interface MediasViewController () <AVPlayerViewControllerDelegate>
 
 @property (nonatomic, copy) NSString *configurationFileName;
 
@@ -32,10 +33,11 @@
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithConfigurationFileName:(NSString *)configurationFileName mediaPlayerType:(MediaPlayerType)mediaPlayerType
+- (instancetype)initWithTitle:(NSString *)title configurationFileName:(NSString *)configurationFileName mediaPlayerType:(MediaPlayerType)mediaPlayerType
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     MediasViewController *viewController = [storyboard instantiateInitialViewController];
+    viewController.title = title;
     viewController.configurationFileName = configurationFileName;
     
     switch (mediaPlayerType) {
@@ -79,6 +81,16 @@
         _medias = [Media mediasFromFileAtPath:filePath];
     }
     return _medias;
+}
+
+#pragma mark AVPlayerViewControllerDelegate protocol
+
+- (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
+{
+    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
+    [topViewController presentViewController:playerViewController animated:YES completion:^{
+        completionHandler(YES);
+    }];
 }
 
 #pragma mark UITableViewDataSource protocol
@@ -144,11 +156,13 @@
         if (mediaPlayer.playerClass == SRGMediaPlayerViewController.class) {
             SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
             mediaPlayerViewController.controller.view.viewMode = media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
+            mediaPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [mediaPlayerViewController.controller playURL:media.URL];
             [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
         }
         else if (mediaPlayer.playerClass == AVPlayerViewController.class) {
             AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+            playerViewController.delegate = self;
             AVPlayer *player = [AVPlayer playerWithURL:media.URL];
             playerViewController.player = player;
             [self presentViewController:playerViewController animated:YES completion:^{
@@ -157,14 +171,17 @@
         }
         else if (mediaPlayer.playerClass == InlinePlayerViewController.class) {
             InlinePlayerViewController *inlinePlayerViewController = [[InlinePlayerViewController alloc] initWithMedia:media];
+            inlinePlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self.navigationController pushViewController:inlinePlayerViewController animated:YES];
         }
         else if (mediaPlayer.playerClass == CustomPlayerViewController.class) {
             CustomPlayerViewController *customPlayerViewController = [[CustomPlayerViewController alloc] initWithMedia:media];
+            customPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:customPlayerViewController animated:YES completion:nil];
         }
         else if (mediaPlayer.playerClass == SegmentsPlayerViewController.class) {
             SegmentsPlayerViewController *segmentsPlayerViewController = [[SegmentsPlayerViewController alloc] initWithMedia:media];
+            segmentsPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:segmentsPlayerViewController animated:YES completion:nil];
         }
         else if (mediaPlayer.playerClass == MultiPlayerViewController.class) {
@@ -173,6 +190,7 @@
             [medias insertObject:media atIndex:0];
             
             MultiPlayerViewController *segmentsPlayerViewController = [[MultiPlayerViewController alloc] initWithMedias:[medias copy]];
+            segmentsPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:segmentsPlayerViewController animated:YES completion:nil];
         }
     }

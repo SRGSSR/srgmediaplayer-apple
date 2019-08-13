@@ -5,6 +5,7 @@
 //
 
 #import "SRGMediaPlayerController.h"
+#import "SRGMediaPlayerConstants.h"
 
 #import <UIKit/UIKit.h>
 
@@ -20,14 +21,14 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /**
- *  The button is about to show the selection popover.
+ *  The button is about to show the track selection.
  */
-- (void)tracksButtonWillShowSelectionPopover:(SRGTracksButton *)tracksButton;
+- (void)tracksButtonWillShowTrackSelection:(SRGTracksButton *)tracksButton;
 
 /**
- *  The selection popover has been hidden.
+ *  The track selection has been hidden.
  */
-- (void)tracksButtonDidHideSelectionPopover:(SRGTracksButton *)tracksButton;
+- (void)tracksButtonDidHideTrackSelection:(SRGTracksButton *)tracksButton;
 
 @end
 
@@ -44,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  button is set to the selected state (with a corresponding image).
  */
 IB_DESIGNABLE
-@interface SRGTracksButton : UIView <UIPopoverPresentationControllerDelegate>
+@interface SRGTracksButton : UIView
 
 /**
  *  The media player which the button must be associated with.
@@ -56,6 +57,14 @@ IB_DESIGNABLE
  */
 @property (nonatomic, null_resettable) UIImage *image;
 @property (nonatomic, null_resettable) UIImage *selectedImage;
+
+/**
+ *  The style to be applied to the selection popover. Default value is `SRGMediaPlayerUserInterfaceStyleUnspecified`
+ *  (default dark appearance prior to iOS 13, and based on dark mode settings for iOS 13 and above).
+ *
+ *  @discussion The style will be applied the next time the popover is opened.
+ */
+@property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
 
 /**
  *  When set to `YES`, force the button to be always hidden, even if subtitles are available.

@@ -179,6 +179,9 @@ static void commonInit(SRGAirPlayButton *self);
     if (self.fakeInterfaceBuilderButton) {
         return self.fakeInterfaceBuilderButton.intrinsicContentSize;
     }
+    else if (@available(iOS 11, *)) {
+        return self.routePickerView.intrinsicContentSize;
+    }
     else {
         return self.volumeView.srg_airPlayButton.intrinsicContentSize;
     }
