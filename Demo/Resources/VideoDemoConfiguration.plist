@@ -92,9 +92,15 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>Tagesschau subject with buggy subtitles (Akamai issue)</string>
+			<string>Tagesschau subject with buggy subtitles (Akamai issue - stage)</string>
 			<key>url</key>
 			<string>https://srfvodhd-vh.akamaihd-staging.net/i/vod/ts20/2019/07/ts20_20190718_193000_16816871_v_webcast_h264_,q40,q10,q20,q30,q50,q60,.mp4.csmil/master.m3u8?start=556.76&amp;end=689.0&amp;caption=srf/a7296faf-9a9a-441b-9e14-36c1eb8aecfa/episode/de/vod/vod.m3u8:de:Deutsch:sdh&amp;webvttbaseurl=www-stage.srf.ch/subtitles</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>10v10 subject with buggy subtitles (Akamai issue - prod)</string>
+			<key>url</key>
+			<string>https://srfvodhd-vh.akamaihd.net/i/vod/10vor10/2019/08/10vor10_20190814_215052_17219255_v_webcast_h264_,q40,q10,q20,q30,q50,q60,.mp4.csmil/master.m3u8?start=648.84&amp;end=1009.36&amp;caption=srf/e2f4ab15-0678-4409-9013-760d6569ed96/episode/de/vod/vod.m3u8:de:Deutsch:sdh&amp;webvttbaseurl=www.srf.ch/subtitles</string>
 		</dict>
 		<dict>
 			<key>name</key>
