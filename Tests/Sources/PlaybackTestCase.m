@@ -792,7 +792,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
 }
 
-- (void)testFixedStreamEndWithBuggyAkamaiStreamWithSubtitles
+- (void)testFixedStreamEndWithBuggyAkamaiStream1WithSubtitles
 {
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
@@ -822,7 +822,40 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))] withCompletionHandler:nil];
     
-    [self waitForExpectationsWithTimeout:8. handler:nil];
+    [self waitForExpectationsWithTimeout:10. handler:nil];
+}
+
+- (void)testFixedStreamEndWithBuggyAkamaiStream2WithSubtitles
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
+        AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"];
+        }];
+        NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+        AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
+        if (option) {
+            [playerItem selectMediaOption:option inMediaSelectionGroup:group];
+        }
+    };
+    
+    NSURL *URL = [NSURL URLWithString:@"https://srfvodhd-vh.akamaihd.net/i/vod/10vor10/2019/08/10vor10_20190814_215052_17219255_v_webcast_h264_,q40,q10,q20,q30,q50,q60,.mp4.csmil/master.m3u8?start=648.84&end=1009.36&caption=srf/e2f4ab15-0678-4409-9013-760d6569ed96/episode/de/vod/vod.m3u8:de:Deutsch:sdh&webvttbaseurl=www.srf.ch/subtitles"];
+    [self.mediaPlayerController playURL:URL];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Seek to the end (media is too long to be entirely played through :) ) and wait until playback ends
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateEnded;
+    }];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:15. handler:nil];
 }
 
 - (void)testLivePause
