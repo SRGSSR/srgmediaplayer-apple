@@ -159,8 +159,6 @@
 		6F816C612258AA3700A71401 /* SRGVideoNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4221FD91A1D00CF175F /* SRGVideoNode.m */; };
 		6F816C6A2258AA3D00A71401 /* SRGPlaybackActivityIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4F1D62072400A55085 /* SRGPlaybackActivityIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F816C6B2258AA3D00A71401 /* SRGPlaybackActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F501D62072400A55085 /* SRGPlaybackActivityIndicatorView.m */; };
-		6F816C6C2258AA3D00A71401 /* SRGPlaybackButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4B1D62072400A55085 /* SRGPlaybackButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6F816C6D2258AA3D00A71401 /* SRGPlaybackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F4C1D62072400A55085 /* SRGPlaybackButton.m */; };
 		6F816C702258AA3D00A71401 /* SRGTimelineView.h in Headers */ = {isa = PBXBuildFile; fileRef = E67799301D75AE2500E58331 /* SRGTimelineView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F816C712258AA3D00A71401 /* SRGTimelineView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67799311D75AE2500E58331 /* SRGTimelineView.m */; };
 		6F816C762258AA3D00A71401 /* SRGViewModeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1112,7 +1110,6 @@
 				6F816C522258AA3700A71401 /* SRGMediaPlayerError.h in Headers */,
 				6F816C392258AA1500A71401 /* MPVolumeView+SRGMediaPlayer.h in Headers */,
 				6F816C4C2258AA3700A71401 /* SRGActivityGestureRecognizer.h in Headers */,
-				6F816C6C2258AA3D00A71401 /* SRGPlaybackButton.h in Headers */,
 				6F816C4E2258AA3700A71401 /* SRGPosition.h in Headers */,
 				6F816C862258AA4700A71401 /* SRGMediaPlayer.h in Headers */,
 				6F816C3D2258AA1500A71401 /* UIBezierPath+SRGMediaPlayer.h in Headers */,
@@ -1575,7 +1572,6 @@
 				6F816C4D2258AA3700A71401 /* SRGActivityGestureRecognizer.m in Sources */,
 				6F816C512258AA3700A71401 /* SRGMediaPlayerConstants.m in Sources */,
 				6F816C4F2258AA3700A71401 /* SRGPosition.m in Sources */,
-				6F816C6D2258AA3D00A71401 /* SRGPlaybackButton.m in Sources */,
 				6F465FBF2306A42C000653E7 /* NSTimer+SRGMediaPlayer.m in Sources */,
 				6F816C3E2258AA1500A71401 /* UIBezierPath+SRGMediaPlayer.m in Sources */,
 				6F816C402258AA1500A71401 /* UIDevice+SRGMediaPlayer.m in Sources */,
