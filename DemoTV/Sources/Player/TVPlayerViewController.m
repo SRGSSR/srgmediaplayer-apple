@@ -38,6 +38,19 @@
     self.mediaPlayerView.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
     
     [self.mediaPlayerController playURL:self.media.URL];
+    
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(togglePlayPause:)];
+    tapGestureRecognizer.allowedPressTypes = @[ @(UIPressTypeSelect), @(UIPressTypePlayPause) ];
+    [self.view addGestureRecognizer:tapGestureRecognizer];
+}
+
+#pragma mark Gesture recognizers
+
+- (void)togglePlayPause:(UIGestureRecognizer *)gestureRecognizer
+{
+    [self.mediaPlayerController togglePlayPause];
+    
+    // TODO: Toggle UI as well
 }
 
 @end
