@@ -272,6 +272,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
+            
+#if TARGET_OS_IOS
             @strongify(player)
             
             // Pause playback when toggling off external playback with the app in background, if settings prevent playback to continue in background
@@ -282,6 +284,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                     [player pause];
                 }
             }
+#endif
             
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
         }];

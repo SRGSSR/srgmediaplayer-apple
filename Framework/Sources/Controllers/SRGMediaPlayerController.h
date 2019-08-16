@@ -249,20 +249,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) IBOutlet SRGMediaPlayerView *view;
 
 /**
- *  Behavior of the associated view when the application is moved to the background. Use detached behaviors to avoid video
- *  playback being automatically paused.
- *
- *  This setting does not affect picture in picture or AirPlay playbacks, audio playback (allowed in background) or 360°
- *  playback (always paused during the transition).
- *
- *  Default is `SRGMediaPlayerViewBackgroundBehaviorAttached`, i.e. the view remains attached to its controller while in
- *  background, pausing video playback automatically.
- *
- *  @discussion The behavior can be changed at any time but will not affect playback if already performed in background.
- */
-@property (nonatomic) SRGMediaPlayerViewBackgroundBehavior viewBackgroundBehavior;
-
-/**
  *  @name Player lifecycle
  */
 
@@ -764,6 +750,24 @@ NS_ASSUME_NONNULL_END
 #if TARGET_OS_IOS
 
 NS_ASSUME_NONNULL_BEGIN
+
+@interface SRGMediaPlayerController (BackgroundPlayback)
+
+/**
+ *  Behavior of the associated view when the application is moved to the background. Use detached behaviors to avoid video
+ *  playback being automatically paused.
+ *
+ *  This setting does not affect picture in picture or AirPlay playbacks, audio playback (allowed in background) or 360°
+ *  playback (always paused during the transition).
+ *
+ *  Default is `SRGMediaPlayerViewBackgroundBehaviorAttached`, i.e. the view remains attached to its controller while in
+ *  background, pausing video playback automatically.
+ *
+ *  @discussion The behavior can be changed at any time but will not affect playback if already performed in background.
+ */
+@property (nonatomic) SRGMediaPlayerViewBackgroundBehavior viewBackgroundBehavior;
+
+@end
 
 /**
  *  Picture in picture functionality (not available on all devices).
