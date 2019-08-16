@@ -12,7 +12,7 @@ static void *s_seekCountKey = &s_seekCountKey;
 
 @implementation AVPlayer (SRGMediaPlayer)
 
-// TODO: Remove when iOS 10 is the minimum required version.
+// TODO: Remove when iOS / tvOS 10 is the minimum required version.
 - (void)srg_playImmediatelyIfPossible
 {
     if (@available(iOS 10, tvOS 10, *)) {

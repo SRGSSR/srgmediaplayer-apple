@@ -125,8 +125,6 @@
 		6F816C462258AA1C00A71401 /* SRGMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3DE1FD919CD00CF175F /* SRGMediaPlayerController.m */; };
 		6F816C472258AA1C00A71401 /* SRGMediaPlayerSharedController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3DB1FD919CD00CF175F /* SRGMediaPlayerSharedController.h */; };
 		6F816C482258AA1C00A71401 /* SRGMediaPlayerSharedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3DF1FD919CD00CF175F /* SRGMediaPlayerSharedController.m */; };
-		6F816C492258AA1C00A71401 /* SRGMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3DD1FD919CD00CF175F /* SRGMediaPlayerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6F816C4A2258AA1C00A71401 /* SRGMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3DA1FD919CD00CF175F /* SRGMediaPlayerViewController.m */; };
 		6F816C4C2258AA3700A71401 /* SRGActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA42F1FD91A1D00CF175F /* SRGActivityGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F816C4D2258AA3700A71401 /* SRGActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4261FD91A1D00CF175F /* SRGActivityGestureRecognizer.m */; };
 		6F816C4E2258AA3700A71401 /* SRGPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F2556D0212FBF63004C8F9A /* SRGPosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1078,7 +1076,6 @@
 				6F816C3D2258AA1500A71401 /* UIBezierPath+SRGMediaPlayer.h in Headers */,
 				6F816C312258AA1500A71401 /* AVPlayer+SRGMediaPlayer.h in Headers */,
 				6F816C802258AA4300A71401 /* SRGMediaPlaybackSceneView.h in Headers */,
-				6F816C492258AA1C00A71401 /* SRGMediaPlayerViewController.h in Headers */,
 				6F816C362258AA1500A71401 /* CMTimeRange+SRGMediaPlayer.h in Headers */,
 				6F816C6A2258AA3D00A71401 /* SRGPlaybackActivityIndicatorView.h in Headers */,
 				6F816C542258AA3700A71401 /* SRGMediaPlayerIconTemplate.h in Headers */,
@@ -1471,7 +1468,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F465FC02306A44D000653E7 /* SRGMediaPlayerTimerTarget.m in Sources */,
-				6F816C4A2258AA1C00A71401 /* SRGMediaPlayerViewController.m in Sources */,
 				6F816C442258AA1500A71401 /* UIWindow+SRGMediaPlayer.m in Sources */,
 				6F816C5F2258AA3700A71401 /* SRGSegment+Private.m in Sources */,
 				6F816C5C2258AA3700A71401 /* SRGQuaternion.m in Sources */,

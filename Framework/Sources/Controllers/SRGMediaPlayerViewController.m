@@ -14,12 +14,9 @@
 #import "SRGPlaybackButton.h"
 #import "SRGPictureInPictureButton.h"
 #import "SRGMediaPlayerSharedController.h"
-#import "SRGViewModeButton.h"
-
-#if TARGET_OS_IOS
 #import "SRGTimeSlider.h"
 #import "SRGTracksButton.h"
-#endif
+#import "SRGViewModeButton.h"
 
 #import <libextobjc/libextobjc.h>
 
@@ -29,23 +26,20 @@ const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
 // Shared instance to manage picture in picture playback
 static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
-@interface SRGMediaPlayerViewController ()
+@interface SRGMediaPlayerViewController () <SRGTracksButtonDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *playerView;
 
+@property (nonatomic, weak) IBOutlet SRGTracksButton *tracksButton;
 @property (nonatomic, weak) IBOutlet SRGPictureInPictureButton *pictureInPictureButton;
 @property (nonatomic, weak) IBOutlet SRGViewModeButton *viewModeButton;
 
 @property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
+@property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
 @property (nonatomic, weak) IBOutlet SRGAirPlayButton *airPlayButton;
 @property (nonatomic, weak) IBOutlet SRGAirPlayView *airPlayView;
 @property (nonatomic, weak) IBOutlet UIButton *skipBackwardButton;
 @property (nonatomic, weak) IBOutlet UIButton *skipForwardButton;
-
-#if TARGET_OS_IOS
-@property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
-@property (nonatomic, weak) IBOutlet SRGTracksButton *tracksButton;
-#endif
 
 @property (nonatomic, weak) IBOutlet UIImageView *errorImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *audioOnlyImageView;
@@ -58,14 +52,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (nonatomic, weak) id periodicTimeObserver;
 
 @end
-
-#if TARGET_OS_IOS
-
-@interface SRGMediaPlayerViewController (TracksButton) <SRGTracksButtonDelegate>
-
-@end
-
-#endif
 
 @implementation SRGMediaPlayerViewController {
 @private
@@ -115,9 +101,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     [super viewDidLoad];
     
-#if TARGET_OS_IOS
     self.tracksButton.delegate = self;
-#endif
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(srg_mediaPlayerViewController_playbackStateDidChange:)
@@ -170,10 +154,8 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self.view addGestureRecognizer:activityGestureRecognizer];
     
     self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
-#if TARGET_OS_IOS
     self.tracksButton.mediaPlayerController = s_mediaPlayerController;
     self.timeSlider.mediaPlayerController = s_mediaPlayerController;
-#endif
     self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
     self.airPlayButton.mediaPlayerController = s_mediaPlayerController;
     self.airPlayView.mediaPlayerController = s_mediaPlayerController;
@@ -201,8 +183,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self restartInactivityTracker];
 }
 
-#if TARGET_OS_IOS
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -218,18 +198,14 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
-#endif
-
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    if ([self isBeingDismissed]) {
+    if (self.beingDismissed) {
         [self stopInactivityTracker];
     }
 }
-
-#if TARGET_OS_IOS
 
 #pragma mark Status bar
 
@@ -248,8 +224,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     return UIStatusBarAnimationFade;
 }
 
-#endif
-
 #pragma mark Home indicator
 
 - (BOOL)prefersHomeIndicatorAutoHidden
@@ -264,38 +238,30 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     SRGMediaPlayerPlaybackState playbackState = s_mediaPlayerController.playbackState;
     switch (playbackState) {
         case SRGMediaPlayerPlaybackStateIdle: {
-#if TARGET_OS_IOS
             self.timeSlider.timeLeftValueLabel.hidden = YES;
             self.timeSlider.valueLabel.hidden = YES;
-#endif
             self.loadingActivityIndicatorView.hidden = YES;
             break;
         }
             
         case SRGMediaPlayerPlaybackStatePreparing: {
-#if TARGET_OS_IOS
             self.timeSlider.timeLeftValueLabel.hidden = YES;
             self.timeSlider.valueLabel.hidden = YES;
-#endif
             self.loadingActivityIndicatorView.hidden = NO;
             break;
         }
             
-        case SRGMediaPlayerPlaybackStateStalled :
-        case SRGMediaPlayerPlaybackStateSeeking: {
-#if TARGET_OS_IOS
+        case SRGMediaPlayerPlaybackStateSeeking:
+        case SRGMediaPlayerPlaybackStateStalled: {
             self.timeSlider.timeLeftValueLabel.hidden = NO;
             self.timeSlider.valueLabel.hidden = YES;
-#endif
             self.loadingActivityIndicatorView.hidden = NO;
             break;
         }
             
         default: {
-#if TARGET_OS_IOS
             self.timeSlider.timeLeftValueLabel.hidden = NO;
             self.timeSlider.valueLabel.hidden = NO;
-#endif
             self.loadingActivityIndicatorView.hidden = YES;
             break;
         }
@@ -350,11 +316,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
             animations();
             [self.view layoutIfNeeded];
         } completion:^(BOOL finished) {
-#if TARGET_OS_IOS
             if (@available(iOS 11, *)) {
                 [self setNeedsUpdateOfHomeIndicatorAutoHidden];
             }
-#endif
         }];
     }
     else {
@@ -364,9 +328,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)updateInterfaceForControlsHidden:(BOOL)hidden
 {
-#if TARGET_OS_IOS
     [self setNeedsStatusBarAppearanceUpdate];
-#endif
     
     for (UIView *view in self.overlayViews) {
         view.alpha = hidden ? 0.f : 1.f;
@@ -467,8 +429,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }];
 }
 
-#if TARGET_OS_IOS
-
 #pragma mark SRGTracksButtonDelegate protocol
 
 - (void)tracksButtonWillShowTrackSelection:(SRGTracksButton *)tracksButton
@@ -480,8 +440,6 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     [self restartInactivityTracker];
 }
-
-#endif
 
 #pragma mark UIGestureRecognizerDelegate protocol
 
@@ -513,13 +471,11 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)srg_mediaPlayerViewController_applicationDidBecomeActive:(NSNotification *)notification
 {
-#if TARGET_OS_IOS
     AVPictureInPictureController *pictureInPictureController = s_mediaPlayerController.pictureInPictureController;
     
     if (pictureInPictureController.isPictureInPictureActive) {
         [pictureInPictureController stopPictureInPicture];
     }
-#endif
 }
 
 - (void)srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:(NSNotification *)notification
@@ -541,13 +497,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (IBAction)dismiss:(id)sender
 {
-#if TARGET_OS_IOS
     if (! s_mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
         [s_mediaPlayerController reset];
     }
-#else
-    [s_mediaPlayerController reset];
-#endif
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
