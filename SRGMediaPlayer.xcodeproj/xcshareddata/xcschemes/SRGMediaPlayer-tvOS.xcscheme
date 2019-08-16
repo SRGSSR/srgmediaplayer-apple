@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6F3711412306B560006F52BC"
+               BuildableName = "SRGMediaPlayer-tvOS-tests.xctest"
+               BlueprintName = "SRGMediaPlayer-tvOS-tests"
+               ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "6F816C242258A93900A71401"
+            BuildableName = "SRGMediaPlayer.framework"
+            BlueprintName = "SRGMediaPlayer-tvOS"
+            ReferencedContainer = "container:SRGMediaPlayer.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
