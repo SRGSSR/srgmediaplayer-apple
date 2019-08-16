@@ -1064,13 +1064,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
 #if TARGET_OS_IOS
     self.pictureInPictureController = nil;
-<<<<<<< HEAD
+#endif
     
     // Emit the notification once all state has been reset
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:[fullUserInfo copy]];
-=======
-#endif
->>>>>>> Make the framework compile for tvOS
+     [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:[fullUserInfo copy]];
 }
 
 #pragma mark Configuration

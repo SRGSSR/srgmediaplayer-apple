@@ -281,7 +281,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
             break;
         }
             
-        case SRGMediaPlayerPlaybackStateStalled : {
+        case SRGMediaPlayerPlaybackStateStalled :
         case SRGMediaPlayerPlaybackStateSeeking: {
 #if TARGET_OS_IOS
             self.timeSlider.timeLeftValueLabel.hidden = NO;
