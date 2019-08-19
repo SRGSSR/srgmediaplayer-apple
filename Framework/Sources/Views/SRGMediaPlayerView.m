@@ -6,7 +6,6 @@
 
 #import "SRGMediaPlayerView.h"
 
-#import "AVPlayer+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "SRGMediaPlaybackMonoscopicView.h"
 #import "SRGMediaPlaybackFlatView.h"

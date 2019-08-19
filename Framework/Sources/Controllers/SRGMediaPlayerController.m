@@ -7,7 +7,6 @@
 #import "SRGMediaPlayerController.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
-#import "AVPlayer+SRGMediaPlayer.h"
 #import "CMTime+SRGMediaPlayer.h"
 #import "CMTimeRange+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
@@ -45,7 +44,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     CMTimeRange _timeRange;
 }
 
-@property (nonatomic) AVPlayer *player;
+@property (nonatomic) SRGPlayer *player;
 
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic) AVURLAsset *URLAsset;
@@ -122,7 +121,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 #pragma mark Getters and setters
 
-- (void)setPlayer:(AVPlayer *)player
+- (void)setPlayer:(SRGPlayer *)player
 {
     BOOL hadPlayer = (_player != nil);
     
@@ -320,7 +319,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                 }
             }
             else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                [player srg_playImmediatelyIfPossible];
+                [player playImmediatelyIfPossible];
             }
             
             self.lastPlaybackTime = currentTime;
@@ -711,13 +710,13 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     if (self.player) {
         // Normal conditions. Simply forward to the player
         if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
-            [self.player srg_playImmediatelyIfPossible];
+            [self.player playImmediatelyIfPossible];
         }
         // Playback ended. Restart at the beginning. Use low-level API to avoid sending seek events
         else {
             [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
                 if (finished) {
-                    [self.player srg_playImmediatelyIfPossible];
+                    [self.player playImmediatelyIfPossible];
                 }
             }];
         }
@@ -943,7 +942,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.view.playbackViewHidden = YES;
     
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:URLAsset];
-    self.player = [AVPlayer playerWithPlayerItem:playerItem];
+    self.player = [SRGPlayer playerWithPlayerItem:playerItem];
     
     @weakify(self)
     [URLAsset loadValuesAsynchronouslyForKeys:@[ @keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) ] completionHandler:^{
@@ -1006,7 +1005,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         //
         // To be able to reset the state no matter the last seek finished, we use a special category method which keeps count
         // of the count of seek requests still pending.
-        [self.player srg_countedSeekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter completionHandler:^(BOOL finished, NSInteger pendingSeekCount) {
+        [self.player countedSeekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter completionHandler:^(BOOL finished, NSInteger pendingSeekCount) {
             if (pendingSeekCount == 0) {
                 [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
                 

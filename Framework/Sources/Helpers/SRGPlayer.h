@@ -8,18 +8,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AVPlayer (SRGMediaPlayer)
+@interface SRGPlayer : AVPlayer
 
 /**
  *  Attempt to play the media immediately if possible (iOS 10 and greater), otherwise normally.
  */
-- (void)srg_playImmediatelyIfPossible;
+- (void)playImmediatelyIfPossible;
 
 /**
  *  Same as `-seekToTime:toleranceBefore:toleranceAfter:completionHandler:`, but counting the number of seek requests still
  *  pending.
  */
-- (void)srg_countedSeekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL finished, NSInteger pendingSeekCount))completionHandler;
+- (void)countedSeekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL finished, NSInteger pendingSeekCount))completionHandler;
 
 @end
 

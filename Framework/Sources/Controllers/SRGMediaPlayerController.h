@@ -10,6 +10,7 @@
 
 #import "SRGMediaPlayerConstants.h"
 #import "SRGMediaPlayerView.h"
+#import "SRGPlayer.h"
 #import "SRGPosition.h"
 #import "SRGSegment.h"
 
@@ -230,7 +231,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  You can still use if for any other purposes, e.g. getting information about the player, setting observers, etc. If you need
  *  to alter properties of the player reliably, you should use the lifecycle blocks hooks instead (see below).
  */
-@property (nonatomic, readonly, nullable) AVPlayer *player;
+@property (nonatomic, readonly, nullable) SRGPlayer *player;
 
 /**
  *  The layer used by the player. Use it if you need to change the content gravity or to detect when the player is ready
