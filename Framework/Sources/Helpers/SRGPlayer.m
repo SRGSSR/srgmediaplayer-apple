@@ -14,6 +14,11 @@
 
 @implementation SRGPlayer
 
+- (BOOL)isSeeking
+{
+    return self.seekCount != 0;
+}
+
 // TODO: Remove when iOS / tvOS 10 is the minimum required version.
 - (void)playImmediatelyIfPossible
 {
@@ -25,12 +30,12 @@
     }
 }
 
-- (void)countedSeekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL finished, NSInteger pendingSeekCount))completionHandler
+- (void)seekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL finished))completionHandler
 {
     ++self.seekCount;
-    [self seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
+    [super seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
         --self.seekCount;
-        completionHandler(finished, self.seekCount);
+        completionHandler(finished);
     }];
 }
 
