@@ -178,7 +178,7 @@
         else if (mediaPlayer.playerClass == SRGNativeMediaPlayerViewController.class) {
             SRGNativeMediaPlayerViewController *playerViewController = [[SRGNativeMediaPlayerViewController alloc] init];
             [self presentViewController:playerViewController animated:YES completion:^{
-                
+                [playerViewController.controller playURL:media.URL];
             }];
         }
         else if (mediaPlayer.playerClass == CustomPlayerViewController.class) {

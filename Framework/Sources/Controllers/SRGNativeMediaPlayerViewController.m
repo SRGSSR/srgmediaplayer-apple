@@ -6,6 +6,29 @@
 
 #import "SRGNativeMediaPlayerViewController.h"
 
+#import <libextobjc/libextobjc.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
+
+@interface SRGNativeMediaPlayerViewController ()
+
+@property (nonatomic) SRGMediaPlayerController *controller;
+
+@end
+
 @implementation SRGNativeMediaPlayerViewController
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.controller = [[SRGMediaPlayerController alloc] init];
+        
+        @weakify(self)
+        [self.controller addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, player) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            self.player = self.controller.player;
+        }];
+    }
+    return self;
+}
 
 @end
