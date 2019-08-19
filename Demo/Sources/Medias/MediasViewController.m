@@ -43,7 +43,7 @@
     switch (mediaPlayerType) {
         case MediaPlayerTypeStandard: {
             viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player") class:SRGMediaPlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Native Media Player") class:SRGNativeMediaPlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player + AVKit") class:SRGNativeMediaPlayerViewController.class],
                                              [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"AVKit") class:AVPlayerViewController.class],
                                              [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline player") class:InlinePlayerViewController.class],
                                              [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Custom player") class:CustomPlayerViewController.class] ];
