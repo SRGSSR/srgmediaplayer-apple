@@ -30,6 +30,7 @@
     }
 }
 
+// Might be called from a background thread, in which case the completion handler might as well
 - (void)seekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL finished))completionHandler
 {
     SRGPosition *position = [SRGPosition positionWithTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
@@ -43,7 +44,14 @@
     }
     
     if (notify) {
-        [self.delegate player:self willSeekToPosition:position];
+        if (NSThread.isMainThread) {
+            [self.delegate player:self willSeekToPosition:position];
+        }
+        else {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.delegate player:self willSeekToPosition:position];
+            });
+        }
     }
     
     ++self.seekCount;
@@ -52,7 +60,14 @@
         --self.seekCount;
         
         if (notify) {
-            [self.delegate player:self didSeekToPosition:position finished:finished];
+            if (NSThread.isMainThread) {
+                [self.delegate player:self didSeekToPosition:position finished:finished];
+            }
+            else {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [self.delegate player:self didSeekToPosition:position finished:finished];
+                });
+            }
         }
         
         completionHandler(finished);

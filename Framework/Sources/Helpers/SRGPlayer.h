@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol SRGPlayerDelegate <NSObject>
 
+// Called on the main thread
 - (void)player:(SRGPlayer *)player willSeekToPosition:(SRGPosition *)position;
 - (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position finished:(BOOL)finished;
 
