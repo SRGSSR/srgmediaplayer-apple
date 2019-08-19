@@ -14,10 +14,14 @@
 
 @implementation SRGPlayer
 
+#pragma mark Getters and setters
+
 - (BOOL)isSeeking
 {
     return self.seekCount != 0;
 }
+
+#pragma mark Playback
 
 // TODO: Remove when iOS / tvOS 10 is the minimum required version.
 - (void)playImmediatelyIfPossible
@@ -59,13 +63,13 @@
     [super seekToTime:position.time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter completionHandler:^(BOOL finished) {
         --self.seekCount;
         
-        if (notify) {
+        if (notify && finished) {
             if (NSThread.isMainThread) {
-                [self.delegate player:self didSeekToPosition:position finished:finished];
+                [self.delegate player:self didSeekToPosition:position];
             }
             else {
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    [self.delegate player:self didSeekToPosition:position finished:finished];
+                    [self.delegate player:self didSeekToPosition:position];
                 });
             }
         }

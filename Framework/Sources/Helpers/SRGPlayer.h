@@ -12,18 +12,36 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class SRGPlayer;
 
+/**
+ *  Player delegate protocol.
+ */
 @protocol SRGPlayerDelegate <NSObject>
 
-// Called on the main thread
+/**
+ *  The player begins seeking to the given position.
+ */
 - (void)player:(SRGPlayer *)player willSeekToPosition:(SRGPosition *)position;
-- (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position finished:(BOOL)finished;
+
+/**
+ *  The player did finish seeking to the given position.
+ */
+- (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position;
 
 @end
 
+/**
+ *  Lightweight `AVPlayer` subclass tracking seek events and reporting them to its delegate.
+ */
 @interface SRGPlayer : AVPlayer
 
+/**
+ *  The player delegate.
+ */
 @property (nonatomic, weak) id<SRGPlayerDelegate> delegate;
 
+/**
+ *  Returns `YES` iff the player is currently seeking to some location.
+ */
 @property (nonatomic, readonly, getter=isSeeking) BOOL seeking;
 
 /**
@@ -31,6 +49,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)playImmediatelyIfPossible;
 
+/**
+ *  Seek to a position (default position if `nil`), calling the specified handler on completion. The delegate methods
+ *  are called iff `notify` is set to `YES`.
+ *
+ *  @discussion The parent `-seekToTime:toleranceBefore:toleranceAfter:completionHandler:` method always notifies
+ *              the player delegate.
+ */
 - (void)seekToPosition:(nullable SRGPosition *)position notify:(BOOL)notify completionHandler:(void (^)(BOOL finished))completionHandler;
 
 @end

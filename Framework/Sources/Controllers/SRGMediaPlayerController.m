@@ -1399,7 +1399,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                                 SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:player.currentTime] }];
 }
 
-- (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position finished:(BOOL)finished
+- (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position
 {
     if (! player.seeking) {
         [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
