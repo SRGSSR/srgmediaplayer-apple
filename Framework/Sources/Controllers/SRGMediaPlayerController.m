@@ -37,7 +37,7 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position,CMTime offset);
 static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
 
-@interface SRGMediaPlayerController () {
+@interface SRGMediaPlayerController () <SRGPlayerDelegate> {
 @private
     SRGMediaPlayerPlaybackState _playbackState;
     BOOL _selected;
@@ -221,9 +221,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                         SRGPosition *toleratedPosition = [SRGPosition positionWithTime:toleratedStartTime toleranceBefore:startPosition.toleranceBefore toleranceAfter:startPosition.toleranceAfter];
                         
                         SRGPosition *seekPosition = SRGMediaPlayerControllerPositionInTimeRange(toleratedPosition, timeRange);
-                        
-                        // Call system method to avoid unwanted seek state in this special case
-                        [player seekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter completionHandler:^(BOOL finished) {
+                        [player seekToPosition:seekPosition notify:NO completionHandler:^(BOOL finished) {
                             completionBlock(finished);
                         }];
                     }
@@ -712,9 +710,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
             [self.player playImmediatelyIfPossible];
         }
-        // Playback ended. Restart at the beginning. Use low-level API to avoid sending seek events
+        // Playback ended. Restart at the beginning
         else {
-            [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
+            [self.player seekToPosition:nil notify:NO completionHandler:^(BOOL finished) {
                 if (finished) {
                     [self.player playImmediatelyIfPossible];
                 }
@@ -943,6 +941,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:URLAsset];
     self.player = [SRGPlayer playerWithPlayerItem:playerItem];
+    self.player.delegate = self;
     
     @weakify(self)
     [URLAsset loadValuesAsynchronouslyForKeys:@[ @keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) ] completionHandler:^{
@@ -985,19 +984,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     // for direct seeks, otherwise blocked segment detection would occur after the segment has been entered, which is too late
     id<SRGSegment> segment = targetSegment ?: [self segmentForTime:seekPosition.time];
     if (! segment || ! segment.srg_blocked) {
-        [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
-        
-        [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSeekNotification
-                                                          object:self
-                                                        userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:seekPosition.time],
-                                                                    SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:self.player.currentTime] }];
-        
-        // Only store the origin in case of multiple seeks, but update the target
-        if (CMTIME_IS_INDEFINITE(self.seekStartTime)) {
-            self.seekStartTime = self.player.currentTime;
-        }
-        self.seekTargetTime = seekPosition.time;
-        
         // Starting with iOS 11, there is no guarantee that the last seek succeeds (there was no formal documentation for this
         // behavior on iOS 10 and below, but this was generally working). Starting with iOS 11, the following is unreliable,
         // as the state might not be updated if the last seek gets cancelled. This is especially the case if multiple seeks
@@ -1005,13 +991,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         //
         // To be able to reset the state no matter the last seek finished, we use a special category method which keeps count
         // of the count of seek requests still pending.
-        [self.player seekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter completionHandler:^(BOOL finished) {
-            if (! self.player.seeking) {
-                [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                
-                self.seekStartTime = kCMTimeIndefinite;
-                self.seekTargetTime = kCMTimeIndefinite;
-            }
+        [self.player seekToPosition:seekPosition notify:YES completionHandler:^(BOOL finished) {
             completionHandler ? completionHandler(finished) : nil;
         }];
     }
@@ -1399,6 +1379,34 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     
     return periodicTimeObserver;
+}
+
+#pragma mark SRGPlayer protocol
+
+- (void)player:(SRGPlayer *)player willSeekToPosition:(SRGPosition *)position
+{
+    // Only store the origin in case of multiple seeks, but update the target
+    if (CMTIME_IS_INDEFINITE(self.seekStartTime)) {
+        self.seekStartTime = player.currentTime;
+    }
+    self.seekTargetTime = position.time;
+    
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
+    
+    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSeekNotification
+                                                      object:self
+                                                    userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:position.time],
+                                                                SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:player.currentTime] }];
+}
+
+- (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position finished:(BOOL)finished
+{
+    if (! player.seeking) {
+        [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+        
+        self.seekStartTime = kCMTimeIndefinite;
+        self.seekTargetTime = kCMTimeIndefinite;
+    }
 }
 
 #pragma mark Notifications
