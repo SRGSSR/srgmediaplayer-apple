@@ -42,8 +42,9 @@
     
     switch (mediaPlayerType) {
         case MediaPlayerTypeStandard: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG media player (built-in design)") class:SRGMediaPlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"iOS media player") class:AVPlayerViewController.class],
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player") class:SRGMediaPlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Native Media Player") class:SRGNativeMediaPlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"AVKit") class:AVPlayerViewController.class],
                                              [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline player") class:InlinePlayerViewController.class],
                                              [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Custom player") class:CustomPlayerViewController.class] ];
             break;
@@ -146,7 +147,7 @@
     else {
         Media *media = self.medias[self.selectedIndexPath.row];
         if (! media) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Please select a media first" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:DemoNonLocalizedString(@"Please select a media first") message:nil preferredStyle:UIAlertControllerStyleAlert];
             [alertController addAction:[UIAlertAction actionWithTitle:DemoNonLocalizedString(@"OK") style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alertController animated:YES completion:nil];
             return;
@@ -173,6 +174,12 @@
             InlinePlayerViewController *inlinePlayerViewController = [[InlinePlayerViewController alloc] initWithMedia:media];
             inlinePlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self.navigationController pushViewController:inlinePlayerViewController animated:YES];
+        }
+        else if (mediaPlayer.playerClass == SRGNativeMediaPlayerViewController.class) {
+            SRGNativeMediaPlayerViewController *playerViewController = [[SRGNativeMediaPlayerViewController alloc] init];
+            [self presentViewController:playerViewController animated:YES completion:^{
+                
+            }];
         }
         else if (mediaPlayer.playerClass == CustomPlayerViewController.class) {
             CustomPlayerViewController *customPlayerViewController = [[CustomPlayerViewController alloc] initWithMedia:media];

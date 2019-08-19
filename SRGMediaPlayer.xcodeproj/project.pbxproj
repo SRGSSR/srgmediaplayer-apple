@@ -177,6 +177,10 @@
 		6F859F3B230A937900ECE021 /* SRGPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F38230A937900ECE021 /* SRGPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F859F3C230A937900ECE021 /* SRGPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F39230A937900ECE021 /* SRGPlayer.m */; };
 		6F859F3D230A937900ECE021 /* SRGPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F39230A937900ECE021 /* SRGPlayer.m */; };
+		6F859F40230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F3E230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F859F41230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F3E230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F859F42230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F3F230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m */; };
+		6F859F43230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F3F230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m */; };
 		6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */; };
 		6F9643D221307920003C6612 /* SRGAirPlayButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9643CE2130791F003C6612 /* SRGAirPlayButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F9643D321307920003C6612 /* SRGAirPlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9643CF2130791F003C6612 /* SRGAirPlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -465,6 +469,8 @@
 		6F816C252258A93900A71401 /* SRGMediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SRGMediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F859F38230A937900ECE021 /* SRGPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGPlayer.h; sourceTree = "<group>"; };
 		6F859F39230A937900ECE021 /* SRGPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGPlayer.m; sourceTree = "<group>"; };
+		6F859F3E230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGNativeMediaPlayerViewController.h; sourceTree = "<group>"; };
+		6F859F3F230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGNativeMediaPlayerViewController.m; sourceTree = "<group>"; };
 		6F8F06E31FDA7631002DD457 /* SRGMediaPlaybackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackView.h; sourceTree = "<group>"; };
 		6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Demo.h"; sourceTree = "<group>"; };
 		6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Demo.m"; sourceTree = "<group>"; };
@@ -688,6 +694,8 @@
 				6F5CA3DD1FD919CD00CF175F /* SRGMediaPlayerViewController.h */,
 				6F5CA3DA1FD919CD00CF175F /* SRGMediaPlayerViewController.m */,
 				6F5CA3DC1FD919CD00CF175F /* SRGMediaPlayerViewController.storyboard */,
+				6F859F3E230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h */,
+				6F859F3F230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1130,6 +1138,7 @@
 				6F816C432258AA1500A71401 /* UIWindow+SRGMediaPlayer.h in Headers */,
 				6F816C762258AA3D00A71401 /* SRGViewModeButton.h in Headers */,
 				6F816C472258AA1C00A71401 /* SRGMediaPlayerSharedController.h in Headers */,
+				6F859F41230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h in Headers */,
 				6F816C5D2258AA3700A71401 /* SRGSegment.h in Headers */,
 				6F816C452258AA1C00A71401 /* SRGMediaPlayerController.h in Headers */,
 				6F816C3B2258AA1500A71401 /* NSBundle+SRGMediaPlayer.h in Headers */,
@@ -1169,6 +1178,7 @@
 				6F5CA43F1FD91A1D00CF175F /* SRGActivityGestureRecognizer.h in Headers */,
 				6F5CA3EC1FD919CD00CF175F /* NSBundle+SRGMediaPlayer.h in Headers */,
 				E67799341D75B0E300E58331 /* SRGTimelineSlider.h in Headers */,
+				6F859F40230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h in Headers */,
 				6F5CA3F21FD919CD00CF175F /* MPVolumeView+SRGMediaPlayer.h in Headers */,
 				E6C9860C1D6F42CB00C45C7A /* SRGPlaybackActivityIndicatorView.h in Headers */,
 				6FC57B1A1FD6A5BE00451B6B /* SRGViewModeButton.h in Headers */,
@@ -1578,6 +1588,7 @@
 				6F816C7B2258AA4300A71401 /* SRGMediaPlaybackFlatView.m in Sources */,
 				6F816C5A2258AA3700A71401 /* SRGPeriodicTimeObserver.m in Sources */,
 				6F816C6B2258AA3D00A71401 /* SRGPlaybackActivityIndicatorView.m in Sources */,
+				6F859F43230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m in Sources */,
 				6F816C342258AA1500A71401 /* (null) in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1615,6 +1626,7 @@
 				6F5CA41F1FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.m in Sources */,
 				089026D42013ECEF00C0688E /* SRGSegment+Private.m in Sources */,
 				6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton.m in Sources */,
+				6F859F42230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m in Sources */,
 				E6C986171D7015F600C45C7A /* SRGVolumeView.m in Sources */,
 				6F5CA41B1FD919CD00CF175F /* SRGMediaPlaybackFlatView.m in Sources */,
 				E6C9860D1D6F42CB00C45C7A /* SRGPlaybackActivityIndicatorView.m in Sources */,
