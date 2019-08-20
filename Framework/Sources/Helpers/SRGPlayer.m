@@ -10,9 +10,23 @@
 
 @property (nonatomic) NSInteger seekCount;
 
+@property (nonatomic) CMTime seekStartTime;
+@property (nonatomic) CMTime seekTargetTime;
+
 @end
 
 @implementation SRGPlayer
+
+#pragma mark Object lifecycle
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.seekStartTime = kCMTimeIndefinite;
+        self.seekTargetTime = kCMTimeIndefinite;
+    }
+    return self;
+}
 
 #pragma mark Getters and setters
 
@@ -47,6 +61,11 @@
         position = SRGPosition.defaultPosition;
     }
     
+    if (self.seekCount == 0) {
+        self.seekStartTime = self.currentTime;
+    }
+    self.seekTargetTime = position.time;
+    
     if (notify) {
         if (NSThread.isMainThread) {
             [self.delegate player:self willSeekToPosition:position];
@@ -63,15 +82,20 @@
     [super seekToTime:position.time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter completionHandler:^(BOOL finished) {
         --self.seekCount;
         
-        if (notify && finished) {
-            if (NSThread.isMainThread) {
-                [self.delegate player:self didSeekToPosition:position];
-            }
-            else {
-                dispatch_sync(dispatch_get_main_queue(), ^{
+        if (finished) {
+            if (notify) {
+                if (NSThread.isMainThread) {
                     [self.delegate player:self didSeekToPosition:position];
-                });
+                }
+                else {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        [self.delegate player:self didSeekToPosition:position];
+                    });
+                }
             }
+            
+            self.seekStartTime = kCMTimeIndefinite;
+            self.seekTargetTime = kCMTimeIndefinite;
         }
         
         completionHandler(finished);

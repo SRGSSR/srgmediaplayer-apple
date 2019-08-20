@@ -88,9 +88,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 @property (nonatomic) NSValue *presentationSizeValue;
 
-@property (nonatomic) CMTime seekStartTime;
-@property (nonatomic) CMTime seekTargetTime;
-
 @property (nonatomic) AVMediaSelectionOption *audioOption;
 @property (nonatomic) AVMediaSelectionOption *subtitleOption;
 
@@ -116,9 +113,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         self.endToleranceRatio = SRGMediaPlayerDefaultEndToleranceRatio;
         
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
-        
-        self.seekStartTime = kCMTimeIndefinite;
-        self.seekTargetTime = kCMTimeIndefinite;
         
         self.lastPlaybackTime = kCMTimeIndefinite;
     }
@@ -508,6 +502,16 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (CMTime)currentTime
 {
     return self.player.currentTime;
+}
+
+- (CMTime)seekStartTime
+{
+    return self.player ? self.player.seekStartTime : kCMTimeIndefinite;
+}
+
+- (CMTime)seekTargetTime
+{
+    return self.player ? self.player.seekTargetTime : kCMTimeIndefinite;
 }
 
 - (SRGMediaPlayerMediaType)mediaType
@@ -1047,9 +1051,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     self.presentationSizeValue = nil;
     
-    self.seekStartTime = kCMTimeIndefinite;
-    self.seekTargetTime = kCMTimeIndefinite;
-    
     self.lastPlaybackTime = kCMTimeIndefinite;
     self.lastStallDetectionDate = nil;
     
@@ -1396,12 +1397,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)player:(SRGPlayer *)player willSeekToPosition:(SRGPosition *)position
 {
-    // Only store the origin in case of multiple seeks, but update the target
-    if (CMTIME_IS_INDEFINITE(self.seekStartTime)) {
-        self.seekStartTime = player.currentTime;
-    }
-    self.seekTargetTime = position.time;
-    
     [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
     
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSeekNotification
@@ -1414,9 +1409,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     if (! player.seeking) {
         [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-        
-        self.seekStartTime = kCMTimeIndefinite;
-        self.seekTargetTime = kCMTimeIndefinite;
     }
 }
 

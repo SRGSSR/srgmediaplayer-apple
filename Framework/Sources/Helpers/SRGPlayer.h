@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  The player did finish seeking to the given position.
+ *
+ *  @discussion Not called if a seek has been interrupted.
  */
 - (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position;
 
@@ -43,6 +45,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  Returns `YES` iff the player is currently seeking to some location.
  */
 @property (nonatomic, readonly, getter=isSeeking) BOOL seeking;
+
+/**
+ *  The time at which the player started seeking, `kCMTimeIndefinite` if no seek is currently being made.
+ */
+@property (nonatomic, readonly) CMTime seekStartTime;
+
+/**
+ *  The current time to which the player is seeking, `kCMTimeIndefinite` if no seek is currently being made.
+ */
+@property (nonatomic, readonly) CMTime seekTargetTime;
 
 /**
  *  Attempt to play the media immediately if possible (iOS 10 and greater), otherwise normally.

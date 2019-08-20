@@ -464,12 +464,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CMTime currentTime;
 
 /**
- *  The time at which the player started seeking, `kCMTimeIndefinite` if none.
+ *  The time at which the player started seeking, `kCMTimeIndefinite` if no seek is currently being made.
  */
 @property (nonatomic, readonly) CMTime seekStartTime;
 
 /**
- *  The current time to which the player is seeking, `kCMTimeIndefinite` if none.
+ *  The current time to which the player is seeking, `kCMTimeIndefinite` if no seek is currently being made.
  */
 @property (nonatomic, readonly) CMTime seekTargetTime;
 
