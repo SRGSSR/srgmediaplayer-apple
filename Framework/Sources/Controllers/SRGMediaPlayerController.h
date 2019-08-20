@@ -10,7 +10,6 @@
 
 #import "SRGMediaPlayerConstants.h"
 #import "SRGMediaPlayerView.h"
-#import "SRGPlayer.h"
 #import "SRGPosition.h"
 #import "SRGSegment.h"
 
@@ -223,35 +222,18 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) float endToleranceRatio;
 
 /**
- *  @name Player
- */
-
-/**
- *  The instance of the player. You should not control playback directly on this instance, otherwise the behavior is undefined.
- *  You can still use if for any other purposes, e.g. getting information about the player, setting observers, etc. If you need
- *  to alter properties of the player reliably, you should use the lifecycle blocks hooks instead (see below).
- */
-@property (nonatomic, readonly, nullable) SRGPlayer *player;
-
-/**
- *  The layer used by the player. Use it if you need to change the content gravity or to detect when the player is ready
- *  for display.
- */
-@property (nonatomic, readonly) AVPlayerLayer *playerLayer;
-
-/**
- *  @name View
- */
-
-/**
  *  The view where the player displays its content. Either install in your own view hierarchy, or bind a corresponding view
  *  with the `SRGMediaPlayerView` class in Interface Builder.
  */
 @property (nonatomic, readonly, nullable) IBOutlet SRGMediaPlayerView *view;
 
+@end
+
 /**
  *  @name Player lifecycle
  */
+
+@interface SRGMediaPlayerController (Lifecycle)
 
 /**
  *  Optional block which gets called right after internal player creation (player changes from `nil` to not `nil`).
@@ -312,9 +294,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)reloadMediaConfigurationWithBlock:(nullable void (^)(AVPlayerItem *playerItem, AVAsset *asset))block;
 
+@end
+
 /**
  *  @name Playback
  */
+
+@interface SRGMediaPlayerController (Playback)
 
 /**
  *  Prepare to play the media, starting at the specified position, but with the player paused (if playback is not started
@@ -405,8 +391,44 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reset;
 
 /**
- *  @name Playback information
+ *  Arbitrary user info which has been associated with the media being played.
+ *
+ *  @discussion This information can be updated at any time, but is usually specified when a playback method is called.
  */
+@property (nonatomic, nullable) NSDictionary *userInfo;
+
+@end
+
+/**
+ *  @name Segments
+ */
+
+@interface SRGMediaPlayerController (Segments)
+
+/**
+ *  The segments which have been loaded into the player.
+ *
+ *  @discussion The segment list can be updated at any time.
+ */
+@property (nonatomic, nullable) NSArray<id<SRGSegment>> *segments;
+
+/**
+ *  The visible segments which have been loaded into the player.
+ */
+@property (nonatomic, readonly, nullable) NSArray<id<SRGSegment>> *visibleSegments;
+
+/**
+ *  Return the segment corresponding to the current playback position, `nil` if none.
+ */
+@property (nonatomic, readonly, weak, nullable) id<SRGSegment> currentSegment;
+
+@end
+
+/**
+ *  @name Controller status information
+ */
+
+@interface SRGMediaPlayerController (Status)
 
 /**
  *  The current state of the media player controller.
@@ -424,30 +446,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  The URL asset currently loaded into the player.
  */
 @property (nonatomic, readonly, nullable) AVURLAsset *URLAsset;
-
-/**
- *  The segments which have been loaded into the player.
- *
- *  @discussion The segment list can be updated while playing.
- */
-@property (nonatomic, nullable) NSArray<id<SRGSegment>> *segments;
-
-/**
- *  The user info which has been associated with the media being played.
- *
- *  @discussion This information can be updated while playing.
- */
-@property (nonatomic, nullable) NSDictionary *userInfo;
-
-/**
- *  The visible segments which have been loaded into the player.
- */
-@property (nonatomic, readonly, nullable) NSArray<id<SRGSegment>> *visibleSegments;
-
-/**
- *  Return the segment corresponding to the current playback position, `nil` if none.
- */
-@property (nonatomic, readonly, weak, nullable) id<SRGSegment> currentSegment;
 
 /**
  *  The current media time range (might be empty or indefinite).
@@ -496,9 +494,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 
+@end
+
 /**
  *  @name Time observers
  */
+
+@interface SRGMediaPlayerController (TimeObservers)
 
 /**
  *  Register a block for periodic execution when the player is not idle (unlike usual `AVPlayer` time observers which do
@@ -524,6 +526,30 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param observer The time observer to remove (does nothing if `nil`).
  */
 - (void)removePeriodicTimeObserver:(nullable id)observer;
+
+@end
+
+/**
+ *  @name Native player access
+ */
+
+@interface SRGMediaPlayerController (NativePlayer)
+
+/**
+ *  The underlying player. You can use it to extract playback information, set observers, or even alter the playback,
+ *  though in general you should prefer the equivalent controller methods.
+ *
+ *
+ *  Use the lifecycle block hooks (see below) to reliably access the player, as it might not always be available (e.g.
+ *  when the controller is idle).
+ */
+@property (nonatomic, readonly, nullable) AVPlayer *player;
+
+/**
+ *  The layer used by the player. Use it if you need to change the content gravity or to detect when the player is ready
+ *  for display.
+ */
+@property (nonatomic, readonly) AVPlayerLayer *playerLayer;
 
 @end
 

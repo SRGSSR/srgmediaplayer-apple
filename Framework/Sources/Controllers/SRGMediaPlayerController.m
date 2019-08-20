@@ -18,6 +18,7 @@
 #import "SRGMediaPlayerView.h"
 #import "SRGMediaPlayerView+Private.h"
 #import "SRGPeriodicTimeObserver.h"
+#import "SRGPlayer.h"
 #import "SRGSegment+Private.h"
 #import "UIDevice+SRGMediaPlayer.h"
 #import "UIScreen+SRGMediaPlayer.h"
@@ -48,7 +49,17 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic) AVURLAsset *URLAsset;
+@property (nonatomic) NSDictionary *userInfo;
 
+@property (nonatomic, copy) void (^playerCreationBlock)(AVPlayer *player);
+@property (nonatomic, copy) void (^playerConfigurationBlock)(AVPlayer *player);
+@property (nonatomic, copy) void (^playerDestructionBlock)(AVPlayer *player);
+
+@property (nonatomic, copy) void (^mediaConfigurationBlock)(AVPlayerItem *playerItem, AVAsset *asset);
+
+@property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
+
+@property (nonatomic) NSArray<id<SRGSegment>> *segments;
 @property (nonatomic) NSArray<id<SRGSegment>> *visibleSegments;
 
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;

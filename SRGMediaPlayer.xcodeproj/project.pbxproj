@@ -173,8 +173,8 @@
 		6F816C852258AA4300A71401 /* SRGMediaPlaybackView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F8F06E31FDA7631002DD457 /* SRGMediaPlaybackView.h */; };
 		6F816C862258AA4700A71401 /* SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F3F1737212FE3F30091A260 /* SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F816C872258AA4700A71401 /* SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3F1738212FE3F40091A260 /* SRGMediaPlayer.m */; };
-		6F859F3A230A937900ECE021 /* SRGPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F38230A937900ECE021 /* SRGPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6F859F3B230A937900ECE021 /* SRGPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F38230A937900ECE021 /* SRGPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F859F3A230A937900ECE021 /* SRGPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F38230A937900ECE021 /* SRGPlayer.h */; };
+		6F859F3B230A937900ECE021 /* SRGPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F38230A937900ECE021 /* SRGPlayer.h */; };
 		6F859F3C230A937900ECE021 /* SRGPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F39230A937900ECE021 /* SRGPlayer.m */; };
 		6F859F3D230A937900ECE021 /* SRGPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F39230A937900ECE021 /* SRGPlayer.m */; };
 		6F859F40230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F3E230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
