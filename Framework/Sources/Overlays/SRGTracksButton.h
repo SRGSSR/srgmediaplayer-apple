@@ -76,7 +76,7 @@ IB_DESIGNABLE
 /**
  *  The button delegate.
  */
-@property (nonatomic, weak) id<SRGTracksButtonDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<SRGTracksButtonDelegate> delegate;
 
 @end
 

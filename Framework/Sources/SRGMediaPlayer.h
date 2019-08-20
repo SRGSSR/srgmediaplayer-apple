@@ -30,7 +30,6 @@ FOUNDATION_EXPORT NSString *SRGMediaPlayerMarketingVersion(void);
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "SRGAirPlayButton.h"
 #import "SRGAirPlayView.h"
-#import "SRGMediaPlayerViewController.h"
 #import "SRGPictureInPictureButton.h"
 #import "SRGPlaybackButton.h"
 #import "SRGTimeSlider.h"

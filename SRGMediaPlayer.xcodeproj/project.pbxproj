@@ -18,6 +18,8 @@
 		08F4E53F1E7FE76900C9E8FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08F4E5411E7FE76900C9E8FD /* Localizable.strings */; };
 		6F0C98B5212162BC00073AB6 /* CMTime+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B421215F9000073AB6 /* CMTime+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F0C98B6212162BC00073AB6 /* CMTimeRange+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F12842D230C0B55001119EA /* SRGMediaPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F12842A230C0B55001119EA /* SRGMediaPlayerViewController.storyboard */; };
+		6F12842E230C1106001119EA /* SRGMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F128429230C0B55001119EA /* SRGMediaPlayerViewController.m */; };
 		6F2556D2212FBF63004C8F9A /* SRGPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F2556D0212FBF63004C8F9A /* SRGPosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F2556D3212FBF63004C8F9A /* SRGPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2556D1212FBF63004C8F9A /* SRGPosition.m */; };
 		6F3711452306B560006F52BC /* MetadataUpdatesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */; };
@@ -39,7 +41,6 @@
 		6F444858210F147E009FDB70 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E0A1D61BAFD0064E6C1 /* thumb_timeline_slider.png */; };
 		6F444859210F1480009FDB70 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E0B1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png */; };
 		6F44485A210F1483009FDB70 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F9453331F7225BC00A6507E /* Images.xcassets */; };
-		6F44485B210F149A009FDB70 /* SRGMediaPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F5CA3DC1FD919CD00CF175F /* SRGMediaPlayerViewController.storyboard */; };
 		6F44485C210F14AE009FDB70 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6C315661D76AB62001FC93A /* LaunchScreen.xib */; };
 		6F44485D210F14BC009FDB70 /* SRGMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */; };
 		6F465FBF2306A42C000653E7 /* NSTimer+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1C74A22BCD29B00D55625 /* NSTimer+SRGMediaPlayer.m */; };
@@ -61,11 +62,7 @@
 		6F5CA3FE1FD919CD00CF175F /* AVAudioSession+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3C61FD919CD00CF175F /* AVAudioSession+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F5CA3FF1FD919CD00CF175F /* UIScreen+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3C71FD919CD00CF175F /* UIScreen+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F5CA40F1FD919CD00CF175F /* SRGMediaPlayerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3D91FD919CD00CF175F /* SRGMediaPlayerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6F5CA4101FD919CD00CF175F /* SRGMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3DA1FD919CD00CF175F /* SRGMediaPlayerViewController.m */; };
-		6F5CA4111FD919CD00CF175F /* SRGMediaPlayerSharedController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3DB1FD919CD00CF175F /* SRGMediaPlayerSharedController.h */; };
-		6F5CA4131FD919CD00CF175F /* SRGMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3DD1FD919CD00CF175F /* SRGMediaPlayerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F5CA4141FD919CD00CF175F /* SRGMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3DE1FD919CD00CF175F /* SRGMediaPlayerController.m */; };
-		6F5CA4151FD919CD00CF175F /* SRGMediaPlayerSharedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3DF1FD919CD00CF175F /* SRGMediaPlayerSharedController.m */; };
 		6F5CA4161FD919CD00CF175F /* SRGMediaPlaybackFlatView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3E11FD919CD00CF175F /* SRGMediaPlaybackFlatView.h */; };
 		6F5CA4171FD919CD00CF175F /* SRGMediaPlaybackMonoscopicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3E21FD919CD00CF175F /* SRGMediaPlaybackMonoscopicView.m */; };
 		6F5CA4181FD919CD00CF175F /* SRGMediaPlaybackSceneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3E31FD919CD00CF175F /* SRGMediaPlaybackSceneView.m */; };
@@ -131,8 +128,6 @@
 		6F816C442258AA1500A71401 /* UIWindow+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3BE1FD919CD00CF175F /* UIWindow+SRGMediaPlayer.m */; };
 		6F816C452258AA1C00A71401 /* SRGMediaPlayerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3D91FD919CD00CF175F /* SRGMediaPlayerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F816C462258AA1C00A71401 /* SRGMediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3DE1FD919CD00CF175F /* SRGMediaPlayerController.m */; };
-		6F816C472258AA1C00A71401 /* SRGMediaPlayerSharedController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3DB1FD919CD00CF175F /* SRGMediaPlayerSharedController.h */; };
-		6F816C482258AA1C00A71401 /* SRGMediaPlayerSharedController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA3DF1FD919CD00CF175F /* SRGMediaPlayerSharedController.m */; };
 		6F816C4C2258AA3700A71401 /* SRGActivityGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA42F1FD91A1D00CF175F /* SRGActivityGestureRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F816C4D2258AA3700A71401 /* SRGActivityGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4261FD91A1D00CF175F /* SRGActivityGestureRecognizer.m */; };
 		6F816C4E2258AA3700A71401 /* SRGPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F2556D0212FBF63004C8F9A /* SRGPosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -226,8 +221,6 @@
 		E67799341D75B0E300E58331 /* SRGTimelineSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F511D62072400A55085 /* SRGTimelineSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E67799351D75B0E300E58331 /* SRGTimelineSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F521D62072400A55085 /* SRGTimelineSlider.m */; };
 		E69A1F981D61BFAE0064E6C1 /* AudioDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F5C1D61BFAE0064E6C1 /* AudioDemoConfiguration.plist */; };
-		E69A1F991D61BFAE0064E6C1 /* close_button.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F5D1D61BFAE0064E6C1 /* close_button.png */; };
-		E69A1F9A1D61BFAE0064E6C1 /* close_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F5E1D61BFAE0064E6C1 /* close_button@2x.png */; };
 		E69A1F9B1D61BFAE0064E6C1 /* goal.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F5F1D61BFAE0064E6C1 /* goal.png */; };
 		E69A1F9C1D61BFAE0064E6C1 /* goal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F601D61BFAE0064E6C1 /* goal@2x.png */; };
 		E69A1F9D1D61BFAE0064E6C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F611D61BFAE0064E6C1 /* Images.xcassets */; };
@@ -398,6 +391,9 @@
 		08F4E5451E7FE77100C9E8FD /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CMTimeRange+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F0C98B421215F9000073AB6 /* CMTime+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CMTime+SRGMediaPlayer.h"; sourceTree = "<group>"; };
+		6F128429230C0B55001119EA /* SRGMediaPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerViewController.m; sourceTree = "<group>"; };
+		6F12842A230C0B55001119EA /* SRGMediaPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SRGMediaPlayerViewController.storyboard; sourceTree = "<group>"; };
+		6F12842B230C0B55001119EA /* SRGMediaPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerViewController.h; sourceTree = "<group>"; };
 		6F2556D0212FBF63004C8F9A /* SRGPosition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGPosition.h; sourceTree = "<group>"; };
 		6F2556D1212FBF63004C8F9A /* SRGPosition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGPosition.m; sourceTree = "<group>"; };
 		6F2A9BDD225A4782006D0615 /* libextobjc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libextobjc.framework; path = Carthage/Build/tvOS/libextobjc.framework; sourceTree = "<group>"; };
@@ -423,12 +419,7 @@
 		6F5CA3C61FD919CD00CF175F /* AVAudioSession+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVAudioSession+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F5CA3C71FD919CD00CF175F /* UIScreen+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F5CA3D91FD919CD00CF175F /* SRGMediaPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerController.h; sourceTree = "<group>"; };
-		6F5CA3DA1FD919CD00CF175F /* SRGMediaPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerViewController.m; sourceTree = "<group>"; };
-		6F5CA3DB1FD919CD00CF175F /* SRGMediaPlayerSharedController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerSharedController.h; sourceTree = "<group>"; };
-		6F5CA3DC1FD919CD00CF175F /* SRGMediaPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SRGMediaPlayerViewController.storyboard; sourceTree = "<group>"; };
-		6F5CA3DD1FD919CD00CF175F /* SRGMediaPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerViewController.h; sourceTree = "<group>"; };
 		6F5CA3DE1FD919CD00CF175F /* SRGMediaPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerController.m; sourceTree = "<group>"; };
-		6F5CA3DF1FD919CD00CF175F /* SRGMediaPlayerSharedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerSharedController.m; sourceTree = "<group>"; };
 		6F5CA3E11FD919CD00CF175F /* SRGMediaPlaybackFlatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackFlatView.h; sourceTree = "<group>"; };
 		6F5CA3E21FD919CD00CF175F /* SRGMediaPlaybackMonoscopicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlaybackMonoscopicView.m; sourceTree = "<group>"; };
 		6F5CA3E31FD919CD00CF175F /* SRGMediaPlaybackSceneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlaybackSceneView.m; sourceTree = "<group>"; };
@@ -527,8 +518,6 @@
 		E69A1E671D61BEFC0064E6C1 /* SRGMediaPlayer-iOS-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SRGMediaPlayer-iOS-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69A1F581D61BFAE0064E6C1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E69A1F5C1D61BFAE0064E6C1 /* AudioDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AudioDemoConfiguration.plist; sourceTree = "<group>"; };
-		E69A1F5D1D61BFAE0064E6C1 /* close_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_button.png; sourceTree = "<group>"; };
-		E69A1F5E1D61BFAE0064E6C1 /* close_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_button@2x.png"; sourceTree = "<group>"; };
 		E69A1F5F1D61BFAE0064E6C1 /* goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goal.png; sourceTree = "<group>"; };
 		E69A1F601D61BFAE0064E6C1 /* goal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "goal@2x.png"; sourceTree = "<group>"; };
 		E69A1F611D61BFAE0064E6C1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -653,6 +642,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6F128428230C0B55001119EA /* Advanced */ = {
+			isa = PBXGroup;
+			children = (
+				6F128429230C0B55001119EA /* SRGMediaPlayerViewController.m */,
+				6F12842A230C0B55001119EA /* SRGMediaPlayerViewController.storyboard */,
+				6F12842B230C0B55001119EA /* SRGMediaPlayerViewController.h */,
+			);
+			path = Advanced;
+			sourceTree = "<group>";
+		};
 		6F5CA3B31FD919CD00CF175F /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -689,11 +688,6 @@
 				6F5CA3DE1FD919CD00CF175F /* SRGMediaPlayerController.m */,
 				6FE0034922EF2D7C00E07977 /* SRGMediaPlayerNavigationController.h */,
 				6FE0034A22EF2D7C00E07977 /* SRGMediaPlayerNavigationController.m */,
-				6F5CA3DB1FD919CD00CF175F /* SRGMediaPlayerSharedController.h */,
-				6F5CA3DF1FD919CD00CF175F /* SRGMediaPlayerSharedController.m */,
-				6F5CA3DD1FD919CD00CF175F /* SRGMediaPlayerViewController.h */,
-				6F5CA3DA1FD919CD00CF175F /* SRGMediaPlayerViewController.m */,
-				6F5CA3DC1FD919CD00CF175F /* SRGMediaPlayerViewController.storyboard */,
 				6F859F3E230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h */,
 				6F859F3F230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m */,
 			);
@@ -912,8 +906,6 @@
 			isa = PBXGroup;
 			children = (
 				E69A1F5C1D61BFAE0064E6C1 /* AudioDemoConfiguration.plist */,
-				E69A1F5D1D61BFAE0064E6C1 /* close_button.png */,
-				E69A1F5E1D61BFAE0064E6C1 /* close_button@2x.png */,
 				E69A1F5F1D61BFAE0064E6C1 /* goal.png */,
 				E69A1F601D61BFAE0064E6C1 /* goal@2x.png */,
 				E69A1F611D61BFAE0064E6C1 /* Images.xcassets */,
@@ -986,10 +978,11 @@
 		E6BCE9391D76CB900021973D /* Players */ = {
 			isa = PBXGroup;
 			children = (
+				6F128428230C0B55001119EA /* Advanced */,
+				E6BCE94A1D76CB900021973D /* Custom */,
 				E6BCE93A1D76CB900021973D /* Inline */,
 				E6BCE93E1D76CB900021973D /* Multi */,
 				E6BCE9421D76CB900021973D /* Segments */,
-				E6BCE94A1D76CB900021973D /* Custom */,
 			);
 			path = Players;
 			sourceTree = "<group>";
@@ -1137,7 +1130,6 @@
 				6F816C7A2258AA4300A71401 /* SRGMediaPlaybackFlatView.h in Headers */,
 				6F816C432258AA1500A71401 /* UIWindow+SRGMediaPlayer.h in Headers */,
 				6F816C762258AA3D00A71401 /* SRGViewModeButton.h in Headers */,
-				6F816C472258AA1C00A71401 /* SRGMediaPlayerSharedController.h in Headers */,
 				6F859F41230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.h in Headers */,
 				6F816C5D2258AA3700A71401 /* SRGSegment.h in Headers */,
 				6F816C452258AA1C00A71401 /* SRGMediaPlayerController.h in Headers */,
@@ -1163,7 +1155,6 @@
 				6F5CA4161FD919CD00CF175F /* SRGMediaPlaybackFlatView.h in Headers */,
 				6F5CA4201FD919CD00CF175F /* SRGMediaPlaybackSceneView.h in Headers */,
 				6FBA837B22C4909300AFAF8B /* SRGRouteDetector.h in Headers */,
-				6F5CA4131FD919CD00CF175F /* SRGMediaPlayerViewController.h in Headers */,
 				6F5CA43D1FD91A1D00CF175F /* SRGSegment.h in Headers */,
 				6F5CA40F1FD919CD00CF175F /* SRGMediaPlayerController.h in Headers */,
 				6F5CA4381FD91A1D00CF175F /* SRGMediaPlayerConstants.h in Headers */,
@@ -1191,7 +1182,6 @@
 				6F5CA41E1FD919CD00CF175F /* SRGMediaPlayerView+Private.h in Headers */,
 				089026D52013ECEF00C0688E /* SRGSegment+Private.h in Headers */,
 				E6C9860E1D6F458900C45C7A /* SRGTimeSlider.h in Headers */,
-				6F5CA4111FD919CD00CF175F /* SRGMediaPlayerSharedController.h in Headers */,
 				6F5CA41C1FD919CD00CF175F /* SRGMediaPlaybackMonoscopicView.h in Headers */,
 				6FC1C75022BCD29D00D55625 /* NSTimer+SRGMediaPlayer.h in Headers */,
 				08D3BEC01DE8756500AE1368 /* SRGAlternateTracksViewController.h in Headers */,
@@ -1419,7 +1409,6 @@
 			files = (
 				6F444856210F1479009FDB70 /* Accessibility.strings in Resources */,
 				6F44485A210F1483009FDB70 /* Images.xcassets in Resources */,
-				6F44485B210F149A009FDB70 /* SRGMediaPlayerViewController.storyboard in Resources */,
 				6F444859210F1480009FDB70 /* thumb_timeline_slider@2x.png in Resources */,
 				6F444857210F147B009FDB70 /* Localizable.strings in Resources */,
 				6F444858210F147E009FDB70 /* thumb_timeline_slider.png in Resources */,
@@ -1460,7 +1449,6 @@
 			files = (
 				E6BCE9541D76CB900021973D /* SegmentCollectionViewCell.xib in Resources */,
 				E69A1FA41D61BFAE0064E6C1 /* red_card@2x.png in Resources */,
-				E69A1F9A1D61BFAE0064E6C1 /* close_button@2x.png in Resources */,
 				E6BCE9511D76CB900021973D /* MultiPlayerViewController.storyboard in Resources */,
 				E69A1F9D1D61BFAE0064E6C1 /* Images.xcassets in Resources */,
 				6F44485C210F14AE009FDB70 /* LaunchScreen.xib in Resources */,
@@ -1468,10 +1456,10 @@
 				E6BCE95B1D76CF7D0021973D /* SegmentDemoConfiguration.plist in Resources */,
 				E6BCE9591D76CBCE0021973D /* SegmentsPlayerViewController.storyboard in Resources */,
 				E69A1FA71D61BFAE0064E6C1 /* thumbnail-placeholder.png in Resources */,
-				E69A1F991D61BFAE0064E6C1 /* close_button.png in Resources */,
 				E69A1F9B1D61BFAE0064E6C1 /* goal.png in Resources */,
 				E69A1FA31D61BFAE0064E6C1 /* red_card.png in Resources */,
 				E69A1FA81D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png in Resources */,
+				6F12842D230C0B55001119EA /* SRGMediaPlayerViewController.storyboard in Resources */,
 				E6BCE94F1D76CB900021973D /* InlinePlayerViewController.storyboard in Resources */,
 				E69A1FA21D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist in Resources */,
 				E69A1FAC1D61BFAE0064E6C1 /* yellow_card@2x.png in Resources */,
@@ -1575,7 +1563,6 @@
 				6F816C832258AA4300A71401 /* SRGMediaPlayerView.m in Sources */,
 				6F816C552258AA3700A71401 /* SRGMediaPlayerIconTemplate.m in Sources */,
 				6F816C3A2258AA1500A71401 /* MPVolumeView+SRGMediaPlayer.m in Sources */,
-				6F816C482258AA1C00A71401 /* SRGMediaPlayerSharedController.m in Sources */,
 				6F816C3C2258AA1500A71401 /* NSBundle+SRGMediaPlayer.m in Sources */,
 				6F816C872258AA4700A71401 /* SRGMediaPlayer.m in Sources */,
 				6F816C4D2258AA3700A71401 /* SRGActivityGestureRecognizer.m in Sources */,
@@ -1618,7 +1605,6 @@
 				6F5CA3F91FD919CD00CF175F /* MPVolumeView+SRGMediaPlayer.m in Sources */,
 				6F9643D421307920003C6612 /* SRGAirPlayView.m in Sources */,
 				6F5CA3F51FD919CD00CF175F /* UIScreen+SRGMediaPlayer.m in Sources */,
-				6F5CA4151FD919CD00CF175F /* SRGMediaPlayerSharedController.m in Sources */,
 				08D3BEB11DE6EAB100AE1368 /* SRGTracksButton.m in Sources */,
 				6F859F3C230A937900ECE021 /* SRGPlayer.m in Sources */,
 				E6C9860B1D6F36C900C45C7A /* SRGPlaybackButton.m in Sources */,
@@ -1636,7 +1622,6 @@
 				08D3BEC11DE8756500AE1368 /* SRGAlternateTracksViewController.m in Sources */,
 				6F5CA4171FD919CD00CF175F /* SRGMediaPlaybackMonoscopicView.m in Sources */,
 				6F5CA4341FD91A1D00CF175F /* SRGMediaPlayerIconTemplate.m in Sources */,
-				6F5CA4101FD919CD00CF175F /* SRGMediaPlayerViewController.m in Sources */,
 				6F5CA4321FD91A1D00CF175F /* SRGVideoNode.m in Sources */,
 				E67799331D75AE2600E58331 /* SRGTimelineView.m in Sources */,
 				6F9643D521307920003C6612 /* SRGAirPlayButton.m in Sources */,
@@ -1672,6 +1657,7 @@
 				6F97C7981E7A89C5001AD9B3 /* ModalTransition.m in Sources */,
 				6F5CA4451FD91CE500CF175F /* Media.m in Sources */,
 				E6BCE9551D76CB900021973D /* SegmentsPlayerViewController.m in Sources */,
+				6F12842E230C1106001119EA /* SRGMediaPlayerViewController.m in Sources */,
 				6FCE34182261D4C400302D4B /* MediaSegment.m in Sources */,
 				E6D21D231D76A3F500B477F3 /* main.m in Sources */,
 				E6BCE9501D76CB900021973D /* MultiPlayerViewController.m in Sources */,

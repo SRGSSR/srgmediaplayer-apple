@@ -106,7 +106,7 @@
 {
     [super viewWillAppear:animated];
     
-    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+    if (self.movingToParentViewController || self.beingPresented) {
         for (NSInteger i = 0; i < self.medias.count; ++i) {
             Media *media = self.medias[i];
             SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerControllers[i];

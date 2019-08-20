@@ -65,7 +65,7 @@
 {
     [super viewWillAppear:animated];
     
-    if ([self isMovingToParentViewController] || [self isBeingPresented]) {
+    if (self.movingToParentViewController || self.beingPresented) {
         [self.mediaPlayerController playURL:self.media.URL];
     }
 }

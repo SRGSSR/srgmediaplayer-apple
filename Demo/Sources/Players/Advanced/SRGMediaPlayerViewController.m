@@ -6,38 +6,22 @@
 
 #import "SRGMediaPlayerViewController.h"
 
-#import "NSBundle+SRGMediaPlayer.h"
-#import "SRGActivityGestureRecognizer.h"
-#import "SRGAirPlayButton.h"
-#import "SRGAirPlayView.h"
-#import "SRGMediaPlayerController.h"
-#import "SRGPlaybackButton.h"
-#import "SRGPictureInPictureButton.h"
-#import "SRGMediaPlayerSharedController.h"
-#import "SRGTimeSlider.h"
-#import "SRGTracksButton.h"
-#import "SRGViewModeButton.h"
+#import "NSBundle+Demo.h"
 
 #import <libextobjc/libextobjc.h>
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 const NSInteger SRGMediaPlayerViewControllerBackwardSkipInterval = 15.;
 const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
 
-// Shared instance to manage picture in picture playback
-static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
-
 @interface SRGMediaPlayerViewController () <SRGTracksButtonDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView *playerView;
+@property (nonatomic) Media *media;
 
-@property (nonatomic, weak) IBOutlet SRGTracksButton *tracksButton;
-@property (nonatomic, weak) IBOutlet SRGPictureInPictureButton *pictureInPictureButton;
-@property (nonatomic, weak) IBOutlet SRGViewModeButton *viewModeButton;
+@property (nonatomic, weak) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
-@property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
+@property (nonatomic, weak) IBOutlet SRGPlaybackButton *playbackButton;
 @property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
-@property (nonatomic, weak) IBOutlet SRGAirPlayButton *airPlayButton;
-@property (nonatomic, weak) IBOutlet SRGAirPlayView *airPlayView;
 @property (nonatomic, weak) IBOutlet UIButton *skipBackwardButton;
 @property (nonatomic, weak) IBOutlet UIButton *skipForwardButton;
 
@@ -49,6 +33,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 @property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
 
 @property (nonatomic) NSTimer *inactivityTimer;
+
 @property (nonatomic, weak) id periodicTimeObserver;
 
 @end
@@ -58,36 +43,17 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     BOOL _userInterfaceHidden;
 }
 
-#pragma mark Class methods
-
-+ (void)initialize
-{
-    if (self != SRGMediaPlayerViewController.class) {
-        return;
-    }
-    
-    s_mediaPlayerController = [[SRGMediaPlayerSharedController alloc] init];
-}
-
 #pragma mark Object lifecycle
 
-- (instancetype)init
+- (instancetype)initWithMedia:(Media *)media
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:NSBundle.srg_mediaPlayerBundle];
-    return [storyboard instantiateInitialViewController];
-}
-
-- (void)dealloc
-{
-    [s_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    SRGMediaPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    viewController.media = media;
+    return viewController;
 }
 
 #pragma mark Getters and setters
-
-- (SRGMediaPlayerController *)controller
-{
-    return s_mediaPlayerController;
-}
 
 - (void)setInactivityTimer:(NSTimer *)inactivityTimer
 {
@@ -101,27 +67,21 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 {
     [super viewDidLoad];
     
-    self.tracksButton.delegate = self;
-    
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(srg_mediaPlayerViewController_playbackStateDidChange:)
+                                           selector:@selector(playbackStateDidChange:)
                                                name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                             object:s_mediaPlayerController];
+                                             object:self.mediaPlayerController];
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(srg_mediaPlayerViewController_playbackDidFail:)
+                                           selector:@selector(playbackDidFail:)
                                                name:SRGMediaPlayerPlaybackDidFailNotification
-                                             object:s_mediaPlayerController];
+                                             object:self.mediaPlayerController];
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(srg_mediaPlayerViewController_applicationDidBecomeActive:)
-                                               name:UIApplicationDidBecomeActiveNotification
-                                             object:nil];
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:)
+                                           selector:@selector(accessibilityVoiceOverStatusChanged:)
                                                name:UIAccessibilityVoiceOverStatusChanged
                                              object:nil];
     
-    self.playerView.isAccessibilityElement = YES;
-    self.playerView.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Media", @"The player view label, where the audio / video is displayed");
+    self.playbackButton.playImage = [UIImage imageNamed:@"play"];
+    self.playbackButton.pauseImage = [UIImage imageNamed:@"pause"];
     
     self.errorImageView.hidden = YES;
     self.audioOnlyImageView.hidden = YES;
@@ -136,31 +96,20 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.audioOnlyImageView.image = nil;
     self.audioOnlyImageView.image = audioOnlyImage;
     
-    // Use a wrapper to avoid setting gesture recognizers widely on the shared player instance view
-    s_mediaPlayerController.view.frame = self.playerView.bounds;
-    s_mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.playerView addSubview:s_mediaPlayerController.view];
+    SRGMediaPlayerView *playerView = self.mediaPlayerController.view;
+    playerView.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
     
     UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
     doubleTapGestureRecognizer.numberOfTapsRequired = 2;
-    [self.playerView addGestureRecognizer:doubleTapGestureRecognizer];
+    [playerView addGestureRecognizer:doubleTapGestureRecognizer];
     
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
     [singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
-    [self.playerView addGestureRecognizer:singleTapGestureRecognizer];
+    [playerView addGestureRecognizer:singleTapGestureRecognizer];
     
     SRGActivityGestureRecognizer *activityGestureRecognizer = [[SRGActivityGestureRecognizer alloc] initWithTarget:self action:@selector(resetInactivityTimer:)];
     activityGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:activityGestureRecognizer];
-    
-    self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
-    self.tracksButton.mediaPlayerController = s_mediaPlayerController;
-    self.timeSlider.mediaPlayerController = s_mediaPlayerController;
-    self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
-    self.airPlayButton.mediaPlayerController = s_mediaPlayerController;
-    self.airPlayView.mediaPlayerController = s_mediaPlayerController;
-    
-    self.viewModeButton.mediaPlayerView = s_mediaPlayerController.view;
     
     // The frame of an activity indicator cannot be changed. Use a transform.
     self.loadingActivityIndicatorView.transform = CGAffineTransformMakeScale(0.6f, 0.6f);
@@ -172,7 +121,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     
     @weakify(self)
-    self.periodicTimeObserver = [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
+    self.periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         
         [self updateUserInterface];
@@ -183,15 +132,18 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     [self restartInactivityTracker];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.movingToParentViewController || self.beingPresented) {
+        [self.mediaPlayerController playURL:self.media.URL];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    if ([self isBeingPresented]) {
-        if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
-            [s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
-        }
-    }
     
     if (@available(iOS 11, *)) {
         [self setNeedsUpdateOfHomeIndicatorAutoHidden];
@@ -235,7 +187,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)updateUserInterface
 {
-    SRGMediaPlayerPlaybackState playbackState = s_mediaPlayerController.playbackState;
+    SRGMediaPlayerPlaybackState playbackState = self.mediaPlayerController.playbackState;
     switch (playbackState) {
         case SRGMediaPlayerPlaybackStateIdle: {
             self.timeSlider.timeLeftValueLabel.hidden = YES;
@@ -270,14 +222,14 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     self.skipForwardButton.hidden = ! [self canSkipForward];
     self.skipBackwardButton.hidden = ! [self canSkipBackward];
     
-    if (self.controller.mediaType != SRGMediaPlayerMediaTypeAudio) {
-        self.playerView.hidden = NO;
+    if (self.mediaPlayerController.mediaType != SRGMediaPlayerMediaTypeAudio) {
+        self.mediaPlayerController.view.hidden = NO;
         self.audioOnlyImageView.hidden = YES;
     }
     else {
         [self updateInterfaceForControlsHidden:NO];
         
-        self.playerView.hidden = YES;
+        self.mediaPlayerController.view.hidden = YES;
         self.audioOnlyImageView.hidden = NO;
     }
 }
@@ -359,7 +311,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (CMTime)seekStartTime
 {
-    return CMTIME_IS_INDEFINITE(self.controller.seekTargetTime) ? self.controller.currentTime : self.controller.seekTargetTime;
+    return CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime) ? self.mediaPlayerController.currentTime : self.mediaPlayerController.seekTargetTime;
 }
 
 - (BOOL)canSkipBackwardFromTime:(CMTime)time
@@ -368,14 +320,14 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         return NO;
     }
     
-    SRGMediaPlayerController *controller = self.controller;
-    SRGMediaPlayerPlaybackState playbackState = controller.playbackState;
+    SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
+    SRGMediaPlayerPlaybackState playbackState = mediaPlayerController.playbackState;
     
     if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
         return NO;
     }
     
-    SRGMediaPlayerStreamType streamType = controller.streamType;
+    SRGMediaPlayerStreamType streamType = mediaPlayerController.streamType;
     return (streamType == SRGMediaPlayerStreamTypeOnDemand || streamType == SRGMediaPlayerStreamTypeDVR);
 }
 
@@ -385,16 +337,16 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
         return NO;
     }
     
-    SRGMediaPlayerController *controller = self.controller;
-    SRGMediaPlayerPlaybackState playbackState = controller.playbackState;
+    SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
+    SRGMediaPlayerPlaybackState playbackState = mediaPlayerController.playbackState;
     
     if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
         return NO;
     }
     
-    SRGMediaPlayerStreamType streamType = controller.streamType;
-    return (streamType == SRGMediaPlayerStreamTypeOnDemand && CMTimeGetSeconds(time) + SRGMediaPlayerViewControllerForwardSkipInterval < CMTimeGetSeconds(controller.player.currentItem.duration))
-        || (streamType == SRGMediaPlayerStreamTypeDVR && ! controller.live);
+    SRGMediaPlayerStreamType streamType = mediaPlayerController.streamType;
+    return (streamType == SRGMediaPlayerStreamTypeOnDemand && CMTimeGetSeconds(time) + SRGMediaPlayerViewControllerForwardSkipInterval < CMTimeGetSeconds(mediaPlayerController.player.currentItem.duration))
+        || (streamType == SRGMediaPlayerStreamTypeDVR && ! mediaPlayerController.live);
 }
 
 - (void)skipBackwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
@@ -405,9 +357,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     
     CMTime targetTime = CMTimeSubtract(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerBackwardSkipInterval, NSEC_PER_SEC));
-    [self.controller seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
-            [self.controller play];
+            [self.mediaPlayerController play];
         }
         completionHandler ? completionHandler(finished) : nil;
     }];
@@ -421,9 +373,9 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
     
     CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerForwardSkipInterval, NSEC_PER_SEC));
-    [self.controller seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
-            [self.controller play];
+            [self.mediaPlayerController play];
         }
         completionHandler ? completionHandler(finished) : nil;
     }];
@@ -450,7 +402,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 #pragma mark Notifications
 
-- (void)srg_mediaPlayerViewController_playbackStateDidChange:(NSNotification *)notification
+- (void)playbackStateDidChange:(NSNotification *)notification
 {
     SRGMediaPlayerController *mediaPlayerController = notification.object;
     
@@ -463,22 +415,13 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
     }
 }
 
-- (void)srg_mediaPlayerViewController_playbackDidFail:(NSNotification *)notification
+- (void)playbackDidFail:(NSNotification *)notification
 {
     self.errorImageView.hidden = NO;
     [self updateUserInterface];
 }
 
-- (void)srg_mediaPlayerViewController_applicationDidBecomeActive:(NSNotification *)notification
-{
-    AVPictureInPictureController *pictureInPictureController = s_mediaPlayerController.pictureInPictureController;
-    
-    if (pictureInPictureController.isPictureInPictureActive) {
-        [pictureInPictureController stopPictureInPicture];
-    }
-}
-
-- (void)srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:(NSNotification *)notification
+- (void)accessibilityVoiceOverStatusChanged:(NSNotification *)notification
 {
     [self restartInactivityTracker];
 }
@@ -497,10 +440,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (IBAction)dismiss:(id)sender
 {
-    if (! s_mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
-        [s_mediaPlayerController reset];
-    }
-    
+    [self.mediaPlayerController reset];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -514,7 +454,7 @@ static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
 
 - (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer
 {
-    AVPlayerLayer *playerLayer = s_mediaPlayerController.playerLayer;
+    AVPlayerLayer *playerLayer = self.mediaPlayerController.playerLayer;
     
     if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
         playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
