@@ -167,6 +167,7 @@
         }
         else if (mediaPlayer.playerClass == SRGMediaPlayerViewController.class) {
             SRGMediaPlayerViewController *playerViewController = [[SRGMediaPlayerViewController alloc] init];
+            playerViewController.delegate = self;
             [playerViewController.controller playURL:media.URL];
             [self presentViewController:playerViewController animated:YES completion:nil];
         }
