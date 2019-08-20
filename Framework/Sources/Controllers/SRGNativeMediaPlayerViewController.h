@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Document: Changing the player property leads to undefined behavior
 @interface SRGNativeMediaPlayerViewController : AVPlayerViewController
 
 @property (nonatomic, readonly) SRGMediaPlayerController *controller;

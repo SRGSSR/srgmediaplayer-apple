@@ -29,8 +29,23 @@
             @strongify(self)
             self.player = self.controller.player;
         }];
+        
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(playbackDidFail:)
+                                                   name:SRGMediaPlayerPlaybackDidFailNotification
+                                                 object:self.controller];
     }
     return self;
+}
+
+#pragma mark Notifications
+
+- (void)playbackDidFail:(NSNotification *)notification
+{
+    // `AVPlayerViewController` displays failures only if a failing `AVPlayer` is attached to it. Since `SRGMediaPlayerController`
+    // sets its player 
+    NSURL *URL = [NSURL URLWithString:@"failed://"];
+    self.player = [AVPlayer playerWithURL:URL];
 }
 
 @end
