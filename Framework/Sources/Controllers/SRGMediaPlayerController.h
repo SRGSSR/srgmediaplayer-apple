@@ -24,7 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
  *    - A controller, `SRGMediaPlayerController`, to perform playback.
  *    - A view, `SRGMediaPlayerView`, with which content played by a controller can be displayed.
  *    - A set of overlays to create custom player user interfaces.
- *    - `SRGMediaPlayerViewController`, a view controller with a default user interface for simple playback needs.
+ *    - `SRGMediaPlayerViewController`, an `AVPlayerViewController` subclass using an `SRGMediaPlayerController` for
+ *      playback.
  *
  *  ## Controller
  *

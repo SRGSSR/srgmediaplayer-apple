@@ -43,7 +43,7 @@
     
     switch (mediaPlayerType) {
         case MediaPlayerTypeStandard: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player") class:SRGNativeMediaPlayerViewController.class],
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player") class:SRGMediaPlayerViewController.class],
                                              [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"System") class:AVPlayerViewController.class],
                                              [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Simple custom") class:SimplePlayerViewController.class],
                                              [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Advanced custom") class:AdvancedPlayerViewController.class],
@@ -165,8 +165,8 @@
             
             [self presentViewController:playerViewController animated:YES completion:nil];
         }
-        else if (mediaPlayer.playerClass == SRGNativeMediaPlayerViewController.class) {
-            SRGNativeMediaPlayerViewController *playerViewController = [[SRGNativeMediaPlayerViewController alloc] init];
+        else if (mediaPlayer.playerClass == SRGMediaPlayerViewController.class) {
+            SRGMediaPlayerViewController *playerViewController = [[SRGMediaPlayerViewController alloc] init];
             [playerViewController.controller playURL:media.URL];
             [self presentViewController:playerViewController animated:YES completion:nil];
         }

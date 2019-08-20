@@ -75,7 +75,12 @@
     Media *media = self.medias[indexPath.row];
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Player", nil) message:NSLocalizedString(@"Choose the player to play the media with", nil) preferredStyle:UIAlertControllerStyleActionSheet];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"AVKit", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SRG Media Player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        SRGMediaPlayerViewController *playerViewController = [[SRGMediaPlayerViewController alloc] init];
+        [playerViewController.controller playURL:media.URL];
+        [self presentViewController:playerViewController animated:YES completion:nil];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"System player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
         AVPlayer *player = [AVPlayer playerWithURL:media.URL];
         playerViewController.player = player;
@@ -83,12 +88,7 @@
             [player play];
         }];
     }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"AVKit + SRG Media Player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        SRGNativeMediaPlayerViewController *playerViewController = [[SRGNativeMediaPlayerViewController alloc] init];
-        [playerViewController.controller playURL:media.URL];
-        [self presentViewController:playerViewController animated:YES completion:nil];
-    }]];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SRG Media Player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Simple player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         TVPlayerViewController *playerViewController = [[TVPlayerViewController alloc] initWithMedia:media];
         [self presentViewController:playerViewController animated:YES completion:nil];
     }]];

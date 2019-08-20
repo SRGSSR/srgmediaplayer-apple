@@ -4,18 +4,18 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGNativeMediaPlayerViewController.h"
+#import "SRGMediaPlayerViewController.h"
 
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
-@interface SRGNativeMediaPlayerViewController ()
+@interface SRGMediaPlayerViewController ()
 
 @property (nonatomic) SRGMediaPlayerController *controller;
 
 @end
 
-@implementation SRGNativeMediaPlayerViewController
+@implementation SRGMediaPlayerViewController
 
 #pragma mark Object lifecycle
 
