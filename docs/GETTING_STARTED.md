@@ -8,20 +8,19 @@ The SRG Media Player library is made of separate building blocks:
 
 Those components can be combined together depending on your application needs. A ready-to-use player view controller is also provided.
 
-## Architecture
+## Core principles
 
-At the highest level, the library intends to provide a default player view controller which can be instantiated in a few keystrokes, much like the system `AVPlayerViewController`. It supports only limited features and its layout is similar to the one of the system player, but cannot be customised.
+The library provides an `AVPlayer`-based controller which provides a clean and powerful API for playback. An `AVPlayerViewController` lightweight subclass, `SRGMediaPlayerViewController`, ensures compatibility with the standard iOS player.
 
-This default player view controller is itself based on a set of lower-level components which you can combine to match your requirements:
+Custom player layouts can also be created by connecting a controller with a set of UI components, provided as well (slider, play / pause button, timeline, message view, AirPlay overlay, etc.).
 
-* A media player controller, which can be optionally attached to a view for playing videos.
-* A set of components (slider, play / pause button, timeline, message view, AirPlay overlay, etc.) which can be connected to an underlying media player controller.
-
-Let us now discuss these components further and describe how they can be glued together.
+The following further discusses these components and describe how they can be glued together.
 
 ## Media player view controller
 
-If you do not need to customize the player appearance, simply instantiate `SRGMediaPlayerViewController` and display it modally. The view controller exposes its underlying `controller` property, which you must use to start playback:
+If you do not need to customize the player appearance, simply instantiate `SRGMediaPlayerViewController` and display it. This class is a simple `AVPlayerViewController` subclass, thus having the exact same look & feel as the standard iOS player. 
+
+The view controller exposes its underlying `controller` property, which you must use to start playback:
 
 ```objective-c
 SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
@@ -30,9 +29,7 @@ SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewCo
 }];
 ```
 
-You can also use the `controller` property to register for playback notifications.
-
-The `SRGMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams), as well as picture in picture for compatible devices. Segments are currently supported (notifications will be received for them) but not displayed. If you need to display segments, implement a custom player.
+Please refer to `AVPlayerViewController` for further integration instructions, from picture in picture to optional settings.
 
 ## Designing custom players
 
