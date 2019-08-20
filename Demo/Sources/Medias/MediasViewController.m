@@ -6,14 +6,14 @@
 
 #import "MediasViewController.h"
 
-#import "SRGMediaPlayerViewController.h"
-#import "CustomPlayerViewController.h"
+#import "AdvancedPlayerViewController.h"
 #import "InlinePlayerViewController.h"
 #import "Media.h"
 #import "MediaPlayer.h"
 #import "MultiPlayerViewController.h"
 #import "NSBundle+Demo.h"
 #import "SegmentsPlayerViewController.h"
+#import "SimplePlayerViewController.h"
 #import "UIWindow+SRGMediaPlayer.h"
 
 #import <AVKit/AVKit.h>
@@ -43,11 +43,11 @@
     
     switch (mediaPlayerType) {
         case MediaPlayerTypeStandard: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player") class:SRGMediaPlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player + AVKit") class:SRGNativeMediaPlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"AVKit") class:AVPlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline player") class:InlinePlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Custom player") class:CustomPlayerViewController.class] ];
+            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player") class:SRGNativeMediaPlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"System") class:AVPlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Simple custom") class:SimplePlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Advanced custom") class:AdvancedPlayerViewController.class],
+                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline custom") class:InlinePlayerViewController.class] ];
             break;
         }
             
@@ -155,12 +155,7 @@
         }
         
         MediaPlayer *mediaPlayer = self.mediaPlayers[indexPath.row];
-        if (mediaPlayer.playerClass == SRGMediaPlayerViewController.class) {
-            SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] initWithMedia:media];
-            mediaPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:mediaPlayerViewController animated:YES completion:nil];
-        }
-        else if (mediaPlayer.playerClass == AVPlayerViewController.class) {
+        if (mediaPlayer.playerClass == AVPlayerViewController.class) {
             AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
             playerViewController.delegate = self;
             
@@ -170,34 +165,39 @@
             
             [self presentViewController:playerViewController animated:YES completion:nil];
         }
-        else if (mediaPlayer.playerClass == InlinePlayerViewController.class) {
-            InlinePlayerViewController *inlinePlayerViewController = [[InlinePlayerViewController alloc] initWithMedia:media];
-            inlinePlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self.navigationController pushViewController:inlinePlayerViewController animated:YES];
-        }
         else if (mediaPlayer.playerClass == SRGNativeMediaPlayerViewController.class) {
             SRGNativeMediaPlayerViewController *playerViewController = [[SRGNativeMediaPlayerViewController alloc] init];
             [playerViewController.controller playURL:media.URL];
             [self presentViewController:playerViewController animated:YES completion:nil];
         }
-        else if (mediaPlayer.playerClass == CustomPlayerViewController.class) {
-            CustomPlayerViewController *customPlayerViewController = [[CustomPlayerViewController alloc] initWithMedia:media];
-            customPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:customPlayerViewController animated:YES completion:nil];
+        else if (mediaPlayer.playerClass == SimplePlayerViewController.class) {
+            SimplePlayerViewController *playerViewController = [[SimplePlayerViewController alloc] initWithMedia:media];
+            playerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:playerViewController animated:YES completion:nil];
+        }
+        else if (mediaPlayer.playerClass == AdvancedPlayerViewController.class) {
+            AdvancedPlayerViewController *playerViewController = [[AdvancedPlayerViewController alloc] initWithMedia:media];
+            playerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:playerViewController animated:YES completion:nil];
+        }
+        else if (mediaPlayer.playerClass == InlinePlayerViewController.class) {
+            InlinePlayerViewController *playerViewController = [[InlinePlayerViewController alloc] initWithMedia:media];
+            playerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self.navigationController pushViewController:playerViewController animated:YES];
         }
         else if (mediaPlayer.playerClass == SegmentsPlayerViewController.class) {
-            SegmentsPlayerViewController *segmentsPlayerViewController = [[SegmentsPlayerViewController alloc] initWithMedia:media];
-            segmentsPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:segmentsPlayerViewController animated:YES completion:nil];
+            SegmentsPlayerViewController *playerViewController = [[SegmentsPlayerViewController alloc] initWithMedia:media];
+            playerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:playerViewController animated:YES completion:nil];
         }
         else if (mediaPlayer.playerClass == MultiPlayerViewController.class) {
             NSMutableArray *medias = [self.medias mutableCopy];
             [medias removeObject:media];
             [medias insertObject:media atIndex:0];
             
-            MultiPlayerViewController *segmentsPlayerViewController = [[MultiPlayerViewController alloc] initWithMedias:[medias copy]];
-            segmentsPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:segmentsPlayerViewController animated:YES completion:nil];
+            MultiPlayerViewController *playerViewController = [[MultiPlayerViewController alloc] initWithMedias:[medias copy]];
+            playerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self presentViewController:playerViewController animated:YES completion:nil];
         }
     }
 }

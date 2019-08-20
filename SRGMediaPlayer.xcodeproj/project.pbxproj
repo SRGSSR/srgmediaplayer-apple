@@ -18,8 +18,8 @@
 		08F4E53F1E7FE76900C9E8FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08F4E5411E7FE76900C9E8FD /* Localizable.strings */; };
 		6F0C98B5212162BC00073AB6 /* CMTime+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B421215F9000073AB6 /* CMTime+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F0C98B6212162BC00073AB6 /* CMTimeRange+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6F12842D230C0B55001119EA /* SRGMediaPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F12842A230C0B55001119EA /* SRGMediaPlayerViewController.storyboard */; };
-		6F12842E230C1106001119EA /* SRGMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F128429230C0B55001119EA /* SRGMediaPlayerViewController.m */; };
+		6F12842D230C0B55001119EA /* AdvancedPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F12842A230C0B55001119EA /* AdvancedPlayerViewController.storyboard */; };
+		6F12842E230C1106001119EA /* AdvancedPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F128429230C0B55001119EA /* AdvancedPlayerViewController.m */; };
 		6F2556D2212FBF63004C8F9A /* SRGPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F2556D0212FBF63004C8F9A /* SRGPosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F2556D3212FBF63004C8F9A /* SRGPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2556D1212FBF63004C8F9A /* SRGPosition.m */; };
 		6F3711452306B560006F52BC /* MetadataUpdatesTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7D5EA1F86237D00817E89 /* MetadataUpdatesTestCase.m */; };
@@ -177,6 +177,8 @@
 		6F859F42230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F3F230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m */; };
 		6F859F43230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F3F230A9E1600ECE021 /* SRGNativeMediaPlayerViewController.m */; };
 		6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */; };
+		6F908B72230C1E0200CB33BD /* SimplePlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F908B6F230C1E0200CB33BD /* SimplePlayerViewController.storyboard */; };
+		6F908B73230C1E0200CB33BD /* SimplePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F908B71230C1E0200CB33BD /* SimplePlayerViewController.m */; };
 		6F9643D221307920003C6612 /* SRGAirPlayButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9643CE2130791F003C6612 /* SRGAirPlayButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F9643D321307920003C6612 /* SRGAirPlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9643CF2130791F003C6612 /* SRGAirPlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F9643D421307920003C6612 /* SRGAirPlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9643D02130791F003C6612 /* SRGAirPlayView.m */; };
@@ -246,8 +248,6 @@
 		E6BCE9531D76CB900021973D /* SegmentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BCE9461D76CB900021973D /* SegmentCollectionViewCell.m */; };
 		E6BCE9541D76CB900021973D /* SegmentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE9471D76CB900021973D /* SegmentCollectionViewCell.xib */; };
 		E6BCE9551D76CB900021973D /* SegmentsPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BCE9491D76CB900021973D /* SegmentsPlayerViewController.m */; };
-		E6BCE9561D76CB900021973D /* CustomPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BCE94C1D76CB900021973D /* CustomPlayerViewController.m */; };
-		E6BCE9571D76CB900021973D /* CustomPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE94D1D76CB900021973D /* CustomPlayerViewController.storyboard */; };
 		E6BCE9591D76CBCE0021973D /* SegmentsPlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE9581D76CBCE0021973D /* SegmentsPlayerViewController.storyboard */; };
 		E6BCE95B1D76CF7D0021973D /* SegmentDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE95A1D76CF7D0021973D /* SegmentDemoConfiguration.plist */; };
 		E6BCE95F1D77F1A50021973D /* PlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDE1D61C6D20064E6C1 /* PlaybackTestCase.m */; };
@@ -391,9 +391,9 @@
 		08F4E5451E7FE77100C9E8FD /* rm */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = rm; path = rm.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CMTimeRange+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F0C98B421215F9000073AB6 /* CMTime+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CMTime+SRGMediaPlayer.h"; sourceTree = "<group>"; };
-		6F128429230C0B55001119EA /* SRGMediaPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerViewController.m; sourceTree = "<group>"; };
-		6F12842A230C0B55001119EA /* SRGMediaPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SRGMediaPlayerViewController.storyboard; sourceTree = "<group>"; };
-		6F12842B230C0B55001119EA /* SRGMediaPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerViewController.h; sourceTree = "<group>"; };
+		6F128429230C0B55001119EA /* AdvancedPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedPlayerViewController.m; sourceTree = "<group>"; };
+		6F12842A230C0B55001119EA /* AdvancedPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AdvancedPlayerViewController.storyboard; sourceTree = "<group>"; };
+		6F12842B230C0B55001119EA /* AdvancedPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedPlayerViewController.h; sourceTree = "<group>"; };
 		6F2556D0212FBF63004C8F9A /* SRGPosition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGPosition.h; sourceTree = "<group>"; };
 		6F2556D1212FBF63004C8F9A /* SRGPosition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGPosition.m; sourceTree = "<group>"; };
 		6F2A9BDD225A4782006D0615 /* libextobjc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libextobjc.framework; path = Carthage/Build/tvOS/libextobjc.framework; sourceTree = "<group>"; };
@@ -465,6 +465,9 @@
 		6F8F06E31FDA7631002DD457 /* SRGMediaPlaybackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackView.h; sourceTree = "<group>"; };
 		6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Demo.h"; sourceTree = "<group>"; };
 		6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Demo.m"; sourceTree = "<group>"; };
+		6F908B6F230C1E0200CB33BD /* SimplePlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SimplePlayerViewController.storyboard; sourceTree = "<group>"; };
+		6F908B70230C1E0200CB33BD /* SimplePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePlayerViewController.h; sourceTree = "<group>"; };
+		6F908B71230C1E0200CB33BD /* SimplePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimplePlayerViewController.m; sourceTree = "<group>"; };
 		6F9453331F7225BC00A6507E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6F9643CE2130791F003C6612 /* SRGAirPlayButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAirPlayButton.h; sourceTree = "<group>"; };
 		6F9643CF2130791F003C6612 /* SRGAirPlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAirPlayView.h; sourceTree = "<group>"; };
@@ -547,9 +550,6 @@
 		E6BCE9471D76CB900021973D /* SegmentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentCollectionViewCell.xib; sourceTree = "<group>"; };
 		E6BCE9481D76CB900021973D /* SegmentsPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentsPlayerViewController.h; sourceTree = "<group>"; };
 		E6BCE9491D76CB900021973D /* SegmentsPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentsPlayerViewController.m; sourceTree = "<group>"; };
-		E6BCE94B1D76CB900021973D /* CustomPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPlayerViewController.h; sourceTree = "<group>"; };
-		E6BCE94C1D76CB900021973D /* CustomPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPlayerViewController.m; sourceTree = "<group>"; };
-		E6BCE94D1D76CB900021973D /* CustomPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CustomPlayerViewController.storyboard; sourceTree = "<group>"; };
 		E6BCE9581D76CBCE0021973D /* SegmentsPlayerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SegmentsPlayerViewController.storyboard; sourceTree = "<group>"; };
 		E6BCE95A1D76CF7D0021973D /* SegmentDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SegmentDemoConfiguration.plist; sourceTree = "<group>"; };
 		E6C315661D76AB62001FC93A /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
@@ -645,9 +645,9 @@
 		6F128428230C0B55001119EA /* Advanced */ = {
 			isa = PBXGroup;
 			children = (
-				6F128429230C0B55001119EA /* SRGMediaPlayerViewController.m */,
-				6F12842A230C0B55001119EA /* SRGMediaPlayerViewController.storyboard */,
-				6F12842B230C0B55001119EA /* SRGMediaPlayerViewController.h */,
+				6F128429230C0B55001119EA /* AdvancedPlayerViewController.m */,
+				6F12842A230C0B55001119EA /* AdvancedPlayerViewController.storyboard */,
+				6F12842B230C0B55001119EA /* AdvancedPlayerViewController.h */,
 			);
 			path = Advanced;
 			sourceTree = "<group>";
@@ -807,6 +807,16 @@
 				6F7B820F225E7A2B0002CD3A /* TVPlayerViewController.storyboard */,
 			);
 			path = Player;
+			sourceTree = "<group>";
+		};
+		6F908B6E230C1E0200CB33BD /* Simple */ = {
+			isa = PBXGroup;
+			children = (
+				6F908B6F230C1E0200CB33BD /* SimplePlayerViewController.storyboard */,
+				6F908B70230C1E0200CB33BD /* SimplePlayerViewController.h */,
+				6F908B71230C1E0200CB33BD /* SimplePlayerViewController.m */,
+			);
+			path = Simple;
 			sourceTree = "<group>";
 		};
 		6F97C7951E7A89C5001AD9B3 /* Helpers */ = {
@@ -979,10 +989,10 @@
 			isa = PBXGroup;
 			children = (
 				6F128428230C0B55001119EA /* Advanced */,
-				E6BCE94A1D76CB900021973D /* Custom */,
 				E6BCE93A1D76CB900021973D /* Inline */,
 				E6BCE93E1D76CB900021973D /* Multi */,
 				E6BCE9421D76CB900021973D /* Segments */,
+				6F908B6E230C1E0200CB33BD /* Simple */,
 			);
 			path = Players;
 			sourceTree = "<group>";
@@ -1018,16 +1028,6 @@
 				E6BCE9581D76CBCE0021973D /* SegmentsPlayerViewController.storyboard */,
 			);
 			path = Segments;
-			sourceTree = "<group>";
-		};
-		E6BCE94A1D76CB900021973D /* Custom */ = {
-			isa = PBXGroup;
-			children = (
-				E6BCE94B1D76CB900021973D /* CustomPlayerViewController.h */,
-				E6BCE94C1D76CB900021973D /* CustomPlayerViewController.m */,
-				E6BCE94D1D76CB900021973D /* CustomPlayerViewController.storyboard */,
-			);
-			path = Custom;
 			sourceTree = "<group>";
 		};
 		E6D21D181D76A3F500B477F3 /* Application */ = {
@@ -1448,6 +1448,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6BCE9541D76CB900021973D /* SegmentCollectionViewCell.xib in Resources */,
+				6F908B72230C1E0200CB33BD /* SimplePlayerViewController.storyboard in Resources */,
 				E69A1FA41D61BFAE0064E6C1 /* red_card@2x.png in Resources */,
 				E6BCE9511D76CB900021973D /* MultiPlayerViewController.storyboard in Resources */,
 				E69A1F9D1D61BFAE0064E6C1 /* Images.xcassets in Resources */,
@@ -1459,7 +1460,7 @@
 				E69A1F9B1D61BFAE0064E6C1 /* goal.png in Resources */,
 				E69A1FA31D61BFAE0064E6C1 /* red_card.png in Resources */,
 				E69A1FA81D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png in Resources */,
-				6F12842D230C0B55001119EA /* SRGMediaPlayerViewController.storyboard in Resources */,
+				6F12842D230C0B55001119EA /* AdvancedPlayerViewController.storyboard in Resources */,
 				E6BCE94F1D76CB900021973D /* InlinePlayerViewController.storyboard in Resources */,
 				E69A1FA21D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist in Resources */,
 				E69A1FAC1D61BFAE0064E6C1 /* yellow_card@2x.png in Resources */,
@@ -1467,7 +1468,6 @@
 				E69A1F981D61BFAE0064E6C1 /* AudioDemoConfiguration.plist in Resources */,
 				E69A1F9C1D61BFAE0064E6C1 /* goal@2x.png in Resources */,
 				E69A1FA11D61BFAE0064E6C1 /* VideoDemoConfiguration.plist in Resources */,
-				E6BCE9571D76CB900021973D /* CustomPlayerViewController.storyboard in Resources */,
 				E69A1FAB1D61BFAE0064E6C1 /* yellow_card.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1650,14 +1650,14 @@
 			files = (
 				E6D21D221D76A3F500B477F3 /* AppDelegate.m in Sources */,
 				6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */,
-				E6BCE9561D76CB900021973D /* CustomPlayerViewController.m in Sources */,
 				E6D21D241D76A3F500B477F3 /* MediasViewController.m in Sources */,
 				E6BCE94E1D76CB900021973D /* InlinePlayerViewController.m in Sources */,
+				6F908B73230C1E0200CB33BD /* SimplePlayerViewController.m in Sources */,
 				6FD312271FD92FAB00EC0C42 /* MediaPlayer.m in Sources */,
 				6F97C7981E7A89C5001AD9B3 /* ModalTransition.m in Sources */,
 				6F5CA4451FD91CE500CF175F /* Media.m in Sources */,
 				E6BCE9551D76CB900021973D /* SegmentsPlayerViewController.m in Sources */,
-				6F12842E230C1106001119EA /* SRGMediaPlayerViewController.m in Sources */,
+				6F12842E230C1106001119EA /* AdvancedPlayerViewController.m in Sources */,
 				6FCE34182261D4C400302D4B /* MediaSegment.m in Sources */,
 				E6D21D231D76A3F500B477F3 /* main.m in Sources */,
 				E6BCE9501D76CB900021973D /* MultiPlayerViewController.m in Sources */,

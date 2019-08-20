@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Custom Player View Controller-->
+        <!--Simple Player View Controller-->
         <scene sceneID="cbS-Cg-mbF">
             <objects>
-                <viewController id="Zk8-W1-piv" customClass="CustomPlayerViewController" sceneMemberID="viewController">
+                <viewController id="Zk8-W1-piv" customClass="SimplePlayerViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xTs-IJ-3tq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

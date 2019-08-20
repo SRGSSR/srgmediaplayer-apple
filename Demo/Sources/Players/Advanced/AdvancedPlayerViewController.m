@@ -4,17 +4,17 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGMediaPlayerViewController.h"
+#import "AdvancedPlayerViewController.h"
 
 #import "NSBundle+Demo.h"
 
 #import <libextobjc/libextobjc.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-const NSInteger SRGMediaPlayerViewControllerBackwardSkipInterval = 15.;
-const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
+const NSInteger kBackwardSkipInterval = 15.;
+const NSInteger kForwardSkipInterval = 15.;
 
-@interface SRGMediaPlayerViewController () <SRGTracksButtonDelegate>
+@interface AdvancedPlayerViewController () <SRGTracksButtonDelegate>
 
 @property (nonatomic) Media *media;
 
@@ -38,7 +38,7 @@ const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
 
 @end
 
-@implementation SRGMediaPlayerViewController {
+@implementation AdvancedPlayerViewController {
 @private
     BOOL _userInterfaceHidden;
 }
@@ -48,7 +48,7 @@ const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
 - (instancetype)initWithMedia:(Media *)media
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    SRGMediaPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    AdvancedPlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.media = media;
     return viewController;
 }
@@ -345,7 +345,7 @@ const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
     }
     
     SRGMediaPlayerStreamType streamType = mediaPlayerController.streamType;
-    return (streamType == SRGMediaPlayerStreamTypeOnDemand && CMTimeGetSeconds(time) + SRGMediaPlayerViewControllerForwardSkipInterval < CMTimeGetSeconds(mediaPlayerController.player.currentItem.duration))
+    return (streamType == SRGMediaPlayerStreamTypeOnDemand && CMTimeGetSeconds(time) + kForwardSkipInterval < CMTimeGetSeconds(mediaPlayerController.player.currentItem.duration))
         || (streamType == SRGMediaPlayerStreamTypeDVR && ! mediaPlayerController.live);
 }
 
@@ -356,7 +356,7 @@ const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
         return;
     }
     
-    CMTime targetTime = CMTimeSubtract(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerBackwardSkipInterval, NSEC_PER_SEC));
+    CMTime targetTime = CMTimeSubtract(time, CMTimeMakeWithSeconds(kBackwardSkipInterval, NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
             [self.mediaPlayerController play];
@@ -372,7 +372,7 @@ const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
         return;
     }
     
-    CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerForwardSkipInterval, NSEC_PER_SEC));
+    CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(kForwardSkipInterval, NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
             [self.mediaPlayerController play];

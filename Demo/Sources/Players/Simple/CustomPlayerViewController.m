@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "CustomPlayerViewController.h"
+#import "SimplePlayerViewController.h"
 
 #import "NSBundle+Demo.h"
 #import "SegmentCollectionViewCell.h"
@@ -12,7 +12,7 @@
 #import <libextobjc/libextobjc.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface CustomPlayerViewController ()
+@interface SimplePlayerViewController ()
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
@@ -26,14 +26,14 @@
 
 @end
 
-@implementation CustomPlayerViewController
+@implementation SimplePlayerViewController
 
 #pragma mark Object lifecycle
 
 - (instancetype)initWithMedia:(Media *)media
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    CustomPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    SimplePlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.media = media;
     return viewController;
 }
