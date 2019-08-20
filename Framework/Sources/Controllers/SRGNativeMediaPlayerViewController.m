@@ -17,6 +17,8 @@
 
 @implementation SRGNativeMediaPlayerViewController
 
+#pragma mark Object lifecycle
+
 - (instancetype)init
 {
     if (self = [super init]) {

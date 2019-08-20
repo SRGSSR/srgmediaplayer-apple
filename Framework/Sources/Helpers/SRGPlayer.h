@@ -42,11 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<SRGPlayerDelegate> delegate;
 
 /**
- *  Returns `YES` iff the player is currently seeking to some location.
- */
-@property (nonatomic, readonly, getter=isSeeking) BOOL seeking;
-
-/**
  *  The time at which the player started seeking, `kCMTimeIndefinite` if no seek is currently being made.
  */
 @property (nonatomic, readonly) CMTime seekStartTime;

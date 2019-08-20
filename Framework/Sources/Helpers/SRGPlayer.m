@@ -28,13 +28,6 @@
     return self;
 }
 
-#pragma mark Getters and setters
-
-- (BOOL)isSeeking
-{
-    return self.seekCount != 0;
-}
-
 #pragma mark Playback
 
 // TODO: Remove when iOS / tvOS 10 is the minimum required version.

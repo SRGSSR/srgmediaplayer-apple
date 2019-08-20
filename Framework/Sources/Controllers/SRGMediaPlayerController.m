@@ -1407,9 +1407,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position
 {
-    if (! player.seeking) {
-        [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-    }
+    [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
 }
 
 #pragma mark Notifications
