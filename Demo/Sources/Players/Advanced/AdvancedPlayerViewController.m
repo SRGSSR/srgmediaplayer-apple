@@ -14,7 +14,10 @@
 const NSInteger kBackwardSkipInterval = 15.;
 const NSInteger kForwardSkipInterval = 15.;
 
-@interface AdvancedPlayerViewController () <SRGTracksButtonDelegate>
+// To keep the view controller when picture in picture is active
+static AdvancedPlayerViewController *s_advancedPlayerViewController;
+
+@interface AdvancedPlayerViewController () <AVPictureInPictureControllerDelegate, SRGTracksButtonDelegate>
 
 @property (nonatomic) Media *media;
 
@@ -66,6 +69,12 @@ const NSInteger kForwardSkipInterval = 15.;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    self.mediaPlayerController.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
+        weakSelf.mediaPlayerController.pictureInPictureController.delegate = weakSelf;
+    };
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(playbackStateDidChange:)
@@ -137,13 +146,21 @@ const NSInteger kForwardSkipInterval = 15.;
     [super viewWillAppear:animated];
     
     if (self.movingToParentViewController || self.beingPresented) {
-        [self.mediaPlayerController playURL:self.media.URL];
+        if (! self.mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
+            [self.mediaPlayerController playURL:self.media.URL];
+        }
     }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if (self.beingPresented) {
+        if (self.mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
+            [self.mediaPlayerController.pictureInPictureController stopPictureInPicture];
+        }
+    }
     
     if (@available(iOS 11, *)) {
         [self setNeedsUpdateOfHomeIndicatorAutoHidden];
@@ -381,6 +398,38 @@ const NSInteger kForwardSkipInterval = 15.;
     }];
 }
 
+#pragma mark AVPictureInPictureControllerDelegate protocol
+
+- (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
+{
+    s_advancedPlayerViewController = self;
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
+{
+    if (s_advancedPlayerViewController) {
+        UIViewController *rootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
+        [rootViewController presentViewController:s_advancedPlayerViewController animated:YES completion:^{
+            completionHandler(YES);
+        }];
+        s_advancedPlayerViewController = nil;
+    }
+    else {
+        completionHandler(NO);
+    }
+}
+
+- (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
+{
+    // Reset the status of the player when picture in picture is exited anywhere except from the SRGMediaPlayerViewController
+    // itself
+    if (s_advancedPlayerViewController && ! s_advancedPlayerViewController.presentingViewController) {
+        [self.mediaPlayerController reset];
+        s_advancedPlayerViewController = nil;
+    }
+}
+
 #pragma mark SRGTracksButtonDelegate protocol
 
 - (void)tracksButtonWillShowTrackSelection:(SRGTracksButton *)tracksButton
@@ -440,7 +489,10 @@ const NSInteger kForwardSkipInterval = 15.;
 
 - (IBAction)dismiss:(id)sender
 {
-    [self.mediaPlayerController reset];
+    if (! self.mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
+        [self.mediaPlayerController reset];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
