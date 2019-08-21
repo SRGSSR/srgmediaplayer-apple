@@ -103,13 +103,16 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
             [interstitialTimeRanges addObject:interstitialTimeRange];
         }
         else if (! segment.srg_hidden) {
+            // For a metadata item to be presented in the Info panel, you need to provide values for the item’s identifier, value, and extendedLanguageTag.
             AVMutableMetadataItem *titleItem = [[AVMutableMetadataItem alloc] init];
             titleItem.identifier = AVMetadataCommonIdentifierTitle;
             titleItem.value = [NSString stringWithFormat:@"Segment %@", @(idx + 1)];
+            titleItem.extendedLanguageTag = @"und";
             
             AVMutableMetadataItem *descriptionItem = [[AVMutableMetadataItem alloc] init];
             descriptionItem.identifier = AVMetadataCommonIdentifierDescription;
             descriptionItem.value = [NSString stringWithFormat:@"This is chapter with number %@", @(idx + 1)];
+            descriptionItem.extendedLanguageTag = @"und";
             
             AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy, descriptionItem.copy ] timeRange:segment.srg_timeRange];
             [navigationMarkers addObject:navigationMarker];
