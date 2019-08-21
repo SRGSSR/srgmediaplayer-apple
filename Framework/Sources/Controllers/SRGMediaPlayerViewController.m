@@ -64,9 +64,9 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
         
         [self.controller addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, segments) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
-            [self updateInterstitialsWithPlayer:self.controller.player];
+            [self updateMetadataWithPlayer:self.controller.player];
         }];
-        [self updateInterstitialsWithPlayer:self.controller.player];
+        [self updateMetadataWithPlayer:self.controller.player];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(playbackDidFail:)
@@ -87,23 +87,46 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
 - (void)updateWithPlayer:(AVPlayer *)player
 {
     [self performSelector:@selector(setPlayer:) withObject:player];
-    [self updateInterstitialsWithPlayer:player];
+    [self updateMetadataWithPlayer:player];
 }
 
 // Register blocked segments as interstitials, so that the seek bar does not provide any preview for such sections.
-- (void)updateInterstitialsWithPlayer:(AVPlayer *)player
+- (void)updateMetadataWithPlayer:(AVPlayer *)player
 {
 #if TARGET_OS_TV
     NSMutableArray<AVInterstitialTimeRange *> *interstitialTimeRanges = [NSMutableArray array];
+    NSMutableArray<AVTimedMetadataGroup *> *navigationMarkers = [NSMutableArray array];
+    
     [self.controller.segments enumerateObjectsUsingBlock:^(id<SRGSegment> _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (! segment.srg_blocked) {
-            return;
+        if (segment.srg_blocked) {
+            AVInterstitialTimeRange *interstitialTimeRange = [[AVInterstitialTimeRange alloc] initWithTimeRange:segment.srg_timeRange];
+            [interstitialTimeRanges addObject:interstitialTimeRange];
         }
-        
-        AVInterstitialTimeRange *interstitialTimeRange = [[AVInterstitialTimeRange alloc] initWithTimeRange:segment.srg_timeRange];
-        [interstitialTimeRanges addObject:interstitialTimeRange];
+        else if (! segment.srg_hidden) {
+            AVMutableMetadataItem *titleItem = [[AVMutableMetadataItem alloc] init];
+            titleItem.identifier = AVMetadataCommonIdentifierTitle;
+            titleItem.value = [NSString stringWithFormat:@"Segment %@", @(idx + 1)];
+            
+            AVMutableMetadataItem *descriptionItem = [[AVMutableMetadataItem alloc] init];
+            descriptionItem.identifier = AVMetadataCommonIdentifierDescription;
+            descriptionItem.value = [NSString stringWithFormat:@"This is chapter with number %@", @(idx + 1)];
+            
+            AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy, descriptionItem.copy ] timeRange:segment.srg_timeRange];
+            [navigationMarkers addObject:navigationMarker];
+        }
     }];
-    player.currentItem.interstitialTimeRanges = [interstitialTimeRanges copy];
+    
+    AVPlayerItem *playerItem = player.currentItem;
+    playerItem.interstitialTimeRanges = interstitialTimeRanges.copy;
+    
+    if (navigationMarkers.count > 0) {
+        // No title must be set for the chapter navigation marker group, see `navigationMarkerGroups` documentation.
+        AVNavigationMarkersGroup *segmentsNavigationMarkerGroup = [[AVNavigationMarkersGroup alloc] initWithTitle:nil timedNavigationMarkers:navigationMarkers.copy];
+        playerItem.navigationMarkerGroups = @[ segmentsNavigationMarkerGroup ];
+    }
+    else {
+        playerItem.navigationMarkerGroups = @[];
+    }
 #endif
 }
 
