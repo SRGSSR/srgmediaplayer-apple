@@ -40,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) AVPlayer *player NS_UNAVAILABLE;
 
+@property (nonatomic, copy) NSArray<AVInterstitialTimeRange *> *interstitialTimeRanges NS_UNAVAILABLE;
+
 @end
 
 NS_ASSUME_NONNULL_END
