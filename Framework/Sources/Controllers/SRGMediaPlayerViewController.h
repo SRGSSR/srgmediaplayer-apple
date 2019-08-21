@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 // Document: Changing the player property leads to undefined behavior
 // TODO: Subclassing is not recommended, see https://developer.apple.com/documentation/avkit/avplayerviewcontroller. But
 //       we should not do much in the subclass, so this should not hurt
+// TODO: Document limitations (e.g. no 360° playback)
+// TODO: Document: Controller PiP controller is not used
 @interface SRGMediaPlayerViewController : AVPlayerViewController
 
 // TODO: Support changes during playback

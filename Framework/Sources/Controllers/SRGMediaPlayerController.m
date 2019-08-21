@@ -1434,7 +1434,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
 #if TARGET_OS_IOS
-    if (self.mediaType == SRGMediaPlayerMediaTypeVideo && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive) {
+    if (self.view.superview && self.mediaType == SRGMediaPlayerMediaTypeVideo && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive) {
         switch (self.viewBackgroundBehavior) {
             case SRGMediaPlayerViewBackgroundBehaviorAttached: {
                 [self.player pause];
