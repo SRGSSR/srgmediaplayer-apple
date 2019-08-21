@@ -2147,6 +2147,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -2174,6 +2175,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = "Debug-static";
@@ -2197,6 +2199,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -2220,6 +2223,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = "Release-static";
