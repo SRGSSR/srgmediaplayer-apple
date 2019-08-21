@@ -15,9 +15,19 @@ NS_ASSUME_NONNULL_BEGIN
 //       we should not do much in the subclass, so this should not hurt
 // TODO: Document limitations (e.g. no 360° playback)
 // TODO: Document: Controller PiP controller is not used
+
+/**
+ *  A lightweight `AVPlayerViewController` subclass, but using an `SRGMediaPlayerController` for playback. A few
+ *  limitations should be mentioned:
+ *    - You should not alter the `player` property, otherwise the behavior is undefined.
+ *    - The `AVPictureInPictureController` used is managed by `AVPlayerViewController` itself and does not correspond
+ *      to the one of `SRGMediaPlayerController`.
+ */
 @interface SRGMediaPlayerViewController : AVPlayerViewController
 
-// TODO: Support changes during playback
+/**
+ *  The controller to use for playback.
+ */
 @property (nonatomic, readonly) SRGMediaPlayerController *controller;
 
 @end
