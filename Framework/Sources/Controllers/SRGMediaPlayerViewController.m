@@ -30,6 +30,7 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
 @interface SRGMediaPlayerViewController ()
 
 @property (nonatomic) SRGMediaPlayerController *controller;
+@property (nonatomic, weak) SRGMediaPlayerView *playerView;
 
 @end
 
@@ -56,12 +57,38 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
     return self;
 }
 
+#pragma mark Getters and setters
+
+- (SRGMediaPlayerViewMode)viewMode
+{
+    return self.controller.view.viewMode;
+}
+
+- (void)setViewMode:(SRGMediaPlayerViewMode)viewMode
+{
+    self.controller.view.viewMode = viewMode;
+}
+
+#pragma mark View lifecycle
+
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
     
-    UIView *playerView = SRGMediaPlayerViewControllerPlayerSubview(self.view);
-    playerView.hidden = self.controller.view.playbackViewHidden;
+    if (! self.playerView) {
+        UIView *originalPlayerView = SRGMediaPlayerViewControllerPlayerSubview(self.view);
+        if (originalPlayerView) {
+            SRGMediaPlayerView *playerView = self.controller.view;
+            playerView.viewMode = self.viewMode;
+            
+            playerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            playerView.frame = originalPlayerView.superview.bounds;
+            [originalPlayerView.superview insertSubview:playerView belowSubview:originalPlayerView];
+            [originalPlayerView removeFromSuperview];
+            
+            self.playerView = playerView;
+        }
+    }
 }
 
 #pragma mark Notifications
