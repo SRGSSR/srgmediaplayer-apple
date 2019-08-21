@@ -9,7 +9,7 @@
 #import "Media.h"
 #import "TVPlayerViewController.h"
 
-@interface TVMediasViewController ()
+@interface TVMediasViewController () <SRGMediaPlayerViewControllerDelegate>
 
 @property (nonatomic, copy) NSString *configurationFileName;
 
@@ -77,6 +77,7 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Player", nil) message:NSLocalizedString(@"Choose the player to play the media with", nil) preferredStyle:UIAlertControllerStyleActionSheet];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SRG Media Player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         SRGMediaPlayerViewController *playerViewController = [[SRGMediaPlayerViewController alloc] init];
+        playerViewController.srg_delegate = self;
         [playerViewController.controller playURL:media.URL atPosition:nil withSegments:media.segments userInfo:nil];
         [self presentViewController:playerViewController animated:YES completion:nil];
     }]];
@@ -96,4 +97,32 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+#pragma mark SRGMediaPlayerViewControllerDelegate protocol
+
+- (NSArray<AVTimedMetadataGroup *> *)mediaPlayerViewController:(SRGMediaPlayerViewController *)mediaPlayerViewController navigationMarkersForDisplayableSegments:(NSArray<id<SRGSegment>> *)segments
+{
+    NSMutableArray<AVTimedMetadataGroup *> *navigationMarkers = [NSMutableArray array];
+    
+    for (id<SRGSegment> segment in segments) {
+        MediaSegment *mediaSegment = (MediaSegment *)segment;
+        
+        // For a metadata item to be presented in the Info panel, you need to provide values for the item’s identifier, value, and extendedLanguageTag.
+        AVMutableMetadataItem *titleItem = [[AVMutableMetadataItem alloc] init];
+        titleItem.identifier = AVMetadataCommonIdentifierTitle;
+        titleItem.value = mediaSegment.name;
+        titleItem.extendedLanguageTag = @"und";
+        
+        AVMutableMetadataItem *artworkItem = [[AVMutableMetadataItem alloc] init];
+        artworkItem.identifier = AVMetadataCommonIdentifierArtwork;
+        artworkItem.value = UIImagePNGRepresentation([UIImage imageNamed:@"segment"]);
+        artworkItem.extendedLanguageTag = @"und";
+        
+        AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy, artworkItem.copy ] timeRange:segment.srg_timeRange];
+        [navigationMarkers addObject:navigationMarker];
+    }
+    
+    return navigationMarkers.copy;
+}
+
 @end
+

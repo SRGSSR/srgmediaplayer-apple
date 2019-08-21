@@ -95,7 +95,7 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
 {
 #if TARGET_OS_TV
     NSMutableArray<AVInterstitialTimeRange *> *interstitialTimeRanges = [NSMutableArray array];
-    NSMutableArray<AVTimedMetadataGroup *> *navigationMarkers = [NSMutableArray array];
+    NSMutableArray<id<SRGSegment>> *visibleSegments = [NSMutableArray array];
     
     [self.controller.segments enumerateObjectsUsingBlock:^(id<SRGSegment> _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
         if (segment.srg_blocked) {
@@ -103,23 +103,23 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
             [interstitialTimeRanges addObject:interstitialTimeRange];
         }
         else if (! segment.srg_hidden) {
-            // For a metadata item to be presented in the Info panel, you need to provide values for the item’s identifier, value, and extendedLanguageTag.
-            AVMutableMetadataItem *titleItem = [[AVMutableMetadataItem alloc] init];
-            titleItem.identifier = AVMetadataCommonIdentifierTitle;
-            titleItem.value = [NSString stringWithFormat:@"Segment %@", @(idx + 1)];
-            titleItem.extendedLanguageTag = @"und";
-            
-            AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy ] timeRange:segment.srg_timeRange];
-            [navigationMarkers addObject:navigationMarker];
+            [visibleSegments addObject:segment];
         }
     }];
     
     AVPlayerItem *playerItem = player.currentItem;
     playerItem.interstitialTimeRanges = interstitialTimeRanges.copy;
     
+    NSArray<AVTimedMetadataGroup *> *navigationMarkers = nil;
+    if (visibleSegments.count > 0) {
+        if (self.srg_delegate && [self.srg_delegate respondsToSelector:@selector(mediaPlayerViewController:navigationMarkersForDisplayableSegments:)]) {
+            navigationMarkers = [self.srg_delegate mediaPlayerViewController:self navigationMarkersForDisplayableSegments:visibleSegments];
+        }
+    }
+    
     if (navigationMarkers.count > 0) {
         // No title must be set for the chapter navigation marker group, see `navigationMarkerGroups` documentation.
-        AVNavigationMarkersGroup *segmentsNavigationMarkerGroup = [[AVNavigationMarkersGroup alloc] initWithTitle:nil timedNavigationMarkers:navigationMarkers.copy];
+        AVNavigationMarkersGroup *segmentsNavigationMarkerGroup = [[AVNavigationMarkersGroup alloc] initWithTitle:nil timedNavigationMarkers:navigationMarkers];
         playerItem.navigationMarkerGroups = @[ segmentsNavigationMarkerGroup ];
     }
     else {

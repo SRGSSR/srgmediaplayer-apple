@@ -10,6 +10,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class SRGMediaPlayerViewController;
+
+/**
+ *  Player view controller delegate protocol.
+ */
+@protocol SRGMediaPlayerViewControllerDelegate <NSObject>
+
+@optional
+
+#if TARGET_OS_TV
+
+/**
+ *  The player view controller can display segments if navigation markers are provided.
+ */
+- (NSArray<AVTimedMetadataGroup *> *)mediaPlayerViewController:(SRGMediaPlayerViewController *)mediaPlayerViewController navigationMarkersForDisplayableSegments:(NSArray<id<SRGSegment>> *)segments;
+
+#endif
+
+@end
+
 /**
  *  A lightweight `AVPlayerViewController` subclass, but using an `SRGMediaPlayerController` for playback. This class
  *  provides standard Apple user experience at the expense of a few limitations:
@@ -34,6 +54,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) SRGMediaPlayerController *controller;
 
+/**
+ *  The srg player view controller delegate.
+ */
+@property (nonatomic, weak) id<SRGMediaPlayerViewControllerDelegate> srg_delegate;
+
 @end
 
 @interface SRGMediaPlayerViewController (Unavailable)
@@ -41,6 +66,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) AVPlayer *player NS_UNAVAILABLE;
 
 @property (nonatomic, copy) NSArray<AVInterstitialTimeRange *> *interstitialTimeRanges NS_UNAVAILABLE;
+
+@property (nonatomic, copy) NSArray<AVNavigationMarkersGroup *> *navigationMarkerGroups NS_UNAVAILABLE;
 
 @end
 
