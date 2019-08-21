@@ -10,25 +10,35 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// Document: Changing the player property leads to undefined behavior
-// TODO: Subclassing is not recommended, see https://developer.apple.com/documentation/avkit/avplayerviewcontroller. But
-//       we should not do much in the subclass, so this should not hurt
-// TODO: Document limitations (e.g. no 360° playback)
-// TODO: Document: Controller PiP controller is not used
-
 /**
- *  A lightweight `AVPlayerViewController` subclass, but using an `SRGMediaPlayerController` for playback. A few
- *  limitations should be mentioned:
- *    - You should not alter the `player` property, otherwise the behavior is undefined.
- *    - The `AVPictureInPictureController` used is managed by `AVPlayerViewController` itself and does not correspond
- *      to the one of `SRGMediaPlayerController`.
+ *  A lightweight `AVPlayerViewController` subclass, but using an `SRGMediaPlayerController` for playback. This class
+ *  provides standard Apple user experience at the expense of a few limitations:
+ *    - 360° medias are not playable with monoscopic or stereoscopic support.
+ *    - Background playback behavior cannot be customized.
+ *
+ *  If you need one of these features, implement your own player layout instead.
+ *
+ *  Since `AVPlayerViewController` also manages video player layers as well, note that the picture in picture controller
+ *  associated with an `SRGMediaPlayerController` is not used.
  */
 @interface SRGMediaPlayerViewController : AVPlayerViewController
 
 /**
- *  The controller to use for playback.
+ *  Instantiate a view controller whose playback is managed by the specified controller. If none is provided a default
+ *  one will be automatically created.
+ */
+- (instancetype)initWithController:(nullable SRGMediaPlayerController *)controller;
+
+/**
+ *  The controller used for playback.
  */
 @property (nonatomic, readonly) SRGMediaPlayerController *controller;
+
+@end
+
+@interface SRGMediaPlayerViewController (Unavailable)
+
+@property (nonatomic, strong, nullable) AVPlayer *player NS_UNAVAILABLE;
 
 @end
 
