@@ -109,12 +109,7 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
             titleItem.value = [NSString stringWithFormat:@"Segment %@", @(idx + 1)];
             titleItem.extendedLanguageTag = @"und";
             
-            AVMutableMetadataItem *descriptionItem = [[AVMutableMetadataItem alloc] init];
-            descriptionItem.identifier = AVMetadataCommonIdentifierDescription;
-            descriptionItem.value = [NSString stringWithFormat:@"This is chapter with number %@", @(idx + 1)];
-            descriptionItem.extendedLanguageTag = @"und";
-            
-            AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy, descriptionItem.copy ] timeRange:segment.srg_timeRange];
+            AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy ] timeRange:segment.srg_timeRange];
             [navigationMarkers addObject:navigationMarker];
         }
     }];
