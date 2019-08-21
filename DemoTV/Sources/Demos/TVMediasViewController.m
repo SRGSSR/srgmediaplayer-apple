@@ -77,7 +77,7 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Player", nil) message:NSLocalizedString(@"Choose the player to play the media with", nil) preferredStyle:UIAlertControllerStyleActionSheet];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SRG Media Player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         SRGMediaPlayerViewController *playerViewController = [[SRGMediaPlayerViewController alloc] init];
-        [playerViewController.controller playURL:media.URL];
+        [playerViewController.controller playURL:media.URL atPosition:nil withSegments:media.segments userInfo:nil];
         [self presentViewController:playerViewController animated:YES completion:nil];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"System player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

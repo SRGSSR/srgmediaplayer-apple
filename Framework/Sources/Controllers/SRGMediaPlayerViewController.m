@@ -58,9 +58,15 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
         @weakify(self)
         [self.controller addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, player) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
-            [self performSelector:@selector(setPlayer:) withObject:self.controller.player];
+            [self updateWithPlayer:self.controller.player];
         }];
-        [self performSelector:@selector(setPlayer:) withObject:self.controller.player];
+        [self updateWithPlayer:self.controller.player];
+        
+        [self.controller addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, segments) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updateInterstitialsWithPlayer:self.controller.player];
+        }];
+        [self updateInterstitialsWithPlayer:self.controller.player];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(playbackDidFail:)
@@ -73,6 +79,32 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
 - (instancetype)init
 {
     return [self initWithController:nil];
+}
+
+#pragma mark Updates
+
+// The property has been marked as non-available, use trick to avoid compiler issues in this file
+- (void)updateWithPlayer:(AVPlayer *)player
+{
+    [self performSelector:@selector(setPlayer:) withObject:player];
+    [self updateInterstitialsWithPlayer:player];
+}
+
+// Register blocked segments as interstitials, so that the seek bar does not provide any preview for such sections.
+- (void)updateInterstitialsWithPlayer:(AVPlayer *)player
+{
+#if TARGET_OS_TV
+    NSMutableArray<AVInterstitialTimeRange *> *interstitialTimeRanges = [NSMutableArray array];
+    [self.controller.segments enumerateObjectsUsingBlock:^(id<SRGSegment> _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (! segment.srg_blocked) {
+            return;
+        }
+        
+        AVInterstitialTimeRange *interstitialTimeRange = [[AVInterstitialTimeRange alloc] initWithTimeRange:segment.srg_timeRange];
+        [interstitialTimeRanges addObject:interstitialTimeRange];
+    }];
+    player.currentItem.interstitialTimeRanges = [interstitialTimeRanges copy];
+#endif
 }
 
 #pragma mark View lifecycle
@@ -92,8 +124,8 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
     // `AVPlayerViewController` displays failures only if a failing `AVPlayer` is attached to it. Since `SRGMediaPlayerController`
     // sets its player 
     NSURL *URL = [NSURL URLWithString:@"failed://"];
-    AVPlayer *player = [AVPlayer playerWithURL:URL];
-    [self performSelector:@selector(setPlayer:) withObject:player];
+    AVPlayer *failedPlayer = [AVPlayer playerWithURL:URL];
+    [self updateWithPlayer:failedPlayer];
 }
 
 @end

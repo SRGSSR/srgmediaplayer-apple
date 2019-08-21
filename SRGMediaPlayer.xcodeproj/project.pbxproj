@@ -168,6 +168,7 @@
 		6F816C852258AA4300A71401 /* SRGMediaPlaybackView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F8F06E31FDA7631002DD457 /* SRGMediaPlaybackView.h */; };
 		6F816C862258AA4700A71401 /* SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F3F1737212FE3F30091A260 /* SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F816C872258AA4700A71401 /* SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3F1738212FE3F40091A260 /* SRGMediaPlayer.m */; };
+		6F839638230D717D00268BE0 /* SegmentDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE95A1D76CF7D0021973D /* SegmentDemoConfiguration.plist */; };
 		6F859F3A230A937900ECE021 /* SRGPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F38230A937900ECE021 /* SRGPlayer.h */; };
 		6F859F3B230A937900ECE021 /* SRGPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F38230A937900ECE021 /* SRGPlayer.h */; };
 		6F859F3C230A937900ECE021 /* SRGPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F39230A937900ECE021 /* SRGPlayer.m */; };
@@ -1431,6 +1432,7 @@
 				6F7B820A225E79740002CD3A /* Assets.xcassets in Resources */,
 				6FC7D66122636CAA00B23F25 /* AudioDemoConfiguration.plist in Resources */,
 				6FF849B322610C3700CE2F71 /* TVMediasViewController.storyboard in Resources */,
+				6F839638230D717D00268BE0 /* SegmentDemoConfiguration.plist in Resources */,
 				6F7B8210225E7A2B0002CD3A /* TVPlayerViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
