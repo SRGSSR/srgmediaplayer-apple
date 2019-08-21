@@ -6,8 +6,26 @@
 
 #import "SRGMediaPlayerViewController.h"
 
+#import "SRGMediaPlayerView+Private.h"
+
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
+
+static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
+{
+    if ([view.layer isKindOfClass:AVPlayerLayer.class]) {
+        return view;
+    }
+    
+    for (UIView *subview in view.subviews) {
+        UIView *playerSubview = SRGMediaPlayerViewControllerPlayerSubview(subview);
+        if (playerSubview) {
+            return playerSubview;
+        }
+    }
+    
+    return nil;
+}
 
 @interface SRGMediaPlayerViewController ()
 
@@ -36,6 +54,14 @@
                                                  object:self.controller];
     }
     return self;
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    UIView *playerView = SRGMediaPlayerViewControllerPlayerSubview(self.view);
+    playerView.hidden = self.controller.view.playbackViewHidden;
 }
 
 #pragma mark Notifications
