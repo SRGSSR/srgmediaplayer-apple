@@ -18,8 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 // TODO: Support changes during playback
 @property (nonatomic, readonly) SRGMediaPlayerController *controller;
 
-@property (nonatomic) SRGMediaPlayerViewMode viewMode;
-
 @end
 
 NS_ASSUME_NONNULL_END
