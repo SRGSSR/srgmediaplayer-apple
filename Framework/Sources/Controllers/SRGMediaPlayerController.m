@@ -57,6 +57,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 @property (nonatomic, copy) void (^mediaConfigurationBlock)(AVPlayerItem *playerItem, AVAsset *asset);
 
+@property (nonatomic) SRGMediaPlayerViewBackgroundBehavior viewBackgroundBehavior;
+
 @property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
 
 @property (nonatomic) NSArray<id<SRGSegment>> *segments;
