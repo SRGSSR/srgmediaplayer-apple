@@ -118,6 +118,15 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
 - (void)updateMetadata
 {
 #if TARGET_OS_TV
+    AVPlayerItem *playerItem = self.controller.player.currentItem;
+    
+    if ([self.delegate respondsToSelector:@selector(playerViewControllerExternalMetadata:)]) {
+        playerItem.externalMetadata = [self.delegate playerViewControllerExternalMetadata:self] ?: @[];
+    }
+    else {
+        playerItem.externalMetadata = @[];
+    }
+    
     // Register blocked segments as interstitials, so that the seek bar does not provide any preview for such sections.
     NSMutableArray<AVInterstitialTimeRange *> *interstitialTimeRanges = [NSMutableArray array];
     NSMutableArray<id<SRGSegment>> *visibleSegments = [NSMutableArray array];
@@ -132,19 +141,15 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
         }
     }];
     
-    AVPlayerItem *playerItem = self.controller.player.currentItem;
     playerItem.interstitialTimeRanges = interstitialTimeRanges.copy;
     
     NSArray<AVTimedMetadataGroup *> *navigationMarkers = nil;
-    if (visibleSegments.count > 0) {
-        if ([self.delegate respondsToSelector:@selector(playerViewController:navigationMarkersForSegments:)]) {
-            navigationMarkers = [self.delegate playerViewController:self navigationMarkersForSegments:visibleSegments];
-        }
+    if (visibleSegments.count != 0 && [self.delegate respondsToSelector:@selector(playerViewController:navigationMarkersForSegments:)]) {
+        navigationMarkers = [self.delegate playerViewController:self navigationMarkersForSegments:visibleSegments] ?: @[];
     }
     
-    if (navigationMarkers.count > 0) {
-        // No title must be set for the chapter navigation marker group, see `navigationMarkerGroups` documentation.
-        AVNavigationMarkersGroup *segmentsNavigationMarkerGroup = [[AVNavigationMarkersGroup alloc] initWithTitle:nil timedNavigationMarkers:navigationMarkers];
+    if (navigationMarkers.count != 0) {
+        AVNavigationMarkersGroup *segmentsNavigationMarkerGroup = [[AVNavigationMarkersGroup alloc] initWithTitle:nil /* No title must be set, otherwise marker titles will be overridden */ timedNavigationMarkers:navigationMarkers];
         playerItem.navigationMarkerGroups = @[ segmentsNavigationMarkerGroup ];
     }
     else {

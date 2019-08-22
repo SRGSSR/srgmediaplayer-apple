@@ -22,9 +22,17 @@ NS_ASSUME_NONNULL_BEGIN
 #if TARGET_OS_TV
 
 /**
+ *  Return optional external metadata to display in the Info panel.
+ *
+ *  @discussion For a metadata item to be presented in the Info panel, you need to provide values for the item’s identifier, value
+ *              and extendedLanguageTag.
+ */
+- (nullable NSArray<AVMetadataItem *> *)playerViewControllerExternalMetadata:(SRGMediaPlayerViewController *)playerViewController;
+
+/**
  *  Return the navigation markers to be displayed for the specified segments.
  */
-- (NSArray<AVTimedMetadataGroup *> *)playerViewController:(SRGMediaPlayerViewController *)playerViewController navigationMarkersForSegments:(NSArray<id<SRGSegment>> *)segments;
+- (nullable NSArray<AVTimedMetadataGroup *> *)playerViewController:(SRGMediaPlayerViewController *)playerViewController navigationMarkersForSegments:(NSArray<id<SRGSegment>> *)segments;
 
 #endif
 

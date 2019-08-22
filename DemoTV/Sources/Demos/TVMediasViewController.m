@@ -9,6 +9,8 @@
 #import "Media.h"
 #import "TVPlayerViewController.h"
 
+static NSString * const kMediaKey = @"Media";
+
 @interface TVMediasViewController () <SRGMediaPlayerViewControllerDelegate>
 
 @property (nonatomic, copy) NSString *configurationFileName;
@@ -78,7 +80,7 @@
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"SRG Media Player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         SRGMediaPlayerViewController *playerViewController = [[SRGMediaPlayerViewController alloc] init];
         playerViewController.delegate = self;
-        [playerViewController.controller playURL:media.URL atPosition:nil withSegments:media.segments userInfo:nil];
+        [playerViewController.controller playURL:media.URL atPosition:nil withSegments:media.segments userInfo:@{ kMediaKey : media }];
         [self presentViewController:playerViewController animated:YES completion:nil];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"System player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -99,22 +101,39 @@
 
 #pragma mark SRGMediaPlayerViewControllerDelegate protocol
 
+- (NSArray<AVMetadataItem *> *)playerViewControllerExternalMetadata:(SRGMediaPlayerViewController *)playerViewController
+{
+    Media *media = playerViewController.controller.userInfo[kMediaKey];
+    if (! media) {
+        return nil;
+    }
+    
+    AVMutableMetadataItem *titleItem = [[AVMutableMetadataItem alloc] init];
+    titleItem.identifier = AVMetadataCommonIdentifierTitle;
+    titleItem.value = media.name;
+    titleItem.extendedLanguageTag = @"und";
+    
+    AVMutableMetadataItem *artworkItem = [[AVMutableMetadataItem alloc] init];
+    artworkItem.identifier = AVMetadataCommonIdentifierArtwork;
+    artworkItem.value = UIImagePNGRepresentation([UIImage imageNamed:@"artwork"]);
+    artworkItem.extendedLanguageTag = @"und";
+    
+    return @[ titleItem, artworkItem ];
+}
+
 - (NSArray<AVTimedMetadataGroup *> *)playerViewController:(SRGMediaPlayerViewController *)playerViewController navigationMarkersForSegments:(NSArray<id<SRGSegment>> *)segments
 {
     NSMutableArray<AVTimedMetadataGroup *> *navigationMarkers = [NSMutableArray array];
     
-    for (id<SRGSegment> segment in segments) {
-        MediaSegment *mediaSegment = (MediaSegment *)segment;
-        
-        // For a metadata item to be presented in the Info panel, you need to provide values for the item’s identifier, value, and extendedLanguageTag.
+    for (MediaSegment *segment in segments) {
         AVMutableMetadataItem *titleItem = [[AVMutableMetadataItem alloc] init];
         titleItem.identifier = AVMetadataCommonIdentifierTitle;
-        titleItem.value = mediaSegment.name;
+        titleItem.value = segment.name;
         titleItem.extendedLanguageTag = @"und";
         
         AVMutableMetadataItem *artworkItem = [[AVMutableMetadataItem alloc] init];
         artworkItem.identifier = AVMetadataCommonIdentifierArtwork;
-        artworkItem.value = UIImagePNGRepresentation([UIImage imageNamed:@"segment"]);
+        artworkItem.value = UIImagePNGRepresentation([UIImage imageNamed:@"artwork"]);
         artworkItem.extendedLanguageTag = @"und";
         
         AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy, artworkItem.copy ] timeRange:segment.srg_timeRange];
