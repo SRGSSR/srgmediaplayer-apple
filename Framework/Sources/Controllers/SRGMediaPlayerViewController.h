@@ -31,14 +31,14 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- *  A lightweight `AVPlayerViewController` subclass, but using an `SRGMediaPlayerController` for playback. This class
- *  provides standard Apple user experience at the expense of a few limitations:
+ *  A lightweight `AVPlayerViewController` subclass using an `SRGMediaPlayerController` for playback. This class provides
+ *  standard Apple player user experience, at the expense of a few limitations:
  *    - 360° medias are not playable with monoscopic or stereoscopic support.
  *    - Background playback behavior cannot be customized.
  *
- *  If you need one of these features, implement your own player layout instead.
+ *  If you need one of the above features you should implement your own player layout instead.
  *
- *  Since `AVPlayerViewController` also manages video player layers as well, note that the picture in picture controller
+ *  Since `AVPlayerViewController` manages its video player layer as well, note that the picture in picture controller
  *  associated with an `SRGMediaPlayerController` is not used.
  */
 @interface SRGMediaPlayerViewController : AVPlayerViewController
