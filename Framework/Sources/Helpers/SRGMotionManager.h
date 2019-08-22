@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  A default reference-counted internal motion manager.
  */
+__TVOS_PROHIBITED
 @interface SRGMotionManager : NSObject
 
 /**

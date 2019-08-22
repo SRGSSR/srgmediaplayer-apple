@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#if TARGET_OS_IOS
+
 #import "SRGTimelineView.h"
 
 #import "SRGMediaPlayerController.h"
@@ -234,3 +236,5 @@ static void commonInit(SRGTimelineView *self)
     self.itemWidth = 60.f;
     self.itemSpacing = 4.f;
 }
+
+#endif

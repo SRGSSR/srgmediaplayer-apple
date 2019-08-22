@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#if TARGET_OS_IOS
+
 #import "SRGPlaybackButton.h"
 
 #import "NSBundle+SRGMediaPlayer.h"
@@ -224,3 +226,5 @@ static void commonInit(SRGPlaybackButton *self)
 {
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
 }
+
+#endif

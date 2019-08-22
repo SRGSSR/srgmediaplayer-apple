@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#if TARGET_OS_IOS
+
 #import "SRGTracksButton.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
@@ -335,3 +337,5 @@ static void commonInit(SRGTracksButton *self)
     
     self.hidden = YES;
 }
+
+#endif

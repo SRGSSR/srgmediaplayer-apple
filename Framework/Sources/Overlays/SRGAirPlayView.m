@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#if TARGET_OS_IOS
+
 #import "SRGAirPlayView.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
@@ -297,3 +299,5 @@ NSString * SRGAirPlayRouteDescription(void)
         return nil;
     }
 }
+
+#endif

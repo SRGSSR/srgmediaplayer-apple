@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#if TARGET_OS_IOS
+
 #import "SRGMotionManager.h"
 
 #import "SRGMediaPlayerView+Private.h"
@@ -83,3 +85,5 @@ static SRGMotionManager *s_motionManager = nil;
 }
 
 @end
+
+#endif

@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#if TARGET_OS_IOS
+
 #import "SRGViewModeButton.h"
 
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
@@ -210,3 +212,5 @@ static void commonInit(SRGViewModeButton *self)
     
     self.hidden = YES;
 }
+
+#endif

@@ -4,6 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
+#if TARGET_OS_IOS
+
 #import "SRGTimeSlider.h"
 
 #import "CMTimeRange+SRGMediaPlayer.h"
@@ -612,3 +614,5 @@ static void commonInit(SRGTimeSlider *self)
     self.seekingDuringTracking = YES;
     self.knobLivePosition = SRGTimeSliderLiveKnobPositionLeft;
 }
+
+#endif

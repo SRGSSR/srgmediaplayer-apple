@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  View controller displaying subtitles and audio tracks. For internal use.
  */
+__TVOS_PROHIBITED
 @interface SRGAlternateTracksViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 /**

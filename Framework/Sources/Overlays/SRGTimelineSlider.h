@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  programmatically. Call `-reloadData` when you need to trigger a reload of the timeline based on the segments
  *  available from the media player controller.
  */
+__TVOS_PROHIBITED
 @interface SRGTimelineSlider : SRGTimeSlider
 
 /**
@@ -38,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Delegate protocol.
  */
+__TVOS_PROHIBITED
 @protocol SRGTimelineSliderDelegate <NSObject>
 
 @optional
