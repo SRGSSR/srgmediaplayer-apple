@@ -19,7 +19,7 @@
 #import <AVKit/AVKit.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface MediasViewController () <AVPlayerViewControllerDelegate>
+@interface MediasViewController () <SRGMediaPlayerViewControllerDelegate>
 
 @property (nonatomic, copy) NSString *configurationFileName;
 

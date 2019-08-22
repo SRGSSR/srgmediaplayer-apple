@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Player view controller delegate protocol.
  */
-@protocol SRGMediaPlayerViewControllerDelegate <NSObject>
+@protocol SRGMediaPlayerViewControllerDelegate <AVPlayerViewControllerDelegate>
 
 @optional
 
@@ -55,9 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) SRGMediaPlayerController *controller;
 
 /**
- *  The srg player view controller delegate.
+ *  The player view controller delegate.
  */
-@property (nonatomic, weak) id<SRGMediaPlayerViewControllerDelegate> srg_delegate;
+@property (nonatomic, weak) id<SRGMediaPlayerViewControllerDelegate> delegate;
 
 @end
 
