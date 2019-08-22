@@ -49,8 +49,6 @@
 - (void)togglePlayPause:(UIGestureRecognizer *)gestureRecognizer
 {
     [self.mediaPlayerController togglePlayPause];
-    
-    // TODO: Toggle UI as well
 }
 
 @end

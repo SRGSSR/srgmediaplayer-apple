@@ -26,12 +26,21 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="mFO-cE-fi9" customClass="SRGPlaybackActivityIndicatorView">
+                                <rect key="frame" x="928" y="508" width="64" height="64"/>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="mediaPlayerController" destination="bga-2r-tsO" id="4JW-bv-mAd"/>
+                                </connections>
+                            </activityIndicatorView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="mFO-cE-fi9" firstAttribute="centerY" secondItem="pCg-HL-ge8" secondAttribute="centerY" id="784-NK-mGp"/>
                             <constraint firstItem="pCg-HL-ge8" firstAttribute="leading" secondItem="Sdt-NG-h7U" secondAttribute="leading" id="Nq7-Ng-nFw"/>
                             <constraint firstItem="pCg-HL-ge8" firstAttribute="top" secondItem="Sdt-NG-h7U" secondAttribute="top" id="SAG-NA-L6V"/>
                             <constraint firstAttribute="bottom" secondItem="pCg-HL-ge8" secondAttribute="bottom" id="VEw-uy-bPS"/>
                             <constraint firstAttribute="trailing" secondItem="pCg-HL-ge8" secondAttribute="trailing" id="bf0-T5-B9N"/>
+                            <constraint firstItem="mFO-cE-fi9" firstAttribute="centerX" secondItem="pCg-HL-ge8" secondAttribute="centerX" id="e9R-8n-zvG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="58l-eV-lCI"/>
                     </view>
