@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Tracks button delegate protocol.
  */
+__TVOS_PROHIBITED
 @protocol SRGTracksButtonDelegate <NSObject>
 
 @optional

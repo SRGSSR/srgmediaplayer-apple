@@ -8,6 +8,8 @@
 
 #import "NSBundle+SRGMediaPlayer.h"
 
+#if TARGET_OS_IOS
+
 static void commonInit(SRGTimelineSlider *self);
 
 @implementation SRGTimelineSlider
@@ -133,3 +135,5 @@ static void commonInit(SRGTimelineSlider *self)
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seekOnTap:)];
     [self addGestureRecognizer:gestureRecognizer];
 }
+
+#endif

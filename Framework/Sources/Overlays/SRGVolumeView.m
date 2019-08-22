@@ -10,6 +10,8 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 
+#if TARGET_OS_IOS
+
 @interface SRGVolumeView ()
 
 @property (nonatomic, weak) MPVolumeView *volumeView;
@@ -59,3 +61,5 @@
 }
 
 @end
+
+#endif

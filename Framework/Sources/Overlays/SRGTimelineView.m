@@ -10,6 +10,8 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+#if TARGET_OS_IOS
+
 static void commonInit(SRGTimelineView *self);
 
 @interface SRGTimelineView ()
@@ -234,3 +236,5 @@ static void commonInit(SRGTimelineView *self)
     self.itemWidth = 60.f;
     self.itemSpacing = 4.f;
 }
+
+#endif

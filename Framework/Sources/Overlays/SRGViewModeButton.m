@@ -12,6 +12,8 @@
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
+#if TARGET_OS_IOS
+
 static void commonInit(SRGViewModeButton *self);
 
 @interface SRGViewModeButton ()
@@ -210,3 +212,5 @@ static void commonInit(SRGViewModeButton *self)
     
     self.hidden = YES;
 }
+
+#endif

@@ -11,6 +11,8 @@
 
 #import <libextobjc/libextobjc.h>
 
+#if TARGET_OS_IOS
+
 static void commonInit(SRGPlaybackButton *self);
 
 @interface SRGPlaybackButton ()
@@ -224,3 +226,5 @@ static void commonInit(SRGPlaybackButton *self)
 {
     [self addTarget:self action:@selector(togglePlayPause:) forControlEvents:UIControlEventTouchUpInside];
 }
+
+#endif
