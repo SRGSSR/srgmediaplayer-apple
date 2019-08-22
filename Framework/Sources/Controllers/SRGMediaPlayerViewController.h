@@ -22,9 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 #if TARGET_OS_TV
 
 /**
- *  The player view controller can display segments if navigation markers are provided.
+ *  Return the navigation markers to be displayed for the specified segments.
  */
-- (NSArray<AVTimedMetadataGroup *> *)mediaPlayerViewController:(SRGMediaPlayerViewController *)mediaPlayerViewController navigationMarkersForDisplayableSegments:(NSArray<id<SRGSegment>> *)segments;
+- (NSArray<AVTimedMetadataGroup *> *)playerViewController:(SRGMediaPlayerViewController *)playerViewController navigationMarkersForSegments:(NSArray<id<SRGSegment>> *)segments;
 
 #endif
 

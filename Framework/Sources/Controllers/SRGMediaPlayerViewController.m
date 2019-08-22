@@ -137,8 +137,8 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
     
     NSArray<AVTimedMetadataGroup *> *navigationMarkers = nil;
     if (visibleSegments.count > 0) {
-        if ([self.delegate respondsToSelector:@selector(mediaPlayerViewController:navigationMarkersForDisplayableSegments:)]) {
-            navigationMarkers = [self.delegate mediaPlayerViewController:self navigationMarkersForDisplayableSegments:visibleSegments];
+        if ([self.delegate respondsToSelector:@selector(playerViewController:navigationMarkersForSegments:)]) {
+            navigationMarkers = [self.delegate playerViewController:self navigationMarkersForSegments:visibleSegments];
         }
     }
     

@@ -99,7 +99,7 @@
 
 #pragma mark SRGMediaPlayerViewControllerDelegate protocol
 
-- (NSArray<AVTimedMetadataGroup *> *)mediaPlayerViewController:(SRGMediaPlayerViewController *)mediaPlayerViewController navigationMarkersForDisplayableSegments:(NSArray<id<SRGSegment>> *)segments
+- (NSArray<AVTimedMetadataGroup *> *)playerViewController:(SRGMediaPlayerViewController *)playerViewController navigationMarkersForSegments:(NSArray<id<SRGSegment>> *)segments
 {
     NSMutableArray<AVTimedMetadataGroup *> *navigationMarkers = [NSMutableArray array];
     
