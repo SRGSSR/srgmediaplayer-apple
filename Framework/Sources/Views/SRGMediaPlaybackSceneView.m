@@ -6,15 +6,15 @@
 
 #import "SRGMediaPlaybackSceneView.h"
 
+#if TARGET_OS_IOS
+#import "SRGMotionManager.h"
+#endif
+
 #import "SRGQuaternion.h"
 #import "SRGVideoNode.h"
 
 #import <libextobjc/libextobjc.h>
 #import <SpriteKit/SpriteKit.h>
-
-#if TARGET_OS_IOS
-#import "SRGMotionManager.h"
-#endif
 
 /**
  *  To manipulate node orientation, use quaternions only. Those are more robust against singularities than Euler
@@ -75,8 +75,8 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
 - (void)willMoveToWindow:(UIWindow *)newWindow
 {
     [super willMoveToWindow:newWindow];
-
-#if TARGET_OS_IOS    
+    
+#if TARGET_OS_IOS
     if (newWindow) {
         [SRGMotionManager start];
     }

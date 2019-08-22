@@ -4,6 +4,12 @@
 //  License information is available from the LICENSE file.
 //
 
+#import <Foundation/Foundation.h>
+
+#if TARGET_OS_IOS
+#import <CoreMotion/CoreMotion.h>
+#endif
+
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -30,13 +36,7 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
 
 @end
 
-NS_ASSUME_NONNULL_END
-
 #if TARGET_OS_IOS
-
-#import <CoreMotion/CoreMotion.h>
-
-NS_ASSUME_NONNULL_BEGIN
 
 @interface SRGMediaPlayerView (CoreMotion)
 
@@ -55,6 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
-
 #endif
+
+NS_ASSUME_NONNULL_END

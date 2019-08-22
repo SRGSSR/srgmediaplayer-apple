@@ -4,8 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#if TARGET_OS_IOS
-
 #import "SRGTimelineSlider.h"
 
 #import "NSBundle+SRGMediaPlayer.h"
@@ -135,5 +133,3 @@ static void commonInit(SRGTimelineSlider *self)
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(seekOnTap:)];
     [self addGestureRecognizer:gestureRecognizer];
 }
-
-#endif

@@ -4,8 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#if TARGET_OS_IOS
-
 #import "SRGAirPlayButton.h"
 
 #import "AVRoutePickerView+SRGMediaPlayer.h"
@@ -325,5 +323,3 @@ static void commonInit(SRGAirPlayButton *self)
     }
     self.hidden = YES;
 }
-
-#endif

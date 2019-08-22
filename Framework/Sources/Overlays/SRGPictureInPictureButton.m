@@ -4,8 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#if TARGET_OS_IOS
-
 #import "SRGPictureInPictureButton.h"
 
 #import "NSBundle+SRGMediaPlayer.h"
@@ -239,5 +237,3 @@ static void commonInit(SRGPictureInPictureButton *self)
     
     self.hidden = YES;
 }
-
-#endif

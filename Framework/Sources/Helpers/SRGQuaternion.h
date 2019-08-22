@@ -5,6 +5,11 @@
 //
 
 #import <SceneKit/SceneKit.h>
+#import <TargetConditionals.h>
+
+#if TARGET_OS_IOS
+#import <CoreMotion/CoreMotion.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,13 +29,7 @@ OBJC_EXPORT SCNQuaternion SRGRotateQuaternion(SCNQuaternion quaternion, float wx
  */
 OBJC_EXPORT SCNQuaternion SRGQuaternionMakeWithAngleAndAxis(float radians, float x, float y, float z);
 
-NS_ASSUME_NONNULL_END
-
 #if TARGET_OS_IOS
-
-#import <CoreMotion/CoreMotion.h>
-
-NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Return a quaternion describing the camera orientation which should be used when the device is held with a
@@ -44,6 +43,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 OBJC_EXTERN SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude);
 
-NS_ASSUME_NONNULL_END
-
 #endif
+
+NS_ASSUME_NONNULL_END

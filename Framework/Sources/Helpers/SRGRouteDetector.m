@@ -4,8 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#if TARGET_OS_IOS
-
 #import "SRGRouteDetector.h"
 
 #import "NSTimer+SRGMediaPlayer.h"
@@ -15,7 +13,7 @@
 
 NSString * const SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification = @"SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification";
 
-static SRGRouteDetector *s_routeDetector;
+API_AVAILABLE(ios(11.0)) static SRGRouteDetector *s_routeDetector;
 
 @interface SRGRouteDetector ()
 
@@ -145,5 +143,3 @@ static SRGRouteDetector *s_routeDetector;
 }
 
 @end
-
-#endif
