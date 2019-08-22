@@ -63,11 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SRGMediaPlayerViewController (Unavailable)
 
-@property (nonatomic, strong, nullable) AVPlayer *player NS_UNAVAILABLE;
-
-@property (nonatomic, copy) NSArray<AVInterstitialTimeRange *> *interstitialTimeRanges NS_UNAVAILABLE;
-
-@property (nonatomic, copy) NSArray<AVNavigationMarkersGroup *> *navigationMarkerGroups NS_UNAVAILABLE;
+@property (nonatomic, nullable) AVPlayer *player NS_UNAVAILABLE;
 
 @end
 

@@ -53,31 +53,34 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
 - (instancetype)initWithController:(SRGMediaPlayerController *)controller
 {
     if (self = [super init]) {
-        self.controller = controller ?: [[SRGMediaPlayerController alloc] init];
+        if (! controller) {
+            controller = [[SRGMediaPlayerController alloc] init];
+        }
+        self.controller = controller;
         
         @weakify(self)
-        [self.controller addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, player) options:0 block:^(MAKVONotification *notification) {
+        [controller addObserver:self keyPath:@keypath(controller.player) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
-            [self updateWithPlayer:self.controller.player];
+            [self updatePlayer];
         }];
-        [self updateWithPlayer:self.controller.player];
+        [self updatePlayer];
         
-        [self.controller addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, segments) options:0 block:^(MAKVONotification *notification) {
+        [controller addObserver:self keyPath:@keypath(controller.segments) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
-            [self updateMetadataWithPlayer:self.controller.player];
+            [self updateMetadata];
         }];
-        [self updateMetadataWithPlayer:self.controller.player];
+        [self updateMetadata];
         
         [controller addObserver:self keyPath:@keypath(controller.view.playbackViewHidden) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
-            [self updateViewVisibility];
+            [self updateView];
         }];
-        [self updateViewVisibility];
+        [self updateView];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(playbackDidFail:)
                                                    name:SRGMediaPlayerPlaybackDidFailNotification
-                                                 object:self.controller];
+                                                 object:controller];
     }
     return self;
 }
@@ -87,25 +90,33 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
     return [self initWithController:nil];
 }
 
-#pragma mark Updates
+#pragma mark Getters and setters
 
-// The property has been marked as non-available, use trick to avoid compiler issues in this file
-- (void)updateWithPlayer:(AVPlayer *)player
+- (void)setMediaPlayer:(AVPlayer *)player
 {
+    // The `player` property has been marked as non-available, use a trick to avoid compiler issues in this file
     [self performSelector:@selector(setPlayer:) withObject:player];
-    [self updateMetadataWithPlayer:player];
+    [self updateMetadata];
+    [self updateView];
 }
 
-- (void)updateViewVisibility
+#pragma mark Updates
+
+- (void)updatePlayer
+{
+    [self setMediaPlayer:self.controller.player];
+}
+
+- (void)updateView
 {
     UIView *playerView = SRGMediaPlayerViewControllerPlayerSubview(self.view);
     playerView.hidden = self.controller.view.playbackViewHidden;
 }
 
-// Register blocked segments as interstitials, so that the seek bar does not provide any preview for such sections.
-- (void)updateMetadataWithPlayer:(AVPlayer *)player
+- (void)updateMetadata
 {
 #if TARGET_OS_TV
+    // Register blocked segments as interstitials, so that the seek bar does not provide any preview for such sections.
     NSMutableArray<AVInterstitialTimeRange *> *interstitialTimeRanges = [NSMutableArray array];
     NSMutableArray<id<SRGSegment>> *visibleSegments = [NSMutableArray array];
     
@@ -119,12 +130,12 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
         }
     }];
     
-    AVPlayerItem *playerItem = player.currentItem;
+    AVPlayerItem *playerItem = self.controller.player.currentItem;
     playerItem.interstitialTimeRanges = interstitialTimeRanges.copy;
     
     NSArray<AVTimedMetadataGroup *> *navigationMarkers = nil;
     if (visibleSegments.count > 0) {
-        if (self.srg_delegate && [self.srg_delegate respondsToSelector:@selector(mediaPlayerViewController:navigationMarkersForDisplayableSegments:)]) {
+        if ([self.srg_delegate respondsToSelector:@selector(mediaPlayerViewController:navigationMarkersForDisplayableSegments:)]) {
             navigationMarkers = [self.srg_delegate mediaPlayerViewController:self navigationMarkersForDisplayableSegments:visibleSegments];
         }
     }
@@ -148,7 +159,7 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
     // sets its player 
     NSURL *URL = [NSURL URLWithString:@"failed://"];
     AVPlayer *failedPlayer = [AVPlayer playerWithURL:URL];
-    [self updateWithPlayer:failedPlayer];
+    [self setMediaPlayer:failedPlayer];
 }
 
 @end
