@@ -68,6 +68,12 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
         }];
         [self updateMetadataWithPlayer:self.controller.player];
         
+        [controller addObserver:self keyPath:@keypath(controller.view.playbackViewHidden) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updateViewVisibility];
+        }];
+        [self updateViewVisibility];
+        
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(playbackDidFail:)
                                                    name:SRGMediaPlayerPlaybackDidFailNotification
@@ -88,6 +94,12 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
 {
     [self performSelector:@selector(setPlayer:) withObject:player];
     [self updateMetadataWithPlayer:player];
+}
+
+- (void)updateViewVisibility
+{
+    UIView *playerView = SRGMediaPlayerViewControllerPlayerSubview(self.view);
+    playerView.hidden = self.controller.view.playbackViewHidden;
 }
 
 // Register blocked segments as interstitials, so that the seek bar does not provide any preview for such sections.
@@ -126,16 +138,6 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
         playerItem.navigationMarkerGroups = @[];
     }
 #endif
-}
-
-#pragma mark View lifecycle
-
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    
-    UIView *playerView = SRGMediaPlayerViewControllerPlayerSubview(self.view);
-    playerView.hidden = self.controller.view.playbackViewHidden;
 }
 
 #pragma mark Notifications
