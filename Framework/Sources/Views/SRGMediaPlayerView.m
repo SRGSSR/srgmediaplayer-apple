@@ -121,7 +121,10 @@ static void commonInit(SRGMediaPlayerView *self);
             dispatch_once(&s_onceToken, ^{
                 s_viewClasses = @{ @(SRGMediaPlayerViewModeFlat) : SRGMediaPlaybackFlatView.class,
                                    @(SRGMediaPlayerViewModeMonoscopic) : SRGMediaPlaybackMonoscopicView.class,
-                                   @(SRGMediaPlayerViewModeStereoscopic) : SRGMediaPlaybackStereoscopicView.class };
+#if TARGET_OS_IOS
+                                   @(SRGMediaPlayerViewModeStereoscopic) : SRGMediaPlaybackStereoscopicView.class
+#endif
+                                   };
             });
             
             Class playbackViewClass = s_viewClasses[@(self.viewMode)];

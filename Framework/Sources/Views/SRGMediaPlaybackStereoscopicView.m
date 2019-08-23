@@ -6,6 +6,8 @@
 
 #import "SRGMediaPlaybackStereoscopicView.h"
 
+#if TARGET_OS_IOS
+
 static void commonInit(SRGMediaPlaybackStereoscopicView *self);
 
 @interface SRGMediaPlaybackStereoscopicView ()
@@ -93,3 +95,5 @@ static void commonInit(SRGMediaPlaybackStereoscopicView *self)
     [self addSubview:rightEyeSceneView];
     self.rightEyeSceneView = rightEyeSceneView;
 }
+
+#endif

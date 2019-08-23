@@ -34,7 +34,7 @@ OBJC_EXPORT CMTime SRGMediaPlayerEffectiveEndTolerance(NSTimeInterval endToleran
 /**
  *  Background view behavior.
  */
-typedef NS_ENUM(NSInteger, SRGMediaPlayerViewBackgroundBehavior) {
+typedef __TVOS_PROHIBITED NS_ENUM(NSInteger, SRGMediaPlayerViewBackgroundBehavior) {
     /**
      *  Keep the player view attached to the controller in background.
      */

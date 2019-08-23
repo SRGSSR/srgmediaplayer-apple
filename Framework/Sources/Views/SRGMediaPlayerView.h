@@ -19,9 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @name Supported view modes.
  */
 typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
-    SRGMediaPlayerViewModeFlat = 0,                         // Standard "flat" playback.
-    SRGMediaPlayerViewModeMonoscopic,                       // 360 monoscopic playback.
-    SRGMediaPlayerViewModeStereoscopic                      // 360 stereoscopic playback (cardboard).
+    SRGMediaPlayerViewModeFlat = 0,                                 // Standard "flat" playback.
+    SRGMediaPlayerViewModeMonoscopic,                               // 360 monoscopic playback.
+    SRGMediaPlayerViewModeStereoscopic __TVOS_PROHIBITED            // 360 stereoscopic playback (cardboard).
 };
 
 /**

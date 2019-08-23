@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  The slider knob position when a live stream is played (the knob itself cannot be moved). The default value is left,
  *  as for the standard iOS playback controller.
  */
-typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
+typedef __TVOS_PROHIBITED NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
     SRGTimeSliderLiveKnobPositionDefault = 0,
     SRGTimeSliderLiveKnobPositionLeft = SRGTimeSliderLiveKnobPositionDefault,
     SRGTimeSliderLiveKnobPositionRight
