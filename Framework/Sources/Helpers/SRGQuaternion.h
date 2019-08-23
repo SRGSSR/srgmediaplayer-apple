@@ -4,12 +4,13 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <SceneKit/SceneKit.h>
 #import <TargetConditionals.h>
 
 #if TARGET_OS_IOS
 #import <CoreMotion/CoreMotion.h>
 #endif
+
+#import <SceneKit/SceneKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

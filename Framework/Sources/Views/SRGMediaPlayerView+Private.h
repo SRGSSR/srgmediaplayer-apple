@@ -7,6 +7,7 @@
 #import "SRGMediaPlayerView.h"
 
 #import <AVFoundation/AVFoundation.h>
+#import <TargetConditionals.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

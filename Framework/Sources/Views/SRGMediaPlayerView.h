@@ -4,12 +4,13 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <Foundation/Foundation.h>
+#import <TargetConditionals.h>
 
 #if TARGET_OS_IOS
 #import <CoreMotion/CoreMotion.h>
 #endif
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN

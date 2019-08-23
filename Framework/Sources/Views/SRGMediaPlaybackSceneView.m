@@ -6,10 +6,7 @@
 
 #import "SRGMediaPlaybackSceneView.h"
 
-#if TARGET_OS_IOS
 #import "SRGMotionManager.h"
-#endif
-
 #import "SRGQuaternion.h"
 #import "SRGVideoNode.h"
 
