@@ -37,6 +37,12 @@
 		08D3BEB11DE6EAB100AE1368 /* SRGTracksButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3BEAF1DE6EAB100AE1368 /* SRGTracksButton.m */; };
 		08D3BEC01DE8756500AE1368 /* SRGAlternateTracksViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */; };
 		08D3BEC11DE8756500AE1368 /* SRGAlternateTracksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3BEBF1DE8756500AE1368 /* SRGAlternateTracksViewController.m */; };
+		08E2AEE32310253D00DCCE74 /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08293A4D1EDC62FC008CE02E /* Accessibility.strings */; };
+		08E2AEE42310253D00DCCE74 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F9453331F7225BC00A6507E /* Images.xcassets */; };
+		08E2AEE52310253D00DCCE74 /* thumb_timeline_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E0B1D61BAFD0064E6C1 /* thumb_timeline_slider@2x.png */; };
+		08E2AEE62310253D00DCCE74 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E001D61BAFD0064E6C1 /* Localizable.strings */; };
+		08E2AEE72310253D00DCCE74 /* thumb_timeline_slider.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E0A1D61BAFD0064E6C1 /* thumb_timeline_slider.png */; };
+		08E2AEF12310259900DCCE74 /* SRGMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 08E2AEED2310253D00DCCE74 /* SRGMediaPlayer.bundle */; };
 		08F4E53F1E7FE76900C9E8FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08F4E5411E7FE76900C9E8FD /* Localizable.strings */; };
 		6F0C98B5212162BC00073AB6 /* CMTime+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B421215F9000073AB6 /* CMTime+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F0C98B6212162BC00073AB6 /* CMTimeRange+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F0C98B321215EFF00073AB6 /* CMTimeRange+SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -200,7 +206,6 @@
 		6FA09D7A1D9E9C1500EDCA64 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6FA09D7D1D9E9C4400EDCA64 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6FA09D7E1D9E9D1400EDCA64 /* SRGLogger.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		6FA39E28225E687100834AA7 /* SRGMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */; };
 		6FA98E15211D68AF00969089 /* ConstantsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA98E14211D68AE00969089 /* ConstantsTestCase.m */; };
 		6FB97FDE1E4A0E080014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FB97FDF1E4A0E1A0014C4C2 /* MAKVONotificationCenter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -301,6 +306,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		08E2AEEF2310258F00DCCE74 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C201D8ED1A9DC1A40016C629 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08E2AEDF2310253D00DCCE74;
+			remoteInfo = "SRGMediaPlayer-resources-tvOS";
+		};
 		6F3711432306B560006F52BC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C201D8ED1A9DC1A40016C629 /* Project object */;
@@ -321,13 +333,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6F816C242258A93900A71401;
 			remoteInfo = "SRGMediaPlayer-tvOS";
-		};
-		6FA39E26225E686B00834AA7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C201D8ED1A9DC1A40016C629 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6F44484B210F1387009FDB70;
-			remoteInfo = "SRGMediaPlayer-resources";
 		};
 		E69A1FC11D61C0180064E6C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -416,6 +421,7 @@
 		08D3BEAF1DE6EAB100AE1368 /* SRGTracksButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGTracksButton.m; sourceTree = "<group>"; };
 		08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGAlternateTracksViewController.h; sourceTree = "<group>"; };
 		08D3BEBF1DE8756500AE1368 /* SRGAlternateTracksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGAlternateTracksViewController.m; sourceTree = "<group>"; };
+		08E2AEED2310253D00DCCE74 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		08F4E5401E7FE76900C9E8FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		08F4E5421E7FE76D00C9E8FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		08F4E5431E7FE76F00C9E8FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -606,6 +612,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		08E2AEE12310253D00DCCE74 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F37114D2306B560006F52BC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -907,6 +920,7 @@
 				6F816C252258A93900A71401 /* SRGMediaPlayer.framework */,
 				6FA39DFD225E647700834AA7 /* SRGMediaPlayer-tvOS-demo.app */,
 				6F3711592306B560006F52BC /* SRGMediaPlayer-tvOS-tests.xctest */,
+				08E2AEED2310253D00DCCE74 /* SRGMediaPlayer.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1248,6 +1262,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		08E2AEDF2310253D00DCCE74 /* SRGMediaPlayer-resources-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08E2AEE82310253D00DCCE74 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-resources-tvOS" */;
+			buildPhases = (
+				08E2AEE02310253D00DCCE74 /* Sources */,
+				08E2AEE12310253D00DCCE74 /* Frameworks */,
+				08E2AEE22310253D00DCCE74 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SRGMediaPlayer-resources-tvOS";
+			productName = "SRGMediaPlayer-resources";
+			productReference = 08E2AEED2310253D00DCCE74 /* SRGMediaPlayer.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 		6F3711412306B560006F52BC /* SRGMediaPlayer-tvOS-tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6F3711542306B560006F52BC /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-tvOS-tests" */;
@@ -1267,9 +1298,9 @@
 			productReference = 6F3711592306B560006F52BC /* SRGMediaPlayer-tvOS-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		6F44484B210F1387009FDB70 /* SRGMediaPlayer-resources */ = {
+		6F44484B210F1387009FDB70 /* SRGMediaPlayer-resources-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6F44484F210F1387009FDB70 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-resources" */;
+			buildConfigurationList = 6F44484F210F1387009FDB70 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-resources-iOS" */;
 			buildPhases = (
 				6F444848210F1387009FDB70 /* Sources */,
 				6F444849210F1387009FDB70 /* Frameworks */,
@@ -1279,7 +1310,7 @@
 			);
 			dependencies = (
 			);
-			name = "SRGMediaPlayer-resources";
+			name = "SRGMediaPlayer-resources-iOS";
 			productName = "SRGMediaPlayer-resources";
 			productReference = 6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */;
 			productType = "com.apple.product-type.bundle";
@@ -1296,7 +1327,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				6FA39E27225E686B00834AA7 /* PBXTargetDependency */,
+				08E2AEF02310258F00DCCE74 /* PBXTargetDependency */,
 			);
 			name = "SRGMediaPlayer-tvOS";
 			productName = "SRGMediaPlayer-tvOS";
@@ -1391,6 +1422,9 @@
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "SRG SSR";
 				TargetAttributes = {
+					08E2AEDF2310253D00DCCE74 = {
+						ProvisioningStyle = Automatic;
+					};
 					6F44484B210F1387009FDB70 = {
 						CreatedOnToolsVersion = 9.4;
 						ProvisioningStyle = Automatic;
@@ -1439,12 +1473,25 @@
 				6F816C242258A93900A71401 /* SRGMediaPlayer-tvOS */,
 				6F3711412306B560006F52BC /* SRGMediaPlayer-tvOS-tests */,
 				6FA39DFC225E647700834AA7 /* SRGMediaPlayer-tvOS-demo */,
-				6F44484B210F1387009FDB70 /* SRGMediaPlayer-resources */,
+				6F44484B210F1387009FDB70 /* SRGMediaPlayer-resources-iOS */,
+				08E2AEDF2310253D00DCCE74 /* SRGMediaPlayer-resources-tvOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		08E2AEE22310253D00DCCE74 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08E2AEE32310253D00DCCE74 /* Accessibility.strings in Resources */,
+				08E2AEE42310253D00DCCE74 /* Images.xcassets in Resources */,
+				08E2AEE52310253D00DCCE74 /* thumb_timeline_slider@2x.png in Resources */,
+				08E2AEE62310253D00DCCE74 /* Localizable.strings in Resources */,
+				08E2AEE72310253D00DCCE74 /* thumb_timeline_slider.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F37114F2306B560006F52BC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1468,7 +1515,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FA39E28225E687100834AA7 /* SRGMediaPlayer.bundle in Resources */,
+				08E2AEF12310259900DCCE74 /* SRGMediaPlayer.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1570,6 +1617,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		08E2AEE02310253D00DCCE74 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6F3711442306B560006F52BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1747,6 +1801,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		08E2AEF02310258F00DCCE74 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08E2AEDF2310253D00DCCE74 /* SRGMediaPlayer-resources-tvOS */;
+			targetProxy = 08E2AEEF2310258F00DCCE74 /* PBXContainerItemProxy */;
+		};
 		6F3711422306B560006F52BC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E69A1DA81D61B9380064E6C1 /* SRGMediaPlayer-iOS */;
@@ -1754,18 +1813,13 @@
 		};
 		6F444855210F144A009FDB70 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6F44484B210F1387009FDB70 /* SRGMediaPlayer-resources */;
+			target = 6F44484B210F1387009FDB70 /* SRGMediaPlayer-resources-iOS */;
 			targetProxy = 6F444854210F144A009FDB70 /* PBXContainerItemProxy */;
 		};
 		6F7B81FD225E77E80002CD3A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6F816C242258A93900A71401 /* SRGMediaPlayer-tvOS */;
 			targetProxy = 6F7B81FC225E77E80002CD3A /* PBXContainerItemProxy */;
-		};
-		6FA39E27225E686B00834AA7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6F44484B210F1387009FDB70 /* SRGMediaPlayer-resources */;
-			targetProxy = 6FA39E26225E686B00834AA7 /* PBXContainerItemProxy */;
 		};
 		E69A1FC21D61C0180064E6C1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1819,6 +1873,114 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		08E2AEE92310253D00DCCE74 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Framework/Resources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		08E2AEEA2310253D00DCCE74 /* Debug-static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Framework/Resources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = "Debug-static";
+		};
+		08E2AEEB2310253D00DCCE74 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Framework/Resources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		08E2AEEC2310253D00DCCE74 /* Release-static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Framework/Resources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
+				PRODUCT_NAME = SRGMediaPlayer;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = "Release-static";
+		};
 		6F3711552306B560006F52BC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2209,7 +2371,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -2237,7 +2399,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = "Debug-static";
@@ -2261,7 +2423,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -2285,7 +2447,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "ch.srgssr.SRGMediaPlayer-resources";
 				PRODUCT_NAME = SRGMediaPlayer;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = "Release-static";
@@ -2846,6 +3008,17 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		08E2AEE82310253D00DCCE74 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-resources-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08E2AEE92310253D00DCCE74 /* Debug */,
+				08E2AEEA2310253D00DCCE74 /* Debug-static */,
+				08E2AEEB2310253D00DCCE74 /* Release */,
+				08E2AEEC2310253D00DCCE74 /* Release-static */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6F3711542306B560006F52BC /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-tvOS-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2857,7 +3030,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6F44484F210F1387009FDB70 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-resources" */ = {
+		6F44484F210F1387009FDB70 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-resources-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6F444850210F1387009FDB70 /* Debug */,
