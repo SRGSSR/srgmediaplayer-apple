@@ -185,6 +185,13 @@
 		6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */; };
 		6F908B72230C1E0200CB33BD /* SimplePlayerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F908B6F230C1E0200CB33BD /* SimplePlayerViewController.storyboard */; };
 		6F908B73230C1E0200CB33BD /* SimplePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F908B71230C1E0200CB33BD /* SimplePlayerViewController.m */; };
+		6F90F7E0230FAE500012170E /* SRGMediaPlayerNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FE0034922EF2D7C00E07977 /* SRGMediaPlayerNavigationController.h */; };
+		6F90F7E1230FAE560012170E /* SRGMediaPlayerNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0034A22EF2D7C00E07977 /* SRGMediaPlayerNavigationController.m */; };
+		6F90F7E2230FAE8C0012170E /* SRGMotionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA4301FD91A1D00CF175F /* SRGMotionManager.h */; };
+		6F90F7E3230FAE980012170E /* SRGRouteDetector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBA837922C4909300AFAF8B /* SRGRouteDetector.h */; };
+		6F90F7E4230FAE9C0012170E /* SRGRouteDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA837A22C4909300AFAF8B /* SRGRouteDetector.m */; };
+		6F90F7E5230FAEA90012170E /* SRGAlternateTracksViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D3BEBE1DE8756400AE1368 /* SRGAlternateTracksViewController.h */; };
+		6F90F7E6230FAEAD0012170E /* SRGAlternateTracksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D3BEBF1DE8756500AE1368 /* SRGAlternateTracksViewController.m */; };
 		6F9643D221307920003C6612 /* SRGAirPlayButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9643CE2130791F003C6612 /* SRGAirPlayButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F9643D321307920003C6612 /* SRGAirPlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9643CF2130791F003C6612 /* SRGAirPlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F9643D421307920003C6612 /* SRGAirPlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9643D02130791F003C6612 /* SRGAirPlayView.m */; };
@@ -239,6 +246,7 @@
 		6FEA13A9230EC864001E64E0 /* SRGMediaPlayerIconTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4241FD91A1D00CF175F /* SRGMediaPlayerIconTemplate.m */; };
 		6FEA13AA230EC868001E64E0 /* SRGMediaPlayerTimerTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 081A1C1A225CF6E80006D446 /* SRGMediaPlayerTimerTarget.h */; };
 		6FEA13B0230ECE3E001E64E0 /* SRGMotionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4251FD91A1D00CF175F /* SRGMotionManager.m */; };
+		6FEC42BE230FB07200A830E5 /* SRGMotionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4251FD91A1D00CF175F /* SRGMotionManager.m */; };
 		6FF702C22267B94C00C4E864 /* TracksTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF702C12267B94C00C4E864 /* TracksTestCase.m */; };
 		6FF849B322610C3700CE2F71 /* TVMediasViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FF849B222610C3700CE2F71 /* TVMediasViewController.storyboard */; };
 		E654909C1D7F33AE007D96E7 /* libextobjc.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1130,6 +1138,7 @@
 				6F816C562258AA3700A71401 /* SRGMediaPlayerLogger.h in Headers */,
 				6FE279CE230EB3DC000755B1 /* AVRoutePickerView+SRGMediaPlayer.h in Headers */,
 				6F816C7E2258AA4300A71401 /* SRGMediaPlaybackStereoscopicView.h in Headers */,
+				6F90F7E5230FAEA90012170E /* SRGAlternateTracksViewController.h in Headers */,
 				6FE279D3230EB3F5000755B1 /* UIBezierPath+SRGMediaPlayer.h in Headers */,
 				6F816C352258AA1500A71401 /* CMTime+SRGMediaPlayer.h in Headers */,
 				6F816C502258AA3700A71401 /* SRGMediaPlayerConstants.h in Headers */,
@@ -1165,6 +1174,7 @@
 				0897CE10230EFBA100555054 /* SRGTimeSlider.h in Headers */,
 				6F816C452258AA1C00A71401 /* SRGMediaPlayerController.h in Headers */,
 				6FE279F1230EB5C4000755B1 /* SRGMediaPlayer.h in Headers */,
+				6F90F7E0230FAE500012170E /* SRGMediaPlayerNavigationController.h in Headers */,
 				0897CE06230EF2F800555054 /* SRGAirPlayButton.h in Headers */,
 				6FE279D7230EB403000755B1 /* UIWindow+SRGMediaPlayer.h in Headers */,
 				6F816C3B2258AA1500A71401 /* NSBundle+SRGMediaPlayer.h in Headers */,
@@ -1172,6 +1182,8 @@
 				6F816C332258AA1500A71401 /* (null) in Headers */,
 				6F816C5B2258AA3700A71401 /* SRGQuaternion.h in Headers */,
 				6F816C5E2258AA3700A71401 /* SRGSegment+Private.h in Headers */,
+				6F90F7E3230FAE980012170E /* SRGRouteDetector.h in Headers */,
+				6F90F7E2230FAE8C0012170E /* SRGMotionManager.h in Headers */,
 				0897CE04230EF09C00555054 /* SRGTracksButton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1276,8 +1288,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6F816C2E2258A93900A71401 /* Build configuration list for PBXNativeTarget "SRGMediaPlayer-tvOS" */;
 			buildPhases = (
-				6F816C202258A93900A71401 /* Headers */,
 				6F816C212258A93900A71401 /* Sources */,
+				6F816C202258A93900A71401 /* Headers */,
 				6F816C222258A93900A71401 /* Frameworks */,
 				6F816C232258A93900A71401 /* Resources */,
 			);
@@ -1586,6 +1598,7 @@
 			files = (
 				6F465FC02306A44D000653E7 /* SRGMediaPlayerTimerTarget.m in Sources */,
 				6F816C5F2258AA3700A71401 /* SRGSegment+Private.m in Sources */,
+				6FEC42BE230FB07200A830E5 /* SRGMotionManager.m in Sources */,
 				0897CE0F230EFB6500555054 /* SRGTimelineView.m in Sources */,
 				6FE279D1230EB3EB000755B1 /* MPVolumeView+SRGMediaPlayer.m in Sources */,
 				6F816C5C2258AA3700A71401 /* SRGQuaternion.m in Sources */,
@@ -1600,12 +1613,15 @@
 				6FE279D6230EB3FD000755B1 /* UIDevice+SRGMediaPlayer.m in Sources */,
 				0897CE01230EED9700555054 /* SRGVolumeView.m in Sources */,
 				6F816C532258AA3700A71401 /* SRGMediaPlayerError.m in Sources */,
+				6F90F7E1230FAE560012170E /* SRGMediaPlayerNavigationController.m in Sources */,
 				6F816C7F2258AA4300A71401 /* SRGMediaPlaybackStereoscopicView.m in Sources */,
 				6F816C382258AA1500A71401 /* MAKVONotificationCenter+SRGMediaPlayer.m in Sources */,
+				6F90F7E4230FAE9C0012170E /* SRGRouteDetector.m in Sources */,
 				6F45129A230E964600C1C111 /* UIScreen+SRGMediaPlayer.m in Sources */,
 				6F816C612258AA3700A71401 /* SRGVideoNode.m in Sources */,
 				6F816C812258AA4300A71401 /* SRGMediaPlaybackSceneView.m in Sources */,
 				6F816C832258AA4300A71401 /* SRGMediaPlayerView.m in Sources */,
+				6F90F7E6230FAEAD0012170E /* SRGAlternateTracksViewController.m in Sources */,
 				6FE279D8230EB405000755B1 /* UIWindow+SRGMediaPlayer.m in Sources */,
 				6F816C3C2258AA1500A71401 /* NSBundle+SRGMediaPlayer.m in Sources */,
 				6F816C872258AA4700A71401 /* SRGMediaPlayer.m in Sources */,

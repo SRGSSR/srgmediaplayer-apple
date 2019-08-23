@@ -4,7 +4,12 @@
 //  License information is available from the LICENSE file.
 //
 
+#import <TargetConditionals.h>
+
+#if TARGET_OS_IOS
 #import <CoreMotion/CoreMotion.h>
+#endif
+
 #import <SceneKit/SceneKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -22,11 +27,15 @@ __TVOS_PROHIBITED
 + (void)start;
 + (void)stop;
 
+#if TARGET_OS_IOS
+
 /**
  *  The Core Motion manager to use. If one has been provided (@see `SRGMediaPlayerView.h`), it will be returned
  *  instead.
  */
 @property (class, nonatomic, readonly) CMMotionManager *motionManager;
+
+#endif
 
 @end
 

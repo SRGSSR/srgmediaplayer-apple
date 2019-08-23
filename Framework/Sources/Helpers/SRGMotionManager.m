@@ -10,6 +10,8 @@
 
 #import <GLKit/GLKit.h>
 
+#if TARGET_OS_IOS
+
 static SRGMotionManager *s_motionManager = nil;
 
 @interface SRGMotionManager () {
@@ -83,3 +85,5 @@ static SRGMotionManager *s_motionManager = nil;
 }
 
 @end
+
+#endif

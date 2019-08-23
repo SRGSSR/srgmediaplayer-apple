@@ -6,6 +6,8 @@
 
 #import "SRGMediaPlayerNavigationController.h"
 
+#if TARGET_OS_IOS
+
 @implementation SRGMediaPlayerNavigationController
 
 #pragma mark Status bar
@@ -16,3 +18,5 @@
 }
 
 @end
+
+#endif
