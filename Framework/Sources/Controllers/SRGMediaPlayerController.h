@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  *    - A view, `SRGMediaPlayerView`, with which content played by a controller can be displayed.
  *    - A set of overlays to create custom player user interfaces.
  *    - `SRGMediaPlayerViewController`, an `AVPlayerViewController` subclass using an `SRGMediaPlayerController` for
- *      playback.
+ *      playback. This class therefore provides a standard iOS / tvOS user experience which should fulfill most needs.
  *
  *  ## Controller
  *
@@ -83,7 +83,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  ## Controls and overlays
  *
  *  The `SRGMediaPlayer` library provides the following set of controls which can be easily connected to a media player
- *  controller instance to report its status or manage playback.
+ *  controller instance to report its status or manage playback. On tvOS you should avoid creating a custom control
+ *  layout, as the experience should be based on `SRGMediaPlayerViewController`. This is why most of the following controls
+ *  are only available for iOS:
  *
  *  - Buttons:
  *    - `SRGPlaybackButton`: A button to pause or resume playback.

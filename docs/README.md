@@ -4,11 +4,11 @@
 
 ## About
 
-The SRG Media Player library for iOS provides a simple way to add a universal audio / video player to any application. It provides:
+The SRG Media Player library provides a simple way to add universal audio / video playback support to any application. It provides:
 
 * A controller with precise playback state information and and a simple but powerful playback API.
 * Automatic integration with `AVPlayerViewController`.
-* A set of overlays which can be combined to create a custom user interface if needed.
+* A set of overlays which can be combined to create custom player user interfaces.
 * Support for subdivision of medias in (non-overlapping) sequences, which can provide am additional finer-grained playback structure or block playback to parts of the content.
 * Support for on-demand, live and DVR streams.
 * Support for 360° and cardboard playback.
@@ -16,7 +16,7 @@ The SRG Media Player library for iOS provides a simple way to add a universal au
 
 ## Compatibility
 
-The library is suitable for applications running on iOS 9 and above. The project is meant to be opened with the latest Xcode version (currently Xcode 10).
+The library is suitable for applications running on iOS 9, tvOS 9, watchOS 3 and above. The project is meant to be opened with the latest Xcode version (currently Xcode 10).
 
 ## Contributing
 
