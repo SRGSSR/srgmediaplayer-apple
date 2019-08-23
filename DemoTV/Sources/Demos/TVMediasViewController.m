@@ -28,6 +28,7 @@ static NSString * const kMediaKey = @"Media";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
     TVMediasViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.configurationFileName = configurationFileName;
+    viewController.tableView.remembersLastFocusedIndexPath = YES;
     return viewController;
 }
 
