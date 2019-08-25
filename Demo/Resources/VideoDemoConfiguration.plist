@@ -50,7 +50,7 @@
 			<key>name</key>
 			<string>Bonjour la Suisse</string>
 			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021-,301k,101k,701k,1201k,2001k,fra-ad,roh,deu,ita,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%C3%A7ais,5:fra:Fran%C3%A7ais%20(AD),6:roh:Rh%C3%A9to-roman,7:deu:Allemand,8:ita:Italien&amp;caption=docfu/2017/docfu_20170728_full_f_1027021_fra.m3u8:fra:Fran%C3%A7ais,docfu/2017/docfu_20170728_full_f_1027021_ita.m3u8:ita:Italien,docfu/2017/docfu_20170728_full_f_1027021_gsw.m3u8:deu:Allemand</string>
+			<string>https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021-,301k,101k,701k,1201k,2001k,fra-ad,roh,deu,ita,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%C3%A7ais,5:fra:Fran%C3%A7ais%20(AD):ad,6:roh:Rh%C3%A9to-roman,7:deu:Allemand,8:ita:Italien&amp;caption=docfu/2017/docfu_20170728_full_f_1027021_fra.m3u8:fra:Fran%C3%A7ais,docfu/2017/docfu_20170728_full_f_1027021_ita.m3u8:ita:Italien,docfu/2017/docfu_20170728_full_f_1027021_gsw.m3u8:deu:Allemand</string>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -84,13 +84,13 @@
 			<key>name</key>
 			<string>Bonjour la Suisse - 4 audios (+ AD) &amp; 5 subtitles</string>
 			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd-staging.net/i/test/bonsu/2019/bonsu_20190105_full_236992be-c219-4936-b9d9-cd8bfb60667c-,301k,101k,701k,1201k,2001k,3501k,6001k,fra-ad,deu,ita,roh,.mp4.csmil/master.m3u8?audiotrack=0%3Afra%3AFran%C3%A7ais%2C7%3Afra%3AFran%C3%A7ais%2B(AD)%3Aauto%3Aad%2C8%3Adeu%3AAllemand%2C9%3Aita%3AItalien%2C10%3Aroh%3ARomanche&amp;caption=BONCH06_ZT031201DE.m3u8%3Adeu%3AAllemand%2CBONCH06_ZT031201.m3u8%3Afra%3AFran%C3%A7ais%2CBONCH06_ZT031201RU.m3u8%3Aroh%3ARomanche%2CBONCH06_ZT031201IT.m3u8%3Aita%3AItalien%2CBONCH06_ZT031201EN.m3u8%3Aeng%3AAnglais&amp;webvttbaseurl=www.rts.ch%2Fx%2Fsub%2Ftest%2Fbonsu%2F2018</string>
+			<string>https://rtsvodww-vh.akamaihd.net/i/test/bonsu/2019/bonsu_20190105_full_236992be-c219-4936-b9d9-cd8bfb60667c-,301k,101k,701k,1201k,2001k,3501k,6001k,fra-ad,deu,ita,roh,.mp4.csmil/master.m3u8?audiotrack=0%3Afra%3AFran%C3%A7ais%2C7%3Afra%3AFran%C3%A7ais%2B(AD)%3Aad%2C8%3Adeu%3AAllemand%2C9%3Aita%3AItalien%2C10%3Aroh%3ARomanche&amp;caption=BONCH06_ZT031201DE.m3u8%3Adeu%3AAllemand%2CBONCH06_ZT031201.m3u8%3Afra%3AFran%C3%A7ais%2CBONCH06_ZT031201RU.m3u8%3Aroh%3ARomanche%2CBONCH06_ZT031201IT.m3u8%3Aita%3AItalien%2CBONCH06_ZT031201EN.m3u8%3Aeng%3AAnglais&amp;webvttbaseurl=www.rts.ch%2Fx%2Fsub%2Ftest%2Fbonsu%2F2018</string>
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>Bonjour la Suisse - 4 audios (+ AD) &amp; FR / EN (CC) subtitles</string>
+			<string>Bonjour la Suisse - 4 audios (+ AD) &amp; FR / EN (SDH) subtitles</string>
 			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd-staging.net/i/test/bonsu/2019/bonsu_20190105_full_236992be-c219-4936-b9d9-cd8bfb60667c-,301k,101k,701k,1201k,2001k,3501k,6001k,fra-ad,deu,ita,roh,.mp4.csmil/master.m3u8?audiotrack=0%3Afra%3AFran%C3%A7ais%2C7%3Afra%3AFran%C3%A7ais%2B(AD)%3Aauto%3Aad%2C8%3Adeu%3AAllemand%2C9%3Aita%3AItalien%2C10%3Aroh%3ARomanche&amp;caption=BONCH06_ZT031201.m3u8%3Afra%3AFran%C3%A7ais%2CBONCH06_ZT031201.m3u8%3Afra%3AFran%C3%A7ais%2B(CC)%3Aauto%3Acc%2CBONCH06_ZT031201EN.m3u8%3Aeng%3AAnglais%2CBONCH06_ZT031201EN.m3u8%3Aeng%3AAnglais%2B(CC)%3Aauto%3Acc&amp;webvttbaseurl=www.rts.ch%2Fx%2Fsub%2Ftest%2Fbonsu%2F2018</string>
+			<string>https://rtsvodww-vh.akamaihd.net/i/test/bonsu/2019/bonsu_20190105_full_236992be-c219-4936-b9d9-cd8bfb60667c-,301k,101k,701k,1201k,2001k,3501k,6001k,fra-ad,deu,ita,roh,.mp4.csmil/master.m3u8?audiotrack=0%3Afra%3AFran%C3%A7ais%2C7%3Afra%3AFran%C3%A7ais%2B(AD)%3Aad%2C8%3Adeu%3AAllemand%2C9%3Aita%3AItalien%2C10%3Aroh%3ARomanche&amp;caption=BONCH06_ZT031201.m3u8%3Afra%3AFran%C3%A7ais%2CBONCH06_ZT031201.m3u8%3Afra%3AFran%C3%A7ais%2B(SDH)%3Asdh%2CBONCH06_ZT031201EN.m3u8%3Aeng%3AAnglais%2CBONCH06_ZT031201EN.m3u8%3Aeng%3AAnglais%2B(SDH)%3Asdh&amp;webvttbaseurl=www.rts.ch%2Fx%2Fsub%2Ftest%2Fbonsu%2F2018</string>
 		</dict>
 		<dict>
 			<key>name</key>
