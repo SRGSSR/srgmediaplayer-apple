@@ -14,47 +14,47 @@
  *  too long to compile, you might not want to opt-in for designables.
  */
 
-IB_DESIGNABLE
+IB_DESIGNABLE __TVOS_PROHIBITED
 @interface SRGAirPlayButton (Designable)
 
 @end
 
-IB_DESIGNABLE
+IB_DESIGNABLE __TVOS_PROHIBITED
 @interface SRGAirPlayView (Designable)
 
 @end
 
-IB_DESIGNABLE
+IB_DESIGNABLE __TVOS_PROHIBITED
 @interface SRGPictureInPictureButton (Designable)
 
 @end
 
-IB_DESIGNABLE
+IB_DESIGNABLE __TVOS_PROHIBITED
 @interface SRGPlaybackButton (Designable)
 
 @end
 
-IB_DESIGNABLE
+IB_DESIGNABLE __TVOS_PROHIBITED
 @interface SRGTimeSlider (Designable)
 
 @end
 
-IB_DESIGNABLE
+IB_DESIGNABLE __TVOS_PROHIBITED
 @interface SRGTimelineView (Designable)
 
 @end
 
-IB_DESIGNABLE
+IB_DESIGNABLE __TVOS_PROHIBITED
 @interface SRGTracksButton (Designable)
 
 @end
 
-IB_DESIGNABLE
+IB_DESIGNABLE __TVOS_PROHIBITED
 @interface SRGViewModeButton (Designable)
 
 @end
 
-IB_DESIGNABLE
+IB_DESIGNABLE __TVOS_PROHIBITED
 @interface SRGVolumeView (Designable)
 
 @end

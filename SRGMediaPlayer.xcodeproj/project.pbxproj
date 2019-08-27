@@ -119,6 +119,7 @@
 		6FC7D66122636CAA00B23F25 /* AudioDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F5C1D61BFAE0064E6C1 /* AudioDemoConfiguration.plist */; };
 		6FCA46BD231567DA00969F6C /* SRGMediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; };
 		6FCA46BE231567DA00969F6C /* SRGMediaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6FCA46C323156A3400969F6C /* SRGMediaPlayerDesignables.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCA46C223156A3400969F6C /* SRGMediaPlayerDesignables.m */; };
 		6FCE341422611AE000302D4B /* TVMediasViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF849B022610C2A00CE2F71 /* TVMediasViewController.m */; };
 		6FCE34152261D2DB00302D4B /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4441FD91CE500CF175F /* Media.m */; };
 		6FCE34182261D4C400302D4B /* MediaSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCE34172261D4C400302D4B /* MediaSegment.m */; };
@@ -367,6 +368,7 @@
 		6FC1C74D22BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVRoutePickerView+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGViewModeButton.h; sourceTree = "<group>"; };
 		6FC57B191FD6A5BE00451B6B /* SRGViewModeButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGViewModeButton.m; sourceTree = "<group>"; };
+		6FCA46C223156A3400969F6C /* SRGMediaPlayerDesignables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerDesignables.m; sourceTree = "<group>"; };
 		6FCE34162261D4C400302D4B /* MediaSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaSegment.h; sourceTree = "<group>"; };
 		6FCE34172261D4C400302D4B /* MediaSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaSegment.m; sourceTree = "<group>"; };
 		6FD312251FD92FAB00EC0C42 /* MediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPlayer.h; sourceTree = "<group>"; };
@@ -698,6 +700,14 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		6FCA46C123156A3400969F6C /* Designables */ = {
+			isa = PBXGroup;
+			children = (
+				6FCA46C223156A3400969F6C /* SRGMediaPlayerDesignables.m */,
+			);
+			path = Designables;
+			sourceTree = "<group>";
+		};
 		6FF849AE22610C1000CE2F71 /* Demos */ = {
 			isa = PBXGroup;
 			children = (
@@ -713,6 +723,7 @@
 			children = (
 				E69A1DB11D61BAFD0064E6C1 /* Framework */,
 				E69A1FD21D61C6830064E6C1 /* Tests */,
+				6FCA46C123156A3400969F6C /* Designables */,
 				E69A1F571D61BFAE0064E6C1 /* Demo */,
 				6F7B81FE225E79740002CD3A /* DemoTV */,
 				E69A1FCC1D61C32D0064E6C1 /* Frameworks */,
@@ -1356,6 +1367,7 @@
 				E6D21D221D76A3F500B477F3 /* AppDelegate.m in Sources */,
 				6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */,
 				E6D21D241D76A3F500B477F3 /* MediasViewController.m in Sources */,
+				6FCA46C323156A3400969F6C /* SRGMediaPlayerDesignables.m in Sources */,
 				E6BCE94E1D76CB900021973D /* InlinePlayerViewController.m in Sources */,
 				6F908B73230C1E0200CB33BD /* SimplePlayerViewController.m in Sources */,
 				6FD312271FD92FAB00EC0C42 /* MediaPlayer.m in Sources */,
