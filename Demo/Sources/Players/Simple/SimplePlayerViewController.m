@@ -19,7 +19,7 @@
 @property (nonatomic) Media *media;
 
 @property (nonatomic, weak) IBOutlet UIView *videoView;
-@property (nonatomic, weak) IBOutlet SRGTimeSlider *timelineSlider;
+@property (nonatomic, weak) IBOutlet SRGTimelineSlider *timelineSlider;
 @property (nonatomic, weak) IBOutlet UIButton *liveButton;
 
 @property (nonatomic, weak) id periodicTimeObserver;

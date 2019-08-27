@@ -41,7 +41,7 @@
                                             <action selector="goToLive:" destination="Zk8-W1-piv" eventType="touchUpInside" id="HOC-pZ-bwD"/>
                                         </connections>
                                     </button>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Tml-pK-mQ9" customClass="SRGTimeSlider">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Tml-pK-mQ9" customClass="SRGTimelineSlider">
                                         <rect key="frame" x="6" y="0.0" width="363" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="ajA-g4-OfO"/>
