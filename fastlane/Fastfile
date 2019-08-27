@@ -23,6 +23,7 @@ platform :ios do
   desc "Run library tests"
   lane :tests do
     scan(
+      devices: ["iPhone X", "Apple TV"],
       output_types: "",
       fail_build: false,
       clean: true
