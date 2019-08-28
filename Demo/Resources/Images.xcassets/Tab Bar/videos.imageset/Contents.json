@@ -1,8 +1,15 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "filename" : "videos.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "videos-1.pdf"
+    },
+    {
+      "idiom" : "tv"
     }
   ],
   "info" : {

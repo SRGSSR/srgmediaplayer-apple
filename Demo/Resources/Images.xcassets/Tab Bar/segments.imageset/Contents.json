@@ -1,8 +1,15 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "filename" : "segments.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "segments-1.pdf"
+    },
+    {
+      "idiom" : "tv"
     }
   ],
   "info" : {
