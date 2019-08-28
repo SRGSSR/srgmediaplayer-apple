@@ -17,9 +17,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-#if TARGET_OS_IOS
-    self.window.backgroundColor = UIColor.blackColor;
-#endif
     [self.window makeKeyAndVisible];
     
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
