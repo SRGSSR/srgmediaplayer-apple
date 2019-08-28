@@ -214,14 +214,10 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 
 #pragma mark Status bar
 
-#if TARGET_OS_IOS
-
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return self.dark ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;
 }
-
-#endif
 
 #pragma mark Responsiveness
 

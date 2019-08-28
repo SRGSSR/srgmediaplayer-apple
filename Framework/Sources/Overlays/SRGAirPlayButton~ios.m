@@ -16,8 +16,6 @@
 
 #import <libextobjc/libextobjc.h>
 
-#if TARGET_OS_IOS
-
 static void commonInit(SRGAirPlayButton *self);
 
 @interface SRGAirPlayButton ()
@@ -325,5 +323,3 @@ static void commonInit(SRGAirPlayButton *self)
     }
     self.hidden = YES;
 }
-
-#endif

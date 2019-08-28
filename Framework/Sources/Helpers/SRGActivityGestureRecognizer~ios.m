@@ -8,8 +8,6 @@
 
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
-#if TARGET_OS_IOS
-
 // Heavily inspired by MPActivityGestureRecognizer from the MediaPlayer framework
 @implementation SRGActivityGestureRecognizer
 
@@ -65,5 +63,3 @@
 }
 
 @end
-
-#endif

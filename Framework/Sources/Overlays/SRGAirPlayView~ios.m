@@ -15,8 +15,6 @@
 
 #import <libextobjc/libextobjc.h>
 
-#if TARGET_OS_IOS
-
 @interface SRGAirPlayView ()
 
 @property (nonatomic, getter=isFakedForInterfaceBuilder) BOOL fakedForInterfaceBuilder;
@@ -299,5 +297,3 @@ NSString * SRGAirPlayRouteDescription(void)
         return nil;
     }
 }
-
-#endif

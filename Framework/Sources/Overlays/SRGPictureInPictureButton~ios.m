@@ -9,8 +9,6 @@
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaPlayerController.h"
 
-#if TARGET_OS_IOS
-
 static void commonInit(SRGPictureInPictureButton *self);
 
 @interface SRGPictureInPictureButton ()
@@ -239,5 +237,3 @@ static void commonInit(SRGPictureInPictureButton *self)
     
     self.hidden = YES;
 }
-
-#endif

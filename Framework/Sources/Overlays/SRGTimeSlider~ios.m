@@ -12,8 +12,6 @@
 
 #import <libextobjc/libextobjc.h>
 
-#if TARGET_OS_IOS
-
 static void commonInit(SRGTimeSlider *self);
 
 static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
@@ -614,5 +612,3 @@ static void commonInit(SRGTimeSlider *self)
     self.seekingDuringTracking = YES;
     self.knobLivePosition = SRGTimeSliderLiveKnobPositionLeft;
 }
-
-#endif

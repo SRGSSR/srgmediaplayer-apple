@@ -11,8 +11,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import <libextobjc/libextobjc.h>
 
-#if TARGET_OS_IOS
-
 NSString * const SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification = @"SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification";
 
 API_AVAILABLE(ios(11.0)) static SRGRouteDetector *s_routeDetector;
@@ -145,5 +143,3 @@ API_AVAILABLE(ios(11.0)) static SRGRouteDetector *s_routeDetector;
 }
 
 @end
-
-#endif

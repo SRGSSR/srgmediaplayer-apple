@@ -6,18 +6,15 @@
 
 #import "MediasViewController.h"
 
-#import "Media.h"
-#import "MediaPlayer.h"
-#import "NSBundle+Demo.h"
-#import "UIWindow+SRGMediaPlayer.h"
-
-#if TARGET_OS_IOS
 #import "AdvancedPlayerViewController.h"
 #import "InlinePlayerViewController.h"
+#import "Media.h"
+#import "MediaPlayer.h"
 #import "MultiPlayerViewController.h"
+#import "NSBundle+Demo.h"
 #import "SimplePlayerViewController.h"
 #import "SegmentsPlayerViewController.h"
-#endif
+#import "UIWindow+SRGMediaPlayer.h"
 
 #import <AVKit/AVKit.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>

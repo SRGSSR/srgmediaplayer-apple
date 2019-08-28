@@ -15,8 +15,6 @@
 
 #import <libextobjc/libextobjc.h>
 
-#if TARGET_OS_IOS
-
 static void commonInit(SRGTracksButton *self);
 
 @interface SRGTracksButton () <UIPopoverPresentationControllerDelegate>
@@ -337,5 +335,3 @@ static void commonInit(SRGTracksButton *self)
     
     self.hidden = YES;
 }
-
-#endif
