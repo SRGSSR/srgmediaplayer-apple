@@ -7,6 +7,7 @@
 #import "SimplePlayerViewController.h"
 
 #import "NSBundle+Demo.h"
+#import "Resources.h"
 #import "SegmentCollectionViewCell.h"
 
 #import <libextobjc/libextobjc.h>
@@ -32,7 +33,7 @@
 
 - (instancetype)initWithMedia:(Media *)media
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:ResourceNameForUIClass(self.class) bundle:nil];
     SimplePlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.media = media;
     return viewController;

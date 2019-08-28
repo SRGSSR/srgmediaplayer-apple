@@ -12,6 +12,7 @@
 #import "MediaPlayer.h"
 #import "MultiPlayerViewController.h"
 #import "NSBundle+Demo.h"
+#import "Resources.h"
 #import "SimplePlayerViewController.h"
 #import "SegmentsPlayerViewController.h"
 #import "UIWindow+SRGMediaPlayer.h"

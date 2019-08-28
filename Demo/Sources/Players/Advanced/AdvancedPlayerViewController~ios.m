@@ -7,6 +7,7 @@
 #import "AdvancedPlayerViewController.h"
 
 #import "NSBundle+Demo.h"
+#import "Resources.h"
 
 #import <libextobjc/libextobjc.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
@@ -50,7 +51,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 - (instancetype)initWithMedia:(Media *)media
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:ResourceNameForUIClass(self.class) bundle:nil];
     AdvancedPlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.media = media;
     return viewController;

@@ -6,6 +6,8 @@
 
 #import "MultiPlayerViewController.h"
 
+#import "Resources.h"
+
 #import <libextobjc/libextobjc.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
@@ -33,7 +35,7 @@
 
 - (instancetype)initWithMedias:(NSArray<Media *> *)medias
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:ResourceNameForUIClass(self.class) bundle:nil];
     MultiPlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.medias = medias;
     return viewController;

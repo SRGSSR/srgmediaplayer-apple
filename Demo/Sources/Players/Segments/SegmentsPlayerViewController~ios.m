@@ -7,6 +7,7 @@
 #import "SegmentsPlayerViewController.h"
 
 #import "ModalTransition.h"
+#import "Resources.h"
 #import "SegmentCollectionViewCell.h"
 
 @interface SegmentsPlayerViewController ()
@@ -37,7 +38,7 @@
 
 - (instancetype)initWithMedia:(Media *)media
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:ResourceNameForUIClass(self.class) bundle:nil];
     SegmentsPlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.media = media;
     return viewController;
@@ -63,9 +64,8 @@
     self.timelineSlider.delegate = self;
     self.blockingOverlayView.hidden = YES;
     
-    NSString *className = NSStringFromClass(SegmentCollectionViewCell.class);
-    UINib *cellNib = [UINib nibWithNibName:className bundle:nil];
-    [self.timelineView registerNib:cellNib forCellWithReuseIdentifier:className];
+    UINib *cellNib = [UINib nibWithNibName:ResourceNameForUIClass(SegmentCollectionViewCell.class) bundle:nil];
+    [self.timelineView registerNib:cellNib forCellWithReuseIdentifier:NSStringFromClass(SegmentCollectionViewCell.class)];
     
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(didSkipSegment:)
