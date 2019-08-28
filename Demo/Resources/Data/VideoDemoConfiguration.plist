@@ -30,6 +30,12 @@
 		</dict>
 		<dict>
 			<key>name</key>
+			<string>Apple Advanced Stream (HEVC)</string>
+			<key>url</key>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_adv_example_hevc/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
 			<string>Big Buck Bunny (640×360 m4v)</string>
 			<key>url</key>
 			<string>http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v</string>
