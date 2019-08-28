@@ -24,8 +24,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
-@property (nonatomic, weak) IBOutlet UILabel *durationLabel;
-@property (nonatomic, weak) IBOutlet UILabel *timestampLabel;
+@property (nonatomic, weak) IBOutlet UILabel *timeLabel;
 @property (nonatomic, weak) IBOutlet UIProgressView *progressView;
 
 @end
@@ -38,17 +37,17 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 {
     _segment = segment;
     
-    self.titleLabel.text = segment.name;
+    NSString *duration = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.start)];
+    self.titleLabel.text = [segment.name stringByAppendingFormat:@" (%@)", duration];
+    self.imageView.image = [UIImage imageNamed:@"artwork"];
     
     if (SRG_CMTIMERANGE_IS_NOT_EMPTY(segment.srg_timeRange)) {
-        self.durationLabel.hidden = NO;
-        self.durationLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.duration)];
+        self.timeLabel.hidden = NO;
+        self.timeLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.duration)];
     }
     else {
-        self.durationLabel.hidden = YES;
+        self.timeLabel.hidden = YES;
     }
-    
-    self.timestampLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.start)];
     
     self.alpha = segment.srg_isBlocked ? 0.5f : 1.f;
 }
