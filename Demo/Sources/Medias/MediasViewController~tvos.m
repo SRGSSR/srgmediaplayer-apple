@@ -4,32 +4,44 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "TVMediasViewController.h"
+#import "MediasViewController.h"
 
 #import "Media.h"
-#import "TVPlayerViewController.h"
+#import "Resources.h"
+#import "SimplePlayerViewController.h"
 
 static NSString * const kMediaKey = @"Media";
 
-@interface TVMediasViewController () <SRGMediaPlayerViewControllerDelegate>
+@interface MediasViewController () <SRGMediaPlayerViewControllerDelegate>
 
 @property (nonatomic, copy) NSString *configurationFileName;
+@property (nonatomic) MediaPlayerType mediaPlayerType;
 
 @property (nonatomic) NSArray<Media *> *medias;
 
 @end
 
-@implementation TVMediasViewController
+@implementation MediasViewController
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithConfigurationFileName:(NSString *)configurationFileName
+- (instancetype)initWithTitle:(NSString *)title configurationFileName:(NSString *)configurationFileName mediaPlayerType:(MediaPlayerType)mediaPlayerType
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    TVMediasViewController *viewController = [storyboard instantiateInitialViewController];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:ResourceNameForUIClass(self.class) bundle:nil];
+    MediasViewController *viewController = [storyboard instantiateInitialViewController];
+    viewController.title = title;
     viewController.configurationFileName = configurationFileName;
-    viewController.tableView.remembersLastFocusedIndexPath = YES;
+    viewController.mediaPlayerType = mediaPlayerType;
     return viewController;
+}
+
+#pragma mark View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.tableView.remembersLastFocusedIndexPath = YES;
 }
 
 #pragma mark Media extraction
@@ -93,7 +105,7 @@ static NSString * const kMediaKey = @"Media";
         }];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Simple player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        TVPlayerViewController *playerViewController = [[TVPlayerViewController alloc] initWithMedia:media];
+        SimplePlayerViewController *playerViewController = [[SimplePlayerViewController alloc] initWithMedia:media];
         [self presentViewController:playerViewController animated:YES completion:nil];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
@@ -126,22 +138,26 @@ static NSString * const kMediaKey = @"Media";
 {
     NSMutableArray<AVTimedMetadataGroup *> *navigationMarkers = [NSMutableArray array];
     
-    for (MediaSegment *segment in segments) {
-        AVMutableMetadataItem *titleItem = [[AVMutableMetadataItem alloc] init];
-        titleItem.identifier = AVMetadataCommonIdentifierTitle;
-        titleItem.value = segment.name;
-        titleItem.extendedLanguageTag = @"und";
-        
-        AVMutableMetadataItem *artworkItem = [[AVMutableMetadataItem alloc] init];
-        artworkItem.identifier = AVMetadataCommonIdentifierArtwork;
-        artworkItem.value = UIImagePNGRepresentation([UIImage imageNamed:@"artwork"]);
-        artworkItem.extendedLanguageTag = @"und";
-        
-        AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy, artworkItem.copy ] timeRange:segment.srg_timeRange];
-        [navigationMarkers addObject:navigationMarker];
+    if (self.mediaPlayerType == MediaPlayerTypeSegments) {
+        for (MediaSegment *segment in segments) {
+            AVMutableMetadataItem *titleItem = [[AVMutableMetadataItem alloc] init];
+            titleItem.identifier = AVMetadataCommonIdentifierTitle;
+            titleItem.value = segment.name;
+            titleItem.extendedLanguageTag = @"und";
+            
+            AVMutableMetadataItem *artworkItem = [[AVMutableMetadataItem alloc] init];
+            artworkItem.identifier = AVMetadataCommonIdentifierArtwork;
+            artworkItem.value = UIImagePNGRepresentation([UIImage imageNamed:@"artwork"]);
+            artworkItem.extendedLanguageTag = @"und";
+            
+            AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy, artworkItem.copy ] timeRange:segment.srg_timeRange];
+            [navigationMarkers addObject:navigationMarker];
+        }
+        return navigationMarkers.copy;
     }
-    
-    return navigationMarkers.copy;
+    else {
+        return nil;
+    }
 }
 
 @end

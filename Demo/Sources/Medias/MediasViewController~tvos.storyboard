@@ -12,7 +12,7 @@
         <!--Medias View Controller-->
         <scene sceneID="A3O-uw-Fs4">
             <objects>
-                <tableViewController id="b2y-Qj-tXS" customClass="TVMediasViewController" sceneMemberID="viewController">
+                <tableViewController id="b2y-Qj-tXS" customClass="MediasViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="66" sectionFooterHeight="66" id="6Lc-5i-4cw">
                         <rect key="frame" x="0.0" y="0.0" width="1920" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

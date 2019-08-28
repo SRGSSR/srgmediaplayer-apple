@@ -4,11 +4,13 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "TVPlayerViewController.h"
+#import "SimplePlayerViewController.h"
+
+#import "Resources.h"
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-@interface TVPlayerViewController ()
+@interface SimplePlayerViewController ()
 
 @property (nonatomic) Media *media;
 
@@ -17,14 +19,14 @@
 
 @end
 
-@implementation TVPlayerViewController
+@implementation SimplePlayerViewController
 
 #pragma mark Object lifecycle
 
 - (instancetype)initWithMedia:(Media *)media
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:nil];
-    TVPlayerViewController *viewController = [storyboard instantiateInitialViewController];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:ResourceNameForUIClass(self.class) bundle:nil];
+    SimplePlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.media = media;
     return viewController;
 }
