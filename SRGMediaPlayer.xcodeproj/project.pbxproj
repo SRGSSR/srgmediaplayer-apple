@@ -120,8 +120,6 @@
 		E69A1F9D1D61BFAE0064E6C1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F611D61BFAE0064E6C1 /* Images.xcassets */; };
 		E69A1FA11D61BFAE0064E6C1 /* VideoDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F651D61BFAE0064E6C1 /* VideoDemoConfiguration.plist */; };
 		E69A1FA21D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F661D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist */; };
-		E69A1FA71D61BFAE0064E6C1 /* thumbnail-placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6B1D61BFAE0064E6C1 /* thumbnail-placeholder.png */; };
-		E69A1FA81D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E69A1F6C1D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png */; };
 		E69A1FC41D61C06B0064E6C1 /* SRGMediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; };
 		E69A1FC51D61C06B0064E6C1 /* SRGMediaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E69A1FD61D61C6830064E6C1 /* SRGMediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; };
@@ -335,8 +333,6 @@
 		E69A1F611D61BFAE0064E6C1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E69A1F651D61BFAE0064E6C1 /* VideoDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = VideoDemoConfiguration.plist; sourceTree = "<group>"; };
 		E69A1F661D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MultiPlayerDemoConfiguration.plist; sourceTree = "<group>"; };
-		E69A1F6B1D61BFAE0064E6C1 /* thumbnail-placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder.png"; sourceTree = "<group>"; };
-		E69A1F6C1D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail-placeholder@2x.png"; sourceTree = "<group>"; };
 		E69A1FD11D61C6830064E6C1 /* SRGMediaPlayer-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SRGMediaPlayer-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E69A1FD51D61C6830064E6C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E69A1FDE1D61C6D20064E6C1 /* PlaybackTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackTestCase.m; sourceTree = "<group>"; };
@@ -643,8 +639,6 @@
 				E69A1F611D61BFAE0064E6C1 /* Images.xcassets */,
 				E6C315661D76AB62001FC93A /* LaunchScreen~ios.xib */,
 				08F4E5411E7FE76900C9E8FD /* Localizable.strings */,
-				E69A1F6B1D61BFAE0064E6C1 /* thumbnail-placeholder.png */,
-				E69A1F6C1D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1029,8 +1023,6 @@
 				E6C315761D76B2AA001FC93A /* MediasViewController~ios.storyboard in Resources */,
 				E6BCE95B1D76CF7D0021973D /* SegmentDemoConfiguration.plist in Resources */,
 				E6BCE9591D76CBCE0021973D /* SegmentsPlayerViewController~ios.storyboard in Resources */,
-				E69A1FA71D61BFAE0064E6C1 /* thumbnail-placeholder.png in Resources */,
-				E69A1FA81D61BFAE0064E6C1 /* thumbnail-placeholder@2x.png in Resources */,
 				6F12842D230C0B55001119EA /* AdvancedPlayerViewController~ios.storyboard in Resources */,
 				E6BCE94F1D76CB900021973D /* InlinePlayerViewController~ios.storyboard in Resources */,
 				E69A1FA21D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist in Resources */,

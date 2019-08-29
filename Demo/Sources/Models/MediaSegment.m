@@ -41,14 +41,6 @@
     return [self initWithDictionary:@{}];
 }
 
-#pragma mark Getters and setters
-
-- (NSURL *)thumbnailURL
-{
-    NSString *imageFilePath = [NSBundle.mainBundle pathForResource:@"thumbnail-placeholder" ofType:@"png"];
-    return [NSURL fileURLWithPath:imageFilePath];
-}
-
 #pragma mark Description
 
 - (NSString *)description
