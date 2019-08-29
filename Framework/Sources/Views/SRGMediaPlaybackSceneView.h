@@ -27,8 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Method called when the scene has been setup.
  *
- *  @param scene  The scene which has been setup.
- *  @param camera The main camera installed within the scene.
+ *  @param scene      The scene which has been setup.
+ *  @param cameraNode The main camera installed within the scene.
  */
 - (void)didSetupScene:(SCNScene *)scene withCameraNode:(SCNNode *)cameraNode NS_REQUIRES_SUPER;
 

@@ -6,35 +6,72 @@
 
 #import "SRGMediaPlayerController.h"
 
-#import <UIKit/UIKit.h>
+#import <AVKit/AVKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- *  `SRGMediaPlayerViewController` is inspired by the `AVPlayerViewController` class, and intends to provide a full-screen
- *  standard media player looking like the default iOS media player.
- *
- *  An `SRGMediaPlayerViewController` instance has to be presented modally using `-presentViewController:animated:completion:`. 
- *  If you need a custom layout, create your own view controller and implement media playback using `SRGMediaPlayerController`
- *  instead.
- *
- *  Like `AVPlayerViewController`, `SRGMediaPlayerViewController` exposes the underlying controller for usual playback
- *  operations. After instantiating the view controller, you must therefore start playback by calling one of the `-play...`
- *  methods available.
- */
-@interface SRGMediaPlayerViewController : UIViewController <UIGestureRecognizerDelegate>
+@class SRGMediaPlayerViewController;
 
 /**
- *  The underlying controller. Use for starting or pausing playback or listening to playback notifications, for example.
+ *  Player view controller delegate protocol.
+ */
+@protocol SRGMediaPlayerViewControllerDelegate <AVPlayerViewControllerDelegate>
+
+@optional
+
+#if TARGET_OS_TV
+
+/**
+ *  Return optional external metadata to display in the Info panel.
+ *
+ *  @discussion For a metadata item to be presented in the Info panel, you need to provide values for the item’s identifier, value
+ *              and extendedLanguageTag.
+ */
+- (nullable NSArray<AVMetadataItem *> *)playerViewControllerExternalMetadata:(SRGMediaPlayerViewController *)playerViewController;
+
+/**
+ *  Return the navigation markers to be displayed for the specified segments.
+ */
+- (nullable NSArray<AVTimedMetadataGroup *> *)playerViewController:(SRGMediaPlayerViewController *)playerViewController navigationMarkersForSegments:(NSArray<id<SRGSegment>> *)segments;
+
+#endif
+
+@end
+
+/**
+ *  A lightweight `AVPlayerViewController` subclass using an `SRGMediaPlayerController` for playback. This class provides
+ *  standard Apple player user experience, at the expense of a few limitations:
+ *    - 360° medias are not playable with monoscopic or stereoscopic support.
+ *    - Background playback behavior cannot be customized.
+ *
+ *  If you need one of the above features you should implement your own player layout instead.
+ *
+ *  Since `AVPlayerViewController` manages its video player layer as well, note that the picture in picture controller
+ *  associated with an `SRGMediaPlayerController` is not used.
+ */
+@interface SRGMediaPlayerViewController : AVPlayerViewController
+
+/**
+ *  Instantiate a view controller whose playback is managed by the specified controller. If none is provided a default
+ *  one will be automatically created.
+ */
+- (instancetype)initWithController:(nullable SRGMediaPlayerController *)controller;
+
+/**
+ *  The controller used for playback.
  */
 @property (nonatomic, readonly) SRGMediaPlayerController *controller;
+
+/**
+ *  The player view controller delegate.
+ */
+@property (nonatomic, weak) id<SRGMediaPlayerViewControllerDelegate> delegate;
 
 @end
 
 @interface SRGMediaPlayerViewController (Unavailable)
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
-- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+@property (nonatomic, nullable) AVPlayer *player NS_UNAVAILABLE;
 
 @end
 

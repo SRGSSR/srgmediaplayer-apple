@@ -6,534 +6,167 @@
 
 #import "SRGMediaPlayerViewController.h"
 
-#import "NSBundle+SRGMediaPlayer.h"
-#import "SRGActivityGestureRecognizer.h"
-#import "SRGAirPlayButton.h"
-#import "SRGAirPlayView.h"
-#import "SRGMediaPlayerController.h"
-#import "SRGPlaybackButton.h"
-#import "SRGPictureInPictureButton.h"
-#import "SRGMediaPlayerSharedController.h"
-#import "SRGTimeSlider.h"
-#import "SRGTracksButton.h"
-#import "SRGViewModeButton.h"
+#import "SRGMediaPlayerView+Private.h"
 
 #import <libextobjc/libextobjc.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
-const NSInteger SRGMediaPlayerViewControllerBackwardSkipInterval = 15.;
-const NSInteger SRGMediaPlayerViewControllerForwardSkipInterval = 15.;
+static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
+{
+    if ([view.layer isKindOfClass:AVPlayerLayer.class]) {
+        return view;
+    }
+    
+    for (UIView *subview in view.subviews) {
+        UIView *playerSubview = SRGMediaPlayerViewControllerPlayerSubview(subview);
+        if (playerSubview) {
+            return playerSubview;
+        }
+    }
+    
+    return nil;
+}
 
-// Shared instance to manage picture in picture playback
-static SRGMediaPlayerSharedController *s_mediaPlayerController = nil;
+/**
+ *  Subclassing is officially not recommended: https://developer.apple.com/documentation/avkit/avplayerviewcontroller.
+ *
+ *  We are doing very few changes in this subclass, though, so this should be a perfectly fine approach at the moment.
+ *  Wrapping `AVPlayerViewController` as child view controller would be possible, but:
+ *    - API methods would need to be mirrored. This would make it possible to restrict `AVPlayerViewController` API to
+ *      only a meaningful safer subset, but would also prevent users from benefiting from `AVPlayerViewController` API
+ *      improvements automatically.
+ *    - The dismissal interactive animation is lost.
+ *    - A play button placeholder would be initially displayed, before content actually begins to play.
+ *
+ *  For these reasons, the subclass approach currently seems a better fit.
+ */
+@interface SRGMediaPlayerViewController ()
 
-@interface SRGMediaPlayerViewController () <SRGTracksButtonDelegate>
-
-@property (nonatomic, weak) IBOutlet UIView *playerView;
-
-@property (nonatomic, weak) IBOutlet SRGTracksButton *tracksButton;
-@property (nonatomic, weak) IBOutlet SRGPictureInPictureButton *pictureInPictureButton;
-@property (nonatomic, weak) IBOutlet SRGViewModeButton *viewModeButton;
-
-@property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
-@property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
-@property (nonatomic, weak) IBOutlet SRGAirPlayButton *airPlayButton;
-@property (nonatomic, weak) IBOutlet SRGAirPlayView *airPlayView;
-@property (nonatomic, weak) IBOutlet UIButton *skipBackwardButton;
-@property (nonatomic, weak) IBOutlet UIButton *skipForwardButton;
-
-@property (nonatomic, weak) IBOutlet UIImageView *errorImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *audioOnlyImageView;
-
-@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingActivityIndicatorView;
-
-@property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
-
-@property (nonatomic) NSTimer *inactivityTimer;
-@property (nonatomic, weak) id periodicTimeObserver;
+@property (nonatomic) SRGMediaPlayerController *controller;
 
 @end
 
-@implementation SRGMediaPlayerViewController {
-@private
-    BOOL _userInterfaceHidden;
-}
+@implementation SRGMediaPlayerViewController
 
-#pragma mark Class methods
-
-+ (void)initialize
-{
-    if (self != SRGMediaPlayerViewController.class) {
-        return;
-    }
-    
-    s_mediaPlayerController = [[SRGMediaPlayerSharedController alloc] init];
-}
+@dynamic delegate;
 
 #pragma mark Object lifecycle
 
-- (instancetype)init
+- (instancetype)initWithController:(SRGMediaPlayerController *)controller
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:NSStringFromClass(self.class) bundle:NSBundle.srg_mediaPlayerBundle];
-    return [storyboard instantiateInitialViewController];
+    if (self = [super init]) {
+        if (! controller) {
+            controller = [[SRGMediaPlayerController alloc] init];
+        }
+        self.controller = controller;
+        
+        @weakify(self)
+        [controller addObserver:self keyPath:@keypath(controller.player) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updatePlayer];
+        }];
+        [self updatePlayer];
+        
+        [controller addObserver:self keyPath:@keypath(controller.segments) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updateMetadata];
+        }];
+        [self updateMetadata];
+        
+        [controller addObserver:self keyPath:@keypath(controller.view.playbackViewHidden) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updateView];
+        }];
+        [self updateView];
+        
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(playbackDidFail:)
+                                                   name:SRGMediaPlayerPlaybackDidFailNotification
+                                                 object:controller];
+    }
+    return self;
 }
 
-- (void)dealloc
+- (instancetype)init
 {
-    [s_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
+    return [self initWithController:nil];
 }
 
 #pragma mark Getters and setters
 
-- (SRGMediaPlayerController *)controller
+- (void)setMediaPlayer:(AVPlayer *)player
 {
-    return s_mediaPlayerController;
+    // The `player` property has been marked as non-available, use a trick to avoid compiler issues in this file
+    [self performSelector:@selector(setPlayer:) withObject:player];
+    [self updateMetadata];
+    [self updateView];
 }
 
-- (void)setInactivityTimer:(NSTimer *)inactivityTimer
+#pragma mark Updates
+
+- (void)updatePlayer
 {
-    [_inactivityTimer invalidate];
-    _inactivityTimer = inactivityTimer;
+    [self setMediaPlayer:self.controller.player];
 }
 
-#pragma mark View lifecycle
-
-- (void)viewDidLoad
+- (void)updateView
 {
-    [super viewDidLoad];
-    
-    self.tracksButton.delegate = self;
-    
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(srg_mediaPlayerViewController_playbackStateDidChange:)
-                                               name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                             object:s_mediaPlayerController];
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(srg_mediaPlayerViewController_playbackDidFail:)
-                                               name:SRGMediaPlayerPlaybackDidFailNotification
-                                             object:s_mediaPlayerController];
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(srg_mediaPlayerViewController_applicationDidBecomeActive:)
-                                               name:UIApplicationDidBecomeActiveNotification
-                                             object:nil];
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:)
-                                               name:UIAccessibilityVoiceOverStatusChanged
-                                             object:nil];
-    
-    self.playerView.isAccessibilityElement = YES;
-    self.playerView.accessibilityLabel = SRGMediaPlayerAccessibilityLocalizedString(@"Media", @"The player view label, where the audio / video is displayed");
-    
-    self.errorImageView.hidden = YES;
-    self.audioOnlyImageView.hidden = YES;
-    
-    // Workaround UIImage view tint color bug
-    // See http://stackoverflow.com/a/26042893/760435
-    UIImage *errorImage = self.errorImageView.image;
-    self.errorImageView.image = nil;
-    self.errorImageView.image = errorImage;
-    
-    UIImage *audioOnlyImage = self.audioOnlyImageView.image;
-    self.audioOnlyImageView.image = nil;
-    self.audioOnlyImageView.image = audioOnlyImage;
-    
-    // Use a wrapper to avoid setting gesture recognizers widely on the shared player instance view
-    s_mediaPlayerController.view.frame = self.playerView.bounds;
-    s_mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.playerView addSubview:s_mediaPlayerController.view];
-    
-    UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-    doubleTapGestureRecognizer.numberOfTapsRequired = 2;
-    [self.playerView addGestureRecognizer:doubleTapGestureRecognizer];
-    
-    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-    [singleTapGestureRecognizer requireGestureRecognizerToFail:doubleTapGestureRecognizer];
-    [self.playerView addGestureRecognizer:singleTapGestureRecognizer];
-    
-    SRGActivityGestureRecognizer *activityGestureRecognizer = [[SRGActivityGestureRecognizer alloc] initWithTarget:self action:@selector(resetInactivityTimer:)];
-    activityGestureRecognizer.delegate = self;
-    [self.view addGestureRecognizer:activityGestureRecognizer];
-    
-    self.pictureInPictureButton.mediaPlayerController = s_mediaPlayerController;
-    self.tracksButton.mediaPlayerController = s_mediaPlayerController;
-    self.timeSlider.mediaPlayerController = s_mediaPlayerController;
-    self.playPauseButton.mediaPlayerController = s_mediaPlayerController;
-    self.airPlayButton.mediaPlayerController = s_mediaPlayerController;
-    self.airPlayView.mediaPlayerController = s_mediaPlayerController;
-    
-    self.viewModeButton.mediaPlayerView = s_mediaPlayerController.view;
-    
-    // The frame of an activity indicator cannot be changed. Use a transform.
-    self.loadingActivityIndicatorView.transform = CGAffineTransformMakeScale(0.6f, 0.6f);
-    [self.loadingActivityIndicatorView startAnimating];
-    
-    for (UIView *view in self.overlayViews) {
-        view.layer.cornerRadius = 10.f;
-        view.clipsToBounds = YES;
-    }
-    
-    @weakify(self)
-    self.periodicTimeObserver = [s_mediaPlayerController addPeriodicTimeObserverForInterval: CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
-        @strongify(self)
-        
-        [self updateUserInterface];
-    }];
-    [self updateUserInterface];
-    
-    [self updateInterfaceForControlsHidden:NO];
-    [self restartInactivityTracker];
+    UIView *playerView = SRGMediaPlayerViewControllerPlayerSubview(self.view);
+    playerView.hidden = self.controller.view.playbackViewHidden;
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)updateMetadata
 {
-    [super viewDidAppear:animated];
+#if TARGET_OS_TV
+    AVPlayerItem *playerItem = self.controller.player.currentItem;
     
-    if ([self isBeingPresented]) {
-        if (s_mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
-            [s_mediaPlayerController.pictureInPictureController stopPictureInPicture];
-        }
-    }
-    
-    if (@available(iOS 11, *)) {
-        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    if ([self isBeingDismissed]) {
-        [self stopInactivityTracker];
-    }
-}
-
-#pragma mark Status bar
-
-- (BOOL)prefersStatusBarHidden
-{
-    return _userInterfaceHidden;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
-- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
-{
-    return UIStatusBarAnimationFade;
-}
-
-#pragma mark Home indicator
-
-- (BOOL)prefersHomeIndicatorAutoHidden
-{
-    return _userInterfaceHidden;
-}
-
-#pragma mark UI
-
-- (void)updateUserInterface
-{
-    SRGMediaPlayerPlaybackState playbackState = s_mediaPlayerController.playbackState;
-    switch (playbackState) {
-        case SRGMediaPlayerPlaybackStateIdle: {
-            self.timeSlider.timeLeftValueLabel.hidden = YES;
-            self.timeSlider.valueLabel.hidden = YES;
-            self.loadingActivityIndicatorView.hidden = YES;
-            break;
-        }
-            
-        case SRGMediaPlayerPlaybackStatePreparing: {
-            self.timeSlider.timeLeftValueLabel.hidden = YES;
-            self.timeSlider.valueLabel.hidden = YES;
-            self.loadingActivityIndicatorView.hidden = NO;
-            break;
-        }
-            
-        case SRGMediaPlayerPlaybackStateSeeking:
-        case SRGMediaPlayerPlaybackStateStalled : {
-            self.timeSlider.timeLeftValueLabel.hidden = NO;
-            self.timeSlider.valueLabel.hidden = YES;
-            self.loadingActivityIndicatorView.hidden = NO;
-            break;
-        }
-            
-        default: {
-            self.timeSlider.timeLeftValueLabel.hidden = NO;
-            self.timeSlider.valueLabel.hidden = NO;
-            self.loadingActivityIndicatorView.hidden = YES;
-            break;
-        }
-    }
-    
-    self.skipForwardButton.hidden = ! [self canSkipForward];
-    self.skipBackwardButton.hidden = ! [self canSkipBackward];
-    
-    if (self.controller.mediaType != SRGMediaPlayerMediaTypeAudio) {
-        self.playerView.hidden = NO;
-        self.audioOnlyImageView.hidden = YES;
+    if ([self.delegate respondsToSelector:@selector(playerViewControllerExternalMetadata:)]) {
+        playerItem.externalMetadata = [self.delegate playerViewControllerExternalMetadata:self] ?: @[];
     }
     else {
-        [self updateInterfaceForControlsHidden:NO];
-        
-        self.playerView.hidden = YES;
-        self.audioOnlyImageView.hidden = NO;
+        playerItem.externalMetadata = @[];
     }
-}
-
-- (void)restartInactivityTracker
-{
-    if (! UIAccessibilityIsVoiceOverRunning()) {
-        self.inactivityTimer = [NSTimer timerWithTimeInterval:5.
-                                                       target:self
-                                                     selector:@selector(updateForInactivity:)
-                                                     userInfo:nil
-                                                      repeats:NO];
-        [[NSRunLoop mainRunLoop] addTimer:self.inactivityTimer forMode:NSRunLoopCommonModes];
+    
+    // Register blocked segments as interstitials, so that the seek bar does not provide any preview for such sections.
+    NSMutableArray<AVInterstitialTimeRange *> *interstitialTimeRanges = [NSMutableArray array];
+    NSMutableArray<id<SRGSegment>> *visibleSegments = [NSMutableArray array];
+    
+    [self.controller.segments enumerateObjectsUsingBlock:^(id<SRGSegment> _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (segment.srg_blocked) {
+            AVInterstitialTimeRange *interstitialTimeRange = [[AVInterstitialTimeRange alloc] initWithTimeRange:segment.srg_timeRange];
+            [interstitialTimeRanges addObject:interstitialTimeRange];
+        }
+        else if (! segment.srg_hidden) {
+            [visibleSegments addObject:segment];
+        }
+    }];
+    
+    playerItem.interstitialTimeRanges = interstitialTimeRanges.copy;
+    
+    NSArray<AVTimedMetadataGroup *> *navigationMarkers = nil;
+    if (visibleSegments.count != 0 && [self.delegate respondsToSelector:@selector(playerViewController:navigationMarkersForSegments:)]) {
+        navigationMarkers = [self.delegate playerViewController:self navigationMarkersForSegments:visibleSegments] ?: @[];
+    }
+    
+    if (navigationMarkers.count != 0) {
+        AVNavigationMarkersGroup *segmentsNavigationMarkerGroup = [[AVNavigationMarkersGroup alloc] initWithTitle:nil /* No title must be set, otherwise marker titles will be overridden */ timedNavigationMarkers:navigationMarkers];
+        playerItem.navigationMarkerGroups = @[ segmentsNavigationMarkerGroup ];
     }
     else {
-        self.inactivityTimer = nil;
+        playerItem.navigationMarkerGroups = @[];
     }
-}
-
-- (void)stopInactivityTracker
-{
-    self.inactivityTimer = nil;
-}
-
-- (void)setUserInterfaceHidden:(BOOL)hidden animated:(BOOL)animated
-{
-    void (^animations)(void) = ^{
-        [self updateInterfaceForControlsHidden:hidden];
-    };
-    
-    _userInterfaceHidden = hidden;
-    
-    if (animated) {
-        [self.view layoutIfNeeded];
-        [UIView animateWithDuration:0.2 animations:^{
-            animations();
-            [self.view layoutIfNeeded];
-        } completion:^(BOOL finished) {
-            if (@available(iOS 11, *)) {
-                [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-            }
-        }];
-    }
-    else {
-        animations();
-    }
-}
-
-- (void)updateInterfaceForControlsHidden:(BOOL)hidden
-{
-    [self setNeedsStatusBarAppearanceUpdate];
-    
-    for (UIView *view in self.overlayViews) {
-        view.alpha = hidden ? 0.f : 1.f;
-    }
-}
-
-#pragma mark Skips
-
-- (BOOL)canSkipBackward
-{
-    return [self canSkipBackwardFromTime:[self seekStartTime]];
-}
-
-- (BOOL)canSkipForward
-{
-    return [self canSkipForwardFromTime:[self seekStartTime]];
-}
-
-- (void)skipBackwardWithCompletionHandler:(void (^)(BOOL finished))completionHandler
-{
-    [self skipBackwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
-}
-
-- (void)skipForwardWithCompletionHandler:(void (^)(BOOL finished))completionHandler
-{
-    [self skipForwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
-}
-
-- (CMTime)seekStartTime
-{
-    return CMTIME_IS_INDEFINITE(self.controller.seekTargetTime) ? self.controller.currentTime : self.controller.seekTargetTime;
-}
-
-- (BOOL)canSkipBackwardFromTime:(CMTime)time
-{
-    if (CMTIME_IS_INDEFINITE(time)) {
-        return NO;
-    }
-    
-    SRGMediaPlayerController *controller = self.controller;
-    SRGMediaPlayerPlaybackState playbackState = controller.playbackState;
-    
-    if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-        return NO;
-    }
-    
-    SRGMediaPlayerStreamType streamType = controller.streamType;
-    return (streamType == SRGMediaPlayerStreamTypeOnDemand || streamType == SRGMediaPlayerStreamTypeDVR);
-}
-
-- (BOOL)canSkipForwardFromTime:(CMTime)time
-{
-    if (CMTIME_IS_INDEFINITE(time)) {
-        return NO;
-    }
-    
-    SRGMediaPlayerController *controller = self.controller;
-    SRGMediaPlayerPlaybackState playbackState = controller.playbackState;
-    
-    if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-        return NO;
-    }
-    
-    SRGMediaPlayerStreamType streamType = controller.streamType;
-    return (streamType == SRGMediaPlayerStreamTypeOnDemand && CMTimeGetSeconds(time) + SRGMediaPlayerViewControllerForwardSkipInterval < CMTimeGetSeconds(controller.player.currentItem.duration))
-        || (streamType == SRGMediaPlayerStreamTypeDVR && ! controller.live);
-}
-
-- (void)skipBackwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
-{
-    if (! [self canSkipBackwardFromTime:time]) {
-        completionHandler ? completionHandler(NO) : nil;
-        return;
-    }
-    
-    CMTime targetTime = CMTimeSubtract(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerBackwardSkipInterval, NSEC_PER_SEC));
-    [self.controller seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
-        if (finished) {
-            [self.controller play];
-        }
-        completionHandler ? completionHandler(finished) : nil;
-    }];
-}
-
-- (void)skipForwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
-{
-    if (! [self canSkipForwardFromTime:time]) {
-        completionHandler ? completionHandler(NO) : nil;
-        return;
-    }
-    
-    CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(SRGMediaPlayerViewControllerForwardSkipInterval, NSEC_PER_SEC));
-    [self.controller seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
-        if (finished) {
-            [self.controller play];
-        }
-        completionHandler ? completionHandler(finished) : nil;
-    }];
-}
-
-#pragma mark SRGTracksButtonDelegate protocol
-
-- (void)tracksButtonWillShowTrackSelection:(SRGTracksButton *)tracksButton
-{
-    [self stopInactivityTracker];
-}
-
-- (void)tracksButtonDidHideTrackSelection:(SRGTracksButton *)tracksButton
-{
-    [self restartInactivityTracker];
-}
-
-#pragma mark UIGestureRecognizerDelegate protocol
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return [gestureRecognizer isKindOfClass:SRGActivityGestureRecognizer.class];
+#endif
 }
 
 #pragma mark Notifications
 
-- (void)srg_mediaPlayerViewController_playbackStateDidChange:(NSNotification *)notification
+- (void)playbackDidFail:(NSNotification *)notification
 {
-    SRGMediaPlayerController *mediaPlayerController = notification.object;
-    
-    if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
-        [self updateInterfaceForControlsHidden:NO];
-    }
-    else if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-        self.errorImageView.hidden = YES;
-        [self updateUserInterface];
-    }
-}
-
-- (void)srg_mediaPlayerViewController_playbackDidFail:(NSNotification *)notification
-{
-    self.errorImageView.hidden = NO;
-    [self updateUserInterface];
-}
-
-- (void)srg_mediaPlayerViewController_applicationDidBecomeActive:(NSNotification *)notification
-{
-    AVPictureInPictureController *pictureInPictureController = s_mediaPlayerController.pictureInPictureController;
-    
-    if (pictureInPictureController.isPictureInPictureActive) {
-        [pictureInPictureController stopPictureInPicture];
-    }
-}
-
-- (void)srg_mediaPlayerViewController_accessibilityVoiceOverStatusChanged:(NSNotification *)notification
-{
-    [self restartInactivityTracker];
-}
-
-#pragma mark Actions
-
-- (IBAction)skipForward:(id)sender
-{
-    [self skipForwardWithCompletionHandler:nil];
-}
-
-- (IBAction)skipBackward:(id)sender
-{
-    [self skipBackwardWithCompletionHandler:nil];
-}
-
-- (IBAction)dismiss:(id)sender
-{
-    if (! s_mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
-        [s_mediaPlayerController reset];
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark Gesture recognizers
-
-- (void)handleSingleTap:(UIGestureRecognizer *)gestureRecognizer
-{
-    [self restartInactivityTracker];
-    [self setUserInterfaceHidden:! _userInterfaceHidden animated:YES];
-}
-
-- (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer
-{
-    AVPlayerLayer *playerLayer = s_mediaPlayerController.playerLayer;
-    
-    if ([playerLayer.videoGravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
-        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    }
-    else {
-        playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    }
-}
-
-- (void)resetInactivityTimer:(UIGestureRecognizer *)gestureRecognizer
-{
-    [self restartInactivityTracker];
-}
-
-#pragma mark Timers
-
-- (void)updateForInactivity:(NSTimer *)timer
-{
-    [self setUserInterfaceHidden:YES animated:YES];
+    // `AVPlayerViewController` displays failures only if a failing `AVPlayer` is attached to it. Since `SRGMediaPlayerController`
+    // sets its player 
+    NSURL *URL = [NSURL URLWithString:@"failed://"];
+    AVPlayer *failedPlayer = [AVPlayer playerWithURL:URL];
+    [self setMediaPlayer:failedPlayer];
 }
 
 @end

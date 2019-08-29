@@ -3,25 +3,25 @@ Getting started
 
 The SRG Media Player library is made of separate building blocks:
 
+* A standard `AVPlayerViewController`-based player for straightforward integration.
 * A core `AVPlayer`-based controller to play medias, optionally with support for a logical playback structure (segments).
 * A set of overlays to be readily used with it.
 
 Those components can be combined together depending on your application needs. A ready-to-use player view controller is also provided.
 
-## Architecture
+## Core principles
 
-At the highest level, the library intends to provide a default player view controller which can be instantiated in a few keystrokes, much like the system `AVPlayerViewController`. It supports only limited features and its layout is similar to the one of the system player, but cannot be customised.
+The library provides an `AVPlayer`-based controller which provides a clean and powerful API for playback. An `AVPlayerViewController` lightweight subclass, `SRGMediaPlayerViewController`, ensures compatibility with the standard native iOS or tvOS player.
 
-This default player view controller is itself based on a set of lower-level components which you can combine to match your requirements:
+Custom player layouts can also be created by connecting a controller with a set of UI components, provided as well (slider, play / pause button, timeline, message view, AirPlay overlay, etc.). This feature is only available on iOS since, as recommended by Apple, the tvOS user experience should be close to the native player.
 
-* A media player controller, which can be optionally attached to a view for playing videos.
-* A set of components (slider, play / pause button, timeline, message view, AirPlay overlay, etc.) which can be connected to an underlying media player controller.
-
-Let us now discuss these components further and describe how they can be glued together.
+The following further discusses these components and describe how they can be glued together.
 
 ## Media player view controller
 
-If you do not need to customize the player appearance, simply instantiate `SRGMediaPlayerViewController` and display it modally. The view controller exposes its underlying `controller` property, which you must use to start playback:
+If you do not need to customize the player appearance, simply instantiate `SRGMediaPlayerViewController` and display it. This class is a simple `AVPlayerViewController` subclass, available both for iOS and tvOS, thus having the exact same look & feel as the standard system player. 
+
+The view controller exposes its underlying `controller` property, which you must use to start playback:
 
 ```objective-c
 SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewController alloc] init];
@@ -30,9 +30,7 @@ SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewCo
 }];
 ```
 
-You can also use the `controller` property to register for playback notifications.
-
-The `SRGMediaPlayerViewController` class natively supports all kind of audio and video streams (VOD, live and DVR streams), as well as picture in picture for compatible devices. Segments are currently supported (notifications will be received for them) but not displayed. If you need to display segments, implement a custom player.
+Please refer to `AVPlayerViewController` for further integration instructions, from picture in picture to optional settings.
 
 ## Designing custom players
 
@@ -45,7 +43,7 @@ Start by adding a view controller to a storyboard file. Drop a custom object fro
 Creating the player layout is then a matter of dropping more views onto the layout, setting their constraints, and connecting them to the media player controller:
 
 * To set where the player controller must display videos (if you want to play videos), add a view to your hierarchy, set its class to `SRGMediaPlayerView`, and bind it to the media player controller `view` property.
-* To control playback, you can drop one of the available overlay classes and bind their `mediaPlayerController` property directly in Interface Builder. No additional setup (except for appearance and constraints) is ususally required, as those components are automatically synchronized with the controller they have been attached to. Built-in overlay classes include most notably:
+* You can drop one of the available overlay classes and bind their `mediaPlayerController` property directly in Interface Builder. Most views are available for iOS only, as the user experience on tvOS should be standard and based on `SEGMediaPlayerViewController`. No additional setup (except for appearance and constraints) is usually required, as those components are automatically synchronized with the controller they have been attached to. Built-in overlay classes include most notably:
   * `SRGPlaybackButton`: A play / pause button.
   * `SRGTimeSlider`: A time slider with elapsed and remaining time label support.
   * `SRGPlaybackActivityIndicatorView`: An activity indicator.
@@ -85,14 +83,11 @@ Note that overlapping segments are not supported yet and lead to undefined behav
 
 The player controller will then emit notifications when segments are being played and skip over blocked ones.
 
-You can display segments using dedicated built-in overlay classes you can drop onto your view controller layout and bind to your media player controller:
+On iOS, you can display segments using the dedicated built-in `SRGTimelineView` overlay class by drpping an instance onto your view controller layout and bind it to your media player controller.
 
-* `SRGTimelineSlider`: A timeline displaying segment start points and providing a way to seek with a single tap. You can use a delegate protocol to display custom icons if you want.
-* `SRGTimelineView`: A horizontal list of cells displaying segments, used like a collection view.
+On tvOS, you should use `SRGMediaPlayerViewController`, which provides the standard top information panel from which sequences can be accessed. To populate this panel, return navigation markers by implementing the corresponding `SRGMediaPlayerViewControllerDelegate` protocol methods.
 
-Both provide a `-reloadData` method to reload segments from the associated media player controller. Please refer to their respective header documentation to learn about the delegate protocols you need to implement to respond to reload requests.
-
-## AirPlay support
+## AirPlay support (iOS)
 
 AirPlay configuration is entirely the responsibilty of client applications. `SRGMediaPlayerController` exposes three block hooks where you can easily configure AirPlay playback settings as you see fit:
 
@@ -121,7 +116,7 @@ In particular, you should ask yourself:
 
 Moreover, you should check that your application behaves well when receiving phone calls (in particular, audio playback should stop).
 
-## Control center integration
+## Control center integration (iOS)
 
 For proper integration into the control center and the lock screen, use the `MPRemoteCommandCenter` class. For everything to work properly on a device, `[UIApplication.sharedApplication beginReceivingRemoteControlEvents]` must have been called first (e.g. in your application delegate) and your audio session category should be set to `AVAudioSessionCategoryPlayback`. For more information, please refer to the `MPRemoteCommandCenter` documentation.
 
@@ -129,11 +124,13 @@ Note that control center integration does not work in the iOS simulator, you wil
 
 ## Subtitles and audio tracks
 
-SRG Media Player provides a built-in `SRGTracksButton` which, when added to a player layout and bound to a media player controller, is displayed when several audio or subtitle options are detected. Tapping on this button lets the user choose one of the options provided by the media being played. 
+On iOS, SRG Media Player provides a built-in `SRGTracksButton` which, when added to a player layout and bound to a media player controller, is displayed when several audio or subtitle options are detected. Tapping on this button lets the user choose one of the options provided by the media being played. 
 
 Subtitle choice made by tapping this button is persisted at the system level, and will be reapplied in subsequent playback contexts, e.g. when playing another media with `SRGMediaPlayerController`, `AVPlayerViewController` or even Safari. Please refer to the [official documentation](https://developer.apple.com/documentation/mediaaccessibility) for more information.
 
-You can also programmatically control subtitles and audio tracks by assigning a `mediaConfigurationBlock` block to a controller. This block gets called when playback starts, once the media `AVAsset` is safe for media selection option inspection. When implementing this block, you can use the supplied `AVAsset` and `AVPlayerItem` objects to look for other legible and audible options, and to apply the ones you want. Here is for example how you would apply French subtitles if available:
+On tvOS, the standard media player provides a top panel to change subtitles and audio tracks. No dedicated button is required, and thus none is made available by the framework.
+
+You can programmatically control subtitles and audio tracks by assigning a `mediaConfigurationBlock` block to a controller. This block gets called when playback starts, once the media `AVAsset` is safe for media selection option inspection. When implementing this block, you can use the supplied `AVAsset` and `AVPlayerItem` objects to look for other legible and audible options, and to apply the ones you want. Here is for example how you would apply French subtitles if available:
 
 ```objective-c
 self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {

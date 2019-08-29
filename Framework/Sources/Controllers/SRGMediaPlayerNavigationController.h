@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Lightweight navigation controller subclass forwarding status bar appearance from its top child view controller.
  */
+__TVOS_PROHIBITED
 @interface SRGMediaPlayerNavigationController : UINavigationController
 
 @end

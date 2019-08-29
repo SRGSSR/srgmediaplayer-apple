@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Helper class used as target for a timer.
  */
-// TODO: Remove when iOS 10 is the minimum required version
+// TODO: Remove when iOS / tvOS 10 is the minimum required version
 @interface SRGMediaPlayerTimerTarget : NSObject
 
 /**

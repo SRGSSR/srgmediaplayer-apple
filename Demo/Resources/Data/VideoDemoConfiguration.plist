@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>medias</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Livestream</string>
+			<key>url</key>
+			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8?dw=0</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Livestream with DVR</string>
+			<key>url</key>
+			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Apple Basic Stream</string>
+			<key>url</key>
+			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Apple Advanced Stream</string>
+			<key>url</key>
+			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Apple Advanced Stream (HEVC)</string>
+			<key>url</key>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_adv_example_hevc/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Big Buck Bunny (640×360 m4v)</string>
+			<key>url</key>
+			<string>http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Big Buck Bunny (1920x1080 mp4 30 fps)</string>
+			<key>url</key>
+			<string>http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Gens d&apos;hiver</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd.net/i/genhi/2018/genhi_20180126_full_f_1067247-,301k,101k,701k,1201k,2001k,fra-ad,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%25C3%25A7ais,5:fra:Fran%25C3%25A7ais+%2528AD%2529</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Bonjour la Suisse</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021-,301k,101k,701k,1201k,2001k,fra-ad,roh,deu,ita,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%C3%A7ais,5:fra:Fran%C3%A7ais%20(AD):ad,6:roh:Rh%C3%A9to-roman,7:deu:Allemand,8:ita:Italien&amp;caption=docfu/2017/docfu_20170728_full_f_1027021_fra.m3u8:fra:Fran%C3%A7ais,docfu/2017/docfu_20170728_full_f_1027021_ita.m3u8:ita:Italien,docfu/2017/docfu_20170728_full_f_1027021_gsw.m3u8:deu:Allemand</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>How women are taking on the Cresta Run</string>
+			<key>url</key>
+			<string>https://srgplayerswivod-vh.akamaihd.net/i/44785866/,video,.mp4.csmil/master.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Short non-streamed video</string>
+			<key>url</key>
+			<string>https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_2mb.mp4</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Gotthard 360 video</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd.net/i/360/2017/2_Gothard_360_full_f_8414077-,301k,701k,1201k,2001k,.mp4.csmil/master.m3u8</string>
+			<key>is360</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Balloon 360</string>
+			<key>url</key>
+			<string>http://kolor.com/360-videos-files/kolor-balloon-icare-full-hd.mp4</string>
+			<key>is360</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Bonjour la Suisse - 4 audios (+ AD) &amp; 5 subtitles</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd.net/i/test/bonsu/2019/bonsu_20190105_full_236992be-c219-4936-b9d9-cd8bfb60667c-,301k,101k,701k,1201k,2001k,3501k,6001k,fra-ad,deu,ita,roh,.mp4.csmil/master.m3u8?audiotrack=0%3Afra%3AFran%C3%A7ais%2C7%3Afra%3AFran%C3%A7ais%2B(AD)%3Aad%2C8%3Adeu%3AAllemand%2C9%3Aita%3AItalien%2C10%3Aroh%3ARomanche&amp;caption=BONCH06_ZT031201DE.m3u8%3Adeu%3AAllemand%2CBONCH06_ZT031201.m3u8%3Afra%3AFran%C3%A7ais%2CBONCH06_ZT031201RU.m3u8%3Aroh%3ARomanche%2CBONCH06_ZT031201IT.m3u8%3Aita%3AItalien%2CBONCH06_ZT031201EN.m3u8%3Aeng%3AAnglais&amp;webvttbaseurl=www.rts.ch%2Fx%2Fsub%2Ftest%2Fbonsu%2F2018</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Bonjour la Suisse - 4 audios (+ AD) &amp; FR / EN (SDH) subtitles</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd.net/i/test/bonsu/2019/bonsu_20190105_full_236992be-c219-4936-b9d9-cd8bfb60667c-,301k,101k,701k,1201k,2001k,3501k,6001k,fra-ad,deu,ita,roh,.mp4.csmil/master.m3u8?audiotrack=0%3Afra%3AFran%C3%A7ais%2C7%3Afra%3AFran%C3%A7ais%2B(AD)%3Aad%2C8%3Adeu%3AAllemand%2C9%3Aita%3AItalien%2C10%3Aroh%3ARomanche&amp;caption=BONCH06_ZT031201.m3u8%3Afra%3AFran%C3%A7ais%2CBONCH06_ZT031201.m3u8%3Afra%3AFran%C3%A7ais%2B(SDH)%3Asdh%2CBONCH06_ZT031201EN.m3u8%3Aeng%3AAnglais%2CBONCH06_ZT031201EN.m3u8%3Aeng%3AAnglais%2B(SDH)%3Asdh&amp;webvttbaseurl=www.rts.ch%2Fx%2Fsub%2Ftest%2Fbonsu%2F2018</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>19h30 subject with buggy subtitles (Akamai issue)</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2019/journ-19h30_20190603_full_ca7d9d68-58aa-4acd-b2e5-a6af7470bc8d-,301k,701k,1201k,2001k,3501k,6001k,.mp4.csmil/master.m3u8?caption=journ-19h30/2019/journ-19h30_20190603_full_500048834.m3u8:fra:Fran%C3%A7ais&amp;start=267.36&amp;end=387.36</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>403 error</string>
+			<key>url</key>
+			<string>http://httpbin.org/status/403</string>
+		</dict>
+	</array>
+</dict>
+</plist>

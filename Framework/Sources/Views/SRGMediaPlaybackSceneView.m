@@ -73,12 +73,14 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
 {
     [super willMoveToWindow:newWindow];
     
+#if TARGET_OS_IOS
     if (newWindow) {
         [SRGMotionManager start];
     }
     else {
         [SRGMotionManager stop];
     }
+#endif
 }
 
 #pragma mark Subclassing hooks
@@ -92,12 +94,16 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
 {
     // CMMotionManager might deliver events to a background queue.
     dispatch_async(dispatch_get_main_queue(), ^{
+#if TARGET_OS_IOS
         CMMotionManager *motionManager = SRGMotionManager.motionManager;
         
         // Calculate the required camera orientation based on device orientation (if available), and apply additional
         // adjustements the user made with the pan gesture.
         CMDeviceMotion *deviceMotion = motionManager.deviceMotion;
         SCNQuaternion deviceBasedCameraOrientation = deviceMotion ? SRGCameraOrientationForAttitude(deviceMotion.attitude) : SRGQuaternionMakeWithAngleAndAxis(M_PI, 1.f, 0.f, 0.f);
+#else
+        SCNQuaternion deviceBasedCameraOrientation = SRGQuaternionMakeWithAngleAndAxis(M_PI, 1.f, 0.f, 0.f);
+#endif
         self.deviceBasedCameraOrientation = deviceBasedCameraOrientation;
         self.cameraNode.orientation = SRGRotateQuaternion(deviceBasedCameraOrientation, self.angularOffsets.x, self.angularOffsets.y);
     });

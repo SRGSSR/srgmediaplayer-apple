@@ -4,18 +4,19 @@
 
 ## About
 
-The SRG Media Player library for iOS provides a simple way to add a universal audio / video player to any application. It provides:
+The SRG Media Player library provides a simple way to add universal audio / video playback support to any application. It provides:
 
-* A default player with the same look & feel as the standard iOS player, and automatic support for picture in picture for compatible devices.
-* A set of overlays which can be combined to create the user interface you need.
-* Support for segments. Those are simply sections of a video, defined by non-overlapping time ranges, which can be blocked or hidden.
+* A controller with precise playback state information and and a simple but powerful playback API.
+* Automatic integration with `AVPlayerViewController`.
+* A set of overlays which can be combined to create custom player user interfaces.
+* Support for subdivision of medias in (non-overlapping) sequences, which can provide am additional finer-grained playback structure or block playback to parts of the content.
 * Support for on-demand, live and DVR streams.
 * Support for 360° and cardboard playback.
 * Ability to use several instances of the player at the same time.
 
 ## Compatibility
 
-The library is suitable for applications running on iOS 9 and above. The project is meant to be opened with the latest Xcode version (currently Xcode 10).
+The library is suitable for applications running on iOS 9, tvOS 9, watchOS 3 and above. The project is meant to be opened with the latest Xcode version (currently Xcode 10).
 
 ## Contributing
 
@@ -43,17 +44,17 @@ The library requires the following frameworks to be added to any target requirin
 ### Dynamic framework integration
 
 1. Run `carthage update` to update the dependencies (which is equivalent to `carthage update --configuration Release`). 
-2. Add the frameworks listed above and generated in the `Carthage/Build/iOS` folder to your target _Embedded binaries_.
+2. Add the frameworks listed above and generated in the `Carthage/Build/(iOS|tvOS|watchOS)` folder to your target _Embedded binaries_.
 
 If your target is building an application, a few more steps are required:
 
 1. Add a _Run script_ build phase to your target, with `/usr/local/bin/carthage copy-frameworks` as command.
-2. Add each of the required frameworks above as input file `$(SRCROOT)/Carthage/Build/iOS/FrameworkName.framework`.
+2. Add each of the required frameworks above as input file `$(SRCROOT)/Carthage/Build/(iOS|tvOS|watchOS)/FrameworkName.framework`.
 
 ### Static framework integration
 
 1. Run `carthage update --configuration Release-static` to update the dependencies. 
-2. Add the frameworks listed above and generated in the `Carthage/Build/iOS/Static` folder to the _Linked frameworks and libraries_ list of your target.
+2. Add the frameworks listed above and generated in the `Carthage/Build/(iOS|tvOS|watchOS)/Static` folder to the _Linked frameworks and libraries_ list of your target.
 3. Also add any resource bundle `.bundle` found within the `.framework` folders to your target directly.
 4. Add the `-all_load` flag to your target _Other linker flags_.
 
