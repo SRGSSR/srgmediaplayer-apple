@@ -75,7 +75,8 @@ __TVOS_PROHIBITED
  *
  *  Further customization is available by using the associated delegate.
  */
-__TVOS_PROHIBITED @interface SRGAirPlayView : UIView <SRGAirPlayViewDelegate>
+__TVOS_PROHIBITED
+@interface SRGAirPlayView : UIView <SRGAirPlayViewDelegate>
 
 /**
  *  The media player which the overlay must be associated with.
