@@ -23,8 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  to manually alter this property leads to undefined behavior. You can force the button to always be hidden by
  *  setting its `alwaysHidden` property to `YES` if needed.
  */
-IB_DESIGNABLE __TVOS_PROHIBITED
-@interface SRGAirPlayButton : UIView
+__TVOS_PROHIBITED @interface SRGAirPlayButton : UIView
 
 /**
  *  The media player which the button must be associated with.

@@ -37,8 +37,7 @@ typedef __TVOS_PROHIBITED NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
  *    - `maximumTrackTintColor`: Remaining time track color (defaults to black).
  *    - `thumbTintColor`: Thumb color (defaults to white).
  */
-IB_DESIGNABLE __TVOS_PROHIBITED
-@interface SRGTimeSlider : UISlider
+__TVOS_PROHIBITED @interface SRGTimeSlider : UISlider
 
 /**
  *  The playback controller attached to the slider.

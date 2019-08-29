@@ -27,8 +27,7 @@ typedef NS_ENUM(NSInteger, SRGPlaybackButtonState) {
  *
  *  Remark: This special kind of button does not support the display of a title.
  */
-IB_DESIGNABLE __TVOS_PROHIBITED
-@interface SRGPlaybackButton : UIButton
+__TVOS_PROHIBITED @interface SRGPlaybackButton : UIButton
 
 /**
  *  The media player which the playback button must be associated with.

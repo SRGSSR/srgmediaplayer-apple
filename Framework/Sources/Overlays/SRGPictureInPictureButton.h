@@ -27,8 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  it automatically from full-screen playback (this is controlled by a system setting). Apple might reject your
  *  application otherwise.
  */
-IB_DESIGNABLE __TVOS_PROHIBITED
-@interface SRGPictureInPictureButton : UIView
+__TVOS_PROHIBITED @interface SRGPictureInPictureButton : UIView
 
 /**
  *  The media player which the picture in picture button must be associated with.

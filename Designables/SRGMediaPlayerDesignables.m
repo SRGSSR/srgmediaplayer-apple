@@ -14,47 +14,47 @@
  *  too long to compile, Kyou might not want to opt-in for designables.
  */
 
-IB_DESIGNABLE __TVOS_PROHIBITED
+IB_DESIGNABLE
 @interface SRGAirPlayButton (Designable)
 
 @end
 
-IB_DESIGNABLE __TVOS_PROHIBITED
+IB_DESIGNABLE
 @interface SRGAirPlayView (Designable)
 
 @end
 
-IB_DESIGNABLE __TVOS_PROHIBITED
+IB_DESIGNABLE
 @interface SRGPictureInPictureButton (Designable)
 
 @end
 
-IB_DESIGNABLE __TVOS_PROHIBITED
+IB_DESIGNABLE
 @interface SRGPlaybackButton (Designable)
 
 @end
 
-IB_DESIGNABLE __TVOS_PROHIBITED
+IB_DESIGNABLE
 @interface SRGTimeSlider (Designable)
 
 @end
 
-IB_DESIGNABLE __TVOS_PROHIBITED
+IB_DESIGNABLE
 @interface SRGTimelineView (Designable)
 
 @end
 
-IB_DESIGNABLE __TVOS_PROHIBITED
+IB_DESIGNABLE
 @interface SRGTracksButton (Designable)
 
 @end
 
-IB_DESIGNABLE __TVOS_PROHIBITED
+IB_DESIGNABLE
 @interface SRGViewModeButton (Designable)
 
 @end
 
-IB_DESIGNABLE __TVOS_PROHIBITED
+IB_DESIGNABLE
 @interface SRGVolumeView (Designable)
 
 @end

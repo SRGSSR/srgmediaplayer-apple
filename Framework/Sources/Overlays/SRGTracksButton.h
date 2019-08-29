@@ -45,8 +45,7 @@ __TVOS_PROHIBITED
  *  subtitles or audio tracks. Tapping on the button displays a list of the available tracks. If one is selected, the
  *  button is set to the selected state (with a corresponding image).
  */
-IB_DESIGNABLE __TVOS_PROHIBITED
-@interface SRGTracksButton : UIView
+__TVOS_PROHIBITED @interface SRGTracksButton : UIView
 
 /**
  *  The media player which the button must be associated with.
