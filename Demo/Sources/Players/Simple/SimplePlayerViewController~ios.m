@@ -20,7 +20,7 @@
 @property (nonatomic) Media *media;
 
 @property (nonatomic, weak) IBOutlet UIView *videoView;
-@property (nonatomic, weak) IBOutlet SRGTimelineSlider *timelineSlider;
+@property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;
 @property (nonatomic, weak) IBOutlet UIButton *liveButton;
 
 @property (nonatomic, weak) id periodicTimeObserver;
@@ -77,7 +77,7 @@
 {
     if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
         [UIView animateWithDuration:0.2 animations:^{
-            self.liveButton.alpha = self.timelineSlider.live ? 0.f : 1.f;
+            self.liveButton.alpha = self.timeSlider.live ? 0.f : 1.f;
         }];
     }
     else {

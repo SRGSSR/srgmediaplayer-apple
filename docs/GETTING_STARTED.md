@@ -85,7 +85,6 @@ The player controller will then emit notifications when segments are being playe
 
 On iOS, you can display segments using dedicated built-in overlay classes you can drop onto your view controller layout and bind to your media player controller:
 
-* `SRGTimelineSlider`: A timeline displaying segment start points and providing a way to seek with a single tap. You can use a delegate protocol to display custom icons if you want.
 * `SRGTimelineView`: A horizontal list of cells displaying segments, used like a collection view.
 
 Both provide a `-reloadData` method to reload segments from the associated media player controller. Please refer to their respective header documentation to learn about the delegate protocols you need to implement to respond to reload requests.

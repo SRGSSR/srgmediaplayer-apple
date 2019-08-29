@@ -92,8 +92,6 @@ NS_ASSUME_NONNULL_BEGIN
  *    - `SRGPictureInPictureButton`: A button to enter or leave picture in picture playback.
  *  - Sliders:
  *    - `SRGTimeSlider`: A slider to see the current playback progress, seek, and display the elapsed and remaining times.
- *    - `SRGTimelineSlider`: Similar to the time slider, but with the ability to display specific points of interests
- *                           along its track.
  *    - `SRGVolumeView`: A slider to adjust the volume.
  *  - Miscellaneous:
  *    - `SRGPlaybackActivityIndicatorView`: An activity indicator displayed when the player is buffering or seeking.
