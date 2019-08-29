@@ -83,11 +83,7 @@ Note that overlapping segments are not supported yet and lead to undefined behav
 
 The player controller will then emit notifications when segments are being played and skip over blocked ones.
 
-On iOS, you can display segments using dedicated built-in overlay classes you can drop onto your view controller layout and bind to your media player controller:
-
-* `SRGTimelineView`: A horizontal list of cells displaying segments, used like a collection view.
-
-Both provide a `-reloadData` method to reload segments from the associated media player controller. Please refer to their respective header documentation to learn about the delegate protocols you need to implement to respond to reload requests.
+On iOS, you can display segments using the dedicated built-in `SRGTimelineView` overlay class by drpping an instance onto your view controller layout and bind it to your media player controller.
 
 On tvOS, you should use `SRGMediaPlayerViewController`, which provides the standard top information panel from which sequences can be accessed. To populate this panel, return navigation markers by implementing the corresponding `SRGMediaPlayerViewControllerDelegate` protocol methods.
 
