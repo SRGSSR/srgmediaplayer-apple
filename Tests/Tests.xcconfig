@@ -6,6 +6,9 @@ TARGETED_DEVICE_FAMILY = 1,2,3;
 CARTHAGE_SUBPATH[sdk=iphone*] = iOS;
 CARTHAGE_SUBPATH[sdk=appletv*] = tvOS;
 
+PRODUCT_NAME_SUFFIX[sdk=iphone*] = -iOS;
+PRODUCT_NAME_SUFFIX[sdk=appletv*] = -tvOS;
+
 // Setup to enable plaform suffixes to enable sources or resources for a specific platform only
 // See https://davedelong.com/blog/2018/07/25/conditional-compilation-in-swift-part-2/
 IOS_FILES = *~ios.*

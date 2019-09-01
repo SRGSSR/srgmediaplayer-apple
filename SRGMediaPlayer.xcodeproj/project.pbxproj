@@ -1356,6 +1356,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)";
+				PRODUCT_NAME = "$(TARGET_NAME)$(PRODUCT_NAME_SUFFIX)";
 			};
 			name = "Debug-static";
 		};
@@ -1485,6 +1486,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)";
+				PRODUCT_NAME = "$(TARGET_NAME)$(PRODUCT_NAME_SUFFIX)";
 			};
 			name = "Release-static";
 		};
@@ -1847,6 +1849,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)";
+				PRODUCT_NAME = "$(TARGET_NAME)$(PRODUCT_NAME_SUFFIX)";
 			};
 			name = Debug;
 		};
@@ -1866,6 +1869,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks $(FRAMEWORK_SEARCH_PATHS)";
+				PRODUCT_NAME = "$(TARGET_NAME)$(PRODUCT_NAME_SUFFIX)";
 			};
 			name = Release;
 		};
