@@ -1,0 +1,7 @@
+language: objective-c
+osx_image: xcode10.3
+before_install:
+  - brew update
+  - brew outdated carthage || brew upgrade carthage
+script:
+  - bundle exec fastlane ios tests
