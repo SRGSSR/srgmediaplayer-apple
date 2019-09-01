@@ -31,6 +31,12 @@ static NSURL *DVRTestURL(void)
     return [NSURL URLWithString:@"http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8"];
 }
 
+static NSURL *DVRLowQualityTestURL(void)
+{
+    // Use lower quality bitrate playlist to avoid network interferences on tests
+    return [NSURL URLWithString:@"http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/index_184_av-p.m3u8?sd=10&rebase=on"];
+}
+
 static NSURL *AudioOverHTTPTestURL(void)
 {
     return [NSURL URLWithString:@"https://rtsww-a-d.rts.ch/la-1ere/programmes/c-est-pas-trop-tot/2017/c-est-pas-trop-tot_20170628_full_c-est-pas-trop-tot_007d77e7-61fb-4aef-9491-5e6b07f7f931-128k.mp3"];
@@ -1436,7 +1442,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRLowQualityTestURL() atPosition:nil withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1465,8 +1471,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    // Seek forward relative to the current position. Add more thant 10 seconds, depending of the tolerance and time to seek.
-    CMTime targetTime2 = CMTimeAdd(self.mediaPlayerController.currentTime, CMTimeMakeWithSeconds(15., NSEC_PER_SEC));
+    // Seek forward relative to the current position.
+    CMTime targetTime2 = CMTimeAdd(self.mediaPlayerController.currentTime, CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime2] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -1523,7 +1529,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRLowQualityTestURL() atPosition:nil withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
