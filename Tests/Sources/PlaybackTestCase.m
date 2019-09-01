@@ -1465,8 +1465,8 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    // Seek forward relative to the current position
-    CMTime targetTime2 = CMTimeAdd(self.mediaPlayerController.currentTime, CMTimeMakeWithSeconds(10., NSEC_PER_SEC));
+    // Seek forward relative to the current position. Add more thant 10 seconds, depending of the tolerance and time to seek.
+    CMTime targetTime2 = CMTimeAdd(self.mediaPlayerController.currentTime, CMTimeMakeWithSeconds(15., NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:targetTime2] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
