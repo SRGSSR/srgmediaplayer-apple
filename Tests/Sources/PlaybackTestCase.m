@@ -721,7 +721,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         SRGMediaPlayerPlaybackState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
         
         // Playback is more likely to stall when playing this media. Ignore such events
-        if (playbackState == SRGMediaPlayerPlaybackStateStalled) {
+        if (playbackState == SRGMediaPlayerPlaybackStateStalled || playbackState == SRGMediaPlayerPlaybackStatePlaying) {
             return NO;
         }
         
