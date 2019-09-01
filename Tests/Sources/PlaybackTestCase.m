@@ -835,7 +835,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))] withCompletionHandler:nil];
     
-    [self waitForExpectationsWithTimeout:8. handler:nil];
+    [self waitForExpectationsWithTimeout:10. handler:nil];
 }
 
 - (void)testLivePause
