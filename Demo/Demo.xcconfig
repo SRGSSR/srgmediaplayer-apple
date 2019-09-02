@@ -1,6 +1,5 @@
 #include "../Common.xcconfig"
 
-// Application settings
 LAUNCH_SCREEN[sdk=iphone*] = LaunchScreen~ios
 LAUNCH_SCREEN[sdk=appletv*] =
 
