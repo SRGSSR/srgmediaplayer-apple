@@ -1,8 +1,12 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "filename" : "airplay.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "airplay-1.pdf"
     }
   ],
   "info" : {

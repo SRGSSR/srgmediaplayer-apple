@@ -1,8 +1,12 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "filename" : "skip_forward_15.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "skip_forward_15-1.pdf"
     }
   ],
   "info" : {

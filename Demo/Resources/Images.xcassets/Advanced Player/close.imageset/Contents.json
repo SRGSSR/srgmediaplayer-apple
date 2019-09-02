@@ -1,8 +1,12 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "filename" : "close.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "close-1.pdf"
     }
   ],
   "info" : {

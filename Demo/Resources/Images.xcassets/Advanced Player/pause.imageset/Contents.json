@@ -1,8 +1,12 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "filename" : "pause.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "pause-1.pdf"
     }
   ],
   "info" : {

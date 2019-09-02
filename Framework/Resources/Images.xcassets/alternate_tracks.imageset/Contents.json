@@ -1,8 +1,12 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "filename" : "alternate_tracks_button.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "alternate_tracks_button-1.pdf"
     }
   ],
   "info" : {

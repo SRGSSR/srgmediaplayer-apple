@@ -1,8 +1,12 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "filename" : "picture_in_picture_start.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "picture_in_picture_start-1.pdf"
     }
   ],
   "info" : {

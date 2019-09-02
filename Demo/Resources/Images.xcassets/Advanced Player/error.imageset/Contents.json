@@ -1,8 +1,12 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "filename" : "error.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "error-1.pdf"
     }
   ],
   "info" : {

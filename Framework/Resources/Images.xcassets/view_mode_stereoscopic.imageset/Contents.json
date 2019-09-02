@@ -1,8 +1,12 @@
 {
   "images" : [
     {
-      "idiom" : "universal",
+      "idiom" : "iphone",
       "filename" : "cardboard.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "cardboard-1.pdf"
     }
   ],
   "info" : {
