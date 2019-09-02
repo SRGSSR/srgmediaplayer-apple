@@ -1,18 +1,2 @@
-// Configuration to have a single target built for all platforms
-// See https://davedelong.com/blog/2018/11/15/building-a-crossplatform-framework/
-SUPPORTED_PLATFORMS = iphoneos iphonesimulator appletvos appletvsimulator;
-TARGETED_DEVICE_FAMILY = 1,2,3;
+#include "../Common.xcconfig"
 
-CARTHAGE_SUBPATH[sdk=iphone*] = iOS;
-CARTHAGE_SUBPATH[sdk=appletv*] = tvOS;
-
-// Setup to enable plaform suffixes to enable sources or resources for a specific platform only
-// See https://davedelong.com/blog/2018/07/25/conditional-compilation-in-swift-part-2/
-IOS_FILES = *~ios.*
-TVOS_FILES = *~tvos.*
-
-EXCLUDED_SOURCE_FILE_NAMES = $(IOS_FILES) $(TVOS_FILES)
-
-INCLUDED_SOURCE_FILE_NAMES =
-INCLUDED_SOURCE_FILE_NAMES[sdk=iphone*] = $(IOS_FILES)
-INCLUDED_SOURCE_FILE_NAMES[sdk=appletv*] = $(TVOS_FILES)
