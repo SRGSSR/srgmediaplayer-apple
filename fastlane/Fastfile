@@ -25,6 +25,7 @@ platform :ios do
     scan(
       devices: ["iPhone X", "Apple TV"],
       output_types: "",
+      output_style: "raw",
       fail_build: false,
       clean: true
     )
