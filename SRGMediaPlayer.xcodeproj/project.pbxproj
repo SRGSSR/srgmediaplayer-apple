@@ -1064,9 +1064,9 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/libextobjc.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/MAKVONotificationCenter.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SRGLogger.framework",
+				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/libextobjc.framework",
+				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/MAKVONotificationCenter.framework",
+				"$(SRCROOT)/Carthage/Build/$(CARTHAGE_PLATFORM)/SRGLogger.framework",
 			);
 			name = "Copy Frameworks (Carthage)";
 			outputFileListPaths = (
