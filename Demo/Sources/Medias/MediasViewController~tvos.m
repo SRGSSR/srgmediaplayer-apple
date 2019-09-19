@@ -7,7 +7,6 @@
 #import "MediasViewController.h"
 
 #import "Media.h"
-#import "Resources.h"
 #import "SimplePlayerViewController.h"
 
 static NSString * const kMediaKey = @"Media";
@@ -27,12 +26,12 @@ static NSString * const kMediaKey = @"Media";
 
 - (instancetype)initWithTitle:(NSString *)title configurationFileName:(NSString *)configurationFileName mediaPlayerType:(MediaPlayerType)mediaPlayerType
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:ResourceNameForUIClass(self.class) bundle:nil];
-    MediasViewController *viewController = [storyboard instantiateInitialViewController];
-    viewController.title = title;
-    viewController.configurationFileName = configurationFileName;
-    viewController.mediaPlayerType = mediaPlayerType;
-    return viewController;
+    if (self = [super initWithStyle:UITableViewStyleGrouped]) {
+        self.title = title;
+        self.configurationFileName = configurationFileName;
+        self.mediaPlayerType = mediaPlayerType;
+    }
+    return self;
 }
 
 #pragma mark View lifecycle
@@ -64,9 +63,7 @@ static NSString * const kMediaKey = @"Media";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // UITableViewController on tvOS does not support static or dynamic table views defined in a storyboard,
-    // apparently
-    static NSString * const kCellIdentifier = @"MediaCell";
+    static NSString * const kCellIdentifier = @"BasicCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     if (! cell) {

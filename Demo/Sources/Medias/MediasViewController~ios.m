@@ -12,7 +12,6 @@
 #import "MediaPlayer.h"
 #import "MultiPlayerViewController.h"
 #import "NSBundle+Demo.h"
-#import "Resources.h"
 #import "SimplePlayerViewController.h"
 #import "SegmentsPlayerViewController.h"
 #import "UIWindow+SRGMediaPlayer.h"
@@ -37,33 +36,32 @@
 
 - (instancetype)initWithTitle:(NSString *)title configurationFileName:(NSString *)configurationFileName mediaPlayerType:(MediaPlayerType)mediaPlayerType
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:ResourceNameForUIClass(self.class) bundle:nil];
-    MediasViewController *viewController = [storyboard instantiateInitialViewController];
-    viewController.title = title;
-    viewController.configurationFileName = configurationFileName;
-    
-    switch (mediaPlayerType) {
-        case MediaPlayerTypeStandard: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player") class:SRGMediaPlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"System") class:AVPlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Simple custom") class:SimplePlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Advanced custom") class:AdvancedPlayerViewController.class],
-                                             [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline custom") class:InlinePlayerViewController.class] ];
-            break;
-        }
-            
-        case MediaPlayerTypeSegments: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Player with segments support") class:SegmentsPlayerViewController.class] ];
-            break;
-        }
-            
-        case MediaPlayerTypeMulti: {
-            viewController.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Multi player") class:MultiPlayerViewController.class] ];
-            break;
+    if (self = [super initWithStyle:UITableViewStyleGrouped]) {
+        self.title = title;
+        self.configurationFileName = configurationFileName;
+        
+        switch (mediaPlayerType) {
+            case MediaPlayerTypeStandard: {
+                self.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player") class:SRGMediaPlayerViewController.class],
+                                       [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"System") class:AVPlayerViewController.class],
+                                       [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Simple custom") class:SimplePlayerViewController.class],
+                                       [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Advanced custom") class:AdvancedPlayerViewController.class],
+                                       [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline custom") class:InlinePlayerViewController.class] ];
+                break;
+            }
+                
+            case MediaPlayerTypeSegments: {
+                self.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Player with segments support") class:SegmentsPlayerViewController.class] ];
+                break;
+            }
+                
+            case MediaPlayerTypeMulti: {
+                self.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Multi player") class:MultiPlayerViewController.class] ];
+                break;
+            }
         }
     }
-    
-    return viewController;
+    return self;
 }
 
 #pragma mark View lifecycle
@@ -115,12 +113,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        return [tableView dequeueReusableCellWithIdentifier:@"MediaCell"];
+    static NSString * const kCellIdentifier = @"BasicCell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
+    if (! cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier];
     }
-    else {
-        return [tableView dequeueReusableCellWithIdentifier:@"PlayerCell"];
-    }
+    
+    return cell;
 }
 
 #pragma mark UITableViewDelegate protocoél
