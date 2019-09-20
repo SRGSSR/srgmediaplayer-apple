@@ -135,6 +135,7 @@
     else {
         MediaPlayer *mediaPlayer = self.mediaPlayers[indexPath.row];
         cell.textLabel.text = mediaPlayer.name;
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
 }
 
