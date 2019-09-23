@@ -67,6 +67,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, weak) id<SRGMediaPlayerViewControllerDelegate> delegate;
 
+/**
+ *  Reload data (external metadata and navigation markers) displayed by the player.
+ */
+- (void)reloadData;
+
 @end
 
 @interface SRGMediaPlayerViewController (Unavailable)
