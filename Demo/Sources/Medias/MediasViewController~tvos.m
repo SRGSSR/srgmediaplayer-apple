@@ -128,7 +128,7 @@ static NSString * const kMediaKey = @"Media";
     artworkItem.value = UIImagePNGRepresentation([UIImage imageNamed:@"artwork"]);
     artworkItem.extendedLanguageTag = @"und";
     
-    return @[ titleItem, artworkItem ];
+    return @[ titleItem.copy, artworkItem.copy ];
 }
 
 - (NSArray<AVTimedMetadataGroup *> *)playerViewController:(SRGMediaPlayerViewController *)playerViewController navigationMarkersForSegments:(NSArray<id<SRGSegment>> *)segments
