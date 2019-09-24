@@ -69,9 +69,9 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
         
         [controller addObserver:self keyPath:@keypath(controller.segments) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
-            [self updateMetadata];
+            [self reloadData];
         }];
-        [self updateMetadata];
+        [self reloadData];
         
         [controller addObserver:self keyPath:@keypath(controller.view.playbackViewHidden) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
@@ -114,24 +114,13 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
     // The `player` property has been marked as non-available, use a trick to avoid compiler issues in this file
     [self performSelector:@selector(setPlayer:) withObject:player];
     
-    [self updateMetadata];
+    [self reloadData];
     [self updateView];
 }
 
-#pragma mark Updates
+#pragma mark Data
 
-- (void)updatePlayer
-{
-    [self setMediaPlayer:self.controller.player];
-}
-
-- (void)updateView
-{
-    UIView *playerView = SRGMediaPlayerViewControllerPlayerSubview(self.view);
-    playerView.hidden = self.controller.view.playbackViewHidden;
-}
-
-- (void)updateMetadata
+- (void)reloadData
 {
 #if TARGET_OS_TV
     AVPlayerItem *playerItem = self.controller.player.currentItem;
@@ -172,6 +161,19 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
         playerItem.navigationMarkerGroups = @[];
     }
 #endif
+}
+
+#pragma mark Updates
+
+- (void)updatePlayer
+{
+    [self setMediaPlayer:self.controller.player];
+}
+
+- (void)updateView
+{
+    UIView *playerView = SRGMediaPlayerViewControllerPlayerSubview(self.view);
+    playerView.hidden = self.controller.view.playbackViewHidden;
 }
 
 #pragma mark Notifications

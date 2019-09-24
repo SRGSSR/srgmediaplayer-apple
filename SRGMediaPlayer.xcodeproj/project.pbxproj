@@ -99,7 +99,6 @@
 		6FC1C75122BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC1C74D22BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.h */; };
 		6FC57B1A1FD6A5BE00451B6B /* SRGViewModeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC57B191FD6A5BE00451B6B /* SRGViewModeButton~ios.m */; };
-		6FCAB6D8231687740043432E /* MediasViewController~tvos.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FCAB6D6231687740043432E /* MediasViewController~tvos.storyboard */; };
 		6FCAB6D9231687740043432E /* MediasViewController~tvos.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCAB6D7231687740043432E /* MediasViewController~tvos.m */; };
 		6FCAB6DC231687BE0043432E /* SimplePlayerViewController~tvos.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCAB6DA231687BE0043432E /* SimplePlayerViewController~tvos.m */; };
 		6FCAB6DD231687BE0043432E /* SimplePlayerViewController~tvos.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FCAB6DB231687BE0043432E /* SimplePlayerViewController~tvos.storyboard */; };
@@ -137,7 +136,6 @@
 		E6BCE95B1D76CF7D0021973D /* SegmentDemoConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE95A1D76CF7D0021973D /* SegmentDemoConfiguration.plist */; };
 		E6BCE95F1D77F1A50021973D /* PlaybackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDE1D61C6D20064E6C1 /* PlaybackTestCase.m */; };
 		E6BCE9641D794D6A0021973D /* SegmentsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FDF1D61C6D20064E6C1 /* SegmentsTestCase.m */; };
-		E6C315761D76B2AA001FC93A /* MediasViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6C315751D76B2AA001FC93A /* MediasViewController~ios.storyboard */; };
 		E6C9860A1D6F36C900C45C7A /* SRGPlaybackButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4B1D62072400A55085 /* SRGPlaybackButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6C9860B1D6F36C900C45C7A /* SRGPlaybackButton~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FC7F4C1D62072400A55085 /* SRGPlaybackButton~ios.m */; };
 		E6C9860C1D6F42CB00C45C7A /* SRGPlaybackActivityIndicatorView.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FC7F4F1D62072400A55085 /* SRGPlaybackActivityIndicatorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -302,7 +300,6 @@
 		6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGViewModeButton.h; sourceTree = "<group>"; };
 		6FC57B191FD6A5BE00451B6B /* SRGViewModeButton~ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SRGViewModeButton~ios.m"; sourceTree = "<group>"; };
 		6FCAB6D5231681C00043432E /* Demo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Demo.xcconfig; sourceTree = "<group>"; };
-		6FCAB6D6231687740043432E /* MediasViewController~tvos.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "MediasViewController~tvos.storyboard"; sourceTree = "<group>"; };
 		6FCAB6D7231687740043432E /* MediasViewController~tvos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MediasViewController~tvos.m"; sourceTree = "<group>"; };
 		6FCAB6DA231687BE0043432E /* SimplePlayerViewController~tvos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SimplePlayerViewController~tvos.m"; sourceTree = "<group>"; };
 		6FCAB6DB231687BE0043432E /* SimplePlayerViewController~tvos.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SimplePlayerViewController~tvos.storyboard"; sourceTree = "<group>"; };
@@ -357,7 +354,6 @@
 		E6BCE9581D76CBCE0021973D /* SegmentsPlayerViewController~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SegmentsPlayerViewController~ios.storyboard"; sourceTree = "<group>"; };
 		E6BCE95A1D76CF7D0021973D /* SegmentDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SegmentDemoConfiguration.plist; sourceTree = "<group>"; };
 		E6C315661D76AB62001FC93A /* LaunchScreen~ios.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "LaunchScreen~ios.xib"; sourceTree = "<group>"; };
-		E6C315751D76B2AA001FC93A /* MediasViewController~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "MediasViewController~ios.storyboard"; sourceTree = "<group>"; };
 		E6D21D191D76A3F500B477F3 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E6D21D1A1D76A3F500B477F3 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		E6D21D1B1D76A3F500B477F3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -764,9 +760,7 @@
 			children = (
 				E6D21D1D1D76A3F500B477F3 /* MediasViewController.h */,
 				E6D21D1E1D76A3F500B477F3 /* MediasViewController~ios.m */,
-				E6C315751D76B2AA001FC93A /* MediasViewController~ios.storyboard */,
 				6FCAB6D7231687740043432E /* MediasViewController~tvos.m */,
-				6FCAB6D6231687740043432E /* MediasViewController~tvos.storyboard */,
 			);
 			path = Medias;
 			sourceTree = "<group>";
@@ -958,7 +952,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SRG;
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "SRG SSR";
 				TargetAttributes = {
 					6F44484B210F1387009FDB70 = {
@@ -967,7 +961,7 @@
 					};
 					E69A1DA81D61B9380064E6C1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = VMGRRW6SG7;
+						ProvisioningStyle = Automatic;
 					};
 					E69A1E661D61BEFC0064E6C1 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -1033,7 +1027,6 @@
 				E6BCE9511D76CB900021973D /* MultiPlayerViewController~ios.storyboard in Resources */,
 				E69A1F9D1D61BFAE0064E6C1 /* Images.xcassets in Resources */,
 				6F44485C210F14AE009FDB70 /* LaunchScreen~ios.xib in Resources */,
-				E6C315761D76B2AA001FC93A /* MediasViewController~ios.storyboard in Resources */,
 				E6BCE95B1D76CF7D0021973D /* SegmentDemoConfiguration.plist in Resources */,
 				E6BCE9591D76CBCE0021973D /* SegmentsPlayerViewController~ios.storyboard in Resources */,
 				6F12842D230C0B55001119EA /* AdvancedPlayerViewController~ios.storyboard in Resources */,
@@ -1041,7 +1034,6 @@
 				E69A1FA21D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist in Resources */,
 				08F4E53F1E7FE76900C9E8FD /* Localizable.strings in Resources */,
 				E69A1F981D61BFAE0064E6C1 /* AudioDemoConfiguration.plist in Resources */,
-				6FCAB6D8231687740043432E /* MediasViewController~tvos.storyboard in Resources */,
 				E69A1FA11D61BFAE0064E6C1 /* VideoDemoConfiguration.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1280,7 +1272,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
 				DYLIB_COMPATIBILITY_VERSION = "$(BUILD_NUMBER)";
@@ -1315,7 +1307,6 @@
 				CLANG_ENABLE_CODE_COVERAGE = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1345,6 +1336,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_IDENTITY = "-";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1369,7 +1361,6 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1384,7 +1375,6 @@
 				);
 				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Debug-static";
@@ -1418,7 +1408,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
 				DYLIB_COMPATIBILITY_VERSION = "$(BUILD_NUMBER)";
@@ -1453,7 +1443,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1478,6 +1467,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1498,7 +1488,6 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
@@ -1509,7 +1498,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Release-static";
@@ -1524,7 +1512,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1551,7 +1538,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1578,7 +1564,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1601,7 +1586,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1643,7 +1627,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
 				DYLIB_COMPATIBILITY_VERSION = "$(BUILD_NUMBER)";
@@ -1697,7 +1681,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
 				DYLIB_COMPATIBILITY_VERSION = "$(BUILD_NUMBER)";
@@ -1730,7 +1714,6 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1761,7 +1744,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1785,7 +1767,6 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1800,7 +1781,6 @@
 				);
 				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1813,7 +1793,6 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
@@ -1824,7 +1803,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -1836,6 +1814,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_IDENTITY = "-";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1859,6 +1838,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
