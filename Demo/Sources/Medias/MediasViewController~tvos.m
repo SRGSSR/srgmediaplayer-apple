@@ -133,9 +133,9 @@ static NSString * const kMediaKey = @"Media";
 
 - (NSArray<AVTimedMetadataGroup *> *)playerViewController:(SRGMediaPlayerViewController *)playerViewController navigationMarkersForSegments:(NSArray<id<SRGSegment>> *)segments
 {
-    NSMutableArray<AVTimedMetadataGroup *> *navigationMarkers = [NSMutableArray array];
-    
     if (self.mediaPlayerType == MediaPlayerTypeSegments) {
+        NSMutableArray<AVTimedMetadataGroup *> *navigationMarkers = [NSMutableArray array];
+        
         for (MediaSegment *segment in segments) {
             AVMutableMetadataItem *titleItem = [[AVMutableMetadataItem alloc] init];
             titleItem.identifier = AVMetadataCommonIdentifierTitle;
