@@ -27,6 +27,22 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
     return nil;
 }
 
+static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
+{
+    if ([NSStringFromClass(view.class) containsString:@"AudioOnly"]) {
+        return view;
+    }
+    
+    for (UIView *subview in view.subviews) {
+        UIView *audioOnlySubview = SRGMediaPlayerViewControllerAudioOnlySubview(subview);
+        if (audioOnlySubview) {
+            return audioOnlySubview;
+        }
+    }
+    
+    return nil;
+}
+
 /**
  *  Subclassing is officially not recommended: https://developer.apple.com/documentation/avkit/avplayerviewcontroller.
  *
@@ -174,6 +190,11 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
 {
     UIView *playerView = SRGMediaPlayerViewControllerPlayerSubview(self.view);
     playerView.hidden = self.controller.view.playbackViewHidden;
+    
+#if TARGET_OS_TV
+    UIView *audioOnlyView = SRGMediaPlayerViewControllerAudioOnlySubview(self.view);
+    [audioOnlyView removeFromSuperview];
+#endif
 }
 
 #pragma mark Notifications
