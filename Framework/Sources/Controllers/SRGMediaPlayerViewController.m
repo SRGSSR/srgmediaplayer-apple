@@ -110,8 +110,7 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
 
 - (void)dealloc
 {
-    // Reattach the player to the original controller view.
-    [self setMediaPlayer:nil];
+    [self.controller reset];
 }
 
 #pragma mark Getters and setters
@@ -123,9 +122,9 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
 
 - (void)setMediaPlayer:(AVPlayer *)player
 {
-    // Make sure the player is never bound to another layer than `AVPlayerViewController` one, otherwise video playback
-    // freezes in the simulator (only, but still annoying and probably a bad sign).
-    self.controller.view.player = player ? nil : self.mediaPlayer;
+    // Avoid simulator `AVPlayerViewController` freeze issues if the player is shared with another layer. Apply for the
+    // device as well.
+    self.controller.view.player = nil;
     
     // The `player` property has been marked as non-available, use a trick to avoid compiler issues in this file
     [self performSelector:@selector(setPlayer:) withObject:player];
