@@ -28,6 +28,8 @@ static UIView *SRGMediaPlayerViewControllerPlayerSubview(UIView *view)
     return nil;
 }
 
+#if TARGET_OS_TV
+
 static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
 {
     if ([NSStringFromClass(view.class) containsString:@"AudioOnly"]) {
@@ -43,6 +45,8 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
     
     return nil;
 }
+
+#endif
 
 /**
  *  Subclassing is officially not recommended: https://developer.apple.com/documentation/avkit/avplayerviewcontroller.

@@ -811,6 +811,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Return the picture in picture controller if picture in picture is available for the device, `nil` otherwise.
+ *
+ *  @discussion The method also returns `nil` when the controller is used by `SRGMediaPlayerViewController`, as picture
+ *              is managed by `SRGMediaPlayerViewController` in this special case.
  */
 @property (nonatomic, readonly, nullable) AVPictureInPictureController *pictureInPictureController;
 

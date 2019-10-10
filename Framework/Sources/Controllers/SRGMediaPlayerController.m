@@ -632,6 +632,16 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 #if TARGET_OS_IOS
 
+- (AVPictureInPictureController *)pictureInPictureController
+{
+    if (self.playerViewController) {
+        return nil;
+    }
+    else {
+        return _pictureInPictureController;
+    }
+}
+
 - (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
 {
     if (_pictureInPictureController) {
