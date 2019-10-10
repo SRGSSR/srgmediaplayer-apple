@@ -57,9 +57,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 @property (nonatomic, copy) void (^mediaConfigurationBlock)(AVPlayerItem *playerItem, AVAsset *asset);
 
-#if TARGET_OS_IOS
 @property (nonatomic) SRGMediaPlayerViewBackgroundBehavior viewBackgroundBehavior;
-#endif
 
 @property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
 
@@ -1435,14 +1433,18 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
+    if (self.view.superview && self.mediaType == SRGMediaPlayerMediaTypeVideo
 #if TARGET_OS_IOS
-    if (self.view.superview && self.mediaType == SRGMediaPlayerMediaTypeVideo && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive) {
+            && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive
+#endif
+    ) {    
         switch (self.viewBackgroundBehavior) {
             case SRGMediaPlayerViewBackgroundBehaviorAttached: {
                 [self.player pause];
                 break;
             }
                 
+#if TARGET_OS_IOS
             case SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked: {
                 // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -1455,6 +1457,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                 });
                 break;
             }
+#endif
                 
             case SRGMediaPlayerViewBackgroundBehaviorDetached: {
                 // The video layer must be detached in the background if we want playback not to be paused automatically.
@@ -1464,7 +1467,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             }
         }
     }
-#endif
 }
 
 - (void)srg_mediaPlayerController_applicationWillEnterForeground:(NSNotification *)notification

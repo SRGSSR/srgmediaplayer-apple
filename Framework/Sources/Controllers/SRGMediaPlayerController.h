@@ -791,7 +791,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion The behavior can be changed at any time but will not affect playback if already performed in background.
  *              It is only applied when the controller view is installed in a view hierarchy.
  */
-@property (nonatomic) SRGMediaPlayerViewBackgroundBehavior viewBackgroundBehavior __TVOS_PROHIBITED;
+@property (nonatomic) SRGMediaPlayerViewBackgroundBehavior viewBackgroundBehavior;
 
 @end
 
