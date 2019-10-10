@@ -6,6 +6,7 @@
 
 #import "SRGMediaPlayerViewController.h"
 
+#import "SRGMediaPlayerController+Private.h"
 #import "SRGMediaPlayerView+Private.h"
 
 #import <libextobjc/libextobjc.h>
@@ -110,25 +111,14 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
 
 - (void)dealloc
 {
-    [self.controller reset];
+    [self.controller unbindFromCurrentPlayerViewController];
 }
 
 #pragma mark Getters and setters
 
-- (AVPlayer *)mediaPlayer
-{
-    return [self performSelector:@selector(player)];
-}
-
 - (void)setMediaPlayer:(AVPlayer *)player
 {
-    // Avoid simulator `AVPlayerViewController` freeze issues if the player is shared with another layer. Apply for the
-    // device as well.
-    self.controller.view.player = nil;
-    
-    // The `player` property has been marked as non-available, use a trick to avoid compiler issues in this file
-    [self performSelector:@selector(setPlayer:) withObject:player];
-    
+    [self.controller bindToPlayerViewController:self];
     [self reloadData];
     [self updateView];
 }

@@ -93,6 +93,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) AVMediaSelectionOption *audioOption;
 @property (nonatomic) AVMediaSelectionOption *subtitleOption;
 
+@property (nonatomic, weak) AVPlayerViewController *playerViewController;
+
 @end
 
 @implementation SRGMediaPlayerController
@@ -160,7 +162,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     
     _player = player;
-    self.view.player = player;
+    [self attachPlayer:player toView:self.view];
     
     if (player) {
         if (! hadPlayer) {
@@ -451,7 +453,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     if (_view != view) {
         _view = view;
-        _view.player = self.player;
+        [self attachPlayer:self.player toView:_view];
     }
 }
 
@@ -460,7 +462,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     if (! _view) {
         _view = [[SRGMediaPlayerView alloc] init];
-        _view.player = self.player;
+        [self attachPlayer:self.player toView:_view];
     }
     return _view;
 }
@@ -1237,6 +1239,45 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }];
 }
 
+#pragma mark AVPlayerViewController support
+
+- (void)bindToPlayerViewController:(AVPlayerViewController *)playerViewController
+{
+    if (self.playerViewController) {
+        self.playerViewController.player = nil;
+    }
+    
+    playerViewController.player = self.player;
+    self.playerViewController = playerViewController;
+    
+    // AVPlayerViewController works well (e.g. playback won't freeze in the simulator after a few seconds) only if
+    // the attached player is not bound to any other layer. We therefore detach the player from the controller view.
+    self.view.player = nil;
+}
+
+- (void)attachPlayer:(AVPlayer *)player toView:(SRGMediaPlayerView *)view
+{
+    if (self.playerViewController) {
+        self.playerViewController.player = player;
+    }
+    else {
+        view.player = player;
+    }
+}
+
+- (void)unbindFromCurrentPlayerViewController
+{
+    if (! self.playerViewController) {
+        return;
+    }
+    
+    self.playerViewController.player = nil;
+    self.playerViewController = nil;
+    
+    // Rebind the player
+    self.view.player = self.player;
+}
+
 #pragma mark Tracks
 
 - (AVMediaSelectionOption *)selectedOptionForPlayer:(AVPlayer *)player withMediaCharacteristic:(AVMediaCharacteristic)mediaCharacteristic
@@ -1449,7 +1490,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                 // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (UIDevice.srg_mediaPlayer_isLocked) {
-                        self.view.player = nil;
+                        [self attachPlayer:nil toView:self.view];
                     }
                     else {
                         [self.player pause];
@@ -1462,7 +1503,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             case SRGMediaPlayerViewBackgroundBehaviorDetached: {
                 // The video layer must be detached in the background if we want playback not to be paused automatically.
                 // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
-                self.view.player = nil;
+                [self attachPlayer:nil toView:self.view];
                 break;
             }
         }
@@ -1471,7 +1512,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)srg_mediaPlayerController_applicationWillEnterForeground:(NSNotification *)notification
 {
-    self.view.player = self.player;
+    [self attachPlayer:self.player toView:self.view];
 }
 
 #pragma mark KVO
