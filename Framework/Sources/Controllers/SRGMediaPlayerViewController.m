@@ -155,7 +155,10 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
         }
     }];
     
-    playerItem.interstitialTimeRanges = interstitialTimeRanges.copy;
+    // Seeking near interstitials is less erratic if updates are made only if something changed.
+    if (! [interstitialTimeRanges isEqualToArray:playerItem.interstitialTimeRanges]) {
+        playerItem.interstitialTimeRanges = interstitialTimeRanges.copy;
+    }
     
     NSArray<AVTimedMetadataGroup *> *navigationMarkers = nil;
     if (visibleSegments.count != 0 && [self.delegate respondsToSelector:@selector(playerViewController:navigationMarkersForSegments:)]) {
@@ -163,8 +166,13 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
     }
     
     if (navigationMarkers.count != 0) {
-        AVNavigationMarkersGroup *segmentsNavigationMarkerGroup = [[AVNavigationMarkersGroup alloc] initWithTitle:nil /* No title must be set, otherwise marker titles will be overridden */ timedNavigationMarkers:navigationMarkers];
-        playerItem.navigationMarkerGroups = @[ segmentsNavigationMarkerGroup ];
+        // The information panel does not support reloading well (scroll position is lost and animations are reset). Only
+        // update when something changed.
+        NSArray<AVTimedMetadataGroup *> *previousNavigationMarkers = playerItem.navigationMarkerGroups.firstObject.timedNavigationMarkers;
+        if (! [navigationMarkers isEqualToArray:previousNavigationMarkers]) {
+            AVNavigationMarkersGroup *segmentsNavigationMarkerGroup = [[AVNavigationMarkersGroup alloc] initWithTitle:nil /* No title must be set, otherwise marker titles will be overridden */ timedNavigationMarkers:navigationMarkers];
+            playerItem.navigationMarkerGroups = @[ segmentsNavigationMarkerGroup ];
+        }
     }
     else {
         playerItem.navigationMarkerGroups = @[];
