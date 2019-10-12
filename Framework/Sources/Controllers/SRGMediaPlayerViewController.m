@@ -134,11 +134,17 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
 #if TARGET_OS_TV
     AVPlayerItem *playerItem = self.controller.player.currentItem;
     
+    NSArray<AVMetadataItem *> *externalMetadata = nil;
     if ([self.delegate respondsToSelector:@selector(playerViewControllerExternalMetadata:)]) {
-        playerItem.externalMetadata = [self.delegate playerViewControllerExternalMetadata:self] ?: @[];
+        externalMetadata = [self.delegate playerViewControllerExternalMetadata:self] ?: @[];
     }
     else {
-        playerItem.externalMetadata = @[];
+        externalMetadata = @[];
+    }
+    
+    // Only update metedata if something changed.
+    if (! [playerItem.externalMetadata isEqualToArray:externalMetadata]) {
+        playerItem.externalMetadata = externalMetadata;
     }
     
     // Register blocked segments as interstitials, so that the seek bar does not provide any preview for such sections.
