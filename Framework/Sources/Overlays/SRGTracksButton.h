@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Tracks button delegate protocol.
  */
-__TVOS_PROHIBITED
+API_UNAVAILABLE(tvos)
 @protocol SRGTracksButtonDelegate <NSObject>
 
 @optional
@@ -45,7 +45,7 @@ __TVOS_PROHIBITED
  *  subtitles or audio tracks. Tapping on the button displays a list of the available tracks. If one is selected, the
  *  button is set to the selected state (with a corresponding image).
  */
-__TVOS_PROHIBITED
+API_UNAVAILABLE(tvos)
 @interface SRGTracksButton : UIView
 
 /**

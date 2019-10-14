@@ -18,11 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  The slider knob position when a live stream is played (the knob itself cannot be moved). The default value is left,
  *  as for the standard iOS playback controller.
  */
-typedef __TVOS_PROHIBITED NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
+typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
     SRGTimeSliderLiveKnobPositionDefault = 0,
     SRGTimeSliderLiveKnobPositionLeft = SRGTimeSliderLiveKnobPositionDefault,
     SRGTimeSliderLiveKnobPositionRight
-};
+} API_UNAVAILABLE(tvos);
 
 /**
  *  A slider displaying the playback position of the associated media player controller (with optional time and remaining
@@ -37,7 +37,7 @@ typedef __TVOS_PROHIBITED NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
  *    - `maximumTrackTintColor`: Remaining time track color (defaults to black).
  *    - `thumbTintColor`: Thumb color (defaults to white).
  */
-__TVOS_PROHIBITED
+API_UNAVAILABLE(tvos)
 @interface SRGTimeSlider : UISlider
 
 /**
@@ -119,7 +119,7 @@ __TVOS_PROHIBITED
 /**
  *  Delegate protocol.
  */
-__TVOS_PROHIBITED
+API_UNAVAILABLE(tvos)
 @protocol SRGTimeSliderDelegate <NSObject>
 
 @optional

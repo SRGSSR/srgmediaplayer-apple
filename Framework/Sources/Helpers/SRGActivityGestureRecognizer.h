@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Simply add to any view onto which user activity must be reported, and bind to an associated target and action.
  */
-__TVOS_PROHIBITED
+API_UNAVAILABLE(tvos)
 @interface SRGActivityGestureRecognizer : UIGestureRecognizer
 
 @end

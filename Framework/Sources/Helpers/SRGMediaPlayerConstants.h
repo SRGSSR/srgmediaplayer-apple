@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewBackgroundBehavior) {
     /**
      *  Detach the player view from the controller when the device is locked while the application is still open.
      */
-    SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked __TVOS_PROHIBITED
+    SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked API_UNAVAILABLE(tvos)
 };
 
 /**
