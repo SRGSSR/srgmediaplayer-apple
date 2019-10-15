@@ -27,7 +27,6 @@
 		6F444856210F1479009FDB70 /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08293A4D1EDC62FC008CE02E /* Accessibility.strings */; };
 		6F444857210F147B009FDB70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E001D61BAFD0064E6C1 /* Localizable.strings */; };
 		6F44485A210F1483009FDB70 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F9453331F7225BC00A6507E /* Images.xcassets */; };
-		6F44485C210F14AE009FDB70 /* LaunchScreen~ios.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6C315661D76AB62001FC93A /* LaunchScreen~ios.xib */; };
 		6F44485D210F14BC009FDB70 /* SRGMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */; };
 		6F5CA3EC1FD919CD00CF175F /* NSBundle+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3B41FD919CD00CF175F /* NSBundle+SRGMediaPlayer.h */; };
 		6F5CA3ED1FD919CD00CF175F /* MAKVONotificationCenter+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3B51FD919CD00CF175F /* MAKVONotificationCenter+SRGMediaPlayer.h */; };
@@ -98,6 +97,7 @@
 		6FC1C74F22BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1C74B22BCD29B00D55625 /* AVRoutePickerView+SRGMediaPlayer.m */; };
 		6FC1C75022BCD29D00D55625 /* NSTimer+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC1C74C22BCD29D00D55625 /* NSTimer+SRGMediaPlayer.h */; };
 		6FC1C75122BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC1C74D22BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.h */; };
+		6FC345D223563A7E00C55A48 /* LaunchScreen~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FC345D123563A7E00C55A48 /* LaunchScreen~ios.storyboard */; };
 		6FC57B1A1FD6A5BE00451B6B /* SRGViewModeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC57B191FD6A5BE00451B6B /* SRGViewModeButton~ios.m */; };
 		6FCAB6D9231687740043432E /* MediasViewController~tvos.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCAB6D7231687740043432E /* MediasViewController~tvos.m */; };
@@ -299,6 +299,7 @@
 		6FC1C74B22BCD29B00D55625 /* AVRoutePickerView+SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVRoutePickerView+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		6FC1C74C22BCD29D00D55625 /* NSTimer+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6FC1C74D22BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVRoutePickerView+SRGMediaPlayer.h"; sourceTree = "<group>"; };
+		6FC345D123563A7E00C55A48 /* LaunchScreen~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "LaunchScreen~ios.storyboard"; sourceTree = "<group>"; };
 		6FC57B181FD6A5BE00451B6B /* SRGViewModeButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGViewModeButton.h; sourceTree = "<group>"; };
 		6FC57B191FD6A5BE00451B6B /* SRGViewModeButton~ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SRGViewModeButton~ios.m"; sourceTree = "<group>"; };
 		6FCAB6D5231681C00043432E /* Demo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Demo.xcconfig; sourceTree = "<group>"; };
@@ -355,7 +356,6 @@
 		E6BCE9491D76CB900021973D /* SegmentsPlayerViewController~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SegmentsPlayerViewController~ios.m"; sourceTree = "<group>"; };
 		E6BCE9581D76CBCE0021973D /* SegmentsPlayerViewController~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SegmentsPlayerViewController~ios.storyboard"; sourceTree = "<group>"; };
 		E6BCE95A1D76CF7D0021973D /* SegmentDemoConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SegmentDemoConfiguration.plist; sourceTree = "<group>"; };
-		E6C315661D76AB62001FC93A /* LaunchScreen~ios.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "LaunchScreen~ios.xib"; sourceTree = "<group>"; };
 		E6D21D191D76A3F500B477F3 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E6D21D1A1D76A3F500B477F3 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		E6D21D1B1D76A3F500B477F3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -649,7 +649,7 @@
 			children = (
 				6FCAB6E123169FC20043432E /* Data */,
 				E69A1F611D61BFAE0064E6C1 /* Images.xcassets */,
-				E6C315661D76AB62001FC93A /* LaunchScreen~ios.xib */,
+				6FC345D123563A7E00C55A48 /* LaunchScreen~ios.storyboard */,
 				08F4E5411E7FE76900C9E8FD /* Localizable.strings */,
 			);
 			path = Resources;
@@ -1030,13 +1030,13 @@
 				6F908B72230C1E0200CB33BD /* SimplePlayerViewController~ios.storyboard in Resources */,
 				E6BCE9511D76CB900021973D /* MultiPlayerViewController~ios.storyboard in Resources */,
 				E69A1F9D1D61BFAE0064E6C1 /* Images.xcassets in Resources */,
-				6F44485C210F14AE009FDB70 /* LaunchScreen~ios.xib in Resources */,
 				E6BCE95B1D76CF7D0021973D /* SegmentDemoConfiguration.plist in Resources */,
 				E6BCE9591D76CBCE0021973D /* SegmentsPlayerViewController~ios.storyboard in Resources */,
 				6F12842D230C0B55001119EA /* AdvancedPlayerViewController~ios.storyboard in Resources */,
 				E6BCE94F1D76CB900021973D /* InlinePlayerViewController~ios.storyboard in Resources */,
 				E69A1FA21D61BFAE0064E6C1 /* MultiPlayerDemoConfiguration.plist in Resources */,
 				08F4E53F1E7FE76900C9E8FD /* Localizable.strings in Resources */,
+				6FC345D223563A7E00C55A48 /* LaunchScreen~ios.storyboard in Resources */,
 				E69A1F981D61BFAE0064E6C1 /* AudioDemoConfiguration.plist in Resources */,
 				E69A1FA11D61BFAE0064E6C1 /* VideoDemoConfiguration.plist in Resources */,
 			);
