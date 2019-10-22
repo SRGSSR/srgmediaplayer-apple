@@ -345,7 +345,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
         return SRGMediaPlayerLocalizedString(@"Audio", @"Section header title in the alternate tracks popup menu, for audio tracks");
     }
-    else if (characteristic == AVMediaCharacteristicLegible) {
+    else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         return SRGMediaPlayerLocalizedString(@"Subtitles & CC", @"Section header title in the alternate tracks popup menu, for subtitles & CC tracks");
     }
     else {
@@ -373,7 +373,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     NSString *characteristic = self.characteristics[section];
     NSArray<AVMediaSelectionOption *> *options = self.options[characteristic];
-    return (characteristic == AVMediaCharacteristicLegible) ? options.count + 2 : options.count;
+    return [characteristic isEqualToString:AVMediaCharacteristicLegible] ? options.count + 2 : options.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -383,7 +383,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
     
     NSString *characteristic = self.characteristics[indexPath.section];
-    if (characteristic == AVMediaCharacteristicLegible) {
+    if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionGroup *group = self.groups[characteristic];
         AVMediaSelectionOption *currentOptionInGroup = [playerItem selectedMediaOptionInMediaSelectionGroup:group];
         
@@ -465,7 +465,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     AVMediaSelectionGroup *group = self.groups[characteristic];
     NSArray<AVMediaSelectionOption *> *options = self.options[characteristic];
     
-    if (characteristic == AVMediaCharacteristicLegible) {
+    if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         if (indexPath.row == 0) {
             [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
             
