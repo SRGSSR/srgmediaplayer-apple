@@ -538,11 +538,18 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     else if (CMTIMERANGE_IS_EMPTY(timeRange)) {
         return SRGMediaPlayerStreamTypeLive;
     }
-    else if (CMTIME_IS_INDEFINITE(self.player.currentItem.duration)) {
-        return SRGMediaPlayerStreamTypeDVR;
-    }
     else {
-        return SRGMediaPlayerStreamTypeOnDemand;
+        CMTime duration = self.player.currentItem.duration;
+        
+        if (CMTIME_IS_INDEFINITE(duration)) {
+            return SRGMediaPlayerStreamTypeDVR;
+        }
+        else if (CMTIME_COMPARE_INLINE(duration, !=, kCMTimeZero)) {
+            return SRGMediaPlayerStreamTypeOnDemand;
+        }
+        else {
+            return SRGMediaPlayerStreamTypeLive;
+        }
     }
 }
 
