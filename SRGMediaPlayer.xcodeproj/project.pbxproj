@@ -79,7 +79,6 @@
 		6F859F3C230A937900ECE021 /* SRGPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F39230A937900ECE021 /* SRGPlayer.m */; };
 		6F859F40230A9E1600ECE021 /* SRGMediaPlayerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F859F3E230A9E1600ECE021 /* SRGMediaPlayerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F859F42230A9E1600ECE021 /* SRGMediaPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F859F3F230A9E1600ECE021 /* SRGMediaPlayerViewController.m */; };
-		6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */; };
 		6F908B72230C1E0200CB33BD /* SimplePlayerViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F908B6F230C1E0200CB33BD /* SimplePlayerViewController~ios.storyboard */; };
 		6F908B73230C1E0200CB33BD /* SimplePlayerViewController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F908B71230C1E0200CB33BD /* SimplePlayerViewController~ios.m */; };
 		6F9643D221307920003C6612 /* SRGAirPlayButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F9643CE2130791F003C6612 /* SRGAirPlayButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -276,8 +275,6 @@
 		6F859F3E230A9E1600ECE021 /* SRGMediaPlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayerViewController.h; sourceTree = "<group>"; };
 		6F859F3F230A9E1600ECE021 /* SRGMediaPlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerViewController.m; sourceTree = "<group>"; };
 		6F8F06E31FDA7631002DD457 /* SRGMediaPlaybackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlaybackView.h; sourceTree = "<group>"; };
-		6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Demo.h"; sourceTree = "<group>"; };
-		6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Demo.m"; sourceTree = "<group>"; };
 		6F908B6F230C1E0200CB33BD /* SimplePlayerViewController~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SimplePlayerViewController~ios.storyboard"; sourceTree = "<group>"; };
 		6F908B70230C1E0200CB33BD /* SimplePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePlayerViewController.h; sourceTree = "<group>"; };
 		6F908B71230C1E0200CB33BD /* SimplePlayerViewController~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SimplePlayerViewController~ios.m"; sourceTree = "<group>"; };
@@ -555,8 +552,6 @@
 			children = (
 				6F97C7961E7A89C5001AD9B3 /* ModalTransition.h */,
 				6F97C7971E7A89C5001AD9B3 /* ModalTransition~ios.m */,
-				6F8F088F1EE7E20600C54ADA /* NSBundle+Demo.h */,
-				6F8F08901EE7E20600C54ADA /* NSBundle+Demo.m */,
 				6FCAB6DE23169BB00043432E /* Resources.h */,
 				6FCAB6DF23169BB00043432E /* Resources.m */,
 			);
@@ -1152,7 +1147,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6D21D221D76A3F500B477F3 /* AppDelegate.m in Sources */,
-				6F8F08911EE7E20600C54ADA /* NSBundle+Demo.m in Sources */,
 				6FCAB6D9231687740043432E /* MediasViewController~tvos.m in Sources */,
 				E6D21D241D76A3F500B477F3 /* MediasViewController~ios.m in Sources */,
 				E6BCE94E1D76CB900021973D /* InlinePlayerViewController~ios.m in Sources */,

@@ -11,7 +11,6 @@
 #import "Media.h"
 #import "MediaPlayer.h"
 #import "MultiPlayerViewController.h"
-#import "NSBundle+Demo.h"
 #import "SimplePlayerViewController.h"
 #import "SegmentsPlayerViewController.h"
 #import "UIWindow+SRGMediaPlayer.h"
@@ -42,21 +41,21 @@
         
         switch (mediaPlayerType) {
             case MediaPlayerTypeStandard: {
-                self.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"SRG Media Player") class:SRGMediaPlayerViewController.class],
-                                       [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"System") class:AVPlayerViewController.class],
-                                       [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Simple custom") class:SimplePlayerViewController.class],
-                                       [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Advanced custom") class:AdvancedPlayerViewController.class],
-                                       [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Inline custom") class:InlinePlayerViewController.class] ];
+                self.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:NSLocalizedString(@"SRG Media Player", nil) class:SRGMediaPlayerViewController.class],
+                                       [MediaPlayer mediaPlayerWithName:NSLocalizedString(@"System", nil) class:AVPlayerViewController.class],
+                                       [MediaPlayer mediaPlayerWithName:NSLocalizedString(@"Simple custom", nil) class:SimplePlayerViewController.class],
+                                       [MediaPlayer mediaPlayerWithName:NSLocalizedString(@"Advanced custom", nil) class:AdvancedPlayerViewController.class],
+                                       [MediaPlayer mediaPlayerWithName:NSLocalizedString(@"Inline custom", nil) class:InlinePlayerViewController.class] ];
                 break;
             }
                 
             case MediaPlayerTypeSegments: {
-                self.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Player with segments support") class:SegmentsPlayerViewController.class] ];
+                self.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:NSLocalizedString(@"Player with segments support", nil) class:SegmentsPlayerViewController.class] ];
                 break;
             }
                 
             case MediaPlayerTypeMulti: {
-                self.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:DemoNonLocalizedString(@"Multi player") class:MultiPlayerViewController.class] ];
+                self.mediaPlayers = @[ [MediaPlayer mediaPlayerWithName:NSLocalizedString(@"Multi player", nil) class:MultiPlayerViewController.class] ];
                 break;
             }
         }
@@ -103,7 +102,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return section == 0 ? DemoNonLocalizedString(@"Medias") : DemoNonLocalizedString(@"Players");
+    return section == 0 ? NSLocalizedString(@"Medias", nil) : NSLocalizedString(@"Players", nil);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -150,8 +149,8 @@
     else {
         Media *media = self.medias[self.selectedIndexPath.row];
         if (! media) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:DemoNonLocalizedString(@"Please select a media first") message:nil preferredStyle:UIAlertControllerStyleAlert];
-            [alertController addAction:[UIAlertAction actionWithTitle:DemoNonLocalizedString(@"OK") style:UIAlertActionStyleDefault handler:nil]];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Please select a media first", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alertController animated:YES completion:nil];
             return;
         }
