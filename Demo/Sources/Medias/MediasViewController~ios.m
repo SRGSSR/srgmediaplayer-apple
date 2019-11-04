@@ -193,11 +193,11 @@
             [self presentViewController:playerViewController animated:YES completion:nil];
         }
         else if (mediaPlayer.playerClass == MultiPlayerViewController.class) {
-            NSMutableArray *medias = [self.medias mutableCopy];
+            NSMutableArray *medias = self.medias.mutableCopy;
             [medias removeObject:media];
             [medias insertObject:media atIndex:0];
             
-            MultiPlayerViewController *playerViewController = [[MultiPlayerViewController alloc] initWithMedias:[medias copy]];
+            MultiPlayerViewController *playerViewController = [[MultiPlayerViewController alloc] initWithMedias:medias.copy];
             playerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [self presentViewController:playerViewController animated:YES completion:nil];
         }

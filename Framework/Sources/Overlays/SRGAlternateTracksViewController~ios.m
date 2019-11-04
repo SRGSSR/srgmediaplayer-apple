@@ -112,9 +112,9 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
             options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
         }
         
-        self.characteristics = [characteristics copy];
-        self.groups = [groups copy];
-        self.options = [options copy];
+        self.characteristics = characteristics.copy;
+        self.groups = groups.copy;
+        self.options = options.copy;
     }
     else {
         self.characteristics = nil;
@@ -562,7 +562,7 @@ static NSArray<NSString *> *SRGPreferredCaptionLanguageCodes(void)
     // system settings (even if it does not appear in the preferred language list). Use it as fallback.
     [languageCodes addObject:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
     
-    return [languageCodes copy];
+    return languageCodes.copy;
 }
 
 // Update the subtitle language selection stack to best match the current language preferences. This helps the "Closed

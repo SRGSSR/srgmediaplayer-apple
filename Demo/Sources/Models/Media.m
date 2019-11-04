@@ -29,7 +29,7 @@
             [medias addObject:media];
         }
     }
-    return [medias copy];
+    return medias.copy;
 }
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
@@ -53,7 +53,7 @@
             MediaSegment *segment = [[MediaSegment alloc] initWithDictionary:segmentDictionary];
             [segments addObject:segment];
         }
-        self.segments = [segments copy];
+        self.segments = segments.copy;
     }
     return self;
 }
