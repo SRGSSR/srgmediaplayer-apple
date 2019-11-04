@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, MediaPlayerType) {
     MediaPlayerTypeStandard,
     MediaPlayerTypeSegments,
-    MediaPlayerTypeMulti __TVOS_PROHIBITED
+    MediaPlayerTypeMulti API_UNAVAILABLE(tvos)
 };
 
 @interface MediasViewController : UITableViewController

@@ -36,8 +36,7 @@ __attribute__((constructor)) static void SRGMediaPlayerUIDeviceInit(void)
     dispatch_async(dispatch_get_main_queue(), ^{
         // Differentiate between device lock and application sent to the background
         // See http://stackoverflow.com/a/9058038/760435
-        NSCharacterSet *characterSet = [NSCharacterSet decimalDigitCharacterSet];
-        NSString *notification = [[[NSString stringWithFormat:@"122c1o6m7.a8p93p0l99e8.s65p4r43i32ng2b1234o2a432rd.l23o3c25567k8c9o08m65p43l32e2te"] componentsSeparatedByCharactersInSet:characterSet] componentsJoinedByString:@""];
+        NSString *notification = [[[NSString stringWithFormat:@"122c1o6m7.a8p93p0l99e8.s65p4r43i32ng2b1234o2a432rd.l23o3c25567k8c9o08m65p43l32e2te"] componentsSeparatedByCharactersInSet:NSCharacterSet.decimalDigitCharacterSet] componentsJoinedByString:@""];
         CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
                                         (__bridge const void *)UIDevice.class,
                                         lockComplete,

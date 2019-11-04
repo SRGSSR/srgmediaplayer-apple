@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  it automatically from full-screen playback (this is controlled by a system setting). Apple might reject your
  *  application otherwise.
  */
-__TVOS_PROHIBITED
+API_UNAVAILABLE(tvos)
 @interface SRGPictureInPictureButton : UIView
 
 /**

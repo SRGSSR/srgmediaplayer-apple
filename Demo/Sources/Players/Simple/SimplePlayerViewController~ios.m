@@ -6,7 +6,6 @@
 
 #import "SimplePlayerViewController.h"
 
-#import "NSBundle+Demo.h"
 #import "Resources.h"
 #import "SegmentCollectionViewCell.h"
 
@@ -45,7 +44,7 @@
 {
     [super viewDidLoad];
     
-    [self.liveButton setTitle:DemoNonLocalizedString(@"Back to live") forState:UIControlStateNormal];
+    [self.liveButton setTitle:NSLocalizedString(@"Back to live", nil) forState:UIControlStateNormal];
     self.liveButton.alpha = 0.f;
     
     self.liveButton.layer.borderColor = UIColor.whiteColor.CGColor;

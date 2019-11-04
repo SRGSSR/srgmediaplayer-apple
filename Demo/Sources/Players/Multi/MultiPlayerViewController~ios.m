@@ -64,7 +64,7 @@
         [mediaPlayerController.view addGestureRecognizer:switchTapGestureRecognizer];
         [mediaPlayerControllers addObject:mediaPlayerController];
     }
-    self.mediaPlayerControllers = [mediaPlayerControllers copy];
+    self.mediaPlayerControllers = mediaPlayerControllers.copy;
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex
@@ -180,7 +180,7 @@
             [thumbnailPlayerControllers addObject:mediaPlayerController];
         }
     }
-    return [thumbnailPlayerControllers copy];
+    return thumbnailPlayerControllers.copy;
 }
 
 #pragma mark Actions

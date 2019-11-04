@@ -6,7 +6,6 @@
 
 #import "AdvancedPlayerViewController.h"
 
-#import "NSBundle+Demo.h"
 #import "Resources.h"
 
 #import <libextobjc/libextobjc.h>

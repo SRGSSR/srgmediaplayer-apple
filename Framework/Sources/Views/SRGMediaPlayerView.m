@@ -90,7 +90,7 @@ static void commonInit(SRGMediaPlayerView *self);
     
     _viewMode = viewMode;
     
-    [self updateSubviewsWithPlayer:self.player];
+    [self updateSubviews];
 }
 
 - (AVPlayerLayer *)playerLayer

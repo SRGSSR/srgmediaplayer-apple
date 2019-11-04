@@ -112,9 +112,9 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
             options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
         }
         
-        self.characteristics = [characteristics copy];
-        self.groups = [groups copy];
-        self.options = [options copy];
+        self.characteristics = characteristics.copy;
+        self.groups = groups.copy;
+        self.options = options.copy;
     }
     else {
         self.characteristics = nil;
@@ -176,7 +176,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     [super viewDidLoad];
     
-#ifdef __IPHONE_13_0
     // The style must only be overridden when forced, otherwise no traits change will occur when dark mode is toggled
     // in the system settings.
     if (@available(iOS 13, *)) {
@@ -187,7 +186,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
             self.navigationController.overrideUserInterfaceStyle = SRGMediaPlayerUserInterfaceStyleUnspecified;
         }
     }
-#endif
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -245,13 +243,11 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     [super traitCollectionDidChange:previousTraitCollection];
  
-#ifdef __IPHONE_13_0
     if (@available(iOS 13, *)) {
         if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
             [self updateViewAppearance];
         }
     }
-#endif
 }
 
 #pragma mark Accessibility
@@ -273,7 +269,6 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     BOOL isDark = self.dark;
     
-#ifdef __IPHONE_13_0
     if (@available(iOS 13, *)) {
         UIBlurEffectStyle blurStyle = isDark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
         UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
@@ -281,16 +276,13 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         self.tableView.backgroundColor = UIColor.clearColor;
     }
     else {
-#endif
         self.navigationController.navigationBar.barStyle = isDark ? UIBarStyleBlack : UIBarStyleDefault;
         self.tableView.separatorColor = isDark ? [UIColor colorWithWhite:1.f alpha:0.08f] : UIColor.lightGrayColor;
         
         UIColor *backgroundColor = isDark ? [UIColor colorWithWhite:0.17f alpha:1.f] : UIColor.groupTableViewBackgroundColor;
         self.tableView.backgroundColor = backgroundColor;
         self.parentPopoverPresentationController.backgroundColor = backgroundColor;
-#ifdef __IPHONE_13_0
     }
-#endif
     
     [self.tableView reloadData];
 }
@@ -345,7 +337,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
         return SRGMediaPlayerLocalizedString(@"Audio", @"Section header title in the alternate tracks popup menu, for audio tracks");
     }
-    else if (characteristic == AVMediaCharacteristicLegible) {
+    else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         return SRGMediaPlayerLocalizedString(@"Subtitles & CC", @"Section header title in the alternate tracks popup menu, for subtitles & CC tracks");
     }
     else {
@@ -373,7 +365,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
 {
     NSString *characteristic = self.characteristics[section];
     NSArray<AVMediaSelectionOption *> *options = self.options[characteristic];
-    return (characteristic == AVMediaCharacteristicLegible) ? options.count + 2 : options.count;
+    return [characteristic isEqualToString:AVMediaCharacteristicLegible] ? options.count + 2 : options.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -383,7 +375,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
     
     NSString *characteristic = self.characteristics[indexPath.section];
-    if (characteristic == AVMediaCharacteristicLegible) {
+    if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionGroup *group = self.groups[characteristic];
         AVMediaSelectionOption *currentOptionInGroup = [playerItem selectedMediaOptionInMediaSelectionGroup:group];
         
@@ -465,7 +457,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
     AVMediaSelectionGroup *group = self.groups[characteristic];
     NSArray<AVMediaSelectionOption *> *options = self.options[characteristic];
     
-    if (characteristic == AVMediaCharacteristicLegible) {
+    if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         if (indexPath.row == 0) {
             [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
             
@@ -570,7 +562,7 @@ static NSArray<NSString *> *SRGPreferredCaptionLanguageCodes(void)
     // system settings (even if it does not appear in the preferred language list). Use it as fallback.
     [languageCodes addObject:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
     
-    return [languageCodes copy];
+    return languageCodes.copy;
 }
 
 // Update the subtitle language selection stack to best match the current language preferences. This helps the "Closed

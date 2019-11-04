@@ -45,9 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
  *    - Background playback behavior cannot be customized.
  *
  *  If you need one of the above features you should implement your own player layout instead.
- *
- *  Since `AVPlayerViewController` manages its video player layer as well, note that the picture in picture controller
- *  associated with an `SRGMediaPlayerController` is not used.
  */
 @interface SRGMediaPlayerViewController : AVPlayerViewController
 
@@ -68,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<SRGMediaPlayerViewControllerDelegate> delegate;
 
 /**
- *  Reload data (external metadata and navigation markers) displayed by the player.
+ *  Reload data (e.g. external metadata and navigation markers on tvOS) displayed by the player.
  */
 - (void)reloadData;
 
