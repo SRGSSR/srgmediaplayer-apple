@@ -40,6 +40,10 @@ static NSString * const kMediaKey = @"Media";
 {
     [super viewDidLoad];
     
+    if (@available(tvOS 13, *)) {
+        self.navigationController.tabBarObservedScrollView = self.tableView;
+    }
+    
     self.tableView.remembersLastFocusedIndexPath = YES;
 }
 
