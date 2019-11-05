@@ -35,7 +35,7 @@
 	<string>$(LAUNCH_SCREEN)</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>armv7</string>
+		<string>$(REQUIRED_DEVICE_CAPABILITY)</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
