@@ -44,6 +44,12 @@
     audiosNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Audios", nil) image:[UIImage imageNamed:@"audios"] tag:3];
     [viewControllers addObject:audiosNavigationController];
     
+#if TARGET_OS_TV
+    videosNavigationController.navigationBarHidden = YES;
+    segmentsNavigationController.navigationBarHidden = YES;
+    audiosNavigationController.navigationBarHidden = YES;
+#endif
+    
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     tabBarController.viewControllers = viewControllers.copy;
     self.window.rootViewController = tabBarController;
