@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Customise this file, documentation can be found here:
 # https://github.com/fastlane/fastlane/tree/master/fastlane/docs
 # All available actions: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Actions.md
@@ -7,40 +9,108 @@
 # All lines starting with a # are ignored when running `fastlane`
 
 # This is the minimum version number required.
-fastlane_version "1.95.0"
+fastlane_version '2.96.0'
 
 default_platform :ios
 
 platform :ios do
-  before_all do |lane|
+  before_all do
     ensure_git_status_clean
-    
-    Dir.chdir("..") do
-      sh "make bootstrap"
-    end
+    Dir.chdir('..') { sh 'make bootstrap' }
   end
 
-  desc "Run library tests"
+  desc 'Run library tests'
   lane :tests do
-    scan(
-      devices: ["iPhone X", "Apple TV"],
-      output_types: "",
-      fail_build: false,
-      clean: true
+    clean_result_files
+
+    override_test_product_names
+
+    run_tests_with_devices(['iPhone 11', 'Apple TV'])
+
+    trainer(
+      path: './fastlane',
+      output_directory: './fastlane'
     )
-    trainer(output_directory: "./fastlane")
   end
 
-  after_all do |lane|
+  after_all do
     reset_git_repo(skip_clean: true)
   end
 
-  error do |lane, exception|
+  error do
     clean_build_artifacts
     reset_git_repo(skip_clean: true, force: true)
   end
 end
 
+def clean_result_files
+  Dir['*.xml'].each { |file| File.delete(file) }
+  Dir['*.xcresult'].each { |folder| FileUtils.remove_entry(folder, true) }
+end
+
+# Override test product names to split iOS and tvOS test results
+def override_test_product_names
+  set_xcconfig_value(
+    path: 'Tests/Tests.xcconfig',
+    name: 'PRODUCT_NAME[sdk=iphone*]',
+    value: '$(PROJECT_NAME)-iOS'
+  )
+  set_xcconfig_value(
+    path: 'Tests/Tests.xcconfig',
+    name: 'PRODUCT_NAME[sdk=appletv*]',
+    value: '$(PROJECT_NAME)-tvOS'
+  )
+end
+
+def run_tests_with_devices(devices)
+  devices.each do |device|
+    srg_scan(device)
+    copy_last_xcresult
+  end
+  check_xcresult_count(devices)
+end
+
+def srg_scan(device)
+  scan(
+    device: device,
+    scheme: xcode_project_name,
+    output_types: '',
+    output_style: FastlaneCore::Env.truthy?('TRAVIS') ? 'raw' : 'standard',
+    fail_build: false,
+    clean: true
+  )
+end
+
+def xcresults_path
+  derived_data_path = lane_context[SharedValues::SCAN_DERIVED_DATA_PATH]
+  derived_data_path + '/Logs/Test/'
+end
+
+def copy_last_xcresult
+  file = nil
+  Dir.chdir(xcresults_path) do
+    # max == sort.last
+    file = Dir['*.xcresult'].max
+  end
+  file_name = File.basename(file)
+  FileUtils.copy_entry(xcresults_path + file_name, file_name)
+end
+
+def check_xcresult_count(devices)
+  return unless Dir['*.xcresult'].count != devices.count
+
+  UI.user_error!('Whoops, unexpected xcresult file count.')
+end
+
+# Return the xcode project name
+def xcode_project_name
+  setting = nil
+  Dir.chdir('..') do
+    setting = sh 'xcodebuild -showBuildSettings | grep "PROJECT ="'
+  end
+  setting ['PROJECT ='] = ''
+  setting.gsub(/\s+/, '').chomp
+end
 
 # More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
 # All available actions: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Actions.md
