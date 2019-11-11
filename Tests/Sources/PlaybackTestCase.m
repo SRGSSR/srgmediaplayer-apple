@@ -63,8 +63,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
     
-    // Do not retain the controller anymore, and force an autorelease pool collection. The weak reference must be nilled
-    // automatically if the controller is correctly deallocated
     @autoreleasepool {
         self.mediaPlayerController = nil;
     }
@@ -72,10 +70,8 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertNil(weakMediaPlayerController);
 }
 
-- (void)testDeallocationWhilePlaying
+- (void)testDeallocationAfterPlayback
 {
-    // If the player controller is not retained, its player and all associated resources (including the player layer) must
-    // be automatically discarded
     __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
     __weak AVPlayer *weakPlayer = self.mediaPlayerController.player;
     
@@ -88,7 +84,6 @@ static NSURL *AudioOverHTTPTestURL(void)
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
         
-        // When no reference retains the player, playback must gracefully stop. Deallocation will occur right afterwards.
         [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
             return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
         }];
@@ -98,9 +93,11 @@ static NSURL *AudioOverHTTPTestURL(void)
             return weakPlayer == nil;
         }] evaluatedWithObject:self /* unused, but a non-nil argument is required  */ handler:nil];
         
-        self.mediaPlayerController = nil;
+        [self.mediaPlayerController reset];
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
+        
+        self.mediaPlayerController = nil;
     }
     
     XCTAssertNil(weakMediaPlayerController);
