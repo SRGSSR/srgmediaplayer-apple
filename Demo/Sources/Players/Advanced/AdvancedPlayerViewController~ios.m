@@ -21,7 +21,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 @property (nonatomic) Media *media;
 
-@property (nonatomic, weak) IBOutlet SRGMediaPlayerController *mediaPlayerController;
+@property (nonatomic, weak) IBOutlet SRGMediaPlayerController *mediaPlayerController;     // top-level object, retained
 
 @property (nonatomic, weak) IBOutlet SRGPlaybackButton *playbackButton;
 @property (nonatomic, weak) IBOutlet SRGTimeSlider *timeSlider;

@@ -14,7 +14,7 @@
 
 @interface SimplePlayerViewController ()
 
-@property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;
+@property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;     // top-level object, retained
 
 @property (nonatomic) Media *media;
 
