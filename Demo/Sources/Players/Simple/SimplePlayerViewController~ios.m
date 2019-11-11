@@ -70,6 +70,13 @@
     }
 }
 
+#pragma mark Status bar
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark UI
 
 - (void)updateLiveButton

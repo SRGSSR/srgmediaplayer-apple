@@ -15,13 +15,11 @@
 @property (nonatomic) Media *media;
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
+@property (nonatomic, getter=isReady) BOOL ready;
 
 @end
 
-@implementation InlinePlayerViewController {
-@private
-    BOOL _ready;
-}
+@implementation InlinePlayerViewController
 
 #pragma mark Object lifecycle
 
@@ -39,13 +37,13 @@
 {
     self.mediaPlayerController.view.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
     [self.mediaPlayerController prepareToPlayURL:self.media.URL atPosition:nil withSegments:nil userInfo:nil completionHandler:^{
-        self->_ready = YES;
+        self.ready = YES;
     }];
 }
 
 - (IBAction)togglePlayPause:(id)sender
 {
-    if (_ready) {
+    if (self.ready) {
         [self.mediaPlayerController togglePlayPause];
     }
     else {
@@ -55,7 +53,7 @@
 
 - (IBAction)reset:(id)sender
 {
-    _ready = NO;
+    self.ready = NO;
     [self.mediaPlayerController reset];
 }
 

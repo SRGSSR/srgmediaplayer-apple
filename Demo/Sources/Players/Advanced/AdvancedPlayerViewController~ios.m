@@ -156,7 +156,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [super viewDidAppear:animated];
     
-    if (self.beingPresented) {
+    if (self.movingToParentViewController || self.beingPresented) {
         if (self.mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
             [self.mediaPlayerController.pictureInPictureController stopPictureInPicture];
         }
@@ -171,7 +171,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [super viewDidDisappear:animated];
     
-    if (self.beingDismissed) {
+    if (self.movingFromParentViewController || self.beingDismissed) {
         [self stopInactivityTracker];
     }
 }
