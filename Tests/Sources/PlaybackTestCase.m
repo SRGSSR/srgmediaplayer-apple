@@ -2107,8 +2107,10 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     XCTestExpectation *observerExpectation = [self expectationWithDescription:@"Periodic time observer fired"];
     
+    __block id periodicTimeObserver = nil;
+    
     @weakify(self)
-    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         [observerExpectation fulfill];
         
@@ -2128,8 +2130,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     
+    __block id periodicTimeObserver = nil;
+    
     @weakify(self)
-    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         [observerExpectation fulfill];
         
@@ -2162,8 +2166,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     [self.mediaPlayerController reset];
     
+    __block id periodicTimeObserver = nil;
+    
     @weakify(self)
-    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         XCTFail(@"Periodic time observers are not fired when the player is idle");
     }];
