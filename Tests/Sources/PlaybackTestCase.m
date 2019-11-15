@@ -1678,12 +1678,42 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testPlayWhilePreparing
 {
-    XCTFail(@"TODO");
+    // Wait until preparing
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        SRGPlaybackButtonState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+        if (playbackState == SRGMediaPlayerPlaybackStatePlaying) {
+            return YES;
+        }
+        
+        if (playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+            [self.mediaPlayerController play];
+        }
+        return NO;
+    }];
+    
+    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testPauseWhilePreparing
 {
-    XCTFail(@"TODO");
+    // Wait until preparing
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        SRGPlaybackButtonState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+        if (playbackState == SRGMediaPlayerPlaybackStatePaused) {
+            return YES;
+        }
+        
+        if (playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+            [self.mediaPlayerController pause];
+        }
+        return NO;
+    }];
+    
+    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
 - (void)testStopWhileWhilePreparing
