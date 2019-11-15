@@ -475,12 +475,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CMTime seekTargetTime;
 
 /**
- *  The media type (audio / video).
+ *  The media type (audio / video). Key-value observable.
  */
 @property (nonatomic, readonly) SRGMediaPlayerMediaType mediaType;
 
 /**
- *  The stream type (live / DVR / VOD).
+ *  The stream type (live / DVR / VOD). Key-value observable.
  */
 @property (nonatomic, readonly) SRGMediaPlayerStreamType streamType;
 
