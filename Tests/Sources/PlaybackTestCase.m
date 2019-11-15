@@ -1676,6 +1676,16 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testPlayWhilePreparing
+{
+    XCTFail(@"TODO");
+}
+
+- (void)testPauseWhilePreparing
+{
+    XCTFail(@"TODO");
+}
+
 - (void)testStopWhileWhilePreparing
 {
     // Wait until preparing
@@ -2093,6 +2103,68 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testOnDemandTimeRangeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, timeRange) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        NSValue *timeRangeValue = change[NSKeyValueChangeNewKey];
+        return SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRangeValue.CMTimeRangeValue);
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, timeRange) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"For on-demand stream the time range is known once playing");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, timeRange)];
+    }];
+}
+
+- (void)testLiveTimeRangeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, timeRange) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        NSValue *timeRangeValue = change[NSKeyValueChangeNewKey];
+        return CMTIMERANGE_IS_EMPTY(timeRangeValue.CMTimeRangeValue);
+    }];
+    
+    [self.mediaPlayerController playURL:LiveTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // For livestreams we continue receiving time range updates.
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, timeRange) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        NSValue *timeRangeValue = change[NSKeyValueChangeNewKey];
+        return CMTIMERANGE_IS_EMPTY(timeRangeValue.CMTimeRangeValue);
+    }];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testDVRTimeRangeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, timeRange) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        NSValue *timeRangeValue = change[NSKeyValueChangeNewKey];
+        return SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRangeValue.CMTimeRangeValue);
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // For livestreams we continue receiving time range updates.
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, timeRange) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        NSValue *timeRangeValue = change[NSKeyValueChangeNewKey];
+        return SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRangeValue.CMTimeRangeValue);
+    }];
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 

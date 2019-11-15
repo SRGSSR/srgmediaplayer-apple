@@ -42,7 +42,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @private
     SRGMediaPlayerPlaybackState _playbackState;
     BOOL _selected;
-    CMTimeRange _timeRange;
 }
 
 @property (nonatomic) SRGPlayer *player;
@@ -67,6 +66,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) id playerPeriodicTimeObserver;
 @property (nonatomic, weak) id controllerPeriodicTimeObserver;
+
+@property (nonatomic) CMTimeRange timeRange;
+@property (nonatomic, getter=timeRangeIsConstant) BOOL timeRangeConstant;
 
 @property (nonatomic) NSTimer *stallDetectionTimer;
 @property (nonatomic) CMTime lastPlaybackTime;
@@ -178,7 +180,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             @strongify(player)
             
             AVPlayerItem *playerItem = player.currentItem;
-            if (playerItem.status == AVPlayerItemStatusReadyToPlay) {    
+            if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+                [self updateTimeRangeForPlayer:player];
+                
                 // Playback start. Use received start parameters, do not update the playback state yet, wait until the
                 // completion handler has been executed (since it might immediately start playback)
                 if (self.startPosition) {
@@ -467,15 +471,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     return _view;
 }
 
-- (CMTimeRange)timeRange
+- (CMTimeRange)timeRangeForPlayerItem:(AVPlayerItem *)playerItem
 {
-    // Cached value available. Use it
-    if (CMTIMERANGE_IS_VALID(_timeRange)) {
-        return _timeRange;
-    }
-    
-    AVPlayerItem *playerItem = self.player.currentItem;
-    
     NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
     NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
     
@@ -491,16 +488,29 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     // DVR window size too small. Check that we the stream is not an on-demand one first, of course
     if (CMTIME_IS_INDEFINITE(playerItem.duration) && CMTimeGetSeconds(timeRange.duration) < self.minimumDVRWindowLength) {
-        timeRange = CMTimeRangeMake(timeRange.start, kCMTimeZero);
+        return CMTimeRangeMake(timeRange.start, kCMTimeZero);
     }
+    else {
+        return timeRange;
+    }
+}
+
+- (void)updateTimeRangeForPlayer:(AVPlayer *)player
+{
+    if (self.timeRangeConstant) {
+        return;
+    }
+    
+    AVPlayerItem *playerItem = player.currentItem;
+    CMTimeRange timeRange = [self timeRangeForPlayerItem:playerItem];
     
     // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when AirPlay is
     // connected or disconnected)
     if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
-        _timeRange = timeRange;
+        self.timeRangeConstant = YES;
     }
     
-    return timeRange;
+    self.timeRange = timeRange;
 }
 
 - (CMTime)currentTime
@@ -953,7 +963,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     [self reset];
     
-    _timeRange = kCMTimeRangeInvalid;
+    self.timeRange = kCMTimeRangeInvalid;
+    self.timeRangeConstant = NO;
     
     self.contentURL = URL;
     self.URLAsset = URLAsset;
@@ -985,6 +996,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
             self.mediaConfigurationBlock ? self.mediaConfigurationBlock(playerItem, URLAsset) : nil;
+            [self updateTracksForPlayer:self.player];
         }
     }];
     
@@ -1060,8 +1072,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         self.player = nil;
     }
     
-    _timeRange = kCMTimeRangeInvalid;
     _selected = NO;
+    
+    self.timeRange = kCMTimeRangeInvalid;
+    self.timeRangeConstant = NO;
     
     self.previousSegment = nil;
     self.targetSegment = nil;
@@ -1075,6 +1089,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.lastPlaybackTime = kCMTimeIndefinite;
     self.lastStallDetectionDate = nil;
     
+    [self updateTimeRangeForPlayer:nil];
     [self updateTracksForPlayer:nil];
     
 #if TARGET_OS_IOS
@@ -1384,6 +1399,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     self.controllerPeriodicTimeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
+        [self updateTimeRangeForPlayer:player];
         [self updateTracksForPlayer:player];
     }];
 }

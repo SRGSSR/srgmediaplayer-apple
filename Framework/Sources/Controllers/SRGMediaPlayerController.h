@@ -449,7 +449,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) AVURLAsset *URLAsset;
 
 /**
- *  The current media time range (might be empty or indefinite).
+ *  The current media time range (might be empty or indefinite). Key-value observable.
  *
  *  @discussion Use `CMTimeRange` macros for checking time ranges, see `CMTimeRange+SRGMediaPlayer.h`. For DVR
  *              streams with sliding windows, the range start can vary as the stream is played. For DVR streams
