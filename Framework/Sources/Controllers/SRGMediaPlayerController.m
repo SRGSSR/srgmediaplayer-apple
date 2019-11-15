@@ -405,6 +405,39 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     SRGMediaPlayerLogDebug(@"Controller", @"Playback state did change to %@ with info %@", SRGMediaPlayerControllerNameForPlaybackState(playbackState), fullUserInfo);
 }
 
+- (void)setMediaType:(SRGMediaPlayerMediaType)mediaType
+{
+    if (mediaType == _mediaType) {
+        return;
+    }
+    
+    [self willChangeValueForKey:@keypath(self.mediaType)];
+    _mediaType = mediaType;
+    [self didChangeValueForKey:@keypath(self.mediaType)];
+}
+
+- (void)setTimeRange:(CMTimeRange)timeRange
+{
+    if (CMTimeRangeEqual(timeRange, _timeRange)) {
+        return;
+    }
+    
+    [self willChangeValueForKey:@keypath(self.timeRange)];
+    _timeRange = timeRange;
+    [self didChangeValueForKey:@keypath(self.timeRange)];
+}
+
+- (void)setStreamType:(SRGMediaPlayerStreamType)streamType
+{
+    if (streamType == _streamType) {
+        return;
+    }
+    
+    [self willChangeValueForKey:@keypath(self.streamType)];
+    _streamType = streamType;
+    [self didChangeValueForKey:@keypath(self.streamType)];
+}
+
 - (void)setSegments:(NSArray<id<SRGSegment>> *)segments
 {
     if (segments && self.previousSegment) {
@@ -504,9 +537,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)updatePlaybackInformationForPlayer:(AVPlayer *)player
 {
     [self updateMediaTypeForPlayer:player];
-    
-    CMTimeRange timeRange = [self updateTimeRangeForPlayer:player];
-    [self updateStreamTypeForPlayer:player timeRange:timeRange];
+    [self updateTimeRangeForPlayer:player];
+    [self updateStreamTypeForPlayer:player];
 }
 
 - (void)updateMediaTypeForPlayer:(AVPlayer *)player
@@ -529,27 +561,26 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.mediaType = CGSizeEqualToSize(presentationSizeValue.CGSizeValue, CGSizeZero) ? SRGMediaPlayerMediaTypeAudio : SRGMediaPlayerMediaTypeVideo;
 }
 
-- (CMTimeRange)updateTimeRangeForPlayer:(AVPlayer *)player
+- (void)updateTimeRangeForPlayer:(AVPlayer *)player
 {
     if (self.timeRangeCached) {
-        return self.timeRange;
+        return;
     }
     
     AVPlayerItem *playerItem = player.currentItem;
-    CMTimeRange timeRange = [self timeRangeForPlayerItem:playerItem];
+    self.timeRange = [self timeRangeForPlayerItem:playerItem];
     
     // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when AirPlay is
     // connected or disconnected)
-    if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
+    if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(self.timeRange)) {
         self.timeRangeCached = YES;
     }
-    
-    self.timeRange = timeRange;
-    return timeRange;
 }
 
-- (void)updateStreamTypeForPlayer:(AVPlayer *)player timeRange:(CMTimeRange)timeRange
+- (void)updateStreamTypeForPlayer:(AVPlayer *)player
 {
+    CMTimeRange timeRange = self.timeRange;
+    
     if (self.streamTypeCached || CMTIMERANGE_IS_INVALID(timeRange)) {
         return;
     }
@@ -1586,7 +1617,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
 {
-    if ([key isEqualToString:@keypath(SRGMediaPlayerController.new, playbackState)]) {
+    if ([key isEqualToString:@keypath(SRGMediaPlayerController.new, playbackState)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, mediaType)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, timeRange)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, streamType)]) {
         return NO;
     }
     else {

@@ -2271,11 +2271,15 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
-    // For livestreams we continue to receive updates.
-    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, streamType) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
-        return [change[NSKeyValueChangeNewKey] integerValue] == SRGMediaPlayerStreamTypeLive;
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more stream type changes should be reported");
     }];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType)];
+    }];
 }
 
 - (void)testDVRStreamTypeKeyValueObserving
@@ -2288,11 +2292,15 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self expectationForElapsedTimeInterval:4. withHandler:nil];
     
-    // For livestreams we continue to receive updates.
-    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, streamType) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
-        return [change[NSKeyValueChangeNewKey] integerValue] == SRGMediaPlayerStreamTypeDVR;
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more stream type changes should be reported");
     }];
-    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType)];
+    }];
 }
 
 - (void)testStalled
