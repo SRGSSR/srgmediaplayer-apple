@@ -84,7 +84,6 @@ static void commonInit(SRGPlaybackButton *self);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
-        [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                     object:_mediaPlayerController];
@@ -94,12 +93,6 @@ static void commonInit(SRGPlaybackButton *self);
     [self refreshButton];
     
     if (mediaPlayerController) {
-        @weakify(self)
-        self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
-            @strongify(self)
-            
-            [self refreshButton];
-        }];
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(mediaPlayerPlaybackStateDidChange:)
                                                    name:SRGMediaPlayerPlaybackStateDidChangeNotification
