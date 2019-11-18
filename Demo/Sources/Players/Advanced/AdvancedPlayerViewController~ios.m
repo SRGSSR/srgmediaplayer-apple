@@ -198,7 +198,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-    return _userInterfaceHidden;
+    return _userInterfaceHidden && self.mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeVideo;
 }
 
 #pragma mark UI
@@ -296,7 +296,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     [self setNeedsStatusBarAppearanceUpdate];
     
     for (UIView *view in self.overlayViews) {
-        view.alpha = hidden ? 0.f : 1.f;
+        view.alpha = (hidden && self.mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeVideo) ? 0.f : 1.f;
     }
 }
 
