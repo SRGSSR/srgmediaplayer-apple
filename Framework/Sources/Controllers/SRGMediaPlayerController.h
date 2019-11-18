@@ -518,6 +518,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion Your can registers observers with the media player controller when you like (you do not have to wait until the player
  *              is ready, observers will be attached to it automatically when appropriate). Note that such observers are not removed
  *              when the player controller is reset (they will not execute until playback is started again).
+ *
+ *              In general, prefer notifications and KVO to periodic time observers. Most important controller property changes
+ *              can be observed instead of constantly checked for changes (e.g. `playbackState` or `timeRange`). Refer to the
+ *              documentation for more information about these properties and how they can be observed.
  */
 - (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
 

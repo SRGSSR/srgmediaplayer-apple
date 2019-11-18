@@ -133,6 +133,9 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType) options:0 block:^(MAKVONotification *notification) {
         [self updateUserInterface];
     }];
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, timeRange) options:0 block:^(MAKVONotification *notification) {
+        [self updateUserInterface];
+    }];
     [self updateUserInterface];
     
     [self updateInterfaceForControlsHidden:NO];
@@ -240,7 +243,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         self.audioOnlyImageView.hidden = YES;
     }
     
-    // TODO: Probably requires a dedicated time observer
     self.skipForwardButton.hidden = ! [self canSkipForward];
     self.skipBackwardButton.hidden = ! [self canSkipBackward];
 }
