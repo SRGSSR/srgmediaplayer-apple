@@ -9,6 +9,7 @@
 #import "Resources.h"
 
 #import <libextobjc/libextobjc.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 const NSInteger kBackwardSkipInterval = 15.;
@@ -70,24 +71,11 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [super viewDidLoad];
     
-    __weak __typeof(self) weakSelf = self;
-    
+    @weakify(self)
     self.mediaPlayerController.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
-        weakSelf.mediaPlayerController.pictureInPictureController.delegate = weakSelf;
+        @strongify(self)
+        self.mediaPlayerController.pictureInPictureController.delegate = self;
     };
-    
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(playbackStateDidChange:)
-                                               name:SRGMediaPlayerPlaybackStateDidChangeNotification
-                                             object:self.mediaPlayerController];
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(playbackDidFail:)
-                                               name:SRGMediaPlayerPlaybackDidFailNotification
-                                             object:self.mediaPlayerController];
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(accessibilityVoiceOverStatusChanged:)
-                                               name:UIAccessibilityVoiceOverStatusChanged
-                                             object:nil];
     
     self.playbackButton.playImage = [UIImage imageNamed:@"play"];
     self.playbackButton.pauseImage = [UIImage imageNamed:@"pause"];
@@ -129,10 +117,20 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         view.clipsToBounds = YES;
     }
     
-    @weakify(self)
-    self.periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
-        @strongify(self)
-        
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(playbackStateDidChange:)
+                                               name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                             object:self.mediaPlayerController];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(playbackDidFail:)
+                                               name:SRGMediaPlayerPlaybackDidFailNotification
+                                             object:self.mediaPlayerController];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(accessibilityVoiceOverStatusChanged:)
+                                               name:UIAccessibilityVoiceOverStatusChanged
+                                             object:nil];
+    
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType) options:0 block:^(MAKVONotification *notification) {
         [self updateUserInterface];
     }];
     [self updateUserInterface];
@@ -220,7 +218,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
             break;
         }
             
-        case SRGMediaPlayerPlaybackStateSeeking:
         case SRGMediaPlayerPlaybackStateStalled: {
             self.timeSlider.timeLeftValueLabel.hidden = NO;
             self.timeSlider.valueLabel.hidden = YES;
@@ -236,19 +233,16 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         }
     }
     
-    self.skipForwardButton.hidden = ! [self canSkipForward];
-    self.skipBackwardButton.hidden = ! [self canSkipBackward];
-    
-    if (self.mediaPlayerController.mediaType != SRGMediaPlayerMediaTypeAudio) {
-        self.mediaPlayerController.view.hidden = NO;
-        self.audioOnlyImageView.hidden = YES;
+    if (self.mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeAudio) {
+        self.audioOnlyImageView.hidden = AVAudioSession.srg_isAirPlayActive;
     }
     else {
-        [self updateInterfaceForControlsHidden:NO];
-        
-        self.mediaPlayerController.view.hidden = YES;
-        self.audioOnlyImageView.hidden = NO;
+        self.audioOnlyImageView.hidden = YES;
     }
+    
+    // TODO: Probably requires a dedicated time observer
+    self.skipForwardButton.hidden = ! [self canSkipForward];
+    self.skipBackwardButton.hidden = ! [self canSkipBackward];
 }
 
 - (void)restartInactivityTracker
@@ -458,8 +452,10 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateEnded) {
         [self updateInterfaceForControlsHidden:NO];
     }
-    else if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-        self.errorImageView.hidden = YES;
+    else {
+        if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+            self.errorImageView.hidden = YES;
+        }
         [self updateUserInterface];
     }
 }
