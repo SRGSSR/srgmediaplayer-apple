@@ -24,7 +24,6 @@ static void commonInit(SRGAirPlayButton *self);
 @property (nonatomic, weak) AVRoutePickerView *routePickerView API_AVAILABLE(ios(11.0));
 
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
-@property (nonatomic, weak) id periodicTimeObserver;
 
 @end
 
@@ -63,7 +62,7 @@ static void commonInit(SRGAirPlayButton *self);
     if (_mediaPlayerController) {
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
-        [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.mediaType)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification
@@ -91,7 +90,7 @@ static void commonInit(SRGAirPlayButton *self);
             [self updateAppearance];
         }];
         
-        self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.mediaType) options:0 block:^(MAKVONotification * _Nonnull notification) {
             @strongify(self)
             [self updateAppearance];
         }];
