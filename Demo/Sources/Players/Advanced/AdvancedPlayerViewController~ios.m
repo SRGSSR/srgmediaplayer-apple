@@ -130,10 +130,13 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
                                                name:UIAccessibilityVoiceOverStatusChanged
                                              object:nil];
     
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, timeRange) options:0 block:^(MAKVONotification *notification) {
+        [self updateUserInterface];
+    }];
     [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType) options:0 block:^(MAKVONotification *notification) {
         [self updateUserInterface];
     }];
-    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, timeRange) options:0 block:^(MAKVONotification *notification) {
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType) options:0 block:^(MAKVONotification *notification) {
         [self updateUserInterface];
     }];
     [self updateUserInterface];
