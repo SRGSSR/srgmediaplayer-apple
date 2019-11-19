@@ -438,13 +438,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerController (Status)
 
 /**
- *  The current state of the media player controller.
- *
- *  @discussion This property is key-value observable.
- */
-@property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
-
-/**
  *  The URL of the content currently loaded into the player.
  */
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
@@ -453,6 +446,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  The URL asset currently loaded into the player.
  */
 @property (nonatomic, readonly, nullable) AVURLAsset *URLAsset;
+
+/**
+ *  The current state of the media player controller. Key-value observable.
+ */
+@property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
 
 /**
  *  The current media time range (might be empty or indefinite). Key-value observable.
@@ -497,7 +495,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSDate *date;
 
 /**
- *  Return `YES` iff the stream is currently played in live conditions (@see `liveTolerance`).
+ *  Return `YES` iff the stream is currently played in live conditions (@see `liveTolerance`). Key-value observable.
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 

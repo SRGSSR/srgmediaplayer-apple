@@ -2303,9 +2303,80 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
 }
 
+- (void)testOnDemandIsLiveKeyValueObserving
+{
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more stream type changes should be reported");
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live)];
+    }];
+}
+
+- (void)testLiveIsLiveKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@YES];
+    
+    [self.mediaPlayerController playURL:LiveTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more live status changes should be reported");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live)];
+    }];
+}
+
+- (void)testDVRIsLiveKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@YES];
+    
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No live status type changes should be reported");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live)];
+    }];
+    
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@NO];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:self.mediaPlayerController.timeRange.start] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@YES];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeRangeGetEnd(self.mediaPlayerController.timeRange)] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
 - (void)testStalled
 {
-    // Idea (might take some time to implement, later): We could expose the resourceLoader property of the AVURLAsset we
+    // TODO: Idea (might take some time to implement, later): We could expose the resourceLoader property of the AVURLAsset we
     // can additionally create when instantiating the AVPlayer. Using AVAssetResourceLoader, it is possible to load
     // data in a custom way (in our case, to simulate a slow network). Custom URL protocols cannot be used with AVPlayer
 }

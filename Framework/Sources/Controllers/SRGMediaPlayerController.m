@@ -75,6 +75,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) SRGMediaPlayerStreamType streamType;
 @property (nonatomic, getter=isStreamTypeCached) BOOL streamTypeCached;
 
+@property (nonatomic, getter=isLive) BOOL live;
+
 @property (nonatomic) NSTimer *stallDetectionTimer;
 @property (nonatomic) CMTime lastPlaybackTime;
 @property (nonatomic) NSDate *lastStallDetectionDate;
@@ -438,6 +440,17 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     [self didChangeValueForKey:@keypath(self.streamType)];
 }
 
+- (void)setLive:(BOOL)live
+{
+    if (live == _live) {
+        return;
+    }
+    
+    [self willChangeValueForKey:@keypath(self.live)];
+    _live = live;
+    [self didChangeValueForKey:@keypath(self.live)];
+}
+
 - (void)setSegments:(NSArray<id<SRGSegment>> *)segments
 {
     if (segments && self.previousSegment) {
@@ -539,6 +552,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     [self updateMediaTypeForPlayer:player];
     [self updateTimeRangeForPlayer:player];
     [self updateStreamTypeForPlayer:player];
+    [self updateLiveForPlayer:player];
 }
 
 - (void)updateMediaTypeForPlayer:(AVPlayer *)player
@@ -601,6 +615,20 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         else {
             self.streamType = SRGMediaPlayerStreamTypeLive;
         }
+    }
+}
+
+- (void)updateLiveForPlayer:(AVPlayer *)player
+{
+    if (self.streamType == SRGMediaPlayerStreamTypeLive) {
+        self.live = YES;
+    }
+    else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
+        AVPlayerItem *playerItem = player.currentItem;
+        self.live = CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), playerItem.currentTime)) < self.liveTolerance;
+    }
+    else {
+        self.live = NO;
     }
 }
 
@@ -682,24 +710,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     else {
         return nil;
-    }
-}
-
-- (BOOL)isLive
-{
-    AVPlayerItem *playerItem = self.player.currentItem;
-    if (! playerItem) {
-        return NO;
-    }
-    
-    if (self.streamType == SRGMediaPlayerStreamTypeLive) {
-        return YES;
-    }
-    else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
-        return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), playerItem.currentTime)) < self.liveTolerance;
-    }
-    else {
-        return NO;
     }
 }
 
@@ -1019,14 +1029,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     [self reset];
     
-    self.mediaType = SRGMediaPlayerMediaTypeUnknown;
-    
-    self.timeRange = kCMTimeRangeInvalid;
-    self.timeRangeCached = NO;
-    
-    self.streamType = SRGMediaPlayerStreamTypeUnknown;
-    self.streamTypeCached = NO;
-    
     self.contentURL = URL;
     self.URLAsset = URLAsset;
     
@@ -1144,6 +1146,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     self.streamType = SRGMediaPlayerStreamTypeUnknown;
     self.streamTypeCached = NO;
+    
+    self.live = NO;
     
     self.previousSegment = nil;
     self.targetSegment = nil;
@@ -1622,7 +1626,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     if ([key isEqualToString:@keypath(SRGMediaPlayerController.new, playbackState)]
             || [key isEqualToString:@keypath(SRGMediaPlayerController.new, mediaType)]
             || [key isEqualToString:@keypath(SRGMediaPlayerController.new, timeRange)]
-            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, streamType)]) {
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, streamType)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, live)]) {
         return NO;
     }
     else {
