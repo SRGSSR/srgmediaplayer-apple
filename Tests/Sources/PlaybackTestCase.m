@@ -2345,6 +2345,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@YES];
     
+    self.mediaPlayerController.liveTolerance = 15.;
     [self.mediaPlayerController playURL:DVRTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -2370,6 +2371,12 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@YES];
     
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeRangeGetEnd(self.mediaPlayerController.timeRange)] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@NO];
+    
+    [self.mediaPlayerController pause];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
