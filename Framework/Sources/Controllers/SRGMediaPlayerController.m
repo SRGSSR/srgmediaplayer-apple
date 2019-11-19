@@ -1393,7 +1393,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)updateTracksForPlayer:(AVPlayer *)player
 {
     AVMediaSelectionOption *audioOption = [self selectedOptionForPlayer:player withMediaCharacteristic:AVMediaCharacteristicAudible];
-    if ((audioOption || self.audioOption) && ! [audioOption isEqual:self.audioOption]) {
+    if (audioOption != self.audioOption && ! [audioOption isEqual:self.audioOption]) {
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
         if (self.audioOption) {
             userInfo[SRGMediaPlayerPreviousTrackKey] = self.audioOption;
@@ -1410,7 +1410,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     
     AVMediaSelectionOption *subtitleOption = [self selectedOptionForPlayer:player withMediaCharacteristic:AVMediaCharacteristicLegible];
-    if ((subtitleOption || self.subtitleOption) && ! [subtitleOption isEqual:self.subtitleOption]) {
+    if (subtitleOption != self.subtitleOption && ! [subtitleOption isEqual:self.subtitleOption]) {
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
         if (self.subtitleOption) {
             userInfo[SRGMediaPlayerPreviousTrackKey] = self.subtitleOption;
