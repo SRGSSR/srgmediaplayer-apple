@@ -131,8 +131,8 @@ static void commonInit(SRGAirPlayButton *self);
 
 - (UIImage *)videoImage
 {
-    // `AVRoutePickerView`: Image is already the one we want if not specified
-    if (@available(iOS 11, *)) {
+    // `AVRoutePickerView`: Image is already the one we want if not specified, but was introduced with iOS 13
+    if (@available(iOS 13, *)) {
         return _videoImage;
     }
     // `MPVolumeView`: Use bundled AirPlay icon when no image is specified.
