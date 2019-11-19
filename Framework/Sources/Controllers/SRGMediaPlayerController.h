@@ -170,9 +170,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Overlapping segments are not supported, associated time ranges must be disjoint (the behavior is otherwise undefined).
  *
- *  ## Boundary time and periodic time observers
+ *  ## KVO, boundary time and periodic time observers
  *
- *  Three kinds of observers can be set on a player to observe its playback:
+ *  In addition to notification registrations, three kinds of observation mechanisms can be set on a player to observe
+ *  changes to some of its properties:
+ *    - KVO, for properties offering support for it, e.g. `timeRange`, `mediaType` or `streamType`.
  *    - Usual boundary time and periodic time observers, which you define on the `AVPlayer` instance directly by accessing
  *      the `player` property. You should use the player creation and destruction blocks to install and remove them reliably.
  *    - `AVPlayer` periodic time observers only trigger when the player actually plays. In some cases, you still want to
@@ -180,6 +182,10 @@ NS_ASSUME_NONNULL_BEGIN
  *      For such use cases, `SRGMediaPlayerController` provides the `-addPeriodicTimeObserverForInterval:queue:usingBlock:`
  *      method, with which such observers can be defined. These observers being managed by the controller, you can set them
  *      up right after controller creation if you like.
+ *
+ *  In general, you should prefer notifications and KVO to periodic observers with short periodicity where possible, as
+ *  this avoids performing unnecessary work too often (KVO updates are triggered only when value changes occur). If you
+ *  need a periodic time observer with a short periodicity, try to keep the work it performs small.
  *
  *  For more information about `AVPlayer` observers, please refer to the official Apple documentation.
  */
@@ -518,10 +524,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion Your can registers observers with the media player controller when you like (you do not have to wait until the player
  *              is ready, observers will be attached to it automatically when appropriate). Note that such observers are not removed
  *              when the player controller is reset (they will not execute until playback is started again).
- *
- *              In general, prefer notifications and KVO to periodic time observers. Most important controller property changes
- *              can be observed instead of constantly checked for changes (e.g. `playbackState` or `timeRange`). Refer to the
- *              documentation for more information about these properties and how they can be observed.
  */
 - (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue usingBlock:(void (^)(CMTime time))block;
 
