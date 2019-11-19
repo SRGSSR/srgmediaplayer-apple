@@ -71,12 +71,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [super viewDidLoad];
     
-    @weakify(self)
-    self.mediaPlayerController.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
-        @strongify(self)
-        self.mediaPlayerController.pictureInPictureController.delegate = self;
-    };
-    
     self.playbackButton.playImage = [UIImage imageNamed:@"play"];
     self.playbackButton.pauseImage = [UIImage imageNamed:@"pause"];
     
@@ -130,13 +124,22 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
                                                name:UIAccessibilityVoiceOverStatusChanged
                                              object:nil];
     
+    @weakify(self)
+    self.mediaPlayerController.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
+        @strongify(self)
+        self.mediaPlayerController.pictureInPictureController.delegate = self;
+    };
+    
     [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, timeRange) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
         [self updateUserInterface];
     }];
     [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
         [self updateUserInterface];
     }];
     [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
         [self updateUserInterface];
     }];
     [self updateUserInterface];
