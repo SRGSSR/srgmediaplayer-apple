@@ -113,13 +113,13 @@ static void commonInit(SRGAirPlayButton *self);
 
 - (UIImage *)audioImage
 {
-    // `AVRoutePickerView`: Image is already the one we want if not specified (AirPlay audio)
+    // `AVRoutePickerView`: Image is already the one we want if not specified
     if (@available(iOS 11, *)) {
         return _audioImage;
     }
-    // `MPVolumeView`: Use bundled AirPlay audio icon when no image is specified.
+    // `MPVolumeView`: Use bundled AirPlay icon when no image is specified.
     else {
-        return _audioImage ?: [UIImage imageNamed:@"airplay" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+        return _audioImage ?: [UIImage imageNamed:@"airplay_audio" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
     }
 }
 
@@ -127,6 +127,18 @@ static void commonInit(SRGAirPlayButton *self);
 {
     _audioImage = audioImage;
     [self updateAppearance];
+}
+
+- (UIImage *)videoImage
+{
+    // `AVRoutePickerView`: Image is already the one we want if not specified
+    if (@available(iOS 11, *)) {
+        return _videoImage;
+    }
+    // `MPVolumeView`: Use bundled AirPlay icon when no image is specified.
+    else {
+        return _videoImage ?: [UIImage imageNamed:@"airplay_video" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    }
 }
 
 - (void)setVideoImage:(UIImage *)videoImage
