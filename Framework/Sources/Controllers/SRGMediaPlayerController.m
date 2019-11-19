@@ -1056,8 +1056,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         @strongify(self)
         
         if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-            self.mediaConfigurationBlock ? self.mediaConfigurationBlock(playerItem, URLAsset) : nil;
-            [self updateTracksForPlayer:self.player];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.mediaConfigurationBlock ? self.mediaConfigurationBlock(playerItem, URLAsset) : nil;
+                [self updateTracksForPlayer:self.player];
+            });
         }
     }];
     
