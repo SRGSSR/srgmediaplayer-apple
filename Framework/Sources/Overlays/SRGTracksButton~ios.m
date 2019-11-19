@@ -272,7 +272,10 @@ static void commonInit(SRGTracksButton *self);
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [fakeInterfaceBuilderButton setImage:self.image forState:UIControlStateNormal];
+    
+    UIImage *image = [UIImage imageNamed:@"alternate_tracks" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    [fakeInterfaceBuilderButton setImage:image forState:UIControlStateNormal];
+    
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
     

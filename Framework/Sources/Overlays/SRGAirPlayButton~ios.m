@@ -302,7 +302,10 @@ static void commonInit(SRGAirPlayButton *self);
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [fakeInterfaceBuilderButton setImage:self.audioImage forState:UIControlStateNormal];
+    
+    UIImage *image = [UIImage imageNamed:@"airplay_audio" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    [fakeInterfaceBuilderButton setImage:image forState:UIControlStateNormal];
+    
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
 }
