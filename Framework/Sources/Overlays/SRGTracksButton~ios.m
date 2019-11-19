@@ -152,14 +152,14 @@ static void commonInit(SRGTracksButton *self);
         NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
         
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        NSArray<AVMediaSelectionOption *> *subtitleOptions = subtitleGroup.options;
+        NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];;
         
         if (audioOptions.count > 1 || subtitleOptions.count != 0) {
             self.hidden = NO;
             
             // Enable the button if an (optional) subtitle has been selected (an audio track is always selected)
             AVMediaSelectionOption *currentSubtitleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
-            [self.button setImage:(currentSubtitleOption != nil) ? self.selectedImage : self.image forState:UIControlStateNormal];
+            [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
         }
         else {
             self.hidden = YES;
