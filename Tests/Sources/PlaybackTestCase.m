@@ -63,8 +63,6 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
     
-    // Do not retain the controller anymore, and force an autorelease pool collection. The weak reference must be nilled
-    // automatically if the controller is correctly deallocated
     @autoreleasepool {
         self.mediaPlayerController = nil;
     }
@@ -72,10 +70,8 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertNil(weakMediaPlayerController);
 }
 
-- (void)testDeallocationWhilePlaying
+- (void)testDeallocationAfterPlayback
 {
-    // If the player controller is not retained, its player and all associated resources (including the player layer) must
-    // be automatically discarded
     __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
     __weak AVPlayer *weakPlayer = self.mediaPlayerController.player;
     
@@ -88,7 +84,6 @@ static NSURL *AudioOverHTTPTestURL(void)
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
         
-        // When no reference retains the player, playback must gracefully stop. Deallocation will occur right afterwards.
         [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
             return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
         }];
@@ -98,9 +93,11 @@ static NSURL *AudioOverHTTPTestURL(void)
             return weakPlayer == nil;
         }] evaluatedWithObject:self /* unused, but a non-nil argument is required  */ handler:nil];
         
-        self.mediaPlayerController = nil;
+        [self.mediaPlayerController reset];
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
+        
+        self.mediaPlayerController = nil;
     }
     
     XCTAssertNil(weakMediaPlayerController);
@@ -1584,6 +1581,27 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testResetWhilePreparing
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePreparing;
+    }];
+    
+    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() withCompletionHandler:^{
+        XCTFail(@"Must not be called");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
+    }];
+    
+    [self.mediaPlayerController reset];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
 - (void)testResetWhileSeeking
 {
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -2089,8 +2107,10 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     XCTestExpectation *observerExpectation = [self expectationWithDescription:@"Periodic time observer fired"];
     
+    __block id periodicTimeObserver = nil;
+    
     @weakify(self)
-    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         [observerExpectation fulfill];
         
@@ -2110,8 +2130,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     
+    __block id periodicTimeObserver = nil;
+    
     @weakify(self)
-    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         [observerExpectation fulfill];
         
@@ -2144,8 +2166,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     [self.mediaPlayerController reset];
     
+    __block id periodicTimeObserver = nil;
+    
     @weakify(self)
-    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         XCTFail(@"Periodic time observers are not fired when the player is idle");
     }];
