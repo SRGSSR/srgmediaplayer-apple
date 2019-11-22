@@ -310,22 +310,22 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 - (BOOL)canSkipBackward
 {
-    return [self canSkipBackwardFromTime:[self seekStartTime]];
+    return [self canSkipFromTime:[self seekStartTime] withInterval:-kBackwardSkipInterval];
 }
 
 - (BOOL)canSkipForward
 {
-    return [self canSkipForwardFromTime:[self seekStartTime]];
+    return [self canSkipFromTime:[self seekStartTime] withInterval:kForwardSkipInterval];
 }
 
 - (void)skipBackwardWithCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
-    [self skipBackwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
+    [self skipFromTime:[self seekStartTime] withInterval:-kBackwardSkipInterval completionHandler:completionHandler];
 }
 
 - (void)skipForwardWithCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
-    [self skipForwardFromTime:[self seekStartTime] withCompletionHandler:completionHandler];
+    [self skipFromTime:[self seekStartTime] withInterval:kForwardSkipInterval completionHandler:completionHandler];
 }
 
 - (CMTime)seekStartTime
@@ -333,7 +333,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     return CMTIME_IS_INDEFINITE(self.mediaPlayerController.seekTargetTime) ? self.mediaPlayerController.currentTime : self.mediaPlayerController.seekTargetTime;
 }
 
-- (BOOL)canSkipBackwardFromTime:(CMTime)time
+- (BOOL)canSkipFromTime:(CMTime)time withInterval:(NSTimeInterval)interval
 {
     if (CMTIME_IS_INDEFINITE(time)) {
         return NO;
@@ -347,51 +347,23 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     }
     
     SRGMediaPlayerStreamType streamType = mediaPlayerController.streamType;
-    return (streamType == SRGMediaPlayerStreamTypeOnDemand || streamType == SRGMediaPlayerStreamTypeDVR);
+    if (interval <= 0) {
+        return (streamType == SRGMediaPlayerStreamTypeOnDemand || streamType == SRGMediaPlayerStreamTypeDVR);
+    }
+    else {
+        return (streamType == SRGMediaPlayerStreamTypeOnDemand && CMTimeGetSeconds(time) + interval < CMTimeGetSeconds(mediaPlayerController.player.currentItem.duration))
+            || (streamType == SRGMediaPlayerStreamTypeDVR && ! mediaPlayerController.live);
+    }
 }
 
-- (BOOL)canSkipForwardFromTime:(CMTime)time
+- (void)skipFromTime:(CMTime)time withInterval:(NSTimeInterval)interval completionHandler:(void (^)(BOOL finished))completionHandler
 {
-    if (CMTIME_IS_INDEFINITE(time)) {
-        return NO;
-    }
-    
-    SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
-    SRGMediaPlayerPlaybackState playbackState = mediaPlayerController.playbackState;
-    
-    if (playbackState == SRGMediaPlayerPlaybackStateIdle || playbackState == SRGMediaPlayerPlaybackStatePreparing) {
-        return NO;
-    }
-    
-    SRGMediaPlayerStreamType streamType = mediaPlayerController.streamType;
-    return (streamType == SRGMediaPlayerStreamTypeOnDemand && CMTimeGetSeconds(time) + kForwardSkipInterval < CMTimeGetSeconds(mediaPlayerController.player.currentItem.duration))
-        || (streamType == SRGMediaPlayerStreamTypeDVR && ! mediaPlayerController.live);
-}
-
-- (void)skipBackwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
-{
-    if (! [self canSkipBackwardFromTime:time]) {
+    if (! [self canSkipFromTime:time withInterval:interval]) {
         completionHandler ? completionHandler(NO) : nil;
         return;
     }
     
-    CMTime targetTime = CMTimeSubtract(time, CMTimeMakeWithSeconds(kBackwardSkipInterval, NSEC_PER_SEC));
-    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
-        if (finished) {
-            [self.mediaPlayerController play];
-        }
-        completionHandler ? completionHandler(finished) : nil;
-    }];
-}
-
-- (void)skipForwardFromTime:(CMTime)time withCompletionHandler:(void (^)(BOOL finished))completionHandler
-{
-    if (! [self canSkipForwardFromTime:time]) {
-        completionHandler ? completionHandler(NO) : nil;
-        return;
-    }
-    
-    CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(kForwardSkipInterval, NSEC_PER_SEC));
+    CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(interval, NSEC_PER_SEC));
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
             [self.mediaPlayerController play];
