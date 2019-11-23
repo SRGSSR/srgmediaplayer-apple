@@ -38,8 +38,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 @property (nonatomic) NSTimer *inactivityTimer;
 
-@property (nonatomic, weak) id periodicTimeObserver;
-
 @end
 
 @implementation AdvancedPlayerViewController {
@@ -130,19 +128,17 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         self.mediaPlayerController.pictureInPictureController.delegate = self;
     };
     
-    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, timeRange) options:0 block:^(MAKVONotification *notification) {
-        @strongify(self)
-        [self updateUserInterface];
-    }];
     [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType) options:0 block:^(MAKVONotification *notification) {
         @strongify(self)
-        [self updateUserInterface];
+        [self updateAudioOnlyUserInterface];
     }];
-    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType) options:0 block:^(MAKVONotification *notification) {
+    [self updateAudioOnlyUserInterface];
+    
+    [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
         @strongify(self)
-        [self updateUserInterface];
+        [self updateSkipButtons];
     }];
-    [self updateUserInterface];
+    [self updateSkipButtons];
     
     [self updateInterfaceForControlsHidden:NO];
     [self restartInactivityTracker];
@@ -209,7 +205,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 #pragma mark UI
 
-- (void)updateUserInterface
+- (void)updateMainPlaybackControls
 {
     SRGMediaPlayerPlaybackState playbackState = self.mediaPlayerController.playbackState;
     switch (playbackState) {
@@ -241,14 +237,20 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
             break;
         }
     }
-    
+}
+
+- (void)updateAudioOnlyUserInterface
+{
     if (self.mediaPlayerController.mediaType == SRGMediaPlayerMediaTypeAudio) {
         self.audioOnlyImageView.hidden = AVAudioSession.srg_isAirPlayActive;
     }
     else {
         self.audioOnlyImageView.hidden = YES;
     }
-    
+}
+
+- (void)updateSkipButtons
+{
     self.skipForwardButton.hidden = ! [self canSkipForward];
     self.skipBackwardButton.hidden = ! [self canSkipBackward];
 }
@@ -436,14 +438,14 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
             self.errorImageView.hidden = YES;
         }
-        [self updateUserInterface];
+        [self updateMainPlaybackControls];
     }
 }
 
 - (void)playbackDidFail:(NSNotification *)notification
 {
     self.errorImageView.hidden = NO;
-    [self updateUserInterface];
+    [self updateMainPlaybackControls];
 }
 
 - (void)accessibilityVoiceOverStatusChanged:(NSNotification *)notification
