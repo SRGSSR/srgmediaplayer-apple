@@ -170,9 +170,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  Overlapping segments are not supported, associated time ranges must be disjoint (the behavior is otherwise undefined).
  *
- *  ## Boundary time and periodic time observers
+ *  ## KVO, boundary time and periodic time observers
  *
- *  Three kinds of observers can be set on a player to observe its playback:
+ *  In addition to notification registrations, three kinds of observation mechanisms can be set on a player to observe
+ *  changes to some of its properties:
+ *    - KVO, for properties offering support for it, e.g. `timeRange`, `mediaType` or `streamType`.
  *    - Usual boundary time and periodic time observers, which you define on the `AVPlayer` instance directly by accessing
  *      the `player` property. You should use the player creation and destruction blocks to install and remove them reliably.
  *    - `AVPlayer` periodic time observers only trigger when the player actually plays. In some cases, you still want to
@@ -180,6 +182,10 @@ NS_ASSUME_NONNULL_BEGIN
  *      For such use cases, `SRGMediaPlayerController` provides the `-addPeriodicTimeObserverForInterval:queue:usingBlock:`
  *      method, with which such observers can be defined. These observers being managed by the controller, you can set them
  *      up right after controller creation if you like.
+ *
+ *  In general, you should prefer notifications and KVO to periodic observers with short periodicity where possible, as
+ *  this avoids performing unnecessary work too often (KVO updates are triggered only when value changes occur). If you
+ *  need a periodic time observer with a short periodicity, try to keep the work it performs small.
  *
  *  For more information about `AVPlayer` observers, please refer to the official Apple documentation.
  */
@@ -432,13 +438,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerController (Status)
 
 /**
- *  The current state of the media player controller.
- *
- *  @discussion This property is key-value observable.
- */
-@property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
-
-/**
  *  The URL of the content currently loaded into the player.
  */
 @property (nonatomic, readonly, nullable) NSURL *contentURL;
@@ -449,7 +448,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) AVURLAsset *URLAsset;
 
 /**
- *  The current media time range (might be empty or indefinite).
+ *  The current state of the media player controller. Key-value observable.
+ */
+@property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
+
+/**
+ *  The current media time range (might be empty or indefinite). Key-value observable.
  *
  *  @discussion Use `CMTimeRange` macros for checking time ranges, see `CMTimeRange+SRGMediaPlayer.h`. For DVR
  *              streams with sliding windows, the range start can vary as the stream is played. For DVR streams
@@ -475,12 +479,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CMTime seekTargetTime;
 
 /**
- *  The media type (audio / video).
+ *  The media type (audio / video). Key-value observable.
  */
 @property (nonatomic, readonly) SRGMediaPlayerMediaType mediaType;
 
 /**
- *  The stream type (live / DVR / VOD).
+ *  The stream type (live / DVR / VOD). Key-value observable.
  */
 @property (nonatomic, readonly) SRGMediaPlayerStreamType streamType;
 
@@ -491,7 +495,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSDate *date;
 
 /**
- *  Return `YES` iff the stream is currently played in live conditions (@see `liveTolerance`).
+ *  Return `YES` iff the stream is currently played in live conditions (@see `liveTolerance`). Key-value observable.
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
 

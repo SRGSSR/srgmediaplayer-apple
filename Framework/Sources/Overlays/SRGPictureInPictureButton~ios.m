@@ -184,7 +184,10 @@ static void commonInit(SRGPictureInPictureButton *self);
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [fakeInterfaceBuilderButton setImage:self.startImage forState:UIControlStateNormal];
+    
+    UIImage *image = [UIImage imageNamed:@"picture_in_picture_start" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    [fakeInterfaceBuilderButton setImage:image forState:UIControlStateNormal];
+    
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
     

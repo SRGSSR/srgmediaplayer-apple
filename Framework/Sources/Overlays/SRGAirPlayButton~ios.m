@@ -24,13 +24,13 @@ static void commonInit(SRGAirPlayButton *self);
 @property (nonatomic, weak) AVRoutePickerView *routePickerView API_AVAILABLE(ios(11.0));
 
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
-@property (nonatomic, weak) id periodicTimeObserver;
 
 @end
 
 @implementation SRGAirPlayButton
 
-@synthesize image = _image;
+@synthesize audioImage = _audioImage;
+@synthesize videoImage = _videoImage;
 @synthesize activeTintColor = _activeTintColor;
 
 #pragma mark Object lifecycle
@@ -63,7 +63,7 @@ static void commonInit(SRGAirPlayButton *self);
     if (_mediaPlayerController) {
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
-        [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.mediaType)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification
@@ -91,7 +91,7 @@ static void commonInit(SRGAirPlayButton *self);
             [self updateAppearance];
         }];
         
-        self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.mediaType) options:0 block:^(MAKVONotification * _Nonnull notification) {
             @strongify(self)
             [self updateAppearance];
         }];
@@ -111,21 +111,39 @@ static void commonInit(SRGAirPlayButton *self);
     }
 }
 
-- (UIImage *)image
+- (UIImage *)audioImage
 {
-    // `AVRoutePickerView`: Image is already the one we want if not specified (AirPlay audio)
+    // `AVRoutePickerView`: Image is already the one we want if not specified
     if (@available(iOS 11, *)) {
-        return _image;
+        return _audioImage;
     }
-    // `MPVolumeView`: Use bundled AirPlay audio icon when no image is specified.
+    // `MPVolumeView`: Use bundled AirPlay icon when no image is specified.
     else {
-        return _image ?: [UIImage imageNamed:@"airplay" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+        return _audioImage ?: [UIImage imageNamed:@"airplay_audio" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
     }
 }
 
-- (void)setImage:(UIImage *)image
+- (void)setAudioImage:(UIImage *)audioImage
 {
-    _image = image;
+    _audioImage = audioImage;
+    [self updateAppearance];
+}
+
+- (UIImage *)videoImage
+{
+    // `AVRoutePickerView`: Image is already the one we want if not specified, but was introduced with iOS 13
+    if (@available(iOS 13, *)) {
+        return _videoImage;
+    }
+    // `MPVolumeView`: Use bundled AirPlay icon when no image is specified.
+    else {
+        return _videoImage ?: [UIImage imageNamed:@"airplay_video" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    }
+}
+
+- (void)setVideoImage:(UIImage *)videoImage
+{
+    _videoImage = videoImage;
     [self updateAppearance];
 }
 
@@ -198,10 +216,17 @@ static void commonInit(SRGAirPlayButton *self);
 {
     UIButton *airPlayButton = nil;
     
+    SRGMediaPlayerMediaType mediaType = mediaPlayerController.mediaType;
+    UIImage *image = (mediaType == SRGMediaPlayerMediaTypeVideo) ? self.videoImage : self.audioImage;
+    
     // `AVRoutePickerView` is a button with no image, with layers representing the AirPlay icon instead. If we need
     // to display an image the original icon layers needs to be hidden first.
     if (@available(iOS 11, *)) {
-        BOOL hasImage = (self.image != nil);
+        if (@available(iOS 13, *)) {
+            self.routePickerView.prioritizesVideoDevices = (mediaType == SRGMediaPlayerMediaTypeVideo);
+        }
+        
+        BOOL hasImage = (image != nil);
         
         airPlayButton = self.routePickerView.srg_airPlayButton;
         airPlayButton.imageView.contentMode = hasImage ? UIViewContentModeCenter : UIViewContentModeScaleToFill;
@@ -217,8 +242,8 @@ static void commonInit(SRGAirPlayButton *self);
         airPlayButton.tintColor = AVAudioSession.srg_isAirPlayActive ? self.activeTintColor : self.tintColor;
     }
     
-    [airPlayButton setImage:self.image forState:UIControlStateNormal];
-    [airPlayButton setImage:self.image forState:UIControlStateSelected];
+    [airPlayButton setImage:image forState:UIControlStateNormal];
+    [airPlayButton setImage:image forState:UIControlStateSelected];
     
     BOOL (^multipleRoutesDetected)(void) = ^{
         if (@available(iOS 11, *)) {
@@ -277,7 +302,10 @@ static void commonInit(SRGAirPlayButton *self);
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [fakeInterfaceBuilderButton setImage:self.image forState:UIControlStateNormal];
+    
+    UIImage *image = [UIImage imageNamed:@"airplay_audio" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    [fakeInterfaceBuilderButton setImage:image forState:UIControlStateNormal];
+    
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
 }

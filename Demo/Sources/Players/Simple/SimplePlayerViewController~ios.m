@@ -10,6 +10,7 @@
 #import "SegmentCollectionViewCell.h"
 
 #import <libextobjc/libextobjc.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface SimplePlayerViewController ()
@@ -53,12 +54,11 @@
     self.mediaPlayerController.view.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
     
     @weakify(self)
-    [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live) options:0 block:^(MAKVONotification *notification) {
         @strongify(self)
-        if (self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
-            [self updateLiveButton];
-        }
+        [self updateLiveButton];
     }];
+    [self updateLiveButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -83,7 +83,7 @@
 {
     if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
         [UIView animateWithDuration:0.2 animations:^{
-            self.liveButton.alpha = self.timeSlider.live ? 0.f : 1.f;
+            self.liveButton.alpha = self.mediaPlayerController.live ? 0.f : 1.f;
         }];
     }
     else {
@@ -110,11 +110,6 @@
     }
     
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeRangeGetEnd(timeRange)] withCompletionHandler:nil];
-}
-
-- (IBAction)seek:(id)sender
-{
-    [self updateLiveButton];
 }
 
 @end

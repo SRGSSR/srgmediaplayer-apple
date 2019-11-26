@@ -32,9 +32,10 @@ API_UNAVAILABLE(tvos)
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
- *  Image customization (a default image is used if not set).
+ *  Image customization (default images are used if not set).
  */
-@property (nonatomic, null_resettable) UIImage *image;
+@property (nonatomic, null_resettable) UIImage *audioImage;         // Displayed for audio content.
+@property (nonatomic, null_resettable) UIImage *videoImage;         // Displayed for video content.
 
 /**
  *  The tint color to apply when AirPlay is active (if nil, then the usual blue tint color is applied).

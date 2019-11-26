@@ -139,9 +139,6 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    [self.button setImage:self.image forState:UIControlStateNormal];
-    [self.button setImage:self.selectedImage forState:UIControlStateSelected];
-    
     AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
     AVAsset *asset = playerItem.asset;
     
@@ -155,15 +152,14 @@ static void commonInit(SRGTracksButton *self);
         NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
         
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        NSArray<AVMediaSelectionOption *> *subtitleOptions = subtitleGroup.options;
+        NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];;
         
         if (audioOptions.count > 1 || subtitleOptions.count != 0) {
             self.hidden = NO;
-            self.button.enabled = YES;
             
             // Enable the button if an (optional) subtitle has been selected (an audio track is always selected)
             AVMediaSelectionOption *currentSubtitleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
-            self.button.selected = (currentSubtitleOption != nil);
+            [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
         }
         else {
             self.hidden = YES;
@@ -276,7 +272,10 @@ static void commonInit(SRGTracksButton *self);
     fakeInterfaceBuilderButton.frame = self.bounds;
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    [fakeInterfaceBuilderButton setImage:self.image forState:UIControlStateNormal];
+    
+    UIImage *image = [UIImage imageNamed:@"alternate_tracks" inBundle:NSBundle.srg_mediaPlayerBundle compatibleWithTraitCollection:nil];
+    [fakeInterfaceBuilderButton setImage:image forState:UIControlStateNormal];
+    
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
     

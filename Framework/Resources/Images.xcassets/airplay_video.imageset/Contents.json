@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "iphone",
-      "filename" : "airplay.pdf"
+      "filename" : "airplay_video.pdf"
     },
     {
       "idiom" : "ipad",
-      "filename" : "airplay-1.pdf"
+      "filename" : "airplay_video-1.pdf"
     }
   ],
   "info" : {
