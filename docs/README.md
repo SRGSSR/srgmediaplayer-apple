@@ -1,6 +1,6 @@
-[![SRG Media Player logo](README-images/logo.png)](https://github.com/SRGSSR/srgmediaplayer-ios)
+[![SRG Media Player logo](README-images/logo.png)](https://github.com/SRGSSR/srgmediaplayer-apple)
 
-[![GitHub releases](https://img.shields.io/github/v/release/SRGSSR/srgmediaplayer-ios)](https://github.com/SRGSSR/srgmediaplayer-ios/releases) [![platform](https://img.shields.io/badge/platfom-ios%20%7C%20tvos-blue)](https://github.com/SRGSSR/srgmediaplayer-ios) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![GitHub license](https://img.shields.io/github/license/SRGSSR/srgmediaplayer-ios)](https://github.com/SRGSSR/srgmediaplayer-ios/blob/master/LICENSE) 
+[![GitHub releases](https://img.shields.io/github/v/release/SRGSSR/srgmediaplayer-apple)](https://github.com/SRGSSR/srgmediaplayer-apple/releases) [![platform](https://img.shields.io/badge/platfom-ios%20%7C%20tvos-blue)](https://github.com/SRGSSR/srgmediaplayer-apple) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![GitHub license](https://img.shields.io/github/license/SRGSSR/srgmediaplayer-apple)](https://github.com/SRGSSR/srgmediaplayer-apple/blob/master/LICENSE) 
 
 ## About
 
@@ -16,7 +16,7 @@ The SRG Media Player library provides a simple way to add universal audio / vide
 
 ## Compatibility
 
-The library is suitable for applications running on iOS 9, tvOS 9, watchOS 3 and above. The project is meant to be opened with the latest Xcode version.
+The library is suitable for applications running on iOS 9, tvOS 12 and above. The project is meant to be opened with the latest Xcode version.
 
 ## Contributing
 
@@ -27,7 +27,7 @@ If you want to contribute to the project, have a look at our [contributing guide
 The library can be added to a project using [Carthage](https://github.com/Carthage/Carthage) by adding the following dependency to your `Cartfile`:
     
 ```
-github "SRGSSR/srgmediaplayer-ios"
+github "SRGSSR/srgmediaplayer-apple"
 ```
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
@@ -94,7 +94,7 @@ The library internally uses the [SRG Logger](https://github.com/SRGSSR/srglogger
 
 ### Control preview in Interface Builder
 
-Interface Builder can render custom controls dropped onto a storyboard or a xib. If you want to enable this feature for SRG Media Player controls, and after Carthage has been run, open the `Carthage/Checkouts/srgmediaplayer-ios/Designables` directory, **copy** the `SRGMediaPlayerDesignables.m` file it contains to your project and add it to your target.
+Interface Builder can render custom controls dropped onto a storyboard or a xib. If you want to enable this feature for SRG Media Player controls, and after Carthage has been run, open the `Carthage/Checkouts/srgmediaplayer-apple/Designables` directory, **copy** the `SRGMediaPlayerDesignables.m` file it contains to your project and add it to your target.
 
 When dropping a media player control (e.g. `SRGPictureInPictureButton`) onto a storyboard or xib, Xcode will now build your project in the background and render the view when it is done.
 
