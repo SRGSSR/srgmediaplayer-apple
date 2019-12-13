@@ -10,6 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AVPlayerItem (SRGMediaPlayer)
 
+/**
+ *  Same as `-selectedMediaOptionInMediaSelectionGroup:`.
+ */
 // TODO: Remove when iOS 11 is the minimum deployment target
 - (nullable AVMediaSelectionOption *)srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup;
 
