@@ -7,6 +7,7 @@
 #import "SRGTracksButton.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
+#import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGAlternateTracksViewController.h"
@@ -158,7 +159,7 @@ static void commonInit(SRGTracksButton *self);
             self.hidden = NO;
             
             // Enable the button if an (optional) subtitle has been selected (an audio track is always selected)
-            AVMediaSelectionOption *currentSubtitleOption = [playerItem selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
+            AVMediaSelectionOption *currentSubtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
             [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
         }
         else {
