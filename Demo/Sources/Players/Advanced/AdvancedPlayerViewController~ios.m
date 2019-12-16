@@ -132,6 +132,10 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         @strongify(self)
         [self updateAudioOnlyUserInterface];
     }];
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, player.externalPlaybackActive) options:0 block:^(MAKVONotification * _Nonnull notification) {
+        @strongify(self)
+        [self updateAudioOnlyUserInterface];
+    }];
     [self updateAudioOnlyUserInterface];
     
     [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
