@@ -8,6 +8,7 @@ xcuserdata
 
 /Carthage
 
+/fastlane/*.xcresult
 /fastlane/*.xml
 
 /vendor

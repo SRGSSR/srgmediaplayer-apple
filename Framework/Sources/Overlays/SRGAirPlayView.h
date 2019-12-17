@@ -25,6 +25,7 @@ OBJC_EXPORT NSString * _Nullable SRGAirPlayRouteDescription(void);
  *  AirPlay view delegate protocol, providing optional customization behaviour for the default `SRGAirPlayView`
  *  appearance.
  */
+API_UNAVAILABLE(tvos)
 @protocol SRGAirPlayViewDelegate <NSObject>
 @optional
 
@@ -74,7 +75,7 @@ OBJC_EXPORT NSString * _Nullable SRGAirPlayRouteDescription(void);
  *
  *  Further customization is available by using the associated delegate.
  */
-IB_DESIGNABLE
+API_UNAVAILABLE(tvos)
 @interface SRGAirPlayView : UIView <SRGAirPlayViewDelegate>
 
 /**

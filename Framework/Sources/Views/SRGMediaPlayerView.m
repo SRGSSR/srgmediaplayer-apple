@@ -6,7 +6,6 @@
 
 #import "SRGMediaPlayerView.h"
 
-#import "AVPlayer+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "SRGMediaPlaybackMonoscopicView.h"
 #import "SRGMediaPlaybackFlatView.h"
@@ -14,7 +13,9 @@
 
 #import <libextobjc/libextobjc.h>
 
+#if TARGET_OS_IOS
 static CMMotionManager *s_motionManager = nil;
+#endif
 
 static void commonInit(SRGMediaPlayerView *self);
 
@@ -30,6 +31,8 @@ static void commonInit(SRGMediaPlayerView *self);
 
 #pragma mark Class methods
 
+#if TARGET_OS_IOS
+
 + (CMMotionManager *)motionManager
 {
     return s_motionManager;
@@ -39,6 +42,8 @@ static void commonInit(SRGMediaPlayerView *self);
 {
     s_motionManager = motionManager;
 }
+
+#endif
 
 #pragma mark Object lifecycle
 
@@ -85,7 +90,7 @@ static void commonInit(SRGMediaPlayerView *self);
     
     _viewMode = viewMode;
     
-    [self updateSubviewsWithPlayer:self.player];
+    [self updateSubviews];
 }
 
 - (AVPlayerLayer *)playerLayer
@@ -116,7 +121,10 @@ static void commonInit(SRGMediaPlayerView *self);
             dispatch_once(&s_onceToken, ^{
                 s_viewClasses = @{ @(SRGMediaPlayerViewModeFlat) : SRGMediaPlaybackFlatView.class,
                                    @(SRGMediaPlayerViewModeMonoscopic) : SRGMediaPlaybackMonoscopicView.class,
-                                   @(SRGMediaPlayerViewModeStereoscopic) : SRGMediaPlaybackStereoscopicView.class };
+#if TARGET_OS_IOS
+                                   @(SRGMediaPlayerViewModeStereoscopic) : SRGMediaPlaybackStereoscopicView.class
+#endif
+                                   };
             });
             
             Class playbackViewClass = s_viewClasses[@(self.viewMode)];

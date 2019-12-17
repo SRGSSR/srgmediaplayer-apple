@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param time            The position time. Use `kCMTimeZero` for the default position.
  *  @param toleranceBefore The tolerance (before `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
  *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
- *  @param toleranceBefore The tolerance (after `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
+ *  @param toleranceAfter  The tolerance (after `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
  *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
  *
  *  @discussion Invalid times are set to `kCMTimeZero`.

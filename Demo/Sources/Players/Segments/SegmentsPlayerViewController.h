@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SegmentsPlayerViewController : UIViewController <SRGTimelineSliderDelegate, SRGTimelineViewDelegate, SRGTimeSliderDelegate, UIViewControllerTransitioningDelegate>
+@interface SegmentsPlayerViewController : UIViewController <SRGTimelineViewDelegate, SRGTimeSliderDelegate, UIViewControllerTransitioningDelegate>
 
 - (instancetype)initWithMedia:(Media *)media;
 

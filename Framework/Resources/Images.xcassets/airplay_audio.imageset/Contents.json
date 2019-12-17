@@ -1,0 +1,19 @@
+{
+  "images" : [
+    {
+      "idiom" : "iphone",
+      "filename" : "airplay_audio-1.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "airplay_audio.pdf"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
+  }
+}

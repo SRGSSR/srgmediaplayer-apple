@@ -1,21 +1,22 @@
-![SRG Media Player logo](README-images/logo.png)
+[![SRG Media Player logo](README-images/logo.png)](https://github.com/SRGSSR/srgmediaplayer-apple)
 
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
+[![GitHub releases](https://img.shields.io/github/v/release/SRGSSR/srgmediaplayer-apple)](https://github.com/SRGSSR/srgmediaplayer-apple/releases) [![platform](https://img.shields.io/badge/platfom-ios%20%7C%20tvos-blue)](https://github.com/SRGSSR/srgmediaplayer-apple) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![GitHub license](https://img.shields.io/github/license/SRGSSR/srgmediaplayer-apple)](https://github.com/SRGSSR/srgmediaplayer-apple/blob/master/LICENSE) 
 
 ## About
 
-The SRG Media Player library for iOS provides a simple way to add a universal audio / video player to any application. It provides:
+The SRG Media Player library provides a simple way to add universal audio / video playback support to any application. It provides:
 
-* A default player with the same look & feel as the standard iOS player, and automatic support for picture in picture for compatible devices.
-* A set of overlays which can be combined to create the user interface you need.
-* Support for segments. Those are simply sections of a video, defined by non-overlapping time ranges, which can be blocked or hidden.
+* A controller with precise playback state information and and a simple but powerful playback API.
+* Automatic integration with `AVPlayerViewController`.
+* A set of overlays which can be combined to create custom player user interfaces.
+* Support for subdivision of medias in (non-overlapping) sequences, which can provide am additional finer-grained playback structure or block playback to parts of the content.
 * Support for on-demand, live and DVR streams.
 * Support for 360° and cardboard playback.
 * Ability to use several instances of the player at the same time.
 
 ## Compatibility
 
-The library is suitable for applications running on iOS 9 and above. The project is meant to be opened with the latest Xcode version (currently Xcode 10).
+The library is suitable for applications running on iOS 9, tvOS 12 and above. The project is meant to be opened with the latest Xcode version.
 
 ## Contributing
 
@@ -26,7 +27,7 @@ If you want to contribute to the project, have a look at our [contributing guide
 The library can be added to a project using [Carthage](https://github.com/Carthage/Carthage) by adding the following dependency to your `Cartfile`:
     
 ```
-github "SRGSSR/srgmediaplayer-ios"
+github "SRGSSR/srgmediaplayer-apple"
 ```
 
 For more information about Carthage and its use, refer to the [official documentation](https://github.com/Carthage/Carthage).
@@ -43,17 +44,17 @@ The library requires the following frameworks to be added to any target requirin
 ### Dynamic framework integration
 
 1. Run `carthage update` to update the dependencies (which is equivalent to `carthage update --configuration Release`). 
-2. Add the frameworks listed above and generated in the `Carthage/Build/iOS` folder to your target _Embedded binaries_.
+2. Add the frameworks listed above and generated in the `Carthage/Build/(iOS|tvOS|watchOS)` folder to your target _Embedded binaries_.
 
 If your target is building an application, a few more steps are required:
 
 1. Add a _Run script_ build phase to your target, with `/usr/local/bin/carthage copy-frameworks` as command.
-2. Add each of the required frameworks above as input file `$(SRCROOT)/Carthage/Build/iOS/FrameworkName.framework`.
+2. Add each of the required frameworks above as input file `$(SRCROOT)/Carthage/Build/(iOS|tvOS|watchOS)/FrameworkName.framework`.
 
 ### Static framework integration
 
 1. Run `carthage update --configuration Release-static` to update the dependencies. 
-2. Add the frameworks listed above and generated in the `Carthage/Build/iOS/Static` folder to the _Linked frameworks and libraries_ list of your target.
+2. Add the frameworks listed above and generated in the `Carthage/Build/(iOS|tvOS|watchOS)/Static` folder to the _Linked frameworks and libraries_ list of your target.
 3. Also add any resource bundle `.bundle` found within the `.framework` folders to your target directly.
 4. Add the `-all_load` flag to your target _Other linker flags_.
 
@@ -89,11 +90,11 @@ To learn about how the library can be used, have a look at the [getting started 
 
 ### Logging
 
-The library internally uses the [SRG Logger](https://github.com/SRGSSR/srglogger-ios) library for logging, within the `ch.srgssr.mediaplayer` subsystem. This logger either automatically integrates with your own logger, or can be easily integrated with it. Refer to the SRG Logger documentation for more information.
+The library internally uses the [SRG Logger](https://github.com/SRGSSR/srglogger-apple) library for logging, within the `ch.srgssr.mediaplayer` subsystem. This logger either automatically integrates with your own logger, or can be easily integrated with it. Refer to the SRG Logger documentation for more information.
 
 ### Control preview in Interface Builder
 
-Interface Builder can render custom controls dropped onto a storyboard or a xib. If you want to enable this feature for SRG Media Player controls, and after Carthage has been run, open the `Carthage/Checkouts/srgmediaplayer-ios/Designables` directory, **copy** the `SRGMediaPlayerDesignables.m` file it contains to your project and add it to your target.
+Interface Builder can render custom controls dropped onto a storyboard or a xib. If you want to enable this feature for SRG Media Player controls, and after Carthage has been run, open the `Carthage/Checkouts/srgmediaplayer-apple/Designables` directory, **copy** the `SRGMediaPlayerDesignables.m` file it contains to your project and add it to your target.
 
 When dropping a media player control (e.g. `SRGPictureInPictureButton`) onto a storyboard or xib, Xcode will now build your project in the background and render the view when it is done.
 

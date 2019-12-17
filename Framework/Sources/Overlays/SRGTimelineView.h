@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Customisation of timeline cells is achieved through subclassing of `UICollectionViewCell`, exactly like a usual
  *  `UICollectionView`.
  */
-IB_DESIGNABLE
+API_UNAVAILABLE(tvos)
 @interface SRGTimelineView : UIView <UICollectionViewDataSource, UICollectionViewDelegate>
 
 /**
@@ -85,6 +85,7 @@ IB_DESIGNABLE
 /**
  *  Timeline delegate protocol.
  */
+API_UNAVAILABLE(tvos)
 @protocol SRGTimelineViewDelegate <NSObject>
 
 /**

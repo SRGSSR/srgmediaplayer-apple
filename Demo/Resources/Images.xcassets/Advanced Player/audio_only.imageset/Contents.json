@@ -1,0 +1,19 @@
+{
+  "images" : [
+    {
+      "idiom" : "iphone",
+      "filename" : "audio_only.pdf"
+    },
+    {
+      "idiom" : "ipad",
+      "filename" : "audio_only-1.pdf"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
+  }
+}

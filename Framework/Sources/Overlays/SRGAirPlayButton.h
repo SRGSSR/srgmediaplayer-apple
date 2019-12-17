@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  to manually alter this property leads to undefined behavior. You can force the button to always be hidden by
  *  setting its `alwaysHidden` property to `YES` if needed.
  */
-IB_DESIGNABLE
+API_UNAVAILABLE(tvos)
 @interface SRGAirPlayButton : UIView
 
 /**
@@ -32,9 +32,10 @@ IB_DESIGNABLE
 @property (nonatomic, weak, nullable) IBOutlet SRGMediaPlayerController *mediaPlayerController;
 
 /**
- *  Image customization (a default image is used if not set).
+ *  Image customization (default images are used if not set).
  */
-@property (nonatomic, null_resettable) UIImage *image;
+@property (nonatomic, null_resettable) UIImage *audioImage;         // Displayed for audio content.
+@property (nonatomic, null_resettable) UIImage *videoImage;         // Displayed for video content.
 
 /**
  *  The tint color to apply when AirPlay is active (if nil, then the usual blue tint color is applied).

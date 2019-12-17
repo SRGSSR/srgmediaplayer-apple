@@ -4,7 +4,13 @@
 //  License information is available from the LICENSE file.
 //
 
+#import <TargetConditionals.h>
+
+#if TARGET_OS_IOS
 #import <CoreMotion/CoreMotion.h>
+#endif
+
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -13,9 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @name Supported view modes.
  */
 typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
-    SRGMediaPlayerViewModeFlat = 0,                         // Standard "flat" playback.
-    SRGMediaPlayerViewModeMonoscopic,                       // 360 monoscopic playback.
-    SRGMediaPlayerViewModeStereoscopic                      // 360 stereoscopic playback (cardboard).
+    SRGMediaPlayerViewModeFlat = 0,                                 // Standard "flat" playback.
+    SRGMediaPlayerViewModeMonoscopic,                               // 360 monoscopic playback.
+    SRGMediaPlayerViewModeStereoscopic API_UNAVAILABLE(tvos)        // 360 stereoscopic playback (cardboard).
 };
 
 /**
@@ -23,6 +29,17 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
  *  and bind them to the `view` property of an `SRGMediaPlayerController` instance.
  */
 @interface SRGMediaPlayerView : UIView
+
+/**
+ *  Retrieve or change the current view mode, if any.
+ */
+@property (nonatomic) SRGMediaPlayerViewMode viewMode;
+
+@end
+
+#if TARGET_OS_IOS
+
+@interface SRGMediaPlayerView (CoreMotion)
 
 /**
  *  Set the motion manager to use for device tracking when playing 360° videos. At most one motion manager should
@@ -37,11 +54,8 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
  */
 + (void)setMotionManager:(nullable CMMotionManager *)motionManager;
 
-/**
- *  Retrieve or change the current view mode, if any.
- */
-@property (nonatomic) SRGMediaPlayerViewMode viewMode;
-
 @end
+
+#endif
 
 NS_ASSUME_NONNULL_END

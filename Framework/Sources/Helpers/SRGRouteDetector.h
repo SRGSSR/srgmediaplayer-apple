@@ -17,7 +17,7 @@ OBJC_EXPORT NSString * const SRGMediaPlayerWirelessRoutesAvailableDidChangeNotif
  *  Detect route availability (e.g. Bluetooth or AirPlay). Implements `AVRouteDetector` in a way that avoids
  *  enabling it unnecessarily.
  */
-API_AVAILABLE(ios(11.0))
+API_AVAILABLE(ios(11.0)) API_UNAVAILABLE(tvos)
 @interface SRGRouteDetector : NSObject
 
 /**

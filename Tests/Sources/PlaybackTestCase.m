@@ -61,26 +61,17 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testDeallocationWhileIdle
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-unsafe-retained-assign"
     __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
     
-    // Do not retain the controller anymore, and force an autorelease pool collection. The weak reference must be nilled
-    // automatically if the controller is correctly deallocated
     @autoreleasepool {
         self.mediaPlayerController = nil;
     }
     
     XCTAssertNil(weakMediaPlayerController);
-#pragma clang diagnostic pop
 }
 
-- (void)testDeallocationWhilePlaying
+- (void)testDeallocationAfterPlayback
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-unsafe-retained-assign"
-    // If the player controller is not retained, its player and all associated resources (including the player layer) must
-    // be automatically discarded
     __weak SRGMediaPlayerController *weakMediaPlayerController = self.mediaPlayerController;
     __weak AVPlayer *weakPlayer = self.mediaPlayerController.player;
     
@@ -93,7 +84,6 @@ static NSURL *AudioOverHTTPTestURL(void)
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
         
-        // When no reference retains the player, playback must gracefully stop. Deallocation will occur right afterwards.
         [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
             return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
         }];
@@ -103,13 +93,14 @@ static NSURL *AudioOverHTTPTestURL(void)
             return weakPlayer == nil;
         }] evaluatedWithObject:self /* unused, but a non-nil argument is required  */ handler:nil];
         
-        self.mediaPlayerController = nil;
+        [self.mediaPlayerController reset];
         
         [self waitForExpectationsWithTimeout:30. handler:nil];
+        
+        self.mediaPlayerController = nil;
     }
     
     XCTAssertNil(weakMediaPlayerController);
-#pragma clang diagnostic pop
 }
 
 - (void)testInitialPlayerState
@@ -1590,6 +1581,27 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testResetWhilePreparing
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePreparing;
+    }];
+    
+    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() withCompletionHandler:^{
+        XCTFail(@"Must not be called");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
+    }];
+    
+    [self.mediaPlayerController reset];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
 - (void)testResetWhileSeeking
 {
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -1660,6 +1672,46 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertNotNil(self.mediaPlayerController.userInfo);
     
     [self.mediaPlayerController stop];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testPlayWhilePreparing
+{
+    // Wait until preparing
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        SRGPlaybackButtonState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+        if (playbackState == SRGMediaPlayerPlaybackStatePlaying) {
+            return YES;
+        }
+        
+        if (playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+            [self.mediaPlayerController play];
+        }
+        return NO;
+    }];
+    
+    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testPauseWhilePreparing
+{
+    // Wait until preparing
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        SRGPlaybackButtonState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+        if (playbackState == SRGMediaPlayerPlaybackStatePaused) {
+            return YES;
+        }
+        
+        if (playbackState == SRGMediaPlayerPlaybackStatePreparing) {
+            [self.mediaPlayerController pause];
+        }
+        return NO;
+    }];
+    
+    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL() withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -2084,9 +2136,254 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testVideoMediaTypeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, mediaType) expectedValue:@(SRGMediaPlayerMediaTypeVideo)];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more media type changes should be reported");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType)];
+    }];
+}
+
+- (void)testAudioMediaTypeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, mediaType) expectedValue:@(SRGMediaPlayerMediaTypeAudio)];
+    
+    [self.mediaPlayerController playURL:AudioOverHTTPTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more media type changes should be reported");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType)];
+    }];
+}
+
+- (void)testOnDemandTimeRangeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, timeRange) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        NSValue *timeRangeValue = change[NSKeyValueChangeNewKey];
+        return SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRangeValue.CMTimeRangeValue);
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, timeRange) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"For on-demand stream the time range is known once playing");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, timeRange)];
+    }];
+}
+
+- (void)testLiveTimeRangeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, timeRange) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        NSValue *timeRangeValue = change[NSKeyValueChangeNewKey];
+        return CMTIMERANGE_IS_EMPTY(timeRangeValue.CMTimeRangeValue);
+    }];
+    
+    [self.mediaPlayerController playURL:LiveTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // For livestreams we continue receiving time range updates.
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, timeRange) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        NSValue *timeRangeValue = change[NSKeyValueChangeNewKey];
+        return CMTIMERANGE_IS_EMPTY(timeRangeValue.CMTimeRangeValue);
+    }];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testDVRTimeRangeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, timeRange) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        NSValue *timeRangeValue = change[NSKeyValueChangeNewKey];
+        return SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRangeValue.CMTimeRangeValue);
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // For livestreams we continue to receive updates.
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, timeRange) handler:^BOOL(id _Nonnull observedObject, NSDictionary * _Nonnull change) {
+        NSValue *timeRangeValue = change[NSKeyValueChangeNewKey];
+        return SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRangeValue.CMTimeRangeValue);
+    }];
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testOnDemandStreamTypeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, streamType) expectedValue:@(SRGMediaPlayerStreamTypeOnDemand)];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more stream type changes should be reported");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType)];
+    }];
+}
+
+- (void)testLiveStreamTypeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, streamType) expectedValue:@(SRGMediaPlayerStreamTypeLive)];
+    
+    [self.mediaPlayerController playURL:LiveTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more stream type changes should be reported");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType)];
+    }];
+}
+
+- (void)testDVRStreamTypeKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, streamType) expectedValue:@(SRGMediaPlayerStreamTypeDVR)];
+    
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more stream type changes should be reported");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, streamType)];
+    }];
+}
+
+- (void)testOnDemandIsLiveKeyValueObserving
+{
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more stream type changes should be reported");
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live)];
+    }];
+}
+
+- (void)testLiveIsLiveKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@YES];
+    
+    [self.mediaPlayerController playURL:LiveTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No more live status changes should be reported");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live)];
+    }];
+}
+
+- (void)testDVRIsLiveKeyValueObserving
+{
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@YES];
+    
+    self.mediaPlayerController.liveTolerance = 15.;
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForElapsedTimeInterval:4. withHandler:nil];
+    
+    @weakify(self)
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live) options:0 block:^(MAKVONotification *notification) {
+        @strongify(self)
+        XCTFail(@"No live status type changes should be reported");
+    }];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removeObserver:self keyPath:@keypath(SRGMediaPlayerController.new, live)];
+    }];
+    
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@NO];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:self.mediaPlayerController.timeRange.start] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@YES];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeRangeGetEnd(self.mediaPlayerController.timeRange)] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@NO];
+    
+    [self.mediaPlayerController pause];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
 - (void)testStalled
 {
-    // Idea (might take some time to implement, later): We could expose the resourceLoader property of the AVURLAsset we
+    // TODO: Idea (might take some time to implement, later): We could expose the resourceLoader property of the AVURLAsset we
     // can additionally create when instantiating the AVPlayer. Using AVAssetResourceLoader, it is possible to load
     // data in a custom way (in our case, to simulate a slow network). Custom URL protocols cannot be used with AVPlayer
 }
@@ -2095,8 +2392,10 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     XCTestExpectation *observerExpectation = [self expectationWithDescription:@"Periodic time observer fired"];
     
+    __block id periodicTimeObserver = nil;
+    
     @weakify(self)
-    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         [observerExpectation fulfill];
         
@@ -2116,8 +2415,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     
+    __block id periodicTimeObserver = nil;
+    
     @weakify(self)
-    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         [observerExpectation fulfill];
         
@@ -2150,8 +2451,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController playURL:OnDemandTestURL()];
     [self.mediaPlayerController reset];
     
+    __block id periodicTimeObserver = nil;
+    
     @weakify(self)
-    __block id periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
         XCTFail(@"Periodic time observers are not fired when the player is idle");
     }];

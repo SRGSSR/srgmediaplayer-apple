@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The view used for 360° stereoscopic video playback (cardboard).
  */
+API_UNAVAILABLE(tvos)
 @interface SRGMediaPlaybackStereoscopicView : SRGMediaPlaybackSceneView
 
 @end

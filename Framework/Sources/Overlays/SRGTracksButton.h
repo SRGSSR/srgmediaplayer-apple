@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Tracks button delegate protocol.
  */
+API_UNAVAILABLE(tvos)
 @protocol SRGTracksButtonDelegate <NSObject>
 
 @optional
@@ -44,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  subtitles or audio tracks. Tapping on the button displays a list of the available tracks. If one is selected, the
  *  button is set to the selected state (with a corresponding image).
  */
-IB_DESIGNABLE
+API_UNAVAILABLE(tvos)
 @interface SRGTracksButton : UIView
 
 /**
@@ -76,7 +77,7 @@ IB_DESIGNABLE
 /**
  *  The button delegate.
  */
-@property (nonatomic, weak) id<SRGTracksButtonDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<SRGTracksButtonDelegate> delegate;
 
 @end
 

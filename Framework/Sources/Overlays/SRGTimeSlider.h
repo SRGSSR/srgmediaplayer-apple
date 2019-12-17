@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
     SRGTimeSliderLiveKnobPositionDefault = 0,
     SRGTimeSliderLiveKnobPositionLeft = SRGTimeSliderLiveKnobPositionDefault,
     SRGTimeSliderLiveKnobPositionRight
-};
+} API_UNAVAILABLE(tvos);
 
 /**
  *  A slider displaying the playback position of the associated media player controller (with optional time and remaining
@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
  *    - `maximumTrackTintColor`: Remaining time track color (defaults to black).
  *    - `thumbTintColor`: Thumb color (defaults to white).
  */
-IB_DESIGNABLE
+API_UNAVAILABLE(tvos)
 @interface SRGTimeSlider : UISlider
 
 /**
@@ -119,6 +119,7 @@ IB_DESIGNABLE
 /**
  *  Delegate protocol.
  */
+API_UNAVAILABLE(tvos)
 @protocol SRGTimeSliderDelegate <NSObject>
 
 @optional

@@ -1,7 +1,7 @@
 #!/usr/bin/xcrun make -f
 
 CARTHAGE_FOLDER=Carthage
-CARTHAGE_FLAGS=--platform iOS --cache-builds --new-resolver
+CARTHAGE_FLAGS=--platform iOS,tvOS --cache-builds --new-resolver
 
 .PHONY: all
 all: bootstrap

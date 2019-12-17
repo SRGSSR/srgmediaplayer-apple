@@ -7,7 +7,7 @@
 #import "SRGMediaPlayerController.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
-#import "AVPlayer+SRGMediaPlayer.h"
+#import "AVPlayerItem+SRGMediaPlayer.h"
 #import "CMTime+SRGMediaPlayer.h"
 #import "CMTimeRange+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
@@ -19,6 +19,7 @@
 #import "SRGMediaPlayerView.h"
 #import "SRGMediaPlayerView+Private.h"
 #import "SRGPeriodicTimeObserver.h"
+#import "SRGPlayer.h"
 #import "SRGSegment+Private.h"
 #import "UIDevice+SRGMediaPlayer.h"
 #import "UIScreen+SRGMediaPlayer.h"
@@ -38,23 +39,44 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position,CMTime offset);
 static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
 
-@interface SRGMediaPlayerController () {
+@interface SRGMediaPlayerController () <SRGPlayerDelegate> {
 @private
     SRGMediaPlayerPlaybackState _playbackState;
     BOOL _selected;
-    CMTimeRange _timeRange;
 }
 
-@property (nonatomic) AVPlayer *player;
+@property (nonatomic) SRGPlayer *player;
 
 @property (nonatomic) NSURL *contentURL;
 @property (nonatomic) AVURLAsset *URLAsset;
+@property (nonatomic) NSDictionary *userInfo;
 
+@property (nonatomic, copy) void (^playerCreationBlock)(AVPlayer *player);
+@property (nonatomic, copy) void (^playerConfigurationBlock)(AVPlayer *player);
+@property (nonatomic, copy) void (^playerDestructionBlock)(AVPlayer *player);
+
+@property (nonatomic, copy) void (^mediaConfigurationBlock)(AVPlayerItem *playerItem, AVAsset *asset);
+
+@property (nonatomic) SRGMediaPlayerViewBackgroundBehavior viewBackgroundBehavior;
+
+@property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
+
+@property (nonatomic) NSArray<id<SRGSegment>> *segments;
 @property (nonatomic) NSArray<id<SRGSegment>> *visibleSegments;
 
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
 @property (nonatomic) id playerPeriodicTimeObserver;
 @property (nonatomic, weak) id controllerPeriodicTimeObserver;
+
+@property (nonatomic) SRGMediaPlayerMediaType mediaType;
+
+@property (nonatomic) CMTimeRange timeRange;
+@property (nonatomic, getter=isTimeRangeCached) BOOL timeRangeCached;
+
+@property (nonatomic) SRGMediaPlayerStreamType streamType;
+@property (nonatomic, getter=isStreamTypeCached) BOOL streamTypeCached;
+
+@property (nonatomic, getter=isLive) BOOL live;
 
 @property (nonatomic) NSTimer *stallDetectionTimer;
 @property (nonatomic) CMTime lastPlaybackTime;
@@ -68,27 +90,30 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
 @property (nonatomic, weak) id<SRGSegment> currentSegment;
 
+#if TARGET_OS_IOS
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
+@property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
+#endif
 
 @property (nonatomic) SRGPosition *startPosition;                   // Will be nilled when reached
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
 
 @property (nonatomic) NSValue *presentationSizeValue;
 
-@property (nonatomic) CMTime seekStartTime;
-@property (nonatomic) CMTime seekTargetTime;
-
 @property (nonatomic) AVMediaSelectionOption *audioOption;
 @property (nonatomic) AVMediaSelectionOption *subtitleOption;
 
-@property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
+@property (nonatomic, weak) AVPlayerViewController *playerViewController;
 
 @end
 
 @implementation SRGMediaPlayerController
 
 @synthesize view = _view;
+
+#if TARGET_OS_IOS
 @synthesize pictureInPictureController = _pictureInPictureController;
+#endif
 
 #pragma mark Object lifecycle
 
@@ -103,9 +128,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
         
-        self.seekStartTime = kCMTimeIndefinite;
-        self.seekTargetTime = kCMTimeIndefinite;
-        
         self.lastPlaybackTime = kCMTimeIndefinite;
     }
     return self;
@@ -118,7 +140,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 #pragma mark Getters and setters
 
-- (void)setPlayer:(AVPlayer *)player
+- (void)setPlayer:(SRGPlayer *)player
 {
     BOOL hadPlayer = (_player != nil);
     
@@ -150,7 +172,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     
     _player = player;
-    self.view.player = player;
+    [self attachPlayer:player toView:self.view];
     
     if (player) {
         if (! hadPlayer) {
@@ -166,7 +188,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             @strongify(player)
             
             AVPlayerItem *playerItem = player.currentItem;
-            if (playerItem.status == AVPlayerItemStatusReadyToPlay) {    
+            if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+                [self updatePlaybackInformationForPlayer:player];
+                
                 // Playback start. Use received start parameters, do not update the playback state yet, wait until the
                 // completion handler has been executed (since it might immediately start playback)
                 if (self.startPosition) {
@@ -218,9 +242,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                         SRGPosition *toleratedPosition = [SRGPosition positionWithTime:toleratedStartTime toleranceBefore:startPosition.toleranceBefore toleranceAfter:startPosition.toleranceAfter];
                         
                         SRGPosition *seekPosition = SRGMediaPlayerControllerPositionInTimeRange(toleratedPosition, timeRange);
-                        
-                        // Call system method to avoid unwanted seek state in this special case
-                        [player seekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter completionHandler:^(BOOL finished) {
+                        [player seekToPosition:seekPosition notify:NO completionHandler:^(BOOL finished) {
                             completionBlock(finished);
                         }];
                     }
@@ -268,6 +290,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
+            
+#if TARGET_OS_IOS
             @strongify(player)
             
             // Pause playback when toggling off external playback with the app in background, if settings prevent playback to continue in background
@@ -278,6 +302,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                     [player pause];
                 }
             }
+#endif
             
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
         }];
@@ -296,6 +321,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             @strongify(player)
             
             self.presentationSizeValue = [NSValue valueWithCGSize:player.currentItem.presentationSize];
+            [self updateMediaTypeForPlayer:player];
         }];
         
         self.stallDetectionTimer = [NSTimer srgmediaplayer_timerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {
@@ -313,7 +339,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                 }
             }
             else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                [player srg_playImmediatelyIfPossible];
+                [player playImmediatelyIfPossible];
             }
             
             self.lastPlaybackTime = currentTime;
@@ -361,8 +387,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     SRGMediaPlayerPlaybackState previousPlaybackState = _playbackState;
     
-    NSMutableDictionary *fullUserInfo = [@{ SRGMediaPlayerPlaybackStateKey : @(playbackState),
-                                            SRGMediaPlayerPreviousPlaybackStateKey: @(previousPlaybackState) } mutableCopy];
+    NSMutableDictionary *fullUserInfo = @{ SRGMediaPlayerPlaybackStateKey : @(playbackState),
+                                           SRGMediaPlayerPreviousPlaybackStateKey: @(previousPlaybackState) }.mutableCopy;
     fullUserInfo[SRGMediaPlayerSelectionKey] = @(self.targetSegment && ! self.targetSegment.srg_blocked);
     if (userInfo) {
         [fullUserInfo addEntriesFromDictionary:userInfo];
@@ -377,9 +403,53 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                       object:self
-                                                    userInfo:[fullUserInfo copy]];
+                                                    userInfo:fullUserInfo.copy];
     
     SRGMediaPlayerLogDebug(@"Controller", @"Playback state did change to %@ with info %@", SRGMediaPlayerControllerNameForPlaybackState(playbackState), fullUserInfo);
+}
+
+- (void)setMediaType:(SRGMediaPlayerMediaType)mediaType
+{
+    if (mediaType == _mediaType) {
+        return;
+    }
+    
+    [self willChangeValueForKey:@keypath(self.mediaType)];
+    _mediaType = mediaType;
+    [self didChangeValueForKey:@keypath(self.mediaType)];
+}
+
+- (void)setTimeRange:(CMTimeRange)timeRange
+{
+    if (CMTimeRangeEqual(timeRange, _timeRange)) {
+        return;
+    }
+    
+    [self willChangeValueForKey:@keypath(self.timeRange)];
+    _timeRange = timeRange;
+    [self didChangeValueForKey:@keypath(self.timeRange)];
+}
+
+- (void)setStreamType:(SRGMediaPlayerStreamType)streamType
+{
+    if (streamType == _streamType) {
+        return;
+    }
+    
+    [self willChangeValueForKey:@keypath(self.streamType)];
+    _streamType = streamType;
+    [self didChangeValueForKey:@keypath(self.streamType)];
+}
+
+- (void)setLive:(BOOL)live
+{
+    if (live == _live) {
+        return;
+    }
+    
+    [self willChangeValueForKey:@keypath(self.live)];
+    _live = live;
+    [self didChangeValueForKey:@keypath(self.live)];
 }
 
 - (void)setSegments:(NSArray<id<SRGSegment>> *)segments
@@ -440,7 +510,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     if (_view != view) {
         _view = view;
-        _view.player = self.player;
+        [self attachPlayer:self.player toView:_view];
     }
 }
 
@@ -449,20 +519,13 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     if (! _view) {
         _view = [[SRGMediaPlayerView alloc] init];
-        _view.player = self.player;
+        [self attachPlayer:self.player toView:_view];
     }
     return _view;
 }
 
-- (CMTimeRange)timeRange
+- (CMTimeRange)timeRangeForPlayerItem:(AVPlayerItem *)playerItem
 {
-    // Cached value available. Use it
-    if (CMTIMERANGE_IS_VALID(_timeRange)) {
-        return _timeRange;
-    }
-    
-    AVPlayerItem *playerItem = self.player.currentItem;
-    
     NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
     NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
     
@@ -478,16 +541,96 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     // DVR window size too small. Check that we the stream is not an on-demand one first, of course
     if (CMTIME_IS_INDEFINITE(playerItem.duration) && CMTimeGetSeconds(timeRange.duration) < self.minimumDVRWindowLength) {
-        timeRange = CMTimeRangeMake(timeRange.start, kCMTimeZero);
+        return CMTimeRangeMake(timeRange.start, kCMTimeZero);
     }
+    else {
+        return timeRange;
+    }
+}
+
+- (void)updatePlaybackInformationForPlayer:(AVPlayer *)player
+{
+    [self updateMediaTypeForPlayer:player];
+    [self updateTimeRangeForPlayer:player];
+    [self updateStreamTypeForPlayer:player];
+    [self updateLiveForPlayer:player];
+}
+
+- (void)updateMediaTypeForPlayer:(AVPlayer *)player
+{
+    if (self.mediaType != SRGMediaPlayerMediaTypeUnknown) {
+        return;
+    }
+    
+    // Cannot reliably determine the media type with AirPlay, most notably when playing a media while an AirPlay
+    // connection has already been established.
+    if ([AVAudioSession srg_isAirPlayActive]) {
+        return;
+    }
+    
+    NSValue *presentationSizeValue = self.presentationSizeValue;
+    if (! presentationSizeValue) {
+        return;
+    }
+    
+    self.mediaType = CGSizeEqualToSize(presentationSizeValue.CGSizeValue, CGSizeZero) ? SRGMediaPlayerMediaTypeAudio : SRGMediaPlayerMediaTypeVideo;
+}
+
+- (void)updateTimeRangeForPlayer:(AVPlayer *)player
+{
+    if (self.timeRangeCached) {
+        return;
+    }
+    
+    AVPlayerItem *playerItem = player.currentItem;
+    self.timeRange = [self timeRangeForPlayerItem:playerItem];
     
     // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when AirPlay is
     // connected or disconnected)
-    if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
-        _timeRange = timeRange;
+    if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(self.timeRange)) {
+        self.timeRangeCached = YES;
+    }
+}
+
+- (void)updateStreamTypeForPlayer:(AVPlayer *)player
+{
+    CMTimeRange timeRange = self.timeRange;
+    
+    if (self.streamTypeCached || CMTIMERANGE_IS_INVALID(timeRange)) {
+        return;
     }
     
-    return timeRange;
+    if (CMTIMERANGE_IS_EMPTY(timeRange)) {
+        self.streamType = SRGMediaPlayerStreamTypeLive;
+    }
+    else {
+        CMTime duration = player.currentItem.duration;
+        
+        if (CMTIME_IS_INDEFINITE(duration)) {
+            self.streamType = SRGMediaPlayerStreamTypeDVR;
+        }
+        else if (CMTIME_COMPARE_INLINE(duration, !=, kCMTimeZero)) {
+            self.streamType = SRGMediaPlayerStreamTypeOnDemand;
+            self.streamTypeCached = YES;
+        }
+        else {
+            self.streamType = SRGMediaPlayerStreamTypeLive;
+        }
+    }
+}
+
+- (void)updateLiveForPlayer:(AVPlayer *)player
+{
+    if (self.streamType == SRGMediaPlayerStreamTypeLive) {
+        self.live = YES;
+    }
+    else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
+        AVPlayerItem *playerItem = player.currentItem;
+        self.live = CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), playerItem.currentTime)) < self.liveTolerance;
+    }
+    else {
+        self.live = NO;
+    }
 }
 
 - (CMTime)currentTime
@@ -495,32 +638,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     return self.player.currentTime;
 }
 
-- (SRGMediaPlayerMediaType)mediaType
+- (CMTime)seekStartTime
 {
-    NSValue *presentationSizeValue = self.presentationSizeValue;
-    if (! presentationSizeValue) {
-        return SRGMediaPlayerMediaTypeUnknown;
-    }
-    
-    return CGSizeEqualToSize(presentationSizeValue.CGSizeValue, CGSizeZero) ? SRGMediaPlayerMediaTypeAudio : SRGMediaPlayerMediaTypeVideo;
+    return self.player ? self.player.seekStartTime : kCMTimeIndefinite;
 }
 
-- (SRGMediaPlayerStreamType)streamType
+- (CMTime)seekTargetTime
 {
-    CMTimeRange timeRange = self.timeRange;
-    
-    if (CMTIMERANGE_IS_INVALID(timeRange)) {
-        return SRGMediaPlayerStreamTypeUnknown;
-    }
-    else if (CMTIMERANGE_IS_EMPTY(timeRange)) {
-        return SRGMediaPlayerStreamTypeLive;
-    }
-    else if (CMTIME_IS_INDEFINITE(self.player.currentItem.duration)) {
-        return SRGMediaPlayerStreamTypeDVR;
-    }
-    else {
-        return SRGMediaPlayerStreamTypeOnDemand;
-    }
+    return self.player ? self.player.seekTargetTime : kCMTimeIndefinite;
 }
 
 - (void)setMinimumDVRWindowLength:(NSTimeInterval)minimumDVRWindowLength
@@ -589,21 +714,15 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-- (BOOL)isLive
+#if TARGET_OS_IOS
+
+- (AVPictureInPictureController *)pictureInPictureController
 {
-    AVPlayerItem *playerItem = self.player.currentItem;
-    if (! playerItem) {
-        return NO;
-    }
-    
-    if (self.streamType == SRGMediaPlayerStreamTypeLive) {
-        return YES;
-    }
-    else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
-        return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), playerItem.currentTime)) < self.liveTolerance;
+    if (self.playerViewController) {
+        return nil;
     }
     else {
-        return NO;
+        return _pictureInPictureController;
     }
 }
 
@@ -628,6 +747,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:observationBlock];
     }
 }
+
+#endif
 
 - (BOOL)allowsExternalNonMirroredPlayback
 {
@@ -700,13 +821,13 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     if (self.player) {
         // Normal conditions. Simply forward to the player
         if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
-            [self.player srg_playImmediatelyIfPossible];
+            [self.player playImmediatelyIfPossible];
         }
-        // Playback ended. Restart at the beginning. Use low-level API to avoid sending seek events
+        // Playback ended. Restart at the beginning
         else {
-            [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity completionHandler:^(BOOL finished) {
+            [self.player seekToPosition:nil notify:NO completionHandler:^(BOOL finished) {
                 if (finished) {
-                    [self.player srg_playImmediatelyIfPossible];
+                    [self.player playImmediatelyIfPossible];
                 }
             }];
         }
@@ -718,7 +839,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         }];
     }
     else if (self.URLAsset) {
-        [self prepareToPlayURLAsset:[self.URLAsset copy] URL:nil atPosition:self.initialPosition withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
+        [self prepareToPlayURLAsset:self.URLAsset.copy URL:nil atPosition:self.initialPosition withSegments:self.segments targetSegment:self.initialTargetSegment userInfo:self.userInfo completionHandler:^{
             [self play];
         }];
     }
@@ -763,7 +884,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.initialTargetSegment = nil;
     self.initialPosition = nil;
     
-    [self stopWithUserInfo:[userInfo copy]];
+    [self stopWithUserInfo:userInfo.copy];
 }
 
 #pragma mark Playback (convenience methods)
@@ -909,8 +1030,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     [self reset];
     
-    _timeRange = kCMTimeRangeInvalid;
-    
     self.contentURL = URL;
     self.URLAsset = URLAsset;
     
@@ -932,14 +1051,18 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.view.playbackViewHidden = YES;
     
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:URLAsset];
-    self.player = [AVPlayer playerWithPlayerItem:playerItem];
+    self.player = [SRGPlayer playerWithPlayerItem:playerItem];
+    self.player.delegate = self;
     
     @weakify(self)
     [URLAsset loadValuesAsynchronouslyForKeys:@[ @keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) ] completionHandler:^{
         @strongify(self)
         
         if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-            self.mediaConfigurationBlock ? self.mediaConfigurationBlock(playerItem, URLAsset) : nil;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.mediaConfigurationBlock ? self.mediaConfigurationBlock(playerItem, URLAsset) : nil;
+                [self updateTracksForPlayer:self.player];
+            });
         }
     }];
     
@@ -975,19 +1098,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     // for direct seeks, otherwise blocked segment detection would occur after the segment has been entered, which is too late
     id<SRGSegment> segment = targetSegment ?: [self segmentForTime:seekPosition.time];
     if (! segment || ! segment.srg_blocked) {
-        [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
-        
-        [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSeekNotification
-                                                          object:self
-                                                        userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:seekPosition.time],
-                                                                    SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:self.player.currentTime] }];
-        
-        // Only store the origin in case of multiple seeks, but update the target
-        if (CMTIME_IS_INDEFINITE(self.seekStartTime)) {
-            self.seekStartTime = self.player.currentTime;
-        }
-        self.seekTargetTime = seekPosition.time;
-        
         // Starting with iOS 11, there is no guarantee that the last seek succeeds (there was no formal documentation for this
         // behavior on iOS 10 and below, but this was generally working). Starting with iOS 11, the following is unreliable,
         // as the state might not be updated if the last seek gets cancelled. This is especially the case if multiple seeks
@@ -995,13 +1105,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         //
         // To be able to reset the state no matter the last seek finished, we use a special category method which keeps count
         // of the count of seek requests still pending.
-        [self.player srg_countedSeekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter completionHandler:^(BOOL finished, NSInteger pendingSeekCount) {
-            if (pendingSeekCount == 0) {
-                [self setPlaybackState:(self.player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-                
-                self.seekStartTime = kCMTimeIndefinite;
-                self.seekTargetTime = kCMTimeIndefinite;
-            }
+        [self.player seekToPosition:seekPosition notify:YES completionHandler:^(BOOL finished) {
             completionHandler ? completionHandler(finished) : nil;
         }];
     }
@@ -1012,11 +1116,13 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)stopWithUserInfo:(NSDictionary *)userInfo
 {
+#if TARGET_OS_IOS
     if (self.pictureInPictureController.isPictureInPictureActive) {
         [self.pictureInPictureController stopPictureInPicture];
     }
+#endif
     
-    NSMutableDictionary *fullUserInfo = [userInfo mutableCopy] ?: [NSMutableDictionary dictionary];
+    NSMutableDictionary *fullUserInfo = userInfo.mutableCopy ?: [NSMutableDictionary dictionary];
     
     // Only reset if needed (this would otherwise lazily instantiate the view again and create potential issues)
     if (self.player) {
@@ -1032,8 +1138,17 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         self.player = nil;
     }
     
-    _timeRange = kCMTimeRangeInvalid;
     _selected = NO;
+    
+    self.mediaType = SRGMediaPlayerMediaTypeUnknown;
+    
+    self.timeRange = kCMTimeRangeInvalid;
+    self.timeRangeCached = NO;
+    
+    self.streamType = SRGMediaPlayerStreamTypeUnknown;
+    self.streamTypeCached = NO;
+    
+    self.live = NO;
     
     self.previousSegment = nil;
     self.targetSegment = nil;
@@ -1044,18 +1159,17 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     self.presentationSizeValue = nil;
     
-    self.seekStartTime = kCMTimeIndefinite;
-    self.seekTargetTime = kCMTimeIndefinite;
-    
     self.lastPlaybackTime = kCMTimeIndefinite;
     self.lastStallDetectionDate = nil;
     
     [self updateTracksForPlayer:nil];
     
+#if TARGET_OS_IOS
     self.pictureInPictureController = nil;
+#endif
     
     // Emit the notification once all state has been reset
-    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:[fullUserInfo copy]];
+     [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:fullUserInfo.copy];
 }
 
 #pragma mark Configuration
@@ -1139,17 +1253,17 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     if (self.previousSegment && ! self.previousSegment.srg_blocked) {
         self.currentSegment = nil;
         
-        NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : self.previousSegment,
-                                            SRGMediaPlayerSelectionKey : @(selected),
-                                            SRGMediaPlayerSelectedKey : @(_selected),
-                                            SRGMediaPlayerInterruptionKey : @(interrupted),
-                                            SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:lastPlaybackTime] } mutableCopy];
+        NSMutableDictionary *userInfo = @{ SRGMediaPlayerSegmentKey : self.previousSegment,
+                                           SRGMediaPlayerSelectionKey : @(selected),
+                                           SRGMediaPlayerSelectedKey : @(_selected),
+                                           SRGMediaPlayerInterruptionKey : @(interrupted),
+                                           SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:lastPlaybackTime] }.mutableCopy;
         if (! segment.srg_blocked) {
             userInfo[SRGMediaPlayerNextSegmentKey] = segment;
         }
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSegmentDidEndNotification
                                                           object:self
-                                                        userInfo:[userInfo copy]];
+                                                        userInfo:userInfo.copy];
         _selected = NO;
         
         SRGMediaPlayerLogDebug(@"Controller", @"Segment did end with info %@", userInfo);
@@ -1161,16 +1275,16 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             
             self.currentSegment = segment;
             
-            NSMutableDictionary *userInfo = [@{ SRGMediaPlayerSegmentKey : segment,
-                                                SRGMediaPlayerSelectionKey : @(_selected),
-                                                SRGMediaPlayerSelectedKey : @(_selected),
-                                                SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:lastPlaybackTime] } mutableCopy];
+            NSMutableDictionary *userInfo = @{ SRGMediaPlayerSegmentKey : segment,
+                                               SRGMediaPlayerSelectionKey : @(_selected),
+                                               SRGMediaPlayerSelectedKey : @(_selected),
+                                               SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:lastPlaybackTime] }.mutableCopy;
             if (self.previousSegment && ! self.previousSegment.srg_blocked) {
                 userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
             }
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSegmentDidStartNotification
                                                               object:self
-                                                            userInfo:[userInfo copy]];
+                                                            userInfo:userInfo.copy];
             
             SRGMediaPlayerLogDebug(@"Controller", @"Segment did start with info %@", userInfo);
         }
@@ -1229,6 +1343,45 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }];
 }
 
+#pragma mark AVPlayerViewController support
+
+- (void)bindToPlayerViewController:(AVPlayerViewController *)playerViewController
+{
+    if (self.playerViewController) {
+        self.playerViewController.player = nil;
+    }
+    
+    playerViewController.player = self.player;
+    self.playerViewController = playerViewController;
+    
+    // AVPlayerViewController works well (e.g. playback won't freeze in the simulator after a few seconds) only if
+    // the attached player is not bound to any other layer. We therefore detach the player from the controller view.
+    self.view.player = nil;
+}
+
+- (void)attachPlayer:(AVPlayer *)player toView:(SRGMediaPlayerView *)view
+{
+    if (self.playerViewController) {
+        self.playerViewController.player = player;
+    }
+    else {
+        view.player = player;
+    }
+}
+
+- (void)unbindFromCurrentPlayerViewController
+{
+    if (! self.playerViewController) {
+        return;
+    }
+    
+    self.playerViewController.player = nil;
+    self.playerViewController = nil;
+    
+    // Rebind the player
+    self.view.player = self.player;
+}
+
 #pragma mark Tracks
 
 - (AVMediaSelectionOption *)selectedOptionForPlayer:(AVPlayer *)player withMediaCharacteristic:(AVMediaCharacteristic)mediaCharacteristic
@@ -1241,13 +1394,13 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     
     AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:mediaCharacteristic];
-    return [playerItem selectedMediaOptionInMediaSelectionGroup:audioGroup];
+    return [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:audioGroup];
 }
 
 - (void)updateTracksForPlayer:(AVPlayer *)player
 {
     AVMediaSelectionOption *audioOption = [self selectedOptionForPlayer:player withMediaCharacteristic:AVMediaCharacteristicAudible];
-    if ((audioOption || self.audioOption) && ! [audioOption isEqual:self.audioOption]) {
+    if (audioOption != self.audioOption && ! [audioOption isEqual:self.audioOption]) {
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
         if (self.audioOption) {
             userInfo[SRGMediaPlayerPreviousTrackKey] = self.audioOption;
@@ -1260,11 +1413,11 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerAudioTrackDidChangeNotification
                                                           object:self
-                                                        userInfo:[userInfo copy]];
+                                                        userInfo:userInfo.copy];
     }
     
     AVMediaSelectionOption *subtitleOption = [self selectedOptionForPlayer:player withMediaCharacteristic:AVMediaCharacteristicLegible];
-    if ((subtitleOption || self.subtitleOption) && ! [subtitleOption isEqual:self.subtitleOption]) {
+    if (subtitleOption != self.subtitleOption && ! [subtitleOption isEqual:self.subtitleOption]) {
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
         if (self.subtitleOption) {
             userInfo[SRGMediaPlayerPreviousTrackKey] = self.subtitleOption;
@@ -1277,7 +1430,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSubtitleTrackDidChangeNotification
                                                           object:self
-                                                        userInfo:[userInfo copy]];
+                                                        userInfo:userInfo.copy];
     }
 }
 
@@ -1292,6 +1445,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     @weakify(self)
     self.playerPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
+        
+#if TARGET_OS_IOS
         if (self.playerLayer.readyForDisplay) {
             if (self.pictureInPictureController.playerLayer != self.playerLayer) {
                 self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
@@ -1301,6 +1456,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         else {
             self.pictureInPictureController = nil;
         }
+#endif
         
         [self updateSegmentStatusForPlaybackState:self.playbackState previousPlaybackState:self.playbackState time:time];
         
@@ -1315,6 +1471,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     self.controllerPeriodicTimeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
+        [self updatePlaybackInformationForPlayer:player];
         [self updateTracksForPlayer:player];
     }];
 }
@@ -1384,6 +1541,23 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     return periodicTimeObserver;
 }
 
+#pragma mark SRGPlayer protocol
+
+- (void)player:(SRGPlayer *)player willSeekToPosition:(SRGPosition *)position
+{
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
+    
+    [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSeekNotification
+                                                      object:self
+                                                    userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:position.time],
+                                                                SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:player.currentTime] }];
+}
+
+- (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position
+{
+    [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+}
+
 #pragma mark Notifications
 
 - (void)srg_mediaPlayerController_playerItemDidPlayToEndTime:(NSNotification *)notification
@@ -1405,18 +1579,23 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
-    if (self.mediaType == SRGMediaPlayerMediaTypeVideo && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive) {
+    if (self.view.superview && self.mediaType == SRGMediaPlayerMediaTypeVideo
+#if TARGET_OS_IOS
+            && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive
+#endif
+    ) {    
         switch (self.viewBackgroundBehavior) {
             case SRGMediaPlayerViewBackgroundBehaviorAttached: {
                 [self.player pause];
                 break;
             }
                 
+#if TARGET_OS_IOS
             case SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked: {
                 // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (UIDevice.srg_mediaPlayer_isLocked) {
-                        self.view.player = nil;
+                        [self attachPlayer:nil toView:self.view];
                     }
                     else {
                         [self.player pause];
@@ -1424,11 +1603,12 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                 });
                 break;
             }
+#endif
                 
             case SRGMediaPlayerViewBackgroundBehaviorDetached: {
                 // The video layer must be detached in the background if we want playback not to be paused automatically.
                 // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
-                self.view.player = nil;
+                [self attachPlayer:nil toView:self.view];
                 break;
             }
         }
@@ -1437,14 +1617,18 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)srg_mediaPlayerController_applicationWillEnterForeground:(NSNotification *)notification
 {
-    self.view.player = self.player;
+    [self attachPlayer:self.player toView:self.view];
 }
 
 #pragma mark KVO
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
 {
-    if ([key isEqualToString:@keypath(SRGMediaPlayerController.new, playbackState)]) {
+    if ([key isEqualToString:@keypath(SRGMediaPlayerController.new, playbackState)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, mediaType)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, timeRange)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, streamType)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, live)]) {
         return NO;
     }
     else {
