@@ -9,9 +9,18 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  A timer class, similar to `NSTimer`, but pausing updates when the application is sent to the background.
+ *  A timer class, similar to `NSTimer`, but pausing updates when the application is sent to the background. This
+ *  timer does require any run loop either.
  */
 @interface SRGTimer : NSObject
+
+/**
+ *  Convenience constructor.
+ */
++ (SRGTimer *)timerWithTimeInterval:(NSTimeInterval)interval
+                            repeats:(BOOL)repeats
+                              queue:(nullable dispatch_queue_t)queue
+                              block:(void (^)(void))block;
 
 /**
  *  Create a timer. After instantiation, call `-resume` to start the timer.
@@ -21,10 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param queue    The serial queue onto which block should be enqueued (main queue if `NULL`).
  *  @param block    The block to be executed.
  */
-- (instancetype)initWithInterval:(NSTimeInterval)interval
-                         repeats:(BOOL)repeats
-                           queue:(nullable dispatch_queue_t)queue
-                           block:(void (^)(void))block NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTimeInterval:(NSTimeInterval)interval
+                             repeats:(BOOL)repeats
+                               queue:(nullable dispatch_queue_t)queue
+                               block:(void (^)(void))block NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Resume the timer.

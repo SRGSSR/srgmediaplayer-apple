@@ -6,7 +6,7 @@
 
 #import "SRGRouteDetector.h"
 
-#import "NSTimer+SRGMediaPlayer.h"
+#import "SRGTimer.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <libextobjc/libextobjc.h>
@@ -20,7 +20,7 @@ API_AVAILABLE(ios(11.0)) static SRGRouteDetector *s_routeDetector;
 @property (nonatomic) AVRouteDetector *routeDetector;
 @property (nonatomic) BOOL multipleRoutesDetected;
 
-@property (nonatomic) NSTimer *timer;
+@property (nonatomic) SRGTimer *timer;
 
 @end
 
@@ -53,7 +53,7 @@ API_AVAILABLE(ios(11.0)) static SRGRouteDetector *s_routeDetector;
         
         // According to its documentation, `AVRouteDetector` detection should only be enabled when needed to avoid
         // unnecessary battery consumption. We therefore only periodically enable it and cache the result
-        self.timer = [NSTimer srgmediaplayer_timerWithTimeInterval:30. repeats:YES block:^(NSTimer * _Nonnull timer) {
+        self.timer = [SRGTimer timerWithTimeInterval:30. repeats:YES queue:NULL block:^{
             [self updateRouteAvailability];
         }];
         [self updateRouteAvailability];
@@ -73,7 +73,7 @@ API_AVAILABLE(ios(11.0)) static SRGRouteDetector *s_routeDetector;
 
 #pragma mark Getters and setters
 
-- (void)setTimer:(NSTimer *)timer
+- (void)setTimer:(SRGTimer *)timer
 {
     [_timer invalidate];
     _timer = timer;

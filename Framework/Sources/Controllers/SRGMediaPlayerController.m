@@ -12,7 +12,6 @@
 #import "CMTimeRange+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
-#import "NSTimer+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
 #import "SRGMediaPlayerError.h"
 #import "SRGMediaPlayerLogger.h"
@@ -21,6 +20,7 @@
 #import "SRGPeriodicTimeObserver.h"
 #import "SRGPlayer.h"
 #import "SRGSegment+Private.h"
+#import "SRGTimer.h"
 #import "UIDevice+SRGMediaPlayer.h"
 #import "UIScreen+SRGMediaPlayer.h"
 
@@ -78,7 +78,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 @property (nonatomic, getter=isLive) BOOL live;
 
-@property (nonatomic) NSTimer *stallDetectionTimer;
+@property (nonatomic) SRGTimer *stallDetectionTimer;
 @property (nonatomic) CMTime lastPlaybackTime;
 @property (nonatomic) NSDate *lastStallDetectionDate;
 
@@ -319,7 +319,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             [self updateMediaTypeForPlayer:player];
         }];
         
-        self.stallDetectionTimer = [NSTimer srgmediaplayer_timerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {
+        self.stallDetectionTimer = [SRGTimer timerWithTimeInterval:1. repeats:YES queue:NULL block:^{
             @strongify(self)
             
             AVPlayerItem *playerItem = player.currentItem;
@@ -361,7 +361,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-- (void)setStallDetectionTimer:(NSTimer *)stallDetectionTimer
+- (void)setStallDetectionTimer:(SRGTimer *)stallDetectionTimer
 {
     [_stallDetectionTimer invalidate];
     _stallDetectionTimer = stallDetectionTimer;

@@ -36,7 +36,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 @property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
 
-@property (nonatomic) NSTimer *inactivityTimer;
+@property (nonatomic) SRGTimer *inactivityTimer;
 
 @end
 
@@ -57,7 +57,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 #pragma mark Getters and setters
 
-- (void)setInactivityTimer:(NSTimer *)inactivityTimer
+- (void)setInactivityTimer:(SRGTimer *)inactivityTimer
 {
     [_inactivityTimer invalidate];
     _inactivityTimer = inactivityTimer;
@@ -264,12 +264,11 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 - (void)restartInactivityTracker
 {
     if (! UIAccessibilityIsVoiceOverRunning()) {
-        self.inactivityTimer = [NSTimer timerWithTimeInterval:5.
-                                                       target:self
-                                                     selector:@selector(updateForInactivity:)
-                                                     userInfo:nil
-                                                      repeats:NO];
-        [[NSRunLoop mainRunLoop] addTimer:self.inactivityTimer forMode:NSRunLoopCommonModes];
+        @weakify(self)
+        self.inactivityTimer = [SRGTimer timerWithTimeInterval:5. repeats:NO queue:NULL block:^{
+            @strongify(self)
+            [self setUserInterfaceHidden:YES animated:YES];
+        }];
     }
     else {
         self.inactivityTimer = nil;
@@ -502,13 +501,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 - (void)resetInactivityTimer:(UIGestureRecognizer *)gestureRecognizer
 {
     [self restartInactivityTracker];
-}
-
-#pragma mark Timers
-
-- (void)updateForInactivity:(NSTimer *)timer
-{
-    [self setUserInterfaceHidden:YES animated:YES];
 }
 
 @end

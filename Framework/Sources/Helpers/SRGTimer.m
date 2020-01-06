@@ -23,12 +23,19 @@
 
 @implementation SRGTimer
 
+#pragma mark Class methods
+
++ (SRGTimer *)timerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats queue:(dispatch_queue_t)queue block:(void (^)(void))block
+{
+    return [[SRGTimer alloc] initWithTimeInterval:interval repeats:repeats queue:queue block:block];
+}
+
 #pragma mark Object lifecycle
 
-- (instancetype)initWithInterval:(NSTimeInterval)interval
-                         repeats:(BOOL)repeats
-                           queue:(dispatch_queue_t)queue
-                           block:(void (^)(void))block
+- (instancetype)initWithTimeInterval:(NSTimeInterval)interval
+                             repeats:(BOOL)repeats
+                               queue:(dispatch_queue_t)queue
+                               block:(void (^)(void))block
 {
     if (self = [super init]) {
         self.interval = interval;
@@ -62,7 +69,7 @@
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithInterval:0. repeats:NO queue:NULL block:^{}];
+    return [self initWithTimeInterval:0. repeats:NO queue:NULL block:^{}];
 }
 
 #pragma clang diagnostic pop
