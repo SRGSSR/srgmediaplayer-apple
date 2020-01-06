@@ -61,7 +61,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 @property (nonatomic, readonly) SRGMediaPlayerPlaybackState playbackState;
 
-@property (nonatomic) NSArray<id<SRGSegment>> *segments;
+@property (nonatomic) NSArray<id<SRGSegment>> *loadedSegments;
 @property (nonatomic) NSArray<id<SRGSegment>> *visibleSegments;
 
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
@@ -445,7 +445,18 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     [self didChangeValueForKey:@keypath(self.live)];
 }
 
+- (NSArray<id<SRGSegment>> *)segments
+{
+    return self.loadedSegments;
+}
+
 - (void)setSegments:(NSArray<id<SRGSegment>> *)segments
+{
+    self.loadedSegments = segments;
+    [self updateSegmentStatusForPlaybackState:self.playbackState previousPlaybackState:self.playbackState time:self.currentTime];
+}
+
+- (void)setLoadedSegments:(NSArray<id<SRGSegment>> *)segments
 {
     if (segments && self.previousSegment) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
@@ -482,7 +493,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         }
     }
     
-    _segments = segments;
+    _loadedSegments = segments;
     
     // Reset the cached visible segment list
     _visibleSegments = nil;
@@ -871,7 +882,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     // Reset input values (so that any state change notification reflects this new state)
     self.contentURL = nil;
     self.URLAsset = nil;
-    self.segments = nil;
+    self.loadedSegments = nil;
     self.userInfo = nil;
     
     self.initialTargetSegment = nil;
@@ -1026,7 +1037,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.contentURL = URL;
     self.URLAsset = URLAsset;
     
-    self.segments = segments;
+    self.loadedSegments = segments;
     self.userInfo = userInfo;
     self.targetSegment = targetSegment;
     
@@ -1216,7 +1227,8 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     
     // Only update when relevant
-    if (playbackState != SRGMediaPlayerPlaybackStatePaused && playbackState != SRGMediaPlayerPlaybackStatePlaying) {
+    if (playbackState != SRGMediaPlayerPlaybackStatePaused && playbackState != SRGMediaPlayerPlaybackStatePlaying
+            && playbackState != SRGMediaPlayerPlaybackStateEnded) {
         return;
     }
     
