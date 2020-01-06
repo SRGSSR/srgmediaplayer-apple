@@ -7,6 +7,7 @@
 #import "SRGTimeSlider.h"
 
 #import "CMTimeRange+SRGMediaPlayer.h"
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "UIBezierPath+SRGMediaPlayer.h"
 
@@ -100,6 +101,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     if (_mediaPlayerController) {
         [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.loadedTimeRanges)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerPlaybackStateDidChangeNotification
@@ -115,12 +117,17 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         @weakify(self)
         self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.2, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
             @strongify(self)
-            
             if (! self.tracking && mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
                 [self updateDisplayWithTime:time];
             }
         }];
-        [self updateDisplayWithTime:mediaPlayerController.player.currentTime];
+        
+        @weakify(mediaPlayerController)
+        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.loadedTimeRanges) options:0 block:^(MAKVONotification *notification) {
+            @strongify(mediaPlayerController)
+            [self updateDisplayWithMediaPlayerController:mediaPlayerController];
+        }];
+        [self updateDisplayWithMediaPlayerController:mediaPlayerController];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_timeSlider_playbackStateDidChange:)
@@ -221,6 +228,12 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 }
 
 #pragma mark Information display
+
+- (void)updateDisplayWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
+{
+    CMTime time = CMTIME_IS_INDEFINITE(mediaPlayerController.seekTargetTime) ? mediaPlayerController.currentTime : mediaPlayerController.seekTargetTime;
+    [self updateDisplayWithTime:time];
+}
 
 - (void)updateDisplayWithTime:(CMTime)time
 {

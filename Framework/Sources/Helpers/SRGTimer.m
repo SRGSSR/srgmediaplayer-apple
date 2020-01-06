@@ -48,7 +48,6 @@
         @weakify(self)
         dispatch_source_set_event_handler(self.source, ^{
             @strongify(self)
-            
             block();
             if (! repeats) {
                 [self invalidate];
