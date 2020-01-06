@@ -152,6 +152,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.playbackLikelyToKeepUp)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.presentationSize)];
+        [_player removeObserver:self keyPath:@keypath(_player.currentItem.seekableTimeRanges)];
         
         self.stallDetectionTimer = nil;
         
@@ -181,11 +182,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         [self registerTimeObserversForPlayer:player];
         
-        @weakify(self)
-        @weakify(player)
+        @weakify(self) @weakify(player)
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.status) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self)
-            @strongify(player)
+            @strongify(self) @strongify(player)
             
             AVPlayerItem *playerItem = player.currentItem;
             if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
@@ -261,8 +260,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.rate) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self)
-            @strongify(player)
+            @strongify(self) @strongify(player)
             
             AVPlayerItem *playerItem = player.currentItem;
             
@@ -308,8 +306,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self)
-            @strongify(player)
+            @strongify(self) @strongify(player)
             
             if (player.currentItem.playbackLikelyToKeepUp && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
                 [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
@@ -317,11 +314,16 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.presentationSize) options:0 block:^(MAKVONotification * _Nonnull notification) {
-            @strongify(self)
-            @strongify(player)
+            @strongify(self) @strongify(player)
             
             self.presentationSizeValue = [NSValue valueWithCGSize:player.currentItem.presentationSize];
             [self updateMediaTypeForPlayer:player];
+        }];
+        
+        [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.seekableTimeRanges) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self) @strongify(player)
+            [self updatePlaybackInformationForPlayer:player];
+            [self updateTracksForPlayer:player];
         }];
         
         self.stallDetectionTimer = [NSTimer srgmediaplayer_timerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {
