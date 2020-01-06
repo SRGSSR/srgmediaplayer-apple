@@ -65,7 +65,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 @property (nonatomic) NSArray<id<SRGSegment>> *visibleSegments;
 
 @property (nonatomic) NSMutableDictionary<NSString *, SRGPeriodicTimeObserver *> *periodicTimeObservers;
-@property (nonatomic) id playerPeriodicTimeObserver;
+@property (nonatomic) id playerPeriodicTimeObserver;        // AVPlayer time observer, needs to be retained according to the documentation
 @property (nonatomic, weak) id controllerPeriodicTimeObserver;
 
 @property (nonatomic) SRGMediaPlayerMediaType mediaType;
@@ -152,7 +152,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.playbackLikelyToKeepUp)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.presentationSize)];
-        [_player removeObserver:self keyPath:@keypath(_player.currentItem.seekableTimeRanges)];
         
         self.stallDetectionTimer = nil;
         
@@ -318,12 +317,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             
             self.presentationSizeValue = [NSValue valueWithCGSize:player.currentItem.presentationSize];
             [self updateMediaTypeForPlayer:player];
-        }];
-        
-        [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.seekableTimeRanges) options:0 block:^(MAKVONotification * _Nonnull notification) {
-            @strongify(self) @strongify(player)
-            [self updatePlaybackInformationForPlayer:player];
-            [self updateTracksForPlayer:player];
         }];
         
         self.stallDetectionTimer = [NSTimer srgmediaplayer_timerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {

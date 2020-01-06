@@ -10,10 +10,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  A periodic time observer calls one or several blocks during playback of an associated player. Unlike usual time
- *  observers associated with an `AVPlayer`, an `SRGPeriodicTimeObserver` executes during the lifetime of the player,
- *  also when it is paused, which makes it useful when updates must be made continuously (e.g. UI updates for paused 
- *  DVR streams).
+ *  A periodic time observer calls one or several blocks during playback of an associated player. This class works
+ *  exactly like time observers associated with an `AVPlayer`, with two differences:
+ *    - Seekable time range updates are reported as well.
+ *    - Observers can execute several blocks stemming from different sources.
  */
 @interface SRGPeriodicTimeObserver : NSObject
 

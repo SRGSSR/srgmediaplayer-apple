@@ -177,10 +177,9 @@ NS_ASSUME_NONNULL_BEGIN
  *    - KVO, for properties offering support for it, e.g. `timeRange`, `mediaType` or `streamType`.
  *    - Usual boundary time and periodic time observers, which you define on the `AVPlayer` instance directly by accessing
  *      the `player` property. You should use the player creation and destruction blocks to install and remove them reliably.
- *    - `AVPlayer` periodic time observers only trigger when the player actually plays. In some cases, you still want to
- *      perform periodic updates even when playback is paused (e.g. updating the user interface while a DVR stream is paused).
- *      For such use cases, `SRGMediaPlayerController` provides the `-addPeriodicTimeObserverForInterval:queue:usingBlock:`
- *      method, with which such observers can be defined. These observers being managed by the controller, you can set them
+ *    - Periodic time observers, added with `-addPeriodicTimeObserverForInterval:queue:usingBlock:`. These are identical to
+ *      the ones provided with `AVPlayer`, with the improvement that they also fire with time range updates. This ensures
+ *      updates are received for paused DVR streams as well. These observers being managed by the controller, you can set them
  *      up right after controller creation if you like.
  *
  *  In general, you should prefer notifications and KVO to periodic observers with short periodicity where possible, as
@@ -508,9 +507,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerController (TimeObservers)
 
 /**
- *  Register a block for periodic execution when the player is not idle (unlike usual `AVPlayer` time observers which do
- *  not run when playback has been paused). This makes such observers very helpful when UI must be updated continously 
- *  when the player is up, for example in the case of paused DVR streams.
+ *  Register a block for periodic execution when the player is active. You should in general prefer this method to its
+ *  `AVPlayer` counterpart, as such observers ensure updates are also received properly for paused DVR streams.
  *
  *  @param interval Time interval between block executions.
  *  @param queue    The serial queue onto which block should be enqueued (main queue if `NULL`).

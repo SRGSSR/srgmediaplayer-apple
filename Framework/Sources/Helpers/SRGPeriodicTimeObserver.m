@@ -6,6 +6,8 @@
 
 #import "SRGPeriodicTimeObserver.h"
 
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
+
 #import <libextobjc/libextobjc.h>
 
 @interface SRGPeriodicTimeObserver ()
@@ -44,7 +46,7 @@
 
 - (void)dealloc
 {
-    [self removeObserver];
+    [self removeObservers];
 }
 
 #pragma mark Associating with a player
@@ -55,14 +57,14 @@
         return;
     }
     
-    [self removeObserver];
+    [self removeObservers];
     self.player = player;
-    [self startObserver];
+    [self startObservers];
 }
 
 - (void)detachFromMediaPlayer
 {
-    [self removeObserver];
+    [self removeObservers];
     self.player = nil;
 }
 
@@ -71,7 +73,7 @@
 - (void)setBlock:(void (^)(CMTime time))block forIdentifier:(NSString *)identifier
 {
     if (self.blocks.count == 0) {
-        [self startObserver];
+        [self startObservers];
     }
     
     [self.blocks setObject:[block copy] forKey:identifier];
@@ -87,7 +89,7 @@
     [self.blocks removeObjectForKey:identifier];
     
     if (self.blocks.count == 0) {
-        [self removeObserver];
+        [self removeObservers];
     }
 }
 
@@ -98,32 +100,42 @@
 
 #pragma mark Observers
 
-- (void)startObserver
+- (void)startObservers
 {
     if (! self.player || self.timeObserver) {
         return;
     }
     
+    void (^notify)(CMTime) = ^(CMTime time) {
+        for (void (^block)(CMTime) in [self.blocks allValues]) {
+            dispatch_async(self.queue, ^{
+                block(time);
+            });
+        }
+    };
+    
     @weakify(self)
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:self.interval queue:self.queue usingBlock:^(CMTime time) {
         @strongify(self)
         if (! self.player) {    // It may have disappeared, as it is a weak property
-            [self removeObserver];
+            [self removeObservers];
             return;
         }
         
-        for (void (^block)(CMTime) in [self.blocks allValues]) {
-            dispatch_async(self.queue, ^{
-                block(self.player.currentTime);
-            });
-        }
+        notify(time);
+    }];
+    
+    [self.player srg_addMainThreadObserver:self keyPath:@keypath(self.player.currentItem.seekableTimeRanges) options:0 block:^(MAKVONotification * _Nonnull notification) {
+        notify(self.player.currentTime);
     }];
 }
 
-- (void)removeObserver
+- (void)removeObservers
 {
     [self.player removeTimeObserver:self.timeObserver];
     self.timeObserver = nil;
+    
+    [self.player removeObserver:self keyPath:@keypath(self.player.currentItem.seekableTimeRanges)];
 }
 
 @end
