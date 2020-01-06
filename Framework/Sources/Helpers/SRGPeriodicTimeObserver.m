@@ -6,13 +6,15 @@
 
 #import "SRGPeriodicTimeObserver.h"
 
+#import <libextobjc/libextobjc.h>
+
 @interface SRGPeriodicTimeObserver ()
 
 @property (nonatomic) CMTime interval;
 @property (nonatomic) dispatch_queue_t queue;
 @property (nonatomic, weak) AVPlayer *player;
 @property (nonatomic) NSMutableDictionary *blocks;
-@property (nonatomic) NSTimer *timer;
+@property (nonatomic) id timeObserver;
 
 @end
 
@@ -98,38 +100,30 @@
 
 - (void)startObserver
 {
-    if (! self.player || self.timer) {
+    if (! self.player || self.timeObserver) {
         return;
     }
     
-    self.timer = [NSTimer timerWithTimeInterval:CMTimeGetSeconds(self.interval)
-                                         target:self
-                                       selector:@selector(timerTick:)
-                                       userInfo:nil
-                                        repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    @weakify(self)
+    self.timeObserver = [self.player addPeriodicTimeObserverForInterval:self.interval queue:self.queue usingBlock:^(CMTime time) {
+        @strongify(self)
+        if (! self.player) {    // It may have disappeared, as it is a weak property
+            [self removeObserver];
+            return;
+        }
+        
+        for (void (^block)(CMTime) in [self.blocks allValues]) {
+            dispatch_async(self.queue, ^{
+                block(self.player.currentTime);
+            });
+        }
+    }];
 }
 
 - (void)removeObserver
 {
-    [self.timer invalidate];
-    self.timer = nil;
-}
-
-#pragma mark Timers
-
-- (void)timerTick:(NSTimer *)timer
-{
-    if (! self.player) {    // It may have disappeared, as it is a weak property
-        [self removeObserver];
-        return;
-    }
-    
-    for (void (^block)(CMTime) in [self.blocks allValues]) {
-        dispatch_async(self.queue, ^{
-            block(self.player.currentTime);
-        });
-    }
+    [self.player removeTimeObserver:self.timeObserver];
+    self.timeObserver = nil;
 }
 
 @end
