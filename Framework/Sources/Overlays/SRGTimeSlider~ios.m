@@ -124,6 +124,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         
         @weakify(mediaPlayerController)
         [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.loadedTimeRanges) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
             @strongify(mediaPlayerController)
             [self updateDisplayWithMediaPlayerController:mediaPlayerController];
         }];
