@@ -337,6 +337,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             
             self.lastPlaybackTime = currentTime;
         }];
+        [self.stallDetectionTimer resume];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_mediaPlayerController_playerItemDidPlayToEndTime:)

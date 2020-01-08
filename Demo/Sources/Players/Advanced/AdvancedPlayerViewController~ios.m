@@ -269,6 +269,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
             @strongify(self)
             [self setUserInterfaceHidden:YES animated:YES];
         }];
+        [self.inactivityTimer resume];
     }
     else {
         self.inactivityTimer = nil;

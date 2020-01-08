@@ -56,6 +56,7 @@ API_AVAILABLE(ios(11.0)) static SRGRouteDetector *s_routeDetector;
         self.timer = [SRGTimer timerWithTimeInterval:30. repeats:YES background:NO queue:NULL block:^{
             [self updateRouteAvailability];
         }];
+        [self.timer resume];
         [self updateRouteAvailability];
         
         [NSNotificationCenter.defaultCenter addObserver:self
