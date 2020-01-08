@@ -283,6 +283,33 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && player.rate != 0.f) {
                 [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
             }
+            
+            if (player.rate != 0.f) {
+                self.stallDetectionTimer = [SRGTimer timerWithTimeInterval:1. repeats:YES background:YES queue:NULL block:^{
+                    @strongify(self)
+                    
+                    AVPlayerItem *playerItem = player.currentItem;
+                    CMTime currentTime = playerItem.currentTime;
+                    if (self.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
+                        if (CMTIME_COMPARE_INLINE(self.lastPlaybackTime, ==, currentTime)) {
+                            [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
+                            self.lastStallDetectionDate = NSDate.date;
+                        }
+                        else {
+                            self.lastStallDetectionDate = nil;
+                        }
+                    }
+                    else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
+                        [player playImmediatelyIfPossible];
+                    }
+                    
+                    self.lastPlaybackTime = currentTime;
+                }];
+                [self.stallDetectionTimer resume];
+            }
+            else {
+                self.stallDetectionTimer = nil;
+            }
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
@@ -316,28 +343,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             self.presentationSizeValue = [NSValue valueWithCGSize:player.currentItem.presentationSize];
             [self updateMediaTypeForPlayer:player];
         }];
-        
-        self.stallDetectionTimer = [SRGTimer timerWithTimeInterval:1. repeats:YES background:YES queue:NULL block:^{
-            @strongify(self)
-            
-            AVPlayerItem *playerItem = player.currentItem;
-            CMTime currentTime = playerItem.currentTime;
-            if (self.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
-                if (CMTIME_COMPARE_INLINE(self.lastPlaybackTime, ==, currentTime)) {
-                    [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
-                    self.lastStallDetectionDate = NSDate.date;
-                }
-                else {
-                    self.lastStallDetectionDate = nil;
-                }
-            }
-            else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                [player playImmediatelyIfPossible];
-            }
-            
-            self.lastPlaybackTime = currentTime;
-        }];
-        [self.stallDetectionTimer resume];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_mediaPlayerController_playerItemDidPlayToEndTime:)
