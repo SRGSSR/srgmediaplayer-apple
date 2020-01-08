@@ -317,7 +317,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             [self updateMediaTypeForPlayer:player];
         }];
         
-        self.stallDetectionTimer = [SRGTimer timerWithTimeInterval:1. repeats:YES queue:NULL block:^{
+        self.stallDetectionTimer = [SRGTimer timerWithTimeInterval:1. repeats:YES background:YES queue:NULL block:^{
             @strongify(self)
             
             AVPlayerItem *playerItem = player.currentItem;

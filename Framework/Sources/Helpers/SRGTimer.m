@@ -13,6 +13,7 @@
 
 @property (nonatomic) NSTimeInterval interval;
 @property (nonatomic) BOOL repeats;
+@property (nonatomic) BOOL background;
 @property (nonatomic) dispatch_queue_t queue;
 @property (nonatomic, copy) void (^block)(void);
 
@@ -25,21 +26,27 @@
 
 #pragma mark Class methods
 
-+ (SRGTimer *)timerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats queue:(dispatch_queue_t)queue block:(void (^)(void))block
++ (SRGTimer *)timerWithTimeInterval:(NSTimeInterval)interval
+                            repeats:(BOOL)repeats
+                         background:(BOOL)background
+                              queue:(dispatch_queue_t)queue
+                              block:(void (^)(void))block
 {
-    return [[SRGTimer alloc] initWithTimeInterval:interval repeats:repeats queue:queue block:block];
+    return [[SRGTimer alloc] initWithTimeInterval:interval repeats:repeats background:background queue:queue block:block];
 }
 
 #pragma mark Object lifecycle
 
 - (instancetype)initWithTimeInterval:(NSTimeInterval)interval
                              repeats:(BOOL)repeats
+                          background:(BOOL)background
                                queue:(dispatch_queue_t)queue
                                block:(void (^)(void))block
 {
     if (self = [super init]) {
         self.interval = interval;
         self.repeats = repeats;
+        self.background = background;
         self.queue = queue ?: dispatch_get_main_queue();
         self.block = block;
 
@@ -68,7 +75,7 @@
 - (instancetype)init
 {
     [self doesNotRecognizeSelector:_cmd];
-    return [self initWithTimeInterval:0. repeats:NO queue:NULL block:^{}];
+    return [self initWithTimeInterval:0. repeats:NO background:NO queue:NULL block:^{}];
 }
 
 #pragma clang diagnostic pop
@@ -91,14 +98,16 @@
     
     self.resumed = YES;
     
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(applicationDidEnterBackground:)
-                                               name:UIApplicationDidEnterBackgroundNotification
-                                             object:nil];
-    [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(applicationWillEnterForeground:)
-                                               name:UIApplicationWillEnterForegroundNotification
-                                             object:nil];
+    if (! self.background) {
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(applicationDidEnterBackground:)
+                                                   name:UIApplicationDidEnterBackgroundNotification
+                                                 object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(applicationWillEnterForeground:)
+                                                   name:UIApplicationWillEnterForegroundNotification
+                                                 object:nil];
+    }
 }
 
 - (void)fire
@@ -127,8 +136,10 @@
     }
     dispatch_source_cancel(self.source);
     
-    [NSNotificationCenter.defaultCenter removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-    [NSNotificationCenter.defaultCenter removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+    if (! self.background) {
+        [NSNotificationCenter.defaultCenter removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [NSNotificationCenter.defaultCenter removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+    }
 }
 
 #pragma mark Notifications

@@ -53,7 +53,7 @@ API_AVAILABLE(ios(11.0)) static SRGRouteDetector *s_routeDetector;
         
         // According to its documentation, `AVRouteDetector` detection should only be enabled when needed to avoid
         // unnecessary battery consumption. We therefore only periodically enable it and cache the result
-        self.timer = [SRGTimer timerWithTimeInterval:30. repeats:YES queue:NULL block:^{
+        self.timer = [SRGTimer timerWithTimeInterval:30. repeats:YES background:NO queue:NULL block:^{
             [self updateRouteAvailability];
         }];
         [self updateRouteAvailability];

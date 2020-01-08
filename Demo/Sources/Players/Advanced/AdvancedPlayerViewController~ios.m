@@ -265,7 +265,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     if (! UIAccessibilityIsVoiceOverRunning()) {
         @weakify(self)
-        self.inactivityTimer = [SRGTimer timerWithTimeInterval:5. repeats:NO queue:NULL block:^{
+        self.inactivityTimer = [SRGTimer timerWithTimeInterval:5. repeats:NO background:NO queue:NULL block:^{
             @strongify(self)
             [self setUserInterfaceHidden:YES animated:YES];
         }];
