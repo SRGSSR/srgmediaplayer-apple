@@ -639,7 +639,9 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (CMTime)currentTime
 {
-    return self.player.currentTime;
+    // If `AVPlayer` is idle (e.g. right after creation), its time is zero. Use the same convention here when no
+    // player is available.
+    return self.player ? self.player.currentTime : kCMTimeZero;
 }
 
 - (CMTime)seekStartTime
