@@ -122,13 +122,11 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
             }
         }];
         
-        @weakify(mediaPlayerController)
         [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.loadedTimeRanges) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
-            @strongify(mediaPlayerController)
-            [self updateDisplayWithMediaPlayerController:mediaPlayerController];
+            [self setNeedsDisplay];
         }];
-        [self updateDisplayWithMediaPlayerController:mediaPlayerController];
+        [self updateDisplayWithTime:mediaPlayerController.currentTime];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_timeSlider_playbackStateDidChange:)
@@ -229,12 +227,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 }
 
 #pragma mark Information display
-
-- (void)updateDisplayWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
-{
-    CMTime time = CMTIME_IS_INDEFINITE(mediaPlayerController.seekTargetTime) ? mediaPlayerController.currentTime : mediaPlayerController.seekTargetTime;
-    [self updateDisplayWithTime:time];
-}
 
 - (void)updateDisplayWithTime:(CMTime)time
 {
