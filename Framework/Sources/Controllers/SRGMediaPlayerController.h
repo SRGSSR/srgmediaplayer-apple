@@ -782,7 +782,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Behavior of the associated view when the application is moved to the background. Use detached behaviors to avoid video
- *  playback being automatically paused.
+ *  playback being automatically paused in the background. Note that in order for this to work your `AVAudioSession` category
+ *  must be set to `AVAudioSessionCategoryPlayback`.
  *
  *  This setting does not affect picture in picture or AirPlay playbacks, audio playback (allowed in background) or 360°
  *  playback (always paused during the transition).
