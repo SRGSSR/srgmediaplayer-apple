@@ -305,7 +305,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                     
                     self.lastPlaybackTime = currentTime;
                 }];
-                [self.stallDetectionTimer resume];
             }
             else {
                 self.stallDetectionTimer = nil;
@@ -369,6 +368,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     [_stallDetectionTimer invalidate];
     _stallDetectionTimer = stallDetectionTimer;
+    [stallDetectionTimer resume];
 }
 
 - (AVPlayerLayer *)playerLayer

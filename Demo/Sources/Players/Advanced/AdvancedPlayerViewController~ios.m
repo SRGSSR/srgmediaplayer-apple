@@ -61,6 +61,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [_inactivityTimer invalidate];
     _inactivityTimer = inactivityTimer;
+    [inactivityTimer resume];
 }
 
 #pragma mark View lifecycle
@@ -269,7 +270,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
             @strongify(self)
             [self setUserInterfaceHidden:YES animated:YES];
         }];
-        [self.inactivityTimer resume];
     }
     else {
         self.inactivityTimer = nil;
