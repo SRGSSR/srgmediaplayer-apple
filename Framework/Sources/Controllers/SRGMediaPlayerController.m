@@ -163,7 +163,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                       name:UIApplicationDidEnterBackgroundNotification
                                                     object:nil];
         [NSNotificationCenter.defaultCenter removeObserver:self
-                                                      name:UIApplicationDidBecomeActiveNotification
+                                                      name:UIApplicationWillEnterForegroundNotification
                                                     object:nil];
         
         self.playerDestructionBlock ? self.playerDestructionBlock(_player) : nil;
