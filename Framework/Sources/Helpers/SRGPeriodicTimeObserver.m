@@ -6,9 +6,8 @@
 
 #import "SRGPeriodicTimeObserver.h"
 
-#import "MAKVONotificationCenter+SRGMediaPlayer.h"
-
 #import <libextobjc/libextobjc.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 @interface SRGPeriodicTimeObserver ()
 
@@ -125,7 +124,7 @@
         notify(time);
     }];
     
-    [self.player srg_addMainThreadObserver:self keyPath:@keypath(self.player.currentItem.seekableTimeRanges) options:0 block:^(MAKVONotification * _Nonnull notification) {
+    [self.player addObserver:self keyPath:@keypath(self.player.currentItem.seekableTimeRanges) options:0 block:^(MAKVONotification * _Nonnull notification) {
         notify(self.player.currentTime);
     }];
 }

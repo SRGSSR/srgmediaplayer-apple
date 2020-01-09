@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  A periodic time observer calls one or several blocks during playback of an associated player. This class works
  *  exactly like time observers associated with an `AVPlayer`, with two differences:
  *    - Seekable time range updates are reported as well.
- *    - Observers can execute several blocks stemming from different sources.
+ *    - Blocks with identical perioidicity are executed together.
  */
 @interface SRGPeriodicTimeObserver : NSObject
 
