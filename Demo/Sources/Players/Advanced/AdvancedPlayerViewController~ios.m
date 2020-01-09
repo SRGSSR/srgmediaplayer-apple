@@ -269,6 +269,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
                                                      selector:@selector(updateForInactivity:)
                                                      userInfo:nil
                                                       repeats:NO];
+        self.inactivityTimer.tolerance = 0.5;
         [[NSRunLoop mainRunLoop] addTimer:self.inactivityTimer forMode:NSRunLoopCommonModes];
     }
     else {
