@@ -153,8 +153,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.playbackLikelyToKeepUp)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.presentationSize)];
         
-        self.stallDetectionTimer = nil;
-        
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:AVPlayerItemDidPlayToEndTimeNotification
                                                     object:_player.currentItem];
@@ -283,32 +281,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
             else if (self.playbackState == SRGMediaPlayerPlaybackStateEnded && player.rate != 0.f) {
                 [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
             }
-            
-            if (player.rate != 0.f) {
-                self.stallDetectionTimer = [NSTimer srgmediaplayer_timerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {
-                    @strongify(self)
-                    
-                    AVPlayerItem *playerItem = player.currentItem;
-                    CMTime currentTime = playerItem.currentTime;
-                    if (self.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
-                        if (CMTIME_COMPARE_INLINE(self.lastPlaybackTime, ==, currentTime)) {
-                            [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
-                            self.lastStallDetectionDate = NSDate.date;
-                        }
-                        else {
-                            self.lastStallDetectionDate = nil;
-                        }
-                    }
-                    else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                        [player playImmediatelyIfPossible];
-                    }
-                    
-                    self.lastPlaybackTime = currentTime;
-                }];
-            }
-            else {
-                self.stallDetectionTimer = nil;
-            }
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.externalPlaybackActive) options:0 block:^(MAKVONotification *notification) {
@@ -396,7 +368,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     _playbackState = playbackState;
     [self didChangeValueForKey:@keypath(self.playbackState)];
     
-    // Ensure segment status is up to date
+    [self updateStallDetectionTimerForPlaybackState:playbackState];
     [self updateSegmentStatusForPlaybackState:playbackState previousPlaybackState:previousPlaybackState time:self.player.currentTime];
     
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
@@ -1221,6 +1193,38 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     self.mediaConfigurationBlock = block;
     [self reloadMediaConfiguration];
+}
+
+#pragma mark Stall detection
+
+- (void)updateStallDetectionTimerForPlaybackState:(SRGMediaPlayerPlaybackState)playbackState
+{
+    if (playbackState == SRGMediaPlayerPlaybackStatePlaying) {
+        @weakify(self)
+        self.stallDetectionTimer = [NSTimer srgmediaplayer_timerWithTimeInterval:1. repeats:YES block:^(NSTimer * _Nonnull timer) {
+            @strongify(self)
+            
+            AVPlayerItem *playerItem = self.player.currentItem;
+            CMTime currentTime = playerItem.currentTime;
+            if (self.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
+                if (CMTIME_COMPARE_INLINE(self.lastPlaybackTime, ==, currentTime)) {
+                    [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
+                    self.lastStallDetectionDate = NSDate.date;
+                }
+                else {
+                    self.lastStallDetectionDate = nil;
+                }
+            }
+            else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
+                [self.player playImmediatelyIfPossible];
+            }
+            
+            self.lastPlaybackTime = currentTime;
+        }];
+    }
+    else {
+        self.stallDetectionTimer = nil;
+    }
 }
 
 #pragma mark Segments
