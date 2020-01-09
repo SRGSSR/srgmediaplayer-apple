@@ -369,7 +369,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     [self didChangeValueForKey:@keypath(self.playbackState)];
     
     [self updateStallDetectionTimerForPlaybackState:playbackState];
-    [self updateSegmentStatusForPlaybackState:playbackState previousPlaybackState:previousPlaybackState time:self.player.currentTime];
+    [self updateSegmentStatusForPlaybackState:playbackState previousPlaybackState:previousPlaybackState time:self.currentTime];
     
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                       object:self
@@ -690,7 +690,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         return NSDate.date;
     }
     else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
-        return [NSDate dateWithTimeIntervalSinceNow:-CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), self.player.currentTime))];
+        return [NSDate dateWithTimeIntervalSinceNow:-CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), self.currentTime))];
     }
     else {
         return nil;
@@ -1263,7 +1263,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         return;
     }
     
-    CMTime lastPlaybackTime = CMTIME_IS_INDEFINITE(self.seekStartTime) ? self.player.currentTime : self.seekStartTime;
+    CMTime lastPlaybackTime = CMTIME_IS_INDEFINITE(self.seekStartTime) ? self.currentTime : self.seekStartTime;
     
     if (self.previousSegment && ! self.previousSegment.srg_blocked) {
         self.currentSegment = nil;
@@ -1332,7 +1332,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     NSAssert(segment.srg_blocked, @"Expect a blocked segment");
     
-    NSValue *lastPlaybackTimeValue = [NSValue valueWithCMTime:self.player.currentTime];
+    NSValue *lastPlaybackTimeValue = [NSValue valueWithCMTime:self.currentTime];
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
                                                       object:self
                                                     userInfo:@{ SRGMediaPlayerSegmentKey : segment,

@@ -124,6 +124,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         
         [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.loadedTimeRanges) options:0 block:^(MAKVONotification *notification) {
             @strongify(self)
+            // Only redraw the slider tracks (more efficient, as time labels do not need any update).
             [self setNeedsDisplay];
         }];
         [self updateDisplayWithTime:mediaPlayerController.currentTime];
