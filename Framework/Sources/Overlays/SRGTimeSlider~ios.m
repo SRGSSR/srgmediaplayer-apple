@@ -19,7 +19,7 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 {
     NSCAssert(seconds >= 0, @"A non-negative number of seconds is expected");
     
-    if (fabs(seconds) < 60. * 60.) {
+    if (seconds < 60. * 60.) {
         static NSDateComponentsFormatter *s_dateComponentsFormatter;
         static dispatch_once_t s_onceToken;
         dispatch_once(&s_onceToken, ^{
@@ -48,6 +48,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         return nil;
     }
     
+    NSCAssert(seconds >= 0, @"A non-negative number of seconds is expected");
+    
     static NSDateComponentsFormatter *s_dateComponentsFormatter;
     static dispatch_once_t s_onceToken;
     dispatch_once(&s_onceToken, ^{
@@ -56,7 +58,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         s_dateComponentsFormatter.allowedUnits = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
     });
     
-    return [s_dateComponentsFormatter stringFromTimeInterval:ABS(seconds)];
+    return [s_dateComponentsFormatter stringFromTimeInterval:seconds];
 }
 
 @interface SRGTimeSlider ()
@@ -357,8 +359,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
                 self.timeLeftValueLabel.accessibilityLabel = nil;
             }
             else {
-                self.timeLeftValueLabel.text = [NSString stringWithFormat:@"-%@", SRGTimeSliderFormatter(self.maximumValue - self.value)];
-                self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
+                NSTimeInterval interval = self.maximumValue - self.value;
+                self.timeLeftValueLabel.text = [NSString stringWithFormat:@"-%@", SRGTimeSliderFormatter(interval)];
+                self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(interval)];
             }
         }
         else {
