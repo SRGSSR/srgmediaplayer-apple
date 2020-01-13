@@ -61,6 +61,7 @@ static void commonInit(SRGAirPlayButton *self);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.allowsExternalPlayback)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.mediaType)];
@@ -81,6 +82,11 @@ static void commonInit(SRGAirPlayButton *self);
     
     if (mediaPlayerController) {
         @weakify(self)
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.allowsExternalPlayback) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
+            [self updateAppearance];
+        }];
+        
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:^(MAKVONotification * _Nonnull notification) {
             @strongify(self)
             [self updateAppearance];
