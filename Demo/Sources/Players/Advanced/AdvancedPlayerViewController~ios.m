@@ -6,6 +6,7 @@
 
 #import "AdvancedPlayerViewController.h"
 
+#import "ModalTransition.h"
 #import "Resources.h"
 
 #import <libextobjc/libextobjc.h>
@@ -18,7 +19,7 @@ const NSInteger kForwardSkipInterval = 15.;
 // To keep the view controller when picture in picture is active
 static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
-@interface AdvancedPlayerViewController () <AVPictureInPictureControllerDelegate, SRGTracksButtonDelegate>
+@interface AdvancedPlayerViewController () <AVPictureInPictureControllerDelegate, SRGTracksButtonDelegate, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic) Media *media;
 
@@ -61,6 +62,17 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [_inactivityTimer invalidate];
     _inactivityTimer = inactivityTimer;
+}
+
+#pragma mark Overrides
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    // Use a custom transition, some subtle issues were discovered with incorrect implementations, when animated
+    // view controllers have an AVPlayer somewhere.
+    self.transitioningDelegate = self;
 }
 
 #pragma mark View lifecycle
@@ -430,6 +442,18 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     return [gestureRecognizer isKindOfClass:SRGActivityGestureRecognizer.class];
+}
+
+#pragma mark UIViewControllerTransitioningDelegate protocol
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    return [[ModalTransition alloc] initForPresentation:YES];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    return [[ModalTransition alloc] initForPresentation:NO];
 }
 
 #pragma mark Notifications
