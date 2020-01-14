@@ -161,17 +161,8 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     [self updateMainPlaybackControls];
     [self updateInterfaceForControlsHidden:NO];
     [self restartInactivityTracker];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     
-    if (self.movingToParentViewController || self.beingPresented) {
-        if (! self.mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
-            [self.mediaPlayerController playURL:self.media.URL];
-        }
-    }
+    [self.mediaPlayerController playURL:self.media.URL];
 }
 
 - (void)viewDidAppear:(BOOL)animated
