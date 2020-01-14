@@ -400,8 +400,8 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         UIViewController *rootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
         [rootViewController presentViewController:s_advancedPlayerViewController animated:YES completion:^{
             completionHandler(YES);
-            s_advancedPlayerViewController = nil;
         }];
+        s_advancedPlayerViewController = nil;
     }
     else {
         completionHandler(NO);
