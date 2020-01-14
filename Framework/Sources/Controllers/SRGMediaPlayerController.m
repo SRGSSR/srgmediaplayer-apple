@@ -491,7 +491,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     if (_view != view) {
         _view = view;
-        [self attachPlayer:self.player toView:_view];
+        [self setupView:view];
     }
 }
 
@@ -500,9 +500,21 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     if (! _view) {
         _view = [[SRGMediaPlayerView alloc] init];
-        [self attachPlayer:self.player toView:_view];
+        [self setupView:_view];
     }
     return _view;
+}
+
+- (void)setupView:(SRGMediaPlayerView *)view
+{
+    @weakify(self)
+    [view srg_addMainThreadObserver:self keyPath:@keypath(view.readyForDisplay) options:0 block:^(MAKVONotification * _Nonnull notification) {
+        @strongify(self)
+        [self updatePictureInPictureForView:view];
+    }];
+    [self updatePictureInPictureForView:view];
+    
+    [self attachPlayer:self.player toView:view];
 }
 
 - (CMTimeRange)timeRangeForPlayerItem:(AVPlayerItem *)playerItem
@@ -728,6 +740,20 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 block:observationBlock];
         [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:observationBlock];
+    }
+}
+
+- (void)updatePictureInPictureForView:(SRGMediaPlayerView *)view
+{
+    AVPlayerLayer *playerLayer = view.playerLayer;
+    if (playerLayer.readyForDisplay) {
+        if (self.pictureInPictureController.playerLayer != playerLayer) {
+            self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:playerLayer];
+            self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
+        }
+    }
+    else {
+        self.pictureInPictureController = nil;
     }
 }
 
@@ -1374,16 +1400,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.view.player = nil;
 }
 
-- (void)attachPlayer:(AVPlayer *)player toView:(SRGMediaPlayerView *)view
-{
-    if (self.playerViewController) {
-        self.playerViewController.player = player;
-    }
-    else {
-        view.player = player;
-    }
-}
-
 - (void)unbindFromCurrentPlayerViewController
 {
     if (! self.playerViewController) {
@@ -1395,6 +1411,16 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     // Rebind the player
     self.view.player = self.player;
+}
+
+- (void)attachPlayer:(AVPlayer *)player toView:(SRGMediaPlayerView *)view
+{
+    if (self.playerViewController) {
+        self.playerViewController.player = player;
+    }
+    else {
+        view.player = player;
+    }
 }
 
 #pragma mark Tracks
@@ -1460,18 +1486,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     @weakify(self)
     self.playerPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
-        
-#if TARGET_OS_IOS
-        if (self.playerLayer.readyForDisplay) {
-            if (self.pictureInPictureController.playerLayer != self.playerLayer) {
-                self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
-                self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
-            }
-        }
-        else {
-            self.pictureInPictureController = nil;
-        }
-#endif
         
         [self updateSegmentStatusForPlaybackState:self.playbackState previousPlaybackState:self.playbackState time:time];
         

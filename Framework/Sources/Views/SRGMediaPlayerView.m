@@ -24,6 +24,7 @@ static void commonInit(SRGMediaPlayerView *self);
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic, weak) UIView<SRGMediaPlaybackView> *playbackView;
 @property (nonatomic, getter=isPlaybackViewHidden) BOOL playbackViewHidden;
+@property (nonatomic, getter=isReadyForDisplay) BOOL readyForDisplay;
 
 @end
 
@@ -80,6 +81,18 @@ static void commonInit(SRGMediaPlayerView *self);
     }];
     
     [self updateSubviewsWithPlayer:player];
+}
+
+- (void)setPlaybackView:(UIView<SRGMediaPlaybackView> *)playbackView
+{
+    [_playbackView.playerLayer removeObserver:self keyPath:@keypath(AVPlayerLayer.new, readyForDisplay)];
+    
+    _playbackView = playbackView;
+    
+    [playbackView.playerLayer srg_addMainThreadObserver:self keyPath:@keypath(AVPlayerLayer.new, readyForDisplay) options:0 block:^(MAKVONotification * _Nonnull notification) {
+        [self updateReadyForDisplay];
+    }];
+    [self updateReadyForDisplay];
 }
 
 - (void)setViewMode:(SRGMediaPlayerViewMode)viewMode
@@ -149,6 +162,11 @@ static void commonInit(SRGMediaPlayerView *self);
         [self.playbackView setPlayer:nil withAssetDimensions:CGSizeZero];
         [self.playbackView removeFromSuperview];
     }
+}
+
+- (void)updateReadyForDisplay
+{
+    self.readyForDisplay = self.playbackView.playerLayer.readyForDisplay;
 }
 
 - (BOOL)isPlaybackViewHiddenWithPlayer:(AVPlayer *)player

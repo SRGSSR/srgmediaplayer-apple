@@ -40,6 +40,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, getter=isPlaybackViewHidden) BOOL playbackViewHidden;
 
+/**
+ *  `YES` iff the unerlying layer is ready for display (always `NO` if no player layer is
+ *  associated with the view). Key-value observable.
+ */
+@property (nonatomic, getter=isReadyForDisplay) BOOL readyForDisplay;
+
 @end
 
 NS_ASSUME_NONNULL_END
