@@ -401,7 +401,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         [rootViewController presentViewController:s_advancedPlayerViewController animated:YES completion:^{
             completionHandler(YES);
         }];
-        s_advancedPlayerViewController = nil;
     }
     else {
         completionHandler(NO);
@@ -410,12 +409,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 - (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
-    // Reset the status of the player when picture in picture is exited anywhere except from the SRGMediaPlayerViewController
-    // itself
-    if (s_advancedPlayerViewController && ! s_advancedPlayerViewController.presentingViewController) {
-        [self.mediaPlayerController reset];
-        s_advancedPlayerViewController = nil;
-    }
+    s_advancedPlayerViewController = nil;
 }
 
 #pragma mark SRGTracksButtonDelegate protocol
