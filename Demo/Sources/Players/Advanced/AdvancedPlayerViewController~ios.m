@@ -144,6 +144,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     }];
     [self updateSkipButtons];
     
+    [self updateMainPlaybackControls];
     [self updateInterfaceForControlsHidden:NO];
     [self restartInactivityTracker];
 }
