@@ -13,14 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  A periodic time observer calls one or several blocks during playback of an associated player. This class works
  *  exactly like time observers associated with an `AVPlayer`, with two differences:
  *    - Seekable time range updates are reported as well.
- *    - Blocks with identical perioidicity are executed together.
+ *    - Blocks with identical periodicity are executed together.
  */
 @interface SRGPeriodicTimeObserver : NSObject
 
 /**
  *  Create a periodic time observer. Does nothing until attached to a player.
  *
- *  @param interval    The interval at which the block must be executed.
+ *  @param interval     The interval at which the block must be executed.
  *  @param queue	   The serial queue onto which block should be enqueued (main queue if `NULL`).
  */
 - (instancetype)initWithInterval:(CMTime)interval queue:(nullable dispatch_queue_t)queue NS_DESIGNATED_INITIALIZER;
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Register a block for a given identifier. If a block with the same identifier has already been registered, it
  *  is simply replaced.
  *
- *  @param block      The block to register (mandatory).
+ *  @param block            The block to register (mandatory).
  *  @param identifier The identifier to which the block must be associated.
  */
 - (void)setBlock:(void (^)(CMTime time))block forIdentifier:(NSString *)identifier;
