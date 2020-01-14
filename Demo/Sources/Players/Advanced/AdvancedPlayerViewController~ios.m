@@ -39,6 +39,8 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 @property (nonatomic) NSTimer *inactivityTimer;
 
+@property (nonatomic) ModalTransition *interactiveTransition;
+
 @end
 
 @implementation AdvancedPlayerViewController {
@@ -456,6 +458,12 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     return [[ModalTransition alloc] initForPresentation:NO];
 }
 
+- (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
+{
+    // Return the installed interactive transition, if any
+    return self.interactiveTransition;
+}
+
 #pragma mark Notifications
 
 - (void)playbackStateDidChange:(NSNotification *)notification
@@ -529,6 +537,57 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [self restartInactivityTracker];
 }
+
+- (IBAction)pullDown:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    CGFloat progress = [panGestureRecognizer translationInView:self.view].y / CGRectGetHeight(self.view.frame);
+    
+    switch (panGestureRecognizer.state) {
+        case UIGestureRecognizerStateBegan: {
+            // Avoid duplicate dismissal (which can make it impossible to dismiss the view controller altogether)
+            if (self.interactiveTransition) {
+                return;
+            }
+            
+            // Install the interactive transition animation before triggering it
+            self.interactiveTransition = [[ModalTransition alloc] initForPresentation:NO];
+            [self dismissViewControllerAnimated:YES completion:^{
+                // Only stop tracking the interactive transition at the very end. The completion block is called
+                // whether the transition ended or was cancelled
+                self.interactiveTransition = nil;
+            }];
+            break;
+        }
+            
+        case UIGestureRecognizerStateChanged: {
+            [self.interactiveTransition updateInteractiveTransitionWithProgress:progress];
+            break;
+        }
+            
+        case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStateCancelled: {
+            [self.interactiveTransition cancelInteractiveTransition];
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded: {
+            // Finish the transition if the view was dragged by 20% and the user is dragging downwards
+            CGFloat velocity = [panGestureRecognizer velocityInView:self.view].y;
+            if ((progress <= 0.5f && velocity > 1000.f) || (progress > 0.5f && velocity > -1000.f)) {
+                [self.interactiveTransition finishInteractiveTransition];
+            }
+            else {
+                [self.interactiveTransition cancelInteractiveTransition];
+            }
+            break;
+        }
+            
+        default: {
+            break;
+        }
+    }
+}
+
 
 #pragma mark Timers
 

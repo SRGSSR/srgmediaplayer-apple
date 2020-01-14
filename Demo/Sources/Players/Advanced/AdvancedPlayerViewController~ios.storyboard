@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="d9c-I7-8ft">
-    <device id="retina6_5" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="d9c-I7-8ft">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -228,6 +226,9 @@
                             <constraint firstItem="bLY-wi-w8n" firstAttribute="leading" secondItem="MoS-P5-AUe" secondAttribute="leading" constant="6" id="vND-cI-OXG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="MoS-P5-AUe"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="QaX-Ny-6Af" appends="YES" id="wyG-q8-ser"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="audioOnlyImageView" destination="2kU-EO-gil" id="v5i-Bc-rBG"/>
@@ -250,6 +251,11 @@
                         <outlet property="view" destination="CjI-bJ-s74" id="6OF-lW-4s2"/>
                     </connections>
                 </customObject>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="QaX-Ny-6Af">
+                    <connections>
+                        <action selector="pullDown:" destination="d9c-I7-8ft" id="e7Y-B1-IFQ"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="348" y="270.31484257871068"/>
         </scene>
