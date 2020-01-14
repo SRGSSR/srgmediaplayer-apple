@@ -809,6 +809,13 @@ NS_ASSUME_NONNULL_BEGIN
  *          enabled in the system settings). This is the only case where switching to picture in picture can be made
  *          automatically. Picture in picture must always be user-triggered, otherwise you application might get rejected
  *          by Apple (@see `AVPictureInPictureController` documentation).
+ *
+ *  Warning: If you plan to implement restoration from picture in picture, you must avoid usual built-in iOS modal
+ *           presentations, as they are implemented using `UIPercentDrivenInteractiveTransition`. You must use a
+ *           custom modal transition instead and avoid implementing it using `UIPercentDrivenInteractiveTransition`.
+ *           The reason is that `UIPercentDrivenInteractiveTransition` varies the time offset of a layer and thus
+ *           messes up with the player local time. This makes PiP restoration unreliable (sometimes it works, sometimes
+ *           it does not and the animation is ugly).
  */
 @interface SRGMediaPlayerController (PictureInPicture)
 
