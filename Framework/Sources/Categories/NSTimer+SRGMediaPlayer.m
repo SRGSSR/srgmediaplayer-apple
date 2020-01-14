@@ -23,6 +23,9 @@
         timer = [self timerWithTimeInterval:interval target:target selector:@selector(fire:) userInfo:nil repeats:repeats];
     }
     
+    // Use the recommended 10% tolerance as default, see `tolerance` documentation
+    timer.tolerance = interval / 10.;
+    
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     return timer;
 }
