@@ -816,6 +816,11 @@ NS_ASSUME_NONNULL_BEGIN
  *           The reason is that `UIPercentDrivenInteractiveTransition` varies the time offset of a layer and thus
  *           messes up with the player local time. This makes PiP restoration unreliable (sometimes it works, sometimes
  *           it does not and the animation is ugly).
+ *
+ *           Picture in picture also temporarily disables external playback for the associated player. You should not
+ *           attempt to change this property while picture in playback is running, otherwise the behavior is undefined.
+ *           When picture in picture playback stops, the player configuration block is called again so that the
+ *           previous configuration can be restored.
  */
 @interface SRGMediaPlayerController (PictureInPicture)
 
