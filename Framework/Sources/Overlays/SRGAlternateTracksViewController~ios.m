@@ -576,7 +576,7 @@ static void MACaptionAppearanceAddPreferredLanguages(MACaptionAppearanceDomain d
 
 // Update the subtitle language selection stack with the provided language list. This list is saved at the system level,
 // and is shard by instances of `AVPlayer` with `appliesMediaSelectionCriteriaAutomatically` (default). This includes
-// `SRGMediaPlayerController`, but also `AVPlayerController` (within the same app) or Safari.
+// `SRGMediaPlayerController`, but also `AVPlayerViewController` (within the same app) or Safari.
 static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain domain, NSArray<NSString *> *languageCodes)
 {
     for (NSString *languageCode in [languageCodes reverseObjectEnumerator]) {

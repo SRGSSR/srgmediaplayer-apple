@@ -125,7 +125,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     @weakify(self)
     self.mediaPlayerController.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
         @strongify(self)
-        self.mediaPlayerController.pictureInPictureController.delegate = self;
+        pictureInPictureController.delegate = self;
     };
     
     [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType) options:0 block:^(MAKVONotification *notification) {
