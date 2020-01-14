@@ -332,7 +332,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                    name:UIApplicationWillEnterForegroundNotification
                                                  object:nil];
         
-        self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
+        [self reloadPlayerConfiguration];
     }
 }
 
@@ -732,28 +732,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
     
     if (pictureInPictureController) {
-        @weakify(self) @weakify(pictureInPictureController)
-        [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:^(MAKVONotification * _Nonnull notification) {
-            @strongify(self) @strongify(pictureInPictureController)
-            
-            // If picture in picture is active, it is difficult to return from PiP if enabling AirPlay from the control
-            // center (this would require calling the restoration methods, not called natively in this case, to let the app
-            // restore the playback UI so that AirPlay playback can resume there). Sadly such attempts leave the player layer
-            // in a mixed state, still displaying the PiP icon.
-            //
-            // The inverse approach is far easier: When PiP is enabled, we override player settings to prevent external playback,
-            // restoring them afterwards.
-            if (pictureInPictureController.pictureInPictureActive) {
-                self.player.allowsExternalPlayback = NO;
-            }
-            else {
-                self.player.allowsExternalPlayback = YES;       // Start again from default `AVPlayer` behavior
-                [self reloadPlayerConfiguration];
-            }
-            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
-        }];
+        @weakify(self)
         [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 block:^(MAKVONotification * _Nonnull notification) {
             @strongify(self)
+            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
+        }];
+        [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
+            [self reloadPlayerConfiguration];
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
         }];
     }
@@ -1201,7 +1187,21 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)reloadPlayerConfiguration
 {
     if (self.player) {
+        // Starts with the default external playback value
+        self.player.allowsExternalPlayback = YES;
+        
         self.playerConfigurationBlock ? self.playerConfigurationBlock(self.player) : nil;
+        
+        // If picture in picture is active, it is difficult to return from PiP if enabling AirPlay from the control
+        // center (this would require calling the restoration methods, not called natively in this case, to let the app
+        // restore the playback UI so that AirPlay playback can resume there). Sadly such attempts leave the player layer
+        // in a mixed state, still displaying the PiP icon.
+        //
+        // The inverse approach is far easier: When PiP is enabled, we override player settings to prevent external playback,
+        // restoring them afterwards.
+        if (self.pictureInPictureController.pictureInPictureActive) {
+            self.player.allowsExternalPlayback = NO;
+        }
     }
 }
 

@@ -814,13 +814,13 @@ NS_ASSUME_NONNULL_BEGIN
  *           presentations, as they are implemented using `UIPercentDrivenInteractiveTransition`. You must use a
  *           custom modal transition instead and avoid implementing it using `UIPercentDrivenInteractiveTransition`.
  *           The reason is that `UIPercentDrivenInteractiveTransition` varies the time offset of a layer and thus
- *           messes up with the player local time. This makes PiP restoration unreliable (sometimes it works, sometimes
- *           it does not and the animation is ugly).
+ *           messes up with the player local time. This makes picture in picture restoration unreliable (sometimes it
+ *           works, sometimes it does not and the animation is ugly).
  *
  *           Picture in picture also temporarily disables external playback for the associated player. You should not
  *           attempt to change this property while picture in playback is running, otherwise the behavior is undefined.
- *           When picture in picture playback stops, the player configuration block is called again so that the
- *           previous configuration can be restored.
+ *           When picture in picture playback starts or stops, the configuration block (if any) is called so that the
+ *           player configuration can be properly setup and restored.
  */
 @interface SRGMediaPlayerController (PictureInPicture)
 
