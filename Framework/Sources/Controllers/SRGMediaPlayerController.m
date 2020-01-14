@@ -507,12 +507,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 
 - (void)setupView:(SRGMediaPlayerView *)view
 {
+#if TARGET_OS_IOS
     @weakify(self)
     [view srg_addMainThreadObserver:self keyPath:@keypath(view.readyForDisplay) options:0 block:^(MAKVONotification * _Nonnull notification) {
         @strongify(self)
         [self updatePictureInPictureForView:view];
     }];
     [self updatePictureInPictureForView:view];
+#endif
     
     [self attachPlayer:self.player toView:view];
 }
@@ -1187,11 +1189,14 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)reloadPlayerConfiguration
 {
     if (self.player) {
+#if TARGET_OS_IOS
         // Starts with the default external playback value
         self.player.allowsExternalPlayback = YES;
+#endif
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(self.player) : nil;
-        
+      
+#if TARGET_OS_IOS
         // If picture in picture is active, it is difficult to return from PiP if enabling AirPlay from the control
         // center (this would require calling the restoration methods, not called natively in this case, to let the app
         // restore the playback UI so that AirPlay playback can resume there). Sadly such attempts leave the player layer
@@ -1202,6 +1207,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         if (self.pictureInPictureController.pictureInPictureActive) {
             self.player.allowsExternalPlayback = NO;
         }
+#endif
     }
 }
 
