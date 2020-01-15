@@ -223,7 +223,7 @@ static void commonInit(SRGAirPlayButton *self);
     UIButton *airPlayButton = nil;
     
     SRGMediaPlayerMediaType mediaType = mediaPlayerController.mediaType;
-    UIImage *image = (mediaType == SRGMediaPlayerMediaTypeVideo) ? self.videoImage : self.audioImage;
+    UIImage *image = (mediaType == SRGMediaPlayerMediaTypeVideo && mediaPlayerController.player.allowsExternalPlayback) ? self.videoImage : self.audioImage;
     
     // `AVRoutePickerView` is a button with no image, with layers representing the AirPlay icon instead. If we need
     // to display an image the original icon layers needs to be hidden first.
@@ -266,8 +266,7 @@ static void commonInit(SRGAirPlayButton *self);
         self.hidden = YES;
     }
     else if (mediaPlayerController) {
-        BOOL allowsAirPlayPlayback = mediaPlayerController.mediaType != SRGMediaPlayerMediaTypeVideo || mediaPlayerController.allowsExternalNonMirroredPlayback;
-        if (multipleRoutesDetected() && allowsAirPlayPlayback) {
+        if (multipleRoutesDetected()) {
             self.hidden = NO;
         }
         else {
