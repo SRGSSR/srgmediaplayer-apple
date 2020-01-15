@@ -41,6 +41,9 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 @property (nonatomic) ModalTransition *interactiveTransition;
 
+@property (nonatomic, weak) id playTarget;
+@property (nonatomic, weak) id pauseTarget;
+
 @end
 
 @implementation AdvancedPlayerViewController {
@@ -386,6 +389,38 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     }];
 }
 
+#pragma mark Basic control center integration
+
+- (void)enableControlCenterIntegration
+{
+    MPNowPlayingInfoCenter.defaultCenter.nowPlayingInfo = @{ MPMediaItemPropertyTitle : self.media.name };
+    
+    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    MPRemoteCommand *playCommand = commandCenter.playCommand;
+    self.playTarget = [playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+        [self.mediaPlayerController play];
+        return MPRemoteCommandHandlerStatusSuccess;
+    }];
+    
+    MPRemoteCommand *pauseCommand = commandCenter.pauseCommand;
+    self.pauseTarget = [pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+        [self.mediaPlayerController pause];
+        return MPRemoteCommandHandlerStatusSuccess;
+    }];
+}
+
+- (void)disableControlCenterIntegration
+{
+    MPNowPlayingInfoCenter.defaultCenter.nowPlayingInfo = nil;
+    
+    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    MPRemoteCommand *playCommand = commandCenter.playCommand;
+    [playCommand removeTarget:self.playTarget];
+    
+    MPRemoteCommand *pauseCommand = commandCenter.pauseCommand;
+    [pauseCommand removeTarget:self.pauseTarget];
+}
+
 #pragma mark AVPictureInPictureControllerDelegate protocol
 
 - (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
@@ -461,6 +496,11 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     else {
         if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
             self.errorImageView.hidden = YES;
+            [self enableControlCenterIntegration];
+        }
+        else if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
+            [self disableControlCenterIntegration];
+            
         }
         [self updateMainPlaybackControls];
     }
