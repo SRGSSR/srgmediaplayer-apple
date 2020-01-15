@@ -75,8 +75,8 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [super awakeFromNib];
     
-    // Use a custom transition, some subtle issues were discovered with incorrect implementations, when animated
-    // view controllers have an AVPlayer somewhere.
+    // Do not use standard presentation animtaions, `UIPercentDrivenInteractiveTransition`-based, which change the
+    // player offset and interfere with normal behavior (paused playback, broken picture in picture restoration).
     self.transitioningDelegate = self;
 }
 
