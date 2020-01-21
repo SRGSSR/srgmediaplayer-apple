@@ -749,6 +749,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  AirPlay. Use player lifecycle blocks (see main `SRGMediaPlayerController` documentation) to setup AirPlay behavior.
  *  Your audio session settings must be compatible with AirPlay, see
  *      https://developer.apple.com/library/content/qa/qa1803/_index.html
+ *  When implementing player configuration blocks, do not (even briefly) set `externalPlayback` to `NO` if AirPlay
+ *  external playback was active and the behavior is supposed to stay so. Only change from `YES` to `NO` when you
+ *  intend to stop and disable AirPlay external playback. Failing to do so will lead to brief unnecessary AirPlay
+ *  interruptions, which you want to avoid.
  *
  *  Remark: Even if `allowsExternalPlayback` is set to `NO`, sound will still play on an external device if selected, only
  *          the visual tracks of a media won't be played. This is normal expected AirPlay behavior, and this is also how
