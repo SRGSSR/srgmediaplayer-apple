@@ -93,6 +93,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 #if TARGET_OS_IOS
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
+@property (nonatomic) NSNumber *savedAllowsExternalPlayback;
 #endif
 
 @property (nonatomic) SRGPosition *startPosition;                   // Will be nilled when reached
@@ -1178,6 +1179,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
 #if TARGET_OS_IOS
     self.pictureInPictureController = nil;
+    self.savedAllowsExternalPlayback = nil;
 #endif
     
     // Emit the notification once all state has been reset
@@ -1190,8 +1192,11 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     if (self.player) {
 #if TARGET_OS_IOS
-        // Starts with the default external playback value
-        self.player.allowsExternalPlayback = YES;
+        // Restore previous external playback behavior after returning from PiP
+        if (! self.pictureInPictureController.pictureInPictureActive && self.savedAllowsExternalPlayback) {
+            self.player.allowsExternalPlayback = self.savedAllowsExternalPlayback.boolValue;
+            self.savedAllowsExternalPlayback = nil;
+        }
 #endif
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(self.player) : nil;
@@ -1205,6 +1210,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         // The inverse approach is far easier: When PiP is enabled, we override player settings to prevent external playback,
         // restoring them afterwards.
         if (self.pictureInPictureController.pictureInPictureActive) {
+            self.savedAllowsExternalPlayback = @(self.player.allowsExternalPlayback);
             self.player.allowsExternalPlayback = NO;
         }
 #endif
