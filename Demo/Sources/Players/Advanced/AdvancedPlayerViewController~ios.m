@@ -577,6 +577,8 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
             // Install the interactive transition animation before triggering it
             self.interactiveTransition = [[ModalTransition alloc] initForPresentation:NO];
             [self dismissViewControllerAnimated:YES completion:^{
+                [self.mediaPlayerController reset];
+                
                 // Only stop tracking the interactive transition at the very end. The completion block is called
                 // whether the transition ended or was cancelled
                 self.interactiveTransition = nil;
