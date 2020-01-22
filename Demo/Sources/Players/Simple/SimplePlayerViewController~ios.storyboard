@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Zk8-W1-piv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Zk8-W1-piv">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,6 +19,18 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oWm-cH-DH1" customClass="SRGMediaPlayerView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kHA-gV-lRG" customClass="SRGAirPlayButton">
+                                <rect key="frame" x="0.0" y="10" width="44" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="eTJ-bb-eBD"/>
+                                    <constraint firstAttribute="width" constant="44" id="oVS-8R-06J"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="mediaPlayerController" destination="UUZ-ax-3wC" id="hly-fy-wot"/>
+                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K0I-7M-Ixt" userLabel="Bottom Bar View">
                                 <rect key="frame" x="0.0" y="603" width="375" height="64"/>
@@ -139,9 +151,11 @@
                         <constraints>
                             <constraint firstItem="VxJ-xJ-ioo" firstAttribute="trailing" secondItem="K0I-7M-Ixt" secondAttribute="trailing" id="1hn-vV-M0w"/>
                             <constraint firstItem="VxJ-xJ-ioo" firstAttribute="trailing" secondItem="oWm-cH-DH1" secondAttribute="trailing" id="2kE-oK-a3J"/>
+                            <constraint firstItem="kHA-gV-lRG" firstAttribute="leading" secondItem="VxJ-xJ-ioo" secondAttribute="leading" id="3zv-Ks-3kr"/>
                             <constraint firstItem="VxJ-xJ-ioo" firstAttribute="centerX" secondItem="C5v-lq-cYV" secondAttribute="centerX" id="50X-FM-qFd"/>
                             <constraint firstItem="G2B-1h-zvk" firstAttribute="top" secondItem="VxJ-xJ-ioo" secondAttribute="top" constant="10" id="AYC-XD-5ic"/>
                             <constraint firstItem="K0I-7M-Ixt" firstAttribute="top" secondItem="oWm-cH-DH1" secondAttribute="bottom" id="CCS-as-yID"/>
+                            <constraint firstItem="kHA-gV-lRG" firstAttribute="top" secondItem="VxJ-xJ-ioo" secondAttribute="top" constant="10" id="CLr-uo-puh"/>
                             <constraint firstItem="oWm-cH-DH1" firstAttribute="top" secondItem="VxJ-xJ-ioo" secondAttribute="top" id="L5N-3A-b1f"/>
                             <constraint firstItem="VxJ-xJ-ioo" firstAttribute="trailing" secondItem="G2B-1h-zvk" secondAttribute="trailing" id="Ree-lc-Qo2"/>
                             <constraint firstItem="VxJ-xJ-ioo" firstAttribute="bottom" secondItem="K0I-7M-Ixt" secondAttribute="bottom" id="eGs-Z9-xrV"/>

@@ -20,6 +20,7 @@
 @property (nonatomic, weak) IBOutlet UIView *playersViewContainer;
 
 @property (nonatomic, weak) IBOutlet SRGPlaybackButton *playbackButton;
+@property (nonatomic, weak) IBOutlet SRGAirPlayButton *airPlayButton;
 
 @end
 
@@ -109,6 +110,7 @@
                 player.muted = NO;
             }];
             self.playbackButton.mediaPlayerController = mediaPlayerController;
+            self.airPlayButton.mediaPlayerController = mediaPlayerController;
             
             UIView *playerView = mediaPlayerController.view;
             playerView.frame = self.mainPlayerView.bounds;
