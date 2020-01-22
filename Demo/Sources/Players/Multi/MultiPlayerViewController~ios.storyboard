@@ -45,10 +45,10 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tmY-iv-N0L" userLabel="Player view container">
-                                <rect key="frame" x="0.0" y="457" width="375" height="150"/>
+                                <rect key="frame" x="0.0" y="517" width="375" height="90"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="ob8-Bu-fXy"/>
+                                    <constraint firstAttribute="height" constant="90" id="ob8-Bu-fXy"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o0R-Vs-Z8P">
@@ -94,10 +94,8 @@
                     </view>
                     <connections>
                         <outlet property="mainPlayerView" destination="3hO-rE-By8" id="rqT-7R-Flj"/>
-                        <outlet property="playPauseButton" destination="Wmk-XY-ASk" id="f65-ae-dhC"/>
-                        <outlet property="playerViewsContainer" destination="tmY-iv-N0L" id="BIV-Zb-rdh"/>
-                        <outletCollection property="overlayViews" destination="VDg-y2-TPv" id="n0G-72-RgW"/>
-                        <outletCollection property="overlayViews" destination="o0R-Vs-Z8P" id="eNE-gU-ZVs"/>
+                        <outlet property="playbackButton" destination="Wmk-XY-ASk" id="gG2-OD-RDj"/>
+                        <outlet property="playersViewContainer" destination="tmY-iv-N0L" id="BIV-Zb-rdh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UBk-af-4ne" userLabel="First Responder" sceneMemberID="firstResponder"/>
