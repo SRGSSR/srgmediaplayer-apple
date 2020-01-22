@@ -754,6 +754,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  intend to stop and disable AirPlay external playback. Failing to do so will lead to brief unnecessary AirPlay
  *  interruptions, which you want to avoid.
  *
+ *  Warning: If you want users to reliably enable AirPlay playback also from the control center, you should use
+ *           `SRGAirPlayButton` with your player layout, or integrate `MPRemoteCommandCenter`. These ensures your
+ *           application is the current one registered with the control center when the user interacts with it, so
+ *           that playback can actually be sent to an AirPlay receiver. If your application is not the current one
+ *           at the moment the route is changed in the control center, playback will stay local.
+ *
  *  Remark: Even if `allowsExternalPlayback` is set to `NO`, sound will still play on an external device if selected, only
  *          the visual tracks of a media won't be played. This is normal expected AirPlay behavior, and this is also how
  *          audio-only medias must be played with AirPlay (so that the screen displays media information notifications,
