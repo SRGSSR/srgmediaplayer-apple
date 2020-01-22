@@ -313,6 +313,13 @@ static void commonInit(SRGAirPlayButton *self);
     
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
+    
+    if (@available(iOS 11, *)) {
+        self.routePickerView.hidden = YES;
+    }
+    else {
+        self.volumeView.hidden = YES;
+    }
 }
 
 #pragma mark Accessibility
