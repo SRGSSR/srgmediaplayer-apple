@@ -558,6 +558,11 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         return;
     }
     
+    // The presentation size is zero before the item is ready to play, see `presentationSize` documentation.
+    if (player.currentItem.status != AVPlayerStatusReadyToPlay) {
+        return;
+    }
+    
     // Cannot reliably determine the media type with AirPlay, most notably when playing a media while an AirPlay
     // connection has already been established.
     if ([AVAudioSession srg_isAirPlayActive]) {
