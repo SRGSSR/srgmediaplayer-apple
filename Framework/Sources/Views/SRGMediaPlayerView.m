@@ -162,11 +162,19 @@ static void commonInit(SRGMediaPlayerView *self);
         [self.playbackView setPlayer:nil withAssetDimensions:CGSizeZero];
         [self.playbackView removeFromSuperview];
     }
+    
+    [self updateReadyForDisplay];
 }
 
 - (void)updateReadyForDisplay
 {
-    self.readyForDisplay = self.playbackView.playerLayer.readyForDisplay;
+    if (self.playbackView.superview) {
+        AVPlayerLayer *playerLayer = self.playbackView.playerLayer;
+        self.readyForDisplay = playerLayer ? playerLayer.readyForDisplay : YES;
+    }
+    else {
+        self.readyForDisplay = NO;
+    }
 }
 
 - (BOOL)isPlaybackViewHiddenWithPlayer:(AVPlayer *)player
