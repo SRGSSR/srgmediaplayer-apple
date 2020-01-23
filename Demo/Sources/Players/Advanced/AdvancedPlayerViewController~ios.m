@@ -189,6 +189,10 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     
     if (self.movingFromParentViewController || self.beingDismissed) {
         [self stopInactivityTracker];
+        
+        if (! self.mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
+            [self.mediaPlayerController reset];
+        }
     }
 }
 
@@ -531,10 +535,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 - (IBAction)dismiss:(id)sender
 {
-    if (! self.mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
-        [self.mediaPlayerController reset];
-    }
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -577,10 +577,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
             // Install the interactive transition animation before triggering it
             self.interactiveTransition = [[ModalTransition alloc] initForPresentation:NO];
             [self dismissViewControllerAnimated:YES completion:^{
-                if (! self.interactiveTransition.wasCancelled) {
-                    [self.mediaPlayerController reset];
-                }
-                
                 // Only stop tracking the interactive transition at the very end. The completion block is called
                 // whether the transition ended or was cancelled
                 self.interactiveTransition = nil;
