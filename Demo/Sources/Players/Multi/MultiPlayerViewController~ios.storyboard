@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="b7b-kf-zbq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="b7b-kf-zbq">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -44,11 +44,20 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="563"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="szc-WD-caG" customClass="SRGAirPlayButton">
+                                <rect key="frame" x="321" y="54" width="44" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="OPU-5Y-mjA"/>
+                                    <constraint firstAttribute="height" constant="44" id="iz0-PK-Xe5"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tmY-iv-N0L" userLabel="Player view container">
-                                <rect key="frame" x="0.0" y="457" width="375" height="150"/>
+                                <rect key="frame" x="0.0" y="517" width="375" height="90"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="ob8-Bu-fXy"/>
+                                    <constraint firstAttribute="height" constant="90" id="ob8-Bu-fXy"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o0R-Vs-Z8P">
@@ -75,6 +84,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="szc-WD-caG" firstAttribute="top" secondItem="3hO-rE-By8" secondAttribute="top" constant="10" id="0ad-oF-LCj"/>
                             <constraint firstItem="zTN-Fw-Xb6" firstAttribute="trailing" secondItem="3hO-rE-By8" secondAttribute="trailing" id="5ER-6h-Ya1"/>
                             <constraint firstItem="o0R-Vs-Z8P" firstAttribute="leading" secondItem="zTN-Fw-Xb6" secondAttribute="leading" id="9Ar-gZ-Ren"/>
                             <constraint firstItem="tmY-iv-N0L" firstAttribute="leading" secondItem="zTN-Fw-Xb6" secondAttribute="leading" id="BNB-G6-rb9"/>
@@ -89,15 +99,15 @@
                             <constraint firstItem="3hO-rE-By8" firstAttribute="top" secondItem="VDg-y2-TPv" secondAttribute="bottom" id="o15-Qo-lwe"/>
                             <constraint firstItem="zTN-Fw-Xb6" firstAttribute="trailing" secondItem="o0R-Vs-Z8P" secondAttribute="trailing" id="oY4-mk-3iD"/>
                             <constraint firstItem="o0R-Vs-Z8P" firstAttribute="top" secondItem="tmY-iv-N0L" secondAttribute="bottom" id="pcl-7L-Ft4"/>
+                            <constraint firstItem="zTN-Fw-Xb6" firstAttribute="trailing" secondItem="szc-WD-caG" secondAttribute="trailing" constant="10" id="yDh-eb-vth"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="zTN-Fw-Xb6"/>
                     </view>
                     <connections>
+                        <outlet property="airPlayButton" destination="szc-WD-caG" id="wty-r0-H8d"/>
                         <outlet property="mainPlayerView" destination="3hO-rE-By8" id="rqT-7R-Flj"/>
-                        <outlet property="playPauseButton" destination="Wmk-XY-ASk" id="f65-ae-dhC"/>
-                        <outlet property="playerViewsContainer" destination="tmY-iv-N0L" id="BIV-Zb-rdh"/>
-                        <outletCollection property="overlayViews" destination="VDg-y2-TPv" id="n0G-72-RgW"/>
-                        <outletCollection property="overlayViews" destination="o0R-Vs-Z8P" id="eNE-gU-ZVs"/>
+                        <outlet property="playbackButton" destination="Wmk-XY-ASk" id="gG2-OD-RDj"/>
+                        <outlet property="playersViewContainer" destination="tmY-iv-N0L" id="BIV-Zb-rdh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UBk-af-4ne" userLabel="First Responder" sceneMemberID="firstResponder"/>

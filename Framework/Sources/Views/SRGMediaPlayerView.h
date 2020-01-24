@@ -35,6 +35,11 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerViewMode) {
  */
 @property (nonatomic) SRGMediaPlayerViewMode viewMode;
 
+/**
+ *  `YES` iff the view is ready to be displayed. Key-value observable.
+ */
+@property (nonatomic, readonly, getter=isReadyForDisplay) BOOL readyForDisplay;
+
 @end
 
 #if TARGET_OS_IOS

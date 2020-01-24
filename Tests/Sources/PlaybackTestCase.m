@@ -837,6 +837,19 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
+- (void)testMediaTypeTransitionDuringPreparation
+{
+    XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeUnknown);
+    
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, mediaType) expectedValue:nil];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeVideo);
+}
+
 - (void)testMediaInformationWhenPreparingToPlay
 {
     XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeUnknown);
@@ -2552,6 +2565,45 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, ==, CMTimeMakeWithSeconds(1700., NSEC_PER_SEC)));
+}
+
+- (void)testReadyForDisplayForFlatView
+{
+    XCTAssertFalse(self.mediaPlayerController.view.readyForDisplay);
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:1700.] withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertTrue(self.mediaPlayerController.view.readyForDisplay);
+    
+    [self.mediaPlayerController reset];
+    
+    XCTAssertFalse(self.mediaPlayerController.view.readyForDisplay);
+}
+
+- (void)testReadyForDisplayForMonoscopicView
+{
+    XCTAssertFalse(self.mediaPlayerController.view.readyForDisplay);
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    self.mediaPlayerController.view.viewMode = SRGMediaPlayerViewModeMonoscopic;
+    [self.mediaPlayerController playURL:OnDemandTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:1700.] withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertTrue(self.mediaPlayerController.view.readyForDisplay);
+    
+    [self.mediaPlayerController reset];
+    
+    XCTAssertFalse(self.mediaPlayerController.view.readyForDisplay);
 }
 
 @end

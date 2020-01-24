@@ -14,18 +14,13 @@
 @interface MultiPlayerViewController ()
 
 @property (nonatomic) NSArray<Media *> *medias;
-
-@property (nonatomic) NSMutableArray<UIView *> *playerViews;
-@property (nonatomic) NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers;
-
-@property (nonatomic) NSInteger selectedIndex;
+@property (nonatomic) NSArray<SRGMediaPlayerController *> *mediaPlayerControllers;
 
 @property (nonatomic, weak) IBOutlet UIView *mainPlayerView;
-@property (nonatomic, weak) IBOutlet UIView *playerViewsContainer;
+@property (nonatomic, weak) IBOutlet UIView *playersViewContainer;
 
-@property (nonatomic, weak) IBOutlet SRGPlaybackButton *playPauseButton;
-
-@property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
+@property (nonatomic, weak) IBOutlet SRGPlaybackButton *playbackButton;
+@property (nonatomic, weak) IBOutlet SRGAirPlayButton *airPlayButton;
 
 @end
 
@@ -41,67 +36,26 @@
     return viewController;
 }
 
-#pragma mark Getters and setters
-
-- (void)setMedias:(NSArray<Media *> *)medias
-{
-    _medias = medias;
-    
-    NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers = [NSMutableArray array];
-    for (NSInteger i = 0; i < medias.count; ++i) {
-        SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
-        
-        @weakify(self)
-        mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
-            @strongify(self)
-            BOOL isMainPlayer = (i == self.selectedIndex);
-            player.allowsExternalPlayback = isMainPlayer;
-            player.usesExternalPlaybackWhileExternalScreenIsActive = isMainPlayer;
-            player.muted = ! isMainPlayer;
-        };
-        
-        UITapGestureRecognizer *switchTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchMainPlayer:)];
-        [mediaPlayerController.view addGestureRecognizer:switchTapGestureRecognizer];
-        [mediaPlayerControllers addObject:mediaPlayerController];
-    }
-    self.mediaPlayerControllers = mediaPlayerControllers.copy;
-}
-
-- (void)setSelectedIndex:(NSInteger)selectedIndex
-{
-    _selectedIndex = selectedIndex;
-    
-    SRGMediaPlayerController *mainMediaPlayerController = self.mediaPlayerControllers[selectedIndex];
-    [mainMediaPlayerController reloadPlayerConfiguration];
-    [self attachPlayer:mainMediaPlayerController toView:self.mainPlayerView];
-    
-    [self.playerViewsContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [self.playerViewsContainer layoutIfNeeded];
-    
-    for (NSInteger index = 0; index < self.mediaPlayerControllers.count; index++) {
-        if (index == selectedIndex) {
-            continue;
-        }
-        
-        CGRect playerViewFrame = [self rectForPlayerViewAtIndex:self.playerViewsContainer.subviews.count];
-        UIView *playerView = [[UIView alloc] initWithFrame:playerViewFrame];
-        playerView.backgroundColor = UIColor.blackColor;
-        playerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
-        [self.playerViewsContainer addSubview:playerView];
-        
-        SRGMediaPlayerController *thumbnailMediaPlayerController = self.mediaPlayerControllers[index];
-        [thumbnailMediaPlayerController reloadPlayerConfiguration];
-        [self attachPlayer:thumbnailMediaPlayerController toView:playerView];
-    }
-}
-
 #pragma mark View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [self setSelectedIndex:0];
+    NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers = [NSMutableArray array];
+    for (Media *media in self.medias) {
+        SRGMediaPlayerController *mediaPlayerController = [[SRGMediaPlayerController alloc] init];
+        SRGMediaPlayerView *playerView = mediaPlayerController.view;
+        playerView.viewMode = media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
+        [mediaPlayerController playURL:media.URL];
+        [mediaPlayerControllers addObject:mediaPlayerController];
+        
+        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(activatePlayer:)];
+        [playerView addGestureRecognizer:tapGestureRecognizer];
+    }
+    self.mediaPlayerControllers = mediaPlayerControllers.copy;
+    
+    [self displayMediaPlayerControllers:mediaPlayerControllers];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -109,12 +63,7 @@
     [super viewWillAppear:animated];
     
     if (self.movingToParentViewController || self.beingPresented) {
-        for (NSInteger i = 0; i < self.medias.count; ++i) {
-            Media *media = self.medias[i];
-            SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerControllers[i];
-            mediaPlayerController.view.viewMode = media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
-            [mediaPlayerController playURL:media.URL];
-        }
+        [self updatePlayerLayout];
     }
 }
 
@@ -125,62 +74,83 @@
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        NSInteger index = 0;
-        for (UIView *playerView in self.playerViewsContainer.subviews) {
-            playerView.frame = [self rectForPlayerViewAtIndex:index++];
-        }
+        [self updatePlayerLayout];
     } completion:nil];
+}
+
+#pragma mark Layout
+
+- (void)updatePlayerLayout
+{
+    [self.playersViewContainer.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull subview, NSUInteger idx, BOOL * _Nonnull stop) {
+        subview.frame = [self rectForPlayerViewAtIndex:idx];
+    }];
+}
+
+- (CGRect)rectForPlayerViewAtIndex:(NSInteger)index
+{
+    CGFloat height = CGRectGetHeight(self.playersViewContainer.frame);
+    CGFloat width = height * 16.f / 9.f;
+    return CGRectMake(index * width, 0.f, width, height);
 }
 
 #pragma mark Media players
 
-- (CGRect)rectForPlayerViewAtIndex:(NSInteger)index
+- (void)displayMediaPlayerControllers:(NSArray<SRGMediaPlayerController *> *)mediaPlayerControllers
 {
-    CGFloat playerWidth = MAX(100, MIN(200, CGRectGetWidth(self.playerViewsContainer.frame) / (self.medias.count - 1)));
-    CGFloat playerHeight = (playerWidth - 10) * 10 / 16;
+    [self.playersViewContainer.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull subview, NSUInteger idx, BOOL * _Nonnull stop) {
+        [subview removeFromSuperview];
+    }];
     
-    CGFloat x = self.medias.count > 2 ? index * playerWidth : (CGRectGetWidth(self.playerViewsContainer.frame) - playerWidth) / 2;
-    CGFloat y = CGRectGetHeight(self.playerViewsContainer.frame) / 2 - playerHeight / 2;
-    
-    return CGRectMake(x + 5, y, playerWidth - 10, playerHeight);
-}
-
-- (void)attachPlayer:(SRGMediaPlayerController *)mediaPlayerController toView:(UIView *)playerView
-{
-    BOOL isMainPlayer = (playerView == self.mainPlayerView);
-    if (isMainPlayer) {
-        [self.playPauseButton setMediaPlayerController:mediaPlayerController];
-    }
-    
-    mediaPlayerController.view.frame = playerView.bounds;
-    mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [playerView insertSubview:mediaPlayerController.view atIndex:0];
-    
-    UITapGestureRecognizer *defaultTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.firstObject;
-    UITapGestureRecognizer *switchTapGestureRecognizer = mediaPlayerController.view.gestureRecognizers.lastObject;
-    defaultTapGestureRecognizer.enabled = isMainPlayer;
-    switchTapGestureRecognizer.enabled = ! isMainPlayer;
-}
-
-- (SRGMediaPlayerController *)mediaPlayerControllerForPlayerView:(UIView *)playerView
-{
-    for (SRGMediaPlayerController *mediaPlayerController in self.mediaPlayerControllers) {
-        if ([mediaPlayerController.view isEqual:playerView]) {
-            return mediaPlayerController;
+    [mediaPlayerControllers enumerateObjectsUsingBlock:^(SRGMediaPlayerController * _Nonnull mediaPlayerController, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx == 0) {
+            [mediaPlayerController reloadPlayerConfigurationWithBlock:^(AVPlayer * _Nonnull player) {
+                player.allowsExternalPlayback = YES;
+                player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
+                player.muted = NO;
+            }];
+            self.playbackButton.mediaPlayerController = mediaPlayerController;
+            self.airPlayButton.mediaPlayerController = mediaPlayerController;
+            
+            UIView *playerView = mediaPlayerController.view;
+            playerView.frame = self.mainPlayerView.bounds;
+            playerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            [self.mainPlayerView addSubview:playerView];
         }
-    }
-    return nil;
+        else {
+            [mediaPlayerController reloadPlayerConfigurationWithBlock:^(AVPlayer * _Nonnull player) {
+                player.allowsExternalPlayback = NO;
+                player.usesExternalPlaybackWhileExternalScreenIsActive = NO;
+                player.muted = YES;
+            }];
+            
+            UIView *playerView = mediaPlayerController.view;
+            [self.playersViewContainer addSubview:playerView];
+        }
+    }];
+    
+    [self updatePlayerLayout];
 }
 
-- (NSArray *)thumbnailPlayerControllers
+#pragma mark Gesture recognizers
+
+- (void)activatePlayer:(UIGestureRecognizer *)gestureRecognizer
 {
-    NSMutableArray *thumbnailPlayerControllers = [NSMutableArray array];
-    for (SRGMediaPlayerController *mediaPlayerController in self.mediaPlayerControllers) {
-        if (! [mediaPlayerController.view.superview isEqual:self.mainPlayerView]) {
-            [thumbnailPlayerControllers addObject:mediaPlayerController];
+    [self.mediaPlayerControllers enumerateObjectsUsingBlock:^(SRGMediaPlayerController * _Nonnull mediaPlayerController, NSUInteger idx, BOOL * _Nonnull stop) {
+        SRGMediaPlayerView *playerView = mediaPlayerController.view;
+        if (gestureRecognizer.view != playerView) {
+            return;
         }
-    }
-    return thumbnailPlayerControllers.copy;
+        
+        if (playerView.superview == self.mainPlayerView) {
+            return;
+        }
+        
+        NSMutableArray<SRGMediaPlayerController *> *mediaPlayerControllers = self.mediaPlayerControllers.mutableCopy;
+        [mediaPlayerControllers removeObject:mediaPlayerController];
+        [mediaPlayerControllers insertObject:mediaPlayerController atIndex:0];
+        [self displayMediaPlayerControllers:mediaPlayerControllers.copy];
+    }];
 }
 
 #pragma mark Actions
@@ -188,14 +158,6 @@
 - (IBAction)dismiss:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:NULL];
-}
-
-#pragma mark Gesture recognizers
-
-- (void)switchMainPlayer:(UITapGestureRecognizer *)gestureRecognizer
-{
-    SRGMediaPlayerController *mediaPlayerController = [self mediaPlayerControllerForPlayerView:gestureRecognizer.view];
-    self.selectedIndex = [self.mediaPlayerControllers indexOfObject:mediaPlayerController];
 }
 
 @end

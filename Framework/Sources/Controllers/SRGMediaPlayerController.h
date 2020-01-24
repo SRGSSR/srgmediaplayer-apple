@@ -749,6 +749,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  AirPlay. Use player lifecycle blocks (see main `SRGMediaPlayerController` documentation) to setup AirPlay behavior.
  *  Your audio session settings must be compatible with AirPlay, see
  *      https://developer.apple.com/library/content/qa/qa1803/_index.html
+ *  When implementing player configuration blocks, do not (even briefly) set `externalPlayback` to `NO` if AirPlay
+ *  external playback was active and the behavior is supposed to stay so. Only change from `YES` to `NO` when you
+ *  intend to stop and disable AirPlay external playback. Failing to do so will lead to brief unnecessary AirPlay
+ *  interruptions, which you want to avoid.
+ *
+ *  Warning: If you want users to reliably enable AirPlay playback also from the control center, you should use
+ *           `SRGAirPlayButton` with your player layout, or integrate `MPRemoteCommandCenter`. These ensures your
+ *           application is the current one registered with the control center when the user interacts with it, so
+ *           that playback can actually be sent to an AirPlay receiver. If your application is not the current one
+ *           at the moment the route is changed in the control center, playback will stay local.
  *
  *  Remark: Even if `allowsExternalPlayback` is set to `NO`, sound will still play on an external device if selected, only
  *          the visual tracks of a media won't be played. This is normal expected AirPlay behavior, and this is also how
@@ -809,6 +819,18 @@ NS_ASSUME_NONNULL_BEGIN
  *          enabled in the system settings). This is the only case where switching to picture in picture can be made
  *          automatically. Picture in picture must always be user-triggered, otherwise you application might get rejected
  *          by Apple (@see `AVPictureInPictureController` documentation).
+ *
+ *  Warning: If you plan to implement restoration from picture in picture, you must avoid usual built-in iOS modal
+ *           presentations, as they are implemented using `UIPercentDrivenInteractiveTransition`. You must use a
+ *           custom modal transition instead and avoid implementing it using `UIPercentDrivenInteractiveTransition`.
+ *           The reason is that `UIPercentDrivenInteractiveTransition` varies the time offset of a layer and thus
+ *           messes up with the player local time. This makes picture in picture restoration unreliable (sometimes it
+ *           works, sometimes it does not and the animation is ugly).
+ *
+ *           Picture in picture also temporarily disables external playback for the associated player. You should not
+ *           attempt to change this property while picture in playback is running, otherwise the behavior is undefined.
+ *           When picture in picture playback starts or stops, the configuration block (if any) is called so that the
+ *           player configuration can be properly setup and restored.
  */
 @interface SRGMediaPlayerController (PictureInPicture)
 

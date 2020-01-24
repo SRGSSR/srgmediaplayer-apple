@@ -93,6 +93,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 #if TARGET_OS_IOS
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController;
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
+@property (nonatomic) NSNumber *savedAllowsExternalPlayback;
 #endif
 
 @property (nonatomic) SRGPosition *startPosition;                   // Will be nilled when reached
@@ -332,7 +333,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                                                    name:UIApplicationWillEnterForegroundNotification
                                                  object:nil];
         
-        self.playerConfigurationBlock ? self.playerConfigurationBlock(player) : nil;
+        [self reloadPlayerConfiguration];
     }
 }
 
@@ -491,7 +492,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     if (_view != view) {
         _view = view;
-        [self attachPlayer:self.player toView:_view];
+        [self setupView:view];
     }
 }
 
@@ -500,9 +501,23 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 {
     if (! _view) {
         _view = [[SRGMediaPlayerView alloc] init];
-        [self attachPlayer:self.player toView:_view];
+        [self setupView:_view];
     }
     return _view;
+}
+
+- (void)setupView:(SRGMediaPlayerView *)view
+{
+#if TARGET_OS_IOS
+    @weakify(self)
+    [view srg_addMainThreadObserver:self keyPath:@keypath(view.readyForDisplay) options:0 block:^(MAKVONotification * _Nonnull notification) {
+        @strongify(self)
+        [self updatePictureInPictureForView:view];
+    }];
+    [self updatePictureInPictureForView:view];
+#endif
+    
+    [self attachPlayer:self.player toView:view];
 }
 
 - (CMTimeRange)timeRangeForPlayerItem:(AVPlayerItem *)playerItem
@@ -540,6 +555,11 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)updateMediaTypeForPlayer:(AVPlayer *)player
 {
     if (self.mediaType != SRGMediaPlayerMediaTypeUnknown) {
+        return;
+    }
+    
+    // The presentation size is zero before the item is ready to play, see `presentationSize` documentation.
+    if (player.currentItem.status != AVPlayerStatusReadyToPlay) {
         return;
     }
     
@@ -721,13 +741,29 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     if (pictureInPictureController) {
         @weakify(self)
-        void (^observationBlock)(MAKVONotification *) = ^(MAKVONotification *notification) {
+        [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 block:^(MAKVONotification * _Nonnull notification) {
             @strongify(self)
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
-        };
-        
-        [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPicturePossible) options:0 block:observationBlock];
-        [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:observationBlock];
+        }];
+        [pictureInPictureController srg_addMainThreadObserver:self keyPath:@keypath(pictureInPictureController.pictureInPictureActive) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
+            [self reloadPlayerConfiguration];
+            [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPictureInPictureStateDidChangeNotification object:self];
+        }];
+    }
+}
+
+- (void)updatePictureInPictureForView:(SRGMediaPlayerView *)view
+{
+    AVPlayerLayer *playerLayer = view.playerLayer;
+    if (playerLayer.readyForDisplay) {
+        if (self.pictureInPictureController.playerLayer != playerLayer) {
+            self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:playerLayer];
+            self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
+        }
+    }
+    else {
+        self.pictureInPictureController = nil;
     }
 }
 
@@ -1148,6 +1184,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
 #if TARGET_OS_IOS
     self.pictureInPictureController = nil;
+    self.savedAllowsExternalPlayback = nil;
 #endif
     
     // Emit the notification once all state has been reset
@@ -1159,7 +1196,29 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 - (void)reloadPlayerConfiguration
 {
     if (self.player) {
+#if TARGET_OS_IOS
+        // Restore previous external playback behavior after returning from PiP
+        if (! self.pictureInPictureController.pictureInPictureActive && self.savedAllowsExternalPlayback) {
+            self.player.allowsExternalPlayback = self.savedAllowsExternalPlayback.boolValue;
+            self.savedAllowsExternalPlayback = nil;
+        }
+#endif
+        
         self.playerConfigurationBlock ? self.playerConfigurationBlock(self.player) : nil;
+      
+#if TARGET_OS_IOS
+        // If picture in picture is active, it is difficult to return from PiP if enabling AirPlay from the control
+        // center (this would require calling the restoration methods, not called natively in this case, to let the app
+        // restore the playback UI so that AirPlay playback can resume there). Sadly such attempts leave the player layer
+        // in a mixed state, still displaying the PiP icon.
+        //
+        // The inverse approach is far easier: When PiP is enabled, we override player settings to prevent external playback,
+        // restoring them afterwards.
+        if (self.pictureInPictureController.pictureInPictureActive) {
+            self.savedAllowsExternalPlayback = @(self.player.allowsExternalPlayback);
+            self.player.allowsExternalPlayback = NO;
+        }
+#endif
     }
 }
 
@@ -1374,16 +1433,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     self.view.player = nil;
 }
 
-- (void)attachPlayer:(AVPlayer *)player toView:(SRGMediaPlayerView *)view
-{
-    if (self.playerViewController) {
-        self.playerViewController.player = player;
-    }
-    else {
-        view.player = player;
-    }
-}
-
 - (void)unbindFromCurrentPlayerViewController
 {
     if (! self.playerViewController) {
@@ -1395,6 +1444,16 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     
     // Rebind the player
     self.view.player = self.player;
+}
+
+- (void)attachPlayer:(AVPlayer *)player toView:(SRGMediaPlayerView *)view
+{
+    if (self.playerViewController) {
+        self.playerViewController.player = player;
+    }
+    else {
+        view.player = player;
+    }
 }
 
 #pragma mark Tracks
@@ -1460,18 +1519,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     @weakify(self)
     self.playerPeriodicTimeObserver = [player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
         @strongify(self)
-        
-#if TARGET_OS_IOS
-        if (self.playerLayer.readyForDisplay) {
-            if (self.pictureInPictureController.playerLayer != self.playerLayer) {
-                self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:self.playerLayer];
-                self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
-            }
-        }
-        else {
-            self.pictureInPictureController = nil;
-        }
-#endif
         
         [self updateSegmentStatusForPlaybackState:self.playbackState previousPlaybackState:self.playbackState time:time];
         
