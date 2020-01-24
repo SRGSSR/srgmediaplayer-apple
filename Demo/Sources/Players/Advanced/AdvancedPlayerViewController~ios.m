@@ -75,7 +75,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [super awakeFromNib];
     
-    // Do not use standard presentation animtaions, `UIPercentDrivenInteractiveTransition`-based, which change the
+    // Do not use standard presentation animations, `UIPercentDrivenInteractiveTransition`-based, which change the
     // player offset and interfere with normal behavior (paused playback, broken picture in picture restoration).
     self.transitioningDelegate = self;
 }
@@ -400,13 +400,16 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     MPNowPlayingInfoCenter.defaultCenter.nowPlayingInfo = @{ MPMediaItemPropertyTitle : self.media.name };
     
     MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    
     MPRemoteCommand *playCommand = commandCenter.playCommand;
+    [playCommand removeTarget:self.playTarget];
     self.playTarget = [playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
         [self.mediaPlayerController play];
         return MPRemoteCommandHandlerStatusSuccess;
     }];
     
     MPRemoteCommand *pauseCommand = commandCenter.pauseCommand;
+    [pauseCommand removeTarget:self.pauseTarget];
     self.pauseTarget = [pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
         [self.mediaPlayerController pause];
         return MPRemoteCommandHandlerStatusSuccess;
@@ -418,11 +421,30 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     MPNowPlayingInfoCenter.defaultCenter.nowPlayingInfo = nil;
     
     MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-    MPRemoteCommand *playCommand = commandCenter.playCommand;
-    [playCommand removeTarget:self.playTarget];
     
-    MPRemoteCommand *pauseCommand = commandCenter.pauseCommand;
-    [pauseCommand removeTarget:self.pauseTarget];
+    if (@available(iOS 12, *)) {
+        MPRemoteCommand *playCommand = commandCenter.playCommand;
+        [playCommand removeTarget:self.playTarget];
+        
+        MPRemoteCommand *pauseCommand = commandCenter.pauseCommand;
+        [pauseCommand removeTarget:self.pauseTarget];
+    }
+    else {
+        // For some unknown reason, at least an action (even dummy) must be bound to a command for `enabled` to have an effect,
+        // see https://stackoverflow.com/questions/38993801/how-to-disable-all-the-mpremotecommand-objects-from-mpremotecommandcenter
+        
+        MPRemoteCommand *playCommand = commandCenter.playCommand;
+        playCommand.enabled = NO;
+        self.playTarget = [playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+            return MPRemoteCommandHandlerStatusSuccess;
+        }];
+        
+        MPRemoteCommand *pauseCommand = commandCenter.pauseCommand;
+        pauseCommand.enabled = NO;
+        self.pauseTarget = [pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+            return MPRemoteCommandHandlerStatusSuccess;
+        }];
+    }
 }
 
 #pragma mark AVPictureInPictureControllerDelegate protocol

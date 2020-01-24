@@ -47,7 +47,7 @@
 {
     [super awakeFromNib];
     
-    // Do not use standard presentation animtaions, `UIPercentDrivenInteractiveTransition`-based, which change the
+    // Do not use standard presentation animations, `UIPercentDrivenInteractiveTransition`-based, which change the
     // player offset and interfere with normal behavior (paused playback, broken picture in picture restoration).
     self.transitioningDelegate = self;
 }
