@@ -20,6 +20,12 @@ void SRGMediaAccessibilityCaptionAppearanceAddSelectedLanguages(MACaptionAppeara
     }
 }
 
+NSString *SRGMediaAccessibilityCaptionAppearanceTopSelectedLanguage(MACaptionAppearanceDomain domain)
+{
+    NSArray *selectedLanguages = CFBridgingRelease(MACaptionAppearanceCopySelectedLanguages(kMACaptionAppearanceDomainUser));
+    return selectedLanguages.firstObject;
+}
+
 // List of preferred languages, from the most to the least preferred one
 static NSArray<NSString *> *SRGPreferredCaptionLanguageCodes(void)
 {

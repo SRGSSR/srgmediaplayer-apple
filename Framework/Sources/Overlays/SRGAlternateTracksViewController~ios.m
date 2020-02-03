@@ -16,6 +16,7 @@
 
 static NSString *SRGTitleForMediaSelectionOption(AVMediaSelectionOption *option);
 static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
+static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSelectionOption *> *options, NSString *languageCode);
 
 @interface SRGAlternateTracksViewController ()
 
@@ -362,7 +363,19 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 {
     NSString *characteristic = self.characteristics[section];
     NSArray<AVMediaSelectionOption *> *options = self.options[characteristic];
-    return [characteristic isEqualToString:AVMediaCharacteristicLegible] ? options.count + 2 : options.count;
+    if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
+        MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
+        if (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn) {
+            NSString *topSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceTopSelectedLanguage(kMACaptionAppearanceDomainUser);
+            return SRGMediaSelectionOptionsContainOptionForLanguage(options, topSelectedLanguage) ? options.count + 2 : options.count + 3;
+        }
+        else {
+            return options.count + 2;
+        }
+    }
+    else {
+        return options.count;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -372,6 +385,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
     
     NSString *characteristic = self.characteristics[indexPath.section];
+    NSArray<AVMediaSelectionOption *> *options = self.options[characteristic];
     if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionGroup *group = self.groups[characteristic];
         AVMediaSelectionOption *currentOptionInGroup = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:group];
@@ -395,10 +409,28 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
             
             return cell;
         }
+        else if (indexPath.row == options.count + 2) {
+            UITableViewCell *cell = [self subtitleCellForTableView:tableView];
+            
+            NSString *topSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceTopSelectedLanguage(kMACaptionAppearanceDomainUser);
+            NSAssert(topSelectedLanguage != nil, @"Must not be nil by construction (row only available if not nil)");
+            
+            NSLocale *locale = [NSLocale localeWithLocaleIdentifier:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
+            cell.textLabel.text = [locale displayNameForKey:NSLocaleLanguageCode value:topSelectedLanguage];
+            cell.textLabel.enabled = NO;
+            
+            cell.detailTextLabel.text = SRGMediaPlayerLocalizedString(@"Not available for this content", @"Information displayed below subtitle languages corresponding to user preferences, for content for which they are not availble");
+            cell.detailTextLabel.enabled = NO;
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            
+            return cell;
+        }
         else {
             UITableViewCell *cell = nil;
             
-            AVMediaSelectionOption *option = self.options[characteristic][indexPath.row - 2];
+            AVMediaSelectionOption *option = options[indexPath.row - 2];
             NSString *title = SRGTitleForMediaSelectionOption(option);
             if (title) {
                 cell = [self subtitleCellForTableView:tableView];
@@ -418,7 +450,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     else {
         UITableViewCell *cell = nil;
         
-        AVMediaSelectionOption *option = self.options[characteristic][indexPath.row];
+        AVMediaSelectionOption *option = options[indexPath.row];
         NSString *title = SRGTitleForMediaSelectionOption(option);
         if (title) {
             cell = [self subtitleCellForTableView:tableView];
@@ -543,6 +575,17 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option)
     // app only supports French). To eliminate such issues, we recreate a simple locale from the current language code.
     NSLocale *locale = [NSLocale localeWithLocaleIdentifier:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
     return [option displayNameWithLocale:locale];
+}
+
+static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSelectionOption *> *options, NSString *languageCode)
+{
+    for (AVMediaSelectionOption *option in options) {
+        NSString *optionLanguageCode = [option.locale objectForKey:NSLocaleLanguageCode];
+        if ([optionLanguageCode isEqualToString:languageCode]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 __attribute__((constructor)) static void SRGAlternateTracksViewControllerInit(void)
