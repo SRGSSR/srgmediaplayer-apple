@@ -416,10 +416,11 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             NSAssert(topSelectedLanguage != nil, @"Must not be nil by construction (row only available if not nil)");
             
             NSLocale *locale = [NSLocale localeWithLocaleIdentifier:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
-            cell.textLabel.text = [locale displayNameForKey:NSLocaleLanguageCode value:topSelectedLanguage];
+            NSString *languageDisplayName = [locale displayNameForKey:NSLocaleLanguageCode value:topSelectedLanguage] ?: SRGMediaPlayerLocalizedString(@"Unknown language", @"Fallback for unknown languages");
+            cell.textLabel.text = [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"%@ (Unavailable)", @"Entry displayed in the subtitle list when the selected language (provided as parameter) is not available for the content being played"), languageDisplayName];
             cell.textLabel.enabled = NO;
             
-            cell.detailTextLabel.text = SRGMediaPlayerLocalizedString(@"Not available for this content", @"Information displayed below subtitle languages corresponding to user preferences, for content for which they are not availble");
+            cell.detailTextLabel.text = SRGMediaPlayerLocalizedString(@"Most recent language used", @"Information displayed for unavailable subtitle languages");
             cell.detailTextLabel.enabled = NO;
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
