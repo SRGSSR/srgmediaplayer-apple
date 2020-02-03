@@ -1078,7 +1078,50 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         @strongify(self)
         if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.mediaConfigurationBlock ? self.mediaConfigurationBlock(playerItem, URLAsset) : nil;
+                // Override completely if a media configuration block is provided
+                if (self.mediaConfigurationBlock) {
+                    self.mediaConfigurationBlock(playerItem, URLAsset);
+                }
+                // Force the last selected language to be used. When playing on device this is ensured by the system anyway, but
+                // when playing on an AirPlay receiver (connected before playback starts), the last used language of the receiver
+                // would win. We cannot use `MediaAccessibility` to update the language list on the receiver (both the sender as
+                // well as the receiver are therefore independent), but at least we can start playback with the most recent language
+                // used on the sender.
+                else {
+                    AVMediaSelectionGroup *group = [URLAsset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+                    MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
+                    switch (displayType) {
+                        case kMACaptionAppearanceDisplayTypeForcedOnly: {
+                            [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
+                            break;
+                        }
+                            
+                        case kMACaptionAppearanceDisplayTypeAutomatic: {
+                            [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
+                            break;
+                        }
+                        
+                        case kMACaptionAppearanceDisplayTypeAlwaysOn: {
+                            NSString *topSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceTopSelectedLanguage(kMACaptionAppearanceDomainUser);
+                            NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+                                return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:topSelectedLanguage];
+                            }];
+                            NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+                            AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
+                            if (option) {
+                                [playerItem selectMediaOption:option inMediaSelectionGroup:group];
+                            }
+                            else {
+                                [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
+                            }
+                            break;
+                        }
+                            
+                        default: {
+                            break;
+                        }
+                    }
+                }
                 [self updateTracksForPlayer:self.player];
             });
         }
