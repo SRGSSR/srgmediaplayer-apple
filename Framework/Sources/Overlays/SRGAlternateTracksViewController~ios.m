@@ -386,15 +386,12 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
             UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
             
-            if (! player.externalPlaybackActive) {
-                cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            }
-            else {
+            if (player.externalPlaybackActive) {
                 cell.textLabel.enabled = NO;
-                
-                cell.accessoryType = UITableViewCellAccessoryNone;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
+            
+            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
