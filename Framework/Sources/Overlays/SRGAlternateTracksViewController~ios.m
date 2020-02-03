@@ -571,7 +571,7 @@ static NSArray<NSString *> *SRGPreferredCaptionLanguageCodes(void)
 //   https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
 static void MACaptionAppearanceAddPreferredLanguages(MACaptionAppearanceDomain domain)
 {
-    MACaptionAppearanceAddSelectedLanguages(kMACaptionAppearanceDomainUser, SRGPreferredCaptionLanguageCodes());
+    MACaptionAppearanceAddSelectedLanguages(domain, SRGPreferredCaptionLanguageCodes());
 }
 
 // Update the subtitle language selection stack with the provided language list. This list is saved at the system level,
