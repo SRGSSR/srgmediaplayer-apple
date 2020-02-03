@@ -445,6 +445,11 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.selectionStyle == UITableViewCellSelectionStyleNone) {
+        return;
+    }
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     AVPlayer *player = self.mediaPlayerController.player;
@@ -483,7 +488,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
     }
     
     // No track change notification is emitted when the setting (e.g. Automatic or Off) does not lead to another value
-    // being selected. We must therefore also fore a refresh to get correct cell state.
+    // being selected. We must therefore also force a refresh to get a correct cell state.
     [self.tableView reloadData];
 }
 
