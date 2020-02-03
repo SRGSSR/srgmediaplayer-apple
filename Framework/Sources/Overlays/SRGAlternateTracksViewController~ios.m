@@ -9,17 +9,13 @@
 #import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGMediaAccessibility.h"
 #import "SRGRouteDetector.h"
 
 #import <libextobjc/libextobjc.h>
-#import <MediaAccessibility/MediaAccessibility.h>
 
 static NSString *SRGTitleForMediaSelectionOption(AVMediaSelectionOption *option);
 static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
-static NSArray<NSString *> *SRGPreferredCaptionLanguageCodes(void);
-
-static void MACaptionAppearanceAddPreferredLanguages(MACaptionAppearanceDomain domain);
-static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain domain, NSArray<NSString *> *languageCodes);
 
 @interface SRGAlternateTracksViewController ()
 
@@ -462,13 +458,13 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
         if (indexPath.row == 0) {
             [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
             
-            MACaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
+            SRGMediaAccessibilityCaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
         }
         else if (indexPath.row == 1) {
             [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
             
-            MACaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
+            SRGMediaAccessibilityCaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
         }
         else {
@@ -477,7 +473,7 @@ static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain do
             
             NSString *languageCode = [option.locale objectForKey:NSLocaleLanguageCode];
             if (languageCode) {
-                MACaptionAppearanceAddSelectedLanguages(kMACaptionAppearanceDomainUser, @[languageCode]);
+                SRGMediaAccessibilityCaptionAppearanceAddSelectedLanguages(kMACaptionAppearanceDomainUser, @[languageCode]);
             }
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
         }
@@ -547,49 +543,12 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option)
     return [option displayNameWithLocale:locale];
 }
 
-// List of preferred languages, from the most to the least preferred one
-static NSArray<NSString *> *SRGPreferredCaptionLanguageCodes(void)
-{
-    NSMutableArray<NSString *> *languageCodes = [NSMutableArray array];
-    
-    // List of preferred languages from the system settings.
-    NSArray<NSString *> *preferredLanguages = NSLocale.preferredLanguages;
-    for (NSString *language in preferredLanguages) {
-        NSLocale *locale = [NSLocale localeWithLocaleIdentifier:language];
-        [languageCodes addObject:[locale objectForKey:NSLocaleLanguageCode]];
-    }
-    
-    // Add current locale language code as last item. The current locale is the one of the app which best matches
-    // system settings (even if it does not appear in the preferred language list). Use it as fallback.
-    [languageCodes addObject:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
-    
-    return languageCodes.copy;
-}
-
-// Update the subtitle language selection stack to best match the current language preferences. This helps the "Closed
-// Captions + SDH" accessibility feature to find a better match for the user.
-//   https://developer.apple.com/documentation/mediaaccessibility/macaptionappearancedisplaytype/kmacaptionappearancedisplaytypealwayson
-static void MACaptionAppearanceAddPreferredLanguages(MACaptionAppearanceDomain domain)
-{
-    MACaptionAppearanceAddSelectedLanguages(domain, SRGPreferredCaptionLanguageCodes());
-}
-
-// Update the subtitle language selection stack with the provided language list. This list is saved at the system level,
-// and is shard by instances of `AVPlayer` with `appliesMediaSelectionCriteriaAutomatically` (default). This includes
-// `SRGMediaPlayerController`, but also `AVPlayerViewController` (within the same app) or Safari.
-static void MACaptionAppearanceAddSelectedLanguages(MACaptionAppearanceDomain domain, NSArray<NSString *> *languageCodes)
-{
-    for (NSString *languageCode in [languageCodes reverseObjectEnumerator]) {
-        MACaptionAppearanceAddSelectedLanguage(domain, (__bridge CFStringRef _Nonnull)languageCode);
-    }
-}
-
 __attribute__((constructor)) static void SRGAlternateTracksViewControllerInit(void)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
         if  (displayType != kMACaptionAppearanceDisplayTypeAlwaysOn) {
-            MACaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
+            SRGMediaAccessibilityCaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
         }
     });
 }

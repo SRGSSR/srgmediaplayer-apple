@@ -14,6 +14,7 @@
 #import "NSBundle+SRGMediaPlayer.h"
 #import "NSTimer+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
+#import "SRGMediaAccessibility.h"
 #import "SRGMediaPlayerError.h"
 #import "SRGMediaPlayerLogger.h"
 #import "SRGMediaPlayerView.h"
@@ -26,7 +27,6 @@
 
 #import <libextobjc/libextobjc.h>
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
-#import <MediaAccessibility/MediaAccessibility.h>
 #import <objc/runtime.h>
 
 static const NSTimeInterval SRGSegmentSeekOffsetInSeconds = 0.1;
@@ -1501,6 +1501,21 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         }
         
         self.subtitleOption = subtitleOption;
+        
+        // When AirPlay is used, mirror language selections made on the receiver
+        if (player.externalPlaybackActive) {
+            if (subtitleOption && ! [subtitleOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]) {
+                NSString *languageCode = [subtitleOption.locale objectForKey:NSLocaleLanguageCode];
+                if (languageCode) {
+                    MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)languageCode);
+                }
+                MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
+            }
+            else {
+                SRGMediaAccessibilityCaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
+                MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
+            }
+        }
         
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSubtitleTrackDidChangeNotification
                                                           object:self
