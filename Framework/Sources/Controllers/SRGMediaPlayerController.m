@@ -1545,21 +1545,6 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         
         self.subtitleOption = subtitleOption;
         
-        // When AirPlay is used, mirror language selections made on the receiver
-        if (player.externalPlaybackActive) {
-            if (subtitleOption && ! [subtitleOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]) {
-                NSString *languageCode = [subtitleOption.locale objectForKey:NSLocaleLanguageCode];
-                if (languageCode) {
-                    MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)languageCode);
-                }
-                MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
-            }
-            else {
-                SRGMediaAccessibilityCaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
-                MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
-            }
-        }
-        
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSubtitleTrackDidChangeNotification
                                                           object:self
                                                         userInfo:userInfo.copy];
