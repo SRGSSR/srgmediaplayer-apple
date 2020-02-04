@@ -62,6 +62,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 {
     if (_mediaPlayerController) {
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive)];
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.currentItem.asset)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerAudioTrackDidChangeNotification
@@ -79,7 +80,11 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             @strongify(self)
             [self.tableView reloadData];
         }];
-        
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.asset) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
+            [self reloadData];
+        }];
+                
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(audioTrackDidChange:)
                                                    name:SRGMediaPlayerAudioTrackDidChangeNotification
@@ -90,35 +95,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
                                                  object:mediaPlayerController];
     }
     
-    AVAsset *asset = mediaPlayerController.player.currentItem.asset;
-    
-    // Never access track information without checking whether it has been loaded first (would lock the main thread)
-    // TODO: Factor out, attempt but also respond to KVO? To test, change media being played while popover displayed
-    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-        NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
-        NSMutableDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options = [NSMutableDictionary dictionary];
-        
-        AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-        if (audioGroup.options.count > 1) {
-            [characteristics addObject:AVMediaCharacteristicAudible];
-            options[AVMediaCharacteristicAudible] = audioGroup.options;
-        }
-        
-        AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        if (subtitleGroup) {
-            [characteristics addObject:AVMediaCharacteristicLegible];
-            options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-        }
-        
-        self.characteristics = characteristics.copy;
-        self.options = options.copy;
-    }
-    else {
-        self.characteristics = nil;
-        self.options = nil;
-    }
-    
-    [self.tableView reloadData];
+    [self reloadData];
 }
 
 - (BOOL)isDark
@@ -260,6 +237,44 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 }
 
 #pragma mark UI
+
+- (void)reloadData
+{
+    AVAsset *asset = self.mediaPlayerController.player.currentItem.asset;
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
+        NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
+        NSMutableDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options = [NSMutableDictionary dictionary];
+        
+        AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        if (audioGroup.options.count > 1) {
+            [characteristics addObject:AVMediaCharacteristicAudible];
+            options[AVMediaCharacteristicAudible] = audioGroup.options;
+        }
+        
+        AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        if (subtitleGroup) {
+            [characteristics addObject:AVMediaCharacteristicLegible];
+            options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+        }
+        
+        self.characteristics = characteristics.copy;
+        self.options = options.copy;
+    }
+    else {
+        self.characteristics = nil;
+        self.options = nil;
+        
+        @weakify(self)
+        [asset loadValuesAsynchronouslyForKeys:@[ @keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) ] completionHandler:^{
+            @strongify(self)
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self reloadData];
+            });
+        }];
+    }
+    
+    [self.tableView reloadData];
+}
 
 - (void)updateViewAppearance
 {
