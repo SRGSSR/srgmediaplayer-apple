@@ -1097,13 +1097,22 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                     }
                         
                     case kMACaptionAppearanceDisplayTypeAlwaysOn: {
+                        // First extract non-forced subtitles matching the last selected language
                         NSString *topSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceTopSelectedLanguage(kMACaptionAppearanceDomainUser);
                         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
                             return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:topSelectedLanguage];
                         }];
-                        NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-                        AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
-                        [playerItem selectMediaOption:option inMediaSelectionGroup:group];
+                        NSArray<AVMediaSelectionOption *> *options = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate];
+                        
+                        // Attempt to find a better match depending on accessibility preferences
+                        NSArray<AVMediaCharacteristic> *accessibilityCharacteristics = CFBridgingRelease(MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(kMACaptionAppearanceDomainUser));
+                        AVMediaSelectionOption *accessibilityOption = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withMediaCharacteristics:accessibilityCharacteristics].firstObject;
+                        if (accessibilityOption) {
+                            [playerItem selectMediaOption:accessibilityOption inMediaSelectionGroup:group];
+                        }
+                        else {
+                            [playerItem selectMediaOption:options.firstObject inMediaSelectionGroup:group];
+                        }
                         break;
                     }
                         
