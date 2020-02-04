@@ -400,21 +400,11 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             return cell;
         }
         else if (indexPath.row == 1) {
-            UITableViewCell *cell = nil;
-            BOOL hasUnforcedSubtitles = currentOptionInGroup && ! [currentOptionInGroup hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles];
-            if (displayType == kMACaptionAppearanceDisplayTypeAutomatic && hasUnforcedSubtitles) {
-                cell = [self subtitleCellForTableView:tableView];
-                cell.detailTextLabel.text = [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"Currently: %@", @"Label introducing which language is currently used in automatic mode"), SRGHintForMediaSelectionOption(currentOptionInGroup)];
-            }
-            else {
-                cell = [self defaultCellForTableView:tableView];
-            }
-            
+            UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
             
             if (player.externalPlaybackActive) {
                 cell.textLabel.enabled = NO;
-                cell.detailTextLabel.enabled = NO;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
             
@@ -430,7 +420,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             
             NSLocale *locale = [NSLocale localeWithLocaleIdentifier:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
             NSString *languageDisplayName = [locale displayNameForKey:NSLocaleLanguageCode value:topSelectedLanguage] ?: SRGMediaPlayerLocalizedString(@"Unknown language", @"Fallback for unknown languages");
-            cell.textLabel.text = [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"%@ (Last used)", @"Entry displayed in the subtitle list to identify the last selected language"), languageDisplayName];
+            cell.textLabel.text = [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"%@ (Current default)", @"Entry displayed in the subtitle list to identify the last selected language"), languageDisplayName];
             cell.textLabel.enabled = NO;
             
             cell.detailTextLabel.text = SRGMediaPlayerLocalizedString(@"Language not available for this content", @"Information displayed for unavailable subtitle languages");
