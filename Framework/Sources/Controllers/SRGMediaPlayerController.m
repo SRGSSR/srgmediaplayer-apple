@@ -1078,11 +1078,11 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
         @strongify(self)
         if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                // Force the last selected language to be used. When playing on device this is ensured by the system anyway, but
-                // when playing on an AirPlay receiver (connected before playback starts), the last used language of the receiver
-                // would win. We cannot use `MediaAccessibility` to update the language list on the receiver (both the sender as
-                // well as the receiver are therefore independent), but at least we can start playback with the most recent language
-                // used on the sender.
+                // Restore the last selected subtitle selection. When playing on device this is ensured by the system anyway (we
+                // must use the default `appliesMediaSelectionCriteriaAutomatically` behavior so that audio description selection is
+                // based on system settings). When playing on an AirPlay receiver, connected before playback starts, the last language
+                // used on the receiver wins, though (`MediaAccessibility` also exists on tvOS). This is disturbing from a user experience
+                // point of view.
                 AVMediaSelectionGroup *group = [URLAsset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
                 MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
                 switch (displayType) {
@@ -1103,12 +1103,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
                         }];
                         NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
                         AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
-                        if (option) {
-                            [playerItem selectMediaOption:option inMediaSelectionGroup:group];
-                        }
-                        else {
-                            [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
-                        }
+                        [playerItem selectMediaOption:option inMediaSelectionGroup:group];
                         break;
                     }
                         
