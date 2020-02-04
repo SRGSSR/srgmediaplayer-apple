@@ -28,6 +28,21 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)unbindFromCurrentPlayerViewController;
 
+/**
+ *  Select an option in the group having the specified characteristic.
+ */
+- (void)selectMediaOption:(nullable AVMediaSelectionOption *)option inMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic;
+
+/**
+ *  Perform automatic option selection in the group having the specified characteristic.
+ */
+- (void)selectMediaOptionAutomaticallyInMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic;
+
+/**
+ *  Return the selected option in the group having the specified characteristic, if any.
+ */
+- (nullable AVMediaSelectionOption *)selectedMediaOptionInMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic;
+
 @end
 
 NS_ASSUME_NONNULL_END
