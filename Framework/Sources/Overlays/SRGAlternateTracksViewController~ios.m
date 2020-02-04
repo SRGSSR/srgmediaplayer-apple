@@ -16,6 +16,8 @@
 
 static NSString *SRGTitleForMediaSelectionOption(AVMediaSelectionOption *option);
 static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
+
+static BOOL SRGMediaSelectionOptionHasLanguage(AVMediaSelectionOption *option, NSString *languageCode);
 static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSelectionOption *> *options, NSString *languageCode);
 
 @interface SRGAlternateTracksViewController ()
@@ -434,7 +436,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             cell.detailTextLabel.enabled = NO;
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            cell.accessoryType = ! currentOptionInGroup || (SRGMediaSelectionOptionHasLanguage(currentOptionInGroup, topSelectedLanguage) && ! [currentOptionInGroup hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
@@ -588,11 +590,16 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option)
     return [option displayNameWithLocale:locale];
 }
 
+static BOOL SRGMediaSelectionOptionHasLanguage(AVMediaSelectionOption *option, NSString *languageCode)
+{
+    NSString *optionLanguageCode = [option.locale objectForKey:NSLocaleLanguageCode];
+    return [optionLanguageCode isEqualToString:languageCode];
+}
+
 static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSelectionOption *> *options, NSString *languageCode)
 {
     for (AVMediaSelectionOption *option in options) {
-        NSString *optionLanguageCode = [option.locale objectForKey:NSLocaleLanguageCode];
-        if ([optionLanguageCode isEqualToString:languageCode]) {
+        if (SRGMediaSelectionOptionHasLanguage(option, languageCode)) {
             return YES;
         }
     }
