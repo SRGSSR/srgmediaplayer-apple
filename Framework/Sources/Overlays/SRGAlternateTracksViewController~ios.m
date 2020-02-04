@@ -389,19 +389,29 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionGroup *group = self.groups[characteristic];
         AVMediaSelectionOption *currentOptionInGroup = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:group];
+        BOOL hasNonForcedSubtitles = currentOptionInGroup && ! [currentOptionInGroup hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles];
         
         if (indexPath.row == 0) {
             UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Off", @"Option to disable subtitles");
-            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeForcedOnly && ! hasNonForcedSubtitles) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             return cell;
         }
         else if (indexPath.row == 1) {
-            UITableViewCell *cell = [self defaultCellForTableView:tableView];
+            UITableViewCell *cell = nil;
+            if (displayType == kMACaptionAppearanceDisplayTypeAutomatic && hasNonForcedSubtitles) {
+                cell = [self subtitleCellForTableView:tableView];
+                cell.detailTextLabel.text = [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"Currently: %@", @"Label introducing which language is currently used in automatic mode"), SRGHintForMediaSelectionOption(currentOptionInGroup)];
+            }
+            else {
+                cell = [self defaultCellForTableView:tableView];
+            }
+            
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
             
             if (player.externalPlaybackActive) {
                 cell.textLabel.enabled = NO;
+                cell.detailTextLabel.enabled = NO;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
             
@@ -443,7 +453,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
                 cell.textLabel.text = SRGHintForMediaSelectionOption(option);
             }
             
-            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = (displayType != kMACaptionAppearanceDisplayTypeAutomatic && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
