@@ -392,6 +392,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
         AVMediaSelectionGroup *group = self.groups[characteristic];
         AVMediaSelectionOption *currentOptionInGroup = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:group];
         
+        // Off
         if (indexPath.row == 0) {
             UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Off", @"Option to disable subtitles");
@@ -399,6 +400,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             cell.accessoryType = (displayType != kMACaptionAppearanceDisplayTypeAutomatic) && ! hasUnforcedSubtitles ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             return cell;
         }
+        // Automatic
         else if (indexPath.row == 1) {
             UITableViewCell *cell = [self defaultCellForTableView:tableView];
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
@@ -412,6 +414,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             
             return cell;
         }
+        // Additional cell only displayed if the current default language is not found in the available languages
         else if (indexPath.row == options.count + 2) {
             UITableViewCell *cell = [self subtitleCellForTableView:tableView];
             
@@ -431,6 +434,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             
             return cell;
         }
+        // Available unforced subtitle languages
         else {
             UITableViewCell *cell = nil;
             
@@ -446,7 +450,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
                 cell.textLabel.text = SRGHintForMediaSelectionOption(option);
             }
             
-            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = (displayType != kMACaptionAppearanceDisplayTypeAutomatic && [currentOptionInGroup isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
