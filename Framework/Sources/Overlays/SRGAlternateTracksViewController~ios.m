@@ -61,7 +61,6 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
-        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.currentItem.asset)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
@@ -76,10 +75,6 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     
     if (mediaPlayerController) {
         @weakify(self)
-        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:^(MAKVONotification * _Nonnull notification) {
-            @strongify(self)
-            [self.tableView reloadData];
-        }];
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.asset) options:0 block:^(MAKVONotification * _Nonnull notification) {
             @strongify(self)
             [self reloadData];
@@ -426,13 +421,6 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             }
             
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
-            
-            if (self.mediaPlayerController.player.externalPlaybackActive) {
-                cell.textLabel.enabled = NO;
-                cell.detailTextLabel.enabled = NO;
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            }
-            
             cell.accessoryType = isAutomaticEnabled ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
@@ -565,11 +553,6 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 }
 
 - (void)subtitleTrackDidChange:(NSNotification *)notification
-{
-    [self.tableView reloadData];
-}
-
-- (void)wirelessRouteActiveDidChange:(NSNotification *)notification
 {
     [self.tableView reloadData];
 }
