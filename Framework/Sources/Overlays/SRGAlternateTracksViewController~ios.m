@@ -369,7 +369,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
         return SRGMediaPlayerLocalizedString(@"You can enable Audio Description automatic selection in the Accessibility settings.", @"Instructions for audio customization");
     }
     else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
-         return SRGMediaPlayerLocalizedString(@"When 'Auto' is enabled, and if the selected audio track language differs from the device settings, subtitles or Closed Captions might be automatically displayed instead.\n\nYou can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings.", @"Instructions for subtitles customization");
+         return SRGMediaPlayerLocalizedString(@"When 'Auto' is enabled, and if the selected audio track language differs from the device settings, subtitles or Closed Captions might be displayed automatically.\n\nYou can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings.", @"Instructions for subtitles customization");
     }
     else {
         return nil;
