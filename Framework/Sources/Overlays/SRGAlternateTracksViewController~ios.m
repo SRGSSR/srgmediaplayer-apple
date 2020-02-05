@@ -354,8 +354,11 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     NSString *characteristic = self.characteristics[section];
-    if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
-        return SRGMediaPlayerLocalizedString(@"You can adjust subtitle appearance and automatic selection behavior in the Accessibility section of the Settings application.", @"Instructions for subtitles customization");
+    if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
+        return SRGMediaPlayerLocalizedString(@"You can enable Audio Description automatic selection in the Accessibility settings.", @"Instructions for audio customization");
+    }
+    else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
+         return SRGMediaPlayerLocalizedString(@"When 'Auto' is enabled, and if the audio differs from the current device language, subtitles or Closed Captions might be automatically displayed instead.\n\nYou can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings.", @"Instructions for subtitles customization");
     }
     else {
         return nil;
