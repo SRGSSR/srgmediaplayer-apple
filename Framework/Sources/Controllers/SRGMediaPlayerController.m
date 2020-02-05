@@ -1569,14 +1569,8 @@ static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerIt
     
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
     
-    // It would be tempting to use `-[AVPlayerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:]`, but
-    // according to its documentation this method only has an effect when a media option has been previously set.
-    // According to my tests, it does not reset to automatic selection (at least as documented for the media
-    // accessibility `kMACaptionAppearanceDisplayTypeAutomatic` constant). The behavior of the `AVPlayerViewController`
-    // standard player does not match the definition of automatic either (though it uses the MediaAccessibility to
-    // save this setting). For all these reasons, the selection logic is implemented manually according to the
-    // specifications.
     if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
+        // Use same implementation as in `-selectMediaOption:inMediaSelectionGroupWithCharacteristic:` for consistency
         AVMediaSelectionOption *audioOption = [self selectedOptionForPlayer:self.player withMediaCharacteristic:AVMediaCharacteristicAudible];
         SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, group, audioOption);
     }
