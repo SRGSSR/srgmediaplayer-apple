@@ -1889,6 +1889,8 @@ static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerIt
 {
     NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
     
+    // The system language always yields a value from the application bundle supported languages, and selects the first
+    // match according to the system preferred language list, in order. If no match is found, the result is "en".
     NSString *systemLanguage = [NSLocale.currentLocale objectForKey:NSLocaleLanguageCode];
     if (! [audioLanguage isEqualToString:systemLanguage]) {
         // First extract non-forced subtitles matching the system language
