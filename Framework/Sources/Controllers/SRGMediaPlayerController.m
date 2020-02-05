@@ -1848,6 +1848,10 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *legibleGroup, AVMediaSelectionOption *audioOption)
 {
     NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
+    if (! audioLanguage) {
+        [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:legibleGroup];
+        return;
+    }
     
     // The system language always yields a value from the application bundle supported languages, and selects the first
     // match according to the system preferred language list, in order. If no match is found, the result is "en".
@@ -1907,6 +1911,13 @@ static void SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem 
     if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         AVMediaSelectionOption *audioOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:audioGroup];
+        
+        // When playback start, an audio track might not be selected, in which case use the recommended one which will
+        // be selected anyway.
+        if (audioOption) {
+            [playerItem srgmediaplayer_preferredMediaOptionInMediaSelectionGroup:audioGroup];
+        }
+        
         SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, group, audioOption);
     }
     else {
