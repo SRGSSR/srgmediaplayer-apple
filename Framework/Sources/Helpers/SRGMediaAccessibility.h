@@ -25,6 +25,6 @@ OBJC_EXPORT void SRGMediaAccessibilityCaptionAppearanceAddSelectedLanguages(MACa
 /**
  *  Return the current top selected language.
  */
-OBJC_EXPORT NSString * _Nullable SRGMediaAccessibilityCaptionAppearanceTopSelectedLanguage(MACaptionAppearanceDomain domain);
+OBJC_EXPORT NSString * _Nullable SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(MACaptionAppearanceDomain domain);
 
 NS_ASSUME_NONNULL_END

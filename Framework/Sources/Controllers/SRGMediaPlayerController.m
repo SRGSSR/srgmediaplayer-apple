@@ -1250,10 +1250,10 @@ static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerIt
         }
             
         case kMACaptionAppearanceDisplayTypeAlwaysOn: {
-            NSString *topSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceTopSelectedLanguage(kMACaptionAppearanceDomainUser);
+            NSString *lastSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(kMACaptionAppearanceDomainUser);
             AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
             NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
-                return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:topSelectedLanguage];
+                return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:lastSelectedLanguage];
             }];
             AVMediaSelectionOption *option = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate].firstObject;
             [self selectMediaOption:option inMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible];
@@ -1549,7 +1549,7 @@ static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerIt
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible] && displayType == kMACaptionAppearanceDisplayTypeAutomatic) {
         // Provide the selected audio option as context information, so that update is consistent when using AirPlay as well
-        // (we cannot use `selectMediaOptionAutomaticallyInMediaSelectionGroupWithCharacteristic:`) as the audio selection
+        // (we cannot use `-selectMediaOptionAutomaticallyInMediaSelectionGroupWithCharacteristic:`) as the audio selection
         // takes more time over AirPlay, yielding the old value for a short while.
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, subtitleGroup, option);
@@ -1570,7 +1570,7 @@ static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerIt
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
     
     if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
-        // Use same implementation as in `-selectMediaOption:inMediaSelectionGroupWithCharacteristic:` for consistency
+        // Use same implementation as in `-selectMediaOption:inMediaSelectionGroupWithCharacteristic:` for consistencyo
         AVMediaSelectionOption *audioOption = [self selectedOptionForPlayer:self.player withMediaCharacteristic:AVMediaCharacteristicAudible];
         SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, group, audioOption);
     }

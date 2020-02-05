@@ -81,7 +81,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             @strongify(self)
             [self reloadData];
         }];
-                
+        
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(audioTrackDidChange:)
                                                    name:SRGMediaPlayerAudioTrackDidChangeNotification
@@ -388,8 +388,8 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
         if (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn) {
-            NSString *topSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceTopSelectedLanguage(kMACaptionAppearanceDomainUser);
-            return SRGMediaSelectionOptionsContainOptionForLanguage(options, topSelectedLanguage) ? options.count + 2 : options.count + 3;
+            NSString *lastSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(kMACaptionAppearanceDomainUser);
+            return SRGMediaSelectionOptionsContainOptionForLanguage(options, lastSelectedLanguage) ? options.count + 2 : options.count + 3;
         }
         else {
             return options.count + 2;
@@ -443,11 +443,11 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
         else if (indexPath.row == options.count + 2) {
             UITableViewCell *cell = [self subtitleCellForTableView:tableView];
             
-            NSString *topSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceTopSelectedLanguage(kMACaptionAppearanceDomainUser);
-            NSAssert(topSelectedLanguage != nil, @"Must not be nil by construction (row only available if not nil)");
+            NSString *lastSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(kMACaptionAppearanceDomainUser);
+            NSAssert(lastSelectedLanguage != nil, @"Must not be nil by construction (row only available if not nil)");
             
             NSLocale *locale = [NSLocale localeWithLocaleIdentifier:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
-            NSString *languageDisplayName = [locale displayNameForKey:NSLocaleLanguageCode value:topSelectedLanguage] ?: SRGMediaPlayerLocalizedString(@"Unknown language", @"Fallback for unknown languages");
+            NSString *languageDisplayName = [locale displayNameForKey:NSLocaleLanguageCode value:lastSelectedLanguage] ?: SRGMediaPlayerLocalizedString(@"Unknown language", @"Fallback for unknown languages");
             cell.textLabel.text = [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"%@ (Current default)", @"Entry displayed in the subtitle list to identify the last selected language"), languageDisplayName];
             cell.textLabel.enabled = NO;
             

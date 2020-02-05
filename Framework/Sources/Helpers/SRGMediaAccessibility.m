@@ -20,7 +20,7 @@ void SRGMediaAccessibilityCaptionAppearanceAddSelectedLanguages(MACaptionAppeara
     }
 }
 
-NSString *SRGMediaAccessibilityCaptionAppearanceTopSelectedLanguage(MACaptionAppearanceDomain domain)
+NSString *SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(MACaptionAppearanceDomain domain)
 {
     NSArray *selectedLanguages = CFBridgingRelease(MACaptionAppearanceCopySelectedLanguages(kMACaptionAppearanceDomainUser));
     return selectedLanguages.firstObject;
