@@ -412,15 +412,29 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
         }
         // Automatic
         else if (indexPath.row == 1) {
-            UITableViewCell *cell = [self defaultCellForTableView:tableView];
+            UITableViewCell *cell = nil;
+            
+            BOOL isAutomaticEnabled = (displayType == kMACaptionAppearanceDisplayTypeAutomatic);
+            if (isAutomaticEnabled) {
+                cell = [self subtitleCellForTableView:tableView];
+                
+                AVMediaSelectionOption *selectedOption = [self.mediaPlayerController selectedMediaOptionInMediaSelectionGroupWithCharacteristic:characteristic];
+                NSString *selectedLanguageName = SRGHintForMediaSelectionOption(selectedOption) ?: NSLocalizedString(@"None", @"Label displayed when no subtitles have been selected in automatic mode");
+                cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Currently: %@", @"Introductory label to display which subtitle is displayed in automatic mode"), selectedLanguageName];
+            }
+            else {
+                cell = [self defaultCellForTableView:tableView];
+            }
+            
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
             
             if (self.mediaPlayerController.player.externalPlaybackActive) {
                 cell.textLabel.enabled = NO;
+                cell.detailTextLabel.enabled = NO;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
             
-            cell.accessoryType = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = isAutomaticEnabled ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
@@ -461,7 +475,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             }
             
             AVMediaSelectionOption *selectedOption = [self.mediaPlayerController selectedMediaOptionInMediaSelectionGroupWithCharacteristic:characteristic];
-            cell.accessoryType = [selectedOption isEqual:option] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = (displayType != kMACaptionAppearanceDisplayTypeAutomatic && [selectedOption isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
