@@ -15,6 +15,8 @@
 
 #import <libextobjc/libextobjc.h>
 
+static BOOL SRGMediaPlayerIsViewControllerDismissed(UIViewController *viewController);
+
 static NSString *SRGTitleForMediaSelectionOption(AVMediaSelectionOption *option);
 static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 
@@ -176,6 +178,15 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     }
     
     [self updateViewAppearance];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if (SRGMediaPlayerIsViewControllerDismissed(self)) {
+        [self.delegate alternateTracksViewControllerWasDismissed:self];
+    }
 }
 
 #pragma mark Status bar
@@ -561,6 +572,25 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 }
 
 @end
+
+// Check whether the controller is being dismissed, taking parents into account. Only valid for use in `-viewWillDisappear:`
+// and `-viewDidDisappear:`.
+static BOOL SRGMediaPlayerIsViewControllerDismissed(UIViewController *viewController)
+{
+    if (viewController.movingFromParentViewController || viewController.beingDismissed) {
+        return YES;
+    }
+    
+    UIViewController *parentViewController = viewController.parentViewController;
+    while (parentViewController) {
+        if (SRGMediaPlayerIsViewControllerDismissed(parentViewController)) {
+            return YES;
+        }
+        parentViewController = parentViewController.parentViewController;
+    }
+    
+    return NO;
+}
 
 // Extract the stream title if available. Return `nil` if the option display name suffices.
 static NSString *SRGTitleForMediaSelectionOption(AVMediaSelectionOption *option)
