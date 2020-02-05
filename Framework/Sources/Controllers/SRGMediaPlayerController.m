@@ -39,6 +39,8 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position,CMTime offset);
 static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
 
+static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *legibleGroup, AVMediaSelectionOption *audioOption);
+
 @interface SRGMediaPlayerController () <SRGPlayerDelegate> {
 @private
     SRGMediaPlayerPlaybackState _playbackState;
@@ -1546,7 +1548,11 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     // If Automatic has been set for subtitles, changing the audio must update the subtitles accordingly
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible] && displayType == kMACaptionAppearanceDisplayTypeAutomatic) {
-        [self selectMediaOptionAutomaticallyInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible];
+        // Provide the selected audio option as context information, so that update is consistent when using AirPlay as well
+        // (we cannot use `selectMediaOptionAutomaticallyInMediaSelectionGroupWithCharacteristic:`) as the audio selection
+        // takes more time over AirPlay, yielding the old value for a short while.
+        AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, subtitleGroup, option);
     }
     
     [self updateTracksForPlayer:self.player];
@@ -1572,37 +1578,7 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     // specifications.
     if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionOption *audioOption = [self selectedOptionForPlayer:self.player withMediaCharacteristic:AVMediaCharacteristicAudible];
-        NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
-        
-        NSString *systemLanguage = [NSLocale.currentLocale objectForKey:NSLocaleLanguageCode];
-        if (! [audioLanguage isEqualToString:systemLanguage]) {
-            // First extract non-forced subtitles matching the system language
-            NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
-                return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:systemLanguage];
-            }];
-            NSArray<AVMediaSelectionOption *> *options = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate];
-            
-            // Attempt to find a better match depending on accessibility preferences
-            NSArray<AVMediaCharacteristic> *accessibilityCharacteristics = CFBridgingRelease(MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(kMACaptionAppearanceDomainUser));
-            AVMediaSelectionOption *accessibilityOption = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withMediaCharacteristics:accessibilityCharacteristics].firstObject;
-            if (accessibilityOption) {
-                [playerItem selectMediaOption:accessibilityOption inMediaSelectionGroup:group];
-            }
-            else {
-                [playerItem selectMediaOption:options.firstObject inMediaSelectionGroup:group];
-            }
-        }
-        else {
-            [playerItem selectMediaOption:nil inMediaSelectionGroup:group];
-        }
-    }
-    else if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
-        NSString *systemLanguage = [NSLocale.currentLocale objectForKey:NSLocaleLanguageCode];
-        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:systemLanguage];
-        }];
-        AVMediaSelectionOption *option = [group.options filteredArrayUsingPredicate:predicate].firstObject ?: group.options.firstObject;
-        [playerItem selectMediaOption:option inMediaSelectionGroup:group];
+        SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, group, audioOption);
     }
     else {
         [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
@@ -1906,5 +1882,32 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
     else {
         return position;
+    }
+}
+
+static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *legibleGroup, AVMediaSelectionOption *audioOption)
+{
+    NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
+    
+    NSString *systemLanguage = [NSLocale.currentLocale objectForKey:NSLocaleLanguageCode];
+    if (! [audioLanguage isEqualToString:systemLanguage]) {
+        // First extract non-forced subtitles matching the system language
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:systemLanguage];
+        }];
+        NSArray<AVMediaSelectionOption *> *options = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:legibleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate];
+        
+        // Attempt to find a better match depending on accessibility preferences
+        NSArray<AVMediaCharacteristic> *accessibilityCharacteristics = CFBridgingRelease(MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(kMACaptionAppearanceDomainUser));
+        AVMediaSelectionOption *accessibilityOption = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withMediaCharacteristics:accessibilityCharacteristics].firstObject;
+        if (accessibilityOption) {
+            [playerItem selectMediaOption:accessibilityOption inMediaSelectionGroup:legibleGroup];
+        }
+        else {
+            [playerItem selectMediaOption:options.firstObject inMediaSelectionGroup:legibleGroup];
+        }
+    }
+    else {
+        [playerItem selectMediaOption:nil inMediaSelectionGroup:legibleGroup];
     }
 }
