@@ -39,9 +39,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position,CMTime offset);
 static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
 
-static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *legibleGroup, AVMediaSelectionOption *audioOption);
-static void SRGMediaPlayerControllerSelectMediaOption(AVPlayerItem *playerItem, AVMediaSelectionOption *option, AVMediaCharacteristic characteristic);
-static void SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem *playerItem, AVMediaCharacteristic characteristic);
+static BOOL SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *legibleGroup, AVMediaSelectionOption *audioOption);
+static BOOL SRGMediaPlayerControllerSelectMediaOption(AVPlayerItem *playerItem, AVMediaSelectionOption *option, AVMediaCharacteristic characteristic);
+static BOOL SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem *playerItem, AVMediaCharacteristic characteristic);
 
 @interface SRGMediaPlayerController () <SRGPlayerDelegate> {
 @private
@@ -1537,14 +1537,16 @@ static void SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem 
 
 - (void)selectMediaOption:(AVMediaSelectionOption *)option inMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic
 {
-    SRGMediaPlayerControllerSelectMediaOption(self.player.currentItem, option, characteristic);
-    [self updateTracksForPlayer:self.player];
+    if (SRGMediaPlayerControllerSelectMediaOption(self.player.currentItem, option, characteristic)) {
+        [self updateTracksForPlayer:self.player];
+    }
 }
 
 - (void)selectMediaOptionAutomaticallyInMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic
 {
-    SRGMediaPlayerControllerSelectMediaOptionAutomatically(self.player.currentItem, characteristic);
-    [self updateTracksForPlayer:self.player];
+    if (SRGMediaPlayerControllerSelectMediaOptionAutomatically(self.player.currentItem, characteristic)) {
+        [self updateTracksForPlayer:self.player];
+    }
 }
 
 - (AVMediaSelectionOption *)selectedMediaOptionInMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic
@@ -1845,12 +1847,12 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *legibleGroup, AVMediaSelectionOption *audioOption)
+static BOOL SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *legibleGroup, AVMediaSelectionOption *audioOption)
 {
     NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
     if (! audioLanguage) {
         [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:legibleGroup];
-        return;
+        return NO;
     }
     
     // The system language always yields a value from the application bundle supported languages, and selects the first
@@ -1876,13 +1878,15 @@ static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerIt
     else {
         [playerItem selectMediaOption:nil inMediaSelectionGroup:legibleGroup];
     }
+    
+    return YES;
 }
 
-static void SRGMediaPlayerControllerSelectMediaOption(AVPlayerItem *playerItem, AVMediaSelectionOption *option, AVMediaCharacteristic characteristic)
+static BOOL SRGMediaPlayerControllerSelectMediaOption(AVPlayerItem *playerItem, AVMediaSelectionOption *option, AVMediaCharacteristic characteristic)
 {
     AVAsset *asset = playerItem.asset;
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
-        return;
+        return NO;
     }
     
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
@@ -1897,13 +1901,15 @@ static void SRGMediaPlayerControllerSelectMediaOption(AVPlayerItem *playerItem, 
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, subtitleGroup, option);
     }
+    
+    return YES;
 }
 
-static void SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem *playerItem, AVMediaCharacteristic characteristic)
+static BOOL SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem *playerItem, AVMediaCharacteristic characteristic)
 {
     AVAsset *asset = playerItem.asset;
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
-        return;
+        return NO;
     }
     
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
@@ -1923,4 +1929,6 @@ static void SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem 
     else {
         [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:group];
     }
+    
+    return YES;
 }
