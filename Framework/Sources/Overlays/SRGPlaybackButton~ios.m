@@ -212,11 +212,13 @@ static void commonInit(SRGPlaybackButton *self);
 - (NSString *)accessibilityLabel
 {
     if ([self.delegate respondsToSelector:@selector(playbackButton:accessibilityLabelForState:)]) {
-        return [self.delegate playbackButton:self accessibilityLabelForState:self.playbackButtonState];
+        NSString *accessibilityLabel = [self.delegate playbackButton:self accessibilityLabelForState:self.playbackButtonState];
+        if (accessibilityLabel) {
+            return accessibilityLabel;
+        }
     }
-    else {
-        return (self.playbackButtonState == SRGPlaybackButtonStatePause) ? SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause label of the Play/Pause button") : SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play label of the Play/Pause button");
-    }
+    
+    return (self.playbackButtonState == SRGPlaybackButtonStatePause) ? SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause label of the Play/Pause button") : SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play label of the Play/Pause button");
 }
 
 @end

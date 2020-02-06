@@ -36,10 +36,10 @@ API_UNAVAILABLE(tvos)
 - (void)playbackButton:(SRGPlaybackButton *)playbackButton didPressInState:(SRGPlaybackButtonState)state;
 
 /**
- *  If implemented, must return the accessibility labels to be used for the provided state. If not implemented,
- *  default labels are used instead.
+ *  If implemented, may return the accessibility label to be used for the provided state. If not implemented,
+ *  or if the method returns `nil` for some state, the default label is used.
  */
-- (NSString *)playbackButton:(SRGPlaybackButton *)playbackButton accessibilityLabelForState:(SRGPlaybackButtonState)state;
+- (nullable NSString *)playbackButton:(SRGPlaybackButton *)playbackButton accessibilityLabelForState:(SRGPlaybackButtonState)state;
 
 @end
 
