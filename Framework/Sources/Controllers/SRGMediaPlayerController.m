@@ -39,7 +39,9 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position,CMTime offset);
 static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
 
-static BOOL SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *legibleGroup, AVMediaSelectionOption *audioOption);
+static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(AVPlayerItem *playerItem, AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption *audioOption);
+static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption *audioOption);
+
 static BOOL SRGMediaPlayerControllerSelectMediaOption(AVPlayerItem *playerItem, AVMediaSelectionOption *option, AVMediaCharacteristic characteristic);
 static BOOL SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem *playerItem, AVMediaCharacteristic characteristic);
 
@@ -1562,6 +1564,28 @@ static BOOL SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem 
     return [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:group];
 }
 
+- (BOOL)matchesAutomaticSubtitleSelection
+{
+    AVPlayerItem *playerItem = self.player.currentItem;
+    AVAsset *asset = playerItem.asset;
+    
+    if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
+        return NO;
+    }
+    
+    AVMediaSelectionOption *audioOption = [self selectedMediaOptionInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
+    AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    
+    AVMediaSelectionOption *subtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
+    AVMediaSelectionOption *defaultSubtitleOption = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(playerItem, subtitleGroup, audioOption);
+    if (defaultSubtitleOption) {
+        return [defaultSubtitleOption isEqual:subtitleOption];
+    }
+    else {
+        return ! subtitleOption || [subtitleOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles];
+    }
+}
+
 #pragma mark Time observers
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
@@ -1847,12 +1871,12 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-static BOOL SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *legibleGroup, AVMediaSelectionOption *audioOption)
+// Return the default option which should be automatically selected if the specified audio selection is made.
+static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(AVPlayerItem *playerItem, AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption *audioOption)
 {
     NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
     if (! audioLanguage) {
-        [playerItem selectMediaOptionAutomaticallyInMediaSelectionGroup:legibleGroup];
-        return NO;
+        return nil;
     }
     
     // The system language always yields a value from the application bundle supported languages, and selects the first
@@ -1863,23 +1887,21 @@ static BOOL SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerIt
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
             return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:systemLanguage];
         }];
-        NSArray<AVMediaSelectionOption *> *options = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:legibleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate];
+        NSArray<AVMediaSelectionOption *> *options = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate];
         
         // Attempt to find a better match depending on accessibility preferences
-        NSArray<AVMediaCharacteristic> *accessibilityCharacteristics = CFBridgingRelease(MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(kMACaptionAppearanceDomainUser));
-        AVMediaSelectionOption *accessibilityOption = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withMediaCharacteristics:accessibilityCharacteristics].firstObject;
-        if (accessibilityOption) {
-            [playerItem selectMediaOption:accessibilityOption inMediaSelectionGroup:legibleGroup];
-        }
-        else {
-            [playerItem selectMediaOption:options.firstObject inMediaSelectionGroup:legibleGroup];
-        }
+        NSArray<AVMediaCharacteristic> *characteristics = CFBridgingRelease(MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(kMACaptionAppearanceDomainUser));
+        return [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withMediaCharacteristics:characteristics].firstObject ?: options.firstObject;
     }
     else {
-        [playerItem selectMediaOption:nil inMediaSelectionGroup:legibleGroup];
+        return nil;
     }
-    
-    return YES;
+}
+
+static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption *audioOption)
+{
+    AVMediaSelectionOption *option = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(playerItem, subtitleGroup, audioOption);
+    [playerItem selectMediaOption:option inMediaSelectionGroup:subtitleGroup];
 }
 
 static BOOL SRGMediaPlayerControllerSelectMediaOption(AVPlayerItem *playerItem, AVMediaSelectionOption *option, AVMediaCharacteristic characteristic)

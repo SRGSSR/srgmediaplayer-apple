@@ -43,6 +43,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable AVMediaSelectionOption *)selectedMediaOptionInMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic;
 
+/**
+ *  Return `YES` iff the current subtitle selection matches the one expected for automatic mode.
+ *
+ *  @discussion This method can return `YES` even if automatic mode is not active.
+ */
+@property (nonatomic, readonly) BOOL matchesAutomaticSubtitleSelection;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -409,6 +409,8 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     
     // Subtitles
     if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
+        BOOL isAutomaticSelectionActive = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) && self.mediaPlayerController.matchesAutomaticSubtitleSelection;
+        
         // Off
         if (indexPath.row == 0) {
             UITableViewCell *cell = [self defaultCellForTableView:tableView];
@@ -416,15 +418,15 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             
             AVMediaSelectionOption *selectedOption = [self.mediaPlayerController selectedMediaOptionInMediaSelectionGroupWithCharacteristic:characteristic];
             BOOL hasUnforcedSubtitles = selectedOption && ! [selectedOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles];
-            cell.accessoryType = (displayType != kMACaptionAppearanceDisplayTypeAutomatic) && ! hasUnforcedSubtitles ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = (! isAutomaticSelectionActive && ! hasUnforcedSubtitles) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            
             return cell;
         }
         // Automatic
         else if (indexPath.row == 1) {
             UITableViewCell *cell = nil;
             
-            BOOL isAutomaticEnabled = (displayType == kMACaptionAppearanceDisplayTypeAutomatic);
-            if (isAutomaticEnabled) {
+            if (isAutomaticSelectionActive) {
                 cell = [self subtitleCellForTableView:tableView];
                 
                 AVMediaSelectionOption *selectedOption = [self.mediaPlayerController selectedMediaOptionInMediaSelectionGroupWithCharacteristic:characteristic];
@@ -435,7 +437,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             }
             
             cell.textLabel.text = SRGMediaPlayerLocalizedString(@"Auto (Recommended)", @"Recommended option to let subtitles be automatically selected based on user settings");
-            cell.accessoryType = isAutomaticEnabled ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = isAutomaticSelectionActive ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
@@ -476,7 +478,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             }
             
             AVMediaSelectionOption *selectedOption = [self.mediaPlayerController selectedMediaOptionInMediaSelectionGroupWithCharacteristic:characteristic];
-            cell.accessoryType = (displayType != kMACaptionAppearanceDisplayTypeAutomatic && [selectedOption isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.accessoryType = (! isAutomaticSelectionActive && [selectedOption isEqual:option]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             return cell;
         }
