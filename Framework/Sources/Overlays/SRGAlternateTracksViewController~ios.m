@@ -449,7 +449,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             NSAssert(lastSelectedLanguage != nil, @"Must not be nil by construction (row only available if not nil)");
             
             NSLocale *locale = [NSLocale localeWithLocaleIdentifier:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
-            NSString *languageDisplayName = [locale displayNameForKey:NSLocaleLanguageCode value:lastSelectedLanguage] ?: SRGMediaPlayerLocalizedString(@"Unknown language", @"Fallback for unknown languages");
+            NSString *languageDisplayName = [locale displayNameForKey:NSLocaleLanguageCode value:lastSelectedLanguage].localizedCapitalizedString ?: SRGMediaPlayerLocalizedString(@"Unknown language", @"Fallback for unknown languages");
             cell.textLabel.text = [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"%@ (Current default)", @"Entry displayed in the subtitle list to identify the last selected language"), languageDisplayName];
             cell.textLabel.enabled = NO;
             
