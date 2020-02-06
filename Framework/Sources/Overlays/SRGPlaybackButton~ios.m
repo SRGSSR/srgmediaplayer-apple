@@ -178,8 +178,8 @@ static void commonInit(SRGPlaybackButton *self);
 
 - (void)togglePlayPause:(id)sender
 {
-    if (self.action) {
-        self.action();
+    if ([self.delegate respondsToSelector:@selector(playbackButton:didPressInState:)]) {
+        [self.delegate playbackButton:self didPressInState:self.playbackButtonState];
     }
     else {
         [self.mediaPlayerController togglePlayPause];
@@ -211,7 +211,12 @@ static void commonInit(SRGPlaybackButton *self);
 
 - (NSString *)accessibilityLabel
 {
-    return (self.playbackButtonState == SRGPlaybackButtonStatePause) ? SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause label of the Play/Pause button") : SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play label of the Play/Pause button");
+    if ([self.delegate respondsToSelector:@selector(playbackButton:accessibilityLabelForState:)]) {
+        return [self.delegate playbackButton:self accessibilityLabelForState:self.playbackButtonState];
+    }
+    else {
+        return (self.playbackButtonState == SRGPlaybackButtonStatePause) ? SRGMediaPlayerAccessibilityLocalizedString(@"Pause", @"Pause label of the Play/Pause button") : SRGMediaPlayerAccessibilityLocalizedString(@"Play", @"Play label of the Play/Pause button");
+    }
 }
 
 @end
