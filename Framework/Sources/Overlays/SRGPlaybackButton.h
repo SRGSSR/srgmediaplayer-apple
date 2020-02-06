@@ -51,6 +51,13 @@ API_UNAVAILABLE(tvos)
  */
 @property (nonatomic, null_resettable) IBInspectable UIColor *highlightedTintColor;
 
+/**
+ *  The action to be executed when the button is tapped. If not set, the default behavior is applied (the
+ *  `-togglePlayPause` method is called on the associated controller, otherwise the defined action replaces
+ *  the default behavior.
+ */
+@property (nonatomic, copy, nullable) void (^action)(void);
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -178,7 +178,12 @@ static void commonInit(SRGPlaybackButton *self);
 
 - (void)togglePlayPause:(id)sender
 {
-    [self.mediaPlayerController togglePlayPause];
+    if (self.action) {
+        self.action();
+    }
+    else {
+        [self.mediaPlayerController togglePlayPause];
+    }
 }
 
 #pragma mark Notifications
