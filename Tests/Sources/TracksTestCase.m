@@ -7,6 +7,7 @@
 #import "MediaPlayerBaseTestCase.h"
 
 #import <libextobjc/libextobjc.h>
+#import <MediaAccessibility/MediaAccessibility.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface TracksTestCase : MediaPlayerBaseTestCase
@@ -34,13 +35,15 @@
 
 - (void)testAudioTrackNotifications
 {
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
+    
     [self expectationForSingleNotification:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
         XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"fr");
         return YES;
     }];
     
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021-,301k,101k,701k,1201k,2001k,fra-ad,roh,deu,ita,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%C3%A7ais,5:fra:Fran%C3%A7ais%20(AD),6:roh:Rh%C3%A9to-roman,7:deu:Allemand,8:ita:Italien&caption=docfu/2017/docfu_20170728_full_f_1027021_fra.m3u8:fra:Fran%C3%A7ais,docfu/2017/docfu_20170728_full_f_1027021_ita.m3u8:ita:Italien,docfu/2017/docfu_20170728_full_f_1027021_gsw.m3u8:deu:Allemand"];
+    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021,-1201k,-701k,-301k,-101k,-2001k,-fra-ad,-roh,-deu,-ita,.mp4.csmil/master.m3u8?audiotrack=0:fr:Fran%C3%A7ais,5:fr:Fran%C3%A7ais%20(AD):ad,6:rm:Rumantsch,7:de:Deutsch,8:it:Italiano&subtitles=it,gsw,fr:sdh"];
     [self.mediaPlayerController playURL:URL];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -58,19 +61,22 @@
 
 - (void)testSubtitlesNotifications
 {
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
+    MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)@"fr");
+    
     [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
-        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"en");
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"fr");
         return YES;
     }];
     
-    NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
+    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021,-1201k,-701k,-301k,-101k,-2001k,-fra-ad,-roh,-deu,-ita,.mp4.csmil/master.m3u8?audiotrack=0:fr:Fran%C3%A7ais,5:fr:Fran%C3%A7ais%20(AD):ad,6:rm:Rumantsch,7:de:Deutsch,8:it:Italiano&subtitles=it,gsw,fr:sdh"];
     [self.mediaPlayerController playURL:URL];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"en");
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"fr");
         XCTAssertNil([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
         return YES;
     }];
@@ -82,6 +88,8 @@
 
 - (void)testAudioTrackNotificationsWithAssetCustomization
 {
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
+    
     [self expectationForSingleNotification:SRGMediaPlayerAudioTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
         XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"de");
@@ -100,7 +108,7 @@
         }
     };
     
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021-,301k,101k,701k,1201k,2001k,fra-ad,roh,deu,ita,.mp4.csmil/master.m3u8?audiotrack=0:fra:Fran%C3%A7ais,5:fra:Fran%C3%A7ais%20(AD),6:roh:Rh%C3%A9to-roman,7:deu:Allemand,8:ita:Italien&caption=docfu/2017/docfu_20170728_full_f_1027021_fra.m3u8:fra:Fran%C3%A7ais,docfu/2017/docfu_20170728_full_f_1027021_ita.m3u8:ita:Italien,docfu/2017/docfu_20170728_full_f_1027021_gsw.m3u8:deu:Allemand"];
+    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021,-1201k,-701k,-301k,-101k,-2001k,-fra-ad,-roh,-deu,-ita,.mp4.csmil/master.m3u8?audiotrack=0:fr:Fran%C3%A7ais,5:fr:Fran%C3%A7ais%20(AD):ad,6:rm:Rumantsch,7:de:Deutsch,8:it:Italiano&subtitles=it,gsw,fr:sdh"];
     [self.mediaPlayerController playURL:URL];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -118,6 +126,8 @@
 
 - (void)testSubtitlesNotificationsWithAssetCustomization
 {
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
+    
     [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
         XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"ja");
@@ -152,12 +162,12 @@
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-- (void)testConfigurationReload
+- (void)testConfigurationReloadDuringPlayback
 {
-    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
-        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"en");
-        return YES;
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
     NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
@@ -166,7 +176,7 @@
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"en");
+        XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
         XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"ja");
         return YES;
     }];

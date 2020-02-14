@@ -788,6 +788,11 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"fr");
+        return YES;
+    }];
     
     self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
         AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
@@ -801,7 +806,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         }
     };
     
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2019/journ-19h30_20190603_full_ca7d9d68-58aa-4acd-b2e5-a6af7470bc8d-,301k,701k,1201k,2001k,3501k,6001k,.mp4.csmil/master.m3u8?caption=journ-19h30/2019/journ-19h30_20190603_full_500048834.m3u8:fra:Fran%C3%A7ais&start=267.36&end=387.36"];
+    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2019/journ-19h30_20190603_full_ca7d9d68-58aa-4acd-b2e5-a6af7470bc8d,-1201k,-701k,-301k,-2001k,-3501k,-6001k,.mp4.csmil/master.m3u8?subtitles=fr:sdh&start=267.36&end=387.36"];
     [self.mediaPlayerController playURL:URL];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -813,7 +818,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))] withCompletionHandler:nil];
     
-    [self waitForExpectationsWithTimeout:8. handler:nil];
+    [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
 - (void)testLivePause

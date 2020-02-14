@@ -18,7 +18,7 @@
 
 static void commonInit(SRGTracksButton *self);
 
-@interface SRGTracksButton () <UIPopoverPresentationControllerDelegate>
+@interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
@@ -174,6 +174,15 @@ static void commonInit(SRGTracksButton *self);
     }
 }
 
+#pragma mark SRGAlternateTracksViewControllerDelegate protocol
+
+- (void)alternateTracksViewControllerWasDismissed:(id)alternateTracksViewController
+{
+    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
+        [self.delegate tracksButtonDidHideTrackSelection:self];
+    }
+}
+
 #pragma mark UIPopoverPresentationControllerDelegate protocol
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller traitCollection:(UITraitCollection *)traitCollection
@@ -193,21 +202,6 @@ static void commonInit(SRGTracksButton *self);
     }
 }
 
-// TODO: Remove when SRG Media Player requires iOS 13 as minimum version
-- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
-{
-    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
-        [self.delegate tracksButtonDidHideTrackSelection:self];
-    }
-}
-
-- (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
-{
-    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
-        [self.delegate tracksButtonDidHideTrackSelection:self];
-    }
-}
-
 #pragma mark Actions
 
 - (void)showTracks:(id)sender
@@ -218,6 +212,7 @@ static void commonInit(SRGTracksButton *self);
     
     SRGAlternateTracksViewController *tracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
                                                                                                                   userInterfaceStyle:self.userInterfaceStyle];
+    tracksViewController.delegate = self;
     tracksViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                            target:self
                                                                                                            action:@selector(hideTracks:)];
@@ -251,11 +246,7 @@ static void commonInit(SRGTracksButton *self);
 - (void)hideTracks:(id)sender
 {
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
-    [topViewController dismissViewControllerAnimated:YES completion:^{
-        if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
-            [self.delegate tracksButtonDidHideTrackSelection:self];
-        }
-    }];
+    [topViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark Interface Builder integration
