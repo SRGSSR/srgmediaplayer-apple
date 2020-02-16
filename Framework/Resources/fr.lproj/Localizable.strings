@@ -46,7 +46,7 @@
 "When '%@' is enabled, and if the selected audio track language differs from the device settings, subtitles or Closed Captions might be displayed automatically." = "Lorsque \"%@\" est activé, si la langue de l'audio sélectionné diffère de celle de l'appareil, des sous-titres pourraient s'afficher automatiquement.";
 
 /* Instructions for subtitles customization */
-"You can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings." = "Vous pouvez ajuster l’apparence et la sélection automatique des sous-titres pour sourds et malentendants dans la section Accessibilité de l’application Réglages.";
+"You can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings." = "Vous pouvez ajuster l’apparence et la sélection automatique des sous-titres pour sourds et malentendants dans les réglages d'accessibilité.";
 
 /* Instructions for audio customization */
-"You can enable Audio Description automatic selection in the Accessibility settings." = "Vous pouvez ajuster la sélection automatique de l'audio description dans la section Accessibilité de l’application Réglages.";
+"You can enable Audio Description automatic selection in the Accessibility settings." = "Vous pouvez ajuster la sélection automatique de l'audio description dans les réglages d'accessibilité.";
