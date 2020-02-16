@@ -10,14 +10,11 @@
 /* Button label to enable 360° video playback */
 "360 degrees" = "360 grads";
 
-/* Button label to enable 360° video playback with a headset */
+/* Button label to enable 360° video playback with a VR headset */
 "Headset" = "VR headset";
 
 /* Slider label when playing live */
 "Live playback" = "Reproducziun live";
-
-/* The player view label, where the audio / video is displayed */
-"Media" = "Media";
 
 /* Slider label when nothing to play */
 "No playback" = "Negina reproducziun";
