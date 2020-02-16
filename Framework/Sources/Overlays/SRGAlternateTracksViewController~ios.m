@@ -430,7 +430,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
                 cell = [self subtitleCellForTableView:tableView];
                 
                 AVMediaSelectionOption *selectedOption = [self.mediaPlayerController selectedMediaOptionInMediaSelectionGroupWithCharacteristic:characteristic];
-                cell.detailTextLabel.text = SRGHintForMediaSelectionOption(selectedOption) ?: NSLocalizedString(@"None", @"Label displayed when no subtitles have been selected in automatic mode");
+                cell.detailTextLabel.text = SRGHintForMediaSelectionOption(selectedOption) ?: SRGMediaPlayerLocalizedString(@"None", @"Label displayed when no subtitles have been selected in automatic mode");
             }
             else {
                 cell = [self defaultCellForTableView:tableView];
