@@ -19,7 +19,7 @@
 "Auto" = "Automatisch";
 
 /* Information displayed for unavailable subtitle languages */
-"Language not available for this content" = "Language not available for this content";
+"Language not available for this content" = "Sprache für diesen Inhalt nicht verfügbar";
 
 /* Very short text on left time label when playing a live stream */
 "Live" = "Live";

@@ -26,7 +26,7 @@
 "Play" = "Jouer";
 
 /* Picture In Picture button label, when PiP is available */
-"Start Picture in Picture" = "Démarrer l’image dans l’image";
+"Start Picture in Picture" = "Démarrer image dans l’image";
 
 /* Picture In Picture button label, when PiP is active */
-"Stop Picture in Picture" = "Arrêter l’image dans l’image";
+"Stop Picture in Picture" = "Arrêter image dans l’image";

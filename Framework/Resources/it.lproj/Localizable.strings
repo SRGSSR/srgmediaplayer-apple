@@ -1,5 +1,5 @@
 /* Entry displayed in the subtitle list to identify the last selected language */
-"%@ (Current default)" = "%@ (Current default)";
+"%@ (Current default)" = "%@ (scelta attuale)";
 
 /* Recommended option (Auto) to let subtitles be automatically selected based on user settings */
 "%@ (Recommended)" = "%@ (consigliato)";
@@ -19,13 +19,13 @@
 "Auto" = "Automatici";
 
 /* Information displayed for unavailable subtitle languages */
-"Language not available for this content" = "Language not available for this content";
+"Language not available for this content" = "Lingua non disponibile per questo contenuto";
 
 /* Very short text on left time label when playing a live stream */
 "Live" = "Live";
 
 /* Label displayed when no subtitles have been selected in automatic mode */
-"None" = "None";
+"None" = "ND";
 
 /* Option to disable subtitles */
 "Off" = "No";
@@ -40,13 +40,13 @@
 "The media cannot be played" = "Il contenuto non può essere riprodotto";
 
 /* Fallback for unknown languages */
-"Unknown language" = "Unknown language";
+"Unknown language" = "Lingua sconosciuta";
 
 /* Instructions for subtitles auto option */
-"When '%@' is enabled, and if the selected audio track language differs from the device settings, subtitles or Closed Captions might be displayed automatically." = "When '%@' is enabled, and if the selected audio track language differs from the device settings, subtitles or Closed Captions might be displayed automatically.";
+"When '%@' is enabled, and if the selected audio track language differs from the device settings, subtitles or Closed Captions might be displayed automatically." = "Quando \"%@\" è attivato, se la pista audio è differente da quella selezionata sul dispositivo, i sottotitoli vengono mostrati automaticamente";
 
 /* Instructions for subtitles customization */
-"You can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings." = "You can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings.";
+"You can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings." = "Potete regolare la visualizzazione e la sezione automatica dei sottotitoli nelle impostazioni di accessibilità";
 
 /* Instructions for audio customization */
-"You can enable Audio Description automatic selection in the Accessibility settings." = "You can enable Audio Description automatic selection in the Accessibility settings.";
+"You can enable Audio Description automatic selection in the Accessibility settings." = "Potete regolare l'attivazione automatica dell'audio descrizione nelle impostazioni di accessibilità.";
