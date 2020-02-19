@@ -1897,12 +1897,20 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOpti
     
     NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:audioGroup.options filteredAndSortedAccordingToPreferredLanguages:preferredLanguages.array];
     
-    // Attempt to find a better match depending on accessibility preferences
-    // Remark: The first audio description track is used, even if a non-described track with another language would have
-    //         been matched first. We can namely expect that the user can understand all selected languages, and that
-    //         what is more important is that the content is audio described if the corresponding setting is enabled.
+    // No option matches application or user preferences. It is likely the user cannot understand any of the available
+    // languages. Just return the first available language.
+    if (options.count == 0) {
+        return audioGroup.options.firstObject;
+    }
+    
+    // A language likely understood by the user has been found. If the corresponding accessibility setting is enabled,
+    // try to find an audio described track.
+    //
+    // Remark: The first audio description track is used, even if a non-described track in another language is located
+    //         before in the list. We can namely expect that the user can understand all selected languages, and that
+    //         what is more important is that the content is audio described.
     NSArray<AVMediaCharacteristic> *characteristics = CFBridgingRelease(MAAudibleMediaCopyPreferredCharacteristics());
-    return [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withMediaCharacteristics:characteristics].firstObject ?: options.firstObject ?: audioGroup.options.firstObject;
+    return [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withMediaCharacteristics:characteristics].firstObject ?: options.firstObject;
 }
 
 static AVMediaSelectionOption *SRGMediaPlayerControllerSelectAudioOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *audioGroup)
