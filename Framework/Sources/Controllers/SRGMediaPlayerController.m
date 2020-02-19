@@ -1898,6 +1898,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOpti
     NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:audioGroup.options filteredAndSortedAccordingToPreferredLanguages:preferredLanguages.array];
     
     // Attempt to find a better match depending on accessibility preferences
+    // Remark: The first audio description track is used, even if a non-described track with another language would have
+    //         been matched first. We can namely expect that the user can understand all selected languages, and that
+    //         what is more important is that the content is audio described if the corresponding setting is enabled.
     NSArray<AVMediaCharacteristic> *characteristics = CFBridgingRelease(MAAudibleMediaCopyPreferredCharacteristics());
     return [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withMediaCharacteristics:characteristics].firstObject ?: options.firstObject ?: audioGroup.options.firstObject;
 }
