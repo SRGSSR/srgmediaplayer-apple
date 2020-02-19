@@ -39,8 +39,11 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position,CMTime offset);
 static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
 
+static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOption(AVPlayerItem *playerItem, AVMediaSelectionGroup *audioGroup);
+static AVMediaSelectionOption *SRGMediaPlayerControllerSelectAudioOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *audioGroup);
+
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(AVPlayerItem *playerItem, AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption *audioOption);
-static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption *audioOption);
+static AVMediaSelectionOption *SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption *audioOption);
 
 static BOOL SRGMediaPlayerControllerSelectMediaOption(AVPlayerItem *playerItem, AVMediaSelectionOption *option, AVMediaCharacteristic characteristic);
 static BOOL SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem *playerItem, AVMediaCharacteristic characteristic);
@@ -1241,6 +1244,9 @@ static BOOL SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem 
         return;
     }
     
+    AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+    AVMediaSelectionOption *audioOption = SRGMediaPlayerControllerSelectAudioOptionAutomatically(playerItem, audioGroup);
+    
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
     switch (displayType) {
         case kMACaptionAppearanceDisplayTypeForcedOnly: {
@@ -1249,17 +1255,18 @@ static BOOL SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem 
         }
             
         case kMACaptionAppearanceDisplayTypeAutomatic: {
-            SRGMediaPlayerControllerSelectMediaOptionAutomatically(playerItem, AVMediaCharacteristicLegible);
+            AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+            SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, subtitleGroup, audioOption);
             break;
         }
             
         case kMACaptionAppearanceDisplayTypeAlwaysOn: {
             NSString *lastSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(kMACaptionAppearanceDomainUser);
-            AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+            AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
             NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
                 return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:lastSelectedLanguage];
             }];
-            AVMediaSelectionOption *option = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate].firstObject;
+            AVMediaSelectionOption *option = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate].firstObject;
             SRGMediaPlayerControllerSelectMediaOption(playerItem, option, AVMediaCharacteristicLegible);
             break;
         }
@@ -1871,7 +1878,24 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
     }
 }
 
-// Return the default option which should be automatically selected if the specified audio selection is made.
+// Return the default audio option which should be automatically selected by default.
+static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOption(AVPlayerItem *playerItem, AVMediaSelectionGroup *audioGroup)
+{
+    NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:audioGroup.options filteredAndSortedAccordingToPreferredLanguages:NSLocale.preferredLanguages];
+    
+    // Attempt to find a better match depending on accessibility preferences
+    NSArray<AVMediaCharacteristic> *characteristics = CFBridgingRelease(MAAudibleMediaCopyPreferredCharacteristics());
+    return [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withMediaCharacteristics:characteristics].firstObject ?: options.firstObject ?: audioGroup.options.firstObject;
+}
+
+static AVMediaSelectionOption *SRGMediaPlayerControllerSelectAudioOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *audioGroup)
+{
+    AVMediaSelectionOption *option = SRGMediaPlayerControllerAutomaticAudioDefaultOption(playerItem, audioGroup);
+    [playerItem selectMediaOption:option inMediaSelectionGroup:audioGroup];
+    return option;
+}
+
+// Return the default subtitle option which should be automatically selected if the specified audio selection is made.
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(AVPlayerItem *playerItem, AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption *audioOption)
 {
     NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
@@ -1898,10 +1922,11 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultO
     }
 }
 
-static void SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption *audioOption)
+static AVMediaSelectionOption *SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(AVPlayerItem *playerItem, AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption *audioOption)
 {
     AVMediaSelectionOption *option = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(playerItem, subtitleGroup, audioOption);
     [playerItem selectMediaOption:option inMediaSelectionGroup:subtitleGroup];
+    return option;
 }
 
 static BOOL SRGMediaPlayerControllerSelectMediaOption(AVPlayerItem *playerItem, AVMediaSelectionOption *option, AVMediaCharacteristic characteristic)
@@ -1936,14 +1961,14 @@ static BOOL SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem 
     
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
     
-    if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
+    if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
+        SRGMediaPlayerControllerSelectAudioOptionAutomatically(playerItem, group);
+    }
+    else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         AVMediaSelectionOption *audioOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:audioGroup];
-        
-        // When playback start, an audio track might not be selected, in which case use the recommended one which will
-        // be selected anyway.
-        if (audioOption) {
-            [playerItem srgmediaplayer_preferredMediaOptionInMediaSelectionGroup:audioGroup];
+        if (! audioOption) {
+            return NO;
         }
         
         SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, group, audioOption);
