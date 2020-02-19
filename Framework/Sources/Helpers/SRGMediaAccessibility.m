@@ -6,6 +6,8 @@
 
 #import "SRGMediaAccessibility.h"
 
+#import "NSBundle+SRGMediaPlayer.h"
+
 static NSArray<NSString *> *SRGPreferredCaptionLanguageCodes(void);
 
 void SRGMediaAccessibilityCaptionAppearanceAddPreferredLanguages(MACaptionAppearanceDomain domain)
@@ -38,9 +40,8 @@ static NSArray<NSString *> *SRGPreferredCaptionLanguageCodes(void)
         [languageCodes addObject:[locale objectForKey:NSLocaleLanguageCode]];
     }
     
-    // Add current locale language code as last item. The current locale is the one of the app which best matches
-    // system settings (even if it does not appear in the preferred language list). Use it as fallback.
-    [languageCodes addObject:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
+    // Add current application language as fallback
+    [languageCodes addObject:SRGMediaPlayerApplicationLocalization()];
     
     return languageCodes.copy;
 }

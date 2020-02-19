@@ -451,7 +451,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             NSString *lastSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(kMACaptionAppearanceDomainUser);
             NSAssert(lastSelectedLanguage != nil, @"Must not be nil by construction (row only available if not nil)");
             
-            NSLocale *locale = [NSLocale localeWithLocaleIdentifier:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
+            NSLocale *locale = [NSLocale localeWithLocaleIdentifier:SRGMediaPlayerApplicationLocalization()];
             NSString *languageDisplayName = [locale displayNameForKey:NSLocaleLanguageCode value:lastSelectedLanguage].localizedCapitalizedString ?: SRGMediaPlayerLocalizedString(@"Unknown language", @"Fallback for unknown languages");
             cell.textLabel.text = [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"%@ (Current default)", @"Entry displayed in the subtitle list to identify the last selected language"), languageDisplayName];
             cell.textLabel.enabled = NO;
@@ -620,7 +620,7 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option)
     // If simply using the current locale to localize the display name, the result might vary depending on which
     // languages the application supports. This can lead to different results, some of the redundant (e.g. if the
     // app only supports French). To eliminate such issues, we recreate a simple locale from the current language code.
-    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:[NSLocale.currentLocale objectForKey:NSLocaleLanguageCode]];
+    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:SRGMediaPlayerApplicationLocalization()];
     return [option displayNameWithLocale:locale];
 }
 

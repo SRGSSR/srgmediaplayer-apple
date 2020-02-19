@@ -13,6 +13,11 @@ NSString *SRGMediaPlayerNonLocalizedString(NSString *string)
     return string;
 }
 
+NSString *SRGMediaPlayerApplicationLocalization(void)
+{
+    return NSBundle.mainBundle.preferredLocalizations.firstObject;
+}
+
 @implementation NSBundle (SRGMediaPlayer)
 
 + (NSBundle *)srg_mediaPlayerBundle

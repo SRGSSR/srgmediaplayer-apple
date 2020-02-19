@@ -1881,7 +1881,21 @@ static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *pos
 // Return the default audio option which should be automatically selected by default.
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOption(AVPlayerItem *playerItem, AVMediaSelectionGroup *audioGroup)
 {
-    NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:audioGroup.options filteredAndSortedAccordingToPreferredLanguages:NSLocale.preferredLanguages];
+    NSMutableOrderedSet<NSString *> *preferredLanguages = [NSMutableOrderedSet orderedSet];
+    
+    // `AVPlayerViewController` selects the default audio option based on system preferred languages only. This is
+    // sub-optimal for apps whose supported languages do not match (e.g. a French-only app, sometimes with subtitles
+    // in other languages). To improve this behavior, we prepend the application language to this list, so that the
+    // default audio track closely matches application language.
+    [preferredLanguages addObject:SRGMediaPlayerApplicationLocalization()];
+    
+    NSArray<NSString *> *preferredLocaleIdentifiers = NSLocale.preferredLanguages;
+    for (NSString *localeIdentifier in preferredLocaleIdentifiers) {
+        NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeIdentifier];
+        [preferredLanguages addObject:[locale objectForKey:NSLocaleLanguageCode]];
+    }
+    
+    NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:audioGroup.options filteredAndSortedAccordingToPreferredLanguages:preferredLanguages.array];
     
     // Attempt to find a better match depending on accessibility preferences
     NSArray<AVMediaCharacteristic> *characteristics = CFBridgingRelease(MAAudibleMediaCopyPreferredCharacteristics());
@@ -1903,13 +1917,11 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultO
         return nil;
     }
     
-    // The system language always yields a value from the application bundle supported languages, and selects the first
-    // match according to the system preferred language list, in order. If no match is found, the result is "en".
-    NSString *systemLanguage = [NSLocale.currentLocale objectForKey:NSLocaleLanguageCode];
-    if (! [audioLanguage isEqualToString:systemLanguage]) {
-        // First extract non-forced subtitles matching the system language
+    NSString *applicationLanguage = SRGMediaPlayerApplicationLocalization();
+    if (! [audioLanguage isEqualToString:applicationLanguage]) {
+        // First extract non-forced subtitles matching the application language
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:systemLanguage];
+            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:applicationLanguage];
         }];
         NSArray<AVMediaSelectionOption *> *options = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate];
         
