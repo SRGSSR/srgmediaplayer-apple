@@ -1244,41 +1244,49 @@ static BOOL SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem 
         return;
     }
     
+    // Start with the default configuration (automatic audio and no styling)
     AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
     AVMediaSelectionOption *audioOption = SRGMediaPlayerControllerSelectAudioOptionAutomatically(playerItem, audioGroup);
     
-    MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
-    switch (displayType) {
-        case kMACaptionAppearanceDisplayTypeForcedOnly: {
-            SRGMediaPlayerControllerSelectMediaOption(playerItem, nil, AVMediaCharacteristicLegible);
-            break;
-        }
-            
-        case kMACaptionAppearanceDisplayTypeAutomatic: {
-            AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-            SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, subtitleGroup, audioOption);
-            break;
-        }
-            
-        case kMACaptionAppearanceDisplayTypeAlwaysOn: {
-            NSString *lastSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(kMACaptionAppearanceDomainUser);
-            AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-            NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
-                return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:lastSelectedLanguage];
-            }];
-            AVMediaSelectionOption *option = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate].firstObject;
-            SRGMediaPlayerControllerSelectMediaOption(playerItem, option, AVMediaCharacteristicLegible);
-            break;
-        }
-            
-        default: {
-            break;
-        }
-    }
-    
-    self.mediaConfigurationBlock ? self.mediaConfigurationBlock(playerItem, asset) : nil;
     playerItem.textStyleRules = nil;
     
+    // If a configuration block is provided, start without subtitles
+    if (self.mediaConfigurationBlock) {
+        SRGMediaPlayerControllerSelectMediaOption(playerItem, nil, AVMediaCharacteristicLegible);
+        self.mediaConfigurationBlock(playerItem, asset);
+    }
+    // Otherwise apply default choice based on `MediaAccessibility` settings
+    else {
+        MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
+        switch (displayType) {
+            case kMACaptionAppearanceDisplayTypeForcedOnly: {
+                SRGMediaPlayerControllerSelectMediaOption(playerItem, nil, AVMediaCharacteristicLegible);
+                break;
+            }
+                
+            case kMACaptionAppearanceDisplayTypeAutomatic: {
+                AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+                SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, subtitleGroup, audioOption);
+                break;
+            }
+                
+            case kMACaptionAppearanceDisplayTypeAlwaysOn: {
+                NSString *lastSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(kMACaptionAppearanceDomainUser);
+                AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+                NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+                    return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:lastSelectedLanguage];
+                }];
+                AVMediaSelectionOption *option = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate].firstObject;
+                SRGMediaPlayerControllerSelectMediaOption(playerItem, option, AVMediaCharacteristicLegible);
+                break;
+            }
+                
+            default: {
+                break;
+            }
+        }
+    }
+        
     [self updateTracksForPlayer:self.player];
 }
 
