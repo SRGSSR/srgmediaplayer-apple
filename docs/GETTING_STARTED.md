@@ -132,38 +132,39 @@ Do not use `[UIApplication.sharedApplication beginReceivingRemoteControlEvents]`
 
 ## Subtitles and audio tracks
 
-On iOS, SRG Media Player provides a built-in `SRGTracksButton` which, when added to a player layout and bound to a media player controller, is displayed when several audio or subtitle options are detected. Tapping on this button lets the user choose one of the options provided by the media being played. 
+SRG Media Player provides on iOS a built-in `SRGTracksButton` which, when added to a player layout and bound to a media player controller, is displayed when audio or subtitle options are detected. Tapping on this button lets the user choose one of the options provided by the media being played. 
 
-Subtitle choice made by tapping this button is persisted at the system level, and will be reapplied in subsequent playback contexts, e.g. when playing another media with `SRGMediaPlayerController`, `AVPlayerViewController` or even Safari. Please refer to the [official documentation](https://developer.apple.com/documentation/mediaaccessibility) for more information.
+Subtitle choice made using this button is persisted at the system level, and will be reapplied in subsequent playback contexts, e.g. when playing another media with `SRGMediaPlayerController`, `AVPlayerViewController` or even Safari. Conversely, choices made in other playback contexts will also determine the initial default audio and subtitle selection for `SRGMediaPlayerController`. Please refer to the [official MediaAccessibility framework documentation](https://developer.apple.com/documentation/mediaaccessibility) for more information.
 
 On tvOS, the standard media player provides a top panel to change subtitles and audio tracks. No dedicated button is required, and thus none is made available by the framework.
 
-You can programmatically control subtitles and audio tracks by assigning a `mediaConfigurationBlock` block to a controller. This block gets called when playback starts, once the media `AVAsset` is safe for media selection option inspection. When implementing this block, you can use the supplied `AVAsset` and `AVPlayerItem` objects to look for other legible and audible options, and to apply the ones you want. Here is for example how you would apply French subtitles if available:
+You can programmatically control subtitles and audio tracks by setting `audioConfigurationBlock` and `subtitleConfigurationBlock` blocks on the controller. These blocks get called when playback starts, once the media `AVAsset` is safe for media selection option inspection. Here is for example how you would apply German audio and French subtitles if available:
 
 ```objective-c
-self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
-    AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+self.mediaPlayerController.audioConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull audioGroup) {
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"];
+    }];
+    NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup playableMediaSelectionOptionsFromArray:audioGroup.options];
+    return [options filteredArrayUsingPredicate:predicate].firstObject;
+};
+self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull subtitleGroup, AVMediaSelectionOption * _Nullable audioOption) {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"fr"];
     }];
-    NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-    AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
-    if (option) {
-        [playerItem selectMediaOption:option inMediaSelectionGroup:group];
-    }
+    NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+    return [options filteredArrayUsingPredicate:predicate].firstObject;
 };
 ``` 
 
-Please refer to the [official documentation](https://developer.apple.com/documentation/avfoundation/media_assets_playback_and_editing/adding_subtitles_and_alternative_audio_tracks) for more information about asset media selection options.
+If for some reason the audio and / or subtitle choice must be updated during playback, call `-[SRGMediaPlayerController reloadMediaConfiguration]` so that these blocks get called again.
 
-Note that you can use the same block to apply subtitle styling as well:
+You can also customize subtitle styling as well if needed:
 
 ```objective-c
-self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
-    AVTextStyleRule *rule = [[AVTextStyleRule alloc] initWithTextMarkupAttributes:@{ (id)kCMTextMarkupAttribute_ForegroundColorARGB : @[ @1, @1, @0, @0 ],
-                                                                                     (id)kCMTextMarkupAttribute_ItalicStyle : @(YES)}]; 
-    playerItem.textStyleRules = @[rule];
-};
+AVTextStyleRule *rule = [[AVTextStyleRule alloc] initWithTextMarkupAttributes:@{ (id)kCMTextMarkupAttribute_ForegroundColorARGB : @[ @1, @1, @0, @0 ],
+                                                                                 (id)kCMTextMarkupAttribute_ItalicStyle : @(YES)}];
+self.mediaPlayerController.textStyleRules = @[rule];
 ``` 
 
 ## Custom resource loading and FairPlay support
