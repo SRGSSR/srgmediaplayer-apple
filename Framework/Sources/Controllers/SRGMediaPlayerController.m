@@ -1936,11 +1936,11 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultO
         return nil;
     }
     
-    NSString *applicationLanguage = SRGMediaPlayerApplicationLocalization();
-    if (! [audioLanguage isEqualToString:applicationLanguage]) {
+    NSString *applicationLocalization = SRGMediaPlayerApplicationLocalization();
+    if (! [audioLanguage isEqualToString:applicationLocalization]) {
         // First extract non-forced subtitles matching the application language
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:applicationLanguage];
+            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:applicationLocalization];
         }];
         NSArray<AVMediaSelectionOption *> *options = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate];
         
