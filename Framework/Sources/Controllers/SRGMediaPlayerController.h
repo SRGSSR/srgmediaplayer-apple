@@ -283,8 +283,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerController (MediaConfiguration)
 
 /**
- *  Optional block which can be used to set the audio option to apply. If no block is provided or if a selection is
- *  mandatory and the block returns `nil`, a default option is applied.
+ *  Optional block which can be used to set the audio option to apply. If no block is provided or if the block returns
+ *  `nil`, a default option is applied instead.
  */
 @property (nonatomic, copy, nullable) AVMediaSelectionOption * _Nullable (^audioConfigurationBlock)(AVMediaSelectionGroup *audioGroup);
 

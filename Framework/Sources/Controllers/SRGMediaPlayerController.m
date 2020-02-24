@@ -1241,19 +1241,16 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultO
         return;
     }
     
-    AVMediaSelectionOption *audioOption = nil;
+    // Setup audio. Even if no option is selected, `AVPlayer` plays some audio anyway, we therefore always use the
+    // default option as fallback.
     AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-    if (self.audioConfigurationBlock) {
-        audioOption = self.audioConfigurationBlock(audioGroup);
-        if (! audioOption && ! audioGroup.allowsEmptySelection) {
-            audioOption = SRGMediaPlayerControllerAutomaticAudioDefaultOption(playerItem, audioGroup);
-        }
-    }
-    else {
+    AVMediaSelectionOption *audioOption = self.audioConfigurationBlock ? self.audioConfigurationBlock(audioGroup) : nil;
+    if (! audioOption) {
         audioOption = SRGMediaPlayerControllerAutomaticAudioDefaultOption(playerItem, audioGroup);
     }
     [playerItem selectMediaOption:audioOption inMediaSelectionGroup:audioGroup];
     
+    // Setup subtitles
     AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
     if (self.subtitleConfigurationBlock) {
         AVMediaSelectionOption *subtitleOption = self.subtitleConfigurationBlock(subtitleGroup, audioOption);
