@@ -251,12 +251,14 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
         NSMutableArray<NSString *> *characteristics = [NSMutableArray array];
         NSMutableDictionary<NSString *, NSArray<AVMediaSelectionOption *> *> *options = [NSMutableDictionary dictionary];
         
+        // Displayed only if several audio options are available
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         if (audioGroup.options.count > 1) {
             [characteristics addObject:AVMediaCharacteristicAudible];
             options[AVMediaCharacteristicAudible] = audioGroup.options;
         }
         
+        // Displayed if a subtitle group is available (even if empty; None and Automatic are always valid additional values)
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         if (subtitleGroup) {
             [characteristics addObject:AVMediaCharacteristicLegible];

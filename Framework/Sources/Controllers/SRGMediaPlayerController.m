@@ -1487,7 +1487,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(AVP
     }
     
     AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:mediaCharacteristic];
-    return [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:audioGroup];
+    return audioGroup ? [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:audioGroup] : nil;
 }
 
 - (void)updateTracksForPlayer:(AVPlayer *)player
@@ -1538,6 +1538,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(AVP
     }
     
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
+    if (! group) {
+        return;
+    }
+    
     [playerItem selectMediaOption:option inMediaSelectionGroup:group];
     
     // If Automatic has been set for subtitles, changing the audio must update the subtitles accordingly
@@ -1547,8 +1551,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(AVP
         // (we cannot use `-selectMediaOptionAutomaticallyInMediaSelectionGroupWithCharacteristic:`) as the audio selection
         // takes more time over AirPlay, yielding the old value for a short while.
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        AVMediaSelectionOption *subtitleOption = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(playerItem, subtitleGroup, option);
-        [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:subtitleGroup];
+        if (subtitleGroup) {
+            AVMediaSelectionOption *subtitleOption = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(playerItem, subtitleGroup, option);
+            [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:subtitleGroup];
+        }
     }
     
     [self updateTracksForPlayer:self.player];
@@ -1563,6 +1569,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(AVP
     }
     
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
+    if (! group) {
+        return;
+    }
     
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
         AVMediaSelectionOption *audioOption = SRGMediaPlayerControllerAutomaticAudioDefaultOption(playerItem, group);
@@ -1570,7 +1579,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(AVP
     }
     else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-        AVMediaSelectionOption *audioOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:audioGroup];
+        AVMediaSelectionOption *audioOption = audioGroup ? [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:audioGroup] : nil;
         AVMediaSelectionOption *subtitleOption = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(playerItem, group, audioOption);
         [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:group];
     }
@@ -1591,7 +1600,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(AVP
     }
     
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
-    return [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:group];
+    return group ? [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:group] : nil;
 }
 
 - (BOOL)matchesAutomaticSubtitleSelection
@@ -1605,6 +1614,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(AVP
     
     AVMediaSelectionOption *audioOption = [self selectedMediaOptionInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
     AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    if (! subtitleGroup) {
+        return NO;
+    }
     
     AVMediaSelectionOption *subtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
     AVMediaSelectionOption *defaultSubtitleOption = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(playerItem, subtitleGroup, audioOption);
