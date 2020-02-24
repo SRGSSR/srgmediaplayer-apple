@@ -1998,10 +1998,6 @@ static BOOL SRGMediaPlayerControllerSelectMediaOptionAutomatically(AVPlayerItem 
     else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         AVMediaSelectionOption *audioOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:audioGroup];
-        if (! audioOption) {
-            return NO;
-        }
-        
         SRGMediaPlayerControllerSelectSubtitleOptionAutomatically(playerItem, group, audioOption);
     }
     else {
