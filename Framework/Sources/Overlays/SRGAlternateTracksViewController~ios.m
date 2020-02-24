@@ -6,6 +6,7 @@
 
 #import "SRGAlternateTracksViewController.h"
 
+#import "AVMediaSelectionGroup+SRGMediaPlayer.h"
 #import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
@@ -253,16 +254,17 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
         
         // Displayed only if several audio options are available
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-        if (audioGroup.options.count > 1) {
+        NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
+        if (audioOptions.count > 1) {
             [characteristics addObject:AVMediaCharacteristicAudible];
-            options[AVMediaCharacteristicAudible] = audioGroup.options;
+            options[AVMediaCharacteristicAudible] = audioOptions;
         }
         
         // Displayed if a subtitle group is available (even if empty; None and Automatic are always valid additional values)
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         if (subtitleGroup) {
             [characteristics addObject:AVMediaCharacteristicLegible];
-            options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+            options[AVMediaCharacteristicLegible] = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
         }
         
         self.characteristics = characteristics.copy;
