@@ -1252,14 +1252,19 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     if (audioGroup) {
         NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
         AVMediaSelectionOption *defaultAudioOption = SRGMediaPlayerControllerAutomaticAudioDefaultOption(audioOptions);
-        audioOption = self.audioConfigurationBlock ? self.audioConfigurationBlock(audioOptions, defaultAudioOption) : defaultAudioOption;
-        
-        // Gracely handle implementation errors. Though the block signature should be followed, compilers might not be able
-        // to catch `nil` return values. Instead of leading to errors discovered only later in production, assert for
-        // discovery during development, and use default as fallback to avoid issues if issues are discovered after code
-        // has been released.
-        if (! audioOption) {
-            NSAssert(NO, @"Missing audio option returned from an audio configuration block. Return the supplied default option instead.");
+        if (self.audioConfigurationBlock) {
+            audioOption = self.audioConfigurationBlock(audioOptions, defaultAudioOption);
+            
+            // Gracely handle implementation errors. Though the block signature should be followed, compilers might not be able
+            // to catch `nil` return values. Instead of leading to errors discovered only later in production, assert for
+            // discovery during development, and use the default as fallback to avoid problems if this is discovered after
+            // a release has been made.
+            if (! audioOption) {
+                NSAssert(NO, @"Missing audio option returned from an audio configuration block. Return the supplied default option instead.");
+                audioOption = defaultAudioOption;
+            }
+        }
+        else {
             audioOption = defaultAudioOption;
         }
         [playerItem selectMediaOption:audioOption inMediaSelectionGroup:audioGroup];
@@ -2000,7 +2005,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(NSA
 }
 
 // Return the default subtitle option which should be selected in the provided list, matching a specific language. Takes into account
-// accessibility preferences (if CC preferred will attempt to find a CC variant, if not will focus on subtitles first)
+// accessibility preferences (if CC is preferred it will attempt to find a CC variant, if not it will focus on subtitles first).
 static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, NSString *language)
 {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {

@@ -295,7 +295,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  Optional block which can be used to set the subtitle option to apply. Only called if subtitle options have been
  *  detected. If no block is provided a default choice is applied, based on current `MediaAccessibility` settings.
  *
- *  The `subtitleOptions` contains unforced subtitles only. No additional filtering is required.
+ *  The `subtitleOptions` list contains unforced subtitles only (subtitles / closed caption). No additional filtering
+ *  is required.
  *
  *  @discussion The default option is provided as additional parameter. You can use it in your implementation if you
  *              need the default behavior to be applied in some cases. The selected audio option is also provided as
