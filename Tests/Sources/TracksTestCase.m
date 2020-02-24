@@ -122,12 +122,12 @@
         return YES;
     }];
     
-    self.mediaPlayerController.audioConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull audioGroup) {
+    self.mediaPlayerController.audioConfigurationBlock = ^AVMediaSelectionOption * _Nonnull(AVMediaSelectionGroup * _Nonnull audioGroup, AVMediaSelectionOption * _Nonnull defaultAudioOption) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
             return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"];
         }];
         NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup playableMediaSelectionOptionsFromArray:audioGroup.options];
-        return [options filteredArrayUsingPredicate:predicate].firstObject;
+        return [options filteredArrayUsingPredicate:predicate].firstObject ?: defaultAudioOption;
     };
     
     NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021,-1201k,-701k,-301k,-101k,-2001k,-fra-ad,-roh,-deu,-ita,.mp4.csmil/master.m3u8?audiotrack=0:fr:Fran%C3%A7ais,5:fr:Fran%C3%A7ais%20(AD):ad,6:rm:Rumantsch,7:de:Deutsch,8:it:Italiano&subtitles=it,gsw,fr:sdh"];
@@ -162,12 +162,12 @@
         return YES;
     }];
     
-    self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull subtitleGroup, AVMediaSelectionOption * _Nullable audioOption) {
+    self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull subtitleGroup, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
             return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"ja"];
         }];
         NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-        return [options filteredArrayUsingPredicate:predicate].firstObject;
+        return [options filteredArrayUsingPredicate:predicate].firstObject ?: defaultSubtitleOption;
     };
     
     NSURL *URL = [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
@@ -230,12 +230,12 @@
         return YES;
     }];
     
-    self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull subtitleGroup, AVMediaSelectionOption * _Nullable audioOption) {
+    self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull subtitleGroup, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
             return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"ja"];
         }];
         NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-        return [options filteredArrayUsingPredicate:predicate].firstObject;
+        return [options filteredArrayUsingPredicate:predicate].firstObject ?: defaultSubtitleOption;
     };
     [self.mediaPlayerController reloadMediaConfiguration];
     
@@ -245,15 +245,15 @@
 - (void)testMediaConfigurationReloadBeforeMediaIsReady
 {
     @weakify(self)
-    self.mediaPlayerController.audioConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull audioGroup) {
+    self.mediaPlayerController.audioConfigurationBlock = ^AVMediaSelectionOption * _Nonnull(AVMediaSelectionGroup * _Nonnull audioGroup, AVMediaSelectionOption * _Nonnull defaultAudioOption) {
         @strongify(self)
         XCTFail(@"Audio configuration block must not be called before the media is ready");
-        return nil;
+        return defaultAudioOption;
     };
-    self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull subtitleGroup, AVMediaSelectionOption * _Nullable audioOption) {
+    self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull subtitleGroup, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption) {
         @strongify(self)
         XCTFail(@"Subtitle configuration block must not be called before the media is ready");
-        return nil;
+        return defaultSubtitleOption;
     };
     [self.mediaPlayerController reloadMediaConfiguration];
 }

@@ -283,19 +283,23 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerController (MediaConfiguration)
 
 /**
- *  Optional block which can be used to set the audio option to apply. If no block is provided or if the block returns
- *  `nil`, a default option is applied instead.
+ *  Optional block which can be used to set the audio option to apply. Only called if an audio group has been detected.
+ *  If no block is provided a default choice is applied.
+ *
+ *  @discussion The default option is provided as additional parameter. If your implementation cannot find a proper
+ *              match, return this value (not `nil` which is prohibited as return value).
  */
-@property (nonatomic, copy, nullable) AVMediaSelectionOption * _Nullable (^audioConfigurationBlock)(AVMediaSelectionGroup *audioGroup);
+@property (nonatomic, copy, nullable) AVMediaSelectionOption * (^audioConfigurationBlock)(AVMediaSelectionGroup *audioGroup, AVMediaSelectionOption *defaultAudioOption);
 
 /**
- *  Optional block which can be used to set the subtitle option to apply. If no block is provided a default option is
- *  applied, based on current `MediaAccessibility` settings.
+ *  Optional block which can be used to set the subtitle option to apply. Only called if a subtitle group has been
+ *  detected. If no block is provided a default choice is applied, based on current `MediaAccessibility` settings.
  *
- *  @discussion The selected audio option is provided as additional parameter if you need subtitle selection to be
- *              different depending on the audio track chosen.
+ *  @discussion The default option is provided as additional parameter. You can use it in your implementation if you
+ *              need the default behavior to be applied in some cases. The selected audio option is also provided as
+ *              parameter if you need subtitle selection to be different depending on the audio track chosen.
  */
-@property (nonatomic, copy, nullable) AVMediaSelectionOption * _Nullable (^subtitleConfigurationBlock)(AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption * _Nullable audioOption);
+@property (nonatomic, copy, nullable) AVMediaSelectionOption * _Nullable (^subtitleConfigurationBlock)(AVMediaSelectionGroup *subtitleGroup, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption);
 
 /**
  *  Reload media configuration by calling the associated block, if any. Does nothing if the media has not been loaded

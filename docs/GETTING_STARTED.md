@@ -141,19 +141,19 @@ On tvOS, the standard media player provides a top panel to change subtitles and 
 You can programmatically control subtitles and audio tracks by setting `audioConfigurationBlock` and `subtitleConfigurationBlock` blocks on the controller. These blocks get called when playback starts, once the media `AVAsset` is safe for media selection option inspection. Here is for example how you would apply German audio and French subtitles if available:
 
 ```objective-c
-self.mediaPlayerController.audioConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull audioGroup) {
+self.mediaPlayerController.audioConfigurationBlock = ^AVMediaSelectionOption * _Nonnull(AVMediaSelectionGroup * _Nonnull audioGroup, AVMediaSelectionOption * _Nonnull defaultAudioOption) {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"];
     }];
     NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup playableMediaSelectionOptionsFromArray:audioGroup.options];
-    return [options filteredArrayUsingPredicate:predicate].firstObject;
+    return [options filteredArrayUsingPredicate:predicate].firstObject ?: defaultAudioOption;
 };
-self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull subtitleGroup, AVMediaSelectionOption * _Nullable audioOption) {
+self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(AVMediaSelectionGroup * _Nonnull subtitleGroup, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption) {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"fr"];
     }];
     NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-    return [options filteredArrayUsingPredicate:predicate].firstObject;
+    return [options filteredArrayUsingPredicate:predicate].firstObject ?: defaultSubtitleOption;
 };
 ``` 
 
