@@ -794,16 +794,11 @@ static NSURL *AudioOverHTTPTestURL(void)
         return YES;
     }];
     
-    self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
-        AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(NSArray<AVMediaSelectionOption *> * _Nonnull subtitleOptions, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
             return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"fr"];
         }];
-        NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-        AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
-        if (option) {
-            [playerItem selectMediaOption:option inMediaSelectionGroup:group];
-        }
+        return [subtitleOptions filteredArrayUsingPredicate:predicate].firstObject ?: defaultSubtitleOption;
     };
     
     NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2019/journ-19h30_20190603_full_ca7d9d68-58aa-4acd-b2e5-a6af7470bc8d,-1201k,-701k,-301k,-2001k,-3501k,-6001k,.mp4.csmil/master.m3u8?subtitles=fr:sdh&start=267.36&end=387.36"];
@@ -2113,9 +2108,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     XCTestExpectation *configurationReloadExpectation = [self expectationWithDescription:@"Configuration reloaded"];
-    [self.mediaPlayerController reloadPlayerConfigurationWithBlock:^(AVPlayer * _Nonnull player) {
+    self.mediaPlayerController.playerConfigurationBlock = ^(AVPlayer * _Nonnull player) {
         [configurationReloadExpectation fulfill];
-    }];
+    };
+    [self.mediaPlayerController reloadPlayerConfiguration];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }

@@ -104,11 +104,13 @@
     
     [mediaPlayerControllers enumerateObjectsUsingBlock:^(SRGMediaPlayerController * _Nonnull mediaPlayerController, NSUInteger idx, BOOL * _Nonnull stop) {
         if (idx == 0) {
-            [mediaPlayerController reloadPlayerConfigurationWithBlock:^(AVPlayer * _Nonnull player) {
+            mediaPlayerController.playerConfigurationBlock = ^(AVPlayer * _Nonnull player) {
                 player.allowsExternalPlayback = YES;
                 player.usesExternalPlaybackWhileExternalScreenIsActive = YES;
                 player.muted = NO;
-            }];
+            };
+            [mediaPlayerController reloadPlayerConfiguration];
+            
             self.playbackButton.mediaPlayerController = mediaPlayerController;
             self.airPlayButton.mediaPlayerController = mediaPlayerController;
             
@@ -118,11 +120,12 @@
             [self.mainPlayerView addSubview:playerView];
         }
         else {
-            [mediaPlayerController reloadPlayerConfigurationWithBlock:^(AVPlayer * _Nonnull player) {
+            mediaPlayerController.playerConfigurationBlock = ^(AVPlayer * _Nonnull player) {
                 player.allowsExternalPlayback = NO;
                 player.usesExternalPlaybackWhileExternalScreenIsActive = NO;
                 player.muted = YES;
-            }];
+            };
+            [mediaPlayerController reloadPlayerConfiguration];
             
             UIView *playerView = mediaPlayerController.view;
             [self.playersViewContainer addSubview:playerView];

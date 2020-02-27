@@ -233,6 +233,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, nullable) IBOutlet SRGMediaPlayerView *view;
 
+/**
+ *  The rules for subtitle appearance customization.
+ *
+ *  @discussion Customization has some limitations, @see `-[AVPlayerItem textStyleRules]` documentation for more information.
+ */
+@property (nonatomic, copy, nullable) NSArray<AVTextStyleRule *> *textStyleRules;
+
 @end
 
 /**
@@ -267,38 +274,41 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)reloadPlayerConfiguration;
 
+@end
+
 /**
- *  Reload the player configuration with a new configuration block. Any previously existing configuration block is
- *  replaced.
+ *  @name Media configuration (audio tracks and subtitles).
+ */
+
+@interface SRGMediaPlayerController (MediaConfiguration)
+
+/**
+ *  Optional block which can be used to set the audio option to apply. Only called if audio options have been detected.
+ *  If no block is provided a default choice is applied.
  *
- *  @discussion If the player has not been created yet, the block is set but not called.
+ *  @discussion The default option is provided as additional parameter. If your implementation cannot find a proper
+ *              match, return this value (not `nil` which is prohibited as return value).
  */
-- (void)reloadPlayerConfigurationWithBlock:(nullable void (^)(AVPlayer *player))block;
+@property (nonatomic, copy, nullable) AVMediaSelectionOption * (^audioConfigurationBlock)(NSArray<AVMediaSelectionOption *> *audioOptions, AVMediaSelectionOption *defaultAudioOption);
 
 /**
- *  @name Media configurationn (audio track and subtitle customization).
+ *  Optional block which can be used to set the subtitle option to apply. Only called if subtitle options have been
+ *  detected. If no block is provided a default choice is applied, based on current `MediaAccessibility` settings.
+ *
+ *  The `subtitleOptions` list contains unforced subtitles only (subtitles / closed caption). No additional filtering
+ *  is required.
+ *
+ *  @discussion The default option is provided as additional parameter. You can use it in your implementation if you
+ *              need the default behavior to be applied in some cases. The selected audio option is also provided as
+ *              parameter if you need subtitle selection to be different depending on the audio track chosen.
  */
-
-/**
- *  Optional block which gets called once media information has been loaded, and which can be used to customize
- *  audio or subtitle selection, as well as subtitle appearance.
- */
-@property (nonatomic, copy, nullable) void (^mediaConfigurationBlock)(AVPlayerItem *playerItem, AVAsset *asset);
+@property (nonatomic, copy, nullable) AVMediaSelectionOption * _Nullable (^subtitleConfigurationBlock)(NSArray<AVMediaSelectionOption *> *subtitleOptions, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption);
 
 /**
  *  Reload media configuration by calling the associated block, if any. Does nothing if the media has not been loaded
- *  yet. If there is no configuration block defined, calling this method applies the default selection options for
- *  audio and subtitles, and removes any subtitle styling which might have been applied.
+ *  yet.
  */
 - (void)reloadMediaConfiguration;
-
-/**
- *  Reload the player configuration with a new configuration block. Any previously existing configuration block is
- *  replaced.
- *
- *  @discussion If the media has not been loaded yet, the block is set but not called.
- */
-- (void)reloadMediaConfigurationWithBlock:(nullable void (^)(AVPlayerItem *playerItem, AVAsset *asset))block;
 
 @end
 

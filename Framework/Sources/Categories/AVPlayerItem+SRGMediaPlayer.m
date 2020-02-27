@@ -28,10 +28,4 @@
 #endif
 }
 
-- (AVMediaSelectionOption *)srgmediaplayer_preferredMediaOptionInMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup
-{
-    AVMediaSelection *preferredMediaSelection = self.asset.preferredMediaSelection;
-    return [preferredMediaSelection selectedMediaOptionInMediaSelectionGroup:mediaSelectionGroup];
-}
-
 @end
