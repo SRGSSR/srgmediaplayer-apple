@@ -82,9 +82,9 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>19h30 subject with buggy subtitles (Akamai issue)</string>
+			<string>10vor10 subject with buggy subtitles (Akamai issue)</string>
 			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2019/journ-19h30_20190603_full_ca7d9d68-58aa-4acd-b2e5-a6af7470bc8d,-1201k,-701k,-301k,-2001k,-3501k,-6001k,.mp4.csmil/master.m3u8?subtitles=fr:sdh&amp;start=267.36&amp;end=387.36</string>
+			<string>https://srfvodhd-vh.akamaihd.net/i/vod/10vor10/2020/02/10vor10_20200226_215000_19794538_v_webcast_h264_,q40,q10,q20,q30,q50,q60,.mp4.csmil/master.m3u8?start=527.04&amp;end=687.56&amp;caption=srf%2F7a4a3dd2-f470-4eab-af9a-efd9dbaad345%2Fepisode%2Fde%2Fvod%2Fvod.m3u8:de:Deutsch:sdh&amp;webvttbaseurl=www.srf.ch%2Fsubtitles</string>
 		</dict>
 		<dict>
 			<key>name</key>
