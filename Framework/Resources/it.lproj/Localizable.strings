@@ -43,10 +43,10 @@
 "Unknown language" = "Lingua sconosciuta";
 
 /* Instructions for subtitles auto option */
-"When '%@' is enabled, and if the selected audio track language differs from the device settings, subtitles or Closed Captions might be displayed automatically." = "Quando \"%@\" è attivato, se la pista audio è differente da quella selezionata sul dispositivo, i sottotitoli vengono mostrati automaticamente";
+"When '%@' is enabled, and if the selected audio track language differs from the device settings, subtitles or Closed Captions might be displayed automatically." = "Quando \"%@\" è attivato, se la pista audio è differente da quella selezionata sul dispositivo, i sottotitoli vengono mostrati automaticamente.";
 
 /* Instructions for subtitles customization */
-"You can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings." = "Potete regolare la visualizzazione e la sezione automatica dei sottotitoli nelle impostazioni di accessibilità";
+"You can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings." = "Potete regolare la visualizzazione e la sezione automatica dei sottotitoli nelle impostazioni di accessibilità.";
 
 /* Instructions for audio customization */
 "You can enable Audio Description automatic selection in the Accessibility settings." = "Potete regolare l'attivazione automatica dell'audio descrizione nelle impostazioni di accessibilità.";
