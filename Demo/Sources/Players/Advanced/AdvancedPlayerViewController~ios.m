@@ -6,6 +6,7 @@
 
 #import "AdvancedPlayerViewController.h"
 
+#import "ModalTransition.h"
 #import "Resources.h"
 
 #import <libextobjc/libextobjc.h>
@@ -18,7 +19,7 @@ const NSInteger kForwardSkipInterval = 15.;
 // To keep the view controller when picture in picture is active
 static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
-@interface AdvancedPlayerViewController () <AVPictureInPictureControllerDelegate, SRGTracksButtonDelegate>
+@interface AdvancedPlayerViewController () <AVPictureInPictureControllerDelegate, SRGTracksButtonDelegate, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic) Media *media;
 
@@ -37,6 +38,11 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 @property (nonatomic) IBOutletCollection(UIView) NSArray *overlayViews;
 
 @property (nonatomic) NSTimer *inactivityTimer;
+
+@property (nonatomic) ModalTransition *interactiveTransition;
+
+@property (nonatomic, weak) id playTarget;
+@property (nonatomic, weak) id pauseTarget;
 
 @end
 
@@ -61,6 +67,17 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [_inactivityTimer invalidate];
     _inactivityTimer = inactivityTimer;
+}
+
+#pragma mark Overrides
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    // Do not use standard presentation animations, `UIPercentDrivenInteractiveTransition`-based, which change the
+    // player offset and interfere with normal behavior (paused playback, broken picture in picture restoration).
+    self.transitioningDelegate = self;
 }
 
 #pragma mark View lifecycle
@@ -125,7 +142,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     @weakify(self)
     self.mediaPlayerController.pictureInPictureControllerCreationBlock = ^(AVPictureInPictureController *pictureInPictureController) {
         @strongify(self)
-        self.mediaPlayerController.pictureInPictureController.delegate = self;
+        pictureInPictureController.delegate = self;
     };
     
     [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, mediaType) options:0 block:^(MAKVONotification *notification) {
@@ -144,19 +161,11 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     }];
     [self updateSkipButtons];
     
+    [self updateMainPlaybackControls];
     [self updateInterfaceForControlsHidden:NO];
     [self restartInactivityTracker];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     
-    if (self.movingToParentViewController || self.beingPresented) {
-        if (! self.mediaPlayerController.pictureInPictureController.pictureInPictureActive) {
-            [self.mediaPlayerController playURL:self.media.URL];
-        }
-    }
+    [self.mediaPlayerController playURL:self.media.URL];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -180,6 +189,10 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     
     if (self.movingFromParentViewController || self.beingDismissed) {
         [self stopInactivityTracker];
+        
+        if (! self.mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
+            [self.mediaPlayerController reset];
+        }
     }
 }
 
@@ -269,6 +282,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
                                                      selector:@selector(updateForInactivity:)
                                                      userInfo:nil
                                                       repeats:NO];
+        self.inactivityTimer.tolerance = 0.5;
         [[NSRunLoop mainRunLoop] addTimer:self.inactivityTimer forMode:NSRunLoopCommonModes];
     }
     else {
@@ -379,6 +393,60 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     }];
 }
 
+#pragma mark Basic control center integration
+
+- (void)enableControlCenterIntegration
+{
+    MPNowPlayingInfoCenter.defaultCenter.nowPlayingInfo = @{ MPMediaItemPropertyTitle : self.media.name };
+    
+    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    
+    MPRemoteCommand *playCommand = commandCenter.playCommand;
+    [playCommand removeTarget:self.playTarget];
+    self.playTarget = [playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+        [self.mediaPlayerController play];
+        return MPRemoteCommandHandlerStatusSuccess;
+    }];
+    
+    MPRemoteCommand *pauseCommand = commandCenter.pauseCommand;
+    [pauseCommand removeTarget:self.pauseTarget];
+    self.pauseTarget = [pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+        [self.mediaPlayerController pause];
+        return MPRemoteCommandHandlerStatusSuccess;
+    }];
+}
+
+- (void)disableControlCenterIntegration
+{
+    MPNowPlayingInfoCenter.defaultCenter.nowPlayingInfo = nil;
+    
+    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    
+    if (@available(iOS 12, *)) {
+        MPRemoteCommand *playCommand = commandCenter.playCommand;
+        [playCommand removeTarget:self.playTarget];
+        
+        MPRemoteCommand *pauseCommand = commandCenter.pauseCommand;
+        [pauseCommand removeTarget:self.pauseTarget];
+    }
+    else {
+        // For some unknown reason, at least an action (even dummy) must be bound to a command for `enabled` to have an effect,
+        // see https://stackoverflow.com/questions/38993801/how-to-disable-all-the-mpremotecommand-objects-from-mpremotecommandcenter
+        
+        MPRemoteCommand *playCommand = commandCenter.playCommand;
+        playCommand.enabled = NO;
+        self.playTarget = [playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+            return MPRemoteCommandHandlerStatusSuccess;
+        }];
+        
+        MPRemoteCommand *pauseCommand = commandCenter.pauseCommand;
+        pauseCommand.enabled = NO;
+        self.pauseTarget = [pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+            return MPRemoteCommandHandlerStatusSuccess;
+        }];
+    }
+}
+
 #pragma mark AVPictureInPictureControllerDelegate protocol
 
 - (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
@@ -394,7 +462,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         [rootViewController presentViewController:s_advancedPlayerViewController animated:YES completion:^{
             completionHandler(YES);
         }];
-        s_advancedPlayerViewController = nil;
     }
     else {
         completionHandler(NO);
@@ -403,12 +470,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 - (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
-    // Reset the status of the player when picture in picture is exited anywhere except from the SRGMediaPlayerViewController
-    // itself
-    if (s_advancedPlayerViewController && ! s_advancedPlayerViewController.presentingViewController) {
-        [self.mediaPlayerController reset];
-        s_advancedPlayerViewController = nil;
-    }
+    s_advancedPlayerViewController = nil;
 }
 
 #pragma mark SRGTracksButtonDelegate protocol
@@ -430,6 +492,24 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     return [gestureRecognizer isKindOfClass:SRGActivityGestureRecognizer.class];
 }
 
+#pragma mark UIViewControllerTransitioningDelegate protocol
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    return [[ModalTransition alloc] initForPresentation:YES];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    return [[ModalTransition alloc] initForPresentation:NO];
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
+{
+    // Return the installed interactive transition, if any
+    return self.interactiveTransition;
+}
+
 #pragma mark Notifications
 
 - (void)playbackStateDidChange:(NSNotification *)notification
@@ -442,6 +522,11 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     else {
         if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStatePreparing) {
             self.errorImageView.hidden = YES;
+            [self enableControlCenterIntegration];
+        }
+        else if (mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
+            [self disableControlCenterIntegration];
+            
         }
         [self updateMainPlaybackControls];
     }
@@ -472,10 +557,6 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 - (IBAction)dismiss:(id)sender
 {
-    if (! self.mediaPlayerController.pictureInPictureController.isPictureInPictureActive) {
-        [self.mediaPlayerController reset];
-    }
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -503,6 +584,57 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     [self restartInactivityTracker];
 }
+
+- (IBAction)pullDown:(UIPanGestureRecognizer *)panGestureRecognizer
+{
+    CGFloat progress = [panGestureRecognizer translationInView:self.view].y / CGRectGetHeight(self.view.frame);
+    
+    switch (panGestureRecognizer.state) {
+        case UIGestureRecognizerStateBegan: {
+            // Avoid duplicate dismissal (which can make it impossible to dismiss the view controller altogether)
+            if (self.interactiveTransition) {
+                return;
+            }
+            
+            // Install the interactive transition animation before triggering it
+            self.interactiveTransition = [[ModalTransition alloc] initForPresentation:NO];
+            [self dismissViewControllerAnimated:YES completion:^{
+                // Only stop tracking the interactive transition at the very end. The completion block is called
+                // whether the transition ended or was cancelled
+                self.interactiveTransition = nil;
+            }];
+            break;
+        }
+            
+        case UIGestureRecognizerStateChanged: {
+            [self.interactiveTransition updateInteractiveTransitionWithProgress:progress];
+            break;
+        }
+            
+        case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStateCancelled: {
+            [self.interactiveTransition cancelInteractiveTransition];
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded: {
+            // Finish the transition if the view was dragged by 20% and the user is dragging downwards
+            CGFloat velocity = [panGestureRecognizer velocityInView:self.view].y;
+            if ((progress <= 0.5f && velocity > 1000.f) || (progress > 0.5f && velocity > -1000.f)) {
+                [self.interactiveTransition finishInteractiveTransition];
+            }
+            else {
+                [self.interactiveTransition cancelInteractiveTransition];
+            }
+            break;
+        }
+            
+        default: {
+            break;
+        }
+    }
+}
+
 
 #pragma mark Timers
 

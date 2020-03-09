@@ -26,6 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 __attribute__((annotate("returns_localized_nsstring")))
 OBJC_EXPORT NSString *SRGMediaPlayerNonLocalizedString(NSString *string);
 
+/**
+ *  Return the localization used for the application.
+ */
+OBJC_EXPORT NSString *SRGMediaPlayerApplicationLocalization(void);
+
 @interface NSBundle (SRGMediaPlayer)
 
 /**

@@ -7,6 +7,7 @@
 #import "SRGTimeSlider.h"
 
 #import "CMTimeRange+SRGMediaPlayer.h"
+#import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "UIBezierPath+SRGMediaPlayer.h"
 
@@ -18,7 +19,7 @@ static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 {
     NSCAssert(seconds >= 0, @"A non-negative number of seconds is expected");
     
-    if (fabs(seconds) < 60. * 60.) {
+    if (seconds < 60. * 60.) {
         static NSDateComponentsFormatter *s_dateComponentsFormatter;
         static dispatch_once_t s_onceToken;
         dispatch_once(&s_onceToken, ^{
@@ -47,6 +48,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         return nil;
     }
     
+    NSCAssert(seconds >= 0, @"A non-negative number of seconds is expected");
+    
     static NSDateComponentsFormatter *s_dateComponentsFormatter;
     static dispatch_once_t s_onceToken;
     dispatch_once(&s_onceToken, ^{
@@ -55,7 +58,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         s_dateComponentsFormatter.allowedUnits = NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
     });
     
-    return [s_dateComponentsFormatter stringFromTimeInterval:ABS(seconds)];
+    return [s_dateComponentsFormatter stringFromTimeInterval:seconds];
 }
 
 @interface SRGTimeSlider ()
@@ -100,6 +103,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     if (_mediaPlayerController) {
         [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.loadedTimeRanges)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerPlaybackStateDidChangeNotification
@@ -113,14 +117,19 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     
     if (mediaPlayerController) {
         @weakify(self)
-        self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.2, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        self.periodicTimeObserver = [mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
             @strongify(self)
-            
             if (! self.tracking && mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
                 [self updateDisplayWithTime:time];
             }
         }];
-        [self updateDisplayWithTime:mediaPlayerController.player.currentTime];
+        
+        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.loadedTimeRanges) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            // Only redraw the slider tracks (more efficient, as time labels do not need any update).
+            [self setNeedsDisplay];
+        }];
+        [self updateDisplayWithTime:mediaPlayerController.currentTime];
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_timeSlider_playbackStateDidChange:)
@@ -350,8 +359,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
                 self.timeLeftValueLabel.accessibilityLabel = nil;
             }
             else {
-                self.timeLeftValueLabel.text = [NSString stringWithFormat:@"-%@", SRGTimeSliderFormatter(self.maximumValue - self.value)];
-                self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(self.value - self.maximumValue)];
+                NSTimeInterval interval = self.maximumValue - self.value;
+                self.timeLeftValueLabel.text = [NSString stringWithFormat:@"-%@", SRGTimeSliderFormatter(interval)];
+                self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(interval)];
             }
         }
         else {

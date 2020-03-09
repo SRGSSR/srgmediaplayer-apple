@@ -28,6 +28,8 @@
 		6F444857210F147B009FDB70 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E69A1E001D61BAFD0064E6C1 /* Localizable.strings */; };
 		6F44485A210F1483009FDB70 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F9453331F7225BC00A6507E /* Images.xcassets */; };
 		6F44485D210F14BC009FDB70 /* SRGMediaPlayer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */; };
+		6F5294C3240410EC008516C5 /* AVMediaSelectionGroup+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5294C1240410EC008516C5 /* AVMediaSelectionGroup+SRGMediaPlayer.h */; };
+		6F5294C4240410EC008516C5 /* AVMediaSelectionGroup+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5294C2240410EC008516C5 /* AVMediaSelectionGroup+SRGMediaPlayer.m */; };
 		6F5CA3EC1FD919CD00CF175F /* NSBundle+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3B41FD919CD00CF175F /* NSBundle+SRGMediaPlayer.h */; };
 		6F5CA3ED1FD919CD00CF175F /* MAKVONotificationCenter+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3B51FD919CD00CF175F /* MAKVONotificationCenter+SRGMediaPlayer.h */; };
 		6F5CA3EE1FD919CD00CF175F /* UIWindow+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F5CA3B61FD919CD00CF175F /* UIWindow+SRGMediaPlayer.h */; };
@@ -101,6 +103,8 @@
 		6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC57B191FD6A5BE00451B6B /* SRGViewModeButton~ios.m */; };
 		6FC7C59C23A392C10058349C /* AVPlayerItem+SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FC7C59A23A392C10058349C /* AVPlayerItem+SRGMediaPlayer.h */; };
 		6FC7C59D23A392C10058349C /* AVPlayerItem+SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC7C59B23A392C10058349C /* AVPlayerItem+SRGMediaPlayer.m */; };
+		6FCA169E23E829440015B23E /* SRGMediaAccessibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FCA169C23E829440015B23E /* SRGMediaAccessibility.h */; };
+		6FCA169F23E829440015B23E /* SRGMediaAccessibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCA169D23E829440015B23E /* SRGMediaAccessibility.m */; };
 		6FCAB6D9231687740043432E /* MediasViewController~tvos.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCAB6D7231687740043432E /* MediasViewController~tvos.m */; };
 		6FCAB6DC231687BE0043432E /* SimplePlayerViewController~tvos.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCAB6DA231687BE0043432E /* SimplePlayerViewController~tvos.m */; };
 		6FCAB6DD231687BE0043432E /* SimplePlayerViewController~tvos.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FCAB6DB231687BE0043432E /* SimplePlayerViewController~tvos.storyboard */; };
@@ -222,6 +226,8 @@
 		6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F5216F323152BDF00456080 /* Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		6F5216F523152C2600456080 /* Tests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Tests.xcconfig; sourceTree = "<group>"; };
+		6F5294C1240410EC008516C5 /* AVMediaSelectionGroup+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVMediaSelectionGroup+SRGMediaPlayer.h"; sourceTree = "<group>"; };
+		6F5294C2240410EC008516C5 /* AVMediaSelectionGroup+SRGMediaPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AVMediaSelectionGroup+SRGMediaPlayer.m"; sourceTree = "<group>"; };
 		6F5CA3B41FD919CD00CF175F /* NSBundle+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F5CA3B51FD919CD00CF175F /* MAKVONotificationCenter+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MAKVONotificationCenter+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6F5CA3B61FD919CD00CF175F /* UIWindow+SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+SRGMediaPlayer.h"; sourceTree = "<group>"; };
@@ -303,6 +309,8 @@
 		6FC57B191FD6A5BE00451B6B /* SRGViewModeButton~ios.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SRGViewModeButton~ios.m"; sourceTree = "<group>"; };
 		6FC7C59A23A392C10058349C /* AVPlayerItem+SRGMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AVPlayerItem+SRGMediaPlayer.h"; sourceTree = "<group>"; };
 		6FC7C59B23A392C10058349C /* AVPlayerItem+SRGMediaPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AVPlayerItem+SRGMediaPlayer.m"; sourceTree = "<group>"; };
+		6FCA169C23E829440015B23E /* SRGMediaAccessibility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMediaAccessibility.h; sourceTree = "<group>"; };
+		6FCA169D23E829440015B23E /* SRGMediaAccessibility.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGMediaAccessibility.m; sourceTree = "<group>"; };
 		6FCAB6D5231681C00043432E /* Demo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Demo.xcconfig; sourceTree = "<group>"; };
 		6FCAB6D7231687740043432E /* MediasViewController~tvos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MediasViewController~tvos.m"; sourceTree = "<group>"; };
 		6FCAB6DA231687BE0043432E /* SimplePlayerViewController~tvos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SimplePlayerViewController~tvos.m"; sourceTree = "<group>"; };
@@ -426,6 +434,8 @@
 			children = (
 				6F5CA3C61FD919CD00CF175F /* AVAudioSession+SRGMediaPlayer.h */,
 				6F5CA3BB1FD919CD00CF175F /* AVAudioSession+SRGMediaPlayer.m */,
+				6F5294C1240410EC008516C5 /* AVMediaSelectionGroup+SRGMediaPlayer.h */,
+				6F5294C2240410EC008516C5 /* AVMediaSelectionGroup+SRGMediaPlayer.m */,
 				6FC7C59A23A392C10058349C /* AVPlayerItem+SRGMediaPlayer.h */,
 				6FC7C59B23A392C10058349C /* AVPlayerItem+SRGMediaPlayer.m */,
 				6FC1C74D22BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.h */,
@@ -489,6 +499,8 @@
 			isa = PBXGroup;
 			children = (
 				6F5CA42F1FD91A1D00CF175F /* SRGActivityGestureRecognizer.h */,
+				6FCA169C23E829440015B23E /* SRGMediaAccessibility.h */,
+				6FCA169D23E829440015B23E /* SRGMediaAccessibility.m */,
 				6F5CA4261FD91A1D00CF175F /* SRGActivityGestureRecognizer~ios.m */,
 				6F5CA4281FD91A1D00CF175F /* SRGMediaPlayerConstants.h */,
 				6F5CA4311FD91A1D00CF175F /* SRGMediaPlayerConstants.m */,
@@ -832,6 +844,7 @@
 				6F5CA4201FD919CD00CF175F /* SRGMediaPlaybackSceneView.h in Headers */,
 				6FBA837B22C4909300AFAF8B /* SRGRouteDetector.h in Headers */,
 				6F5CA43D1FD91A1D00CF175F /* SRGSegment.h in Headers */,
+				6FCA169E23E829440015B23E /* SRGMediaAccessibility.h in Headers */,
 				6F5CA40F1FD919CD00CF175F /* SRGMediaPlayerController.h in Headers */,
 				6F5CA4381FD91A1D00CF175F /* SRGMediaPlayerConstants.h in Headers */,
 				6F2556D2212FBF63004C8F9A /* SRGPosition.h in Headers */,
@@ -844,6 +857,7 @@
 				6F5CA3FE1FD919CD00CF175F /* AVAudioSession+SRGMediaPlayer.h in Headers */,
 				6F5CA3FF1FD919CD00CF175F /* UIScreen+SRGMediaPlayer.h in Headers */,
 				6F5CA43F1FD91A1D00CF175F /* SRGActivityGestureRecognizer.h in Headers */,
+				6F5294C3240410EC008516C5 /* AVMediaSelectionGroup+SRGMediaPlayer.h in Headers */,
 				6F5CA3EC1FD919CD00CF175F /* NSBundle+SRGMediaPlayer.h in Headers */,
 				6F859F40230A9E1600ECE021 /* SRGMediaPlayerViewController.h in Headers */,
 				6F5CA3F21FD919CD00CF175F /* MPVolumeView+SRGMediaPlayer.h in Headers */,
@@ -1108,6 +1122,7 @@
 				6F5CA3F81FD919CD00CF175F /* NSBundle+SRGMediaPlayer.m in Sources */,
 				081A1C1B225CF6E80006D446 /* SRGMediaPlayerTimerTarget.m in Sources */,
 				6FE0034C22EF2D7C00E07977 /* SRGMediaPlayerNavigationController~ios.m in Sources */,
+				6F5294C4240410EC008516C5 /* AVMediaSelectionGroup+SRGMediaPlayer.m in Sources */,
 				6F5CA3F91FD919CD00CF175F /* MPVolumeView+SRGMediaPlayer.m in Sources */,
 				6F9643D421307920003C6612 /* SRGAirPlayView~ios.m in Sources */,
 				6F5CA3F51FD919CD00CF175F /* UIScreen+SRGMediaPlayer.m in Sources */,
@@ -1136,6 +1151,7 @@
 				6F5CA3F31FD919CD00CF175F /* AVAudioSession+SRGMediaPlayer.m in Sources */,
 				6F5CA3F41FD919CD00CF175F /* UIDevice+SRGMediaPlayer.m in Sources */,
 				6F5CA41A1FD919CD00CF175F /* SRGMediaPlayerView.m in Sources */,
+				6FCA169F23E829440015B23E /* SRGMediaAccessibility.m in Sources */,
 				6FC1C74E22BCD29D00D55625 /* NSTimer+SRGMediaPlayer.m in Sources */,
 				E6C9860F1D6F458900C45C7A /* SRGTimeSlider~ios.m in Sources */,
 				6F5CA3F71FD919CD00CF175F /* MAKVONotificationCenter+SRGMediaPlayer.m in Sources */,

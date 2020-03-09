@@ -177,10 +177,9 @@ NS_ASSUME_NONNULL_BEGIN
  *    - KVO, for properties offering support for it, e.g. `timeRange`, `mediaType` or `streamType`.
  *    - Usual boundary time and periodic time observers, which you define on the `AVPlayer` instance directly by accessing
  *      the `player` property. You should use the player creation and destruction blocks to install and remove them reliably.
- *    - `AVPlayer` periodic time observers only trigger when the player actually plays. In some cases, you still want to
- *      perform periodic updates even when playback is paused (e.g. updating the user interface while a DVR stream is paused).
- *      For such use cases, `SRGMediaPlayerController` provides the `-addPeriodicTimeObserverForInterval:queue:usingBlock:`
- *      method, with which such observers can be defined. These observers being managed by the controller, you can set them
+ *    - Periodic time observers, added with `-addPeriodicTimeObserverForInterval:queue:usingBlock:`. These are identical to
+ *      the ones provided with `AVPlayer`, with the improvement that they also fire with time range updates. This ensures
+ *      updates are received for paused DVR streams as well. These observers being managed by the controller, you can set them
  *      up right after controller creation if you like.
  *
  *  In general, you should prefer notifications and KVO to periodic observers with short periodicity where possible, as
@@ -234,6 +233,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, nullable) IBOutlet SRGMediaPlayerView *view;
 
+/**
+ *  The rules for subtitle appearance customization.
+ *
+ *  @discussion Customization has some limitations, @see `-[AVPlayerItem textStyleRules]` documentation for more information.
+ */
+@property (nonatomic, copy, nullable) NSArray<AVTextStyleRule *> *textStyleRules;
+
 @end
 
 /**
@@ -268,38 +274,41 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)reloadPlayerConfiguration;
 
+@end
+
 /**
- *  Reload the player configuration with a new configuration block. Any previously existing configuration block is
- *  replaced.
+ *  @name Media configuration (audio tracks and subtitles).
+ */
+
+@interface SRGMediaPlayerController (MediaConfiguration)
+
+/**
+ *  Optional block which can be used to set the audio option to apply. Only called if audio options have been detected.
+ *  If no block is provided a default choice is applied.
  *
- *  @discussion If the player has not been created yet, the block is set but not called.
+ *  @discussion The default option is provided as additional parameter. If your implementation cannot find a proper
+ *              match, return this value (not `nil` which is prohibited as return value).
  */
-- (void)reloadPlayerConfigurationWithBlock:(nullable void (^)(AVPlayer *player))block;
+@property (nonatomic, copy, nullable) AVMediaSelectionOption * (^audioConfigurationBlock)(NSArray<AVMediaSelectionOption *> *audioOptions, AVMediaSelectionOption *defaultAudioOption);
 
 /**
- *  @name Media configurationn (audio track and subtitle customization).
+ *  Optional block which can be used to set the subtitle option to apply. Only called if subtitle options have been
+ *  detected. If no block is provided a default choice is applied, based on current `MediaAccessibility` settings.
+ *
+ *  The `subtitleOptions` list contains unforced subtitles only (subtitles / closed caption). No additional filtering
+ *  is required.
+ *
+ *  @discussion The default option is provided as additional parameter. You can use it in your implementation if you
+ *              need the default behavior to be applied in some cases. The selected audio option is also provided as
+ *              parameter if you need subtitle selection to be different depending on the audio track chosen.
  */
-
-/**
- *  Optional block which gets called once media information has been loaded, and which can be used to customize
- *  audio or subtitle selection, as well as subtitle appearance.
- */
-@property (nonatomic, copy, nullable) void (^mediaConfigurationBlock)(AVPlayerItem *playerItem, AVAsset *asset);
+@property (nonatomic, copy, nullable) AVMediaSelectionOption * _Nullable (^subtitleConfigurationBlock)(NSArray<AVMediaSelectionOption *> *subtitleOptions, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption);
 
 /**
  *  Reload media configuration by calling the associated block, if any. Does nothing if the media has not been loaded
- *  yet. If there is no configuration block defined, calling this method applies the default selection options for
- *  audio and subtitles, and removes any subtitle styling which might have been applied.
+ *  yet.
  */
 - (void)reloadMediaConfiguration;
-
-/**
- *  Reload the player configuration with a new configuration block. Any previously existing configuration block is
- *  replaced.
- *
- *  @discussion If the media has not been loaded yet, the block is set but not called.
- */
-- (void)reloadMediaConfigurationWithBlock:(nullable void (^)(AVPlayerItem *playerItem, AVAsset *asset))block;
 
 @end
 
@@ -508,9 +517,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMediaPlayerController (TimeObservers)
 
 /**
- *  Register a block for periodic execution when the player is not idle (unlike usual `AVPlayer` time observers which do
- *  not run when playback has been paused). This makes such observers very helpful when UI must be updated continously 
- *  when the player is up, for example in the case of paused DVR streams.
+ *  Register a block for periodic execution when the player is active. You should in general prefer this method to its
+ *  `AVPlayer` counterpart, as such observers ensure updates are also received properly for paused DVR streams.
  *
  *  @param interval Time interval between block executions.
  *  @param queue    The serial queue onto which block should be enqueued (main queue if `NULL`).
@@ -751,6 +759,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  AirPlay. Use player lifecycle blocks (see main `SRGMediaPlayerController` documentation) to setup AirPlay behavior.
  *  Your audio session settings must be compatible with AirPlay, see
  *      https://developer.apple.com/library/content/qa/qa1803/_index.html
+ *  When implementing player configuration blocks, do not (even briefly) set `externalPlayback` to `NO` if AirPlay
+ *  external playback was active and the behavior is supposed to stay so. Only change from `YES` to `NO` when you
+ *  intend to stop and disable AirPlay external playback. Failing to do so will lead to brief unnecessary AirPlay
+ *  interruptions, which you want to avoid.
+ *
+ *  Warning: If you want users to reliably enable AirPlay playback also from the control center, you should use
+ *           `SRGAirPlayButton` with your player layout, or integrate `MPRemoteCommandCenter`. These ensures your
+ *           application is the current one registered with the control center when the user interacts with it, so
+ *           that playback can actually be sent to an AirPlay receiver. If your application is not the current one
+ *           at the moment the route is changed in the control center, playback will stay local.
  *
  *  Remark: Even if `allowsExternalPlayback` is set to `NO`, sound will still play on an external device if selected, only
  *          the visual tracks of a media won't be played. This is normal expected AirPlay behavior, and this is also how
@@ -784,7 +802,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Behavior of the associated view when the application is moved to the background. Use detached behaviors to avoid video
- *  playback being automatically paused.
+ *  playback being automatically paused in the background. Note that in order for this to work your `AVAudioSession` category
+ *  must be set to `AVAudioSessionCategoryPlayback`.
  *
  *  This setting does not affect picture in picture or AirPlay playbacks, audio playback (allowed in background) or 360°
  *  playback (always paused during the transition).
@@ -810,6 +829,18 @@ NS_ASSUME_NONNULL_BEGIN
  *          enabled in the system settings). This is the only case where switching to picture in picture can be made
  *          automatically. Picture in picture must always be user-triggered, otherwise you application might get rejected
  *          by Apple (@see `AVPictureInPictureController` documentation).
+ *
+ *  Warning: If you plan to implement restoration from picture in picture, you must avoid usual built-in iOS modal
+ *           presentations, as they are implemented using `UIPercentDrivenInteractiveTransition`. You must use a
+ *           custom modal transition instead and avoid implementing it using `UIPercentDrivenInteractiveTransition`.
+ *           The reason is that `UIPercentDrivenInteractiveTransition` varies the time offset of a layer and thus
+ *           messes up with the player local time. This makes picture in picture restoration unreliable (sometimes it
+ *           works, sometimes it does not and the animation is ugly).
+ *
+ *           Picture in picture also temporarily disables external playback for the associated player. You should not
+ *           attempt to change this property while picture in playback is running, otherwise the behavior is undefined.
+ *           When picture in picture playback starts or stops, the configuration block (if any) is called so that the
+ *           player configuration can be properly setup and restored.
  */
 @interface SRGMediaPlayerController (PictureInPicture)
 

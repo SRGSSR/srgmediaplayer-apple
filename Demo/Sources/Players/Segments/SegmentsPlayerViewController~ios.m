@@ -6,7 +6,6 @@
 
 #import "SegmentsPlayerViewController.h"
 
-#import "ModalTransition.h"
 #import "Resources.h"
 #import "SegmentCollectionViewCell.h"
 
@@ -28,8 +27,6 @@
 
 @property (nonatomic, weak) IBOutlet UISwitch *externalPlaybackSwitch;
 
-@property (nonatomic) ModalTransition *interactiveTransition;
-
 @end
 
 @implementation SegmentsPlayerViewController
@@ -50,8 +47,8 @@
 {
     [super awakeFromNib];
     
-    // Use a custom transition, some subtle issues were discovered with incorrect implementations, when animated
-    // view controllers have an AVPlayer somewhere.
+    // Do not use standard presentation animations, `UIPercentDrivenInteractiveTransition`-based, which change the
+    // player offset and interfere with normal behavior (paused playback, broken picture in picture restoration).
     self.transitioningDelegate = self;
 }
 
@@ -138,22 +135,6 @@
     [self updateAppearanceWithTime:self.timelineSlider.time];
 }
 
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
-{
-    return [[ModalTransition alloc] initForPresentation:YES];
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
-{
-    return [[ModalTransition alloc] initForPresentation:NO];
-}
-
-- (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
-{
-    // Return the installed interactive transition, if any
-    return self.interactiveTransition;
-}
-
 #pragma mark Actions
 
 - (IBAction)dismiss:(id)sender
@@ -164,58 +145,6 @@
 - (IBAction)toggleExternalPlayback:(id)sender
 {
     self.mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive = self.externalPlaybackSwitch.on;
-}
-
-#pragma mark Gesture recognizers
-
-- (IBAction)pullDown:(UIPanGestureRecognizer *)panGestureRecognizer
-{
-    CGFloat progress = [panGestureRecognizer translationInView:self.view].y / CGRectGetHeight(self.view.frame);
-    
-    switch (panGestureRecognizer.state) {
-        case UIGestureRecognizerStateBegan: {
-            // Avoid duplicate dismissal (which can make it impossible to dismiss the view controller altogether)
-            if (self.interactiveTransition) {
-                return;
-            }
-            
-            // Install the interactive transition animation before triggering it
-            self.interactiveTransition = [[ModalTransition alloc] initForPresentation:NO];
-            [self dismissViewControllerAnimated:YES completion:^{
-                // Only stop tracking the interactive transition at the very end. The completion block is called
-                // whether the transition ended or was cancelled
-                self.interactiveTransition = nil;
-            }];
-            break;
-        }
-            
-        case UIGestureRecognizerStateChanged: {
-            [self.interactiveTransition updateInteractiveTransitionWithProgress:progress];
-            break;
-        }
-            
-        case UIGestureRecognizerStateFailed:
-        case UIGestureRecognizerStateCancelled: {
-            [self.interactiveTransition cancelInteractiveTransition];
-            break;
-        }
-            
-        case UIGestureRecognizerStateEnded: {
-            // Finish the transition if the view was dragged by 20% and the user is dragging downwards
-            CGFloat velocity = [panGestureRecognizer velocityInView:self.view].y;
-            if ((progress <= 0.5f && velocity > 1000.f) || (progress > 0.5f && velocity > -1000.f)) {
-                [self.interactiveTransition finishInteractiveTransition];
-            }
-            else {
-                [self.interactiveTransition cancelInteractiveTransition];
-            }
-            break;
-        }
-            
-        default: {
-            break;
-        }
-    }
 }
 
 #pragma mark Notifications

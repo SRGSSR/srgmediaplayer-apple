@@ -1,3 +1,9 @@
+/* Entry displayed in the subtitle list to identify the last selected language */
+"%@ (Current default)" = "%@ (choix actuel)";
+
+/* Recommended option (Auto) to let subtitles be automatically selected based on user settings */
+"%@ (Recommended)" = "%@ (recommandé)";
+
 /* AirPlay device description on which device the media is played if no name provided by the system. Use with \"This media is playing on %@\" */
 "an external device" = "un appareil externe";
 
@@ -8,11 +14,18 @@
    Title of the pop over view to select audio or subtitles */
 "Audio and Subtitles" = "Audio et sous-titres";
 
-/* Recommended option to let subtitles be automatically selected based on user settings */
-"Auto (Recommended)" = "Automatique (recommandé)";
+/* Automatic option title to let subtitles be automatically selected based on user settings
+   Automatic option title to let subtitles be automatically selected based on user settings */
+"Auto" = "Automatique";
+
+/* Information displayed for unavailable subtitle languages */
+"Language not available for this content" = "Langue non disponible pour ce contenu";
 
 /* Very short text on left time label when playing a live stream */
 "Live" = "En direct";
+
+/* Label displayed when no subtitles have been selected in automatic mode */
+"None" = "Aucun";
 
 /* Option to disable subtitles */
 "Off" = "Désactivé";
@@ -26,5 +39,14 @@
 /* Error message when the media cannot be played due to a technical error. */
 "The media cannot be played" = "Le contenu ne peut être joué";
 
+/* Fallback for unknown languages */
+"Unknown language" = "Langue inconnue";
+
+/* Instructions for subtitles auto option */
+"When '%@' is enabled, and if the selected audio track language differs from the device settings, subtitles or Closed Captions might be displayed automatically." = "Lorsque \"%@\" est activé, si la langue audio sélectionnée diffère de celle de l'appareil, des sous-titres peuvent s'afficher automatiquement.";
+
 /* Instructions for subtitles customization */
-"You can adjust subtitle appearance and automatic selection behavior in the Accessibility section of the Settings application." = "Vous pouvez ajuster l’apparence et la sélection automatique des sous-titres dans la section Accessibilité de l’application Réglages.";
+"You can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings." = "Vous pouvez ajuster l’apparence et la sélection automatique des sous-titres et sous-titres pour sourds et malentendants dans les réglages d'accessibilité.";
+
+/* Instructions for audio customization */
+"You can enable Audio Description automatic selection in the Accessibility settings." = "Vous pouvez ajuster la sélection automatique de l'audio description dans les réglages d'accessibilité.";

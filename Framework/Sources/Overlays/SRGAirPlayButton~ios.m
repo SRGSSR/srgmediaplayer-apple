@@ -61,6 +61,7 @@ static void commonInit(SRGAirPlayButton *self);
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (_mediaPlayerController) {
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.allowsExternalPlayback)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.externalPlaybackActive)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.usesExternalPlaybackWhileExternalScreenIsActive)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.mediaType)];
@@ -81,6 +82,11 @@ static void commonInit(SRGAirPlayButton *self);
     
     if (mediaPlayerController) {
         @weakify(self)
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.allowsExternalPlayback) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
+            [self updateAppearance];
+        }];
+        
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.player.externalPlaybackActive) options:0 block:^(MAKVONotification * _Nonnull notification) {
             @strongify(self)
             [self updateAppearance];
@@ -217,7 +223,7 @@ static void commonInit(SRGAirPlayButton *self);
     UIButton *airPlayButton = nil;
     
     SRGMediaPlayerMediaType mediaType = mediaPlayerController.mediaType;
-    UIImage *image = (mediaType == SRGMediaPlayerMediaTypeVideo) ? self.videoImage : self.audioImage;
+    UIImage *image = (mediaType == SRGMediaPlayerMediaTypeVideo && mediaPlayerController.player.allowsExternalPlayback) ? self.videoImage : self.audioImage;
     
     // `AVRoutePickerView` is a button with no image, with layers representing the AirPlay icon instead. If we need
     // to display an image the original icon layers needs to be hidden first.
@@ -260,8 +266,7 @@ static void commonInit(SRGAirPlayButton *self);
         self.hidden = YES;
     }
     else if (mediaPlayerController) {
-        BOOL allowsAirPlayPlayback = mediaPlayerController.mediaType != SRGMediaPlayerMediaTypeVideo || mediaPlayerController.allowsExternalNonMirroredPlayback;
-        if (multipleRoutesDetected() && allowsAirPlayPlayback) {
+        if (multipleRoutesDetected()) {
             self.hidden = NO;
         }
         else {
@@ -308,6 +313,13 @@ static void commonInit(SRGAirPlayButton *self);
     
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
+    
+    if (@available(iOS 11, *)) {
+        self.routePickerView.hidden = YES;
+    }
+    else {
+        self.volumeView.hidden = YES;
+    }
 }
 
 #pragma mark Accessibility

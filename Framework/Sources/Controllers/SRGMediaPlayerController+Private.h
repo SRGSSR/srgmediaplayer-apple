@@ -28,6 +28,28 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)unbindFromCurrentPlayerViewController;
 
+/**
+ *  Select an option in the group having the specified characteristic.
+ */
+- (void)selectMediaOption:(nullable AVMediaSelectionOption *)option inMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic;
+
+/**
+ *  Perform automatic option selection in the group having the specified characteristic.
+ */
+- (void)selectMediaOptionAutomaticallyInMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic;
+
+/**
+ *  Return the selected option in the group having the specified characteristic, if any.
+ */
+- (nullable AVMediaSelectionOption *)selectedMediaOptionInMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic;
+
+/**
+ *  Return `YES` iff the current subtitle selection matches the one expected for automatic mode.
+ *
+ *  @discussion This method can return `YES` even if automatic mode is not active.
+ */
+@property (nonatomic, readonly) BOOL matchesAutomaticSubtitleSelection;
+
 @end
 
 NS_ASSUME_NONNULL_END

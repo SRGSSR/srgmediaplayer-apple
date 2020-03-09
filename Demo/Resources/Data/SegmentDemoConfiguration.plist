@@ -214,108 +214,108 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>Real example (19h30 2016 09 06)</string>
+			<string>Real example (19h30 2020 01 06)</string>
 			<key>url</key>
-			<string>http://stream-i.akamaihd.net/i/tj/2016/tj_20160905_full_f_965656-,101,301,701,1201,k.mp4.csmil/master.m3u8</string>
+			<string>https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2020/4c9b662de33d7a84ce8fba6f9077849a/journ-19h30_20200106_full_,lr3,lr2,lr1,sd,hd,fhd,.mp4.csmil/master.m3u8?caption=journ-19h30/2020/4c9b662de33d7a84ce8fba6f9077849a/journ-19h30_20200106_full_fra.m3u8:fra:Fran%C3%A7ais:sdh</string>
 			<key>segments</key>
 			<array>
 				<dict>
 					<key>name</key>
-					<string>L&apos;entrepreneur Pascal Jaussi a été retrouvé gravement blessé et brûlé après une agression violente</string>
+					<string>Heure de vérité pour Harvey Weinstein, symbole de la prédation sexuelle. Il comparaît devant un tribunal de New York.</string>
 					<key>startTime</key>
-					<integer>95640</integer>
+					<integer>112840</integer>
 					<key>duration</key>
-					<integer>120600</integer>
+					<integer>142440</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>GE: le Grand Conseil a reconstitué les faits de la manifestation sauvage qui avait dégénéré fin 2015</string>
+					<string>Raphaël Grand : &quot;Dans ce procès il y a toute la symbolique du mouvement &quot;#metoo&quot; et le système des prédateurs sexuels.</string>
 					<key>startTime</key>
-					<integer>216520</integer>
+					<integer>255280</integer>
 					<key>duration</key>
-					<integer>110480</integer>
+					<integer>110960</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>L’efficacité du Baclofène pour lutter contre l’alcoolisme a été démontrée scientifiquement</string>
+					<string>Lorella Bertani, avocate &quot;La mentalité a changé, on comprend que ces femmes parlent de choses graves, de violences.&quot;</string>
 					<key>startTime</key>
-					<integer>327120</integer>
+					<integer>366240</integer>
 					<key>duration</key>
-					<integer>121440</integer>
+					<integer>204360</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>VD: Pierre-Yves Maillard ouvre le jeu électoral et se déclare disponible pour un nouveau mandat</string>
+					<string>100&apos;000 personnes évacuées, plus de 49 degrés à Sydney... que se passe-t-il véritablement en Australie ?</string>
 					<key>startTime</key>
-					<integer>448760</integer>
+					<integer>570600</integer>
 					<key>duration</key>
-					<integer>130360</integer>
+					<integer>113800</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>Entretien avec Pierre-Yves Maillard, président du gouvernement vaudois</string>
+					<string>Une foule immense a participé aux funérailles du général Soleimani alors que le monde est inquiet des suites de l&apos;assassinat.</string>
 					<key>startTime</key>
-					<integer>579280</integer>
+					<integer>691400</integer>
 					<key>duration</key>
-					<integer>340560</integer>
+					<integer>128000</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>Votation: la loi sur le renseignement donnerait des moyens d’écoute des candidats présumés au djihad</string>
+					<string>En Suisse la politique s&apos;empare du scandale de la Dépakine. Le monde médical est épinglé.</string>
 					<key>startTime</key>
-					<integer>939040</integer>
+					<integer>977200</integer>
 					<key>duration</key>
-					<integer>145600</integer>
+					<integer>154200</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>Cahuzac affirme avoir ouvert un compte en Suisse pour financer l’activité politique de Michel Rocard</string>
+					<string>Garde d&apos;enfants malades, le casse-tête des congés. Le secteur public est souvent moins généreux que le privé.</string>
 					<key>startTime</key>
-					<integer>1084840</integer>
+					<integer>1131400</integer>
 					<key>duration</key>
-					<integer>140080</integer>
+					<integer>190000</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>Allemagne: Angela Merkel se voit menacée par la percée des populistes de l’AFD</string>
+					<string>Elections municipales à Genève: les ambitions de reconquête de la droite souffrent des divisions internes.</string>
 					<key>startTime</key>
-					<integer>1225240</integer>
+					<integer>1321400</integer>
 					<key>duration</key>
-					<integer>148800</integer>
+					<integer>135000</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>Allemagne / Succès électoral des populistes de l’AFD: les précisions de Marion Van Renterghem, écrivain et journaliste, à Paris</string>
+					<string>Platzspitz, Letten, les célèbres scènes ouvertes de la drogue. Une sombre époque désormais sous forme artistique.</string>
 					<key>startTime</key>
-					<integer>1374160</integer>
+					<integer>1482480</integer>
 					<key>duration</key>
-					<integer>240400</integer>
+					<integer>160840</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>
 				<dict>
 					<key>name</key>
-					<string>L’instant politique: les entreprises de presse sont au cœur du débat sur la publicité de l’EPFL</string>
+					<string>Série &quot;Enjeux 2020&quot;: Les grèves du climat vont-elles se reproduire ? Rencontre entre un jeune PLR et un gréviste du climat.</string>
 					<key>startTime</key>
-					<integer>1616840</integer>
+					<integer>1643320</integer>
 					<key>duration</key>
-					<integer>265000</integer>
+					<integer>180800</integer>
 					<key>blocked</key>
 					<false/>
 				</dict>

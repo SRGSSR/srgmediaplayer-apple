@@ -102,6 +102,10 @@ To add basic AirPlay support to your application, you can for example:
 
 You can also drop an `SRGAirPlayButton` onto your layout (displayed only when AirPlay is available) or an `SRGAirPlayView` (displaying the current route when AirPlay is active).
 
+#### Warning
+
+If you want users to reliably enable AirPlay playback also from the control center, you should use `SRGAirPlayButton` with your player layout, or integrate `MPRemoteCommandCenter`. These ensures your application is the current one registered with the control center when the user interacts with it, so that playback can actually be sent to an AirPlay receiver. If your application is not the current one at the moment the route is changed in the control center, playback will stay local.
+
 ## Audio session management
 
 No audio session specific management is provided by the library. Managing audio sessions is entirely the responsibility of the application, which gives you complete freedom over how playback happens, especially in the background or when switching between applications. As for AirPlay setup (see above), you can use the various block hooks to setup and restore audio session settings as required by your application.
@@ -118,44 +122,47 @@ Moreover, you should check that your application behaves well when receiving pho
 
 ## Control center integration (iOS)
 
-For proper integration into the control center and the lock screen, use the `MPRemoteCommandCenter` class. For everything to work properly on a device, `[UIApplication.sharedApplication beginReceivingRemoteControlEvents]` must have been called first (e.g. in your application delegate) and your audio session category should be set to `AVAudioSessionCategoryPlayback`. For more information, please refer to the `MPRemoteCommandCenter` documentation.
+For proper integration into the control center and the lock screen, use the `MPRemoteCommandCenter` class and set your audio session category to `AVAudioSessionCategoryPlayback`. For more information, please refer to the `MPRemoteCommandCenter` documentation.
 
 Note that control center integration does not work in the iOS simulator, you will need a real device for tests.
 
+#### Warning
+
+Do not use `[UIApplication.sharedApplication beginReceivingRemoteControlEvents]`. This would result in control center playback buttons flickering between states.
+
 ## Subtitles and audio tracks
 
-On iOS, SRG Media Player provides a built-in `SRGTracksButton` which, when added to a player layout and bound to a media player controller, is displayed when several audio or subtitle options are detected. Tapping on this button lets the user choose one of the options provided by the media being played. 
+SRG Media Player provides on iOS a built-in `SRGTracksButton` which, when added to a player layout and bound to a media player controller, is displayed when audio or subtitle options are detected. Tapping on this button lets the user choose one of the options provided by the media being played. 
 
-Subtitle choice made by tapping this button is persisted at the system level, and will be reapplied in subsequent playback contexts, e.g. when playing another media with `SRGMediaPlayerController`, `AVPlayerViewController` or even Safari. Please refer to the [official documentation](https://developer.apple.com/documentation/mediaaccessibility) for more information.
+Subtitle choice made using this button is persisted at the system level, and will be reapplied in subsequent playback contexts, e.g. when playing another media with `SRGMediaPlayerController`, `AVPlayerViewController` or even Safari. Conversely, choices made in other playback contexts will also determine the initial default audio and subtitle selection for `SRGMediaPlayerController`. Please refer to the [official MediaAccessibility framework documentation](https://developer.apple.com/documentation/mediaaccessibility) for more information.
 
 On tvOS, the standard media player provides a top panel to change subtitles and audio tracks. No dedicated button is required, and thus none is made available by the framework.
 
-You can programmatically control subtitles and audio tracks by assigning a `mediaConfigurationBlock` block to a controller. This block gets called when playback starts, once the media `AVAsset` is safe for media selection option inspection. When implementing this block, you can use the supplied `AVAsset` and `AVPlayerItem` objects to look for other legible and audible options, and to apply the ones you want. Here is for example how you would apply French subtitles if available:
+You can programmatically control subtitles and audio tracks by setting `audioConfigurationBlock` and `subtitleConfigurationBlock` blocks on the controller. These blocks get called when playback starts, once the media `AVAsset` is safe for media selection option inspection. Here is for example how you would apply German audio and French subtitles if available:
 
 ```objective-c
-self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
-    AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+self.mediaPlayerController.audioConfigurationBlock = ^AVMediaSelectionOption * _Nonnull(NSArray<AVMediaSelectionOption *> * _Nonnull audioOptions, AVMediaSelectionOption * _Nonnull defaultAudioOption) {
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"];
+    }];
+    return [audioOptions filteredArrayUsingPredicate:predicate].firstObject ?: defaultAudioOption;
+};
+self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(NSArray<AVMediaSelectionOption *> * _Nonnull subtitleOptions, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption) {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"fr"];
     }];
-    NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-    AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
-    if (option) {
-        [playerItem selectMediaOption:option inMediaSelectionGroup:group];
-    }
+    return [subtitleOptions filteredArrayUsingPredicate:predicate].firstObject ?: defaultSubtitleOption;
 };
 ``` 
 
-Please refer to the [official documentation](https://developer.apple.com/documentation/avfoundation/media_assets_playback_and_editing/adding_subtitles_and_alternative_audio_tracks) for more information about asset media selection options.
+If for some reason the audio and / or subtitle choice must be updated during playback, call `-[SRGMediaPlayerController reloadMediaConfiguration]` so that these blocks get called again.
 
-Note that you can use the same block to apply subtitle styling as well:
+You can also customize subtitle styling as well if needed:
 
 ```objective-c
-self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
-    AVTextStyleRule *rule = [[AVTextStyleRule alloc] initWithTextMarkupAttributes:@{ (id)kCMTextMarkupAttribute_ForegroundColorARGB : @[ @1, @1, @0, @0 ],
-                                                                                     (id)kCMTextMarkupAttribute_ItalicStyle : @(YES)}]; 
-    playerItem.textStyleRules = @[rule];
-};
+AVTextStyleRule *rule = [[AVTextStyleRule alloc] initWithTextMarkupAttributes:@{ (id)kCMTextMarkupAttribute_ForegroundColorARGB : @[ @1, @1, @0, @0 ],
+                                                                                 (id)kCMTextMarkupAttribute_ItalicStyle : @(YES)}];
+self.mediaPlayerController.textStyleRules = @[rule];
 ``` 
 
 ## Custom resource loading and FairPlay support

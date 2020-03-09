@@ -10,13 +10,38 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Forward declarations
+@class SRGPlaybackButton;
+
 /**
  *  Possible button states.
  */
 typedef NS_ENUM(NSInteger, SRGPlaybackButtonState) {
-    SRGPlaybackButtonStatePlay,
-    SRGPlaybackButtonStatePause
+    SRGPlaybackButtonStatePlay,         // The button is in a state where pressing it should trigger a play (displays a play icon by default).
+    SRGPlaybackButtonStatePause         // The button is in a state where pressing it should trigger a pause (displays a pause icon by default).
 };
+
+/**
+ *  Playack button delegate protocol for customization.
+ */
+API_UNAVAILABLE(tvos)
+@protocol SRGPlaybackButtonDelegate <NSObject>
+
+@optional
+
+/**
+ *  If implementd, replaces the default action bound to the button (a call to `-togglePlayPause` for the associated
+ *  controller). The current state the button is in is provided as parameter.
+ */
+- (void)playbackButton:(SRGPlaybackButton *)playbackButton didPressInState:(SRGPlaybackButtonState)state;
+
+/**
+ *  If implemented, may return the accessibility label to be used for the provided state. If not implemented,
+ *  or if the method returns `nil` for some state, the default label is used.
+ */
+- (nullable NSString *)playbackButton:(SRGPlaybackButton *)playbackButton accessibilityLabelForState:(SRGPlaybackButtonState)state;
+
+@end
 
 /**
  *  A play / pause button whose status is automatically synchronized with the media player controller it is attached
@@ -50,6 +75,11 @@ API_UNAVAILABLE(tvos)
  *  The tint color to apply when the button is highlighted (if nil, then the tint color is applied).
  */
 @property (nonatomic, null_resettable) IBInspectable UIColor *highlightedTintColor;
+
+/**
+ *  The button customization delegate.
+ */
+@property (nonatomic, weak) id<SRGPlaybackButtonDelegate> delegate;
 
 @end
 

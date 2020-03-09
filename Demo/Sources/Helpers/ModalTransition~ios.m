@@ -21,6 +21,8 @@
 
 @implementation ModalTransition
 
+#pragma mark Object lifecycle
+
 - (instancetype)initForPresentation:(BOOL)presentation
 {
     if (self = [super init]) {
@@ -33,6 +35,13 @@
 {
     [self doesNotRecognizeSelector:_cmd];
     return [self initForPresentation:YES];
+}
+
+#pragma mark Getters and setters
+
+- (BOOL)wasCancelled
+{
+    return self.transitionContext.transitionWasCancelled;
 }
 
 #pragma mark Common transition implementation

@@ -8,6 +8,10 @@
 
 @implementation AVPlayerItem (SRGMediaPlayer)
 
+/**
+ *  Same as `-selectedMediaOptionInMediaSelectionGroup:`.
+ */
+// TODO: Remove when iOS 11 is the minimum deployment target
 - (AVMediaSelectionOption *)srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup
 {
 #if TARGET_OS_TV

@@ -6,10 +6,12 @@
 
 #import "MediaPlayerBaseTestCase.h"
 #import "Segment.h"
-#import "SRGSegment+Private.h"
 #import "TestMacros.h"
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
+
+// Private headers
+#import "SRGSegment+Private.h"
 
 static NSURL *SegmentsTestURL(void)
 {

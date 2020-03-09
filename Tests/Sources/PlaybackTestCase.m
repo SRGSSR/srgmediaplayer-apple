@@ -788,20 +788,20 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"de");
+        return YES;
+    }];
     
-    self.mediaPlayerController.mediaConfigurationBlock = ^(AVPlayerItem * _Nonnull playerItem, AVAsset * _Nonnull asset) {
-        AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+    self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(NSArray<AVMediaSelectionOption *> * _Nonnull subtitleOptions, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"fr"];
+            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"];
         }];
-        NSArray<AVMediaSelectionOption *> *options = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:group.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-        AVMediaSelectionOption *option = [options filteredArrayUsingPredicate:predicate].firstObject;
-        if (option) {
-            [playerItem selectMediaOption:option inMediaSelectionGroup:group];
-        }
+        return [subtitleOptions filteredArrayUsingPredicate:predicate].firstObject ?: defaultSubtitleOption;
     };
     
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2019/journ-19h30_20190603_full_ca7d9d68-58aa-4acd-b2e5-a6af7470bc8d-,301k,701k,1201k,2001k,3501k,6001k,.mp4.csmil/master.m3u8?caption=journ-19h30/2019/journ-19h30_20190603_full_500048834.m3u8:fra:Fran%C3%A7ais&start=267.36&end=387.36"];
+    NSURL *URL = [NSURL URLWithString:@"https://srfvodhd-vh.akamaihd.net/i/vod/10vor10/2020/02/10vor10_20200226_215000_19794538_v_webcast_h264_,q40,q10,q20,q30,q50,q60,.mp4.csmil/master.m3u8?start=527.04&end=687.56&caption=srf%2F7a4a3dd2-f470-4eab-af9a-efd9dbaad345%2Fepisode%2Fde%2Fvod%2Fvod.m3u8:de:Deutsch:sdh&webvttbaseurl=www.srf.ch%2Fsubtitles"];
     [self.mediaPlayerController playURL:URL];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -813,7 +813,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))] withCompletionHandler:nil];
     
-    [self waitForExpectationsWithTimeout:8. handler:nil];
+    [self waitForExpectationsWithTimeout:20. handler:nil];
 }
 
 - (void)testLivePause
@@ -835,6 +835,19 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self.mediaPlayerController pause];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+}
+
+- (void)testMediaTypeTransitionDuringPreparation
+{
+    XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeUnknown);
+    
+    [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, mediaType) expectedValue:nil];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.mediaType, SRGMediaPlayerMediaTypeVideo);
 }
 
 - (void)testMediaInformationWhenPreparingToPlay
@@ -2095,9 +2108,10 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     XCTestExpectation *configurationReloadExpectation = [self expectationWithDescription:@"Configuration reloaded"];
-    [self.mediaPlayerController reloadPlayerConfigurationWithBlock:^(AVPlayer * _Nonnull player) {
+    self.mediaPlayerController.playerConfigurationBlock = ^(AVPlayer * _Nonnull player) {
         [configurationReloadExpectation fulfill];
-    }];
+    };
+    [self.mediaPlayerController reloadPlayerConfiguration];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
@@ -2552,6 +2566,45 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     XCTAssertTrue(CMTIME_COMPARE_INLINE(self.mediaPlayerController.currentTime, ==, CMTimeMakeWithSeconds(1700., NSEC_PER_SEC)));
+}
+
+- (void)testReadyForDisplayForFlatView
+{
+    XCTAssertFalse(self.mediaPlayerController.view.readyForDisplay);
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:1700.] withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertTrue(self.mediaPlayerController.view.readyForDisplay);
+    
+    [self.mediaPlayerController reset];
+    
+    XCTAssertFalse(self.mediaPlayerController.view.readyForDisplay);
+}
+
+- (void)testReadyForDisplayForMonoscopicView
+{
+    XCTAssertFalse(self.mediaPlayerController.view.readyForDisplay);
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    self.mediaPlayerController.view.viewMode = SRGMediaPlayerViewModeMonoscopic;
+    [self.mediaPlayerController playURL:OnDemandTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:1700.] withSegments:nil userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertTrue(self.mediaPlayerController.view.readyForDisplay);
+    
+    [self.mediaPlayerController reset];
+    
+    XCTAssertFalse(self.mediaPlayerController.view.readyForDisplay);
 }
 
 @end

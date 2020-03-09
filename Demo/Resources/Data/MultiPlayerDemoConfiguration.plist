@@ -6,15 +6,15 @@
 	<array>
 		<dict>
 			<key>name</key>
-			<string>Tagesschau</string>
+			<string>Apple Advanced Stream (HEVC)</string>
 			<key>url</key>
-			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8?dw=0</string>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_adv_example_hevc/master.m3u8</string>
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>Apple Basic Stream</string>
+			<string>Tagesschau</string>
 			<key>url</key>
-			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8</string>
+			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8?dw=0</string>
 		</dict>
 		<dict>
 			<key>name</key>

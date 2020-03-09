@@ -85,12 +85,24 @@
 
 #pragma mark AVPlayerViewControllerDelegate protocol
 
+- (void)playerViewControllerWillStartPictureInPicture:(AVPlayerViewController *)playerViewController
+{
+    // Disable external playback while picture in picture is active. Transition does not work. Sound is still sent
+    // to the AirPlay receiver.
+    playerViewController.player.allowsExternalPlayback = NO;
+}
+
 - (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
     [topViewController presentViewController:playerViewController animated:YES completion:^{
         completionHandler(YES);
     }];
+}
+
+- (void)playerViewControllerDidStopPictureInPicture:(AVPlayerViewController *)playerViewController
+{
+    playerViewController.player.allowsExternalPlayback = YES;
 }
 
 #pragma mark UITableViewDataSource protocol

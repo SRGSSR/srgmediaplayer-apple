@@ -7,6 +7,7 @@
 #import "SRGTracksButton.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
+#import "AVMediaSelectionGroup+SRGMediaPlayer.h"
 #import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
@@ -18,7 +19,7 @@
 
 static void commonInit(SRGTracksButton *self);
 
-@interface SRGTracksButton () <UIPopoverPresentationControllerDelegate>
+@interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
@@ -153,14 +154,19 @@ static void commonInit(SRGTracksButton *self);
         NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
         
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.options withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];;
+        NSArray<AVMediaSelectionOption *> *subtitleOptions = subtitleGroup ? [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] : nil;
         
         if (audioOptions.count > 1 || subtitleOptions.count != 0) {
             self.hidden = NO;
             
-            // Enable the button if an (optional) subtitle has been selected (an audio track is always selected)
-            AVMediaSelectionOption *currentSubtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
-            [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
+            // Enable the button if an (optional) subtitle has been selected
+            if (subtitleGroup) {
+                AVMediaSelectionOption *currentSubtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
+                [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
+            }
+            else {
+                [self.button setImage:self.image forState:UIControlStateNormal];
+            }
         }
         else {
             self.hidden = YES;
@@ -171,6 +177,15 @@ static void commonInit(SRGTracksButton *self);
     }
     else {
         self.hidden = YES;
+    }
+}
+
+#pragma mark SRGAlternateTracksViewControllerDelegate protocol
+
+- (void)alternateTracksViewControllerWasDismissed:(id)alternateTracksViewController
+{
+    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
+        [self.delegate tracksButtonDidHideTrackSelection:self];
     }
 }
 
@@ -193,21 +208,6 @@ static void commonInit(SRGTracksButton *self);
     }
 }
 
-// TODO: Remove when SRG Media Player requires iOS 13 as minimum version
-- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
-{
-    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
-        [self.delegate tracksButtonDidHideTrackSelection:self];
-    }
-}
-
-- (void)presentationControllerDidDismiss:(UIPresentationController *)presentationController
-{
-    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
-        [self.delegate tracksButtonDidHideTrackSelection:self];
-    }
-}
-
 #pragma mark Actions
 
 - (void)showTracks:(id)sender
@@ -218,6 +218,7 @@ static void commonInit(SRGTracksButton *self);
     
     SRGAlternateTracksViewController *tracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
                                                                                                                   userInterfaceStyle:self.userInterfaceStyle];
+    tracksViewController.delegate = self;
     tracksViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                            target:self
                                                                                                            action:@selector(hideTracks:)];
@@ -251,11 +252,7 @@ static void commonInit(SRGTracksButton *self);
 - (void)hideTracks:(id)sender
 {
     UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
-    [topViewController dismissViewControllerAnimated:YES completion:^{
-        if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
-            [self.delegate tracksButtonDidHideTrackSelection:self];
-        }
-    }];
+    [topViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark Interface Builder integration

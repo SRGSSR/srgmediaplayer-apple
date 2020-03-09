@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bsm-y7-rxx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bsm-y7-rxx">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -203,9 +203,6 @@
                             <constraint firstItem="VeV-H6-y34" firstAttribute="top" secondItem="F6O-Cw-jnT" secondAttribute="top" constant="23" id="zoE-h5-rZB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="F6O-Cw-jnT"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="ZsL-oZ-UDX" appends="YES" id="ChG-Fp-lwl"/>
-                        </connections>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
@@ -223,11 +220,6 @@
                         <outlet property="view" destination="Fdx-yQ-RWj" id="7A1-Tw-SZV"/>
                     </connections>
                 </customObject>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="ZsL-oZ-UDX">
-                    <connections>
-                        <action selector="pullDown:" destination="bsm-y7-rxx" id="6U7-yj-wKm"/>
-                    </connections>
-                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-2243" y="3974"/>
         </scene>

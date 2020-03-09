@@ -12,6 +12,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Forward declarations
+@class SRGAlternateTracksViewController;
+
+/**
+ *  Tracks view controller delegate protocol.
+ */
+@protocol SRGAlternateTracksViewControllerDelegate <NSObject>
+
+/**
+ *  Called after the view controller has been dismissed.
+ */
+- (void)alternateTracksViewControllerWasDismissed:(SRGAlternateTracksViewController *)alternateTracksViewController;
+
+@end
+
 /**
  *  View controller displaying subtitles and audio tracks. For internal use.
  */
@@ -22,6 +37,11 @@ API_UNAVAILABLE(tvos)
  *  Create an instance displaying tracks for a controller and adjusted for the provided style.
  */
 - (instancetype)initWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController userInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle;
+
+/**
+ *
+ */
+@property (nonatomic, weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
 
 @end
 
