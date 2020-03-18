@@ -36,6 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (SRGPosition *)positionAtTimeInSeconds:(NSTimeInterval)timeInSeconds;
 
 /**
+ *  Exact position at the specified date.
+ */
++ (SRGPosition *)positionAtDate:(NSDate *)date;
+
+/**
  *  Position around the specified time with maximum tolerance.
  */
 + (SRGPosition *)positionAroundTime:(CMTime)time;
@@ -44,6 +49,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Position around the specified time with maximum tolerance.
  */
 + (SRGPosition *)positionAroundTimeInSeconds:(NSTimeInterval)timeInSeconds;
+
+/**
+ *  Position around the specified date.
+ */
++ (SRGPosition *)positionAroundDate:(NSDate *)date;
 
 /**
  *  Position earlier than the specified time.
@@ -56,19 +66,34 @@ NS_ASSUME_NONNULL_BEGIN
 + (SRGPosition *)positionBeforeTimeInSeconds:(NSTimeInterval)timeInSeconds;
 
 /**
+ *  Position earlier than the specified date.
+ */
++ (SRGPosition *)positionBeforeDate:(NSDate *)date;
+
+/**
  *  Position later than the specified time.
  */
 + (SRGPosition *)positionAfterTime:(CMTime)time;
 
 /**
- *  Position earlier than the specified time (in seconds).
+ *  Position later than the specified time (in seconds).
  */
 + (SRGPosition *)positionAfterTimeInSeconds:(NSTimeInterval)timeInSeconds;
+
+/**
+ *  Position later than the specified date.
+ */
++ (SRGPosition *)positionAfterDate:(NSDate *)date;
 
 /**
  *  Position for the specified time with custom tolerance settings.
  */
 + (SRGPosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
+
+/**
+ *  Position for the specified date with custom tolerance settings.
+ */
++ (SRGPosition *)positionWithDate:(NSDate *)date toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
 
 /**
  *  Instantiate a position for the specified time with custom tolerance settings.
@@ -84,9 +109,29 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
 
 /**
+ *  Instantiate a position for the specified date with custom tolerance settings.
+ *
+ *  @param date            The position date. Use `nil` for the default position.
+ *  @param toleranceBefore The tolerance (before `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
+ *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
+ *  @param toleranceAfter  The tolerance (after `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
+ *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
+ *
+ *  @discussion Invalid times are set to `kCMTimeZero`.
+ */
+- (instancetype)initWithDate:(NSDate *)date toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
+
+/**
  *  The time to reach. Guaranteed to be valid.
+ *
+ *  @discussion `kCMTimeZero` when a date has been specified.
  */
 @property (nonatomic, readonly) CMTime time;
+
+/**
+ *  The date to reach, if any.
+ */
+@property (nonatomic, readonly, nullable) NSDate *date;
 
 /**
  *  The tolerances applied when reaching `time`. Guaranteed to be valid.
