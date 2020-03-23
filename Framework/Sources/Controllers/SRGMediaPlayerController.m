@@ -532,6 +532,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (CMTimeRange)timeRangeForPlayerItem:(AVPlayerItem *)playerItem
 {
+    if (playerItem.status != AVPlayerStatusReadyToPlay) {
+        return kCMTimeRangeInvalid;
+    }
+    
     NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
     NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
     
