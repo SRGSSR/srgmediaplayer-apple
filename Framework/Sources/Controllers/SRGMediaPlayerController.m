@@ -648,6 +648,16 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     return self.player ? self.player.currentTime : kCMTimeZero;
 }
 
+- (NSDate *)currentDate
+{
+    if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
+        return self.player.currentItem.currentDate ?: NSDate.date;
+    }
+    else {
+        return nil;
+    }
+}
+
 - (CMTime)seekStartTime
 {
     return self.player ? self.player.seekStartTime : kCMTimeIndefinite;

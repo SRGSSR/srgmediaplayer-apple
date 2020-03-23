@@ -478,6 +478,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CMTime currentTime;
 
 /**
+ *  For DVR streams, the date corresponding to the current time. Use stream date information if available, otherwise
+ *  system date information.
+ *
+ *  @discussion Returns `nil` for on-demand and livestreams without DVR capabilities.
+ */
+@property (nonatomic, readonly, nullable) NSDate *currentDate;
+
+/**
  *  The time at which the player started seeking, `kCMTimeIndefinite` if no seek is currently being made.
  */
 @property (nonatomic, readonly) CMTime seekStartTime;
