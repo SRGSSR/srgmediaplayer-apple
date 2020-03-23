@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  a large tolerance means less precision, but more efficiency (an acceptable position might require less buffering
  *  to be reached).
  *
+ *  Positions are either time-based or date-based. Date-based positions are only relevant for livestreams and are ignored
+ *  when used with on-demand ones (in such cases, the default position is used instead).
+ *
  *  Remark: When designating a position to within a segment, there is no need to adjust tolerances based on the segment
  *          time range. In such cases, SRG Media Player ensures that the position stays within the desired segment.
  */

@@ -685,7 +685,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return [SRGPosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceBefore];
     }
     else {
-        return position;
+        return [SRGPosition positionWithTime:position.time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
     }
 }
 

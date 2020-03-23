@@ -18,7 +18,7 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>Livestream with DVR + date information</string>
+			<string>Livestream with DVR (with timestamps)</string>
 			<key>url</key>
 			<string>https://mcdn.daserste.de/daserste/int/master.m3u8</string>
 		</dict>
