@@ -50,6 +50,8 @@
 
 - (void)seekToPosition:(SRGPosition *)position notify:(BOOL)notify completionHandler:(void (^)(BOOL))completionHandler
 {
+    NSAssert(position.date == nil, @"The low-level API does not support date-based positions");
+    
     if (! position) {
         position = SRGPosition.defaultPosition;
     }

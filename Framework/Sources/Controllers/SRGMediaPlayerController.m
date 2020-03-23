@@ -37,7 +37,7 @@ static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlay
 static NSString *SRGMediaPlayerControllerNameForMediaType(SRGMediaPlayerMediaType mediaType);
 static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamType streamType);
 
-static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position,CMTime offset);
+static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position, CMTime offset);
 static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
 
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOption(NSArray<AVMediaSelectionOption *> *audioOptions);
@@ -84,6 +84,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic, getter=isStreamTypeCached) BOOL streamTypeCached;
 
 @property (nonatomic, getter=isLive) BOOL live;
+
+@property (nonatomic) CMTime referenceTime;
+@property (nonatomic) NSDate *referenceDate;
 
 @property (nonatomic) NSTimer *stallDetectionTimer;
 @property (nonatomic) CMTime lastPlaybackTime;
@@ -219,10 +222,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                         }
                     };
                     
-                    SRGPosition *startPosition = self.startPosition;
+                    SRGPosition *startPosition = [self timePositionForPosition:self.startPosition];
                     
                     // Default position. Nothing to do.
-                    if (CMTIME_COMPARE_INLINE(self.startPosition.time, ==, kCMTimeZero) && ! self.targetSegment) {
+                    if (CMTIME_COMPARE_INLINE(startPosition.time, ==, kCMTimeZero) && ! self.targetSegment) {
                         completionBlock(YES);
                     }
                     // Non-default start position. Calculate a valid position to seek to.
@@ -557,6 +560,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     [self updateTimeRangeForPlayer:player];
     [self updateStreamTypeForPlayer:player];
     [self updateLiveForPlayer:player];
+    [self updateReferenceForPlayer:player];
 }
 
 - (void)updateMediaTypeForPlayer:(AVPlayer *)player
@@ -641,6 +645,46 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
 }
 
+- (void)updateReferenceForPlayer:(AVPlayer *)player
+{
+    // We store synchronized current date and playhead position information for DVR streams and update both regularly at the
+    // same time. When seeking, these two values might namely be briefly misaligned when read from the player item directly
+    // (provided the stream embedds date information, of course), leading to unreliable calculations using both values.
+    //
+    // If the stream does not embed date information, we use the current date as reference date, mapped to the end of
+    // the DVR window. This is less accurate or might be completely incorrect, especially if stream and device clocks are
+    // entirely different, but this is the best we can do.
+    if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
+        AVPlayerItem *playerItem = player.currentItem;
+        NSDate *currentDate = playerItem.currentDate;
+        if (currentDate) {
+            self.referenceDate = currentDate;
+            self.referenceTime = playerItem.currentTime;
+        }
+        else {
+            self.referenceDate = NSDate.date;
+            self.referenceTime = CMTimeRangeGetEnd(self.timeRange);
+        }
+    }
+    else {
+        self.referenceDate = nil;
+        self.referenceTime = kCMTimeIndefinite;
+    }
+}
+
+- (SRGPosition *)timePositionForPosition:(SRGPosition *)position
+{
+    if (position.date && self.referenceDate) {
+        // Return an equivalent time-based position calculated relatively to the reference date
+        NSTimeInterval offset = [position.date timeIntervalSinceDate:self.referenceDate];
+        CMTime time = CMTimeAdd(self.referenceTime, CMTimeMakeWithSeconds(offset, NSEC_PER_SEC));
+        return [SRGPosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceBefore];
+    }
+    else {
+        return position;
+    }
+}
+
 - (CMTime)currentTime
 {
     // If `AVPlayer` is idle (e.g. right after creation), its time is zero. Use the same convention here when no
@@ -650,8 +694,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (NSDate *)currentDate
 {
-    if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
-        return self.player.currentItem.currentDate ?: NSDate.date;
+    if (self.referenceDate) {
+        // Calculate the date corresponding to the current time relatively to the reference date
+        NSTimeInterval offset = CMTimeGetSeconds(CMTimeSubtract(self.currentTime, self.referenceTime));
+        return [self.referenceDate dateByAddingTimeInterval:offset];
     }
     else {
         return nil;
@@ -1116,12 +1162,15 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 {
     NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Segment must be valid");
     
+    if (self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
+        return;
+    }
+    
     if (! position) {
         position = SRGPosition.defaultPosition;
     }
-    
-    if (self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
-        return;
+    else {
+        position = [self timePositionForPosition:position];
     }
     
     self.targetSegment = targetSegment;
@@ -1190,6 +1239,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.streamTypeCached = NO;
     
     self.live = NO;
+    
+    self.referenceTime = kCMTimeIndefinite;
+    self.referenceDate = nil;
     
     self.previousSegment = nil;
     self.targetSegment = nil;

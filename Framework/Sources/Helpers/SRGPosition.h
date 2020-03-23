@@ -122,19 +122,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithDate:(NSDate *)date toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
 
 /**
- *  The time to reach. Guaranteed to be valid.
+ *  The associated time. Guaranteed to be valid.
  *
  *  @discussion `kCMTimeZero` when a date has been specified.
  */
 @property (nonatomic, readonly) CMTime time;
 
 /**
- *  The date to reach, if any.
+ *  The associated date, if any.
  */
 @property (nonatomic, readonly, nullable) NSDate *date;
 
 /**
- *  The tolerances applied when reaching `time`. Guaranteed to be valid.
+ *  The tolerances applied when reaching the position. Guaranteed to be valid.
  */
 @property (nonatomic, readonly) CMTime toleranceBefore;
 @property (nonatomic, readonly) CMTime toleranceAfter;
