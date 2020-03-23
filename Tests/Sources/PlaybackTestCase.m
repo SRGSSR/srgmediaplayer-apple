@@ -885,7 +885,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeOnDemand);
     XCTAssertFalse(self.mediaPlayerController.live);
-    XCTAssertNil(self.mediaPlayerController.date);
+    XCTAssertNil(self.mediaPlayerController.currentDate);
 }
 
 - (void)testLiveProperties
@@ -906,7 +906,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeLive);
     XCTAssertTrue(self.mediaPlayerController.live);
-    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.date] < 0.1);
+    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.currentDate] < 0.1);
 }
 
 - (void)testDVRProperties
@@ -921,7 +921,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeDVR);
     XCTAssertTrue(self.mediaPlayerController.live);
-    XCTAssertNotNil(self.mediaPlayerController.date);
+    XCTAssertNotNil(self.mediaPlayerController.currentDate);
     
     // Seek 10 seconds in the past. The default live tolerance is 30 seconds, we still must be in live conditions
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -933,7 +933,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
     XCTAssertTrue(self.mediaPlayerController.live);
-    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.date] > 8);
+    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.currentDate] > 8);
     
     // Seek 40 seconds in the past. We now are outside the tolerance and therefore not live anymore
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -945,7 +945,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
     XCTAssertFalse(self.mediaPlayerController.live);
-    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.date] > 38);
+    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.currentDate] > 38);
 }
 
 - (void)testLiveTolerance

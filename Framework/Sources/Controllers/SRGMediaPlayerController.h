@@ -478,11 +478,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CMTime currentTime;
 
 /**
- *  For DVR streams, returns the date corresponding to the current time.
+ *  For livestreams, returns the date corresponding to the current time.
  *
- *  @discussion Returns `nil` for on-demand and livestreams without DVR capabilities. An accurate stream-based date
- *              is returned if the stream embedds `EXT-X-PROGRAM-DATE-TIME` timestamps, otherwise an approximate
- *              less reliable date based on the device date only.
+ *  @discussion Returns `nil` for on-demand streams. An accurate stream-based date is returned if the stream embedds
+ *              `EXT-X-PROGRAM-DATE-TIME` timestamps, otherwise an approximate less reliable date based on the device
+ *              date only.
  */
 @property (nonatomic, readonly, nullable) NSDate *currentDate;
 
@@ -505,12 +505,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  The stream type (live / DVR / VOD). Key-value observable.
  */
 @property (nonatomic, readonly) SRGMediaPlayerStreamType streamType;
-
-/**
- *  For DVR and live streams, returns the date corresponding to the current playback time. If the date cannot be
- *  determined or for an on-demand stream, the method returns `nil`.
- */
-@property (nonatomic, readonly, nullable) NSDate *date;
 
 /**
  *  Return `YES` iff the stream is currently played in live conditions (@see `liveTolerance`). Key-value observable.

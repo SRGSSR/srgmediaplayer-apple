@@ -647,14 +647,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)updateReferenceForPlayer:(AVPlayer *)player
 {
-    // We store synchronized current date and playhead position information for DVR streams and update both regularly at the
+    // We store synchronized current date and playhead position information for livestreams and update both regularly at the
     // same time. When seeking, these two values might namely be briefly misaligned when read from the player item directly
     // (provided the stream embedds date information, of course), leading to unreliable calculations using both values.
     //
     // If the stream does not embed date information, we use the current date as reference date, mapped to the end of
     // the DVR window. This is less accurate or might be completely incorrect, especially if stream and device clocks are
     // entirely different, but this is the best we can do.
-    if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
+    if (self.streamType == SRGMediaPlayerStreamTypeDVR || self.streamType == SRGMediaPlayerStreamTypeLive) {
         AVPlayerItem *playerItem = player.currentItem;
         NSDate *currentDate = playerItem.currentDate;
         if (currentDate) {
@@ -766,24 +766,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 {
     _textStyleRules = textStyleRules.copy;
     self.player.currentItem.textStyleRules = _textStyleRules;
-}
-
-- (NSDate *)date
-{
-    CMTimeRange timeRange = self.timeRange;
-    if (CMTIMERANGE_IS_INVALID(timeRange)) {
-        return nil;
-    }
-    
-    if (self.streamType == SRGMediaPlayerStreamTypeLive) {
-        return NSDate.date;
-    }
-    else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
-        return [NSDate dateWithTimeIntervalSinceNow:-CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), self.currentTime))];
-    }
-    else {
-        return nil;
-    }
 }
 
 #if TARGET_OS_IOS
