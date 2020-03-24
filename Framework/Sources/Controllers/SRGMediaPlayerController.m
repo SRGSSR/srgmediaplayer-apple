@@ -1157,6 +1157,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return;
     }
     
+    if (self.streamType == SRGMediaPlayerStreamTypeLive) {
+        return;
+    }
+    
     if (! position) {
         position = SRGPosition.defaultPosition;
     }
