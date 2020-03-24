@@ -226,54 +226,6 @@ static NSURL *AudioOverHTTPTestURL(void)
     XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateIdle);
 }
 
-- (void)testPrepareToTimeOutsideMedia
-{
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
-        XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        return YES;
-    }];
-    
-    [self.mediaPlayerController prepareToPlayURL:OnDemandTestURL()
-                                      atPosition:[SRGPosition positionAtTimeInSeconds:24. * 60. * 60.]
-                                    withSegments:nil
-                                        userInfo:nil
-                               completionHandler:nil];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    // After completion handler execution, the player state is updated. Since nothing is done in the completion handler,
-    // the player must be paused
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePaused);
-        XCTAssertEqual([notification.userInfo[SRGMediaPlayerPreviousPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
-        XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        return YES;
-    }];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-}
-
-- (void)testPrepareToDateOutsideMedia
-{
-    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
-    }];
-    
-    // Use a date in the future
-    NSDate *date = [NSDate.date dateByAddingTimeInterval:10. * 60.];
-    [self.mediaPlayerController playURL:DVRTimestampTestURL()
-                             atPosition:[SRGPosition positionAtDate:date]
-                           withSegments:nil
-                               userInfo:nil];
-    
-    [self waitForExpectationsWithTimeout:30. handler:nil];
-    
-    // Start at the beginning of the stream
-    // TODO: Document. Probably undefined behavior for DVR streams, but currently incorrectly documented
-    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, 0., 5.);
-}
-
 - (void)testPlay
 {
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -381,6 +333,143 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     // Check we started near the specified location
     TestAssertAlmostButNotEqual(self.mediaPlayerController.currentTime, 22, 4);
+}
+
+- (void)testPlayAtTimeBeforeOnDemandMediaStart
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                             atPosition:[SRGPosition positionAtTimeInSeconds:-24. * 60. * 60.]
+                           withSegments:nil
+                               userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Start at the default position (media start)
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, 0., 5.);
+}
+
+- (void)testPlayAtTimeAfterOnDemandMediaEnd
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:OnDemandTestURL()
+                             atPosition:[SRGPosition positionAtTimeInSeconds:24. * 60. * 60.]
+                           withSegments:nil
+                               userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Start at the default position (media start)
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, 0., 5.);
+}
+
+- (void)testPlayAtTimeBeforeDVRStreamStart
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTimestampTestURL()
+                             atPosition:[SRGPosition positionAtTimeInSeconds:-24. * 60. * 60.]
+                           withSegments:nil
+                               userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Start at the default position (live conditions)
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange)), 5.);
+}
+
+- (void)testPlayAtTimeAfterDVRStreamEnd
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTimestampTestURL()
+                             atPosition:[SRGPosition positionAtTimeInSeconds:24. * 60. * 60.]
+                           withSegments:nil
+                               userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Start at the default position (live conditions)
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange)), 5.);
+}
+
+- (void)testPlayAtDateBeforeDVRStreamStart
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:0.];
+    [self.mediaPlayerController playURL:DVRTimestampTestURL()
+                             atPosition:[SRGPosition positionAtDate:date]
+                           withSegments:nil
+                               userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Start at the default position (live conditions)
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange)), 5.);
+}
+
+- (void)testPlayAtDateAfterDVRStreamEnd
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    NSDate *date = [NSDate.date dateByAddingTimeInterval:-24. * 60. * 60.];
+    [self.mediaPlayerController playURL:DVRTimestampTestURL()
+                             atPosition:[SRGPosition positionAtDate:date]
+                           withSegments:nil
+                               userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    // Start at the default position (live conditions)
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange)), 5.);
+}
+
+- (void)testPlayAtTimeWithLivestream
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:LiveTestURL()
+                             atPosition:[SRGPosition positionAtTimeInSeconds:24. * 60. * 60.]
+                           withSegments:nil
+                               userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange)), 5.);
+}
+
+- (void)testPlayAtDateWithLivestream
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    NSDate *date = [NSDate.date dateByAddingTimeInterval:24. * 60. * 60.];
+    [self.mediaPlayerController playURL:LiveTestURL()
+                             atPosition:[SRGPosition positionAtDate:date]
+                           withSegments:nil
+                               userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    TestAssertAlmostEqual(self.mediaPlayerController.currentTime, CMTimeGetSeconds(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange)), 5.);
 }
 
 - (void)testVideoTrackInLastPosition
@@ -2393,7 +2482,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
 }
 
-- (void)testLiveStreamTypeKeyValueObserving
+- (void)testLivestreamTypeKeyValueObserving
 {
     [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, streamType) expectedValue:@(SRGMediaPlayerStreamTypeLive)];
     

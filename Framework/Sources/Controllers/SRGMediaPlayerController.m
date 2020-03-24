@@ -249,9 +249,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                         SRGPosition *toleratedPosition = [SRGPosition positionWithTime:toleratedStartTime toleranceBefore:startPosition.toleranceBefore toleranceAfter:startPosition.toleranceAfter];
                         
                         SRGPosition *seekPosition = SRGMediaPlayerControllerPositionInTimeRange(toleratedPosition, timeRange);
-                        [player seekToPosition:seekPosition notify:NO completionHandler:^(BOOL finished) {
-                            completionBlock(finished);
-                        }];
+                        if (self.streamType != SRGMediaPlayerStreamTypeDVR || CMTIME_COMPARE_INLINE(seekPosition.time, !=, kCMTimeZero)) {
+                            [player seekToPosition:seekPosition notify:NO completionHandler:^(BOOL finished) {
+                                completionBlock(finished);
+                            }];
+                        }
+                        else {
+                            completionBlock(YES);
+                        }
                     }
                 }
             }
