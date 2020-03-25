@@ -4,21 +4,19 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <CoreMedia/CoreMedia.h>
-#import <Foundation/Foundation.h>
+#import "SRGMark.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Representation of a position in time to reach within a given tolerance. In general, a small tolerance means greater
- *  precision, at the expense of efficiency (reaching a position precisely may require more buffering). Conversely,
- *  a large tolerance means less precision, but more efficiency (an acceptable position might require less buffering
- *  to be reached).
+ *  Representation of a position to reach within a given tolerance. A position is a time or date, whose duality can
+ *  in general be expressed with a mark.
  *
- *  Positions are either time-based or date-based. Date-based positions are only relevant for livestreams and are ignored
- *  when used with on-demand ones (in such cases, the default position is used instead).
+ *  In general, attempting to reach a position with small tolerance means greater precision, at the expense of efficiency
+ *  (reaching a position precisely may require more buffering). Conversely, a large tolerance means less precision, but
+ *  more efficiency (an acceptable position might require less buffering to be reached).
  *
- *  Remark: When designating a position to within a segment, there is no need to adjust tolerances based on the segment
+ *  Remark: When designating a position within a segment, there is no need to adjust tolerances based on the segment
  *          time range. In such cases, SRG Media Player ensures that the position stays within the desired segment.
  */
 @interface SRGPosition : NSObject
@@ -27,6 +25,72 @@ NS_ASSUME_NONNULL_BEGIN
  *  The default position.
  */
 @property (class, nonatomic, readonly) SRGPosition *defaultPosition;
+
+/**
+ *  Position for the specified time with custom tolerance settings.
+ *
+ *  @param time            The position time. Use `kCMTimeZero` for the default position.
+ *  @param toleranceBefore The tolerance (before `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
+ *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
+ *  @param toleranceAfter  The tolerance (after `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
+ *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
+ *
+ *  @discussion Invalid times are set to `kCMTimeZero`.
+ */
++ (SRGPosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
+
+/**
+ *  Position for the specified date with custom tolerance settings.
+ *
+ *  @param date            The position date. Use `nil` for the default position.
+ *  @param toleranceBefore The tolerance (before `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
+ *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
+ *  @param toleranceAfter  The tolerance (after `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
+ *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
+ *
+ *  @discussion Invalid times are set to `kCMTimeZero`.
+ */
++ (SRGPosition *)positionWithDate:(NSDate *)date toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
+
+/**
+ *  Position for the specified mark with custom tolerance settings.
+ *
+ *  @param mark            The position mark. Use `nil` for the default position.
+ *  @param toleranceBefore The tolerance (before `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
+ *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
+ *  @param toleranceAfter  The tolerance (after `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
+ *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
+ *
+ *  @discussion Invalid times are set to `kCMTimeZero`.
+ */
++ (SRGPosition *)positionWithMark:(SRGMark *)mark toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
+
+/**
+ *  The associated mark.
+ */
+@property (nonatomic, readonly) SRGMark *mark;
+
+/**
+ *  The associated time. Guaranteed to be valid.
+ *
+ *  @discussion `kCMTimeZero` when if the mark is a date.
+ */
+@property (nonatomic, readonly) CMTime time;
+
+/**
+ *  The mark date, if any.
+ */
+@property (nonatomic, readonly, nullable) NSDate *date;
+
+/**
+ *  The tolerances applied when reaching the position. Guaranteed to be valid.
+ */
+@property (nonatomic, readonly) CMTime toleranceBefore;
+@property (nonatomic, readonly) CMTime toleranceAfter;
+
+@end
+
+@interface SRGPosition (Exact)
 
 /**
  *  Exact position at the specified time.
@@ -44,6 +108,15 @@ NS_ASSUME_NONNULL_BEGIN
 + (SRGPosition *)positionAtDate:(NSDate *)date;
 
 /**
+ *  Exact position at the specified mark.
+ */
++ (SRGPosition *)positionAtMark:(SRGMark *)mark;
+
+@end
+
+@interface SRGPosition (Around)
+
+/**
  *  Position around the specified time with maximum tolerance.
  */
 + (SRGPosition *)positionAroundTime:(CMTime)time;
@@ -59,88 +132,57 @@ NS_ASSUME_NONNULL_BEGIN
 + (SRGPosition *)positionAroundDate:(NSDate *)date;
 
 /**
- *  Position earlier than the specified time.
+ *  Position around the specified mark.
+ */
++ (SRGPosition *)positionAroundMark:(SRGMark *)mark;
+
+@end
+
+@interface SRGPosition (Before)
+
+/**
+ *  Position before the specified time.
  */
 + (SRGPosition *)positionBeforeTime:(CMTime)time;
 
 /**
- *  Position earlier than the specified time (in seconds).
+ *  Position before the specified time (in seconds).
  */
 + (SRGPosition *)positionBeforeTimeInSeconds:(NSTimeInterval)timeInSeconds;
 
 /**
- *  Position earlier than the specified date.
+ *  Position before the specified date.
  */
 + (SRGPosition *)positionBeforeDate:(NSDate *)date;
 
 /**
- *  Position later than the specified time.
+ *  Position before the specified mark.
+ */
++ (SRGPosition *)positionBeforeMark:(SRGMark *)mark;
+
+@end
+
+@interface SRGPosition (After)
+
+/**
+ *  Position after the specified time.
  */
 + (SRGPosition *)positionAfterTime:(CMTime)time;
 
 /**
- *  Position later than the specified time (in seconds).
+ *  Position after the specified time (in seconds).
  */
 + (SRGPosition *)positionAfterTimeInSeconds:(NSTimeInterval)timeInSeconds;
 
 /**
- *  Position later than the specified date.
+ *  Position after the specified date.
  */
 + (SRGPosition *)positionAfterDate:(NSDate *)date;
 
 /**
- *  Position for the specified time with custom tolerance settings.
+ *  Position after the specified mark.
  */
-+ (SRGPosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
-
-/**
- *  Position for the specified date with custom tolerance settings.
- */
-+ (SRGPosition *)positionWithDate:(NSDate *)date toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
-
-/**
- *  Instantiate a position for the specified time with custom tolerance settings.
- *
- *  @param time            The position time. Use `kCMTimeZero` for the default position.
- *  @param toleranceBefore The tolerance (before `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
- *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
- *  @param toleranceAfter  The tolerance (after `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
- *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
- *
- *  @discussion Invalid times are set to `kCMTimeZero`.
- */
-- (instancetype)initWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
-
-/**
- *  Instantiate a position for the specified date with custom tolerance settings.
- *
- *  @param date            The position date. Use `nil` for the default position.
- *  @param toleranceBefore The tolerance (before `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
- *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
- *  @param toleranceAfter  The tolerance (after `time`) allowed when reaching the position. Use `kCMTimeZero` for precise
- *                         positioning, or `kCMTimePositiveInfinity` for efficient positioning.
- *
- *  @discussion Invalid times are set to `kCMTimeZero`.
- */
-- (instancetype)initWithDate:(NSDate *)date toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter;
-
-/**
- *  The associated time. Guaranteed to be valid.
- *
- *  @discussion `kCMTimeZero` when a date has been specified.
- */
-@property (nonatomic, readonly) CMTime time;
-
-/**
- *  The associated date, if any.
- */
-@property (nonatomic, readonly, nullable) NSDate *date;
-
-/**
- *  The tolerances applied when reaching the position. Guaranteed to be valid.
- */
-@property (nonatomic, readonly) CMTime toleranceBefore;
-@property (nonatomic, readonly) CMTime toleranceAfter;
++ (SRGPosition *)positionAfterMark:(SRGMark *)mark;
 
 @end
 

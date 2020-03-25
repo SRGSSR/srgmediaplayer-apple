@@ -250,7 +250,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                         
                         SRGPosition *seekPosition = SRGMediaPlayerControllerPositionInTimeRange(toleratedPosition, timeRange);
                         if (self.streamType != SRGMediaPlayerStreamTypeDVR || CMTIME_COMPARE_INLINE(seekPosition.time, !=, kCMTimeZero)) {
-                            [player seekToPosition:seekPosition notify:NO completionHandler:^(BOOL finished) {
+                            [player seekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter notify:NO completionHandler:^(BOOL finished) {
                                 completionBlock(finished);
                             }];
                         }
@@ -904,7 +904,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         }
         // Playback ended. Restart at the beginning
         else {
-            [self.player seekToPosition:nil notify:NO completionHandler:^(BOOL finished) {
+            [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero notify:NO completionHandler:^(BOOL finished) {
                 if (finished) {
                     [self.player playImmediatelyIfPossible];
                 }
@@ -1190,7 +1190,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         //
         // To be able to reset the state no matter the last seek finished, we use a special category method which keeps count
         // of the count of seek requests still pending.
-        [self.player seekToPosition:seekPosition notify:YES completionHandler:^(BOOL finished) {
+        [self.player seekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter notify:YES completionHandler:^(BOOL finished) {
             completionHandler ? completionHandler(finished) : nil;
         }];
     }
@@ -1791,17 +1791,17 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 #pragma mark SRGPlayer protocol
 
-- (void)player:(SRGPlayer *)player willSeekToPosition:(SRGPosition *)position
+- (void)player:(SRGPlayer *)player willSeekToTime:(CMTime)time
 {
     [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
     
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSeekNotification
                                                       object:self
-                                                    userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:position.time],
+                                                    userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:time],
                                                                 SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:player.currentTime] }];
 }
 
-- (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position
+- (void)player:(SRGPlayer *)player didSeekToTime:(CMTime)time
 {
     [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
 }
