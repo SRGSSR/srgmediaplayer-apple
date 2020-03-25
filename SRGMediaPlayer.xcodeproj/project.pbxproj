@@ -24,6 +24,8 @@
 		6F2556D3212FBF63004C8F9A /* SRGPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2556D1212FBF63004C8F9A /* SRGPosition.m */; };
 		6F3C72AD242B4BBA0023206D /* SRGMark.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F3C72AB242B4BBA0023206D /* SRGMark.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F3C72AE242B4BBA0023206D /* SRGMark.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C72AC242B4BBA0023206D /* SRGMark.m */; };
+		6F3C72B1242B76890023206D /* SRGMarkRange.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F3C72AF242B76890023206D /* SRGMarkRange.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6F3C72B2242B76890023206D /* SRGMarkRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3C72B0242B76890023206D /* SRGMarkRange.m */; };
 		6F3F1739212FE3F40091A260 /* SRGMediaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F3F1737212FE3F30091A260 /* SRGMediaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6F3F173A212FE3F40091A260 /* SRGMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3F1738212FE3F40091A260 /* SRGMediaPlayer.m */; };
 		6F444856210F1479009FDB70 /* Accessibility.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08293A4D1EDC62FC008CE02E /* Accessibility.strings */; };
@@ -222,6 +224,8 @@
 		6F2556D1212FBF63004C8F9A /* SRGPosition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGPosition.m; sourceTree = "<group>"; };
 		6F3C72AB242B4BBA0023206D /* SRGMark.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMark.h; sourceTree = "<group>"; };
 		6F3C72AC242B4BBA0023206D /* SRGMark.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGMark.m; sourceTree = "<group>"; };
+		6F3C72AF242B76890023206D /* SRGMarkRange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGMarkRange.h; sourceTree = "<group>"; };
+		6F3C72B0242B76890023206D /* SRGMarkRange.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGMarkRange.m; sourceTree = "<group>"; };
 		6F3F1737212FE3F30091A260 /* SRGMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRGMediaPlayer.h; sourceTree = "<group>"; };
 		6F3F1738212FE3F40091A260 /* SRGMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayer.m; sourceTree = "<group>"; };
 		6F44484C210F1387009FDB70 /* SRGMediaPlayer.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRGMediaPlayer.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -500,6 +504,8 @@
 				6F5CA4261FD91A1D00CF175F /* SRGActivityGestureRecognizer~ios.m */,
 				6F3C72AB242B4BBA0023206D /* SRGMark.h */,
 				6F3C72AC242B4BBA0023206D /* SRGMark.m */,
+				6F3C72AF242B76890023206D /* SRGMarkRange.h */,
+				6F3C72B0242B76890023206D /* SRGMarkRange.m */,
 				6FCA169C23E829440015B23E /* SRGMediaAccessibility.h */,
 				6FCA169D23E829440015B23E /* SRGMediaAccessibility.m */,
 				6F5CA4281FD91A1D00CF175F /* SRGMediaPlayerConstants.h */,
@@ -877,6 +883,7 @@
 				6FC1C75022BCD29D00D55625 /* NSTimer+SRGMediaPlayer.h in Headers */,
 				6FE279F0230EB5BB000755B1 /* SRGMediaPlaybackView.h in Headers */,
 				08D3BEC01DE8756500AE1368 /* SRGAlternateTracksViewController.h in Headers */,
+				6F3C72B1242B76890023206D /* SRGMarkRange.h in Headers */,
 				6FC1C75122BCD29D00D55625 /* AVRoutePickerView+SRGMediaPlayer.h in Headers */,
 				E6C986161D7015F600C45C7A /* SRGVolumeView.h in Headers */,
 				E6C9860A1D6F36C900C45C7A /* SRGPlaybackButton.h in Headers */,
@@ -1131,6 +1138,7 @@
 				6F859F3C230A937900ECE021 /* SRGPlayer.m in Sources */,
 				E6C9860B1D6F36C900C45C7A /* SRGPlaybackButton~ios.m in Sources */,
 				6F5CA4361FD91A1D00CF175F /* SRGActivityGestureRecognizer~ios.m in Sources */,
+				6F3C72B2242B76890023206D /* SRGMarkRange.m in Sources */,
 				6F5CA41F1FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView~ios.m in Sources */,
 				089026D42013ECEF00C0688E /* SRGSegment+Private.m in Sources */,
 				6FC57B1B1FD6A5BE00451B6B /* SRGViewModeButton~ios.m in Sources */,
