@@ -758,6 +758,23 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
+*  @name Time conversions in the stream reference frame.
+*/
+@interface SRGMediaPlayerController (TimeConversions)
+
+/**
+ *  Return the time corresponding to a mark.
+ */
+- (CMTime)streamTimeForMark:(SRGMark *)mark;
+
+/**
+ *  Return the time range corresponding to a mark range.
+ */
+- (CMTimeRange)streamTimeRangeForMarkRange:(SRGMarkRange *)markRange;
+
+@end
+
+/**
  *  AirPlay. Use player lifecycle blocks (see main `SRGMediaPlayerController` documentation) to setup AirPlay behavior.
  *  Your audio session settings must be compatible with AirPlay, see
  *      https://developer.apple.com/library/content/qa/qa1803/_index.html

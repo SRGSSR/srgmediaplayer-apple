@@ -49,21 +49,49 @@
     return self;
 }
 
+#pragma mark Equality
+
+- (BOOL)isEqual:(id)object
+{
+    if (! [object isKindOfClass:self.class]) {
+        return NO;
+    }
+    
+    SRGMark *otherMark = object;
+    if (self.date) {
+        return [self.date isEqualToDate:otherMark.date];
+    }
+    else {
+        return CMTIME_COMPARE_INLINE(self.time, ==, otherMark.time);
+    }
+}
+
+- (NSUInteger)hash
+{
+    if (self.date) {
+        return self.date.hash;
+    }
+    else {
+        return @(CMTimeGetSeconds(self.time)).hash;
+    }
+}
+
 #pragma mark Description
 
 - (NSString *)description
 {
     if (self.date) {
-        return [NSString stringWithFormat:@"<%@: %p; time (seconds) = %@",
-                self.class,
-                self,
-                @(CMTimeGetSeconds(self.time))];
-    }
-    else {
         return [NSString stringWithFormat:@"<%@: %p; date = %@>",
                 self.class,
                 self,
                 self.date];
+        
+    }
+    else {
+        return [NSString stringWithFormat:@"<%@: %p; time (seconds) = %@",
+                self.class,
+                self,
+                @(CMTimeGetSeconds(self.time))];
     }
 }
 

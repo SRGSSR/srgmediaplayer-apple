@@ -4,8 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <CoreMedia/CoreMedia.h>
-#import <Foundation/Foundation.h>
+#import "SRGMarkRange.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,9 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SRGSegment <NSObject>
 
 /**
- *  The time range covered by the segment in the associated media.
+ *  The range covered by the segment in the associated media.
  */
-@property (nonatomic, readonly) CMTimeRange srg_timeRange;
+@property (nonatomic, readonly) SRGMarkRange *srg_markRange;
 
 /**
  *  Return `YES` iff the segment can be played. Blocked segments are skipped during playback.

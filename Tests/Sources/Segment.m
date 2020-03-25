@@ -8,7 +8,7 @@
 
 @interface Segment ()
 
-@property (nonatomic) CMTimeRange srg_timeRange;
+@property (nonatomic) SRGMarkRange *srg_markRange;
 @property (nonatomic, getter=srg_isBlocked) BOOL srg_blocked;
 @property (nonatomic, getter=srg_isHidden) BOOL srg_hidden;
 
@@ -42,7 +42,7 @@
 - (instancetype)initWithTimeRange:(CMTimeRange)timeRange
 {
     if (self = [super init]) {
-        self.srg_timeRange = timeRange;
+        self.srg_markRange = [SRGMarkRange rangeFromTimeRange:timeRange];
     }
     return self;
 }
@@ -51,11 +51,10 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@: %p; startTime = %@; duration = %@>",
+    return [NSString stringWithFormat:@"<%@: %p; range = %@>",
             self.class,
             self,
-            @(CMTimeGetSeconds(self.srg_timeRange.start)),
-            @(CMTimeGetSeconds(self.srg_timeRange.duration))];
+            self.srg_markRange];
 }
 
 @end

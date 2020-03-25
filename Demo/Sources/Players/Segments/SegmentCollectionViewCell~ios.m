@@ -22,6 +22,9 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 @interface SegmentCollectionViewCell ()
 
+@property (nonatomic) MediaSegment *segment;
+@property (nonatomic, weak) SRGMediaPlayerController *mediaPlayerController;
+
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *timeLabel;
@@ -33,17 +36,18 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 #pragma mark Getters and setters
 
-- (void)setSegment:(MediaSegment *)segment
+- (void)setSegment:(MediaSegment *)segment mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    _segment = segment;
+    self.segment = segment;
+    self.mediaPlayerController = mediaPlayerController;
     
-    NSString *duration = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.start)];
-    self.titleLabel.text = [segment.name stringByAppendingFormat:@" (%@)", duration];
+    self.titleLabel.text = segment.name;
     self.imageView.image = [UIImage imageNamed:@"artwork"];
     
-    if (SRG_CMTIMERANGE_IS_NOT_EMPTY(segment.srg_timeRange)) {
+    CMTimeRange segmentTimeRange = [mediaPlayerController streamTimeRangeForMarkRange:self.segment.srg_markRange];
+    if (SRG_CMTIMERANGE_IS_NOT_EMPTY(segmentTimeRange)) {
         self.timeLabel.hidden = NO;
-        self.timeLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segment.srg_timeRange.duration)];
+        self.timeLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segmentTimeRange.duration)];
     }
     else {
         self.timeLabel.hidden = YES;
@@ -64,8 +68,9 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 - (void)updateAppearanceWithTime:(CMTime)time selectedSegment:(MediaSegment *)selectedSegment
 {
-    CMTimeRange r = self.segment.srg_timeRange;
-    float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(r.start)) / (CMTimeGetSeconds(CMTimeAdd(r.start, r.duration)) - CMTimeGetSeconds(r.start));
+    CMTimeRange segmentTimeRange = [self.mediaPlayerController streamTimeRangeForMarkRange:self.segment.srg_markRange];
+    
+    float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(segmentTimeRange.start)) / (CMTimeGetSeconds(CMTimeAdd(segmentTimeRange.start, segmentTimeRange.duration)) - CMTimeGetSeconds(segmentTimeRange.start));
     progress = fminf(1.f, fmaxf(0.f, progress));
     
     self.progressView.progress = progress;

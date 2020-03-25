@@ -44,7 +44,7 @@
 // Might be called from a background thread, in which case the completion handler might as well
 - (void)seekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL finished))completionHandler
 {
-    [self seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:completionHandler];
+    [self seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter notify:YES completionHandler:completionHandler];
 }
 
 - (void)seekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter notify:(BOOL)notify completionHandler:(void (^)(BOOL))completionHandler

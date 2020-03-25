@@ -222,7 +222,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                         }
                     };
                     
-                    SRGPosition *startPosition = [self timePositionForPosition:self.startPosition];
+                    SRGPosition *startPosition = [self streamPositionForPosition:self.startPosition];
                     
                     // Default position. Nothing to do.
                     if (CMTIME_COMPARE_INLINE(startPosition.time, ==, kCMTimeZero) && ! self.targetSegment) {
@@ -237,7 +237,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                         
                         // Take into account tolerance at the end of the content being played. If near the end enough, start
                         // at the default position instead.
-                        CMTimeRange timeRange = self.targetSegment ? self.targetSegment.srg_timeRange : self.timeRange;
+                        CMTimeRange timeRange = self.targetSegment ? [self streamTimeRangeForMarkRange:self.targetSegment.srg_markRange] : self.timeRange;
                         CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(timeRange.duration));
                         CMTime toleratedStartTime = CMTIME_COMPARE_INLINE(startPosition.time, >=, CMTimeSubtract(timeRange.duration, tolerance)) ? kCMTimeZero : startPosition.time;
                         
@@ -681,19 +681,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
 }
 
-- (SRGPosition *)timePositionForPosition:(SRGPosition *)position
-{
-    if (position.date && self.referenceDate) {
-        // Return an equivalent time-based position calculated relatively to the reference date
-        NSTimeInterval offset = [position.date timeIntervalSinceDate:self.referenceDate];
-        CMTime time = CMTimeAdd(self.referenceTime, CMTimeMakeWithSeconds(offset, NSEC_PER_SEC));
-        return [SRGPosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceBefore];
-    }
-    else {
-        return [SRGPosition positionWithTime:position.time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
-    }
-}
-
 - (CMTime)currentTime
 {
     // If `AVPlayer` is idle (e.g. right after creation), its time is zero. Use the same convention here when no
@@ -872,6 +859,32 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     // If the player switches to external playback, then it does not mirror the display
     return player.usesExternalPlaybackWhileExternalScreenIsActive;
+}
+
+#pragma mark Conversions
+
+- (CMTime)streamTimeForMark:(SRGMark *)mark
+{
+    if (mark.date && self.referenceDate) {
+        NSTimeInterval offset = [mark.date timeIntervalSinceDate:self.referenceDate];
+        return CMTimeAdd(self.referenceTime, CMTimeMakeWithSeconds(offset, NSEC_PER_SEC));
+    }
+    else {
+        return mark.time;
+    }
+}
+
+- (CMTimeRange)streamTimeRangeForMarkRange:(SRGMarkRange *)markRange
+{
+    CMTime fromTime = [self streamTimeForMark:markRange.fromMark];
+    CMTime toTime = [self streamTimeForMark:markRange.toMark];
+    return CMTimeRangeFromTimeToTime(fromTime, toTime);
+}
+
+- (SRGPosition *)streamPositionForPosition:(SRGPosition *)position
+{
+    CMTime time = [self streamTimeForMark:position.mark];
+    return [SRGPosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
 }
 
 #pragma mark Playback
@@ -1165,18 +1178,20 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         position = SRGPosition.defaultPosition;
     }
     else {
-        position = [self timePositionForPosition:position];
+        position = [self streamPositionForPosition:position];
     }
     
     self.targetSegment = targetSegment;
     
     // If a segment is targeted, interpret the position as relative, and add a small offset so that playback is guaranteed
     // to start within the segment.
+    CMTimeRange timeRange = self.timeRange;
     if (targetSegment) {
-        position = SRGMediaPlayerControllerOffset(position, CMTimeAdd(targetSegment.srg_timeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC)));
+        CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:targetSegment.srg_markRange];
+        position = SRGMediaPlayerControllerOffset(position, CMTimeAdd(segmentTimeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC)));
+        timeRange = segmentTimeRange;
     }
     
-    CMTimeRange timeRange = targetSegment ? targetSegment.srg_timeRange : self.timeRange;
     SRGPosition *seekPosition = SRGMediaPlayerControllerPositionInTimeRange(position, timeRange);
     
     // Trap attempts to seek to blocked segments early. We cannot only rely on playback time observers to detect a blocked segment
@@ -1463,7 +1478,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     __block id<SRGSegment> locatedSegment = nil;
     [self.segments enumerateObjectsUsingBlock:^(id<SRGSegment>  _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (CMTimeRangeContainsTime(segment.srg_timeRange, time)) {
+        CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
+        if (CMTimeRangeContainsTime(segmentTimeRange, time)) {
             locatedSegment = segment;
             *stop = YES;
         }
@@ -1486,7 +1502,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
     // would trigger skips recursively)
-    SRGPosition *segmentEndPosition = [SRGPosition positionAtTime:CMTimeRangeGetEnd(segment.srg_timeRange)];
+    CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
+    SRGPosition *segmentEndPosition = [SRGPosition positionAtTime:CMTimeRangeGetEnd(segmentTimeRange)];
     [self seekToPosition:SRGMediaPlayerControllerOffset(segmentEndPosition, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC)) withCompletionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
         // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler

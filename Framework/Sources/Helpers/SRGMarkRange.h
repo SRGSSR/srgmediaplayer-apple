@@ -26,4 +26,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface SRGMarkRange (Convenience)
+
+/**
+ *  Range between two times.
+ */
++ (SRGMarkRange *)rangeFromTime:(CMTime)fromTime toTime:(CMTime)toTime;
+
+/**
+ *  Range from a time range.
+ */
++ (SRGMarkRange *)rangeFromTimeRange:(CMTimeRange)timeRange;
+
+/**
+ *  Range between two dates.
+ */
++ (SRGMarkRange *)rangeFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
+
+@end
+
 NS_ASSUME_NONNULL_END

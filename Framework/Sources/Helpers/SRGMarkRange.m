@@ -33,6 +33,24 @@
     return self;
 }
 
+#pragma mark Equality
+
+- (BOOL)isEqual:(id)object
+{
+    if (! [object isKindOfClass:self.class]) {
+        return NO;
+    }
+    
+    SRGMarkRange *otherMarkRange = object;
+    return [self.fromMark isEqual:otherMarkRange.fromMark] && [self.toMark isEqual:otherMarkRange.toMark];
+    
+}
+
+- (NSUInteger)hash
+{
+    return [NSString stringWithFormat:@"%@_%@", @(self.fromMark.hash), @(self.toMark.hash)].hash;
+}
+
 #pragma mark Description
 
 - (NSString *)description
@@ -42,6 +60,25 @@
             self,
             self.fromMark,
             self.toMark];
+}
+
+@end
+
+@implementation SRGMarkRange (Convenience)
+
++ (SRGMarkRange *)rangeFromTime:(CMTime)fromTime toTime:(CMTime)toTime
+{
+    return [self rangeFromMark:[SRGMark markAtTime:fromTime] toMark:[SRGMark markAtTime:toTime]];
+}
+
++ (SRGMarkRange *)rangeFromTimeRange:(CMTimeRange)timeRange
+{
+    return [self rangeFromTime:timeRange.start toTime:CMTimeRangeGetEnd(timeRange)];
+}
+
++ (SRGMarkRange *)rangeFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
+{
+    return [self rangeFromMark:[SRGMark markAtDate:fromDate] toMark:[SRGMark markAtDate:toDate]];
 }
 
 @end
