@@ -10,8 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- *  Represents a mark within a media, either as a time or a date. Date marks are only relevant for livestreams and,
- *  if incorrectly used with an on-demand streams, are interpreted as `kCMTimeZero`).
+ *  Represents a mark within a media, either as a time or a date. Date marks are only relevant for livestreams.
+ *  If incorrectly used with an on-demand streams, they are simply interpreted as `kCMTimeZero`.
  */
 @interface SRGMark : NSObject
 
