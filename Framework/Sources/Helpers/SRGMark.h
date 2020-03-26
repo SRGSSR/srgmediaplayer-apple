@@ -30,18 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (SRGMark *)markAtDate:(NSDate *)date;
 
-/**
- *  The associated time. Guaranteed to be valid.
- *
- *  @discussion `kCMTimeZero` when if the mark is a date.
- */
-@property (nonatomic, readonly) CMTime time;
-
-/**
- *  The mark date, if any.
- */
-@property (nonatomic, readonly, nullable) NSDate *date;
-
 @end
 
 NS_ASSUME_NONNULL_END

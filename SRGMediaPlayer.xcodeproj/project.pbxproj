@@ -112,6 +112,8 @@
 		6FCAB6DD231687BE0043432E /* SimplePlayerViewController~tvos.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FCAB6DB231687BE0043432E /* SimplePlayerViewController~tvos.storyboard */; };
 		6FCAB6E023169BB00043432E /* Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCAB6DF23169BB00043432E /* Resources.m */; };
 		6FCE34182261D4C400302D4B /* MediaSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FCE34172261D4C400302D4B /* MediaSegment.m */; };
+		6FD027BF242CC94C0009B115 /* SRGMark+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FD027BD242CC94C0009B115 /* SRGMark+Private.h */; };
+		6FD027C3242CD1B90009B115 /* SRGPosition+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FD027C1242CD1B90009B115 /* SRGPosition+Private.h */; };
 		6FD312271FD92FAB00EC0C42 /* MediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD312261FD92FAB00EC0C42 /* MediaPlayer.m */; };
 		6FD3122A1FD9AB0100EC0C42 /* SRGQuaternion.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FD312281FD9AB0100EC0C42 /* SRGQuaternion.h */; };
 		6FD3122B1FD9AB0100EC0C42 /* SRGQuaternion.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD312291FD9AB0100EC0C42 /* SRGQuaternion.m */; };
@@ -324,6 +326,8 @@
 		6FCAB6DF23169BB00043432E /* Resources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Resources.m; sourceTree = "<group>"; };
 		6FCE34162261D4C400302D4B /* MediaSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaSegment.h; sourceTree = "<group>"; };
 		6FCE34172261D4C400302D4B /* MediaSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaSegment.m; sourceTree = "<group>"; };
+		6FD027BD242CC94C0009B115 /* SRGMark+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRGMark+Private.h"; sourceTree = "<group>"; };
+		6FD027C1242CD1B90009B115 /* SRGPosition+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SRGPosition+Private.h"; sourceTree = "<group>"; };
 		6FD312251FD92FAB00EC0C42 /* MediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaPlayer.h; sourceTree = "<group>"; };
 		6FD312261FD92FAB00EC0C42 /* MediaPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaPlayer.m; sourceTree = "<group>"; };
 		6FD312281FD9AB0100EC0C42 /* SRGQuaternion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRGQuaternion.h; sourceTree = "<group>"; };
@@ -504,6 +508,7 @@
 				6F5CA4261FD91A1D00CF175F /* SRGActivityGestureRecognizer~ios.m */,
 				6F3C72AB242B4BBA0023206D /* SRGMark.h */,
 				6F3C72AC242B4BBA0023206D /* SRGMark.m */,
+				6FD027BD242CC94C0009B115 /* SRGMark+Private.h */,
 				6F3C72AF242B76890023206D /* SRGMarkRange.h */,
 				6F3C72B0242B76890023206D /* SRGMarkRange.m */,
 				6FCA169C23E829440015B23E /* SRGMediaAccessibility.h */,
@@ -525,6 +530,7 @@
 				6F859F39230A937900ECE021 /* SRGPlayer.m */,
 				6F2556D0212FBF63004C8F9A /* SRGPosition.h */,
 				6F2556D1212FBF63004C8F9A /* SRGPosition.m */,
+				6FD027C1242CD1B90009B115 /* SRGPosition+Private.h */,
 				6FD312281FD9AB0100EC0C42 /* SRGQuaternion.h */,
 				6FD312291FD9AB0100EC0C42 /* SRGQuaternion.m */,
 				6FBA837922C4909300AFAF8B /* SRGRouteDetector.h */,
@@ -856,6 +862,7 @@
 				6F5CA4381FD91A1D00CF175F /* SRGMediaPlayerConstants.h in Headers */,
 				6F2556D2212FBF63004C8F9A /* SRGPosition.h in Headers */,
 				6F3F1739212FE3F40091A260 /* SRGMediaPlayer.h in Headers */,
+				6FD027C3242CD1B90009B115 /* SRGPosition+Private.h in Headers */,
 				6F5CA41D1FD919CD00CF175F /* SRGMediaPlayerView.h in Headers */,
 				6F79C11B234FA5F0003CF345 /* SRGMediaPlayerController+Private.h in Headers */,
 				6F9643D321307920003C6612 /* SRGAirPlayView.h in Headers */,
@@ -873,6 +880,7 @@
 				6F5CA43B1FD91A1D00CF175F /* SRGVideoNode.h in Headers */,
 				6F5CA3ED1FD919CD00CF175F /* MAKVONotificationCenter+SRGMediaPlayer.h in Headers */,
 				6F0C98B5212162BC00073AB6 /* CMTime+SRGMediaPlayer.h in Headers */,
+				6FD027BF242CC94C0009B115 /* SRGMark+Private.h in Headers */,
 				E6C986181D70182300C45C7A /* SRGPictureInPictureButton.h in Headers */,
 				6F5CA3EE1FD919CD00CF175F /* UIWindow+SRGMediaPlayer.h in Headers */,
 				6F5CA4191FD919CD00CF175F /* SRGMediaPlaybackStereoscopicView.h in Headers */,
