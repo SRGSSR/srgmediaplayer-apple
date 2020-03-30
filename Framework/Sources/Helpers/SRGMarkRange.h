@@ -34,6 +34,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (SRGMarkRange *)rangeFromTime:(CMTime)fromTime toTime:(CMTime)toTime;
 
 /**
+ *  Range between two times in seconds.
+ */
++ (SRGMarkRange *)rangeFromTimeInSeconds:(NSTimeInterval)fromTimeInSeconds toTimeInSeconds:(NSTimeInterval)toTimeInSeconds;
+
+/**
  *  Range from a time range.
  */
 + (SRGMarkRange *)rangeFromTimeRange:(CMTimeRange)timeRange;

@@ -311,7 +311,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    NSDate *date = [NSDate.date dateByAddingTimeInterval:-10. * 60.];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-10. * 60.];
     [self.mediaPlayerController playURL:DVRTestURL() atPosition:[SRGPosition positionAtDate:date] withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -327,7 +327,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    NSDate *date = [NSDate.date dateByAddingTimeInterval:-10. * 60.];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-10. * 60.];
     [self.mediaPlayerController playURL:DVRTimestampTestURL() atPosition:[SRGPosition positionAtDate:date] withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -443,7 +443,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    NSDate *date = [NSDate.date dateByAddingTimeInterval:-24. * 60. * 60.];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-24. * 60. * 60.];
     [self.mediaPlayerController playURL:DVRTimestampTestURL()
                              atPosition:[SRGPosition positionAtDate:date]
                            withSegments:nil
@@ -477,7 +477,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    NSDate *date = [NSDate.date dateByAddingTimeInterval:24. * 60. * 60.];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:24. * 60. * 60.];
     [self.mediaPlayerController playURL:LiveTestURL()
                              atPosition:[SRGPosition positionAtDate:date]
                            withSegments:nil
@@ -1822,7 +1822,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    NSDate *date = [NSDate.date dateByAddingTimeInterval:24. * 60. * 60.];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:24. * 60. * 60.];
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtDate:date] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
@@ -1869,7 +1869,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     [self expectationForElapsedTimeInterval:5. withHandler:nil];
     
-    NSDate *date = [NSDate.date dateByAddingTimeInterval:24. * 60. * 60.];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:24. * 60. * 60.];
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtDate:date] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {

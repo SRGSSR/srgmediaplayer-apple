@@ -71,6 +71,11 @@
     return [self rangeFromMark:[SRGMark markAtTime:fromTime] toMark:[SRGMark markAtTime:toTime]];
 }
 
++ (SRGMarkRange *)rangeFromTimeInSeconds:(NSTimeInterval)fromTimeInSeconds toTimeInSeconds:(NSTimeInterval)toTimeInSeconds
+{
+    return [self rangeFromMark:[SRGMark markAtTimeInSeconds:fromTimeInSeconds] toMark:[SRGMark markAtTimeInSeconds:toTimeInSeconds]];
+}
+
 + (SRGMarkRange *)rangeFromTimeRange:(CMTimeRange)timeRange
 {
     return [self rangeFromTime:timeRange.start toTime:CMTimeRangeGetEnd(timeRange)];
