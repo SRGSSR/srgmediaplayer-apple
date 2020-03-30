@@ -18,31 +18,45 @@
 
 #pragma mark Class methods
 
++ (Segment *)segmentWithMarkRange:(SRGMarkRange *)markRange
+{
+    return [[self.class alloc] initWithMarkRange:markRange];
+}
+
 + (Segment *)segmentWithTimeRange:(CMTimeRange)timeRange
 {
-    return [[self.class alloc] initWithTimeRange:timeRange];
+    SRGMarkRange *markRange = [SRGMarkRange rangeFromTimeRange:timeRange];
+    return [self segmentWithMarkRange:markRange];
 }
 
 + (Segment *)blockedSegmentWithTimeRange:(CMTimeRange)timeRange
 {
-    Segment *segment = [[self.class alloc] initWithTimeRange:timeRange];
+    SRGMarkRange *markRange = [SRGMarkRange rangeFromTimeRange:timeRange];
+    Segment *segment = [self segmentWithMarkRange:markRange];
     segment.srg_blocked = YES;
     return segment;
 }
 
 + (Segment *)hiddenSegmentWithTimeRange:(CMTimeRange)timeRange
 {
-    Segment *segment = [[self.class alloc] initWithTimeRange:timeRange];
+    SRGMarkRange *markRange = [SRGMarkRange rangeFromTimeRange:timeRange];
+    Segment *segment = [self segmentWithMarkRange:markRange];
     segment.srg_hidden = YES;
     return segment;
 }
 
++ (Segment *)segmentFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
+{
+    SRGMarkRange *markRange = [SRGMarkRange rangeFromDate:fromDate toDate:toDate];
+    return [self segmentWithMarkRange:markRange];
+}
+
 #pragma mark Object lifecycle
 
-- (instancetype)initWithTimeRange:(CMTimeRange)timeRange
+- (instancetype)initWithMarkRange:(SRGMarkRange *)markRange
 {
     if (self = [super init]) {
-        self.srg_markRange = [SRGMarkRange rangeFromTimeRange:timeRange];
+        self.srg_markRange = markRange;
     }
     return self;
 }
