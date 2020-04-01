@@ -88,9 +88,7 @@
 		6F9643D421307920003C6612 /* SRGAirPlayView~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9643D02130791F003C6612 /* SRGAirPlayView~ios.m */; };
 		6F9643D521307920003C6612 /* SRGAirPlayButton~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9643D121307920003C6612 /* SRGAirPlayButton~ios.m */; };
 		6F97C7981E7A89C5001AD9B3 /* ModalTransition~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F97C7971E7A89C5001AD9B3 /* ModalTransition~ios.m */; };
-		6FA09D7D1D9E9C4400EDCA64 /* SRGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */; };
 		6FA98E15211D68AF00969089 /* ConstantsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA98E14211D68AE00969089 /* ConstantsTestCase.m */; };
-		6FB97FDE1E4A0E080014C4C2 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FB97FDD1E4A0E080014C4C2 /* MAKVONotificationCenter.framework */; };
 		6FBA837B22C4909300AFAF8B /* SRGRouteDetector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBA837922C4909300AFAF8B /* SRGRouteDetector.h */; };
 		6FBA837C22C4909300AFAF8B /* SRGRouteDetector~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA837A22C4909300AFAF8B /* SRGRouteDetector~ios.m */; };
 		6FBDD1A721308242001E4398 /* PositionTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBDD1A621308242001E4398 /* PositionTestCase.m */; };
@@ -130,7 +128,6 @@
 		E69A1FC51D61C06B0064E6C1 /* SRGMediaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E69A1FD61D61C6830064E6C1 /* SRGMediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69A1DA91D61B9380064E6C1 /* SRGMediaPlayer.framework */; };
 		E69A1FE61D61C6D20064E6C1 /* Segment.m in Sources */ = {isa = PBXBuildFile; fileRef = E69A1FE11D61C6D20064E6C1 /* Segment.m */; };
-		E6B0276F1D7EF76700012FDF /* libextobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B0276E1D7EF76700012FDF /* libextobjc.framework */; };
 		E6BCE94E1D76CB900021973D /* InlinePlayerViewController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BCE93C1D76CB900021973D /* InlinePlayerViewController~ios.m */; };
 		E6BCE94F1D76CB900021973D /* InlinePlayerViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6BCE93D1D76CB900021973D /* InlinePlayerViewController~ios.storyboard */; };
 		E6BCE9501D76CB900021973D /* MultiPlayerViewController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BCE9401D76CB900021973D /* MultiPlayerViewController~ios.m */; };
@@ -394,9 +391,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FB97FDE1E4A0E080014C4C2 /* MAKVONotificationCenter.framework in Frameworks */,
-				E6B0276F1D7EF76700012FDF /* libextobjc.framework in Frameworks */,
-				6FA09D7D1D9E9C4400EDCA64 /* SRGLogger.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
