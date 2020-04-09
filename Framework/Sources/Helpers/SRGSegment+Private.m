@@ -8,6 +8,6 @@
 
 BOOL SRGMediaPlayerAreEqualSegments(id<SRGSegment> segment1, id<SRGSegment> segment2)
 {
-    return CMTimeRangeEqual(segment1.srg_timeRange, segment2.srg_timeRange)
-        && segment1.srg_blocked == segment2.srg_blocked && segment1.srg_hidden == segment2.srg_hidden;
+    return [segment1.srg_markRange isEqual:segment2.srg_markRange]
+        && segment1.srg_blocked == segment2.srg_blocked && segment1.srg_hidden == segment2.srg_hidden;        
 }

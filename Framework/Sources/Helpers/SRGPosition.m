@@ -6,9 +6,12 @@
 
 #import "SRGPosition.h"
 
+#import "SRGMark+Private.h"
+
 @interface SRGPosition ()
 
-@property (nonatomic) CMTime time;
+@property (nonatomic) SRGMark *mark;
+
 @property (nonatomic) CMTime toleranceBefore;
 @property (nonatomic) CMTime toleranceAfter;
 
@@ -23,6 +26,70 @@
     return [self positionWithTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
++ (SRGPosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
+{
+    SRGMark *mark = [SRGMark markAtTime:time];
+    return [[self.class alloc] initWithMark:mark toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
+}
+
++ (SRGPosition *)positionWithDate:(NSDate *)date toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
+{
+    SRGMark *mark = [SRGMark markAtDate:date];
+    return [[self.class alloc] initWithMark:mark toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
+}
+
++ (SRGPosition *)positionWithMark:(SRGMark *)mark toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
+{
+    return [[self.class alloc] initWithMark:mark toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
+}
+
+#pragma mark Object lifecycle
+
+- (instancetype)initWithMark:(SRGMark *)mark toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
+{
+    NSParameterAssert(mark);
+    
+    if (self = [super init]) {
+        self.mark = mark;
+        self.toleranceBefore = CMTIME_IS_VALID(toleranceBefore) ? toleranceBefore : kCMTimeZero;
+        self.toleranceAfter = CMTIME_IS_VALID(toleranceAfter) ? toleranceAfter : kCMTimeZero;
+    }
+    return self;
+}
+
+- (instancetype)init
+{
+    return [[SRGPosition alloc] initWithMark:nil toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
+#pragma mark Getters and setters
+
+- (CMTime)time
+{
+    return self.mark.time;
+}
+
+- (NSDate *)date
+{
+    return self.mark.date;
+}
+
+#pragma mark Description
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p; mark = %@; toleranceBefore = %@; toleranceAfter = %@>",
+            self.class,
+            self,
+            self.mark,
+            @(CMTimeGetSeconds(self.toleranceBefore)),
+            @(CMTimeGetSeconds(self.toleranceAfter))];
+}
+
+@end
+
+@implementation SRGPosition (Exact)
+
 + (SRGPosition *)positionAtTime:(CMTime)time
 {
     return [self positionWithTime:time toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
@@ -32,6 +99,20 @@
 {
     return [self positionAtTime:CMTimeMakeWithSeconds(timeInSeconds, NSEC_PER_SEC)];
 }
+
++ (SRGPosition *)positionAtDate:(NSDate *)date
+{
+    return [self positionWithDate:date toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
++ (SRGPosition *)positionAtMark:(SRGMark *)mark
+{
+    return [self positionWithMark:mark toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
+@end
+
+@implementation SRGPosition (Around)
 
 + (SRGPosition *)positionAroundTime:(CMTime)time
 {
@@ -43,6 +124,20 @@
     return [self positionAroundTime:CMTimeMakeWithSeconds(timeInSeconds, NSEC_PER_SEC)];
 }
 
++ (SRGPosition *)positionAroundDate:(NSDate *)date
+{
+    return [self positionWithDate:date toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity];
+}
+
++ (SRGPosition *)positionAroundMark:(SRGMark *)mark
+{
+    return [self positionWithMark:mark toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimePositiveInfinity];
+}
+
+@end
+
+@implementation SRGPosition (Before)
+
 + (SRGPosition *)positionBeforeTime:(CMTime)time
 {
     return [self positionWithTime:time toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimeZero];
@@ -52,6 +147,20 @@
 {
     return [self positionBeforeTime:CMTimeMakeWithSeconds(timeInSeconds, NSEC_PER_SEC)];
 }
+
++ (SRGPosition *)positionBeforeDate:(NSDate *)date
+{
+    return [self positionWithDate:date toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimeZero];
+}
+
++ (SRGPosition *)positionBeforeMark:(SRGMark *)mark
+{
+    return [self positionWithMark:mark toleranceBefore:kCMTimePositiveInfinity toleranceAfter:kCMTimeZero];
+}
+
+@end
+
+@implementation SRGPosition (After)
 
 + (SRGPosition *)positionAfterTime:(CMTime)time
 {
@@ -63,38 +172,14 @@
     return [self positionAfterTime:CMTimeMakeWithSeconds(timeInSeconds, NSEC_PER_SEC)];
 }
 
-+ (SRGPosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
++ (SRGPosition *)positionAfterDate:(NSDate *)date
 {
-    return [[self.class alloc] initWithTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
+    return [self positionWithDate:date toleranceBefore:kCMTimeZero toleranceAfter:kCMTimePositiveInfinity];
 }
 
-#pragma mark Object lifecycle
-
-- (instancetype)initWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
++ (SRGPosition *)positionAfterMark:(SRGMark *)mark
 {
-    if (self = [super init]) {
-        self.time = CMTIME_IS_VALID(time) ? time : kCMTimeZero;
-        self.toleranceBefore = CMTIME_IS_VALID(toleranceBefore) ? toleranceBefore : kCMTimeZero;
-        self.toleranceAfter = CMTIME_IS_VALID(toleranceAfter) ? toleranceAfter : kCMTimeZero;
-    }
-    return self;
-}
-
-- (instancetype)init
-{
-    return [[SRGPosition alloc] initWithTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
-}
-
-#pragma mark Description
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"<%@: %p; time = %@; toleranceBefore = %@; toleranceAfter = %@>",
-            self.class,
-            self,
-            @(CMTimeGetSeconds(self.time)),
-            @(CMTimeGetSeconds(self.toleranceBefore)),
-            @(CMTimeGetSeconds(self.toleranceAfter))];
+    return [self positionWithMark:mark toleranceBefore:kCMTimeZero toleranceAfter:kCMTimePositiveInfinity];
 }
 
 @end

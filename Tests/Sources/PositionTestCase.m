@@ -9,6 +9,9 @@
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
+// Private headers
+#import "SRGPosition+Private.h"
+
 @interface PositionTestCase : MediaPlayerBaseTestCase
 
 @end
@@ -19,15 +22,10 @@
 
 - (void)testCreation
 {
-    SRGPosition *position1 = [[SRGPosition alloc] initWithTime:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) toleranceBefore:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) toleranceAfter:CMTimeMakeWithSeconds(7., NSEC_PER_SEC)];
+    SRGPosition *position1 = [SRGPosition positionWithTime:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) toleranceBefore:CMTimeMakeWithSeconds(2., NSEC_PER_SEC) toleranceAfter:CMTimeMakeWithSeconds(7., NSEC_PER_SEC)];
     TestAssertEqualTimeInSeconds(position1.time, 1.);
     TestAssertEqualTimeInSeconds(position1.toleranceBefore, 2.);
     TestAssertEqualTimeInSeconds(position1.toleranceAfter, 7.);
-    
-    SRGPosition *position2 = [[SRGPosition alloc] init];
-    TestAssertEqualTimeInSeconds(position2.time, 0.);
-    TestAssertEqualTimeInSeconds(position2.toleranceBefore, 0.);
-    TestAssertEqualTimeInSeconds(position2.toleranceAfter, 0.);
 }
 
 - (void)testDefaultPosition

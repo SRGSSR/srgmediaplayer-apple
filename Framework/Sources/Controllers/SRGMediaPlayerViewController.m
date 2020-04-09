@@ -170,7 +170,8 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
     
     [self.controller.segments enumerateObjectsUsingBlock:^(id<SRGSegment> _Nonnull segment, NSUInteger idx, BOOL * _Nonnull stop) {
         if (segment.srg_blocked) {
-            AVInterstitialTimeRange *interstitialTimeRange = [[AVInterstitialTimeRange alloc] initWithTimeRange:segment.srg_timeRange];
+            CMTimeRange segmentTimeRange = [self.controller streamTimeRangeForMarkRange:segment.srg_markRange];
+            AVInterstitialTimeRange *interstitialTimeRange = [[AVInterstitialTimeRange alloc] initWithTimeRange:segmentTimeRange];
             [interstitialTimeRanges addObject:interstitialTimeRange];
         }
     }];
