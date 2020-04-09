@@ -1658,7 +1658,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     // The stream chunk size is 10 seconds and the stream window is sliding. Play a little bit longer than the chunk size
     // so that a new chunk is pumped in at the end (and a chunk pumped out at the beginning).
-    [self expectationForElapsedTimeInterval:15. withHandler:nil];
+    [self expectationForElapsedTimeInterval:20. withHandler:nil];
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
