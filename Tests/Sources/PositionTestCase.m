@@ -9,9 +9,6 @@
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-// Private headers
-#import "SRGPosition+Private.h"
-
 @interface PositionTestCase : MediaPlayerBaseTestCase
 
 @end

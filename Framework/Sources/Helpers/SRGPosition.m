@@ -6,8 +6,6 @@
 
 #import "SRGPosition.h"
 
-#import "SRGMark+Private.h"
-
 @interface SRGPosition ()
 
 @property (nonatomic) SRGMark *mark;
