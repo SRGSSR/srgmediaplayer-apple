@@ -9,9 +9,6 @@
 
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
-// Private headers
-#import "SRGMark+Private.h"
-
 @interface MarkTestCase : MediaPlayerBaseTestCase
 
 @end

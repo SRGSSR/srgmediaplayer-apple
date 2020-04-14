@@ -88,7 +88,7 @@
 - (void)updateAppearanceWithTime:(CMTime)time
 {
     if (self.selectedSegment) {
-        time = [self.mediaPlayerController streamTimeRangeForMarkRange:self.selectedSegment.srg_markRange].start;
+        time = [self.selectedSegment.srg_markRange timeRangeForMediaPlayerController:self.mediaPlayerController].start;
     }
     
     for (SegmentCollectionViewCell *segmentCell in [self.timelineView visibleCells]) {
@@ -104,7 +104,7 @@
     
     if (interactive) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
-            CMTimeRange segmentTimeRange = [self.mediaPlayerController streamTimeRangeForMarkRange:segment.srg_markRange];
+            CMTimeRange segmentTimeRange = [segment.srg_markRange timeRangeForMediaPlayerController:self.mediaPlayerController];
             return CMTimeRangeContainsTime(segmentTimeRange, time);
         }];
         

@@ -50,6 +50,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) BOOL matchesAutomaticSubtitleSelection;
 
+/**
+ *  Return the time corresponding to a mark, in the stream reference frame.
+ */
+- (CMTime)streamTimeForMark:(SRGMark *)mark;
+
+/**
+ *  Return the time range corresponding to a mark range, in the stream reference frame.
+ */
+- (CMTimeRange)streamTimeRangeForMarkRange:(SRGMarkRange *)markRange;
+
 @end
 
 NS_ASSUME_NONNULL_END
