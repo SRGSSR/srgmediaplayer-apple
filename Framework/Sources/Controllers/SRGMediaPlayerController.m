@@ -1144,20 +1144,37 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     // by clients.
     self.view.playbackViewHidden = YES;
     
-    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:URLAsset];
-    playerItem.textStyleRules = self.textStyleRules;
-    
-    self.player = [SRGPlayer playerWithPlayerItem:playerItem];
-    self.player.delegate = self;
-    
-    @weakify(self)
-    [URLAsset loadValuesAsynchronouslyForKeys:@[ @keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) ] completionHandler:^{
-        @strongify(self)
+    void (^setupPlayer)(void) = ^{
+        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:URLAsset];
+        playerItem.textStyleRules = self.textStyleRules;
         
-        dispatch_async(dispatch_get_main_queue(), ^{
+        self.player = [SRGPlayer playerWithPlayerItem:playerItem];
+        self.player.delegate = self;
+        
+        if ([URLAsset statusOfValueForKey:@keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] != AVKeyValueStatusLoaded) {
+            @weakify(self)
+            [URLAsset loadValuesAsynchronouslyForKeys:@[ @keypath(URLAsset.availableMediaCharacteristicsWithMediaSelectionOptions) ] completionHandler:^{
+                @strongify(self)
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self reloadMediaConfiguration];
+                });
+            }];
+        }
+        else {
             [self reloadMediaConfiguration];
-        });
-    }];
+        }
+    };
+    
+    if ([URLAsset statusOfValueForKey:@keypath(URLAsset.tracks) error:NULL] != AVKeyValueStatusLoaded) {
+        [URLAsset loadValuesAsynchronouslyForKeys:@[ @keypath(URLAsset.tracks) ] completionHandler:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                setupPlayer();
+            });
+        }];
+    }
+    else {
+        setupPlayer();
+    }
     
     // Notify the state change last. If clients repond to the preparing state change notification, the state need to
     // be fully consistent first.
@@ -1226,10 +1243,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     NSMutableDictionary *fullUserInfo = userInfo.mutableCopy ?: [NSMutableDictionary dictionary];
     
+    [self.URLAsset cancelLoading];
+    
     // Only reset if needed (this would otherwise lazily instantiate the view again and create potential issues)
     if (self.player) {
-        [self.player.currentItem.asset cancelLoading];
-        
         fullUserInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:self.player.currentTime];
         fullUserInfo[SRGMediaPlayerPreviousTimeRangeKey] = [NSValue valueWithCMTimeRange:self.timeRange];
         fullUserInfo[SRGMediaPlayerPreviousMediaTypeKey] = @(self.mediaType);
