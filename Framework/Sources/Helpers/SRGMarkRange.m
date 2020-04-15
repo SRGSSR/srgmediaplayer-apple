@@ -43,7 +43,7 @@
         return [mediaPlayerController streamTimeRangeForMarkRange:self];
     }
     else {
-        return kCMTimeRangeZero;
+        return CMTimeRangeFromTimeToTime(self.fromMark.time, self.toMark.time);
     }
 }
 

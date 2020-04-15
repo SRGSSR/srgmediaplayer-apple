@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return the time corresponding to a mark, in the reference frame of the provided controller.
  *
- *  @discussion Returns `kCMTimeZero` if the controller is `nil`.
+ *  @discussion Returns `time` if the controller is `nil`.
  */
 - (CMTime)timeForMediaPlayerController:(nullable SRGMediaPlayerController *)mediaPlayerController;
 

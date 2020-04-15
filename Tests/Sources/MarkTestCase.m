@@ -91,4 +91,13 @@
     XCTAssertNotEqual(dateMark1.hash, timeMark3.hash);
 }
 
+- (void)testTimeConversionsWithoutController
+{
+    SRGMark *mark1 = [SRGMark markAtTimeInSeconds:7.];
+    TestAssertEqualTimeInSeconds([mark1 timeForMediaPlayerController:nil], 7.);
+    
+    SRGMark *mark2 = [SRGMark markAtDate:NSDate.date];
+    TestAssertEqualTimeInSeconds([mark2 timeForMediaPlayerController:nil], 0.);
+}
+
 @end

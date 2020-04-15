@@ -59,7 +59,7 @@
         return [mediaPlayerController streamTimeForMark:self];
     }
     else {
-        return kCMTimeZero;
+        return self.time;
     }
 }
 
