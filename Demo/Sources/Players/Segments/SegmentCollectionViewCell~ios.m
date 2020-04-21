@@ -44,7 +44,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
     self.titleLabel.text = segment.name;
     self.imageView.image = [UIImage imageNamed:@"artwork"];
     
-    CMTimeRange segmentTimeRange = [mediaPlayerController streamTimeRangeForMarkRange:self.segment.srg_markRange];
+    CMTimeRange segmentTimeRange = [self.segment.srg_markRange timeRangeForMediaPlayerController:mediaPlayerController];
     if (SRG_CMTIMERANGE_IS_NOT_EMPTY(segmentTimeRange)) {
         self.timeLabel.hidden = NO;
         self.timeLabel.text = [SegmentDurationDateComponentsFormatter() stringFromTimeInterval:CMTimeGetSeconds(segmentTimeRange.duration)];
@@ -68,7 +68,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 
 - (void)updateAppearanceWithTime:(CMTime)time selectedSegment:(MediaSegment *)selectedSegment
 {
-    CMTimeRange segmentTimeRange = [self.mediaPlayerController streamTimeRangeForMarkRange:self.segment.srg_markRange];
+    CMTimeRange segmentTimeRange = [self.segment.srg_markRange timeRangeForMediaPlayerController:self.mediaPlayerController];
     
     float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(segmentTimeRange.start)) / (CMTimeGetSeconds(CMTimeAdd(segmentTimeRange.start, segmentTimeRange.duration)) - CMTimeGetSeconds(segmentTimeRange.start));
     progress = fminf(1.f, fmaxf(0.f, progress));

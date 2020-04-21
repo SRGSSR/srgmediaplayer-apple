@@ -15,7 +15,6 @@
 #import "NSBundle+SRGMediaPlayer.h"
 #import "NSTimer+SRGMediaPlayer.h"
 #import "SRGActivityGestureRecognizer.h"
-#import "SRGMark+Private.h"
 #import "SRGMediaAccessibility.h"
 #import "SRGMediaPlayerError.h"
 #import "SRGMediaPlayerLogger.h"
@@ -23,7 +22,6 @@
 #import "SRGMediaPlayerView+Private.h"
 #import "SRGPeriodicTimeObserver.h"
 #import "SRGPlayer.h"
-#import "SRGPosition+Private.h"
 #import "SRGSegment+Private.h"
 #import "UIDevice+SRGMediaPlayer.h"
 #import "UIScreen+SRGMediaPlayer.h"
@@ -692,14 +690,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (NSDate *)currentDate
 {
-    if (self.referenceDate) {
-        // Calculate the date corresponding to the current time relatively to the reference date
-        NSTimeInterval offset = CMTimeGetSeconds(CMTimeSubtract(self.currentTime, self.referenceTime));
-        return [self.referenceDate dateByAddingTimeInterval:offset];
-    }
-    else {
-        return nil;
-    }
+    return [self streamDateForTime:self.currentTime];
 }
 
 - (CMTime)seekStartTime
@@ -887,6 +878,17 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 {
     CMTime time = [self streamTimeForMark:position.mark];
     return [SRGPosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
+}
+
+- (NSDate *)streamDateForTime:(CMTime)time
+{
+    if (self.referenceDate) {
+        NSTimeInterval offset = CMTimeGetSeconds(CMTimeSubtract(time, self.referenceTime));
+        return [self.referenceDate dateByAddingTimeInterval:offset];
+    }
+    else {
+        return nil;
+    }
 }
 
 #pragma mark Playback

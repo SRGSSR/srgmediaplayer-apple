@@ -50,6 +50,23 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) BOOL matchesAutomaticSubtitleSelection;
 
+/**
+ *  Return the time corresponding to a mark, in the stream reference frame.
+ */
+- (CMTime)streamTimeForMark:(SRGMark *)mark;
+
+/**
+ *  Return the time range corresponding to a mark range, in the stream reference frame.
+ */
+- (CMTimeRange)streamTimeRangeForMarkRange:(SRGMarkRange *)markRange;
+
+/**
+ *  Return the date corresponding to some time, in the stream reference frame.
+ *
+ *  @discussion Returns `nil` if the stream cannot be associated with a date, e.g. in the case of on-demand streams.
+ */
+- (nullable NSDate *)streamDateForTime:(CMTime)time;
+
 @end
 
 NS_ASSUME_NONNULL_END

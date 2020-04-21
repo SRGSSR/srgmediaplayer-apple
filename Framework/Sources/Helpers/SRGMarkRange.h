@@ -8,6 +8,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Forward declarations
+@class SRGMediaPlayerController;
+
 /**
  *  Describes a range enclosed by two marks.
  */
@@ -47,6 +50,17 @@ NS_ASSUME_NONNULL_BEGIN
  *  Range between two dates.
  */
 + (SRGMarkRange *)rangeFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
+
+@end
+
+@interface SRGMarkRange (TimeConversions)
+
+/**
+ *  Return the time corresponding to a mark, in the reference frame of the provided controller.
+ *
+ *  @discussion Returns the range from `fromMark.time` to `toMark.time` if the controller is `nil`.
+ */
+- (CMTimeRange)timeRangeForMediaPlayerController:(nullable SRGMediaPlayerController *)mediaPlayerController;
 
 @end
 

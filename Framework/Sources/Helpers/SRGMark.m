@@ -6,6 +6,8 @@
 
 #import "SRGMark.h"
 
+#import "SRGMediaPlayerController+Private.h"
+
 @interface SRGMark ()
 
 @property (nonatomic) CMTime time;
@@ -47,6 +49,18 @@
         }
     }
     return self;
+}
+
+#pragma mark Time conversions
+
+- (CMTime)timeForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
+{
+    if (mediaPlayerController) {
+        return [mediaPlayerController streamTimeForMark:self];
+    }
+    else {
+        return self.time;
+    }
 }
 
 #pragma mark Equality

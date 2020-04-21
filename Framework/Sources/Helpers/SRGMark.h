@@ -9,6 +9,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Forward declarations
+@class SRGMediaPlayerController;
+
 /**
  *  Represents a mark within a media, either as a time or a date. Date marks are only relevant for livestreams.
  *  If incorrectly used with an on-demand streams, they are simply interpreted as `kCMTimeZero`.
@@ -29,6 +32,29 @@ NS_ASSUME_NONNULL_BEGIN
  *  Mark at the specified date.
  */
 + (SRGMark *)markAtDate:(NSDate *)date;
+
+/**
+ *  The associated time. Guaranteed to be valid.
+ *
+ *  @discussion `kCMTimeZero` when if the mark is a date.
+ */
+@property (nonatomic, readonly) CMTime time;
+
+/**
+ *  The mark date, if any.
+ */
+@property (nonatomic, readonly, nullable) NSDate *date;
+
+@end
+
+@interface SRGMark (TimeConversions)
+
+/**
+ *  Return the time corresponding to a mark, in the reference frame of the provided controller.
+ *
+ *  @discussion Returns `time` if the controller is `nil`.
+ */
+- (CMTime)timeForMediaPlayerController:(nullable SRGMediaPlayerController *)mediaPlayerController;
 
 @end
 

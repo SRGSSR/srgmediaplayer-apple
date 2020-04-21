@@ -9,6 +9,7 @@
 #import "CMTimeRange+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGMediaPlayerController+Private.h"
 #import "UIBezierPath+SRGMediaPlayer.h"
 
 #import <libextobjc/libextobjc.h>
@@ -272,21 +273,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 - (NSDate *)date
 {
-    SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
-    CMTimeRange timeRange = mediaPlayerController.timeRange;
-    if (CMTIMERANGE_IS_INVALID(timeRange)) {
-        return nil;
-    }
-    
-    if (mediaPlayerController.streamType == SRGMediaPlayerStreamTypeLive) {
-        return NSDate.date;
-    }
-    else if (mediaPlayerController.streamType == SRGMediaPlayerStreamTypeDVR) {
-        return [NSDate dateWithTimeIntervalSinceNow:-CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), self.time))];
-    }
-    else {
-        return nil;
-    }
+    return [self.mediaPlayerController streamDateForTime:self.time];
 }
 
 - (BOOL)isLive
