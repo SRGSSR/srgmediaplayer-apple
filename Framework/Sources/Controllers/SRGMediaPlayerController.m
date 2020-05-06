@@ -1927,7 +1927,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
-    if (self.view.window && self.mediaType == SRGMediaPlayerMediaTypeVideo
+    if (! self.playerViewController && self.mediaType == SRGMediaPlayerMediaTypeVideo
 #if TARGET_OS_IOS
             && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive
 #endif
@@ -1960,6 +1960,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                 break;
             }
         }
+    }
+    else {
+        [self attachPlayer:nil toView:self.view];
     }
     
     [self updatePlayerDeviceSleepConfiguration];
