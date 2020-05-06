@@ -179,6 +179,16 @@ where `resourceLoaderDelegate` is an instance of your custom resource loader del
 
 In particular, FairPlay requires the use of a custom resource loader delegate for license retrieval. Please refer to the [official FairPlay documentation](https://developer.apple.com/streaming/fps) for more information.
 
+## Device sleep mode
+
+The new `preventsDisplaySleepDuringVideoPlayback` `AVPlayer` property added with iOS and tvOS 12 provides a way to control whether video playback should prevent the device from going to sleep.
+
+While you can setup this property in the player configuration block, note that `SRGMediaPlayerController` overrides it in some cases:
+
+- If no view has been attached to the controller or if the view is not installed within a view hierarchy, the value is forced to `NO` so that the device can go to sleep.
+- On iOS, when picture in picture is used, the value is forced to `YES` so that the screen remains active.
+- On iOS, when AirPlay is used, the value is forced to `NO` so that the device can go to sleep automatically during playback on the receiver.
+
 ## Thread-safety
 
 The library is intended to be used from the main thread only.

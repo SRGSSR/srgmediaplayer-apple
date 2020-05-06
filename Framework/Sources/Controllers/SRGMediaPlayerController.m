@@ -45,7 +45,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultO
 static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, AVMediaSelectionOption *audioOption);
 static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, NSString *language);
 
-@interface SRGMediaPlayerController () <SRGPlayerDelegate> {
+@interface SRGMediaPlayerController () <SRGMediaPlayerViewDelegate, SRGPlayerDelegate> {
 @private
     SRGMediaPlayerPlaybackState _playbackState;
     BOOL _selected;
@@ -105,6 +105,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
 @property (nonatomic) NSNumber *savedAllowsExternalPlayback;
 #endif
+
+@property (nonatomic) BOOL preventsDisplaySleepDuringVideoPlayback API_AVAILABLE(ios(12.0), tvos(12.0));
 
 @property (nonatomic) SRGPosition *startPosition;                   // Will be nilled when reached
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
@@ -315,6 +317,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             }
 #endif
             
+            [self updatePlayerDeviceSleepConfiguration];
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
         }];
         
@@ -523,6 +526,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)setupView:(SRGMediaPlayerView *)view
 {
+    view.delegate = self;
+    
 #if TARGET_OS_IOS
     @weakify(self)
     [view srg_addMainThreadObserver:self keyPath:@keypath(view.readyForDisplay) options:0 block:^(MAKVONotification * _Nonnull notification) {
@@ -1276,8 +1281,12 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.savedAllowsExternalPlayback = nil;
 #endif
     
+    if (@available(iOS 12, tvOS 12, *)) {
+        self.preventsDisplaySleepDuringVideoPlayback = NO;
+    }
+    
     // Emit the notification once all state has been reset
-     [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:fullUserInfo.copy];
+    [self setPlaybackState:SRGMediaPlayerPlaybackStateIdle withUserInfo:fullUserInfo.copy];
 }
 
 #pragma mark Configuration
@@ -1294,6 +1303,11 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 #endif
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(self.player) : nil;
+        
+        if (@available(iOS 12, tvOS 12, *)) {
+            self.preventsDisplaySleepDuringVideoPlayback = self.player.preventsDisplaySleepDuringVideoPlayback;
+        }
+        [self updatePlayerDeviceSleepConfiguration];
       
 #if TARGET_OS_IOS
         // If picture in picture is active, it is difficult to return from PiP if enabling AirPlay from the control
@@ -1521,6 +1535,29 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         
         completionHandler ? completionHandler(finished) : nil;
     }];
+}
+
+#pragma mark Device sleep
+
+- (void)updatePlayerDeviceSleepConfiguration
+{
+    if (@available(iOS 12, tvOS 12, *)) {
+#if TARGET_OS_IOS
+        if (self.pictureInPictureController.pictureInPictureActive) {
+            self.player.preventsDisplaySleepDuringVideoPlayback = YES;
+        }
+        else if (AVAudioSession.srg_isAirPlayActive) {
+            self.player.preventsDisplaySleepDuringVideoPlayback = NO;
+        }
+        else
+#endif
+        if (self.view.player && self.view.window) {
+            self.player.preventsDisplaySleepDuringVideoPlayback = self.preventsDisplaySleepDuringVideoPlayback;
+        }
+        else {
+            self.player.preventsDisplaySleepDuringVideoPlayback = NO;
+        }
+    }
 }
 
 #pragma mark AVPlayerViewController support
@@ -1810,7 +1847,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     return periodicTimeObserver;
 }
 
-#pragma mark SRGPlayer protocol
+#pragma mark SRGMediaPlayerViewDelegate protocol
+
+- (void)mediaPlayerView:(SRGMediaPlayerView *)mediaPlayerView didMoveToWindow:(UIWindow *)window
+{
+    [self updatePlayerDeviceSleepConfiguration];
+}
+
+#pragma mark SRGPlayerDelegate protocol
 
 - (void)player:(SRGPlayer *)player willSeekToTime:(CMTime)time
 {
@@ -1848,7 +1892,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
-    if (self.view.superview && self.mediaType == SRGMediaPlayerMediaTypeVideo
+    if (self.view.window && self.mediaType == SRGMediaPlayerMediaTypeVideo
 #if TARGET_OS_IOS
             && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive
 #endif
@@ -1882,11 +1926,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             }
         }
     }
+    
+    [self updatePlayerDeviceSleepConfiguration];
 }
 
 - (void)srg_mediaPlayerController_applicationWillEnterForeground:(NSNotification *)notification
 {
     [self attachPlayer:self.player toView:self.view];
+    [self updatePlayerDeviceSleepConfiguration];
 }
 
 #pragma mark KVO
