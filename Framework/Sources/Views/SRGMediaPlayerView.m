@@ -72,13 +72,6 @@ static void commonInit(SRGMediaPlayerView *self);
 {
     [super didMoveToWindow];
     
-    if (self.window) {
-        [self updateSubviewsWithPlayer:self.player];
-    }
-    else {
-        [self updateSubviewsWithPlayer:nil];
-    }
-    
     [self.delegate mediaPlayerView:self didMoveToWindow:self.window];
 }
 

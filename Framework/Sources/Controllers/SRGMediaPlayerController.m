@@ -1237,7 +1237,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 - (void)stopWithUserInfo:(NSDictionary *)userInfo
 {
 #if TARGET_OS_IOS
-    if (self.pictureInPictureController.isPictureInPictureActive) {
+    if (self.pictureInPictureController.pictureInPictureActive) {
         [self.pictureInPictureController stopPictureInPicture];
     }
 #endif
@@ -1879,6 +1879,15 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)mediaPlayerView:(SRGMediaPlayerView *)mediaPlayerView didMoveToWindow:(UIWindow *)window
 {
+    if (window) {
+        [self attachPlayer:self.player toView:self.view];
+    }
+    else {
+        if (! self.pictureInPictureController.pictureInPictureActive) {
+            [self attachPlayer:nil toView:self.view];
+        }
+    }
+    
     [self updatePlayerDeviceSleepConfiguration];
 }
 
@@ -1927,7 +1936,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
-    if (! self.playerViewController && self.mediaType == SRGMediaPlayerMediaTypeVideo
+    if (self.view.window && self.mediaType == SRGMediaPlayerMediaTypeVideo
 #if TARGET_OS_IOS
             && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive
 #endif
