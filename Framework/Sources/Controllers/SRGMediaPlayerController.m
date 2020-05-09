@@ -1940,43 +1940,45 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
-    if (self.view.window && self.mediaType == SRGMediaPlayerMediaTypeVideo
 #if TARGET_OS_IOS
-            && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive
+    if (! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive) {
 #endif
-    ) {    
-        switch (self.viewBackgroundBehavior) {
-            case SRGMediaPlayerViewBackgroundBehaviorAttached: {
-                [self.player pause];
-                break;
-            }
-                
+        if (self.view.window && self.mediaType == SRGMediaPlayerMediaTypeVideo) {
+            switch (self.viewBackgroundBehavior) {
+                case SRGMediaPlayerViewBackgroundBehaviorAttached: {
+                    [self.player pause];
+                    break;
+                }
+                    
 #if TARGET_OS_IOS
-            case SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked: {
-                // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    if (UIDevice.srg_mediaPlayer_isLocked) {
-                        [self attachPlayer:nil toView:self.view];
-                    }
-                    else {
-                        [self.player pause];
-                    }
-                });
-                break;
-            }
+                case SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked: {
+                    // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        if (UIDevice.srg_mediaPlayer_isLocked) {
+                            [self attachPlayer:nil toView:self.view];
+                        }
+                        else {
+                            [self.player pause];
+                        }
+                    });
+                    break;
+                }
 #endif
-                
-            case SRGMediaPlayerViewBackgroundBehaviorDetached: {
-                // The video layer must be detached in the background if we want playback not to be paused automatically.
-                // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
-                [self attachPlayer:nil toView:self.view];
-                break;
+                    
+                case SRGMediaPlayerViewBackgroundBehaviorDetached: {
+                    // The video layer must be detached in the background if we want playback not to be paused automatically.
+                    // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
+                    [self attachPlayer:nil toView:self.view];
+                    break;
+                }
             }
         }
+        else {
+            [self attachPlayer:nil toView:self.view];
+        }
+#if TARGET_OS_IOS
     }
-    else {
-        [self attachPlayer:nil toView:self.view];
-    }
+#endif
     
     [self updatePlayerDeviceSleepConfiguration];
 }
