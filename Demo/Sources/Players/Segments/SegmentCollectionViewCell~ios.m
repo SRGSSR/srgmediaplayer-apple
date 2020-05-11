@@ -70,7 +70,7 @@ static NSDateComponentsFormatter *SegmentDurationDateComponentsFormatter(void)
 {
     CMTimeRange segmentTimeRange = [self.segment.srg_markRange timeRangeForMediaPlayerController:self.mediaPlayerController];
     
-    float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(segmentTimeRange.start)) / (CMTimeGetSeconds(CMTimeAdd(segmentTimeRange.start, segmentTimeRange.duration)) - CMTimeGetSeconds(segmentTimeRange.start));
+    float progress = (CMTimeGetSeconds(time) - CMTimeGetSeconds(segmentTimeRange.start)) / (CMTimeGetSeconds(segmentTimeRange.duration));
     progress = fminf(1.f, fmaxf(0.f, progress));
     
     self.progressView.progress = progress;
