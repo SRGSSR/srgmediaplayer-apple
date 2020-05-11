@@ -57,7 +57,6 @@
     
     SRGMarkRange *otherMarkRange = object;
     return [self.fromMark isEqual:otherMarkRange.fromMark] && [self.toMark isEqual:otherMarkRange.toMark];
-    
 }
 
 - (NSUInteger)hash

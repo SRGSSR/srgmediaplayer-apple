@@ -384,10 +384,12 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         return;
     }
     
+    SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
+    
     CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(interval, NSEC_PER_SEC));
-    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
+    [mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
-            [self.mediaPlayerController play];
+            [mediaPlayerController play];
         }
         completionHandler ? completionHandler(finished) : nil;
     }];

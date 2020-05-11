@@ -863,9 +863,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (CMTime)streamTimeForMark:(SRGMark *)mark
 {
-    if (mark.date && self.referenceDate) {
-        NSTimeInterval offset = [mark.date timeIntervalSinceDate:self.referenceDate];
-        return CMTimeAdd(self.referenceTime, CMTimeMakeWithSeconds(offset, NSEC_PER_SEC));
+    CMTime time = [self streamTimeForDate:mark.date];
+    if (SRG_CMTIME_IS_DEFINITE(time)) {
+        return time;
     }
     else {
         return mark.time;
@@ -883,6 +883,17 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 {
     CMTime time = [self streamTimeForMark:position.mark];
     return [SRGPosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
+}
+
+- (CMTime)streamTimeForDate:(NSDate *)date
+{
+    if (date && self.referenceDate) {
+        NSTimeInterval offset = [date timeIntervalSinceDate:self.referenceDate];
+        return CMTimeAdd(self.referenceTime, CMTimeMakeWithSeconds(offset, NSEC_PER_SEC));
+    }
+    else {
+        return kCMTimeIndefinite;
+    }
 }
 
 - (NSDate *)streamDateForTime:(CMTime)time

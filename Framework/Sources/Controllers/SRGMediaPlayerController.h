@@ -513,6 +513,28 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
+ *  @name Date - time conversions
+ */
+
+@interface SRGMediaPlayerController (TimeConversions)
+
+/**
+ *  Return the time corresponding to some date, in the stream reference frame.
+ *
+ *  @discussion Returns `kCMTimeIndefinite` if the stream has no date information, or if the date parameter is `nil`.
+ */
+- (CMTime)streamTimeForDate:(nullable NSDate *)date;
+
+/**
+ *  Return the date corresponding to some time, in the stream reference frame.
+ *
+ *  @discussion Returns `nil` if the stream has no date information.
+ */
+- (nullable NSDate *)streamDateForTime:(CMTime)time;
+
+@end
+
+/**
  *  @name Time observers
  */
 
