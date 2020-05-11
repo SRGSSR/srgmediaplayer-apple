@@ -1248,7 +1248,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     if (self.player) {
         [self.player.currentItem.asset cancelLoading];
         
-        fullUserInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:self.player.currentTime];
+        CMTime lastPlaybackTime = self.player.currentTime;
+        fullUserInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:lastPlaybackTime];
+        fullUserInfo[SRGMediaPlayerLastPlaybackDateKey] = [self streamDateForTime:lastPlaybackTime];
         fullUserInfo[SRGMediaPlayerPreviousTimeRangeKey] = [NSValue valueWithCMTimeRange:self.timeRange];
         fullUserInfo[SRGMediaPlayerPreviousMediaTypeKey] = @(self.mediaType);
         fullUserInfo[SRGMediaPlayerPreviousStreamTypeKey] = @(self.streamType);
@@ -1452,18 +1454,23 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
     
     CMTime lastPlaybackTime = CMTIME_IS_INDEFINITE(self.seekStartTime) ? self.currentTime : self.seekStartTime;
+    NSDate *lastPlaybackDate = [self streamDateForTime:lastPlaybackTime];
     
     if (self.previousSegment && ! self.previousSegment.srg_blocked) {
         self.currentSegment = nil;
         
-        NSMutableDictionary *userInfo = @{ SRGMediaPlayerSegmentKey : self.previousSegment,
-                                           SRGMediaPlayerSelectionKey : @(selected),
-                                           SRGMediaPlayerSelectedKey : @(_selected),
-                                           SRGMediaPlayerInterruptionKey : @(interrupted),
-                                           SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:lastPlaybackTime] }.mutableCopy;
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+        userInfo[SRGMediaPlayerSegmentKey] = self.previousSegment;
+        userInfo[SRGMediaPlayerSelectionKey] = @(selected);
+        userInfo[SRGMediaPlayerSelectedKey] = @(_selected);
+        userInfo[SRGMediaPlayerInterruptionKey] = @(interrupted);
+        userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:lastPlaybackTime];
+        userInfo[SRGMediaPlayerLastPlaybackDateKey] = lastPlaybackDate;
+        
         if (! segment.srg_blocked) {
             userInfo[SRGMediaPlayerNextSegmentKey] = segment;
         }
+
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSegmentDidEndNotification
                                                           object:self
                                                         userInfo:userInfo.copy];
@@ -1478,13 +1485,17 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             
             self.currentSegment = segment;
             
-            NSMutableDictionary *userInfo = @{ SRGMediaPlayerSegmentKey : segment,
-                                               SRGMediaPlayerSelectionKey : @(_selected),
-                                               SRGMediaPlayerSelectedKey : @(_selected),
-                                               SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:lastPlaybackTime] }.mutableCopy;
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+            userInfo[SRGMediaPlayerSegmentKey] = segment;
+            userInfo[SRGMediaPlayerSelectionKey] = @(_selected);
+            userInfo[SRGMediaPlayerSelectedKey] = @(_selected);
+            userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:lastPlaybackTime];
+            userInfo[SRGMediaPlayerLastPlaybackDateKey] = lastPlaybackDate;
+            
             if (self.previousSegment && ! self.previousSegment.srg_blocked) {
                 userInfo[SRGMediaPlayerPreviousSegmentKey] = self.previousSegment;
             }
+            
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSegmentDidStartNotification
                                                               object:self
                                                             userInfo:userInfo.copy];
@@ -1521,11 +1532,16 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 {
     NSAssert(segment.srg_blocked, @"Expect a blocked segment");
     
-    NSValue *lastPlaybackTimeValue = [NSValue valueWithCMTime:self.currentTime];
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    userInfo[SRGMediaPlayerSegmentKey] = segment;
+    
+    CMTime currentTime = self.currentTime;
+    userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:currentTime];
+    userInfo[SRGMediaPlayerLastPlaybackDateKey] = [self streamDateForTime:currentTime];
+    
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerWillSkipBlockedSegmentNotification
                                                       object:self
-                                                    userInfo:@{ SRGMediaPlayerSegmentKey : segment,
-                                                                SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTimeValue }];
+                                                    userInfo:userInfo.copy];
     
     SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ will be skipped", segment);
     
@@ -1539,8 +1555,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         // so that consecutive notifications are received in the correct order
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                           object:self
-                                                        userInfo:@{ SRGMediaPlayerSegmentKey : segment,
-                                                                    SRGMediaPlayerLastPlaybackTimeKey : lastPlaybackTimeValue}];
+                                                        userInfo:userInfo.copy];
         
         SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ was skipped", segment);
         
@@ -1871,10 +1886,17 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 {
     [self setPlaybackState:SRGMediaPlayerPlaybackStateSeeking withUserInfo:nil];
     
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    userInfo[SRGMediaPlayerSeekTimeKey] = [NSValue valueWithCMTime:time];
+    userInfo[SRGMediaPlayerSeekDateKey] = [self streamDateForTime:time];
+    
+    CMTime lastPlaybackTime = player.currentTime;
+    userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:lastPlaybackTime];
+    userInfo[SRGMediaPlayerLastPlaybackDateKey] = [self streamDateForTime:lastPlaybackTime];
+    
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerSeekNotification
                                                       object:self
-                                                    userInfo:@{ SRGMediaPlayerSeekTimeKey : [NSValue valueWithCMTime:time],
-                                                                SRGMediaPlayerLastPlaybackTimeKey : [NSValue valueWithCMTime:player.currentTime] }];
+                                                    userInfo:userInfo.copy];
 }
 
 - (void)player:(SRGPlayer *)player didSeekToTime:(CMTime)time

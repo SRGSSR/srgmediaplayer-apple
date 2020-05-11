@@ -1303,7 +1303,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-- (void)testSeekNotification
+- (void)testSeekNotificationForOnDemandStream
 {
     // Wait until the player is in the playing state to seek
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -1317,7 +1317,34 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self expectationForSingleNotification:SRGMediaPlayerSeekNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateSeeking);
         TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerSeekTimeKey] CMTimeValue], 30);
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerSeekDateKey]);
         TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerLastPlaybackDateKey]);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTimeInSeconds:30.] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testSeekNotificationForDvrStream
+{
+    // Wait until the player is in the playing state to seek
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForSingleNotification:SRGMediaPlayerSeekNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateSeeking);
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerSeekTimeKey] CMTimeValue], 30);
+        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerSeekDateKey]);
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 7151);
+        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerLastPlaybackDateKey]);
         return YES;
     }];
     
@@ -2001,6 +2028,7 @@ static NSURL *AudioOverHTTPTestURL(void)
             XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousSelectedSegmentKey]);
             
             TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
+            XCTAssertNil(notification.userInfo[SRGMediaPlayerLastPlaybackDateKey]);
             return YES;
         }];
         
@@ -2097,6 +2125,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerPreviousStreamTypeKey]);
         
         TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerLastPlaybackDateKey]);
         return YES;
     }];
     
