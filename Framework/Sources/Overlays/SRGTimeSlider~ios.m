@@ -300,13 +300,14 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 - (void)updateTimeRangeLabelsWithTime:(CMTime)time
 {
     BOOL isReady = [self isReadyToDisplayValues];
+    NSDate *date = [self.mediaPlayerController streamDateForTime:time];
     
     // Value label
-    if ([self.delegate respondsToSelector:@selector(timeSlider:labelForValue:time:)]) {
-        self.valueLabel.attributedText = [self.delegate timeSlider:self labelForValue:self.value time:time];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:labelForValue:time:date:)]) {
+        self.valueLabel.attributedText = [self.delegate timeSlider:self labelForValue:self.value time:time date:date];
         
-        if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityLabelForValue:time:)]) {
-            self.valueLabel.accessibilityLabel = [self.delegate timeSlider:self accessibilityLabelForValue:self.value time:time];
+        if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityLabelForValue:time:date:)]) {
+            self.valueLabel.accessibilityLabel = [self.delegate timeSlider:self accessibilityLabelForValue:self.value time:time date:date];
         }
         else {
             self.valueLabel.accessibilityLabel = nil;
@@ -330,11 +331,11 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
     
     // Time left label
-    if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftLabelForValue:time:)]) {
-        self.timeLeftValueLabel.attributedText = [self.delegate timeSlider:self timeLeftLabelForValue:self.value time:time];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftLabelForValue:time:date:)]) {
+        self.timeLeftValueLabel.attributedText = [self.delegate timeSlider:self timeLeftLabelForValue:self.value time:time date:date];
         
-        if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftAccessibilityLabelForValue:time:)]) {
-            self.timeLeftValueLabel.accessibilityLabel = [self.delegate timeSlider:self timeLeftAccessibilityLabelForValue:self.value time:time];
+        if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftAccessibilityLabelForValue:time:date:)]) {
+            self.timeLeftValueLabel.accessibilityLabel = [self.delegate timeSlider:self timeLeftAccessibilityLabelForValue:self.value time:time date:date];
         }
         else {
             self.timeLeftValueLabel.accessibilityLabel = nil;

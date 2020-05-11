@@ -142,20 +142,22 @@ API_UNAVAILABLE(tvos)
  *  @param slider The slider for which the call is made.
  *  @param value  The corresponding slider value (in seconds).
  *  @param time   The corresponding time.
+ *  @param date   The date corresponding to the time, if any.
  */
-- (nullable NSAttributedString *)timeSlider:(SRGTimeSlider *)slider labelForValue:(float)value time:(CMTime)time;
+- (nullable NSAttributedString *)timeSlider:(SRGTimeSlider *)slider labelForValue:(float)value time:(CMTime)time date:(nullable NSDate *)date;
 
 /**
  *  Implement to customise the accessibility label attached to `valueLabel`. If this method is not implemented,
- *  the `-timeSlider:labelForValue:time:` label is used, otherwise a default label.
+ *  the `-timeSlider:labelForValue:time:date:` label is used, otherwise a default label.
  *
  *  @param slider The slider for which the call is made.
  *  @param value  The corresponding slider value (in seconds).
  *  @param time   The corresponding time.
+ *  @param date   The date corresponding to the time, if any.
  *
- *  @discussion This method is only called if `-timeSlider:labelForValue:time:` has been implemented.
+ *  @discussion This method is only called if `-timeSlider:labelForValue:time:date:` has been implemented.
  */
-- (nullable NSString *)timeSlider:(SRGTimeSlider *)slider accessibilityLabelForValue:(float)value time:(CMTime)time;
+- (nullable NSString *)timeSlider:(SRGTimeSlider *)slider accessibilityLabelForValue:(float)value time:(CMTime)time date:(nullable NSDate *)date;
 
 /**
  *  Implement to customise the value displayed by the slider `timeLeftValueLabel`. If not implemented, a default presentation
@@ -164,19 +166,22 @@ API_UNAVAILABLE(tvos)
  *  @param slider The slider for which the call is made.
  *  @param value  The corresponding slider value (in seconds).
  *  @param time   The corresponding time.
+ *  @param date   The date corresponding to the time, if any.
  */
-- (nullable NSAttributedString *)timeSlider:(SRGTimeSlider *)slider timeLeftLabelForValue:(float)value time:(CMTime)time;
+- (nullable NSAttributedString *)timeSlider:(SRGTimeSlider *)slider timeLeftLabelForValue:(float)value time:(CMTime)time date:(nullable NSDate *)date;
 
 /**
  *  Implement to customise the accessibility label attached to `timeLeftValueLabel`. If this method is not implemented,
- *  the `-timeSlider:timeLeftLabelForValue:time:` label is used, otherwise a default label.
+ *  the `-timeSlider:timeLeftLabelForValue:time:date:` label is used, otherwise a default label.
  *
  *  @param slider The slider for which the call is made.
  *  @param value  The corresponding slider value (in seconds).
+ *  @param time   The corresponding time.
+ *  @param date   The date corresponding to the time, if any.
  *
- *  @discussion This method is only called if `-timeSlider:timeLeftAccessibilityLabelForValue:time:` has been implemented.
+ *  @discussion This method is only called if `-timeSlider:timeLeftAccessibilityLabelForValue:time:date:` has been implemented.
  */
-- (nullable NSString *)timeSlider:(SRGTimeSlider *)slider timeLeftAccessibilityLabelForValue:(float)value time:(CMTime)time;
+- (nullable NSString *)timeSlider:(SRGTimeSlider *)slider timeLeftAccessibilityLabelForValue:(float)value time:(CMTime)time date:(nullable NSDate *)date;
 
 @end
 
