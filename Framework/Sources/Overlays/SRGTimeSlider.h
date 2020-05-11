@@ -129,10 +129,11 @@ API_UNAVAILABLE(tvos)
  *
  *  @param slider      The slider for which the call is made.
  *  @param time        The time at which the slider was moved.
+ *  @param date        The date corresponding to the time, if any.
  *  @param value       The corresponding slider value (in seconds).
  *  @param interactive Whether the change is a result of a user interfaction (`YES`) or not.
  */
-- (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(float)value interactive:(BOOL)interactive;
+- (void)timeSlider:(SRGTimeSlider *)slider isMovingToTime:(CMTime)time date:(nullable NSDate *)date withValue:(float)value interactive:(BOOL)interactive;
 
 /**
  *  Implement to customise the value displayed by the slider `valueLabel`. If not implemented, a default presentation

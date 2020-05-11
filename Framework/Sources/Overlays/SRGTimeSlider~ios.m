@@ -234,7 +234,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 - (void)updateDisplayWithTime:(CMTime)time
 {
-    CMTimeRange timeRange = [self.mediaPlayerController timeRange];
+    CMTimeRange timeRange = self.mediaPlayerController.timeRange;
     if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeOnDemand && self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
         self.maximumValue = 0.f;
         self.value = 0.f;
@@ -252,8 +252,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         self.userInteractionEnabled = NO;
     }
     
-    if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToPlaybackTime:withValue:interactive:)]) {
-        [self.delegate timeSlider:self isMovingToPlaybackTime:time withValue:self.value interactive:NO];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToTime:date:withValue:interactive:)]) {
+        NSDate *date = [self.mediaPlayerController streamDateForTime:time];
+        [self.delegate timeSlider:self isMovingToTime:time date:date withValue:self.value interactive:NO];
     }
     
     [self setNeedsDisplay];
@@ -385,8 +386,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:time] withCompletionHandler:nil];
     }
     
-    if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToPlaybackTime:withValue:interactive:)]) {
-        [self.delegate timeSlider:self isMovingToPlaybackTime:time withValue:self.value interactive:YES];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToTime:date:withValue:interactive:)]) {
+        NSDate *date = [self.mediaPlayerController streamDateForTime:time];
+        [self.delegate timeSlider:self isMovingToTime:time date:date withValue:self.value interactive:YES];
     }
     
     return continueTracking;
@@ -523,8 +525,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         self.value = value;
         self.maximumValue = value;
         
-        if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToPlaybackTime:withValue:interactive:)]) {
-            [self.delegate timeSlider:self isMovingToPlaybackTime:self.time withValue:self.value interactive:NO];
+        if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToTime:date:withValue:interactive:)]) {
+            [self.delegate timeSlider:self isMovingToTime:self.time date:self.date withValue:self.value interactive:NO];
         }
         
         [self setNeedsDisplay];
