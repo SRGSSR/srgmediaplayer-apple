@@ -34,13 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (SRGMark *)markAtDate:(NSDate *)date;
 
 /**
- *  The associated time. Guaranteed to be valid.
- *
- *  @discussion `kCMTimeZero` when if the mark is a date.
- */
-@property (nonatomic, readonly) CMTime time;
-
-/**
  *  The mark date, if any.
  */
 @property (nonatomic, readonly, nullable) NSDate *date;
@@ -52,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return the time corresponding to a mark, in the reference frame of the provided controller.
  *
- *  @discussion Returns `time` if the controller is `nil`.
+ *  @discussion Returns the raw time if the controller is `nil`.
  */
 - (CMTime)timeForMediaPlayerController:(nullable SRGMediaPlayerController *)mediaPlayerController;
 

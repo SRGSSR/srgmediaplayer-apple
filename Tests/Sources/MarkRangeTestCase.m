@@ -136,13 +136,13 @@
 - (void)testTimeConversionsWithoutController
 {
     SRGMarkRange *markRange1 = [SRGMarkRange rangeFromTimeInSeconds:5. toTimeInSeconds:10.];
-    TestAssertEqualTimeInSeconds(markRange1.fromMark.time, 5.);
-    TestAssertEqualTimeInSeconds(markRange1.toMark.time, 10.);
+    TestAssertEqualTimeInSeconds([markRange1.fromMark timeForMediaPlayerController:nil], 5.);
+    TestAssertEqualTimeInSeconds([markRange1.toMark timeForMediaPlayerController:nil], 10.);
     
     NSDate *date = NSDate.date;
     SRGMarkRange *markRange2 = [SRGMarkRange rangeFromDate:date toDate:[date dateByAddingTimeInterval:10.]];
-    TestAssertEqualTimeInSeconds(markRange2.fromMark.time, 0.);
-    TestAssertEqualTimeInSeconds(markRange2.toMark.time, 0.);
+    TestAssertEqualTimeInSeconds([markRange2.fromMark timeForMediaPlayerController:nil], 0.);
+    TestAssertEqualTimeInSeconds([markRange2.toMark timeForMediaPlayerController:nil], 0.);
 }
 
 @end

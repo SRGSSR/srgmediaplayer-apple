@@ -868,7 +868,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return time;
     }
     else {
-        return mark.time;
+        return [mark timeForMediaPlayerController:nil];
     }
 }
 
