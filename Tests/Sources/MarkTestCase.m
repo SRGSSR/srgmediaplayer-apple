@@ -20,14 +20,14 @@
 - (void)testMarkAtTime
 {
     SRGMark *mark = [SRGMark markAtTime:CMTimeMakeWithSeconds(7., NSEC_PER_SEC)];
-    TestAssertEqualTimeInSeconds(mark.time, 7.);
+    TestAssertEqualTimeInSeconds([mark timeForMediaPlayerController:nil], 7.);
     XCTAssertNil(mark.date);
 }
 
 - (void)testMarkAtTimeInSeconds
 {
     SRGMark *mark = [SRGMark markAtTimeInSeconds:9.];
-    TestAssertEqualTimeInSeconds(mark.time, 9.);
+    TestAssertEqualTimeInSeconds([mark timeForMediaPlayerController:nil], 9.);
     XCTAssertNil(mark.date);
 }
 
@@ -35,7 +35,7 @@
 {
     NSDate *date = NSDate.date;
     SRGMark *mark = [SRGMark markAtDate:date];
-    TestAssertEqualTimeInSeconds(mark.time, 0.);
+    TestAssertEqualTimeInSeconds([mark timeForMediaPlayerController:nil], 0.);
     XCTAssertEqualObjects(mark.date, date);
 }
 

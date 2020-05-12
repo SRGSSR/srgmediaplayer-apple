@@ -234,7 +234,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 - (void)updateDisplayWithTime:(CMTime)time
 {
-    CMTimeRange timeRange = [self.mediaPlayerController timeRange];
+    CMTimeRange timeRange = self.mediaPlayerController.timeRange;
     if (self.mediaPlayerController.streamType == SRGMediaPlayerStreamTypeOnDemand && self.mediaPlayerController.playbackState == SRGMediaPlayerPlaybackStateIdle) {
         self.maximumValue = 0.f;
         self.value = 0.f;
@@ -252,8 +252,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         self.userInteractionEnabled = NO;
     }
     
-    if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToPlaybackTime:withValue:interactive:)]) {
-        [self.delegate timeSlider:self isMovingToPlaybackTime:time withValue:self.value interactive:NO];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToTime:date:withValue:interactive:)]) {
+        NSDate *date = [self.mediaPlayerController streamDateForTime:time];
+        [self.delegate timeSlider:self isMovingToTime:time date:date withValue:self.value interactive:NO];
     }
     
     [self setNeedsDisplay];
@@ -299,13 +300,14 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 - (void)updateTimeRangeLabelsWithTime:(CMTime)time
 {
     BOOL isReady = [self isReadyToDisplayValues];
+    NSDate *date = [self.mediaPlayerController streamDateForTime:time];
     
     // Value label
-    if ([self.delegate respondsToSelector:@selector(timeSlider:labelForValue:time:)]) {
-        self.valueLabel.attributedText = [self.delegate timeSlider:self labelForValue:self.value time:time];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:labelForValue:time:date:)]) {
+        self.valueLabel.attributedText = [self.delegate timeSlider:self labelForValue:self.value time:time date:date];
         
-        if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityLabelForValue:time:)]) {
-            self.valueLabel.accessibilityLabel = [self.delegate timeSlider:self accessibilityLabelForValue:self.value time:time];
+        if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityLabelForValue:time:date:)]) {
+            self.valueLabel.accessibilityLabel = [self.delegate timeSlider:self accessibilityLabelForValue:self.value time:time date:date];
         }
         else {
             self.valueLabel.accessibilityLabel = nil;
@@ -329,11 +331,11 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
     
     // Time left label
-    if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftLabelForValue:time:)]) {
-        self.timeLeftValueLabel.attributedText = [self.delegate timeSlider:self timeLeftLabelForValue:self.value time:time];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftLabelForValue:time:date:)]) {
+        self.timeLeftValueLabel.attributedText = [self.delegate timeSlider:self timeLeftLabelForValue:self.value time:time date:date];
         
-        if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftAccessibilityLabelForValue:time:)]) {
-            self.timeLeftValueLabel.accessibilityLabel = [self.delegate timeSlider:self timeLeftAccessibilityLabelForValue:self.value time:time];
+        if ([self.delegate respondsToSelector:@selector(timeSlider:timeLeftAccessibilityLabelForValue:time:date:)]) {
+            self.timeLeftValueLabel.accessibilityLabel = [self.delegate timeSlider:self timeLeftAccessibilityLabelForValue:self.value time:time date:date];
         }
         else {
             self.timeLeftValueLabel.accessibilityLabel = nil;
@@ -385,8 +387,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:time] withCompletionHandler:nil];
     }
     
-    if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToPlaybackTime:withValue:interactive:)]) {
-        [self.delegate timeSlider:self isMovingToPlaybackTime:time withValue:self.value interactive:YES];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToTime:date:withValue:interactive:)]) {
+        NSDate *date = [self.mediaPlayerController streamDateForTime:time];
+        [self.delegate timeSlider:self isMovingToTime:time date:date withValue:self.value interactive:YES];
     }
     
     return continueTracking;
@@ -523,8 +526,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         self.value = value;
         self.maximumValue = value;
         
-        if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToPlaybackTime:withValue:interactive:)]) {
-            [self.delegate timeSlider:self isMovingToPlaybackTime:self.time withValue:self.value interactive:NO];
+        if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToTime:date:withValue:interactive:)]) {
+            [self.delegate timeSlider:self isMovingToTime:self.time date:self.date withValue:self.value interactive:NO];
         }
         
         [self setNeedsDisplay];

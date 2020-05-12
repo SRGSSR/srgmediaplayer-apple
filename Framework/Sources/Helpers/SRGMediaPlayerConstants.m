@@ -38,6 +38,7 @@ NSString * const SRGMediaPlayerPreviousSelectedSegmentKey = @"SRGMediaPlayerPrev
 NSString * const SRGMediaPlayerErrorKey = @"SRGMediaPlayerError";
 
 NSString * const SRGMediaPlayerSeekTimeKey = @"SRGMediaPlayerSeekTime";
+NSString * const SRGMediaPlayerSeekDateKey = @"SRGMediaPlayerSeekDate";
 
 NSString * const SRGMediaPlayerSegmentKey = @"SRGMediaPlayerSegment";
 
@@ -54,6 +55,7 @@ NSString * const SRGMediaPlayerTrackKey = @"SRGMediaPlayerTrack";
 NSString * const SRGMediaPlayerPreviousTrackKey = @"SRGMediaPlayerPreviousTrack";
 
 NSString * const SRGMediaPlayerLastPlaybackTimeKey = @"SRGMediaPlayerLastPlaybackTime";
+NSString * const SRGMediaPlayerLastPlaybackDateKey = @"SRGMediaPlayerLastPlaybackDate";
 
 CMTime SRGMediaPlayerEffectiveEndTolerance(NSTimeInterval endTolerance, float endToleranceRatio, NSTimeInterval contentDuration)
 {

@@ -151,7 +151,8 @@ OBJC_EXPORT NSString * const SRGMediaPlayerPlaybackDidFailNotification;         
 
 /**
  *  Notification sent just before a seek is made (the player is already in the seeking state, though). Use the `SRGMediaPlayerSeekTimeKey`
- *  to retrieve an `NSValue` containing the `CMTime` of the target seek position.
+ *  to retrieve an `NSValue` containing the `CMTime` of the target seek position, or `SRGMediaPlayerSeekDateKey` for a date position if
+ *  the stream supports date seeking.
  *
  *  @discussion If multiple seeks are made, no additional state change notification is sent (and thus the new target seek
  *              time is not received in a notification).
@@ -214,6 +215,7 @@ OBJC_EXPORT NSString * const SRGMediaPlayerErrorKey;                            
  *  Information available for `SRGMediaPlayerSeekNotification`.
  */
 OBJC_EXPORT NSString * const SRGMediaPlayerSeekTimeKey;                                     // Key to access the time to which the seek is made, as an `NSValue` (wrapping a `CMTime` value).
+OBJC_EXPORT NSString * const SRGMediaPlayerSeekDateKey;                                     // Key to access the date to which the seek is made, as an `NSDate`. For DVR streams only.
 
 /**
  *  Information available for all segment-related notifications.
@@ -252,5 +254,6 @@ OBJC_EXPORT NSString * const SRGMediaPlayerPreviousTrackKey;                    
  *  For `SRGMediaPlayerPlaybackStateDidChangeNotification` notifications, this key is only present when the player returns to idle, and provides the last known playback position.
  */
 OBJC_EXPORT NSString * const SRGMediaPlayerLastPlaybackTimeKey;                             // Key to an `NSValue` wrapping a `CMTime` specifying the last playback position before the event occurred.
+OBJC_EXPORT NSString * const SRGMediaPlayerLastPlaybackDateKey;                             // Key to an `NSDate` specifying the last playback date before the event occurred. For DVR streams only.
 
 NS_ASSUME_NONNULL_END

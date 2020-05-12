@@ -43,7 +43,9 @@
         return [mediaPlayerController streamTimeRangeForMarkRange:self];
     }
     else {
-        return CMTimeRangeFromTimeToTime(self.fromMark.time, self.toMark.time);
+        CMTime fromTime = [self.fromMark timeForMediaPlayerController:nil];
+        CMTime toTime = [self.toMark timeForMediaPlayerController:nil];
+        return CMTimeRangeFromTimeToTime(fromTime, toTime);
     }
 }
 
@@ -57,7 +59,6 @@
     
     SRGMarkRange *otherMarkRange = object;
     return [self.fromMark isEqual:otherMarkRange.fromMark] && [self.toMark isEqual:otherMarkRange.toMark];
-    
 }
 
 - (NSUInteger)hash

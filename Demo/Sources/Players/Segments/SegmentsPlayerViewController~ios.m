@@ -98,7 +98,7 @@
 
 #pragma mark SRGTimeSliderDelegate protocol
 
-- (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(float)value interactive:(BOOL)interactive
+- (void)timeSlider:(SRGTimeSlider *)slider isMovingToTime:(CMTime)time date:(NSDate *)date withValue:(float)value interactive:(BOOL)interactive
 {
     [self updateAppearanceWithTime:time];
     

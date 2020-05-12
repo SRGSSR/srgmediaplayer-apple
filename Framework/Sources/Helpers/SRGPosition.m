@@ -64,7 +64,7 @@
 
 - (CMTime)time
 {
-    return self.mark.time;
+    return [self.mark timeForMediaPlayerController:nil];
 }
 
 - (NSDate *)date

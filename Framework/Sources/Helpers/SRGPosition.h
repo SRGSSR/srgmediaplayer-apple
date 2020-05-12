@@ -71,18 +71,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) SRGMark *mark;
 
 /**
- *  The associated time. Guaranteed to be valid.
- *
- *  @discussion `kCMTimeZero` when if the mark is a date.
- */
-@property (nonatomic, readonly) CMTime time;
-
-/**
- *  The mark date, if any.
- */
-@property (nonatomic, readonly, nullable) NSDate *date;
-
-/**
  *  The tolerances applied when reaching the position. Guaranteed to be valid.
  */
 @property (nonatomic, readonly) CMTime toleranceBefore;

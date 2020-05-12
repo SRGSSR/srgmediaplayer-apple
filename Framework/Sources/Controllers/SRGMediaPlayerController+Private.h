@@ -60,13 +60,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (CMTimeRange)streamTimeRangeForMarkRange:(SRGMarkRange *)markRange;
 
-/**
- *  Return the date corresponding to some time, in the stream reference frame.
- *
- *  @discussion Returns `nil` if the stream cannot be associated with a date, e.g. in the case of on-demand streams.
- */
-- (nullable NSDate *)streamDateForTime:(CMTime)time;
-
 @end
 
 NS_ASSUME_NONNULL_END
