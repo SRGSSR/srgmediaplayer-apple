@@ -122,11 +122,11 @@
     }
 }
 
-- (IBAction)toggleVideoPlaybackPreventsDeviceSleep:(id)sender
+- (IBAction)toggleVideoPlaybackPreventsDeviceSleep:(UISwitch *)preventsDeviceSleepSwitch
 {
     if (@available(iOS 12.0, *)) {
         self.mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
-            player.preventsDisplaySleepDuringVideoPlayback = ! player.preventsDisplaySleepDuringVideoPlayback;
+            player.preventsDisplaySleepDuringVideoPlayback = preventsDeviceSleepSwitch.on;
         };
         [self.mediaPlayerController reloadPlayerConfiguration];
     }
