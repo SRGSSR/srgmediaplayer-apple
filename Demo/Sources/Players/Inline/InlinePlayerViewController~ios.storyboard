@@ -123,7 +123,7 @@
                                             </switch>
                                         </subviews>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDw-Tm-CV6">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;sleep result&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDw-Tm-CV6">
                                         <rect key="frame" x="0.0" y="78" width="343" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -155,15 +155,24 @@
                                     </segmentedControl>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ccJ-Rh-ok5">
+                                <rect key="frame" x="93.5" y="472" width="188" height="30"/>
+                                <state key="normal" title="Reload player configuration"/>
+                                <connections>
+                                    <action selector="reloadPlayerConfiguration:" destination="IH9-dj-2W7" eventType="touchUpInside" id="h9J-UJ-RL0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="cn5-le-qTe" firstAttribute="centerX" secondItem="DNG-or-44v" secondAttribute="centerX" id="3QC-Pm-DWR"/>
                             <constraint firstItem="cn5-le-qTe" firstAttribute="top" secondItem="mz4-3g-dMP" secondAttribute="bottom" constant="30" id="7aD-SW-Ifo"/>
                             <constraint firstItem="mz4-3g-dMP" firstAttribute="width" secondItem="VxK-5u-5wr" secondAttribute="width" multiplier="3/4" id="FBl-Le-WAa"/>
+                            <constraint firstItem="ccJ-Rh-ok5" firstAttribute="top" secondItem="vDW-bB-6uQ" secondAttribute="bottom" constant="30" id="RbJ-fO-85W"/>
                             <constraint firstItem="vDW-bB-6uQ" firstAttribute="top" secondItem="cn5-le-qTe" secondAttribute="bottom" constant="20" id="T5a-zM-3Kx"/>
                             <constraint firstItem="vDW-bB-6uQ" firstAttribute="leading" secondItem="DNG-or-44v" secondAttribute="leading" constant="16" id="TlS-yT-Mkq"/>
                             <constraint firstItem="DNG-or-44v" firstAttribute="centerX" secondItem="mz4-3g-dMP" secondAttribute="centerX" id="iDI-ui-5nQ"/>
+                            <constraint firstItem="ccJ-Rh-ok5" firstAttribute="centerX" secondItem="DNG-or-44v" secondAttribute="centerX" id="j77-7t-UUc"/>
                             <constraint firstItem="mz4-3g-dMP" firstAttribute="top" secondItem="DNG-or-44v" secondAttribute="top" constant="20" id="s6e-fV-Bta"/>
                             <constraint firstItem="DNG-or-44v" firstAttribute="trailing" secondItem="vDW-bB-6uQ" secondAttribute="trailing" constant="16" id="u17-YY-ze4"/>
                         </constraints>

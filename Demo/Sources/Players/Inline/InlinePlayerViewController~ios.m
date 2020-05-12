@@ -156,4 +156,9 @@
     }
 }
 
+- (IBAction)reloadPlayerConfiguration:(id)sender
+{
+    [self.mediaPlayerController reloadPlayerConfiguration];
+}
+
 @end
