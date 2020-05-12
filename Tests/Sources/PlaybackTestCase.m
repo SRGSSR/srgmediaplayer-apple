@@ -961,7 +961,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [subtitleOptions filteredArrayUsingPredicate:predicate].firstObject ?: defaultSubtitleOption;
     };
     
-    NSURL *URL = [NSURL URLWithString:@"https://srfvodhd-vh.akamaihd.net/i/vod/10vor10/2020/03/10vor10_20200326_215000_20178198_v_webcast_h264_,q40,q10,q20,q30,q50,q60,.mp4.csmil/master.m3u8?start=0.0&end=1705.64&caption=srf/af5c0281-9070-43c4-a00d-542c7d5b007d/episode/de/vod/vod.m3u8:de:Deutsch:sdh&webvttbaseurl=www.srf.ch/subtitles"];
+    NSURL *URL = [NSURL URLWithString:@"https://srfvodhd-vh.akamaihd.net/i/vod/10vor10/2020/05/10vor10_20200508_215000_20733968_v_webcast_h264_,q40,q10,q20,q30,q50,.mp4.csmil/master.m3u8?start=0.0&end=1606.76&caption=srf/bbde25d4-ab17-4f9e-8c95-70e7adeed2e2/episode/de/vod/vod.m3u8:de:Deutsch:sdh&webvttbaseurl=www.srf.ch/subtitles"];
     [self.mediaPlayerController playURL:URL];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
