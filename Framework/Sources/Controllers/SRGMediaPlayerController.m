@@ -1879,19 +1879,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)mediaPlayerView:(SRGMediaPlayerView *)mediaPlayerView didMoveToWindow:(UIWindow *)window
 {
-    if (window) {
-        [self attachPlayer:self.player toView:self.view];
-    }
-    else {
-#if TARGET_OS_IOS
-        if (! self.pictureInPictureController.pictureInPictureActive) {
-#endif
-            [self attachPlayer:nil toView:self.view];
-#if TARGET_OS_IOS
-        }
-#endif
-    }
-    
     [self updatePlayerDeviceSleepConfiguration];
 }
 
