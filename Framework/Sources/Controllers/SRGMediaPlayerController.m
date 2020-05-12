@@ -23,6 +23,7 @@
 #import "SRGPeriodicTimeObserver.h"
 #import "SRGPlayer.h"
 #import "SRGSegment+Private.h"
+#import "SRGTimePosition.h"
 #import "UIDevice+SRGMediaPlayer.h"
 #import "UIScreen+SRGMediaPlayer.h"
 
@@ -37,8 +38,8 @@ static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlay
 static NSString *SRGMediaPlayerControllerNameForMediaType(SRGMediaPlayerMediaType mediaType);
 static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamType streamType);
 
-static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position, CMTime offset);
-static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange);
+static SRGTimePosition *SRGMediaPlayerControllerOffset(SRGTimePosition *position, CMTime offset);
+static SRGTimePosition *SRGMediaPlayerControllerPositionInTimeRange(SRGTimePosition *position, CMTimeRange timeRange);
 
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOption(NSArray<AVMediaSelectionOption *> *audioOptions);
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, AVMediaSelectionOption *audioOption);
@@ -224,35 +225,35 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                         }
                     };
                     
-                    SRGPosition *startPosition = [self streamPositionForPosition:self.startPosition];
+                    SRGTimePosition *startTimePosition = [self streamTimePositionForPosition:self.startPosition];
                     
                     // Default position. Nothing to do.
-                    if (CMTIME_COMPARE_INLINE(startPosition.time, ==, kCMTimeZero) && ! self.targetSegment) {
+                    if (CMTIME_COMPARE_INLINE(startTimePosition.time, ==, kCMTimeZero) && ! self.targetSegment) {
                         completionBlock(YES);
                     }
                     // Non-default start position. Calculate a valid position to seek to.
                     else {
                         // If a segment is targeted, add a small offset so that playback is guaranteed to start within the segment
                         if (self.targetSegment) {
-                            startPosition = SRGMediaPlayerControllerOffset(startPosition, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC));
+                            startTimePosition = SRGMediaPlayerControllerOffset(startTimePosition, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC));
                         }
                         
                         // Take into account tolerance at the end of the content being played. If near the end enough, start
                         // at the default position instead.
                         CMTimeRange timeRange = self.targetSegment ? [self streamTimeRangeForMarkRange:self.targetSegment.srg_markRange] : self.timeRange;
                         CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(timeRange.duration));
-                        CMTime toleratedStartTime = CMTIME_COMPARE_INLINE(startPosition.time, >=, CMTimeSubtract(timeRange.duration, tolerance)) ? kCMTimeZero : startPosition.time;
+                        CMTime toleratedStartTime = CMTIME_COMPARE_INLINE(startTimePosition.time, >=, CMTimeSubtract(timeRange.duration, tolerance)) ? kCMTimeZero : startTimePosition.time;
                         
                         // Positions in segments are relative. If not within a segment, they are absolute (relative positions
                         // are misleading for a DVR stream with a sliding window, and match the absolute position in other cases)
                         if (self.targetSegment) {
                             toleratedStartTime = CMTimeAdd(toleratedStartTime, timeRange.start);
                         }
-                        SRGPosition *toleratedPosition = [SRGPosition positionWithTime:toleratedStartTime toleranceBefore:startPosition.toleranceBefore toleranceAfter:startPosition.toleranceAfter];
+                        SRGTimePosition *toleratedTimePosition = [SRGTimePosition positionWithTime:toleratedStartTime toleranceBefore:startTimePosition.toleranceBefore toleranceAfter:startTimePosition.toleranceAfter];
                         
-                        SRGPosition *seekPosition = SRGMediaPlayerControllerPositionInTimeRange(toleratedPosition, timeRange);
-                        if (self.streamType != SRGMediaPlayerStreamTypeDVR || CMTIME_COMPARE_INLINE(seekPosition.time, !=, kCMTimeZero)) {
-                            [player seekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter notify:NO completionHandler:^(BOOL finished) {
+                        SRGTimePosition *seekTimePosition = SRGMediaPlayerControllerPositionInTimeRange(toleratedTimePosition, timeRange);
+                        if (self.streamType != SRGMediaPlayerStreamTypeDVR || CMTIME_COMPARE_INLINE(seekTimePosition.time, !=, kCMTimeZero)) {
+                            [player seekToTime:seekTimePosition.time toleranceBefore:seekTimePosition.toleranceBefore toleranceAfter:seekTimePosition.toleranceAfter notify:NO completionHandler:^(BOOL finished) {
                                 completionBlock(finished);
                             }];
                         }
@@ -879,10 +880,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     return CMTimeRangeFromTimeToTime(fromTime, toTime);
 }
 
-- (SRGPosition *)streamPositionForPosition:(SRGPosition *)position
+- (SRGTimePosition *)streamTimePositionForPosition:(SRGPosition *)position
 {
+    if (! position) {
+        position = SRGPosition.defaultPosition;
+    }
+    
     CMTime time = [self streamTimeForMark:position.mark];
-    return [SRGPosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
+    return [SRGTimePosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
 }
 
 - (CMTime)streamTimeForDate:(NSDate *)date
@@ -1194,29 +1199,24 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return;
     }
     
-    if (! position) {
-        position = SRGPosition.defaultPosition;
-    }
-    else {
-        position = [self streamPositionForPosition:position];
-    }
-    
     self.targetSegment = targetSegment;
+    
+    SRGTimePosition *timePosition = [self streamTimePositionForPosition:position];
     
     // If a segment is targeted, interpret the position as relative, and add a small offset so that playback is guaranteed
     // to start within the segment.
     CMTimeRange timeRange = self.timeRange;
     if (targetSegment) {
         CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:targetSegment.srg_markRange];
-        position = SRGMediaPlayerControllerOffset(position, CMTimeAdd(segmentTimeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC)));
+        timePosition = SRGMediaPlayerControllerOffset(timePosition, CMTimeAdd(segmentTimeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC)));
         timeRange = segmentTimeRange;
     }
     
-    SRGPosition *seekPosition = SRGMediaPlayerControllerPositionInTimeRange(position, timeRange);
+    SRGTimePosition *seekTimePosition = SRGMediaPlayerControllerPositionInTimeRange(timePosition, timeRange);
     
     // Trap attempts to seek to blocked segments early. We cannot only rely on playback time observers to detect a blocked segment
     // for direct seeks, otherwise blocked segment detection would occur after the segment has been entered, which is too late
-    id<SRGSegment> segment = targetSegment ?: [self segmentForTime:seekPosition.time];
+    id<SRGSegment> segment = targetSegment ?: [self segmentForTime:seekTimePosition.time];
     if (! segment || ! segment.srg_blocked) {
         // Starting with iOS 11, there is no guarantee that the last seek succeeds (there was no formal documentation for this
         // behavior on iOS 10 and below, but this was generally working). Starting with iOS 11, the following is unreliable,
@@ -1225,7 +1225,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         //
         // To be able to reset the state no matter the last seek finished, we use a special category method which keeps count
         // of the count of seek requests still pending.
-        [self.player seekToTime:seekPosition.time toleranceBefore:seekPosition.toleranceBefore toleranceAfter:seekPosition.toleranceAfter notify:YES completionHandler:^(BOOL finished) {
+        [self.player seekToTime:seekTimePosition.time toleranceBefore:seekTimePosition.toleranceBefore toleranceAfter:seekTimePosition.toleranceAfter notify:YES completionHandler:^(BOOL finished) {
             completionHandler ? completionHandler(finished) : nil;
         }];
     }
@@ -1548,8 +1548,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
     // would trigger skips recursively)
     CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
-    SRGPosition *segmentEndPosition = [SRGPosition positionAtTime:CMTimeRangeGetEnd(segmentTimeRange)];
-    [self seekToPosition:SRGMediaPlayerControllerOffset(segmentEndPosition, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC)) withCompletionHandler:^(BOOL finished) {
+    CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC));
+    
+    SRGPosition *seekTimePosition = [SRGPosition positionAtTime:seekTime];
+    [self seekToPosition:seekTimePosition withCompletionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
         // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
         // so that consecutive notifications are received in the correct order
@@ -2060,23 +2062,23 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
 }
 
 // Add an offset to a position
-static SRGPosition *SRGMediaPlayerControllerOffset(SRGPosition *position, CMTime offset)
+static SRGTimePosition *SRGMediaPlayerControllerOffset(SRGTimePosition *timePosition, CMTime offset)
 {
-    return [SRGPosition positionWithTime:CMTimeAdd(position.time, offset) toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
+    return [SRGTimePosition positionWithTime:CMTimeAdd(timePosition.time, offset) toleranceBefore:timePosition.toleranceBefore toleranceAfter:timePosition.toleranceAfter];
 }
 
 // Adjust position tolerance settings so that the position is guaranteed to fall within the specified time range. If the time itself
 // is outside the specified range, it is fixed to the nearest end.
-static SRGPosition *SRGMediaPlayerControllerPositionInTimeRange(SRGPosition *position, CMTimeRange timeRange)
+static SRGTimePosition *SRGMediaPlayerControllerPositionInTimeRange(SRGTimePosition *timePosition, CMTimeRange timeRange)
 {
     if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
-        CMTime toleranceBefore = CMTimeMaximum(CMTimeMinimum(position.toleranceBefore, CMTimeSubtract(position.time, timeRange.start)), kCMTimeZero);
-        CMTime toleranceAfter = CMTimeMaximum(CMTimeMinimum(position.toleranceAfter, CMTimeSubtract(CMTimeRangeGetEnd(timeRange), position.time)), kCMTimeZero);
-        CMTime time = CMTimeMaximum(CMTimeMinimum(position.time, CMTimeRangeGetEnd(timeRange)), timeRange.start);
-        return [SRGPosition positionWithTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
+        CMTime toleranceBefore = CMTimeMaximum(CMTimeMinimum(timePosition.toleranceBefore, CMTimeSubtract(timePosition.time, timeRange.start)), kCMTimeZero);
+        CMTime toleranceAfter = CMTimeMaximum(CMTimeMinimum(timePosition.toleranceAfter, CMTimeSubtract(CMTimeRangeGetEnd(timeRange), timePosition.time)), kCMTimeZero);
+        CMTime time = CMTimeMaximum(CMTimeMinimum(timePosition.time, CMTimeRangeGetEnd(timeRange)), timeRange.start);
+        return [SRGTimePosition positionWithTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
     }
     else {
-        return position;
+        return timePosition;
     }
 }
 
