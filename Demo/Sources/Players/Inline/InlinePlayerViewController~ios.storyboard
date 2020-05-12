@@ -87,7 +87,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="vDW-bB-6uQ">
-                                <rect key="frame" x="16" y="258" width="343" height="155.5"/>
+                                <rect key="frame" x="16" y="258" width="343" height="184"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ru7-d1-uhJ">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="31"/>
@@ -123,21 +123,27 @@
                                             </switch>
                                         </subviews>
                                     </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDw-Tm-CV6">
+                                        <rect key="frame" x="0.0" y="78" width="343" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UFh-8V-3r2">
-                                        <rect key="frame" x="0.0" y="78" width="343" height="10"/>
+                                        <rect key="frame" x="0.0" y="106.5" width="343" height="10"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="10" id="431-3j-lfv"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View background behavior" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4qZ-pf-u9I">
-                                        <rect key="frame" x="0.0" y="96" width="343" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="124.5" width="343" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="LXd-Hb-Gy9">
-                                        <rect key="frame" x="0.0" y="124.5" width="343" height="32"/>
+                                        <rect key="frame" x="0.0" y="153" width="343" height="32"/>
                                         <segments>
                                             <segment title="Attached"/>
                                             <segment title="Detached"/>
@@ -166,6 +172,7 @@
                     <connections>
                         <outlet property="mediaPlayerController" destination="VI1-qS-HQF" id="c0t-Es-Esg"/>
                         <outlet property="playerHostView" destination="mz4-3g-dMP" id="AVT-GQ-RhV"/>
+                        <outlet property="sleepResultLabel" destination="aDw-Tm-CV6" id="OGu-xg-nvm"/>
                         <outlet property="sleepSettingStackView" destination="5sx-BV-zrm" id="0PT-RZ-acb"/>
                     </connections>
                 </viewController>

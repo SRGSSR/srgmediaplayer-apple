@@ -8,6 +8,8 @@
 
 #import "Resources.h"
 
+#import <libextobjc/libextobjc.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface InlinePlayerViewController ()
@@ -19,6 +21,7 @@
 
 @property (nonatomic, weak) IBOutlet UIView *playerHostView;
 @property (nonatomic, weak) IBOutlet UIStackView *sleepSettingStackView;
+@property (nonatomic, weak) IBOutlet UILabel *sleepResultLabel;
 
 @end
 
@@ -40,6 +43,18 @@
 {
     [super viewDidLoad];
     
+    if (@available(iOS 12, *)) {
+        @weakify(self)
+        [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, player.preventsDisplaySleepDuringVideoPlayback) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updateSleepResultLabel];
+        }];
+        [self updateSleepResultLabel];
+    }
+    else {
+        self.sleepResultLabel.hidden = YES;
+    }
+        
     if (@available(iOS 12.0, *)) {
         self.sleepSettingStackView.hidden = NO;
     }
@@ -62,6 +77,13 @@
 - (void)detachPlayerView
 {
     [self.mediaPlayerController.view removeFromSuperview];
+}
+
+#pragma mark UI
+
+- (void)updateSleepResultLabel API_AVAILABLE(ios(12.0))
+{
+    self.sleepResultLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Current value: %@", nil), self.mediaPlayerController.player.preventsDisplaySleepDuringVideoPlayback ? @"YES" : @"NO"];
 }
 
 #pragma mark Actions
