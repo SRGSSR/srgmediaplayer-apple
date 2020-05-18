@@ -50,6 +50,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @private
     SRGMediaPlayerPlaybackState _playbackState;
     BOOL _selected;
+    CMTimeRange _timeRange;
+    SRGMediaPlayerStreamType _streamType;
+    BOOL _live;
 }
 
 @property (nonatomic) SRGPlayer *player;
@@ -77,12 +80,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic, weak) id controllerPeriodicTimeObserver;
 
 @property (nonatomic) SRGMediaPlayerMediaType mediaType;
-
-@property (nonatomic) CMTimeRange timeRange;
 @property (nonatomic, getter=isTimeRangeCached) BOOL playbackInformationCached;
-
-@property (nonatomic) SRGMediaPlayerStreamType streamType;
-@property (nonatomic, getter=isLive) BOOL live;
 
 @property (nonatomic) CMTime referenceTime;
 @property (nonatomic) NSDate *referenceDate;
@@ -329,8 +327,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.presentationSize) options:0 block:^(MAKVONotification * _Nonnull notification) {
             @strongify(self) @strongify(player)
-            self.presentationSizeValue = [NSValue valueWithCGSize:player.currentItem.presentationSize];
-            [self updateMediaTypeForPlayer:player];
+            AVPlayerItem *playerItem = player.currentItem;
+            self.presentationSizeValue = [NSValue valueWithCGSize:playerItem.presentationSize];
+            [self updateMediaTypeForPlayerItem:playerItem];
         }];
         
         [NSNotificationCenter.defaultCenter addObserver:self
@@ -407,37 +406,50 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     [self didChangeValueForKey:@keypath(self.mediaType)];
 }
 
-- (void)setTimeRange:(CMTimeRange)timeRange
+- (void)setTimeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType live:(BOOL)live
 {
-    if (CMTimeRangeEqual(timeRange, _timeRange)) {
-        return;
+    BOOL timeRangeChange = ! CMTimeRangeEqual(timeRange, _timeRange);
+    BOOL streamTypeChange = (streamType != _streamType);
+    BOOL liveChange = (live != _live);
+    
+    if (timeRangeChange) {
+        [self willChangeValueForKey:@keypath(self.timeRange)];
+    }
+    if (streamTypeChange) {
+        [self willChangeValueForKey:@keypath(self.streamType)];
+    }
+    if (liveChange) {
+        [self willChangeValueForKey:@keypath(self.live)];
     }
     
-    [self willChangeValueForKey:@keypath(self.timeRange)];
     _timeRange = timeRange;
-    [self didChangeValueForKey:@keypath(self.timeRange)];
-}
-
-- (void)setStreamType:(SRGMediaPlayerStreamType)streamType
-{
-    if (streamType == _streamType) {
-        return;
-    }
-    
-    [self willChangeValueForKey:@keypath(self.streamType)];
     _streamType = streamType;
-    [self didChangeValueForKey:@keypath(self.streamType)];
+    _live = live;
+    
+    if (timeRangeChange) {
+        [self didChangeValueForKey:@keypath(self.timeRange)];
+    }
+    if (streamTypeChange) {
+        [self didChangeValueForKey:@keypath(self.streamType)];
+    }
+    if (liveChange) {
+        [self didChangeValueForKey:@keypath(self.live)];
+    }
 }
 
-- (void)setLive:(BOOL)live
+- (CMTimeRange)timeRange
 {
-    if (live == _live) {
-        return;
-    }
-    
-    [self willChangeValueForKey:@keypath(self.live)];
-    _live = live;
-    [self didChangeValueForKey:@keypath(self.live)];
+    return _timeRange;
+}
+
+- (SRGMediaPlayerStreamType)streamType
+{
+    return _streamType;
+}
+
+- (BOOL)isLive
+{
+    return _live;
 }
 
 - (NSArray<id<SRGSegment>> *)segments
@@ -569,39 +581,32 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)updatePlaybackInformationForPlayer:(AVPlayer *)player
 {
-    [self updateMediaTypeForPlayer:player];
-    
     AVPlayerItem *playerItem = player.currentItem;
     
-    if (! self.playbackInformationCached) {
-        CMTimeRange timeRange = [self timeRangeForPlayerItem:playerItem];
-        
-        SRGMediaPlayerStreamType streamType = [self streamTypeForPlayerItem:playerItem timeRange:timeRange];
-        [self updateReferenceForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
-        
-        self.timeRange = timeRange;
-        self.streamType = streamType;
-        self.live = [self isLiveForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
-        
-        // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when AirPlay is
-        // connected or disconnected)
-        if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
-            self.playbackInformationCached = YES;
-        }
-    }
-    else {
-        self.live = [self isLiveForPlayerItem:playerItem timeRange:self.timeRange streamType:self.streamType];
+    [self updateMediaTypeForPlayerItem:playerItem];
+    
+    CMTimeRange timeRange = self.playbackInformationCached ? self.timeRange : [self timeRangeForPlayerItem:playerItem];
+    SRGMediaPlayerStreamType streamType = self.playbackInformationCached ? self.streamType : [self streamTypeForPlayerItem:playerItem timeRange:timeRange];
+    BOOL live = [self isLiveForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
+    
+    [self updateReferenceForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
+    [self setTimeRange:timeRange streamType:streamType live:live];
+    
+    // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when AirPlay is
+    // connected or disconnected)
+    if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
+        self.playbackInformationCached = YES;
     }
 }
 
-- (void)updateMediaTypeForPlayer:(AVPlayer *)player
+- (void)updateMediaTypeForPlayerItem:(AVPlayerItem *)playerItem
 {
     if (self.mediaType != SRGMediaPlayerMediaTypeUnknown) {
         return;
     }
     
     // The presentation size is zero before the item is ready to play, see `presentationSize` documentation.
-    if (player.currentItem.status != AVPlayerStatusReadyToPlay) {
+    if (playerItem.status != AVPlayerStatusReadyToPlay) {
         return;
     }
     
@@ -1259,14 +1264,12 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     self.mediaType = SRGMediaPlayerMediaTypeUnknown;
     
-    self.timeRange = kCMTimeRangeInvalid;
-    self.playbackInformationCached = NO;
-    
-    self.streamType = SRGMediaPlayerStreamTypeUnknown;
-    self.live = NO;
-    
     self.referenceTime = kCMTimeIndefinite;
     self.referenceDate = nil;
+    
+    [self setTimeRange:kCMTimeRangeInvalid streamType:SRGMediaPlayerStreamTypeUnknown live:NO];
+    
+    self.playbackInformationCached = NO;
     
     self.previousSegment = nil;
     self.targetSegment = nil;
