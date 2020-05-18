@@ -1343,7 +1343,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateSeeking);
         TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerSeekTimeKey] CMTimeValue], 30);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerSeekDateKey]);
-        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 7151);
+        XCTAssertNotNil(notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey]);
         XCTAssertNotNil(notification.userInfo[SRGMediaPlayerLastPlaybackDateKey]);
         return YES;
     }];
