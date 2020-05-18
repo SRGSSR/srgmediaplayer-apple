@@ -52,11 +52,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Return the time corresponding to a mark, in the stream reference frame.
+ *
+ *  @discussion Return `kCMTimeInvalid` if no valid time can be determined for the mark.
  */
 - (CMTime)streamTimeForMark:(SRGMark *)mark;
 
 /**
  *  Return the time range corresponding to a mark range, in the stream reference frame.
+ *
+ *  @discussion Return `kCMTimeRangeInvalid` if the no valid time range could be determined for the mark range.
  */
 - (CMTimeRange)streamTimeRangeForMarkRange:(SRGMarkRange *)markRange;
 

@@ -236,7 +236,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                         
                         // Take into account tolerance at the end of the content being played. If near the end enough, start
                         // at the default position instead.
-                        CMTimeRange timeRange = self.targetSegment ? [self streamTimeRangeForMarkRange:self.targetSegment.srg_markRange] : self.timeRange;
+                        CMTimeRange timeRange = self.timeRange;
+                        if (self.targetSegment) {
+                            CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:self.targetSegment.srg_markRange];
+                            if (CMTIMERANGE_IS_VALID(segmentTimeRange)) {
+                                timeRange = segmentTimeRange;
+                            }
+                        }
+                        
                         CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(timeRange.duration));
                         CMTime toleratedStartTime = CMTIME_COMPARE_INLINE(startTimePosition.time, >=, CMTimeSubtract(timeRange.duration, tolerance)) ? kCMTimeZero : startTimePosition.time;
                         
@@ -864,9 +871,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (CMTime)streamTimeForMark:(SRGMark *)mark
 {
-    CMTime time = [self streamTimeForDate:mark.date];
-    if (SRG_CMTIME_IS_DEFINITE(time)) {
-        return time;
+    if (mark.date) {
+        return [self streamTimeForDate:mark.date];
     }
     else {
         return [mark timeForMediaPlayerController:nil];
@@ -876,7 +882,15 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 - (CMTimeRange)streamTimeRangeForMarkRange:(SRGMarkRange *)markRange
 {
     CMTime fromTime = [self streamTimeForMark:markRange.fromMark];
+    if (CMTIME_IS_INVALID(fromTime)) {
+        return kCMTimeRangeInvalid;
+    }
+    
     CMTime toTime = [self streamTimeForMark:markRange.toMark];
+    if (CMTIME_IS_INVALID(toTime)) {
+        return kCMTimeRangeInvalid;
+    }
+    
     return CMTimeRangeFromTimeToTime(fromTime, toTime);
 }
 
@@ -887,6 +901,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
     
     CMTime time = [self streamTimeForMark:position.mark];
+    if (CMTIME_IS_INDEFINITE(time)) {
+        time = kCMTimeZero;
+    }
+    
     return [SRGTimePosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
 }
 
@@ -1208,8 +1226,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     CMTimeRange timeRange = self.timeRange;
     if (targetSegment) {
         CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:targetSegment.srg_markRange];
-        timePosition = SRGMediaPlayerControllerOffset(timePosition, CMTimeAdd(segmentTimeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC)));
-        timeRange = segmentTimeRange;
+        if (CMTIMERANGE_IS_VALID(segmentTimeRange)) {
+            timePosition = SRGMediaPlayerControllerOffset(timePosition, CMTimeAdd(segmentTimeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC)));
+            timeRange = segmentTimeRange;
+        }
     }
     
     SRGTimePosition *seekTimePosition = SRGMediaPlayerControllerPositionInTimeRange(timePosition, timeRange);
@@ -1550,6 +1570,11 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 {
     NSAssert(segment.srg_blocked, @"Expect a blocked segment");
     
+    CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
+    if (CMTIMERANGE_IS_INVALID(segmentTimeRange)) {
+        return;
+    }
+    
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     userInfo[SRGMediaPlayerSegmentKey] = segment;
     
@@ -1565,9 +1590,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
     // would trigger skips recursively)
-    CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
     CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC));
-    
     SRGPosition *seekTimePosition = [SRGPosition positionAtTime:seekTime];
     [self seekToPosition:seekTimePosition withCompletionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another

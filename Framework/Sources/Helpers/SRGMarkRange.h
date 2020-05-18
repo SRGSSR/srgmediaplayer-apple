@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return the time corresponding to a mark, in the reference frame of the provided controller.
  *
- *  @discussion Returns the range from `fromMark.time` to `toMark.time` if the controller is `nil`.
+ *  @discussion Returns the raw time range if the controller is `nil`.
  */
 - (CMTimeRange)timeRangeForMediaPlayerController:(nullable SRGMediaPlayerController *)mediaPlayerController;
 
