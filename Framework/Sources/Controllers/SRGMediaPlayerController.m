@@ -79,11 +79,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic) SRGMediaPlayerMediaType mediaType;
 
 @property (nonatomic) CMTimeRange timeRange;
-@property (nonatomic, getter=isTimeRangeCached) BOOL timeRangeCached;
+@property (nonatomic, getter=isTimeRangeCached) BOOL playbackInformationCached;
 
 @property (nonatomic) SRGMediaPlayerStreamType streamType;
-@property (nonatomic, getter=isStreamTypeCached) BOOL streamTypeCached;
-
 @property (nonatomic, getter=isLive) BOOL live;
 
 @property (nonatomic) CMTime referenceTime;
@@ -572,10 +570,28 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 - (void)updatePlaybackInformationForPlayer:(AVPlayer *)player
 {
     [self updateMediaTypeForPlayer:player];
-    [self updateTimeRangeForPlayer:player];
-    [self updateStreamTypeForPlayer:player];
-    [self updateLiveForPlayer:player];
-    [self updateReferenceForPlayer:player];
+    
+    AVPlayerItem *playerItem = player.currentItem;
+    
+    if (! self.playbackInformationCached) {
+        CMTimeRange timeRange = [self timeRangeForPlayerItem:playerItem];
+        
+        SRGMediaPlayerStreamType streamType = [self streamTypeForPlayerItem:playerItem timeRange:timeRange];
+        [self updateReferenceForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
+        
+        self.timeRange = timeRange;
+        self.streamType = streamType;
+        self.live = [self isLiveForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
+        
+        // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when AirPlay is
+        // connected or disconnected)
+        if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
+            self.playbackInformationCached = YES;
+        }
+    }
+    else {
+        self.live = [self isLiveForPlayerItem:playerItem timeRange:self.timeRange streamType:self.streamType];
+    }
 }
 
 - (void)updateMediaTypeForPlayer:(AVPlayer *)player
@@ -603,64 +619,44 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.mediaType = CGSizeEqualToSize(presentationSizeValue.CGSizeValue, CGSizeZero) ? SRGMediaPlayerMediaTypeAudio : SRGMediaPlayerMediaTypeVideo;
 }
 
-- (void)updateTimeRangeForPlayer:(AVPlayer *)player
+- (SRGMediaPlayerStreamType)streamTypeForPlayerItem:(AVPlayerItem *)playerItem timeRange:(CMTimeRange)timeRange
 {
-    if (self.timeRangeCached) {
-        return;
-    }
-    
-    AVPlayerItem *playerItem = player.currentItem;
-    self.timeRange = [self timeRangeForPlayerItem:playerItem];
-    
-    // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when AirPlay is
-    // connected or disconnected)
-    if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(self.timeRange)) {
-        self.timeRangeCached = YES;
-    }
-}
-
-- (void)updateStreamTypeForPlayer:(AVPlayer *)player
-{
-    CMTimeRange timeRange = self.timeRange;
-    
-    if (self.streamTypeCached || CMTIMERANGE_IS_INVALID(timeRange)) {
-        return;
+    if (CMTIMERANGE_IS_INVALID(timeRange)) {
+        return SRGMediaPlayerStreamTypeUnknown;
     }
     
     if (CMTIMERANGE_IS_EMPTY(timeRange)) {
-        self.streamType = SRGMediaPlayerStreamTypeLive;
+        return SRGMediaPlayerStreamTypeLive;
     }
     else {
-        CMTime duration = player.currentItem.duration;
+        CMTime duration = playerItem.duration;
         
         if (CMTIME_IS_INDEFINITE(duration)) {
-            self.streamType = SRGMediaPlayerStreamTypeDVR;
+            return SRGMediaPlayerStreamTypeDVR;
         }
         else if (CMTIME_COMPARE_INLINE(duration, !=, kCMTimeZero)) {
-            self.streamType = SRGMediaPlayerStreamTypeOnDemand;
-            self.streamTypeCached = YES;
+            return SRGMediaPlayerStreamTypeOnDemand;
         }
         else {
-            self.streamType = SRGMediaPlayerStreamTypeLive;
+            return SRGMediaPlayerStreamTypeLive;
         }
     }
 }
 
-- (void)updateLiveForPlayer:(AVPlayer *)player
+- (BOOL)isLiveForPlayerItem:(AVPlayerItem *)playerItem timeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType
 {
-    if (self.streamType == SRGMediaPlayerStreamTypeLive) {
-        self.live = YES;
+    if (streamType == SRGMediaPlayerStreamTypeLive) {
+        return YES;
     }
-    else if (self.streamType == SRGMediaPlayerStreamTypeDVR) {
-        AVPlayerItem *playerItem = player.currentItem;
-        self.live = CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(self.timeRange), playerItem.currentTime)) < self.liveTolerance;
+    else if (streamType == SRGMediaPlayerStreamTypeDVR) {
+        return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), playerItem.currentTime)) < self.liveTolerance;
     }
     else {
-        self.live = NO;
+        return NO;
     }
 }
 
-- (void)updateReferenceForPlayer:(AVPlayer *)player
+- (void)updateReferenceForPlayerItem:(AVPlayerItem *)playerItem timeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType
 {
     // We store synchronized current date and playhead position information for livestreams and update both regularly at the
     // same time. When seeking, these two values might namely be briefly misaligned when read from the player item directly
@@ -669,8 +665,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     // If the stream does not embed date information, we use the current date as reference date, mapped to the end of
     // the DVR window. This is less accurate or might be completely incorrect, especially if stream and device clocks are
     // entirely different, but this is the best we can do.
-    if (self.streamType == SRGMediaPlayerStreamTypeDVR || self.streamType == SRGMediaPlayerStreamTypeLive) {
-        AVPlayerItem *playerItem = player.currentItem;
+    if (streamType == SRGMediaPlayerStreamTypeDVR || streamType == SRGMediaPlayerStreamTypeLive) {
         NSDate *currentDate = playerItem.currentDate;
         if (currentDate) {
             self.referenceDate = currentDate;
@@ -678,7 +673,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         }
         else {
             self.referenceDate = NSDate.date;
-            self.referenceTime = CMTimeRangeGetEnd(self.timeRange);
+            self.referenceTime = CMTimeRangeGetEnd(timeRange);
         }
     }
     else {
@@ -1265,11 +1260,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.mediaType = SRGMediaPlayerMediaTypeUnknown;
     
     self.timeRange = kCMTimeRangeInvalid;
-    self.timeRangeCached = NO;
+    self.playbackInformationCached = NO;
     
     self.streamType = SRGMediaPlayerStreamTypeUnknown;
-    self.streamTypeCached = NO;
-    
     self.live = NO;
     
     self.referenceTime = kCMTimeIndefinite;
