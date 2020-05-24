@@ -836,7 +836,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  background, pausing video playback automatically.
  *
  *  @discussion The behavior can be changed at any time but will not affect playback if already performed in background.
- *              It is only applied when the controller view is installed in a view hierarchy.
+ *              It is ignored when using `SRGMediaPlayerViewController`.
  */
 @property (nonatomic) SRGMediaPlayerViewBackgroundBehavior viewBackgroundBehavior;
 

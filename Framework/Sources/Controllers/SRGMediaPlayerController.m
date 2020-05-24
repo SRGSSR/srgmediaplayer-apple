@@ -107,7 +107,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic) NSNumber *savedAllowsExternalPlayback;
 #endif
 
-@property (nonatomic) BOOL preventsDisplaySleepDuringVideoPlayback API_AVAILABLE(ios(12.0), tvos(12.0));
+@property (nonatomic) NSNumber *savedPreventsDisplaySleepDuringVideoPlayback API_AVAILABLE(ios(12.0), tvos(12.0));
 
 @property (nonatomic) SRGPosition *startPosition;                   // Will be nilled when reached
 @property (nonatomic, copy) void (^startCompletionHandler)(void);
@@ -318,7 +318,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             }
 #endif
             
-            [self updatePlayerDeviceSleepConfiguration];
+            [self reloadPlayerConfiguration];
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
         }];
         
@@ -1237,7 +1237,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 - (void)stopWithUserInfo:(NSDictionary *)userInfo
 {
 #if TARGET_OS_IOS
-    if (self.pictureInPictureController.isPictureInPictureActive) {
+    if (self.pictureInPictureController.pictureInPictureActive) {
         [self.pictureInPictureController stopPictureInPicture];
     }
 #endif
@@ -1295,7 +1295,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 #endif
     
     if (@available(iOS 12, tvOS 12, *)) {
-        self.preventsDisplaySleepDuringVideoPlayback = NO;
+        self.savedPreventsDisplaySleepDuringVideoPlayback = nil;
     }
     
     // Emit the notification once all state has been reset
@@ -1315,13 +1315,15 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         }
 #endif
         
+        if (@available(iOS 12, tvOS 12, *)) {
+            if (self.savedPreventsDisplaySleepDuringVideoPlayback) {
+                self.player.preventsDisplaySleepDuringVideoPlayback = self.savedPreventsDisplaySleepDuringVideoPlayback.boolValue;
+                self.savedPreventsDisplaySleepDuringVideoPlayback = nil;
+            }
+        }
+        
         self.playerConfigurationBlock ? self.playerConfigurationBlock(self.player) : nil;
         
-        if (@available(iOS 12, tvOS 12, *)) {
-            self.preventsDisplaySleepDuringVideoPlayback = self.player.preventsDisplaySleepDuringVideoPlayback;
-        }
-        [self updatePlayerDeviceSleepConfiguration];
-      
 #if TARGET_OS_IOS
         // If picture in picture is active, it is difficult to return from PiP if enabling AirPlay from the control
         // center (this would require calling the restoration methods, not called natively in this case, to let the app
@@ -1335,6 +1337,24 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             self.player.allowsExternalPlayback = NO;
         }
 #endif
+        
+        if (@available(iOS 12, tvOS 12, *)) {
+#if TARGET_OS_IOS
+            if (self.pictureInPictureController.pictureInPictureActive) {
+                self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
+                self.player.preventsDisplaySleepDuringVideoPlayback = YES;
+            }
+            else if (AVAudioSession.srg_isAirPlayActive) {
+                self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
+                self.player.preventsDisplaySleepDuringVideoPlayback = NO;
+            }
+            else
+#endif
+            if (! self.view.player || ! self.view.window) {
+                self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
+                self.player.preventsDisplaySleepDuringVideoPlayback = NO;
+            }
+        }
     }
 }
 
@@ -1563,29 +1583,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         
         completionHandler ? completionHandler(finished) : nil;
     }];
-}
-
-#pragma mark Device sleep
-
-- (void)updatePlayerDeviceSleepConfiguration
-{
-    if (@available(iOS 12, tvOS 12, *)) {
-#if TARGET_OS_IOS
-        if (self.pictureInPictureController.pictureInPictureActive) {
-            self.player.preventsDisplaySleepDuringVideoPlayback = YES;
-        }
-        else if (AVAudioSession.srg_isAirPlayActive) {
-            self.player.preventsDisplaySleepDuringVideoPlayback = NO;
-        }
-        else
-#endif
-        if (self.view.player && self.view.window) {
-            self.player.preventsDisplaySleepDuringVideoPlayback = self.preventsDisplaySleepDuringVideoPlayback;
-        }
-        else {
-            self.player.preventsDisplaySleepDuringVideoPlayback = NO;
-        }
-    }
 }
 
 #pragma mark AVPlayerViewController support
@@ -1879,7 +1876,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)mediaPlayerView:(SRGMediaPlayerView *)mediaPlayerView didMoveToWindow:(UIWindow *)window
 {
-    [self updatePlayerDeviceSleepConfiguration];
+    [self reloadPlayerConfiguration];
 }
 
 #pragma mark SRGPlayerDelegate protocol
@@ -1927,48 +1924,53 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
-    if (self.view.window && self.mediaType == SRGMediaPlayerMediaTypeVideo
+    if (! self.playerViewController
 #if TARGET_OS_IOS
             && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive
 #endif
-    ) {    
-        switch (self.viewBackgroundBehavior) {
-            case SRGMediaPlayerViewBackgroundBehaviorAttached: {
-                [self.player pause];
-                break;
-            }
-                
+        ) {
+        if (self.view.window && self.mediaType == SRGMediaPlayerMediaTypeVideo) {
+            switch (self.viewBackgroundBehavior) {
+                case SRGMediaPlayerViewBackgroundBehaviorAttached: {
+                    [self.player pause];
+                    break;
+                }
+                    
 #if TARGET_OS_IOS
-            case SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked: {
-                // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    if (UIDevice.srg_mediaPlayer_isLocked) {
-                        [self attachPlayer:nil toView:self.view];
-                    }
-                    else {
-                        [self.player pause];
-                    }
-                });
-                break;
-            }
+                case SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked: {
+                    // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        if (UIDevice.srg_mediaPlayer_isLocked) {
+                            [self attachPlayer:nil toView:self.view];
+                        }
+                        else {
+                            [self.player pause];
+                        }
+                    });
+                    break;
+                }
 #endif
-                
-            case SRGMediaPlayerViewBackgroundBehaviorDetached: {
-                // The video layer must be detached in the background if we want playback not to be paused automatically.
-                // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
-                [self attachPlayer:nil toView:self.view];
-                break;
+                    
+                case SRGMediaPlayerViewBackgroundBehaviorDetached: {
+                    // The video layer must be detached in the background if we want playback not to be paused automatically.
+                    // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
+                    [self attachPlayer:nil toView:self.view];
+                    break;
+                }
             }
+        }
+        else {
+            [self attachPlayer:nil toView:self.view];
         }
     }
     
-    [self updatePlayerDeviceSleepConfiguration];
+    [self reloadPlayerConfiguration];
 }
 
 - (void)srg_mediaPlayerController_applicationWillEnterForeground:(NSNotification *)notification
 {
     [self attachPlayer:self.player toView:self.view];
-    [self updatePlayerDeviceSleepConfiguration];
+    [self reloadPlayerConfiguration];
 }
 
 #pragma mark KVO

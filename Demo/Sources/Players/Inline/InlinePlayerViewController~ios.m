@@ -8,6 +8,8 @@
 
 #import "Resources.h"
 
+#import <libextobjc/libextobjc.h>
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <SRGMediaPlayer/SRGMediaPlayer.h>
 
 @interface InlinePlayerViewController ()
@@ -16,6 +18,10 @@
 
 @property (nonatomic) IBOutlet SRGMediaPlayerController *mediaPlayerController;         // top object, strong
 @property (nonatomic, getter=isReady) BOOL ready;
+
+@property (nonatomic, weak) IBOutlet UIView *playerHostView;
+@property (nonatomic, weak) IBOutlet UIStackView *sleepSettingStackView;
+@property (nonatomic, weak) IBOutlet UILabel *sleepResultLabel;
 
 @end
 
@@ -29,6 +35,55 @@
     InlinePlayerViewController *viewController = [storyboard instantiateInitialViewController];
     viewController.media = media;
     return viewController;
+}
+
+#pragma mark View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    if (@available(iOS 12, *)) {
+        @weakify(self)
+        [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, player.preventsDisplaySleepDuringVideoPlayback) options:0 block:^(MAKVONotification *notification) {
+            @strongify(self)
+            [self updateSleepResultLabel];
+        }];
+        [self updateSleepResultLabel];
+    }
+    else {
+        self.sleepResultLabel.hidden = YES;
+    }
+        
+    if (@available(iOS 12.0, *)) {
+        self.sleepSettingStackView.hidden = NO;
+    }
+    else {
+        self.sleepSettingStackView.hidden = YES;
+    }
+    
+    [self attachPlayerView];
+}
+
+#pragma mark View management
+
+- (void)attachPlayerView
+{
+    self.mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.mediaPlayerController.view.frame = self.playerHostView.bounds;
+    [self.playerHostView insertSubview:self.mediaPlayerController.view atIndex:0];
+}
+
+- (void)detachPlayerView
+{
+    [self.mediaPlayerController.view removeFromSuperview];
+}
+
+#pragma mark UI
+
+- (void)updateSleepResultLabel API_AVAILABLE(ios(12.0))
+{
+    self.sleepResultLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Current value: %@", nil), self.mediaPlayerController.player.preventsDisplaySleepDuringVideoPlayback ? @"YES" : @"NO"];
 }
 
 #pragma mark Actions
@@ -47,7 +102,10 @@
         [self.mediaPlayerController togglePlayPause];
     }
     else {
-        [self.mediaPlayerController playURL:self.media.URL];
+        [self.mediaPlayerController prepareToPlayURL:self.media.URL atPosition:nil withSegments:nil userInfo:nil completionHandler:^{
+            self.ready = YES;
+            [self.mediaPlayerController play];
+        }];
     }
 }
 
@@ -55,6 +113,55 @@
 {
     self.ready = NO;
     [self.mediaPlayerController reset];
+}
+
+- (IBAction)toggleAttached:(id)sender
+{
+    if (self.mediaPlayerController.view.superview) {
+        [self detachPlayerView];
+    }
+    else {
+        [self attachPlayerView];
+    }
+}
+
+- (IBAction)toggleVideoPlaybackPreventsDeviceSleep:(UISwitch *)preventsDeviceSleepSwitch
+{
+    if (@available(iOS 12.0, *)) {
+        self.mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
+            player.preventsDisplaySleepDuringVideoPlayback = preventsDeviceSleepSwitch.on;
+        };
+        [self.mediaPlayerController reloadPlayerConfiguration];
+    }
+}
+
+- (IBAction)selectViewBackgroundBehavior:(UISegmentedControl *)segmentedControl
+{
+    switch (segmentedControl.selectedSegmentIndex) {
+        case 0: {
+            self.mediaPlayerController.viewBackgroundBehavior = SRGMediaPlayerViewBackgroundBehaviorAttached;
+            break;
+        }
+            
+        case 1: {
+            self.mediaPlayerController.viewBackgroundBehavior = SRGMediaPlayerViewBackgroundBehaviorDetached;
+            break;
+        }
+            
+        case 2: {
+            self.mediaPlayerController.viewBackgroundBehavior = SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked;
+            break;
+        }
+            
+        default: {
+            break;
+        }
+    }
+}
+
+- (IBAction)reloadPlayerConfiguration:(id)sender
+{
+    [self.mediaPlayerController reloadPlayerConfiguration];
 }
 
 @end
