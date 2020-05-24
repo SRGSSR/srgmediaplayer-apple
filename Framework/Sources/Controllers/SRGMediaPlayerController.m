@@ -1339,20 +1339,22 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 #endif
         
         if (@available(iOS 12, tvOS 12, *)) {
+            if (! self.playerViewController) {
 #if TARGET_OS_IOS
-            if (self.pictureInPictureController.pictureInPictureActive) {
-                self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
-                self.player.preventsDisplaySleepDuringVideoPlayback = YES;
-            }
-            else if (AVAudioSession.srg_isAirPlayActive) {
-                self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
-                self.player.preventsDisplaySleepDuringVideoPlayback = NO;
-            }
-            else
+                if (self.pictureInPictureController.pictureInPictureActive) {
+                    self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
+                    self.player.preventsDisplaySleepDuringVideoPlayback = YES;
+                }
+                else if (AVAudioSession.srg_isAirPlayActive) {
+                    self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
+                    self.player.preventsDisplaySleepDuringVideoPlayback = NO;
+                }
+                else
 #endif
-            if (! self.view.player || ! self.view.window) {
-                self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
-                self.player.preventsDisplaySleepDuringVideoPlayback = NO;
+                if (! self.view.player || ! self.view.window) {
+                    self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
+                    self.player.preventsDisplaySleepDuringVideoPlayback = NO;
+                }
             }
         }
     }

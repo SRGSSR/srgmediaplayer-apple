@@ -193,6 +193,8 @@ While you can setup this property in the player configuration block, note that `
 - On iOS, when picture in picture is used, the value is forced to `YES` so that the screen remains active.
 - On iOS, when AirPlay is used, the value is forced to `NO` so that the device can go to sleep automatically during playback on the receiver.
 
+No overriding is performed when using `SRGMediaPlayerViewController`, though.
+
 ## Thread-safety
 
 The library is intended to be used from the main thread only.
