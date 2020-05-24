@@ -102,7 +102,10 @@
         [self.mediaPlayerController togglePlayPause];
     }
     else {
-        [self.mediaPlayerController playURL:self.media.URL];
+        [self.mediaPlayerController prepareToPlayURL:self.media.URL atPosition:nil withSegments:nil userInfo:nil completionHandler:^{
+            self.ready = YES;
+            [self.mediaPlayerController play];
+        }];
     }
 }
 
