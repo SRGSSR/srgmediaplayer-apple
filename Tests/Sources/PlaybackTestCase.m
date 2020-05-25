@@ -2928,6 +2928,72 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
 }
 
+- (void)testDVRStreamDateMonotony
+{
+    [self expectationForElapsedTimeInterval:20. withHandler:nil];
+    
+    __block NSDate *lastDate = [NSDate dateWithTimeIntervalSince1970:0];
+    __block id periodicTimeObserver = nil;
+    
+    @weakify(self)
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        @strongify(self)
+        NSDate *date = [self.mediaPlayerController streamDateForTime:time];
+        XCTAssertTrue([lastDate compare:date] != NSOrderedDescending);
+        lastDate = date;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
+    }];
+}
+
+- (void)testDVRStreamWithTimestampsDateMonotony
+{
+    [self expectationForElapsedTimeInterval:20. withHandler:nil];
+    
+    __block NSDate *lastDate = [NSDate dateWithTimeIntervalSince1970:0];
+    __block id periodicTimeObserver = nil;
+    
+    @weakify(self)
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        @strongify(self)
+        NSDate *date = [self.mediaPlayerController streamDateForTime:time];
+        XCTAssertTrue([lastDate compare:date] != NSOrderedDescending);
+        lastDate = date;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTimestampTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
+    }];
+}
+
+- (void)testLivestreamDateMonotony
+{
+    [self expectationForElapsedTimeInterval:20. withHandler:nil];
+    
+    __block NSDate *lastDate = [NSDate dateWithTimeIntervalSince1970:0];
+    __block id periodicTimeObserver = nil;
+    
+    @weakify(self)
+    periodicTimeObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
+        @strongify(self)
+        NSDate *date = [self.mediaPlayerController streamDateForTime:time];
+        XCTAssertTrue([lastDate compare:date] != NSOrderedDescending);
+        lastDate = date;
+    }];
+    
+    [self.mediaPlayerController playURL:LiveTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [self.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
+    }];
+}
+
 - (void)testOnDemandStreamEndDefaultTolerance
 {
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
