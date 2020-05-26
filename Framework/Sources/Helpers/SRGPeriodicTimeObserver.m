@@ -106,6 +106,11 @@
     }
     
     void (^notify)(CMTime) = ^(CMTime time) {
+        if (self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
+            return;
+            
+        }
+        
         for (void (^block)(CMTime) in [self.blocks allValues]) {
             dispatch_async(self.queue, ^{
                 block(time);
