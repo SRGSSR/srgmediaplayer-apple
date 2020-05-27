@@ -1743,7 +1743,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    // Seek to date not supported, replace with default position
+    // Seek to date not supported, position replaced with 0
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtDate:NSDate.date] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];

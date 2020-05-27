@@ -521,7 +521,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return the time corresponding to some date, in the stream reference frame.
  *
- *  @discussion Returns `kCMTimeIndefinite` if the stream has no date information, or if the date parameter is `nil`.
+ *  @discussion Returns `kCMTimeZero` if the stream has no date information, or if the date parameter is `nil`.
  */
 - (CMTime)streamTimeForDate:(nullable NSDate *)date;
 
