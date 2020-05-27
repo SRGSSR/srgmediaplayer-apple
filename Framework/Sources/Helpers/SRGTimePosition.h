@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGTimePosition : NSObject
 
 /**
+ *  The default position.
+ */
+@property (class, nonatomic, readonly) SRGTimePosition *defaultPosition;
+
+/**
 *  Position for the specified time with custom tolerance settings.
 *
 *  @param time            The position time. Use `kCMTimeZero` for the default position.
