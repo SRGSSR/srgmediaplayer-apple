@@ -37,7 +37,7 @@
 {
     if (self = [super init]) {
         self.interval = interval;
-        self.queue = queue ?: dispatch_get_main_queue();
+        self.queue = queue;
         self.blocks = [NSMutableDictionary dictionary];
     }
     return self;
@@ -111,10 +111,8 @@
             
         }
         
-        for (void (^block)(CMTime) in [self.blocks allValues]) {
-            dispatch_async(self.queue, ^{
-                block(time);
-            });
+        for (void (^block)(CMTime) in self.blocks.allValues) {
+            block(time);
         }
     };
     
