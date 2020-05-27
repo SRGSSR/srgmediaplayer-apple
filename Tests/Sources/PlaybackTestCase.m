@@ -1078,7 +1078,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeLive);
     XCTAssertTrue(self.mediaPlayerController.live);
-    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.currentDate] < 0.1);
+    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.currentDate] < 1.);
     
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
