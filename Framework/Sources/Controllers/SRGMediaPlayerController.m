@@ -31,7 +31,10 @@
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <objc/runtime.h>
 
-static const NSTimeInterval SRGSegmentSeekOffsetInSeconds = 0.1;
+static NSTimeInterval SRGSegmentSeekOffsetInSeconds(void)
+{
+    return [AVAudioSession srg_isBluetoothHeadsetActive] ? 0.3 : 0.1;
+}
 
 static NSError *SRGMediaPlayerControllerError(NSError *underlyingError);
 static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlaybackState playbackState);
@@ -236,7 +239,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                             CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:self.targetSegment.srg_markRange];
                             
                             // Add a small offset so that playback is guaranteed to start within the segment.
-                            startTimePosition = SRGMediaPlayerControllerOffset(startTimePosition, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC));
+                            startTimePosition = SRGMediaPlayerControllerOffset(startTimePosition, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds(), NSEC_PER_SEC));
                             
                             // Start at the segment beginning if the desired position is above tolerance settings.
                             CMTime tolerance = SRGMediaPlayerEffectiveEndTolerance(self.endTolerance, self.endToleranceRatio, CMTimeGetSeconds(segmentTimeRange.duration));
@@ -1223,7 +1226,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:targetSegment.srg_markRange];
         
         // Add a small offset so that playback is guaranteed to start within the segment.
-        timePosition = SRGMediaPlayerControllerOffset(timePosition, CMTimeAdd(segmentTimeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC)));
+        timePosition = SRGMediaPlayerControllerOffset(timePosition, CMTimeAdd(segmentTimeRange.start, CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds(), NSEC_PER_SEC)));
         
         // Fit position settings to the segment time range.
         timePosition = SRGMediaPlayerControllerPositionInTimeRange(timePosition, segmentTimeRange);
@@ -1584,7 +1587,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
     // would trigger skips recursively)
     CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
-    CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds, NSEC_PER_SEC));
+    CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), CMTimeMakeWithSeconds(SRGSegmentSeekOffsetInSeconds(), NSEC_PER_SEC));
     SRGPosition *seekTimePosition = [SRGPosition positionAtTime:seekTime];
     [self seekToPosition:seekTimePosition withCompletionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
