@@ -1328,9 +1328,8 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
-- (void)testSeekNotificationForDvrStream
+- (void)testSeekNotificationForDVRStream
 {
-    // Wait until the player is in the playing state to seek
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -1349,6 +1348,28 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTimeInSeconds:30.] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+}
+
+- (void)testSeekPausedDVRStreamAtEnd
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePaused;
+    }];
+    
+    [self.mediaPlayerController prepareToPlayURL:DVRTestURL() withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    CMTime time = CMTimeRangeGetEnd(self.mediaPlayerController.timeRange);
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:time] withCompletionHandler:^(BOOL finished) {
+        [self.mediaPlayerController play];
+    }];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
