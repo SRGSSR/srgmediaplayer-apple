@@ -31,10 +31,14 @@
 #import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 #import <objc/runtime.h>
 
-static CMTime SRGSegmentSeekOffset(void)
+static CMTime SRGSafeSeekOffset(void)
 {
-    NSTimeInterval offsetInSeconds = [AVAudioSession srg_isBluetoothHeadsetActive] ? 0.3 : 0.1;
-    return CMTimeMakeWithSeconds(offsetInSeconds, NSEC_PER_SEC);
+    return CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC);
+}
+
+static CMTime SRGSafeStartSeekOffset(void)
+{
+    return [AVAudioSession srg_isBluetoothHeadsetActive] ? CMTimeMakeWithSeconds(0.3, NSEC_PER_SEC) : SRGSafeSeekOffset();
 }
 
 static NSError *SRGMediaPlayerControllerError(NSError *underlyingError);
@@ -42,7 +46,7 @@ static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlay
 static NSString *SRGMediaPlayerControllerNameForMediaType(SRGMediaPlayerMediaType mediaType);
 static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamType streamType);
 
-static SRGTimePosition *SRGMediaPlayerControllerPositionInTimeRange(SRGTimePosition *position, CMTimeRange timeRange);
+static SRGTimePosition *SRGMediaPlayerControllerPositionInTimeRange(SRGTimePosition *timePosition, CMTimeRange timeRange, CMTime startOffset, CMTime endOffset);
 
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOption(NSArray<AVMediaSelectionOption *> *audioOptions);
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, AVMediaSelectionOption *audioOption);
@@ -908,9 +912,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                 }
             }
             
-            // Fit position settings to the available time range.
+            // Fit position settings to the available time range (cut a bit off at the end to ensure we do not fall outside
+            // the seekable range).
             SRGTimePosition *timePosition = [SRGTimePosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
-            return SRGMediaPlayerControllerPositionInTimeRange(timePosition, timeRange);
+            return SRGMediaPlayerControllerPositionInTimeRange(timePosition, timeRange, kCMTimeZero, SRGSafeSeekOffset());
         }
     }
     else {
@@ -926,17 +931,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             }
         }
         
-        // Cut a bit off the segment time range beginning portion, so that the position we calculate ends there
-        // (ensuring playback takes place correctly within the segment, which otherwise is not guaranteed).
-        CMTime offset = SRGSegmentSeekOffset();
-        CMTimeRange restrictedSegmentTimeRange = CMTIME_COMPARE_INLINE(offset, <=, segmentTimeRange.duration) ? CMTimeRangeMake(CMTimeAdd(segmentTimeRange.start, offset), CMTimeSubtract(segmentTimeRange.duration, offset)) : segmentTimeRange;
-        
-        // Fit position settings to the restricted segment time range.
+        // Fit position settings to the restricted segment time range. Cut a bit off of the segment at start ends to ensure
+        // playback takes place within the segment (segment start requires a different to compensate Bluetooth seek imprecisions).
         SRGTimePosition *timePosition = [SRGTimePosition positionWithTime:time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter];
-        timePosition = SRGMediaPlayerControllerPositionInTimeRange(timePosition, restrictedSegmentTimeRange);
+        timePosition = SRGMediaPlayerControllerPositionInTimeRange(timePosition, segmentTimeRange, SRGSafeStartSeekOffset(), SRGSafeSeekOffset());
         
-        // Fit position settings to the available time range.
-        return SRGMediaPlayerControllerPositionInTimeRange(timePosition, self.timeRange);
+        // Fit position settings to the available time range (cut a bit off at the end to ensure we do not fall outside
+        // the seekable range).
+        return SRGMediaPlayerControllerPositionInTimeRange(timePosition, self.timeRange, kCMTimeZero, SRGSafeSeekOffset());
     }
 }
 
@@ -1583,7 +1585,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
     // would trigger skips recursively)
     CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
-    CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), SRGSegmentSeekOffset());
+    CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), SRGSafeStartSeekOffset());
     SRGPosition *seekTimePosition = [SRGPosition positionAtTime:seekTime];
     [self seekToPosition:seekTimePosition withCompletionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
@@ -2077,10 +2079,18 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
     return s_names[@(streamType)] ?: @"unknown";
 }
 
-// Adjust position tolerance settings so that the position is guaranteed to fall within the specified time range. If the time itself
-// is outside the specified range, it is fixed to the nearest end.
-static SRGTimePosition *SRGMediaPlayerControllerPositionInTimeRange(SRGTimePosition *timePosition, CMTimeRange timeRange)
+// Adjust position tolerance settings so that the position is guaranteed to fall within the specified time range. Offsets
+// can be provided to trim off a bit of the time range at its start and end. If the time itself lies outside the specified
+// range, it is fixed to the nearest end.
+static SRGTimePosition *SRGMediaPlayerControllerPositionInTimeRange(SRGTimePosition *timePosition, CMTimeRange timeRange, CMTime startOffset, CMTime endOffset)
 {
+    NSCAssert(CMTIME_COMPARE_INLINE(startOffset, >=, kCMTimeZero) && CMTIME_COMPARE_INLINE(startOffset, >=, kCMTimeZero), @"Offsets must be positive");
+    
+    CMTime totalOffset = CMTimeAdd(startOffset, endOffset);
+    if (CMTIME_COMPARE_INLINE(totalOffset, <=, timeRange.duration)) {
+        timeRange = CMTimeRangeMake(CMTimeAdd(timeRange.start, startOffset), CMTimeSubtract(timeRange.duration, totalOffset));
+    }
+    
     if (SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
         CMTime time = CMTimeMaximum(CMTimeMinimum(timePosition.time, CMTimeRangeGetEnd(timeRange)), timeRange.start);
         CMTime toleranceBefore = CMTimeMaximum(CMTimeMinimum(timePosition.toleranceBefore, CMTimeSubtract(timePosition.time, timeRange.start)), kCMTimeZero);
