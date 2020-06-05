@@ -665,7 +665,18 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         else {
             // Cache the date only once, as the end window oscillates because of chunks being added and removed.
             if (! self.referenceDate) {
-                self.referenceDate = NSDate.date;
+                NSDate *referenceDate = NSDate.date;
+                
+                NSValue *streamOffsetValue = self.userInfo[SRGMediaPlayerUserInfoStreamOffsetKey];
+                if (streamOffsetValue) {
+                    CMTime streamOffset = streamOffsetValue.CMTimeValue;
+                    if (CMTIME_IS_VALID(streamOffset)) {
+                        CMTime positiveStreamOffset = CMTimeMaximum(streamOffset, kCMTimeZero);
+                        referenceDate = [referenceDate dateByAddingTimeInterval:-CMTimeGetSeconds(positiveStreamOffset)];
+                    }
+                }
+                
+                self.referenceDate = referenceDate;
                 self.referenceTime = CMTimeRangeGetEnd(timeRange);
             }
         }
