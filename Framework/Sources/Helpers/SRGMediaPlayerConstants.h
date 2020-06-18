@@ -135,6 +135,30 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerUserInterfaceStyle) {
 };
 
 /**
+ *  @name Playback setup (provided as `userInfo` to the controller).
+ */
+
+/**
+ *  `SRGMediaPlayerController` supports seeking to dates for livestreams with DVR support. It is strongly recommended
+ *  that date information is delivered within HLS streams to support accurate positioning. If date information is not
+ *  embedded in the streams, though, the position is approximated based on the device date.
+ *
+ *  We cannot do much against devices off-clock but, even assuming that your device is synchronized with a time server,
+ *  you might still experience delays when seeking to a date in a stream which does not embedd timestamps. This is
+ *  due to stream encoding and delivery, which creates a delay in comparison to usual broadcasting.
+ *
+ *  To compensate for such effects, you can provide an offset as an `NSValue` wrapping a `CMTime`, giving the offset
+ *  you experience from theoretically perfect delivery. For example, if you seek to a date where you expect to hear
+ *  something, but in fact must wait 1 minute before hearing what you were expecting, set this time to 1 minute.
+ *
+ *  If date information is available within the stream, if the streams is not a livestream with DVR capabilities,
+ *  or if the time is incorrect (negative or invalid), this value is ignored.
+ *
+ *  @discussion The behavior is undefined if you attempt to update this value during playback.
+ */
+OBJC_EXPORT NSString * const SRGMediaPlayerUserInfoStreamOffsetKey;
+
+/**
  *  @name Notifications
  */
 

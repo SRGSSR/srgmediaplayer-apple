@@ -45,7 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Return the time corresponding to a mark, in the reference frame of the provided controller.
  *
- *  @discussion Returns the raw time if the controller is `nil`.
+ *  @discussion Returns the raw time if the controller is `nil`. Might return `kCMTimeInvalid` if no valid time could
+ *              be calculated for the provided media player controller.
  */
 - (CMTime)timeForMediaPlayerController:(nullable SRGMediaPlayerController *)mediaPlayerController;
 

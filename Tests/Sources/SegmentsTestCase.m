@@ -957,6 +957,60 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     XCTAssertEqualObjects(self.mediaPlayerController.selectedSegment, segment);
 }
 
+- (void)testStartDateInSegmentWithoutSelection
+{
+    NSDate *segmentFromDate = [NSDate dateWithTimeIntervalSinceNow:-30. * 60.];
+    NSDate *segmentToDate = [segmentFromDate dateByAddingTimeInterval:10.];
+    NSDate *date = [segmentFromDate dateByAddingTimeInterval:3.];
+    
+    Segment *segment = [Segment segmentFromDate:segmentFromDate toDate:segmentToDate];
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    [self expectationForSingleNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectionKey] boolValue]);
+        XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
+        TestAssertAlmostEqualDate(self.mediaPlayerController.currentDate, date, 0.5);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:SegmentsLiveTimestampTestURL() atPosition:[SRGPosition positionAtDate:date] withSegments:@[segment] userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
+    XCTAssertNil(self.mediaPlayerController.selectedSegment);
+}
+
+- (void)testStartDateInSegmentWithSelection
+{
+    NSDate *segmentFromDate = [NSDate dateWithTimeIntervalSinceNow:-30. * 60.];
+    NSDate *segmentToDate = [segmentFromDate dateByAddingTimeInterval:10.];
+    NSDate *date = [segmentFromDate dateByAddingTimeInterval:3.];
+    
+    Segment *segment = [Segment segmentFromDate:segmentFromDate toDate:segmentToDate];
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    [self expectationForSingleNotification:SRGMediaPlayerSegmentDidStartNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertEqualObjects(notification.userInfo[SRGMediaPlayerSegmentKey], segment);
+        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectionKey] boolValue]);
+        XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
+        TestAssertAlmostEqualDate(self.mediaPlayerController.currentDate, date, 0.5);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:SegmentsLiveTimestampTestURL() atIndex:0 position:[SRGPosition positionAtDate:date] inSegments:@[segment] withUserInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqualObjects(self.mediaPlayerController.currentSegment, segment);
+    XCTAssertEqualObjects(self.mediaPlayerController.selectedSegment, segment);
+}
+
 - (void)testSeekBetweenSegments
 {
     Segment *segment1 = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(20., NSEC_PER_SEC), CMTimeMakeWithSeconds(60., NSEC_PER_SEC))];
@@ -1730,6 +1784,42 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     [self.mediaPlayerController seekToPosition:nil inSegment:segment2 withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+}
+
+- (void)testStartOnSegmentOutsideAvailableTimeRange
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(365. * 24. * 60. * 60., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atIndex:0 position:nil inSegments:@[segment] withUserInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, 1800);
+}
+
+- (void)testSeekToSegmentOutsideAvailableTimeRange
+{
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(365. * 24. * 60. * 60., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
+    [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment] userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController seekToPosition:nil inSegment:segment withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, 1800);
 }
 
 @end

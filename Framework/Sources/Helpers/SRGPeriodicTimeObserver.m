@@ -37,7 +37,7 @@
 {
     if (self = [super init]) {
         self.interval = interval;
-        self.queue = queue ?: dispatch_get_main_queue();
+        self.queue = queue;
         self.blocks = [NSMutableDictionary dictionary];
     }
     return self;
@@ -106,10 +106,13 @@
     }
     
     void (^notify)(CMTime) = ^(CMTime time) {
-        for (void (^block)(CMTime) in [self.blocks allValues]) {
-            dispatch_async(self.queue, ^{
-                block(time);
-            });
+        if (self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
+            return;
+            
+        }
+        
+        for (void (^block)(CMTime) in self.blocks.allValues) {
+            block(time);
         }
     };
     

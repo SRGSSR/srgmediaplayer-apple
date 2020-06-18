@@ -21,7 +21,7 @@
 
 + (SRGPosition *)defaultPosition
 {
-    return [self positionWithTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    return [[self.class alloc] init];
 }
 
 + (SRGPosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
@@ -57,7 +57,8 @@
 
 - (instancetype)init
 {
-    return [[SRGPosition alloc] initWithMark:nil toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    SRGMark *mark = [SRGMark markAtTime:kCMTimeZero];
+    return [[SRGPosition alloc] initWithMark:mark toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
 #pragma mark Getters and setters

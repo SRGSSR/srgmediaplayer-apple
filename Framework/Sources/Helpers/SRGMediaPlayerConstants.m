@@ -6,6 +6,8 @@
 
 #import "SRGMediaPlayerConstants.h"
 
+NSString * const SRGMediaPlayerUserInfoStreamOffsetKey = @"SRGMediaPlayerUserInfoStreamOffset";
+
 NSString * const SRGMediaPlayerPlaybackStateDidChangeNotification = @"SRGMediaPlayerPlaybackStateDidChangeNotification";
 
 NSString * const SRGMediaPlayerPlaybackDidFailNotification = @"SRGMediaPlayerPlaybackDidFailNotification";

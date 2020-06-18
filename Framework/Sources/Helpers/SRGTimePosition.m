@@ -18,6 +18,11 @@
 
 #pragma mark Class methods
 
++ (SRGTimePosition *)defaultPosition
+{
+    return [[self.class alloc] init];
+}
+
 + (SRGTimePosition *)positionWithTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter
 {
     return [[self.class alloc] initWithTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
@@ -37,7 +42,7 @@
 
 - (instancetype)init
 {
-    return [self initWithTime:kCMTimeZero toleranceBefore:kCMTimeIndefinite toleranceAfter:kCMTimeIndefinite];
+    return [self initWithTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
 #pragma mark Description

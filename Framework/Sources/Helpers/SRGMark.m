@@ -56,7 +56,7 @@
 - (CMTime)timeForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
     if (mediaPlayerController) {
-        return [mediaPlayerController streamTimeForMark:self];
+        return [mediaPlayerController streamTimeForMark:self withTimeOrigin:kCMTimeZero];
     }
     else {
         return self.time;
