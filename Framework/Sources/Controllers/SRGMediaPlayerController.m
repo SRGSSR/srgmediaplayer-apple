@@ -657,14 +657,16 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     // the DVR window. This is less accurate or might be completely incorrect, especially if stream and device clocks are
     // entirely different, but this is the best we can do.
     if (streamType == SRGMediaPlayerStreamTypeDVR || streamType == SRGMediaPlayerStreamTypeLive) {
-        NSDate *currentDate = playerItem.currentDate;
-        if (currentDate) {
-            self.referenceDate = currentDate;
-            self.referenceTime = playerItem.currentTime;
-        }
-        else {
-            // Cache the date only once, as the end window oscillates because of chunks being added and removed.
-            if (! self.referenceDate) {
+        // Cache the date only once for stable values:
+        //  - Streams without embedded timestamps: Eliminates end window oscillations because of chunks being added and removed.
+        //  - Streams with embedded timestamps: Avoid discontinuities when the player is seeking.
+        if (! self.referenceDate) {
+            NSDate *currentDate = playerItem.currentDate;
+            if (currentDate) {
+                self.referenceDate = currentDate;
+                self.referenceTime = playerItem.currentTime;
+            }
+            else {
                 NSDate *referenceDate = NSDate.date;
                 
                 NSValue *streamOffsetValue = self.userInfo[SRGMediaPlayerUserInfoStreamOffsetKey];
