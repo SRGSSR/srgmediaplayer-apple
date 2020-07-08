@@ -88,7 +88,7 @@
 - (void)updateAppearanceWithTime:(CMTime)time
 {
     if (self.selectedSegment) {
-        time = self.selectedSegment.srg_timeRange.start;
+        time = [self.selectedSegment.srg_markRange timeRangeForMediaPlayerController:self.mediaPlayerController].start;
     }
     
     for (SegmentCollectionViewCell *segmentCell in [self.timelineView visibleCells]) {
@@ -98,13 +98,14 @@
 
 #pragma mark SRGTimeSliderDelegate protocol
 
-- (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(float)value interactive:(BOOL)interactive
+- (void)timeSlider:(SRGTimeSlider *)slider isMovingToTime:(CMTime)time date:(NSDate *)date withValue:(float)value interactive:(BOOL)interactive
 {
     [self updateAppearanceWithTime:time];
     
     if (interactive) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id<SRGSegment> _Nonnull segment, NSDictionary<NSString *, id> *_Nullable bindings) {
-            return CMTimeRangeContainsTime(segment.srg_timeRange, time);
+            CMTimeRange segmentTimeRange = [segment.srg_markRange timeRangeForMediaPlayerController:self.mediaPlayerController];
+            return CMTimeRangeContainsTime(segmentTimeRange, time);
         }];
         
         id<SRGSegment> segment = [self.timelineView.mediaPlayerController.segments filteredArrayUsingPredicate:predicate].firstObject;
@@ -121,7 +122,7 @@
 - (UICollectionViewCell *)timelineView:(SRGTimelineView *)timelineView cellForSegment:(id<SRGSegment>)segment
 {
     SegmentCollectionViewCell *segmentCell = [timelineView dequeueReusableCellWithReuseIdentifier:NSStringFromClass(SegmentCollectionViewCell.class) forSegment:segment];
-    segmentCell.segment = (MediaSegment *)segment;
+    [segmentCell setSegment:(MediaSegment *)segment mediaPlayerController:self.mediaPlayerController];
     return segmentCell;
 }
 

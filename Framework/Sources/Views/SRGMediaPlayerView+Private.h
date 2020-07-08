@@ -11,6 +11,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Forward declarations
+@class SRGMediaPlayerView;
+
+/**
+ *  Media player view delegate protocol.
+ */
+@protocol SRGMediaPlayerViewDelegate <NSObject>
+
+/**
+ *  Called when the view has been added to a window (`nil` if removed from its parent window).
+ */
+- (void)mediaPlayerView:(SRGMediaPlayerView *)mediaPlayerView didMoveToWindow:(nullable UIWindow *)window;
+
+@end
+
 /**
  *  Private interface for internal use.
  */
@@ -39,6 +54,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Set to `YES` to hide the internal view used for playback. Default is `NO`.
  */
 @property (nonatomic, getter=isPlaybackViewHidden) BOOL playbackViewHidden;
+
+/**
+ *  The view delegate.
+ */
+@property (nonatomic, weak) id<SRGMediaPlayerViewDelegate> delegate;
 
 @end
 

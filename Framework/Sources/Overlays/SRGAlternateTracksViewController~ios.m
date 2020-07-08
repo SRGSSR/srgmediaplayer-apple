@@ -154,7 +154,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
             self.navigationController.overrideUserInterfaceStyle = (self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleDark) ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
         }
         else {
-            self.navigationController.overrideUserInterfaceStyle = SRGMediaPlayerUserInterfaceStyleUnspecified;
+            self.navigationController.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
         }
     }
     

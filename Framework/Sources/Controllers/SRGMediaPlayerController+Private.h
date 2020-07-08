@@ -50,6 +50,21 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) BOOL matchesAutomaticSubtitleSelection;
 
+/**
+ *  Return the stream time corresponding to a mark, relative to a given time in the stream reference frame. Date
+ *  marks are always considered absolute (and thus not calculated relatively to the provided `time`).
+ *
+ *  @discussion Return `kCMTimeZero` if no valid time can be determined for the mark.
+ */
+- (CMTime)streamTimeForMark:(SRGMark *)mark withTimeOrigin:(CMTime)time;
+
+/**
+ *  Return the time range corresponding to a mark range, in the stream reference frame.
+ *
+ *  @discussion Marks for which no valid time can be determined are replaced with `kCMTimeZero`.
+ */
+- (CMTimeRange)streamTimeRangeForMarkRange:(SRGMarkRange *)markRange;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -44,45 +44,40 @@
 // Might be called from a background thread, in which case the completion handler might as well
 - (void)seekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL finished))completionHandler
 {
-    SRGPosition *position = [SRGPosition positionWithTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter];
-    [self seekToPosition:position notify:YES completionHandler:completionHandler];
+    [self seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter notify:YES completionHandler:completionHandler];
 }
 
-- (void)seekToPosition:(SRGPosition *)position notify:(BOOL)notify completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter notify:(BOOL)notify completionHandler:(void (^)(BOOL))completionHandler
 {
-    if (! position) {
-        position = SRGPosition.defaultPosition;
-    }
-    
     if (self.seekCount == 0) {
         self.seekStartTime = self.currentTime;
     }
-    self.seekTargetTime = position.time;
+    self.seekTargetTime = time;
     
     if (notify) {
         if (NSThread.isMainThread) {
-            [self.delegate player:self willSeekToPosition:position];
+            [self.delegate player:self willSeekToTime:time];
         }
         else {
             dispatch_sync(dispatch_get_main_queue(), ^{
-                [self.delegate player:self willSeekToPosition:position];
+                [self.delegate player:self willSeekToTime:time];
             });
         }
     }
     
     ++self.seekCount;
     
-    [super seekToTime:position.time toleranceBefore:position.toleranceBefore toleranceAfter:position.toleranceAfter completionHandler:^(BOOL finished) {
+    [super seekToTime:time toleranceBefore:toleranceBefore toleranceAfter:toleranceAfter completionHandler:^(BOOL finished) {
         --self.seekCount;
         
         if (finished) {
             if (notify) {
                 if (NSThread.isMainThread) {
-                    [self.delegate player:self didSeekToPosition:position];
+                    [self.delegate player:self didSeekToTime:time];
                 }
                 else {
                     dispatch_sync(dispatch_get_main_queue(), ^{
-                        [self.delegate player:self didSeekToPosition:position];
+                        [self.delegate player:self didSeekToTime:time];
                     });
                 }
             }

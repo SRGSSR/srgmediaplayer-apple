@@ -6,14 +6,14 @@
 
 #import "MediaSegment.h"
 
-#import <CoreMedia/CoreMedia.h>
+#import <SRGMediaPlayer/SRGMediaPlayer.h>
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SegmentCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, nullable) MediaSegment *segment;
+- (void)setSegment:(nullable MediaSegment *)segment mediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController;
 
 - (void)updateAppearanceWithTime:(CMTime)time selectedSegment:(nullable MediaSegment *)selectedSegment;
 

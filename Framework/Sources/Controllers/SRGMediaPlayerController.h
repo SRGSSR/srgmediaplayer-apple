@@ -380,8 +380,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  playing. You can use the completion handler to change the player state if needed, e.g. to automatically
  *  resume playback after a seek has been performed on a paused player.
  *
- *  @param position          The position to seek to. If `nil` or if the specified position lies outside the media time
- *                           range, seeking will be made to the nearest valid position.
+ *  @param position          The position to seek to, or the default position if `nil`. If the specified position lies
+ *                           outside the media time range, seeking will be made to the nearest valid position.
  *  @param completionHandler The completion block called when the seek ends. If the seek has been interrupted by
  *                           another seek, the completion handler will be called with `finished` set to `NO`, otherwise 
  *                           with `finished` set to `YES`.
@@ -390,12 +390,11 @@ NS_ASSUME_NONNULL_BEGIN
  *              the player will still be in the seeking state. Note that if the media was not ready to play, seeking
  *              won't take place, and the completion handler won't be called.
  *
- *              If the specified position lies outside the media time range, the location at which playback actually
- *              resumes is undefined (depends on iOS versions).
- *
  *              Refer to `-[AVPlayer seekToTime:toleranceBefore:toleranceAfter:completionHandler:]` documentation
  *              for more information about seek tolerances. Attempting to seek to a blocked segment will skip the segment
  *              and resume after it.
+ *
+ *              Note that this method has no effect on livestreams without DVR capabilities.
  */
 - (void)seekToPosition:(nullable SRGPosition *)position withCompletionHandler:(nullable void (^)(BOOL finished))completionHandler;
 
@@ -478,6 +477,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CMTime currentTime;
 
 /**
+ *  For livestreams, returns the date corresponding to the current time.
+ *
+ *  @discussion Returns `nil` for on-demand streams. An accurate stream-based date is returned if the stream embedds
+ *              `EXT-X-PROGRAM-DATE-TIME` timestamps, otherwise an approximate less reliable date based on the device
+ *              date only.
+ */
+@property (nonatomic, readonly, nullable) NSDate *currentDate;
+
+/**
  *  The time at which the player started seeking, `kCMTimeIndefinite` if no seek is currently being made.
  */
 @property (nonatomic, readonly) CMTime seekStartTime;
@@ -498,15 +506,31 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) SRGMediaPlayerStreamType streamType;
 
 /**
- *  For DVR and live streams, returns the date corresponding to the current playback time. If the date cannot be
- *  determined or for an on-demand stream, the method returns `nil`.
- */
-@property (nonatomic, readonly, nullable) NSDate *date;
-
-/**
  *  Return `YES` iff the stream is currently played in live conditions (@see `liveTolerance`). Key-value observable.
  */
 @property (nonatomic, readonly, getter=isLive) BOOL live;
+
+@end
+
+/**
+ *  @name Date - time conversions
+ */
+
+@interface SRGMediaPlayerController (TimeConversions)
+
+/**
+ *  Return the time corresponding to some date, in the stream reference frame.
+ *
+ *  @discussion Returns `kCMTimeZero` if the stream has no date information, or if the date parameter is `nil`.
+ */
+- (CMTime)streamTimeForDate:(nullable NSDate *)date;
+
+/**
+ *  Return the date corresponding to some time, in the stream reference frame.
+ *
+ *  @discussion Returns `nil` if the stream has no date information.
+ */
+- (nullable NSDate *)streamDateForTime:(CMTime)time;
 
 @end
 
@@ -812,7 +836,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  background, pausing video playback automatically.
  *
  *  @discussion The behavior can be changed at any time but will not affect playback if already performed in background.
- *              It is only applied when the controller view is installed in a view hierarchy.
+ *              It is ignored when using `SRGMediaPlayerViewController`.
  */
 @property (nonatomic) SRGMediaPlayerViewBackgroundBehavior viewBackgroundBehavior;
 

@@ -10,6 +10,7 @@
 #import "SRGMediaPlaybackMonoscopicView.h"
 #import "SRGMediaPlaybackFlatView.h"
 #import "SRGMediaPlaybackStereoscopicView.h"
+#import "SRGMediaPlayerView+Private.h"
 
 #import <libextobjc/libextobjc.h>
 
@@ -24,6 +25,7 @@ static void commonInit(SRGMediaPlayerView *self);
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic, weak) UIView<SRGMediaPlaybackView> *playbackView;
 @property (nonatomic, getter=isPlaybackViewHidden) BOOL playbackViewHidden;
+@property (nonatomic, weak) id<SRGMediaPlayerViewDelegate> delegate;
 @property (nonatomic, getter=isReadyForDisplay) BOOL readyForDisplay;
 
 @end
@@ -62,6 +64,15 @@ static void commonInit(SRGMediaPlayerView *self);
         commonInit(self);
     }
     return self;
+}
+
+#pragma mark Overrides
+
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    
+    [self.delegate mediaPlayerView:self didMoveToWindow:self.window];
 }
 
 #pragma mark Getters and setters

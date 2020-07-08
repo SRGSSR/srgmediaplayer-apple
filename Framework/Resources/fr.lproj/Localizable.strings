@@ -22,7 +22,7 @@
 "Language not available for this content" = "Langue non disponible pour ce contenu";
 
 /* Very short text on left time label when playing a live stream */
-"Live" = "En direct";
+"Live" = "Direct";
 
 /* Label displayed when no subtitles have been selected in automatic mode */
 "None" = "Aucun";

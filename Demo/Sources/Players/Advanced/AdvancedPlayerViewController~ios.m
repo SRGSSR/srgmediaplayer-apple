@@ -155,7 +155,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     }];
     [self updateAudioOnlyUserInterface];
     
-    [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(1., NSEC_PER_SEC) queue: NULL usingBlock:^(CMTime time) {
+    [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, timeRange) options:0 block:^(MAKVONotification * _Nonnull notification) {
         @strongify(self)
         [self updateSkipButtons];
     }];
@@ -384,10 +384,12 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         return;
     }
     
+    SRGMediaPlayerController *mediaPlayerController = self.mediaPlayerController;
+    
     CMTime targetTime = CMTimeAdd(time, CMTimeMakeWithSeconds(interval, NSEC_PER_SEC));
-    [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
+    [mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:^(BOOL finished) {
         if (finished) {
-            [self.mediaPlayerController play];
+            [mediaPlayerController play];
         }
         completionHandler ? completionHandler(finished) : nil;
     }];

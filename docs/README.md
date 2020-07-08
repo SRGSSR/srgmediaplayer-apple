@@ -121,10 +121,6 @@ Alternatively, you can of course open the project with Xcode and use the availab
 
 To test what the library is capable of, run the associated demo.
 
-## Migration from versions 1.x
-
-For information about changes introduced with version 2 of the library, please read the [migration guide](MIGRATION_GUIDE.md).
-
 ## License
 
 See the [LICENSE](../LICENSE) file for more information.

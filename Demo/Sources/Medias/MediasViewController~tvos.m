@@ -151,7 +151,8 @@ static NSString * const kMediaKey = @"Media";
             artworkItem.value = UIImagePNGRepresentation([UIImage imageNamed:@"artwork"]);
             artworkItem.extendedLanguageTag = @"und";
             
-            AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy, artworkItem.copy ] timeRange:segment.srg_timeRange];
+            CMTimeRange segmentTimeRange = [segment.srg_markRange timeRangeForMediaPlayerController:playerViewController.controller];
+            AVTimedMetadataGroup *navigationMarker = [[AVTimedMetadataGroup alloc] initWithItems:@[ titleItem.copy, artworkItem.copy ] timeRange:segmentTimeRange];
             [navigationMarkers addObject:navigationMarker];
         }
         return navigationMarkers.copy;

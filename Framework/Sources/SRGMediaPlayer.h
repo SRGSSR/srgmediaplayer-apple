@@ -16,6 +16,8 @@ FOUNDATION_EXPORT NSString *SRGMediaPlayerMarketingVersion(void);
 #import "SRGActivityGestureRecognizer.h"
 #import "SRGAirPlayButton.h"
 #import "SRGAirPlayView.h"
+#import "SRGMark.h"
+#import "SRGMarkRange.h"
 #import "SRGMediaPlayerConstants.h"
 #import "SRGMediaPlayerController.h"
 #import "SRGMediaPlayerError.h"

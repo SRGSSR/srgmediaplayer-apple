@@ -14,11 +14,21 @@
 
 + (BOOL)srg_isAirPlayActive
 {
+    return [self srg_isRouteActiveForPort:AVAudioSessionPortAirPlay];
+}
+
++ (BOOL)srg_isBluetoothHeadsetActive
+{
+    return [self srg_isRouteActiveForPort:AVAudioSessionPortBluetoothA2DP];
+}
+
++ (BOOL)srg_isRouteActiveForPort:(AVAudioSessionPort)port
+{
     AVAudioSession *audioSession = [self sharedInstance];
     AVAudioSessionRouteDescription *currentRoute = audioSession.currentRoute;
     
     for (AVAudioSessionPortDescription *outputPort in currentRoute.outputs) {
-        if ([outputPort.portType isEqualToString:AVAudioSessionPortAirPlay]) {
+        if ([outputPort.portType isEqualToString:port]) {
             return YES;
         }
     }

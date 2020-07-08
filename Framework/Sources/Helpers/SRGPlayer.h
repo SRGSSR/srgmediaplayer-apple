@@ -4,8 +4,6 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGPosition.h"
-
 #import <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -18,16 +16,16 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SRGPlayerDelegate <NSObject>
 
 /**
- *  The player begins seeking to the given position.
+ *  The player begins seeking to the given time.
  */
-- (void)player:(SRGPlayer *)player willSeekToPosition:(SRGPosition *)position;
+- (void)player:(SRGPlayer *)player willSeekToTime:(CMTime)time;
 
 /**
- *  The player did finish seeking to the given position.
+ *  The player did finish seeking to the given time.
  *
  *  @discussion Not called if a seek has been interrupted.
  */
-- (void)player:(SRGPlayer *)player didSeekToPosition:(SRGPosition *)position;
+- (void)player:(SRGPlayer *)player didSeekToTime:(CMTime)time;
 
 @end
 
@@ -57,13 +55,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playImmediatelyIfPossible;
 
 /**
- *  Seek to a position (default position if `nil`), calling the specified handler on completion. The delegate methods
- *  are called iff `notify` is set to `YES`.
+ *  Seek to a given time with the provided tolerances, calling the specified handler on completion. The delegate
+ *  methods are called iff `notify` is set to `YES`.
  *
  *  @discussion The parent `-seekToTime:toleranceBefore:toleranceAfter:completionHandler:` method always notifies
- *              the player delegate.
+ *              the player delegate. Refer to this method documentation for more information about the parameters
+ *              and their role.
  */
-- (void)seekToPosition:(nullable SRGPosition *)position notify:(BOOL)notify completionHandler:(void (^)(BOOL finished))completionHandler;
+- (void)seekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter notify:(BOOL)notify completionHandler:(void (^)(BOOL finished))completionHandler;
 
 @end
 

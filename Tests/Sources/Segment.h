@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (Segment *)blockedSegmentWithTimeRange:(CMTimeRange)timeRange;
 + (Segment *)hiddenSegmentWithTimeRange:(CMTimeRange)timeRange;
 
-- (instancetype)initWithTimeRange:(CMTimeRange)timeRange;
++ (Segment *)segmentFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 
 @end
 
