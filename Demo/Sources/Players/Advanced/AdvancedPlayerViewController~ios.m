@@ -9,9 +9,9 @@
 #import "ModalTransition.h"
 #import "Resources.h"
 
-#import <libextobjc/libextobjc.h>
-#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
+@import libextobjc;
+@import MAKVONotificationCenter;
+@import SRGMediaPlayer;
 
 const NSInteger kBackwardSkipInterval = 15.;
 const NSInteger kForwardSkipInterval = 15.;

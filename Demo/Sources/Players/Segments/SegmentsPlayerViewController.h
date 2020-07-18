@@ -6,8 +6,8 @@
 
 #import "Media.h"
 
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
-#import <UIKit/UIKit.h>
+@import SRGMediaPlayer;
+@import UIKit;
 
 NS_ASSUME_NONNULL_BEGIN
 

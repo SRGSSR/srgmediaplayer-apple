@@ -4,8 +4,8 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
-#import <UIKit/UIKit.h>
+@import SRGMediaPlayer;
+@import UIKit;
 
 NS_ASSUME_NONNULL_BEGIN
 
