@@ -6,8 +6,6 @@
 
 #import "SRGMediaPlayer.h"
 
-#import "NSBundle+SRGMediaPlayer.h"
-
 NSString *SRGMediaPlayerMarketingVersion(void)
 {
     return @MARKETING_VERSION;

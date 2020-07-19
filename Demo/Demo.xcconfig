@@ -1,9 +1,6 @@
 // Version information
 MARKETING_VERSION = 5.0.4
 
-// Version information
-MARKETING_VERSION = 5.0.1
-
 // Deployment targets
 IPHONEOS_DEPLOYMENT_TARGET = 9.0
 TVOS_DEPLOYMENT_TARGET = 12.0

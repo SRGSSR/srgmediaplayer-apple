@@ -8,9 +8,8 @@
 
 #if TARGET_OS_IOS
 
-#import "SRGVolumeView.h"
-
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGVolumeView.h"
 
 @import MediaPlayer;
 

@@ -40,7 +40,6 @@ or in Swift:
 import SRGMediaPlayer
 ```
 
-
 ### Working with the library
 
 To learn about how the library can be used, have a look at the [getting started guide](GETTING_STARTED.md).
