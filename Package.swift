@@ -37,7 +37,7 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "SRGMediaPlayer-tests",
+            name: "SRGMediaPlayerTests",
             dependencies: ["SRGMediaPlayer"]
         )
     ]
