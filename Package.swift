@@ -37,7 +37,10 @@ let package = Package(
         ),
         .testTarget(
             name: "SRGMediaPlayerTests",
-            dependencies: ["SRGMediaPlayer"]
+            dependencies: ["SRGMediaPlayer"],
+            cSettings: [
+                .headerSearchPath("Private")
+            ]
         )
     ]
 )

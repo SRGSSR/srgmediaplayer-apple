@@ -10,12 +10,8 @@
 @import MediaAccessibility;
 @import SRGMediaPlayer;
 
-// Private headers
-@interface SRGMediaPlayerController (Private)
-
-- (nullable AVMediaSelectionOption *)selectedMediaOptionInMediaSelectionGroupWithCharacteristic:(AVMediaCharacteristic)characteristic;
-
-@end
+// Private framework header
+#import "SRGMediaPlayerController+Private.h"
 
 @interface TracksTestCase : MediaPlayerBaseTestCase
 

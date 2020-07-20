@@ -10,7 +10,9 @@
 
 @import SRGMediaPlayer;
 
-// Private function
+// Private framework header
+#import "SRGSegment+Private.h"
+
 OBJC_EXPORT BOOL SRGMediaPlayerAreEqualSegments(id<SRGSegment> segment1, id<SRGSegment> segment2);
 
 static NSURL *SegmentsOnDemandTestURL(void)
