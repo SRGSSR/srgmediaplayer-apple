@@ -32,7 +32,7 @@ let package = Package(
                 .process("Resources")
             ],
             cSettings: [
-                .define("MARKETING_VERSION", to: "\"\(ProjectSettings.marketingVersion)\""),
+                .define("MARKETING_VERSION", to: "\"\(ProjectSettings.marketingVersion)\"")
             ]
         ),
         .testTarget(
