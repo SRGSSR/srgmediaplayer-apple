@@ -1373,7 +1373,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                     self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
                     self.player.preventsDisplaySleepDuringVideoPlayback = YES;
                 }
-                else if (AVAudioSession.srg_isAirPlayActive) {
+                else if (self.player.externalPlaybackActive) {
                     self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
                     self.player.preventsDisplaySleepDuringVideoPlayback = NO;
                 }
