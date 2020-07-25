@@ -950,18 +950,18 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
-        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"de");
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"fr");
         return YES;
     }];
     
     self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(NSArray<AVMediaSelectionOption *> * _Nonnull subtitleOptions, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"];
+            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"fr"];
         }];
         return [subtitleOptions filteredArrayUsingPredicate:predicate].firstObject ?: defaultSubtitleOption;
     };
     
-    NSURL *URL = [NSURL URLWithString:@"https://hdvodsrforigin-f.akamaihd.net/i/vod/10vor10/2020/06/10vor10_20200618_215000_21133279_v_webcast_h264_,q40,q10,q20,q30,q50,.mp4.csmil/master.m3u8?start=0.0&end=1601.08&caption=srf/b179f07d-7cde-4cf6-b313-fcd997b38005/episode/de/vod/vod.m3u8:de:Deutsch:sdh&webvttbaseurl=www.srf.ch/subtitles"];
+    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/journ-12h45/2020/f68bb78541d953e933cbd938525640f5/journ-12h45_20200721_full,_lr3,_lr2,_lr1,_sd,_hd,_fhd,.mp4.csmil/master.m3u8?subtitles=fr:sdh&start=68.24&end=181.12"];
     [self.mediaPlayerController playURL:URL];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
