@@ -167,7 +167,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.status)];
         [_player removeObserver:self keyPath:@keypath(_player.rate)];
         [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
-        [_player removeObserver:self keyPath:@keypath(_player.currentItem.playbackLikelyToKeepUp)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.presentationSize)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
@@ -302,13 +301,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             
             [self reloadPlayerConfiguration];
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
-        }];
-        
-        [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self) @strongify(player)
-            if (player.currentItem.playbackLikelyToKeepUp && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
-                [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-            }
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.presentationSize) options:0 block:^(MAKVONotification * _Nonnull notification) {
@@ -1446,23 +1438,30 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             
             AVPlayerItem *playerItem = self.player.currentItem;
             CMTime currentTime = playerItem.currentTime;
+            
             if (self.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
+                // Playing but playhead position not actually moving. Stalled
                 if (CMTIME_COMPARE_INLINE(self.lastPlaybackTime, ==, currentTime)) {
                     [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
                     self.lastStallDetectionDate = NSDate.date;
                 }
                 else {
-                    self.lastStallDetectionDate = nil;
+                    self.lastPlaybackTime = currentTime;
                 }
             }
-            else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                [self.player playImmediatelyIfPossible];
+            else if (self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
+                // Stalled but we detect the playhead position has moved. Not stalled anymore
+                if (CMTIME_COMPARE_INLINE(self.lastPlaybackTime, !=, currentTime)) {
+                    [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+                    self.lastStallDetectionDate = nil;
+                }
+                else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
+                    [self.player playImmediatelyIfPossible];
+                }
             }
-            
-            self.lastPlaybackTime = currentTime;
         }];
     }
-    else {
+    else if (playbackState != SRGMediaPlayerPlaybackStateStalled) {
         self.stallDetectionTimer = nil;
     }
 }
