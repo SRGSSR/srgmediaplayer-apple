@@ -11,8 +11,8 @@
 		6F08FF6824C35E310059093F /* UIWindow+Demo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F08FF6624C35E310059093F /* UIWindow+Demo.m */; };
 		6F12842D230C0B55001119EA /* AdvancedPlayerViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F12842A230C0B55001119EA /* AdvancedPlayerViewController~ios.storyboard */; };
 		6F12842E230C1106001119EA /* AdvancedPlayerViewController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F128429230C0B55001119EA /* AdvancedPlayerViewController~ios.m */; };
-		6F4D316524C3687500C668A8 /* SRGMediaPlayerDesignables.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F4D316424C3687500C668A8 /* SRGMediaPlayerDesignables.m */; };
 		6F5CA4451FD91CE500CF175F /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5CA4441FD91CE500CF175F /* Media.m */; };
+		6F8F6CF524CF2FEA00F9FD12 /* SRGMediaPlayerDesignables.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F6CF424CF2FE200F9FD12 /* SRGMediaPlayerDesignables.m */; };
 		6F908B72230C1E0200CB33BD /* SimplePlayerViewController~ios.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F908B6F230C1E0200CB33BD /* SimplePlayerViewController~ios.storyboard */; };
 		6F908B73230C1E0200CB33BD /* SimplePlayerViewController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F908B71230C1E0200CB33BD /* SimplePlayerViewController~ios.m */; };
 		6F97C7981E7A89C5001AD9B3 /* ModalTransition~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F97C7971E7A89C5001AD9B3 /* ModalTransition~ios.m */; };
@@ -53,10 +53,10 @@
 		6F128429230C0B55001119EA /* AdvancedPlayerViewController~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AdvancedPlayerViewController~ios.m"; sourceTree = "<group>"; };
 		6F12842A230C0B55001119EA /* AdvancedPlayerViewController~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "AdvancedPlayerViewController~ios.storyboard"; sourceTree = "<group>"; };
 		6F12842B230C0B55001119EA /* AdvancedPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedPlayerViewController.h; sourceTree = "<group>"; };
-		6F4D316424C3687500C668A8 /* SRGMediaPlayerDesignables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SRGMediaPlayerDesignables.m; path = ../../Designables/SRGMediaPlayerDesignables.m; sourceTree = "<group>"; };
 		6F5CA4431FD91CE500CF175F /* Media.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Media.h; sourceTree = "<group>"; };
 		6F5CA4441FD91CE500CF175F /* Media.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Media.m; sourceTree = "<group>"; };
 		6F6AE77D24CEF7B600D7C8B6 /* SRGMediaPlayer-demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SRGMediaPlayer-demo.entitlements"; sourceTree = "<group>"; };
+		6F8F6CF424CF2FE200F9FD12 /* SRGMediaPlayerDesignables.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGMediaPlayerDesignables.m; sourceTree = "<group>"; };
 		6F908B6F230C1E0200CB33BD /* SimplePlayerViewController~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SimplePlayerViewController~ios.storyboard"; sourceTree = "<group>"; };
 		6F908B70230C1E0200CB33BD /* SimplePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePlayerViewController.h; sourceTree = "<group>"; };
 		6F908B71230C1E0200CB33BD /* SimplePlayerViewController~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SimplePlayerViewController~ios.m"; sourceTree = "<group>"; };
@@ -146,6 +146,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		6F8F6CF324CF2FE200F9FD12 /* Designables */ = {
+			isa = PBXGroup;
+			children = (
+				6F8F6CF424CF2FE200F9FD12 /* SRGMediaPlayerDesignables.m */,
+			);
+			name = Designables;
+			path = ../Designables;
+			sourceTree = "<group>";
+		};
 		6F908B6E230C1E0200CB33BD /* Simple */ = {
 			isa = PBXGroup;
 			children = (
@@ -188,6 +197,7 @@
 				6F6AE77D24CEF7B600D7C8B6 /* SRGMediaPlayer-demo.entitlements */,
 				E69A1F711D61BFAE0064E6C1 /* Sources */,
 				E69A1F5A1D61BFAE0064E6C1 /* Resources */,
+				6F8F6CF324CF2FE200F9FD12 /* Designables */,
 				E69A1FCC1D61C32D0064E6C1 /* Frameworks */,
 				C201D8F61A9DC1A40016C629 /* Products */,
 			);
@@ -224,7 +234,6 @@
 				E6D21D1C1D76A3F500B477F3 /* Medias */,
 				6F5CA4421FD91CBA00CF175F /* Models */,
 				E6BCE9391D76CB900021973D /* Players */,
-				6F4D316424C3687500C668A8 /* SRGMediaPlayerDesignables.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -407,7 +416,7 @@
 				6F12842E230C1106001119EA /* AdvancedPlayerViewController~ios.m in Sources */,
 				6FCE34182261D4C400302D4B /* MediaSegment.m in Sources */,
 				E6D21D231D76A3F500B477F3 /* main.m in Sources */,
-				6F4D316524C3687500C668A8 /* SRGMediaPlayerDesignables.m in Sources */,
+				6F8F6CF524CF2FEA00F9FD12 /* SRGMediaPlayerDesignables.m in Sources */,
 				6FCAB6DC231687BE0043432E /* SimplePlayerViewController~tvos.m in Sources */,
 				E6BCE9501D76CB900021973D /* MultiPlayerViewController~ios.m in Sources */,
 				E6BCE9531D76CB900021973D /* SegmentCollectionViewCell~ios.m in Sources */,
