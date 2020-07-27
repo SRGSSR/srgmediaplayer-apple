@@ -1,6 +1,6 @@
 [![SRG Media Player logo](README-images/logo.png)](https://github.com/SRGSSR/srgmediaplayer-apple)
 
-[![GitHub releases](https://img.shields.io/github/v/release/SRGSSR/srgmediaplayer-apple)](https://github.com/SRGSSR/srgmediaplayer-apple/releases) [![platform](https://img.shields.io/badge/platfom-ios%20%7C%20tvos-blue)](https://github.com/SRGSSR/srgmediaplayer-apple) [![GitHub license](https://img.shields.io/github/license/SRGSSR/srgmediaplayer-apple)](https://github.com/SRGSSR/srgmediaplayer-apple/blob/master/LICENSE) 
+[![GitHub releases](https://img.shields.io/github/v/release/SRGSSR/srgmediaplayer-apple)](https://github.com/SRGSSR/srgmediaplayer-apple/releases) [![platform](https://img.shields.io/badge/platfom-ios%20%7C%20tvos-blue)](https://github.com/SRGSSR/srgmediaplayer-apple) [![SPM compatible](https://img.shields.io/badge/SPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager) [![GitHub license](https://img.shields.io/github/license/SRGSSR/srgmediaplayer-apple)](https://github.com/SRGSSR/srgmediaplayer-apple/blob/master/LICENSE) 
 
 ## About
 
