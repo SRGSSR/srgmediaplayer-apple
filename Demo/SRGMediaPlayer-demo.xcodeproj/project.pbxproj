@@ -69,6 +69,7 @@
 		6F4D316424C3687500C668A8 /* SRGMediaPlayerDesignables.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SRGMediaPlayerDesignables.m; path = ../../Designables/SRGMediaPlayerDesignables.m; sourceTree = "<group>"; };
 		6F5CA4431FD91CE500CF175F /* Media.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Media.h; sourceTree = "<group>"; };
 		6F5CA4441FD91CE500CF175F /* Media.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Media.m; sourceTree = "<group>"; };
+		6F6AE77D24CEF7B600D7C8B6 /* SRGMediaPlayer-demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SRGMediaPlayer-demo.entitlements"; sourceTree = "<group>"; };
 		6F908B6F230C1E0200CB33BD /* SimplePlayerViewController~ios.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SimplePlayerViewController~ios.storyboard"; sourceTree = "<group>"; };
 		6F908B70230C1E0200CB33BD /* SimplePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePlayerViewController.h; sourceTree = "<group>"; };
 		6F908B71230C1E0200CB33BD /* SimplePlayerViewController~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SimplePlayerViewController~ios.m"; sourceTree = "<group>"; };
@@ -197,6 +198,7 @@
 			children = (
 				6FCAB6D5231681C00043432E /* Demo.xcconfig */,
 				E69A1F581D61BFAE0064E6C1 /* Info.plist */,
+				6F6AE77D24CEF7B600D7C8B6 /* SRGMediaPlayer-demo.entitlements */,
 				E69A1F711D61BFAE0064E6C1 /* Sources */,
 				E69A1F5A1D61BFAE0064E6C1 /* Resources */,
 				E69A1FCC1D61C32D0064E6C1 /* Frameworks */,
@@ -506,6 +508,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_ENTITLEMENTS = "SRGMediaPlayer-demo.entitlements";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -520,6 +523,7 @@
 					"@executable_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 			};
 			name = "Debug-static";
 		};
@@ -582,6 +586,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_ENTITLEMENTS = "SRGMediaPlayer-demo.entitlements";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
@@ -592,6 +597,7 @@
 					"@executable_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 			};
 			name = "Release-static";
 		};
@@ -706,6 +712,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_ENTITLEMENTS = "SRGMediaPlayer-demo.entitlements";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -720,6 +727,7 @@
 					"@executable_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 			};
 			name = Debug;
 		};
@@ -731,6 +739,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_ENTITLEMENTS = "SRGMediaPlayer-demo.entitlements";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = VMGRRW6SG7;
@@ -741,6 +750,7 @@
 					"@executable_path/Frameworks",
 				);
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 			};
 			name = Release;
 		};
