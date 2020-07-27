@@ -12,8 +12,6 @@
 
 #import "SRGMediaPlayerView+Private.h"
 
-@import GLKit;
-
 static SRGMotionManager *s_motionManager = nil;
 
 @interface SRGMotionManager () {
