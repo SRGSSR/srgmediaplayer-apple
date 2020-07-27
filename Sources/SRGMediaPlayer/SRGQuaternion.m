@@ -6,25 +6,27 @@
 
 #import "SRGQuaternion.h"
 
-@import GLKit;
+@import simd;
 
 SCNQuaternion SRGRotateQuaternion(SCNQuaternion quaternion, float wx, float wy)
 {
-    GLKQuaternion glkQuaternion = GLKQuaternionMake(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+    simd_quatf simdQuaternion = simd_quaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     
-    GLKQuaternion glkRotationAroundX = GLKQuaternionMakeWithAngleAndAxis(wx, 1.f, 0.f, 0.f);
-    glkQuaternion = GLKQuaternionMultiply(glkQuaternion, glkRotationAroundX);
+    simd_quatf simdRotationAroundX = simd_quaternion(wx, simd_make_float3(1.f, 0.f, 0.f));
+    simdQuaternion = simd_mul(simdQuaternion, simdRotationAroundX);
     
-    GLKQuaternion glkRotationAroundY = GLKQuaternionMakeWithAngleAndAxis(wy, 0.f, 1.f, 0.f);
-    glkQuaternion = GLKQuaternionMultiply(glkRotationAroundY, glkQuaternion);
+    simd_quatf simdRotationAroundY = simd_quaternion(wy, simd_make_float3(0.f, 1.f, 0.f));
+    simdQuaternion = simd_mul(simdRotationAroundY, simdQuaternion);
     
-    return SCNVector4Make(glkQuaternion.x, glkQuaternion.y, glkQuaternion.z, glkQuaternion.w);
+    simd_float3 vector = simd_imag(simdQuaternion);
+    return SCNVector4Make(vector.x, vector.y, vector.z, simd_real(simdQuaternion));
 }
 
 SCNQuaternion SRGQuaternionMakeWithAngleAndAxis(float radians, float x, float y, float z)
 {
-    GLKQuaternion glkQuaternion = GLKQuaternionMakeWithAngleAndAxis(radians, x, y, z);
-    return SCNVector4Make(glkQuaternion.x, glkQuaternion.y, glkQuaternion.z, glkQuaternion.w);
+    simd_quatf simdQuaternion = simd_quaternion(radians, simd_make_float3(x, y, z));
+    simd_float3 vector = simd_imag(simdQuaternion);
+    return SCNVector4Make(vector.x, vector.y, vector.z, simd_real(simdQuaternion));
 }
 
 #if TARGET_OS_IOS
@@ -32,34 +34,39 @@ SCNQuaternion SRGQuaternionMakeWithAngleAndAxis(float radians, float x, float y,
 SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude)
 {
     // Based on: https://gist.github.com/travisnewby/96ee1ac2bc2002f1d480
+    // Also see https://stackoverflow.com/a/28784841/760435
     CMQuaternion quaternion = attitude.quaternion;
-    GLKQuaternion glkQuaternion = GLKQuaternionMake(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+    simd_quatf simdQuaternion = simd_quaternion((float)quaternion.x, (float)quaternion.y, (float)quaternion.z, (float)quaternion.w);
     switch (UIApplication.sharedApplication.statusBarOrientation) {
         case UIInterfaceOrientationPortrait: {
-            GLKQuaternion glkRotationQuaternion = GLKQuaternionMakeWithAngleAndAxis(M_PI_2, 1.f, 0.f, 0.f);
-            glkQuaternion = GLKQuaternionMultiply(glkRotationQuaternion, glkQuaternion);
-            return SCNVector4Make(glkQuaternion.x, glkQuaternion.y, glkQuaternion.z, glkQuaternion.w);
+            simd_quatf simdRotationQuaternion = simd_quaternion(M_PI_2, simd_make_float3(1.f, 0.f, 0.f));
+            simdQuaternion = simd_mul(simdRotationQuaternion, simdQuaternion);
+            simd_float3 vector = simd_imag(simdQuaternion);
+            return SCNVector4Make(vector.x, vector.y, vector.z, simd_real(simdQuaternion));
             break;
         }
             
         case UIInterfaceOrientationPortraitUpsideDown: {
-            GLKQuaternion glkRotationQuaternion = GLKQuaternionMakeWithAngleAndAxis(-M_PI_2, 1.f, 0.f, 0.f);
-            glkQuaternion = GLKQuaternionMultiply(glkRotationQuaternion, glkQuaternion);
-            return SCNVector4Make(-glkQuaternion.x, -glkQuaternion.y, glkQuaternion.z, glkQuaternion.w);
+            simd_quatf simdRotationQuaternion = simd_quaternion(-M_PI_2, simd_make_float3(1.f, 0.f, 0.f));
+            simdQuaternion = simd_mul(simdRotationQuaternion, simdQuaternion);
+            simd_float3 vector = simd_imag(simdQuaternion);
+            return SCNVector4Make(-vector.x, -vector.y, vector.z, simd_real(simdQuaternion));
             break;
         }
             
         case UIInterfaceOrientationLandscapeLeft: {
-            GLKQuaternion glkRotationQuaternion = GLKQuaternionMakeWithAngleAndAxis(M_PI_2, 0.f, 1.f, 0.f);
-            glkQuaternion = GLKQuaternionMultiply(glkRotationQuaternion, glkQuaternion);
-            return SCNVector4Make(glkQuaternion.y, -glkQuaternion.x, glkQuaternion.z, glkQuaternion.w);
+            simd_quatf simdRotationQuaternion = simd_quaternion(M_PI_2, simd_make_float3(0.f, 1.f, 0.f));
+            simdQuaternion = simd_mul(simdRotationQuaternion, simdQuaternion);
+            simd_float3 vector = simd_imag(simdQuaternion);
+            return SCNVector4Make(vector.y, -vector.x, vector.z, simd_real(simdQuaternion));
             break;
         }
             
         case UIInterfaceOrientationLandscapeRight: {
-            GLKQuaternion glkRotationQuaternion = GLKQuaternionMakeWithAngleAndAxis(-M_PI_2, 0.f, 1.f, 0.f);
-            glkQuaternion = GLKQuaternionMultiply(glkRotationQuaternion, glkQuaternion);
-            return SCNVector4Make(-glkQuaternion.y, glkQuaternion.x, glkQuaternion.z, glkQuaternion.w);
+            simd_quatf simdRotationQuaternion = simd_quaternion(-M_PI_2, simd_make_float3(0.f, 1.f, 0.f));
+            simdQuaternion = simd_mul(simdRotationQuaternion, simdQuaternion);
+            simd_float3 vector = simd_imag(simdQuaternion);
+            return SCNVector4Make(-vector.y, vector.x, vector.z, simd_real(simdQuaternion));
             break;
         }
             
