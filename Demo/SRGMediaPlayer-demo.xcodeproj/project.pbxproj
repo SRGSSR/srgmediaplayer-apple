@@ -42,19 +42,6 @@
 		E6D21D241D76A3F500B477F3 /* MediasViewController~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D21D1E1D76A3F500B477F3 /* MediasViewController~ios.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		E69A1FC31D61C0180064E6C1 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		08F4E5401E7FE76900C9E8FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		08F4E5421E7FE76D00C9E8FD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -327,7 +314,6 @@
 				E69A1E631D61BEFC0064E6C1 /* Sources */,
 				E69A1E641D61BEFC0064E6C1 /* Frameworks */,
 				E69A1E651D61BEFC0064E6C1 /* Resources */,
-				E69A1FC31D61C0180064E6C1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
