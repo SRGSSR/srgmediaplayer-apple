@@ -247,7 +247,7 @@ static void commonInit(SRGTracksButton *self);
         navigationController.modalPresentationCapturesStatusBarAppearance = YES;
     }
     
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
+    UIViewController *topViewController = self.window.srg_topViewController;
     [topViewController presentViewController:navigationController
                                     animated:YES
                                   completion:nil];
@@ -255,7 +255,7 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)hideTracks:(id)sender
 {
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
+    UIViewController *topViewController = self.window.srg_topViewController;
     [topViewController dismissViewControllerAnimated:YES completion:nil];
 }
 

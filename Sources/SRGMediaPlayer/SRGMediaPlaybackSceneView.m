@@ -100,7 +100,20 @@ static void commonInit(SRGMediaPlaybackSceneView *self);
         // Calculate the required camera orientation based on device orientation (if available), and apply additional
         // adjustements the user made with the pan gesture.
         CMDeviceMotion *deviceMotion = motionManager.deviceMotion;
-        SCNQuaternion deviceBasedCameraOrientation = deviceMotion ? SRGCameraOrientationForAttitude(deviceMotion.attitude) : SRGQuaternionMakeWithAngleAndAxis(M_PI, 1.f, 0.f, 0.f);
+        
+        UIInterfaceOrientation interfaceOrientation;
+#if !TARGET_OS_MACCATALYST
+        if (@available(iOS 13, *)) {
+#endif
+            interfaceOrientation = self.window.windowScene.interfaceOrientation;
+#if !TARGET_OS_MACCATALYST
+        }
+        else {
+            interfaceOrientation = UIApplication.sharedApplication.statusBarOrientation;
+        }
+#endif
+            
+        SCNQuaternion deviceBasedCameraOrientation = deviceMotion ? SRGCameraOrientationForAttitude(deviceMotion.attitude, interfaceOrientation) : SRGQuaternionMakeWithAngleAndAxis(M_PI, 1.f, 0.f, 0.f);
 #else
         SCNQuaternion deviceBasedCameraOrientation = SRGQuaternionMakeWithAngleAndAxis(M_PI, 1.f, 0.f, 0.f);
 #endif

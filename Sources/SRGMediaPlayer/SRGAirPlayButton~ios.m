@@ -256,14 +256,18 @@ static void commonInit(SRGAirPlayButton *self);
     [airPlayButton setImage:image forState:UIControlStateSelected];
     
     BOOL (^multipleRoutesDetected)(void) = ^{
+#if !TARGET_OS_MACCATALYST
         if (@available(iOS 11, *)) {
+#endif
             return SRGRouteDetector.sharedRouteDetector.multipleRoutesDetected;
+#if !TARGET_OS_MACCATALYST
         }
         else {
             // For `MPVolumeView` to return correct route availability information, it must be installed in a view
             // hierarchy.
             return self.volumeView.areWirelessRoutesAvailable;
         }
+#endif
     };
     
     if (self.alwaysHidden) {

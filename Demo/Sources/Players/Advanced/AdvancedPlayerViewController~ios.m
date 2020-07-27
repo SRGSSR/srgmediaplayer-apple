@@ -134,9 +134,21 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
                                            selector:@selector(playbackDidFail:)
                                                name:SRGMediaPlayerPlaybackDidFailNotification
                                              object:self.mediaPlayerController];
+    
+    NSNotificationName voiceOverNotificationName = nil;
+#if !TARGET_OS_MACCATALYST
+    if (@available(iOS 11, *)) {
+#endif
+        voiceOverNotificationName = UIAccessibilityVoiceOverStatusDidChangeNotification;
+#if !TARGET_OS_MACCATALYST
+    }
+    else {
+        voiceOverNotificationName = UIAccessibilityVoiceOverStatusChanged;
+    }
+#endif
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(accessibilityVoiceOverStatusChanged:)
-                                               name:UIAccessibilityVoiceOverStatusChanged
+                                           selector:@selector(accessibilityVoiceOverStatusDidChange:)
+                                               name:voiceOverNotificationName
                                              object:nil];
     
     @weakify(self)
@@ -460,7 +472,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
     if (s_advancedPlayerViewController) {
-        UIViewController *rootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
+        UIViewController *rootViewController = self.view.window.rootViewController;
         [rootViewController presentViewController:s_advancedPlayerViewController animated:YES completion:^{
             completionHandler(YES);
         }];
@@ -540,7 +552,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     [self updateMainPlaybackControls];
 }
 
-- (void)accessibilityVoiceOverStatusChanged:(NSNotification *)notification
+- (void)accessibilityVoiceOverStatusDidChange:(NSNotification *)notification
 {
     [self restartInactivityTracker];
 }

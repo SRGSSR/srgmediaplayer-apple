@@ -42,7 +42,7 @@ OBJC_EXPORT SCNQuaternion SRGQuaternionMakeWithAngleAndAxis(float radians, float
  *
  *  @see `CMAttitude` documentation for more information.
  */
-OBJC_EXTERN SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude);
+OBJC_EXTERN SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude, UIInterfaceOrientation interfaceOrientation);
 
 #endif
 

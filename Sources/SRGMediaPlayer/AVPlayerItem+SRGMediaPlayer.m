@@ -18,13 +18,17 @@
     AVMediaSelection *currentMediaSelection = self.currentMediaSelection;
     return [currentMediaSelection selectedMediaOptionInMediaSelectionGroup:mediaSelectionGroup];
 #else
+#if !TARGET_OS_MACCATALYST
     if (@available(iOS 11, *)) {
+#endif
         AVMediaSelection *currentMediaSelection = self.currentMediaSelection;
         return [currentMediaSelection selectedMediaOptionInMediaSelectionGroup:mediaSelectionGroup];
+#if !TARGET_OS_MACCATALYST
     }
     else {
         return [self selectedMediaOptionInMediaSelectionGroup:mediaSelectionGroup];
     }
+#endif
 #endif
 }
 

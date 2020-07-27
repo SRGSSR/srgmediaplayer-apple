@@ -304,7 +304,18 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
         self.navigationController.navigationBar.barStyle = isDark ? UIBarStyleBlack : UIBarStyleDefault;
         self.tableView.separatorColor = isDark ? [UIColor colorWithWhite:1.f alpha:0.08f] : UIColor.lightGrayColor;
         
-        UIColor *backgroundColor = isDark ? [UIColor colorWithWhite:0.17f alpha:1.f] : UIColor.groupTableViewBackgroundColor;
+        UIColor *lightBackgroundColor = nil;
+#if !TARGET_OS_MACCATALYST
+        if (@available(iOS 13, *)) {
+#endif
+            lightBackgroundColor = UIColor.systemGroupedBackgroundColor;
+#if !TARGET_OS_MACCATALYST
+        }
+        else {
+            lightBackgroundColor = UIColor.groupTableViewBackgroundColor;
+        }
+#endif
+        UIColor *backgroundColor = isDark ? [UIColor colorWithWhite:0.17f alpha:1.f] : lightBackgroundColor;
         self.tableView.backgroundColor = backgroundColor;
         self.parentPopoverPresentationController.backgroundColor = backgroundColor;
     }

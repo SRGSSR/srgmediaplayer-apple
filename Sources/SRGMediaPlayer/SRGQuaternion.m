@@ -31,13 +31,13 @@ SCNQuaternion SRGQuaternionMakeWithAngleAndAxis(float radians, float x, float y,
 
 #if TARGET_OS_IOS
 
-SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude)
+SCNQuaternion SRGCameraOrientationForAttitude(CMAttitude *attitude, UIInterfaceOrientation interfaceOrientation)
 {
     // Based on: https://gist.github.com/travisnewby/96ee1ac2bc2002f1d480
     // Also see https://stackoverflow.com/a/28784841/760435
     CMQuaternion quaternion = attitude.quaternion;
     simd_quatf simdQuaternion = simd_quaternion((float)quaternion.x, (float)quaternion.y, (float)quaternion.z, (float)quaternion.w);
-    switch (UIApplication.sharedApplication.statusBarOrientation) {
+    switch (interfaceOrientation) {
         case UIInterfaceOrientationPortrait: {
             simd_quatf simdRotationQuaternion = simd_quaternion(M_PI_2, simd_make_float3(1.f, 0.f, 0.f));
             simdQuaternion = simd_mul(simdRotationQuaternion, simdQuaternion);

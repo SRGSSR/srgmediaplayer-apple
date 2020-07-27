@@ -94,7 +94,7 @@
 
 - (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.demo_topViewController;
+    UIViewController *topViewController = self.view.window.demo_topViewController;
     [topViewController presentViewController:playerViewController animated:YES completion:^{
         completionHandler(YES);
     }];
