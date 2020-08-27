@@ -8,6 +8,7 @@
 
 #import "ModalTransition.h"
 #import "Resources.h"
+#import "UIWindow+Demo.h"
 
 @import libextobjc;
 @import MAKVONotificationCenter;
@@ -43,6 +44,8 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 @property (nonatomic, weak) id playTarget;
 @property (nonatomic, weak) id pauseTarget;
+
+@property (nonatomic, weak) UIWindow *restorationWindow;
 
 @end
 
@@ -466,14 +469,15 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 - (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
     s_advancedPlayerViewController = self;
+    self.restorationWindow = self.view.window;
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
     if (s_advancedPlayerViewController) {
-        UIViewController *rootViewController = self.view.window.rootViewController;
-        [rootViewController presentViewController:s_advancedPlayerViewController animated:YES completion:^{
+        [self.restorationWindow.demo_topViewController presentViewController:s_advancedPlayerViewController animated:YES completion:^{
             completionHandler(YES);
         }];
     }
@@ -485,6 +489,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 - (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
     s_advancedPlayerViewController = nil;
+    self.restorationWindow = nil;
 }
 
 #pragma mark SRGTracksButtonDelegate protocol
