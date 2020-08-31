@@ -2158,14 +2158,11 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultO
     NSCParameterAssert(subtitleOptions);
     
     NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
-    if (! audioLanguage) {
-        return nil;
-    }
-    
     NSString *applicationLanguage = SRGMediaPlayerApplicationLocalization();
     NSArray<AVMediaCharacteristic> *characteristics = CFBridgingRelease(MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(kMACaptionAppearanceDomainUser));
     
-    if (! [audioLanguage isEqualToString:applicationLanguage] || characteristics.count != 0) {
+    if (characteristics.count != 0
+            || (audioLanguage && ! [audioLanguage isEqualToString:applicationLanguage])) {
         return SRGMediaPlayerControllerSubtitleDefaultLanguageOption(subtitleOptions, applicationLanguage, characteristics);
     }
     else {
