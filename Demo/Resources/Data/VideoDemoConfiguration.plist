@@ -66,6 +66,18 @@
 		</dict>
 		<dict>
 			<key>name</key>
+			<string>19h30 (French audio track)</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2020/11352c9f46908e5e44c30eaa91ea4932/journ-19h30_20200830_full,_lr3,_lr2,_lr1,_sd,_hd,_fhd,.mp4.csmil/master.m3u8?audiotrack=0:fr:Fran%C3%A7ais&amp;subtitles=fr:sdh</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>19h30 (Unknown audio track)</string>
+			<key>url</key>
+			<string>https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2020/11352c9f46908e5e44c30eaa91ea4932/journ-19h30_20200830_full,_lr3,_lr2,_lr1,_sd,_hd,_fhd,.mp4.csmil/master.m3u8?subtitles=fr:sdh</string>
+		</dict>
+		<dict>
+			<key>name</key>
 			<string>Short non-streamed video</string>
 			<key>url</key>
 			<string>https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_2mb.mp4</string>

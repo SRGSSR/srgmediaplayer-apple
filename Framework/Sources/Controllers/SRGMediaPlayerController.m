@@ -51,7 +51,7 @@ static SRGTimePosition *SRGMediaPlayerControllerPositionInTimeRange(SRGTimePosit
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOption(NSArray<AVMediaSelectionOption *> *audioOptions);
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, AVMediaSelectionOption *audioOption);
 static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, AVMediaSelectionOption *audioOption);
-static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, NSString *language);
+static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, NSString *language, NSArray<AVMediaCharacteristic> *characteristics);
 
 @interface SRGMediaPlayerController () <SRGMediaPlayerViewDelegate, SRGPlayerDelegate> {
 @private
@@ -167,7 +167,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.status)];
         [_player removeObserver:self keyPath:@keypath(_player.rate)];
         [_player removeObserver:self keyPath:@keypath(_player.externalPlaybackActive)];
-        [_player removeObserver:self keyPath:@keypath(_player.currentItem.playbackLikelyToKeepUp)];
         [_player removeObserver:self keyPath:@keypath(_player.currentItem.presentationSize)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
@@ -302,13 +301,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             
             [self reloadPlayerConfiguration];
             [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerExternalPlaybackStateDidChangeNotification object:self];
-        }];
-        
-        [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.playbackLikelyToKeepUp) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self) @strongify(player)
-            if (player.currentItem.playbackLikelyToKeepUp && self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
-                [self setPlaybackState:(player.rate == 0.f) ? SRGMediaPlayerPlaybackStatePaused : SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
-            }
         }];
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.currentItem.presentationSize) options:0 block:^(MAKVONotification * _Nonnull notification) {
@@ -1373,7 +1365,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                     self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
                     self.player.preventsDisplaySleepDuringVideoPlayback = YES;
                 }
-                else if (AVAudioSession.srg_isAirPlayActive) {
+                else if (self.player.externalPlaybackActive) {
                     self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
                     self.player.preventsDisplaySleepDuringVideoPlayback = NO;
                 }
@@ -1446,23 +1438,30 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             
             AVPlayerItem *playerItem = self.player.currentItem;
             CMTime currentTime = playerItem.currentTime;
+            
             if (self.playbackState == SRGMediaPlayerPlaybackStatePlaying) {
+                // Playing but playhead position not actually moving. Stalled
                 if (CMTIME_COMPARE_INLINE(self.lastPlaybackTime, ==, currentTime)) {
                     [self setPlaybackState:SRGMediaPlayerPlaybackStateStalled withUserInfo:nil];
                     self.lastStallDetectionDate = NSDate.date;
                 }
                 else {
-                    self.lastStallDetectionDate = nil;
+                    self.lastPlaybackTime = currentTime;
                 }
             }
-            else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                [self.player playImmediatelyIfPossible];
+            else if (self.playbackState == SRGMediaPlayerPlaybackStateStalled) {
+                // Stalled but we detect the playhead position has moved. Not stalled anymore
+                if (CMTIME_COMPARE_INLINE(self.lastPlaybackTime, !=, currentTime)) {
+                    [self setPlaybackState:SRGMediaPlayerPlaybackStatePlaying withUserInfo:nil];
+                    self.lastStallDetectionDate = nil;
+                }
+                else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
+                    [self.player playImmediatelyIfPossible];
+                }
             }
-            
-            self.lastPlaybackTime = currentTime;
         }];
     }
-    else {
+    else if (playbackState != SRGMediaPlayerPlaybackStateStalled) {
         self.stallDetectionTimer = nil;
     }
 }
@@ -2159,13 +2158,12 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultO
     NSCParameterAssert(subtitleOptions);
     
     NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
-    if (! audioLanguage) {
-        return nil;
-    }
-    
     NSString *applicationLanguage = SRGMediaPlayerApplicationLocalization();
-    if (! [audioLanguage isEqualToString:applicationLanguage]) {
-        return SRGMediaPlayerControllerSubtitleDefaultLanguageOption(subtitleOptions, applicationLanguage);
+    NSArray<AVMediaCharacteristic> *characteristics = CFBridgingRelease(MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(kMACaptionAppearanceDomainUser));
+    
+    if (characteristics.count != 0
+            || (audioLanguage && ! [audioLanguage isEqualToString:applicationLanguage])) {
+        return SRGMediaPlayerControllerSubtitleDefaultLanguageOption(subtitleOptions, applicationLanguage, characteristics);
     }
     else {
         return nil;
@@ -2187,7 +2185,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(NSA
             
         case kMACaptionAppearanceDisplayTypeAlwaysOn: {
             NSString *lastSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(kMACaptionAppearanceDomainUser);
-            return SRGMediaPlayerControllerSubtitleDefaultLanguageOption(subtitleOptions, lastSelectedLanguage);
+            NSArray<AVMediaCharacteristic> *characteristics = CFBridgingRelease(MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(kMACaptionAppearanceDomainUser));
+            return SRGMediaPlayerControllerSubtitleDefaultLanguageOption(subtitleOptions, lastSelectedLanguage, characteristics);
             break;
         }
             
@@ -2198,21 +2197,19 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultOption(NSA
     }
 }
 
-// Return the default subtitle option which should be selected in the provided list, matching a specific language. Takes into account
-// accessibility preferences (if CC is preferred it will attempt to find a CC variant, if not it will focus on subtitles first).
-static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, NSString *language)
+// Return the default subtitle option which should be selected in the provided list, matching a specific language and characteristics.
+static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOption(NSArray<AVMediaSelectionOption *> *subtitleOptions, NSString *language, NSArray<AVMediaCharacteristic> *characteristics)
 {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:language];
     }];
     NSArray<AVMediaSelectionOption *> *options = [[AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] filteredArrayUsingPredicate:predicate];
     
-    // Attempt to find a better match depending on accessibility preferences
-    NSArray<AVMediaCharacteristic> *characteristics = CFBridgingRelease(MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(kMACaptionAppearanceDomainUser));
+    // Attempt to find a better match depending on the provided characteristics
     if (characteristics.count != 0) {
         return [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withMediaCharacteristics:characteristics].firstObject ?: options.firstObject;
     }
-    // No preferences set. At least attempt to avoid closed captions
+    // No characteristics provided. At least attempt to avoid closed captions
     else {
         return [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withoutMediaCharacteristics:@[AVMediaCharacteristicTranscribesSpokenDialogForAccessibility]].firstObject ?: options.firstObject;
     }
