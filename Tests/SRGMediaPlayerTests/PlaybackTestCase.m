@@ -950,18 +950,18 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
-        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"fr");
+        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"de");
         return YES;
     }];
     
     self.mediaPlayerController.subtitleConfigurationBlock = ^AVMediaSelectionOption * _Nullable(NSArray<AVMediaSelectionOption *> * _Nonnull subtitleOptions, AVMediaSelectionOption * _Nullable audioOption, AVMediaSelectionOption * _Nullable defaultSubtitleOption) {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(AVMediaSelectionOption * _Nullable option, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"fr"];
+            return [[option.locale objectForKey:NSLocaleLanguageCode] isEqualToString:@"de"];
         }];
         return [subtitleOptions filteredArrayUsingPredicate:predicate].firstObject ?: defaultSubtitleOption;
     };
     
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/journ-12h45/2020/f68bb78541d953e933cbd938525640f5/journ-12h45_20200721_full,_lr3,_lr2,_lr1,_sd,_hd,_fhd,.mp4.csmil/master.m3u8?subtitles=fr:sdh&start=68.24&end=181.12"];
+    NSURL *URL = [NSURL URLWithString:@"https://hdvodsrforigins3-vh.akamaihd.net/i/assets/video/10vor10/2020/06/10vor10_20200610_215034_21058070_v_webcast_h264_,q40,q10,q20,q30,q50,.mp4.csmil/master.m3u8?start=66.4&end=554.52&caption=srf%2F26a1de9a-7b3e-460f-a3c2-24421b00217a%2Fepisode%2Fde%2Fvod%2Fvod.m3u8%3Ade%3ADeutsch%3Asdh&webvttbaseurl=www.srf.ch%2Fsubtitles"];
     [self.mediaPlayerController playURL:URL];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
