@@ -8,7 +8,22 @@
 @import Foundation;
 @import UIKit;
 
-@interface SRGPictureInPictureFix: NSObject
+@interface SRGDummyPlayerViewController : AVPlayerViewController
+    
+@end
+
+@implementation SRGDummyPlayerViewController
+
+- (UIView *)view
+{
+    UIView *view = super.view;
+    view.hidden = YES;
+    return view;
+}
+
+@end
+
+@interface SRGPictureInPictureFix : NSObject
 
 @end
 
@@ -33,7 +48,8 @@
         // app released all strong references (reported as FB8561088).
         // Somehow Apple manages to circumvent this issue internally with `AVPlayerViewController` which, if
         // displayed once, ensures proper behavior afterwards.
-        AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+        SRGDummyPlayerViewController *playerViewController = [[SRGDummyPlayerViewController alloc] init];
+        playerViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
         playerViewController.player = [AVPlayer new];
         
         UIViewController *rootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
