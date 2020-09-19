@@ -5,7 +5,6 @@
 //
 
 @import AVKit;
-@import Foundation;
 @import UIKit;
 
 @interface SRGDummyPlayerViewController : AVPlayerViewController
@@ -42,8 +41,8 @@
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    static dispatch_once_t s_onceToken;
+    dispatch_once(&s_onceToken, ^{
         // iOS 14 regression: Using `AVPictureInPictureController` leaks an `AVPlayer`instance even afer the
         // app released all strong references (reported as FB8561088).
         // Somehow Apple manages to circumvent this issue internally with `AVPlayerViewController` which, if
