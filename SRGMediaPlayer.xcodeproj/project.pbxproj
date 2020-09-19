@@ -92,6 +92,7 @@
 		6F9643D421307920003C6612 /* SRGAirPlayView~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9643D02130791F003C6612 /* SRGAirPlayView~ios.m */; };
 		6F9643D521307920003C6612 /* SRGAirPlayButton~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9643D121307920003C6612 /* SRGAirPlayButton~ios.m */; };
 		6F97C7981E7A89C5001AD9B3 /* ModalTransition~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F97C7971E7A89C5001AD9B3 /* ModalTransition~ios.m */; };
+		6F9A566C2514D29100F30CC6 /* SRGPictureInPictureFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9A566A2514D29100F30CC6 /* SRGPictureInPictureFix.m */; };
 		6FA98E15211D68AF00969089 /* ConstantsTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA98E14211D68AE00969089 /* ConstantsTestCase.m */; };
 		6FBA837B22C4909300AFAF8B /* SRGRouteDetector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6FBA837922C4909300AFAF8B /* SRGRouteDetector.h */; };
 		6FBA837C22C4909300AFAF8B /* SRGRouteDetector~ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA837A22C4909300AFAF8B /* SRGRouteDetector~ios.m */; };
@@ -302,6 +303,7 @@
 		6F9643D121307920003C6612 /* SRGAirPlayButton~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRGAirPlayButton~ios.m"; sourceTree = "<group>"; };
 		6F97C7961E7A89C5001AD9B3 /* ModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalTransition.h; sourceTree = "<group>"; };
 		6F97C7971E7A89C5001AD9B3 /* ModalTransition~ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ModalTransition~ios.m"; sourceTree = "<group>"; };
+		6F9A566A2514D29100F30CC6 /* SRGPictureInPictureFix.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRGPictureInPictureFix.m; sourceTree = "<group>"; };
 		6FA09D791D9E9C1500EDCA64 /* SRGLogger.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SRGLogger.framework; path = Carthage/Build/iOS/SRGLogger.framework; sourceTree = "<group>"; };
 		6FA1D6081F42C13E00C85D15 /* TestMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMacros.h; sourceTree = "<group>"; };
 		6FA98E14211D68AE00969089 /* ConstantsTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConstantsTestCase.m; sourceTree = "<group>"; };
@@ -529,6 +531,7 @@
 				6F5CA4251FD91A1D00CF175F /* SRGMotionManager~ios.m */,
 				6F5CA42E1FD91A1D00CF175F /* SRGPeriodicTimeObserver.h */,
 				6F5CA4271FD91A1D00CF175F /* SRGPeriodicTimeObserver.m */,
+				6F9A566A2514D29100F30CC6 /* SRGPictureInPictureFix.m */,
 				6F859F38230A937900ECE021 /* SRGPlayer.h */,
 				6F859F39230A937900ECE021 /* SRGPlayer.m */,
 				6F2556D0212FBF63004C8F9A /* SRGPosition.h */,
@@ -1175,6 +1178,7 @@
 				6FD71B5E246A767D00AB08FF /* SRGTimePosition.m in Sources */,
 				6F5CA41A1FD919CD00CF175F /* SRGMediaPlayerView.m in Sources */,
 				6FCA169F23E829440015B23E /* SRGMediaAccessibility.m in Sources */,
+				6F9A566C2514D29100F30CC6 /* SRGPictureInPictureFix.m in Sources */,
 				6FC1C74E22BCD29D00D55625 /* NSTimer+SRGMediaPlayer.m in Sources */,
 				E6C9860F1D6F458900C45C7A /* SRGTimeSlider~ios.m in Sources */,
 				6F5CA3F71FD919CD00CF175F /* MAKVONotificationCenter+SRGMediaPlayer.m in Sources */,
