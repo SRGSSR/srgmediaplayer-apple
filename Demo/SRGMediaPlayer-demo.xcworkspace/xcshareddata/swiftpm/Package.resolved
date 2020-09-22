@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/SRGSSR/libextobjc.git",
         "state": {
           "branch": "feature/spm-support",
-          "revision": "bec0bafcb6f837267ac58c2babd9ff9e1402e091",
+          "revision": "30ee5b73bdf57a826978aa146881277f22369be1",
           "version": null
         }
       },
@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/SRGSSR/srglogger-apple.git",
         "state": {
           "branch": "feature/spm-support",
-          "revision": "8082292fc9a519e8a2bdb806e863a816438b62b5",
+          "revision": "f362dff71515f75ebe098f993d6951af067516fa",
           "version": null
         }
       }
