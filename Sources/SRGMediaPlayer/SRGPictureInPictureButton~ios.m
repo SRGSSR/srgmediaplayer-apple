@@ -56,6 +56,9 @@ static void commonInit(SRGPictureInPictureButton *self);
 {
     if (_mediaPlayerController) {
         [NSNotificationCenter.defaultCenter removeObserver:self
+                                                      name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                    object:_mediaPlayerController];
+        [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerPictureInPictureStateDidChangeNotification
                                                     object:_mediaPlayerController];
     }
@@ -64,6 +67,10 @@ static void commonInit(SRGPictureInPictureButton *self);
     [self updateAppearanceForMediaPlayerController:mediaPlayerController];
     
     if (mediaPlayerController) {
+        [NSNotificationCenter.defaultCenter addObserver:self
+                                               selector:@selector(srg_pictureInPictureButton_playbackStateDidChange:)
+                                                   name:SRGMediaPlayerPlaybackStateDidChangeNotification
+                                                 object:mediaPlayerController];
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(srg_pictureInPictureButton_pictureInPictureStateDidChange:)
                                                    name:SRGMediaPlayerPictureInPictureStateDidChangeNotification
@@ -134,7 +141,10 @@ static void commonInit(SRGPictureInPictureButton *self);
     if (self.alwaysHidden) {
         self.hidden = YES;
     }
-    else if (pictureInPictureController.pictureInPicturePossible) {
+    else if (pictureInPictureController.pictureInPicturePossible
+             && mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateIdle
+             && mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStatePreparing
+             && mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateEnded) {
         self.hidden = NO;
         
         UIImage *image = pictureInPictureController.pictureInPictureActive ? self.stopImage : self.startImage;
@@ -167,6 +177,11 @@ static void commonInit(SRGPictureInPictureButton *self);
 }
 
 #pragma mark Notifications
+
+- (void)srg_pictureInPictureButton_playbackStateDidChange:(NSNotification *)notification
+{
+    [self updateAppearance];
+}
 
 - (void)srg_pictureInPictureButton_pictureInPictureStateDidChange:(NSNotification *)notification
 {
