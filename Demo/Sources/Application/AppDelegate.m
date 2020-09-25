@@ -8,8 +8,8 @@
 
 #import "MediasViewController.h"
 
-#import <AVFoundation/AVFoundation.h>
-#import <SRGLogger/SRGLogger.h>
+@import AVFoundation;
+@import SRGLogger;
 
 @implementation AppDelegate
 

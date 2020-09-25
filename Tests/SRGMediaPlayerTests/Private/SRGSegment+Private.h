@@ -1,0 +1,1 @@
+../../../Sources/SRGMediaPlayer/SRGSegment+Private.h

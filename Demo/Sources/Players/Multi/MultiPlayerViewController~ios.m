@@ -8,8 +8,8 @@
 
 #import "Resources.h"
 
-#import <libextobjc/libextobjc.h>
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
+@import libextobjc;
+@import SRGMediaPlayer;
 
 @interface MultiPlayerViewController ()
 

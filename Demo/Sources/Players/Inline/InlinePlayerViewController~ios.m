@@ -8,9 +8,9 @@
 
 #import "Resources.h"
 
-#import <libextobjc/libextobjc.h>
-#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
+@import libextobjc;
+@import MAKVONotificationCenter;
+@import SRGMediaPlayer;
 
 @interface InlinePlayerViewController ()
 

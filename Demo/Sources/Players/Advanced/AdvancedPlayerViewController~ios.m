@@ -8,10 +8,11 @@
 
 #import "ModalTransition.h"
 #import "Resources.h"
+#import "UIWindow+Demo.h"
 
-#import <libextobjc/libextobjc.h>
-#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
+@import libextobjc;
+@import MAKVONotificationCenter;
+@import SRGMediaPlayer;
 
 const NSInteger kBackwardSkipInterval = 15.;
 const NSInteger kForwardSkipInterval = 15.;
@@ -43,6 +44,8 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 @property (nonatomic, weak) id playTarget;
 @property (nonatomic, weak) id pauseTarget;
+
+@property (nonatomic, weak) UIWindow *restorationWindow;
 
 @end
 
@@ -134,9 +137,21 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
                                            selector:@selector(playbackDidFail:)
                                                name:SRGMediaPlayerPlaybackDidFailNotification
                                              object:self.mediaPlayerController];
+    
+    NSNotificationName voiceOverNotificationName = nil;
+#if !TARGET_OS_MACCATALYST
+    if (@available(iOS 11, *)) {
+#endif
+        voiceOverNotificationName = UIAccessibilityVoiceOverStatusDidChangeNotification;
+#if !TARGET_OS_MACCATALYST
+    }
+    else {
+        voiceOverNotificationName = UIAccessibilityVoiceOverStatusChanged;
+    }
+#endif
     [NSNotificationCenter.defaultCenter addObserver:self
-                                           selector:@selector(accessibilityVoiceOverStatusChanged:)
-                                               name:UIAccessibilityVoiceOverStatusChanged
+                                           selector:@selector(accessibilityVoiceOverStatusDidChange:)
+                                               name:voiceOverNotificationName
                                              object:nil];
     
     @weakify(self)
@@ -454,14 +469,15 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 - (void)pictureInPictureControllerDidStartPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
     s_advancedPlayerViewController = self;
+    self.restorationWindow = self.view.window;
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)pictureInPictureController:(AVPictureInPictureController *)pictureInPictureController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
     if (s_advancedPlayerViewController) {
-        UIViewController *rootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
-        [rootViewController presentViewController:s_advancedPlayerViewController animated:YES completion:^{
+        [self.restorationWindow.demo_topViewController presentViewController:s_advancedPlayerViewController animated:YES completion:^{
             completionHandler(YES);
         }];
     }
@@ -473,6 +489,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 - (void)pictureInPictureControllerDidStopPictureInPicture:(AVPictureInPictureController *)pictureInPictureController
 {
     s_advancedPlayerViewController = nil;
+    self.restorationWindow = nil;
 }
 
 #pragma mark SRGTracksButtonDelegate protocol
@@ -540,7 +557,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     [self updateMainPlaybackControls];
 }
 
-- (void)accessibilityVoiceOverStatusChanged:(NSNotification *)notification
+- (void)accessibilityVoiceOverStatusDidChange:(NSNotification *)notification
 {
     [self restartInactivityTracker];
 }

@@ -9,8 +9,8 @@
 #import "NSBundle+Demo.h"
 #import "SegmentCollectionViewCell.h"
 
-#import <libextobjc/libextobjc.h>
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
+@import libextobjc;
+@import SRGMediaPlayer;
 
 @interface SimplePlayerViewController ()
 

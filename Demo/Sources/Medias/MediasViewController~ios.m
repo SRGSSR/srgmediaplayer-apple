@@ -13,10 +13,10 @@
 #import "MultiPlayerViewController.h"
 #import "SimplePlayerViewController.h"
 #import "SegmentsPlayerViewController.h"
-#import "UIWindow+SRGMediaPlayer.h"
+#import "UIWindow+Demo.h"
 
-#import <AVKit/AVKit.h>
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
+@import AVKit;
+@import SRGMediaPlayer;
 
 @interface MediasViewController () <SRGMediaPlayerViewControllerDelegate>
 
@@ -94,7 +94,7 @@
 
 - (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.srg_topViewController;
+    UIViewController *topViewController = self.view.window.demo_topViewController;
     [topViewController presentViewController:playerViewController animated:YES completion:^{
         completionHandler(YES);
     }];

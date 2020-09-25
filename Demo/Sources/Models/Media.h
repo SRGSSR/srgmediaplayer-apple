@@ -4,9 +4,9 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "MediaSegment.h"
+
+@import Foundation;
 
 NS_ASSUME_NONNULL_BEGIN
 
