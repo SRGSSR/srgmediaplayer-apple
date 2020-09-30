@@ -63,7 +63,7 @@
 
 static SRGPictureInPictureFix *s_pictureInPictureFix;
 
-__attribute__ ((constructor)) void SRGPictureInPictureFixInit(void)
+__attribute__((constructor)) void SRGPictureInPictureFixInit(void)
 {
     if (@available(iOS 14, tvOS 14, *)) {
         s_pictureInPictureFix = [[SRGPictureInPictureFix alloc] init];
