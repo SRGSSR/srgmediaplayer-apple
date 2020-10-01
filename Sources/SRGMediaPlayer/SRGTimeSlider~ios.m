@@ -432,6 +432,28 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     return [path srg_imageWithColor:self.thumbTintColor];
 }
 
+#pragma mark Overrides
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    // As of iOS 14 `UISlider` is made of an internal `_UISlideriOSVisualElement` which contains the usual `UIView` tracks
+    // and `UIImageView` knob. When using `-drawRect:` for custom drawing the internal slider might still be seen,
+    // especially when displayed in a modal displayed with `UIModalPresentationCustom`. To fix this issue we hide
+    // the tracks since we draw them ourselves.
+    // TODO: Disable / remove this fix when possible.
+    if (@available(iOS 14, *)) {
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(UIView * _Nullable view, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return ! [view isKindOfClass:UIImageView.class];
+        }];
+        NSArray<UIView *> *trackViews = [self.subviews.firstObject.subviews filteredArrayUsingPredicate:predicate];
+        [trackViews enumerateObjectsUsingBlock:^(UIView * _Nonnull view, NSUInteger idx, BOOL * _Nonnull stop) {
+            view.hidden = YES;
+        }];
+    }
+}
+
 #pragma mark Drawing
 
 - (void)drawRect:(CGRect)rect
