@@ -191,7 +191,7 @@
         }
         else if (mediaPlayer.playerClass == AdvancedPlayerViewController.class) {
             AdvancedPlayerViewController *playerViewController = [[AdvancedPlayerViewController alloc] initWithMedia:media];
-            playerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            playerViewController.modalPresentationStyle = UIModalPresentationCustom;
             [self presentViewController:playerViewController animated:YES completion:nil];
         }
         else if (mediaPlayer.playerClass == InlinePlayerViewController.class) {
