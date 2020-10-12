@@ -845,19 +845,23 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Picture in picture functionality (not available on all devices).
  *
- *  Remark: When the application is sent to the background, the behavior is the same as the vanilla picture in picture
+ *  Remark: When the application is sent to the background on iOS, the behavior is the same as the vanilla picture in picture
  *          controller: If the managed player layer is the one of a view controller's root view ('full screen'), picture
  *          in picture is automatically enabled when switching to the background (provided the corresponding flag has been
  *          enabled in the system settings). This is the only case where switching to picture in picture can be made
  *          automatically. Picture in picture must always be user-triggered, otherwise you application might get rejected
  *          by Apple (@see `AVPictureInPictureController` documentation).
  *
- *  Warning: If you plan to implement restoration from picture in picture, you must avoid usual built-in iOS modal
- *           presentations, as they are implemented using `UIPercentDrivenInteractiveTransition`. You must use a
+ *  Warning: If you plan to implement restoration from picture in picture, you must avoid usual built-in modal
+ *           presentations on iOS, as they are implemented using `UIPercentDrivenInteractiveTransition`. You must use a
  *           custom modal transition instead and avoid implementing it using `UIPercentDrivenInteractiveTransition`.
  *           The reason is that `UIPercentDrivenInteractiveTransition` varies the time offset of a layer and thus
  *           messes up with the player local time. This makes picture in picture restoration unreliable (sometimes it
  *           works, sometimes it does not and the animation is ugly).
+ *
+ *           For a perfect transition animation on iOS, be sure to call the picture in picture delegate restoration
+ *           completion handler at the very end of the transition and to avoid altering view controller content insets
+ *           where the picture in picture overlay was displayed.
  *
  *           Picture in picture also temporarily disables external playback for the associated player. You should not
  *           attempt to change this property while picture in playback is running, otherwise the behavior is undefined.
