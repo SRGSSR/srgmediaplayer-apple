@@ -8,6 +8,7 @@
 
 #import "Media.h"
 #import "SimplePlayerViewController.h"
+#import "UIWindow+Demo.h"
 
 static NSString * const kMediaKey = @"Media";
 
@@ -111,6 +112,16 @@ static NSString * const kMediaKey = @"Media";
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+#pragma mark AVPlayerViewControllerDelegate protocol
+
+- (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
+{
+    UIViewController *topViewController = self.view.window.demo_topViewController;
+    [topViewController presentViewController:playerViewController animated:YES completion:^{
+        completionHandler(YES);
+    }];
 }
 
 #pragma mark SRGMediaPlayerViewControllerDelegate protocol
