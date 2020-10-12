@@ -842,8 +842,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#if TARGET_OS_IOS
-
 /**
  *  Picture in picture functionality (not available on all devices).
  *
@@ -874,15 +872,13 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion The method also returns `nil` when the controller is used by `SRGMediaPlayerViewController`, as picture
  *              is managed by `SRGMediaPlayerViewController` in this special case.
  */
-@property (nonatomic, readonly, nullable) AVPictureInPictureController *pictureInPictureController;
+@property (nonatomic, readonly, nullable) AVPictureInPictureController *pictureInPictureController API_AVAILABLE(ios(9.0), tvos(14.0));
 
 /**
  *  Optional block which gets called right after picture in picture controller creation.
  */
-@property (nonatomic, copy, nullable) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
+@property (nonatomic, copy, nullable) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController) API_AVAILABLE(ios(9.0), tvos(14.0));
 
 @end
-
-#endif
 
 NS_ASSUME_NONNULL_END
