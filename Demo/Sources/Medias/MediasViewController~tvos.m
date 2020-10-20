@@ -6,6 +6,7 @@
 
 #import "MediasViewController.h"
 
+#import "AppDelegate.h"
 #import "Media.h"
 #import "SimplePlayerViewController.h"
 #import "UIWindow+Demo.h"
@@ -100,6 +101,7 @@ static NSString * const kMediaKey = @"Media";
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"System player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+        playerViewController.delegate = self;
         AVPlayer *player = [AVPlayer playerWithURL:media.URL];
         playerViewController.player = player;
         [self presentViewController:playerViewController animated:YES completion:^{
@@ -118,10 +120,21 @@ static NSString * const kMediaKey = @"Media";
 
 - (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    UIViewController *topViewController = self.view.window.demo_topViewController;
-    [topViewController presentViewController:playerViewController animated:YES completion:^{
-        completionHandler(YES);
-    }];
+    void (^presentPlayer)(void) = ^{
+        // Do not animate on tvOS to avoid UI glitches when swapping
+        [self presentViewController:playerViewController animated:NO completion:^{
+            completionHandler(YES);
+        }];
+    };
+    
+    // On tvOS dismiss any existing player first, otherwise picture in picture will be stopped when swapping
+    UIViewController *presentedViewController = self.presentedViewController;
+    if ([presentedViewController isKindOfClass:AVPlayerViewController.class]) {
+        [presentedViewController dismissViewControllerAnimated:NO completion:presentPlayer];
+    }
+    else {
+        presentPlayer();
+    }
 }
 
 #pragma mark SRGMediaPlayerViewControllerDelegate protocol
