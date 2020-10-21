@@ -6,7 +6,6 @@
 
 #import "MediasViewController.h"
 
-#import "AppDelegate.h"
 #import "Media.h"
 #import "SimplePlayerViewController.h"
 #import "UIWindow+Demo.h"
