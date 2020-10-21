@@ -128,9 +128,9 @@ static NSString * const kMediaKey = @"Media";
     };
     
     // On tvOS dismiss any existing player first, otherwise picture in picture will be stopped when swapping
-    UIViewController *presentedViewController = self.presentedViewController;
-    if ([presentedViewController isKindOfClass:AVPlayerViewController.class]) {
-        [presentedViewController dismissViewControllerAnimated:NO completion:presentPlayer];
+    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.demo_topViewController;
+    if ([topViewController isKindOfClass:AVPlayerViewController.class]) {
+        [topViewController dismissViewControllerAnimated:NO completion:presentPlayer];
     }
     else {
         presentPlayer();
