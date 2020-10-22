@@ -18,7 +18,7 @@
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     [self.window makeKeyAndVisible];
     
-    [AVAudioSession.sharedInstance setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [AVAudioSession.sharedInstance setCategory:AVAudioSessionCategoryPlayback error:NULL];
     
     MediasViewController *videosViewController = [[MediasViewController alloc] initWithTitle:NSLocalizedString(@"Videos", nil) configurationFileName:@"VideoDemoConfiguration" mediaPlayerType:MediaPlayerTypeStandard];
     MediasViewController *segmentsViewController = [[MediasViewController alloc] initWithTitle:NSLocalizedString(@"Segments", nil) configurationFileName:@"SegmentDemoConfiguration" mediaPlayerType:MediaPlayerTypeSegments];

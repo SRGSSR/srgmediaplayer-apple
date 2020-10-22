@@ -8,8 +8,11 @@
 
 #import "Media.h"
 #import "SimplePlayerViewController.h"
+#import "UIWindow+Demo.h"
 
 static NSString * const kMediaKey = @"Media";
+
+static NSMutableSet<AVPlayerViewController *> *s_playerViewControllers;
 
 @interface MediasViewController () <SRGMediaPlayerViewControllerDelegate>
 
@@ -21,6 +24,21 @@ static NSString * const kMediaKey = @"Media";
 @end
 
 @implementation MediasViewController
+
+#pragma mark Class methods
+
++ (void)addPlayerViewController:(AVPlayerViewController *)playerViewController
+{
+    if (! s_playerViewControllers) {
+        s_playerViewControllers = [NSMutableSet set];
+    }
+    [s_playerViewControllers addObject:playerViewController];
+}
+
++ (void)removePlayerViewController:(AVPlayerViewController *)playerViewController
+{
+    [s_playerViewControllers removeObject:playerViewController];
+}
 
 #pragma mark Object lifecycle
 
@@ -99,6 +117,7 @@ static NSString * const kMediaKey = @"Media";
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"System player", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+        playerViewController.delegate = self;
         AVPlayer *player = [AVPlayer playerWithURL:media.URL];
         playerViewController.player = player;
         [self presentViewController:playerViewController animated:YES completion:^{
@@ -111,6 +130,37 @@ static NSString * const kMediaKey = @"Media";
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+#pragma mark AVPlayerViewControllerDelegate protocol
+
+- (void)playerViewControllerWillStartPictureInPicture:(AVPlayerViewController *)playerViewController
+{
+    [MediasViewController addPlayerViewController:playerViewController];
+}
+
+- (void)playerViewControllerDidStopPictureInPicture:(AVPlayerViewController *)playerViewController
+{
+    [MediasViewController removePlayerViewController:playerViewController];
+}
+
+- (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
+{
+    void (^presentPlayer)(void) = ^{
+        // Do not animate on tvOS to avoid UI glitches when swapping
+        [self presentViewController:playerViewController animated:NO completion:^{
+            completionHandler(YES);
+        }];
+    };
+    
+    // On tvOS dismiss any existing player first, otherwise picture in picture will be stopped when swapping
+    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.demo_topViewController;
+    if ([topViewController isKindOfClass:AVPlayerViewController.class]) {
+        [topViewController dismissViewControllerAnimated:NO completion:presentPlayer];
+    }
+    else {
+        presentPlayer();
+    }
 }
 
 #pragma mark SRGMediaPlayerViewControllerDelegate protocol

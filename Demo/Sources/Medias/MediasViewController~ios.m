@@ -18,6 +18,8 @@
 @import AVKit;
 @import SRGMediaPlayer;
 
+static NSMutableSet<AVPlayerViewController *> *s_playerViewControllers;
+
 @interface MediasViewController () <SRGMediaPlayerViewControllerDelegate>
 
 @property (nonatomic, copy) NSString *configurationFileName;
@@ -30,6 +32,21 @@
 @end
 
 @implementation MediasViewController
+
+#pragma mark Class methods
+
++ (void)addPlayerViewController:(AVPlayerViewController *)playerViewController
+{
+    if (! s_playerViewControllers) {
+        s_playerViewControllers = [NSMutableSet set];
+    }
+    [s_playerViewControllers addObject:playerViewController];
+}
+
++ (void)removePlayerViewController:(AVPlayerViewController *)playerViewController
+{
+    [s_playerViewControllers removeObject:playerViewController];
+}
 
 #pragma mark Object lifecycle
 
@@ -87,6 +104,8 @@
 
 - (void)playerViewControllerWillStartPictureInPicture:(AVPlayerViewController *)playerViewController
 {
+    [MediasViewController addPlayerViewController:playerViewController];
+    
     // Disable external playback while picture in picture is active. Transition does not work. Sound is still sent
     // to the AirPlay receiver.
     playerViewController.player.allowsExternalPlayback = NO;
@@ -94,7 +113,7 @@
 
 - (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    UIViewController *topViewController = self.view.window.demo_topViewController;
+    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.demo_topViewController;
     [topViewController presentViewController:playerViewController animated:YES completion:^{
         completionHandler(YES);
     }];
@@ -103,6 +122,8 @@
 - (void)playerViewControllerDidStopPictureInPicture:(AVPlayerViewController *)playerViewController
 {
     playerViewController.player.allowsExternalPlayback = YES;
+    
+    [MediasViewController removePlayerViewController:playerViewController];
 }
 
 #pragma mark UITableViewDataSource protocol

@@ -105,11 +105,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
 @property (nonatomic, weak) id<SRGSegment> currentSegment;
 
-#if TARGET_OS_IOS
-@property (nonatomic) AVPictureInPictureController *pictureInPictureController;
-@property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController);
+@property (nonatomic) AVPictureInPictureController *pictureInPictureController API_AVAILABLE(ios(9.0), tvos(14.0));
+@property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController) API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic) NSNumber *savedAllowsExternalPlayback;
-#endif
 
 @property (nonatomic) NSNumber *savedPreventsDisplaySleepDuringVideoPlayback API_AVAILABLE(ios(12.0), tvos(12.0));
 
@@ -129,9 +127,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 @synthesize view = _view;
 
-#if TARGET_OS_IOS
 @synthesize pictureInPictureController = _pictureInPictureController;
-#endif
 
 #pragma mark Object lifecycle
 
@@ -518,14 +514,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 {
     view.delegate = self;
     
-#if TARGET_OS_IOS
-    @weakify(self)
-    [view srg_addMainThreadObserver:self keyPath:@keypath(view.readyForDisplay) options:0 block:^(MAKVONotification * _Nonnull notification) {
-        @strongify(self)
+    if (@available(iOS 9, tvOS 14, *)) {
+        @weakify(self)
+        [view srg_addMainThreadObserver:self keyPath:@keypath(view.readyForDisplay) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
+            [self updatePictureInPictureForView:view];
+        }];
         [self updatePictureInPictureForView:view];
-    }];
-    [self updatePictureInPictureForView:view];
-#endif
+    }
     
     [self attachPlayer:self.player toView:view];
 }
@@ -758,9 +754,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.player.currentItem.textStyleRules = _textStyleRules;
 }
 
-#if TARGET_OS_IOS
-
-- (AVPictureInPictureController *)pictureInPictureController
+- (AVPictureInPictureController *)pictureInPictureController API_AVAILABLE(ios(9.0), tvos(14.0))
 {
     if (self.playerViewController) {
         return nil;
@@ -770,7 +764,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
 }
 
-- (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
+- (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController API_AVAILABLE(ios(9.0), tvos(14.0))
 {
     if (_pictureInPictureController) {
         [_pictureInPictureController removeObserver:self keyPath:@keypath(_pictureInPictureController.pictureInPicturePossible)];
@@ -794,7 +788,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
 }
 
-- (void)updatePictureInPictureForView:(SRGMediaPlayerView *)view
+- (void)updatePictureInPictureForView:(SRGMediaPlayerView *)view API_AVAILABLE(ios(9.0), tvos(14.0))
 {
     AVPlayerLayer *playerLayer = view.playerLayer;
     if (playerLayer.readyForDisplay) {
@@ -807,8 +801,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         self.pictureInPictureController = nil;
     }
 }
-
-#endif
 
 - (BOOL)allowsExternalNonMirroredPlayback
 {
@@ -853,6 +845,27 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     // If the player switches to external playback, then it does not mirror the display
     return player.usesExternalPlaybackWhileExternalScreenIsActive;
+}
+
+#pragma mark Picture in picture
+
+// TODO: Remove once tvOS 14 is the minimum version
+- (BOOL)isPictureInPictureActive
+{
+    if (@available(iOS 9, tvOS 14, *)) {
+        return self.pictureInPictureController.pictureInPictureActive;
+    }
+    else {
+        return NO;
+    }
+}
+
+// TODO: Remove once tvOS 14 is the minimum version
+- (void)stopPictureInPicture
+{
+    if (@available(iOS 9, tvOS 14, *)) {
+        [self.pictureInPictureController stopPictureInPicture];
+    }
 }
 
 #pragma mark Conversions
@@ -1261,11 +1274,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)stopWithUserInfo:(NSDictionary *)userInfo
 {
-#if TARGET_OS_IOS
-    if (self.pictureInPictureController.pictureInPictureActive) {
-        [self.pictureInPictureController stopPictureInPicture];
+    if ([self isPictureInPictureActive]) {
+        [self stopPictureInPicture];
     }
-#endif
     
     NSMutableDictionary *fullUserInfo = userInfo.mutableCopy ?: [NSMutableDictionary dictionary];
     
@@ -1310,10 +1321,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     [self updateTracksForPlayer:nil];
     
-#if TARGET_OS_IOS
-    self.pictureInPictureController = nil;
+    if (@available(iOS 9, tvOS 14, *)) {
+        self.pictureInPictureController = nil;
+    }
     self.savedAllowsExternalPlayback = nil;
-#endif
     
     if (@available(iOS 12, tvOS 12, *)) {
         self.savedPreventsDisplaySleepDuringVideoPlayback = nil;
@@ -1328,13 +1339,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 - (void)reloadPlayerConfiguration
 {
     if (self.player) {
-#if TARGET_OS_IOS
-        // Restore previous external playback behavior after returning from PiP
-        if (! self.pictureInPictureController.pictureInPictureActive && self.savedAllowsExternalPlayback) {
+        if (! [self isPictureInPictureActive] && self.savedAllowsExternalPlayback) {
             self.player.allowsExternalPlayback = self.savedAllowsExternalPlayback.boolValue;
             self.savedAllowsExternalPlayback = nil;
         }
-#endif
         
         if (@available(iOS 12, tvOS 12, *)) {
             if (self.savedPreventsDisplaySleepDuringVideoPlayback) {
@@ -1345,7 +1353,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         
         self.playerConfigurationBlock ? self.playerConfigurationBlock(self.player) : nil;
         
-#if TARGET_OS_IOS
         // If picture in picture is active, it is difficult to return from PiP if enabling AirPlay from the control
         // center (this would require calling the restoration methods, not called natively in this case, to let the app
         // restore the playback UI so that AirPlay playback can resume there). Sadly such attempts leave the player layer
@@ -1353,16 +1360,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         //
         // The inverse approach is far easier: When PiP is enabled, we override player settings to prevent external playback,
         // restoring them afterwards.
-        if (self.pictureInPictureController.pictureInPictureActive) {
+        if ([self isPictureInPictureActive]) {
             self.savedAllowsExternalPlayback = @(self.player.allowsExternalPlayback);
             self.player.allowsExternalPlayback = NO;
         }
-#endif
         
         if (@available(iOS 12, tvOS 12, *)) {
             if (! self.playerViewController) {
-#if TARGET_OS_IOS
-                if (self.pictureInPictureController.pictureInPictureActive) {
+                if ([self isPictureInPictureActive]) {
                     self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
                     self.player.preventsDisplaySleepDuringVideoPlayback = YES;
                 }
@@ -1370,9 +1375,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                     self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
                     self.player.preventsDisplaySleepDuringVideoPlayback = NO;
                 }
-                else
-#endif
-                if (! self.view.player || ! self.view.window) {
+                else if (! self.view.player || ! self.view.window) {
                     self.savedPreventsDisplaySleepDuringVideoPlayback = @(self.player.preventsDisplaySleepDuringVideoPlayback);
                     self.player.preventsDisplaySleepDuringVideoPlayback = NO;
                 }
@@ -1953,11 +1956,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
-    if (! self.playerViewController
-#if TARGET_OS_IOS
-            && ! self.pictureInPictureController.pictureInPictureActive && ! self.player.externalPlaybackActive
-#endif
-        ) {
+    if (! self.playerViewController && ! [self isPictureInPictureActive] && ! self.player.externalPlaybackActive) {
         if (self.view.window && self.mediaType == SRGMediaPlayerMediaTypeVideo) {
             switch (self.viewBackgroundBehavior) {
                 case SRGMediaPlayerViewBackgroundBehaviorAttached: {
