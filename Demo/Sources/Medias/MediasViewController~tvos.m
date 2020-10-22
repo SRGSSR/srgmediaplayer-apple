@@ -12,6 +12,8 @@
 
 static NSString * const kMediaKey = @"Media";
 
+static NSMutableSet<AVPlayerViewController *> *s_playerViewControllers;
+
 @interface MediasViewController () <SRGMediaPlayerViewControllerDelegate>
 
 @property (nonatomic, copy) NSString *configurationFileName;
@@ -22,6 +24,21 @@ static NSString * const kMediaKey = @"Media";
 @end
 
 @implementation MediasViewController
+
+#pragma mark Class methods
+
++ (void)addPlayerViewController:(AVPlayerViewController *)playerViewController
+{
+    if (! s_playerViewControllers) {
+        s_playerViewControllers = [NSMutableSet set];
+    }
+    [s_playerViewControllers addObject:playerViewController];
+}
+
++ (void)removePlayerViewController:(AVPlayerViewController *)playerViewController
+{
+    [s_playerViewControllers removeObject:playerViewController];
+}
 
 #pragma mark Object lifecycle
 
@@ -116,6 +133,16 @@ static NSString * const kMediaKey = @"Media";
 }
 
 #pragma mark AVPlayerViewControllerDelegate protocol
+
+- (void)playerViewControllerWillStartPictureInPicture:(AVPlayerViewController *)playerViewController
+{
+    [MediasViewController addPlayerViewController:playerViewController];
+}
+
+- (void)playerViewControllerDidStopPictureInPicture:(AVPlayerViewController *)playerViewController
+{
+    [MediasViewController removePlayerViewController:playerViewController];
+}
 
 - (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
