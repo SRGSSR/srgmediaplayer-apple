@@ -4,7 +4,7 @@
 //  License information is available from the LICENSE file.
 //
 
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
+@import SRGMediaPlayer;
 
 /**
  *  File for clients to opt-in for designable support (preview in Interface Builder).

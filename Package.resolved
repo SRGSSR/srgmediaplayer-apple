@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "libextobjc",
+        "repositoryURL": "https://github.com/SRGSSR/libextobjc.git",
+        "state": {
+          "branch": null,
+          "revision": "30ee5b73bdf57a826978aa146881277f22369be1",
+          "version": "0.6.0-srg3"
+        }
+      },
+      {
+        "package": "MAKVONotificationCenter",
+        "repositoryURL": "https://github.com/SRGSSR/MAKVONotificationCenter.git",
+        "state": {
+          "branch": null,
+          "revision": "60395e0601ffd4a784856b423d4cac558366276d",
+          "version": "1.0.0-srg5"
+        }
+      },
+      {
+        "package": "SRGLogger",
+        "repositoryURL": "https://github.com/SRGSSR/srglogger-apple.git",
+        "state": {
+          "branch": null,
+          "revision": "cfc39d1223ed039aeb7df38c6c7570977b22d1aa",
+          "version": "3.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

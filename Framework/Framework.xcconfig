@@ -1,3 +1,0 @@
-#include "../Common.xcconfig"
-
-OTHER_LDFLAGS = -framework libextobjc -framework MAKVONotificationCenter -framework SRGLogger

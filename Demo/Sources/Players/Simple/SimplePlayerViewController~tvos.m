@@ -8,7 +8,7 @@
 
 #import "Resources.h"
 
-#import <SRGMediaPlayer/SRGMediaPlayer.h>
+@import SRGMediaPlayer;
 
 @interface SimplePlayerViewController ()
 
