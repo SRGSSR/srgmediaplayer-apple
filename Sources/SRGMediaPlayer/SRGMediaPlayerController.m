@@ -102,8 +102,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic) SRGPosition *initialPosition;
 
 @property (nonatomic, weak) id<SRGSegment> previousSegment;
-@property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
 @property (nonatomic, weak) id<SRGSegment> currentSegment;
+
+@property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
+@property (nonatomic) SRGMediaPlayerSelectionReason selectionReason;
 
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController) API_AVAILABLE(ios(9.0), tvos(14.0));
@@ -351,7 +353,12 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     NSMutableDictionary *fullUserInfo = @{ SRGMediaPlayerPlaybackStateKey : @(playbackState),
                                            SRGMediaPlayerPreviousPlaybackStateKey: @(previousPlaybackState) }.mutableCopy;
-    fullUserInfo[SRGMediaPlayerSelectionKey] = @(self.targetSegment && ! self.targetSegment.srg_blocked);
+    
+    BOOL selection = self.targetSegment && ! self.targetSegment.srg_blocked;
+    fullUserInfo[SRGMediaPlayerSelectionKey] = @(selection);
+    if (selection) {
+        fullUserInfo[SRGMediaPlayerSelectionReasonKey] = @(self.selectionReason);
+    }
     if (userInfo) {
         [fullUserInfo addEntriesFromDictionary:userInfo];
     }
@@ -1202,7 +1209,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     self.loadedSegments = segments;
     self.userInfo = userInfo;
+    
     self.targetSegment = targetSegment;
+    self.selectionReason = SRGMediaPlayerSelectionReasonInitial;
     
     // Save initial values for restart after a stop
     self.initialTargetSegment = targetSegment;
@@ -1250,6 +1259,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
     
     self.targetSegment = targetSegment;
+    self.selectionReason = SRGMediaPlayerSelectionReasonUpdate;
     
     SRGTimePosition *timePosition = [self timePositionForPosition:position inSegment:targetSegment applyEndTolerance:NO];
     
@@ -1309,8 +1319,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.playbackInformationCached = NO;
     
     self.previousSegment = nil;
-    self.targetSegment = nil;
     self.currentSegment = nil;
+    self.targetSegment = nil;
     
     self.startPosition = nil;
     self.startCompletionHandler = nil;
@@ -1516,6 +1526,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
         userInfo[SRGMediaPlayerSegmentKey] = self.previousSegment;
         userInfo[SRGMediaPlayerSelectionKey] = @(selected);
+        if (selected) {
+            userInfo[SRGMediaPlayerSelectionReasonKey] = @(self.selectionReason);
+        }
         userInfo[SRGMediaPlayerSelectedKey] = @(_selected);
         userInfo[SRGMediaPlayerInterruptionKey] = @(interrupted);
         userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:lastPlaybackTime];
@@ -1542,6 +1555,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
             userInfo[SRGMediaPlayerSegmentKey] = segment;
             userInfo[SRGMediaPlayerSelectionKey] = @(_selected);
+            if (_selected) {
+                userInfo[SRGMediaPlayerSelectionReasonKey] = @(self.selectionReason);
+            }
             userInfo[SRGMediaPlayerSelectedKey] = @(_selected);
             userInfo[SRGMediaPlayerLastPlaybackTimeKey] = [NSValue valueWithCMTime:lastPlaybackTime];
             userInfo[SRGMediaPlayerLastPlaybackDateKey] = lastPlaybackDate;

@@ -52,6 +52,7 @@ NSString * const SRGMediaPlayerNextSegmentKey = @"SRGMediaPlayerNextSegment";
 NSString * const SRGMediaPlayerInterruptionKey = @"SRGMediaPlayerInterruption";
 
 NSString * const SRGMediaPlayerSelectionKey = @"SRGMediaPlayerSelection";
+NSString * const SRGMediaPlayerSelectionReasonKey = @"SRGMediaPlayerSelectionReason";
 
 NSString * const SRGMediaPlayerTrackKey = @"SRGMediaPlayerTrack";
 NSString * const SRGMediaPlayerPreviousTrackKey = @"SRGMediaPlayerPreviousTrack";
