@@ -361,11 +361,12 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     [self didChangeValueForKey:@keypath(self.playbackState)];
     
     [self updateStallDetectionTimerForPlaybackState:playbackState];
-    [self updateSegmentStatusForPlaybackState:playbackState previousPlaybackState:previousPlaybackState time:self.currentTime];
     
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPlaybackStateDidChangeNotification
                                                       object:self
                                                     userInfo:fullUserInfo.copy];
+    
+    [self updateSegmentStatusForPlaybackState:playbackState previousPlaybackState:previousPlaybackState time:self.currentTime];
     
     SRGMediaPlayerLogDebug(@"Controller", @"Playback state did change to %@ with info %@", SRGMediaPlayerControllerNameForPlaybackState(playbackState), fullUserInfo);
 }
