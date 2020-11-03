@@ -92,7 +92,7 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     XCTAssertEqual(self.mediaPlayerController.visibleSegments.count, 1);
 }
 
-- (void)testSegmentPlaythrough
+- (void)testSegmentPlayback
 {
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment] userInfo:nil];
@@ -127,7 +127,7 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     XCTAssertNil(self.mediaPlayerController.selectedSegment);
 }
 
-- (void)testBlockedSegmentPlaythrough
+- (void)testBlockedSegmentPlayback
 {
     Segment *segment = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment] userInfo:nil];
@@ -183,7 +183,7 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     }];
 }
 
-- (void)testSegmentAtStartPlaythrough
+- (void)testSegmentAtStartPlayback
 {
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment] userInfo:nil];
@@ -218,7 +218,7 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     XCTAssertNil(self.mediaPlayerController.selectedSegment);
 }
 
-- (void)testBlockedSegmentAtStartPlaythrough
+- (void)testBlockedSegmentAtStartPlayback
 {
     Segment *segment = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
     [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment] userInfo:nil];
@@ -1177,7 +1177,7 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     XCTAssertNil(self.mediaPlayerController.selectedSegment);
 }
 
-- (void)testSelectedSegmentPlaythrough
+- (void)testSelectedSegmentPlayback
 {
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
