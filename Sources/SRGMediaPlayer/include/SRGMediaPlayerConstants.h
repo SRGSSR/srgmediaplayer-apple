@@ -126,6 +126,14 @@ typedef NS_ENUM(NSInteger, SRGMediaPlayerPlaybackState) {
 };
 
 /**
+ *  Reasons for segment selection.
+ */
+typedef NS_ENUM(NSInteger, SRGMediaPlayerSelectionReason) {
+    SRGMediaPlayerSelectionReasonInitial = 1,                   // Initial selection at playback start
+    SRGMediaPlayerSelectionReasonUpdate                         // Selection update during playback
+};
+
+/**
  *  User interface styles, for compatibility with `UIUserInterfaceStyle` on iOS 11 and below.
  */
 typedef NS_ENUM(NSInteger, SRGMediaPlayerUserInterfaceStyle) {
@@ -266,6 +274,7 @@ OBJC_EXPORT NSString * const SRGMediaPlayerInterruptionKey;                     
  *  Information available for `SRGMediaPlayerSegmentDidStartNotification`, `SRGMediaPlayerSegmentDidEndNotification` and `SRGMediaPlayerPlaybackStateDidChangeNotification`.
  */
 OBJC_EXPORT NSString * const SRGMediaPlayerSelectionKey;                                    // Key to an `NSNumber` wrapping a boolean, set to `YES` iff the notification results from a segment selection.
+OBJC_EXPORT NSString * const SRGMediaPlayerSelectionReasonKey;                              // Key to an `NSNumber` wrapping a `SRGMediaPlayerSelectionReason`, specifying the reason selection was made.
 
 /**
  *  Information available for `SRGMediaPlayerAudioTrackDidChangeNotification` and `SRGMediaPlayerSubtitleTrackDidChangeNotification`.
