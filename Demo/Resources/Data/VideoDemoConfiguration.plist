@@ -102,7 +102,7 @@
 			<key>name</key>
 			<string>10vor10 subject with buggy subtitles (Akamai issue)</string>
 			<key>url</key>
-			<string>https://srfvodhd-vh.akamaihd.net/i/vod/10vor10/2020/02/10vor10_20200226_215000_19794538_v_webcast_h264_,q40,q10,q20,q30,q50,q60,.mp4.csmil/master.m3u8?start=527.04&amp;end=687.56&amp;caption=srf%2F7a4a3dd2-f470-4eab-af9a-efd9dbaad345%2Fepisode%2Fde%2Fvod%2Fvod.m3u8:de:Deutsch:sdh&amp;webvttbaseurl=www.srf.ch%2Fsubtitles</string>
+			<string>https://hdvodsrforigins3-vh.akamaihd.net/i/assets/video/10vor10/2020/06/10vor10_20200610_215034_21058070_v_webcast_h264_,q40,q10,q20,q30,q50,.mp4.csmil/master.m3u8?start=66.4&amp;end=554.52&amp;caption=srf%2F26a1de9a-7b3e-460f-a3c2-24421b00217a%2Fepisode%2Fde%2Fvod%2Fvod.m3u8%3Ade%3ADeutsch%3Asdh&amp;webvttbaseurl=www.srf.ch%2Fsubtitles</string>
 		</dict>
 		<dict>
 			<key>name</key>
