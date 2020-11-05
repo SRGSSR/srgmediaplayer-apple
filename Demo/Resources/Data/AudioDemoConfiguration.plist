@@ -30,21 +30,21 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>SRF 1 DVR mp3</string>
+			<string>SRF 1 HLS DVR</string>
 			<key>url</key>
 			<string>http://lsaplus.swisstxt.ch/audio/drs1_96.stream/playlist.m3u8</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>La 1ère HLS DVR</string>
+			<key>url</key>
+			<string>http://lsaplus.swisstxt.ch/audio/rsp_96.stream/playlist.m3u8</string>
 		</dict>
 		<dict>
 			<key>name</key>
 			<string>SRF 2 Livestream mp3</string>
 			<key>url</key>
 			<string>http://streaming.swisstxt.ch/m/drs2/mp3_128</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>Timeshift</string>
-			<key>url</key>
-			<string>http://lsaplus.swisstxt.ch/audio/rsp_96.stream/playlist.m3u8</string>
 		</dict>
 	</array>
 </dict>
