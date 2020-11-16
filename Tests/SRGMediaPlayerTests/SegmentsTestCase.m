@@ -17,7 +17,7 @@ OBJC_EXPORT BOOL SRGMediaPlayerAreEqualSegments(id<SRGSegment> segment1, id<SRGS
 
 static NSURL *SegmentsOnDemandTestURL(void)
 {
-    return [NSURL URLWithString:@"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
+    return [NSURL URLWithString:@"https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
 }
 
 static NSURL *SegmentsLiveTimestampTestURL(void)
