@@ -8,7 +8,7 @@
 			<key>name</key>
 			<string>3 non-consecutive segments</string>
 			<key>url</key>
-			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
@@ -41,7 +41,7 @@
 			<key>name</key>
 			<string>One blocked segment</string>
 			<key>url</key>
-			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
@@ -60,7 +60,7 @@
 			<key>name</key>
 			<string>One hidden segment</string>
 			<key>url</key>
-			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
@@ -79,7 +79,7 @@
 			<key>name</key>
 			<string>One blocked hidden segment</string>
 			<key>url</key>
-			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
@@ -100,7 +100,7 @@
 			<key>name</key>
 			<string>Segment at start</string>
 			<key>url</key>
-			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
@@ -119,7 +119,7 @@
 			<key>name</key>
 			<string>Blocked segment at start</string>
 			<key>url</key>
-			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
@@ -138,7 +138,7 @@
 			<key>name</key>
 			<string>Five consecutive segments</string>
 			<key>url</key>
-			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
@@ -187,7 +187,7 @@
 			<key>name</key>
 			<string>Two consecutive blocked segments</string>
 			<key>url</key>
-			<string>http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>

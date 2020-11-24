@@ -29,7 +29,7 @@ Stack trace or log information
 > The simulator is a valid device as well. If all versions or devices seem to be affected, simply enter 'Any'
 
 * Library version: _version_
-* iOS version: _version_
+* iOS / tvOS version: _version_
 * Device: _model_
 
 ### Reproducibility
