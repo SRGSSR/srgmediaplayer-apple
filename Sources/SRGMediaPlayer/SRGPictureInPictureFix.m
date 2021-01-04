@@ -48,8 +48,6 @@
         // Somehow Apple manages to circumvent this issue internally with `AVPlayerViewController` which, if
         // displayed once, ensures proper behavior afterwards.
         SRGDummyPlayerViewController *playerViewController = [[SRGDummyPlayerViewController alloc] init];
-        playerViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-        playerViewController.definesPresentationContext = NO;
         playerViewController.player = [AVPlayer new];
         
         UIView *playerView = playerViewController.view;
