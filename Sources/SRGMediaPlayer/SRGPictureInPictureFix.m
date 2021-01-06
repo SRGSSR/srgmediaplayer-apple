@@ -48,14 +48,14 @@
         // Somehow Apple manages to circumvent this issue internally with `AVPlayerViewController` which, if
         // displayed once, ensures proper behavior afterwards.
         SRGDummyPlayerViewController *playerViewController = [[SRGDummyPlayerViewController alloc] init];
-        playerViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-        playerViewController.definesPresentationContext = NO;
         playerViewController.player = [AVPlayer new];
         
-        UIViewController *rootViewController = UIApplication.sharedApplication.keyWindow.rootViewController;
-        [rootViewController presentViewController:playerViewController animated:NO completion:^{
-            [rootViewController dismissViewControllerAnimated:NO completion:nil];
-        }];
+        UIView *playerView = playerViewController.view;
+        UIWindow *keyWindow = UIApplication.sharedApplication.keyWindow;
+        [keyWindow addSubview:playerView];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [playerView removeFromSuperview];
+        });
     });
 }
 
