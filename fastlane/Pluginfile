@@ -4,5 +4,4 @@
 #
 # Ensure this file is checked in to source control!
 
-gem 'fastlane-plugin-trainer', git: 'https://github.com/SRGSSR/trainer', tag: '0.9.1.1'
-gem 'fastlane-plugin-xcconfig'
+gem 'fastlane-plugin-trainer'

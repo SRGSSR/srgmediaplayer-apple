@@ -16,21 +16,31 @@ default_platform :ios
 platform :ios do
   before_all do
     ensure_git_status_clean
-    Dir.chdir('..') { sh 'make bootstrap' }
+
+    xcversion(version: '~> 12')
   end
 
   desc 'Run library tests'
   lane :tests do
     clean_result_files
 
-    override_test_product_names
+    Device = Struct.new(:platform, :name)
+    TestBuild = Struct.new(:scheme, :scheme_suffix, :in_workspace)
 
-    run_tests_with_devices(['iPhone 11', 'Apple TV'])
+    iphone11 = Device.new('iOS', 'iPhone 11')
+    appletv = Device.new('tvOS', 'Apple TV')
+    devices = [iphone11, appletv]
 
-    trainer(
-      path: './fastlane',
-      output_directory: './fastlane'
-    )
+    scheme = swift_package_name
+    swift_package_tests = TestBuild.new(scheme, '', false)
+    test_builds = [swift_package_tests]
+
+    # Run all tests on various simulators
+    srg_run_tests(devices, test_builds)
+
+    # Produce JUnit files for CI
+    srg_trainer
+    override_junit_test_suite_names(test_builds)
   end
 
   after_all do
@@ -43,73 +53,83 @@ platform :ios do
   end
 end
 
+def swift_package_name
+  JSON.parse((sh 'swift package dump-package'))['name']
+end
+
 def clean_result_files
   Dir['*.xml'].each { |file| File.delete(file) }
-  Dir['*.xcresult'].each { |folder| FileUtils.remove_entry(folder, true) }
+  FileUtils.remove_entry('xcresult', true)
 end
 
-# Override test product names to split iOS and tvOS test results
-def override_test_product_names
-  set_xcconfig_value(
-    path: 'Tests/Tests.xcconfig',
-    name: 'PRODUCT_NAME[sdk=iphone*]',
-    value: '$(PROJECT_NAME)-iOS'
-  )
-  set_xcconfig_value(
-    path: 'Tests/Tests.xcconfig',
-    name: 'PRODUCT_NAME[sdk=appletv*]',
-    value: '$(PROJECT_NAME)-tvOS'
-  )
-end
-
-def run_tests_with_devices(devices)
+def srg_run_tests(devices, test_builds)
   devices.each do |device|
-    srg_scan(device)
-    copy_last_xcresult
+    test_builds.each do |test_build|
+      begin
+        srg_xcodebuild(device, test_build)
+      rescue StandardError => e
+        raise e unless e.message.include? '** TEST FAILED **'
+
+        UI.important('One or more tests failed on ' + device.platform + ' (' + srg_xcodebuild_scheme(test_build) + '). ⚠️')
+      end
+    end
   end
-  check_xcresult_count(devices)
 end
 
-def srg_scan(device)
-  scan(
-    device: device,
-    scheme: xcode_library_scheme,
-    output_types: '',
-    output_style: FastlaneCore::Env.truthy?('TRAVIS') ? 'raw' : 'standard',
-    fail_build: false,
-    clean: true
+def srg_xcodebuild(device, test_build)
+  xcodebuild(
+    test: true,
+    workspace: srg_xcodebuild_workspace(test_build),
+    scheme: srg_xcodebuild_scheme(test_build),
+    destination: srg_xcodebuild_destination(device),
+    result_bundle_path: srg_xcodebuild_result_bundle_path(device, test_build)
   )
 end
 
-def xcresults_path
-  derived_data_path = lane_context[SharedValues::SCAN_DERIVED_DATA_PATH]
-  derived_data_path + '/Logs/Test/'
+def srg_xcodebuild_workspace(test_build)
+  test_build.in_workspace ? 'Tests/' + srg_xcodebuild_scheme(test_build) + '.xcworkspace' : nil
 end
 
-def copy_last_xcresult
-  file = nil
-  Dir.chdir(xcresults_path) do
-    # max == sort.last
-    file = Dir['*.xcresult'].max
+def srg_xcodebuild_scheme(test_build)
+  test_build.scheme + test_build.scheme_suffix
+end
+
+def srg_xcodebuild_destination(device)
+  'platform=' + device.platform + ' Simulator,name=' + device.name
+end
+
+def srg_xcodebuild_result_bundle_path(device, test_build)
+  result_bundle_folder_path + test_build.scheme + '-' + device.platform
+end
+
+# Convert xcresults to JUnit files
+def srg_trainer
+  trainer(
+    path: result_bundle_folder_path,
+    output_directory: './fastlane',
+    fail_build: false
+  )
+end
+
+def result_bundle_folder_path
+  './fastlane/xcresult/'
+end
+
+# Override JUnit test suite names to split iOS and tvOS test results
+def override_junit_test_suite_names(test_builds)
+  test_builds.each do |test_build|
+    Dir[test_build.scheme + '-*.xml'].each do |file_name|
+      override_junit_test_suite_name(file_name)
+    end
   end
-  file_name = File.basename(file)
-  FileUtils.copy_entry(xcresults_path + file_name, file_name)
 end
 
-def check_xcresult_count(devices)
-  return unless Dir['*.xcresult'].count != devices.count
-
-  UI.user_error!('Whoops, unexpected xcresult file count.')
-end
-
-# Returns the library scheme
-def xcode_library_scheme
-  scheme = nil
-  Dir.chdir('..') do
-    scheme = sh 'xcodebuild -list | grep "Schemes:" -A 1'
-  end
-  scheme ['Schemes:'] = ''
-  scheme.gsub(/\s+/, '').chomp
+def override_junit_test_suite_name(file_name)
+  platform = file_name.split('.').first.split('-').last
+  file = File.open(file_name, 'r')
+  xml = file.read.gsub('Tests" tests="', '-' + platform + '" tests="')
+  xml = xml.gsub('-tests" tests="', '-' + platform + '" tests="')
+  File.open(file_name, 'w') { |f| f.write(xml) }
 end
 
 # More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
