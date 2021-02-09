@@ -1,5 +1,5 @@
 /* Slider label when playing a DVR in the past */
-"%@ from live" = "%@da live";
+"%@ from live" = "%@ da live";
 
 /* Label on slider for time elapsed */
 "%@ played" = "%@ reproducì";
