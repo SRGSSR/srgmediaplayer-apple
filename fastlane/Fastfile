@@ -23,6 +23,7 @@ platform :ios do
   desc 'Run library tests'
   lane :tests do
     clean_result_files
+    clean_derived_data
 
     Device = Struct.new(:platform, :name)
     TestBuild = Struct.new(:scheme, :scheme_suffix, :in_workspace)
@@ -62,6 +63,10 @@ def clean_result_files
   FileUtils.remove_entry('xcresult', true)
 end
 
+def clean_derived_data
+  Dir.chdir('..') { FileUtils.remove_entry(srg_xcodebuild_derived_data_path, true) }
+end
+
 def srg_run_tests(devices, test_builds)
   devices.each do |device|
     test_builds.each do |test_build|
@@ -82,7 +87,8 @@ def srg_xcodebuild(device, test_build)
     workspace: srg_xcodebuild_workspace(test_build),
     scheme: srg_xcodebuild_scheme(test_build),
     destination: srg_xcodebuild_destination(device),
-    result_bundle_path: srg_xcodebuild_result_bundle_path(device, test_build)
+    result_bundle_path: srg_xcodebuild_result_bundle_path(device, test_build),
+    derivedDataPath: srg_xcodebuild_derived_data_path
   )
 end
 
@@ -100,6 +106,10 @@ end
 
 def srg_xcodebuild_result_bundle_path(device, test_build)
   result_bundle_folder_path + test_build.scheme + '-' + device.platform
+end
+
+def srg_xcodebuild_derived_data_path
+  '.build/DerivedData'
 end
 
 # Convert xcresults to JUnit files
