@@ -23,7 +23,7 @@ static NSURL *RTSWWOnDemandTestURL(void)
 
 static NSURL *RTSCHOnDemandTestURL(void)
 {
-    return [NSURL URLWithString:@"https://rts-vod-amd.akamaized.net/ch/hls/11986730/95e3d258-9200-38b1-b3ea-19cbc42ee0c9/master.m3u8"];
+    return [NSURL URLWithString:@"https://rts-vod-amd.akamaized.net/ch/hls/12063264/27f6b361-ba1c-3b8d-91d3-3330e17c4cc3/master.m3u8"];
 }
 
 
