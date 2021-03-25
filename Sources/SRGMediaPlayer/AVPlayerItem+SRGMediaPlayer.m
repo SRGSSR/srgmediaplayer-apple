@@ -15,14 +15,12 @@
 - (AVMediaSelectionOption *)srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:(AVMediaSelectionGroup *)mediaSelectionGroup
 {
 #if TARGET_OS_TV
-    AVMediaSelection *currentMediaSelection = self.currentMediaSelection;
-    return [currentMediaSelection selectedMediaOptionInMediaSelectionGroup:mediaSelectionGroup];
+    return [self.currentMediaSelection selectedMediaOptionInMediaSelectionGroup:mediaSelectionGroup];
 #else
 #if !TARGET_OS_MACCATALYST
     if (@available(iOS 11, *)) {
 #endif
-        AVMediaSelection *currentMediaSelection = self.currentMediaSelection;
-        return [currentMediaSelection selectedMediaOptionInMediaSelectionGroup:mediaSelectionGroup];
+        return [self.currentMediaSelection selectedMediaOptionInMediaSelectionGroup:mediaSelectionGroup];
 #if !TARGET_OS_MACCATALYST
     }
     else {
