@@ -539,11 +539,11 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return kCMTimeRangeInvalid;
     }
     
-    NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-    NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
+    NSValue *firstSeekableTimeRangeValue = playerItem.seekableTimeRanges.firstObject;
+    NSValue *lastSeekableTimeRangeValue = playerItem.seekableTimeRanges.lastObject;
     
-    CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
-    CMTimeRange lastSeekableTimeRange = [lastSeekableTimeRangeValue CMTimeRangeValue];
+    CMTimeRange firstSeekableTimeRange = firstSeekableTimeRangeValue.CMTimeRangeValue;
+    CMTimeRange lastSeekableTimeRange = lastSeekableTimeRangeValue.CMTimeRangeValue;
     
     if (! firstSeekableTimeRangeValue || CMTIMERANGE_IS_INVALID(firstSeekableTimeRange)
             || ! lastSeekableTimeRangeValue || CMTIMERANGE_IS_INVALID(lastSeekableTimeRange)) {
