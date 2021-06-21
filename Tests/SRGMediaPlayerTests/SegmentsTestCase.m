@@ -339,61 +339,43 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     XCTAssertNil(self.mediaPlayerController.selectedSegment);
 }
 
-// No particular order is guaranteed for skip notifications belong to different segments. The only guaranteed behavior
-// is that the skip end notification for a segment will be received after the skip start of the same segment
 - (void)testContiguousBlockedSegments
 {
     Segment *segment1 = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(2., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
     Segment *segment2 = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment1, segment2] userInfo:nil];
     
-    __block BOOL segment1WillSkipReceived = NO;
-    __block BOOL segment2WillSkipReceived = NO;
+    id willSkipObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerWillSkipBlockedSegmentNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        id<SRGSegment> segment = notification.userInfo[SRGMediaPlayerSegmentKey];
+        XCTAssertNotEqualObjects(segment, segment2);
+    }];
     
-    __block BOOL segment1DidSkipReceived = NO;
-    __block BOOL segment2DidSkipReceived = NO;
+    id didSkipObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        id<SRGSegment> segment = notification.userInfo[SRGMediaPlayerSegmentKey];
+        XCTAssertNotEqualObjects(segment, segment2);
+    }];
     
     [self expectationForSingleNotification:SRGMediaPlayerWillSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         id<SRGSegment> segment = notification.userInfo[SRGMediaPlayerSegmentKey];
-        if (segment == segment1) {
-            XCTAssertFalse(segment1DidSkipReceived);
-            TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
-            segment1WillSkipReceived = YES;
-        }
-        else if (segment == segment2) {
-            XCTAssertFalse(segment2DidSkipReceived);
-            TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);        // Two seeks in a row, get original playback position
-            segment2WillSkipReceived = YES;
-        }
-        else {
-            XCTFail(@"Unexpected skip notification received");
-        }
-        
+        XCTAssertEqualObjects(segment, segment1);
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        
-        return segment1WillSkipReceived && segment2WillSkipReceived;
+        return YES;
     }];
     
     [self expectationForSingleNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         id<SRGSegment> segment = notification.userInfo[SRGMediaPlayerSegmentKey];
-        if (segment == segment1) {
-            TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
-            segment1DidSkipReceived = YES;
-        }
-        else if (segment == segment2) {
-            TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);        // Two seeks in a row, get original playback position
-            segment2DidSkipReceived = YES;
-        }
-        else {
-            XCTFail(@"Unexpected skip notification received");
-        }
-        
+        XCTAssertEqualObjects(segment, segment1);
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 2);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        
-        return segment1DidSkipReceived && segment2DidSkipReceived;
+        return YES;
     }];
     
-    [self waitForExpectationsWithTimeout:20. handler:nil];
+    [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment1, segment2] userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:willSkipObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:didSkipObserver];
+    }];
     
     XCTAssertNil(self.mediaPlayerController.currentSegment);
     XCTAssertNil(self.mediaPlayerController.selectedSegment);
@@ -403,7 +385,6 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
 {
     Segment *segment1 = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., NSEC_PER_SEC), CMTimeMakeWithSeconds(3., NSEC_PER_SEC))];
     Segment *segment2 = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment1, segment2] userInfo:nil];
     
     __block BOOL segment1WillSkipReceived = NO;
     __block BOOL segment2WillSkipReceived = NO;
@@ -450,6 +431,8 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
         
         return segment1DidSkipReceived && segment2DidSkipReceived;
     }];
+    
+    [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment1, segment2] userInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -461,55 +444,39 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
 {
     Segment *segment1 = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(0., NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     Segment *segment2 = [Segment blockedSegmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(5., NSEC_PER_SEC), CMTimeMakeWithSeconds(4., NSEC_PER_SEC))];
-    [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment1, segment2] userInfo:nil];
     
-    __block BOOL segment1WillSkipReceived = NO;
-    __block BOOL segment2WillSkipReceived = NO;
+    id willSkipObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerWillSkipBlockedSegmentNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        id<SRGSegment> segment = notification.userInfo[SRGMediaPlayerSegmentKey];
+        XCTAssertNotEqualObjects(segment, segment2);
+    }];
     
-    __block BOOL segment1DidSkipReceived = NO;
-    __block BOOL segment2DidSkipReceived = NO;
+    id didSkipObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull notification) {
+        id<SRGSegment> segment = notification.userInfo[SRGMediaPlayerSegmentKey];
+        XCTAssertNotEqualObjects(segment, segment2);
+    }];
     
     [self expectationForSingleNotification:SRGMediaPlayerWillSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         id<SRGSegment> segment = notification.userInfo[SRGMediaPlayerSegmentKey];
-        if (segment == segment1) {
-            XCTAssertFalse(segment1DidSkipReceived);
-            TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
-            segment1WillSkipReceived = YES;
-        }
-        else if (segment == segment2) {
-            XCTAssertFalse(segment2DidSkipReceived);
-            TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
-            segment2WillSkipReceived = YES;
-        }
-        else {
-            XCTFail(@"Unexpected skip notification received");
-        }
-        
+        XCTAssertEqualObjects(segment, segment1);
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        
-        return segment1WillSkipReceived && segment2WillSkipReceived;
+        return YES;
     }];
     
     [self expectationForSingleNotification:SRGMediaPlayerDidSkipBlockedSegmentNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         id<SRGSegment> segment = notification.userInfo[SRGMediaPlayerSegmentKey];
-        if (segment == segment1) {
-            TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
-            segment1DidSkipReceived = YES;
-        }
-        else if (segment == segment2) {
-            TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
-            segment2DidSkipReceived = YES;
-        }
-        else {
-            XCTFail(@"Unexpected skip notification received");
-        }
-        
+        XCTAssertEqualObjects(segment, segment1);
+        TestAssertEqualTimeInSeconds([notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue], 0);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
-        
-        return segment1DidSkipReceived && segment2DidSkipReceived;
+        return YES;
     }];
     
-    [self waitForExpectationsWithTimeout:20. handler:nil];
+    [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:nil withSegments:@[segment1, segment2] userInfo:nil];
+    
+    [self waitForExpectationsWithTimeout:20. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:willSkipObserver];
+        [NSNotificationCenter.defaultCenter removeObserver:didSkipObserver];
+    }];
     
     XCTAssertNil(self.mediaPlayerController.currentSegment);
     XCTAssertNil(self.mediaPlayerController.selectedSegment);

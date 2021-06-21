@@ -1031,7 +1031,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)seekToPosition:(SRGPosition *)position withCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    [self seekToPosition:position inTargetSegment:nil withSkippedSegment:nil completionHandler:completionHandler];
+    [self seekToPosition:position inTargetSegment:nil withCompletionHandler:completionHandler];
 }
 
 - (void)reset
@@ -1167,7 +1167,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return;
     }
     
-    [self seekToPosition:position inTargetSegment:segment withSkippedSegment:nil completionHandler:completionHandler];
+    [self seekToPosition:position inTargetSegment:segment withCompletionHandler:completionHandler];
 }
 
 - (id<SRGSegment>)selectedSegment
@@ -1245,7 +1245,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
 }
 
-- (void)seekToPosition:(SRGPosition *)position inTargetSegment:(id<SRGSegment>)targetSegment withSkippedSegment:(id<SRGSegment>)skippedSegment completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToPosition:(SRGPosition *)position inTargetSegment:(id<SRGSegment>)targetSegment withCompletionHandler:(void (^)(BOOL))completionHandler
 {
     NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Target segment must be valid if provided");
     
@@ -1265,7 +1265,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     // Trap attempts to seek to blocked segments early. We cannot only rely on playback time observers to detect a blocked segment
     // for direct seeks, otherwise blocked segment detection would occur after the segment has been entered, which is too late
     id<SRGSegment> segment = targetSegment ?: [self segmentForTime:timePosition.time];
-    if (! segment || ! segment.srg_blocked || segment == skippedSegment) {
+    if (! segment || ! segment.srg_blocked) {
         // Starting with iOS 11, there is no guarantee that the last seek succeeds (there was no formal documentation for this
         // behavior on iOS 10 and below, but this was generally working). Starting with iOS 11, the following is unreliable,
         // as the state might not be updated if the last seek gets cancelled. This is especially the case if multiple seeks
@@ -1596,6 +1596,19 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     return locatedSegment;
 }
 
+- (CMTime)seekableTimeAfterSegment:(id<SRGSegment>)segment
+{
+    CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
+    CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), SRGSafeStartSeekOffset());
+    id<SRGSegment> nextSegment = [self segmentForTime:seekTime];
+    if (nextSegment.srg_blocked && nextSegment != segment) {
+        return [self seekableTimeAfterSegment:nextSegment];
+    }
+    else {
+        return seekTime;
+    }
+}
+
 // No tolerance parameters here. When skipping blocked segments, we want to resume sharply at segment end
 - (void)skipBlockedSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
@@ -1614,12 +1627,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ will be skipped", segment);
     
-    // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
-    // would trigger skips recursively)
-    CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
-    CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), SRGSafeStartSeekOffset());
-    SRGPosition *seekTimePosition = [SRGPosition positionAtTime:seekTime];
-    [self seekToPosition:seekTimePosition inTargetSegment:nil withSkippedSegment:segment completionHandler:^(BOOL finished) {
+    CMTime seekTime = [self seekableTimeAfterSegment:segment];
+    [self.player seekToTime:seekTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero notify:YES completionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
         // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
         // so that consecutive notifications are received in the correct order
