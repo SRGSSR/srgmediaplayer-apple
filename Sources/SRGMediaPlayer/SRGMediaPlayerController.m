@@ -1031,7 +1031,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)seekToPosition:(SRGPosition *)position withCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    [self seekToPosition:position inTargetSegment:nil completionHandler:completionHandler];
+    [self seekToPosition:position inTargetSegment:nil withSkippedSegment:nil completionHandler:completionHandler];
 }
 
 - (void)reset
@@ -1167,7 +1167,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return;
     }
     
-    [self seekToPosition:position inTargetSegment:segment completionHandler:completionHandler];
+    [self seekToPosition:position inTargetSegment:segment withSkippedSegment:nil completionHandler:completionHandler];
 }
 
 - (id<SRGSegment>)selectedSegment
@@ -1245,9 +1245,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
 }
 
-- (void)seekToPosition:(SRGPosition *)position inTargetSegment:(id<SRGSegment>)targetSegment completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToPosition:(SRGPosition *)position inTargetSegment:(id<SRGSegment>)targetSegment withSkippedSegment:(id<SRGSegment>)skippedSegment completionHandler:(void (^)(BOOL))completionHandler
 {
-    NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Segment must be valid");
+    NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Target segment must be valid if provided");
     
     if (self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
         return;
@@ -1265,7 +1265,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     // Trap attempts to seek to blocked segments early. We cannot only rely on playback time observers to detect a blocked segment
     // for direct seeks, otherwise blocked segment detection would occur after the segment has been entered, which is too late
     id<SRGSegment> segment = targetSegment ?: [self segmentForTime:timePosition.time];
-    if (! segment || ! segment.srg_blocked) {
+    if (! segment || ! segment.srg_blocked || segment == skippedSegment) {
         // Starting with iOS 11, there is no guarantee that the last seek succeeds (there was no formal documentation for this
         // behavior on iOS 10 and below, but this was generally working). Starting with iOS 11, the following is unreliable,
         // as the state might not be updated if the last seek gets cancelled. This is especially the case if multiple seeks
@@ -1619,7 +1619,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
     CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), SRGSafeStartSeekOffset());
     SRGPosition *seekTimePosition = [SRGPosition positionAtTime:seekTime];
-    [self seekToPosition:seekTimePosition withCompletionHandler:^(BOOL finished) {
+    [self seekToPosition:seekTimePosition inTargetSegment:nil withSkippedSegment:segment completionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
         // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
         // so that consecutive notifications are received in the correct order
