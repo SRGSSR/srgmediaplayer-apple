@@ -261,6 +261,14 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:1500.] withSegments:@[segment] userInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateEnded;
+    }];
+        
+    [self waitForExpectationsWithTimeout:20. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.playbackState, SRGMediaPlayerPlaybackStateEnded);
 }
 
 - (void)testBlockedMediaPlayback
