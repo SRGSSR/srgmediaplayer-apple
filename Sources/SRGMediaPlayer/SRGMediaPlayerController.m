@@ -1634,8 +1634,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     SRGTimePosition *timePosition = [self timePositionForPosition:position inSegment:nil applyEndTolerance:NO];
     [self.player seekToTime:timePosition.time toleranceBefore:timePosition.toleranceBefore toleranceAfter:timePosition.toleranceAfter notify:YES completionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
-        // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
-        // so that consecutive notifications are received in the correct order
+        // one (e.g. due to a contiguous blocked segment being skipped).
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                           object:self
                                                         userInfo:userInfo.copy];
