@@ -1627,13 +1627,12 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ will be skipped", segment);
     
+    // Use low-level seek API to prevent infinite skip blocked segment recursion, but use calculation methods ensuring
+    // the position is in range.
     CMTime seekTime = [self seekableTimeAfterSegment:segment];
-    if (self.streamType == SRGMediaPlayerStreamTypeOnDemand && CMTIME_COMPARE_INLINE(seekTime, >, CMTimeRangeGetEnd(self.timeRange))) {
-        // Seek to end to get `SRGMediaPlayerPlaybackStateEnded` playback state.
-        seekTime  = CMTimeRangeGetEnd(self.timeRange);
-    }
-    
-    [self.player seekToTime:seekTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero notify:YES completionHandler:^(BOOL finished) {
+    SRGPosition *position = [SRGPosition positionAtTime:seekTime];
+    SRGTimePosition *timePosition = [self timePositionForPosition:position inSegment:nil applyEndTolerance:NO];
+    [self.player seekToTime:timePosition.time toleranceBefore:timePosition.toleranceBefore toleranceAfter:timePosition.toleranceAfter notify:YES completionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
         // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
         // so that consecutive notifications are received in the correct order
