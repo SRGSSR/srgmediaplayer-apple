@@ -56,25 +56,13 @@
 			<key>name</key>
 			<string>Bonjour la Suisse - 4 audios (+ AD) &amp; 3 subtitles (incl. SDH)</string>
 			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021,-1201k,-701k,-301k,-101k,-2001k,-fra-ad,-roh,-deu,-ita,.mp4.csmil/master.m3u8?audiotrack=0:fr:Fran%C3%A7ais,5:fr:Fran%C3%A7ais%20(AD):ad,6:rm:Rumantsch,7:de:Deutsch,8:it:Italiano&amp;subtitles=it,gsw,fr:sdh</string>
+			<string>https://rts-vod-amd.akamaized.net/ww/hls/8806923/ead53ddc-4703-35bd-b6a2-c0a9231a4d62/master.m3u8</string>
 		</dict>
 		<dict>
 			<key>name</key>
 			<string>How women are taking on the Cresta Run</string>
 			<key>url</key>
 			<string>https://srgplayerswivod-vh.akamaihd.net/i/44785866/,video,.mp4.csmil/master.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>19h30 (French audio track)</string>
-			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2020/11352c9f46908e5e44c30eaa91ea4932/journ-19h30_20200830_full,_lr3,_lr2,_lr1,_sd,_hd,_fhd,.mp4.csmil/master.m3u8?audiotrack=0:fr:Fran%C3%A7ais&amp;subtitles=fr:sdh</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>19h30 (Unknown audio track)</string>
-			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2020/11352c9f46908e5e44c30eaa91ea4932/journ-19h30_20200830_full,_lr3,_lr2,_lr1,_sd,_hd,_fhd,.mp4.csmil/master.m3u8?subtitles=fr:sdh</string>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -86,7 +74,7 @@
 			<key>name</key>
 			<string>Gothard 360° video</string>
 			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd.net/i/360/2017/2_Gothard_360_full_f_8414077-,301k,701k,1201k,2001k,.mp4.csmil/master.m3u8</string>
+			<string>https://rts-vod-amd.akamaized.net/ww/hls/8414077/f66334a7-1bdb-3690-b91a-29f6c258e1cb/master.m3u8</string>
 			<key>is360</key>
 			<true/>
 		</dict>
@@ -94,7 +82,7 @@
 			<key>name</key>
 			<string>Sample 360° video</string>
 			<key>url</key>
-			<string>https://bitmovin.com/player-content/playhouse-vr/m3u8s/105560.m3u8</string>
+			<string>https://bitmovin-a.akamaihd.net/content/playhouse-vr/m3u8s/105560.m3u8</string>
 			<key>is360</key>
 			<true/>
 		</dict>

@@ -10,6 +10,16 @@
 @import MediaAccessibility;
 @import SRGMediaPlayer;
 
+static NSURL *SwissTracksOnDemandTestURL(void)
+{
+    return [NSURL URLWithString:@"https://rts-vod-amd.akamaized.net/ww/hls/8806923/ead53ddc-4703-35bd-b6a2-c0a9231a4d62/master.m3u8"];
+}
+
+static NSURL *InternationalTracksOnDemandTestURL(void)
+{
+    return [NSURL URLWithString:@"https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
+}
+
 // Private framework header
 #import "SRGMediaPlayerController+Private.h"
 
@@ -57,8 +67,7 @@
         return YES;
     }];
     
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021,-1201k,-701k,-301k,-101k,-2001k,-fra-ad,-roh,-deu,-ita,.mp4.csmil/master.m3u8?audiotrack=0:fr:Fran%C3%A7ais,5:fr:Fran%C3%A7ais%20(AD):ad,6:rm:Rumantsch,7:de:Deutsch,8:it:Italiano&subtitles=it,gsw,fr:sdh"];
-    [self.mediaPlayerController playURL:URL];
+    [self.mediaPlayerController playURL:SwissTracksOnDemandTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -90,8 +99,7 @@
         return YES;
     }];
     
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021,-1201k,-701k,-301k,-101k,-2001k,-fra-ad,-roh,-deu,-ita,.mp4.csmil/master.m3u8?audiotrack=0:fr:Fran%C3%A7ais,5:fr:Fran%C3%A7ais%20(AD):ad,6:rm:Rumantsch,7:de:Deutsch,8:it:Italiano&subtitles=it,gsw,fr:sdh"];
-    [self.mediaPlayerController playURL:URL];
+    [self.mediaPlayerController playURL:SwissTracksOnDemandTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -129,8 +137,7 @@
         return [audioOptions filteredArrayUsingPredicate:predicate].firstObject ?: defaultAudioOption;
     };
     
-    NSURL *URL = [NSURL URLWithString:@"https://rtsvodww-vh.akamaihd.net/i/docfu/2017/docfu_20170728_full_f_1027021,-1201k,-701k,-301k,-101k,-2001k,-fra-ad,-roh,-deu,-ita,.mp4.csmil/master.m3u8?audiotrack=0:fr:Fran%C3%A7ais,5:fr:Fran%C3%A7ais%20(AD):ad,6:rm:Rumantsch,7:de:Deutsch,8:it:Italiano&subtitles=it,gsw,fr:sdh"];
-    [self.mediaPlayerController playURL:URL];
+    [self.mediaPlayerController playURL:SwissTracksOnDemandTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -168,8 +175,7 @@
         return [subtitleOptions filteredArrayUsingPredicate:predicate].firstObject ?: defaultSubtitleOption;
     };
     
-    NSURL *URL = [NSURL URLWithString:@"https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
-    [self.mediaPlayerController playURL:URL];
+    [self.mediaPlayerController playURL:InternationalTracksOnDemandTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -200,8 +206,7 @@
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    NSURL *URL = [NSURL URLWithString:@"https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
-    [self.mediaPlayerController playURL:URL];
+    [self.mediaPlayerController playURL:InternationalTracksOnDemandTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -217,8 +222,7 @@
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    NSURL *URL = [NSURL URLWithString:@"https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8"];
-    [self.mediaPlayerController playURL:URL];
+    [self.mediaPlayerController playURL:InternationalTracksOnDemandTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     

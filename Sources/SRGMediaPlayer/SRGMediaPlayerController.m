@@ -539,11 +539,11 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return kCMTimeRangeInvalid;
     }
     
-    NSValue *firstSeekableTimeRangeValue = [playerItem.seekableTimeRanges firstObject];
-    NSValue *lastSeekableTimeRangeValue = [playerItem.seekableTimeRanges lastObject];
+    NSValue *firstSeekableTimeRangeValue = playerItem.seekableTimeRanges.firstObject;
+    NSValue *lastSeekableTimeRangeValue = playerItem.seekableTimeRanges.lastObject;
     
-    CMTimeRange firstSeekableTimeRange = [firstSeekableTimeRangeValue CMTimeRangeValue];
-    CMTimeRange lastSeekableTimeRange = [lastSeekableTimeRangeValue CMTimeRangeValue];
+    CMTimeRange firstSeekableTimeRange = firstSeekableTimeRangeValue.CMTimeRangeValue;
+    CMTimeRange lastSeekableTimeRange = lastSeekableTimeRangeValue.CMTimeRangeValue;
     
     if (! firstSeekableTimeRangeValue || CMTIMERANGE_IS_INVALID(firstSeekableTimeRange)
             || ! lastSeekableTimeRangeValue || CMTIMERANGE_IS_INVALID(lastSeekableTimeRange)) {
@@ -1031,7 +1031,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)seekToPosition:(SRGPosition *)position withCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    [self seekToPosition:position inTargetSegment:nil completionHandler:completionHandler];
+    [self seekToPosition:position inTargetSegment:nil withCompletionHandler:completionHandler];
 }
 
 - (void)reset
@@ -1167,7 +1167,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return;
     }
     
-    [self seekToPosition:position inTargetSegment:segment completionHandler:completionHandler];
+    [self seekToPosition:position inTargetSegment:segment withCompletionHandler:completionHandler];
 }
 
 - (id<SRGSegment>)selectedSegment
@@ -1245,9 +1245,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     [self setPlaybackState:SRGMediaPlayerPlaybackStatePreparing withUserInfo:nil];
 }
 
-- (void)seekToPosition:(SRGPosition *)position inTargetSegment:(id<SRGSegment>)targetSegment completionHandler:(void (^)(BOOL))completionHandler
+- (void)seekToPosition:(SRGPosition *)position inTargetSegment:(id<SRGSegment>)targetSegment withCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Segment must be valid");
+    NSAssert(! targetSegment || [self.segments containsObject:targetSegment], @"Target segment must be valid if provided");
     
     if (self.player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
         return;
@@ -1596,6 +1596,19 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     return locatedSegment;
 }
 
+- (CMTime)seekableTimeAfterSegment:(id<SRGSegment>)segment
+{
+    CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
+    CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), SRGSafeStartSeekOffset());
+    id<SRGSegment> nextSegment = [self segmentForTime:seekTime];
+    if (nextSegment.srg_blocked && nextSegment != segment) {
+        return [self seekableTimeAfterSegment:nextSegment];
+    }
+    else {
+        return seekTime;
+    }
+}
+
 // No tolerance parameters here. When skipping blocked segments, we want to resume sharply at segment end
 - (void)skipBlockedSegment:(id<SRGSegment>)segment withCompletionHandler:(void (^)(BOOL finished))completionHandler
 {
@@ -1614,15 +1627,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     SRGMediaPlayerLogDebug(@"Controller", @"Segment %@ will be skipped", segment);
     
-    // Seek precisely just after the end of the segment to avoid reentering the blocked segment when playback resumes (which
-    // would trigger skips recursively)
-    CMTimeRange segmentTimeRange = [self streamTimeRangeForMarkRange:segment.srg_markRange];
-    CMTime seekTime = CMTimeAdd(CMTimeRangeGetEnd(segmentTimeRange), SRGSafeStartSeekOffset());
-    SRGPosition *seekTimePosition = [SRGPosition positionAtTime:seekTime];
-    [self seekToPosition:seekTimePosition withCompletionHandler:^(BOOL finished) {
+    // Use low-level seek API to prevent infinite skip blocked segment recursion, but use calculation methods ensuring
+    // the position is in range.
+    CMTime seekTime = [self seekableTimeAfterSegment:segment];
+    SRGPosition *position = [SRGPosition positionAtTime:seekTime];
+    SRGTimePosition *timePosition = [self timePositionForPosition:position inSegment:nil applyEndTolerance:NO];
+    [self.player seekToTime:timePosition.time toleranceBefore:timePosition.toleranceBefore toleranceAfter:timePosition.toleranceAfter notify:YES completionHandler:^(BOOL finished) {
         // Do not check the finished boolean. We want to emit the notification even if the seek is interrupted by another
-        // one (e.g. due to a contiguous blocked segment being skipped). Emit the notification after the completion handler
-        // so that consecutive notifications are received in the correct order
+        // one (e.g. due to a contiguous blocked segment being skipped).
         [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerDidSkipBlockedSegmentNotification
                                                           object:self
                                                         userInfo:userInfo.copy];

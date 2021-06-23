@@ -55,7 +55,7 @@
         self.sleepResultLabel.hidden = YES;
     }
         
-    if (@available(iOS 12.0, *)) {
+    if (@available(iOS 12, *)) {
         self.sleepSettingStackView.hidden = NO;
     }
     else {
@@ -127,7 +127,7 @@
 
 - (IBAction)toggleVideoPlaybackPreventsDeviceSleep:(UISwitch *)preventsDeviceSleepSwitch
 {
-    if (@available(iOS 12.0, *)) {
+    if (@available(iOS 12, *)) {
         self.mediaPlayerController.playerConfigurationBlock = ^(AVPlayer *player) {
             player.preventsDisplaySleepDuringVideoPlayback = preventsDeviceSleepSwitch.on;
         };
