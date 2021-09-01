@@ -8,6 +8,7 @@
 
 #import "Media.h"
 #import "SimplePlayerViewController.h"
+#import "UIApplication+Demo.h"
 #import "UIWindow+Demo.h"
 
 static NSString * const kMediaKey = @"Media";
@@ -154,7 +155,7 @@ static NSMutableSet<AVPlayerViewController *> *s_playerViewControllers;
     };
     
     // On tvOS dismiss any existing player first, otherwise picture in picture will be stopped when swapping
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.demo_topViewController;
+    UIViewController *topViewController = UIApplication.sharedApplication.demo_mainWindow.demo_topViewController;
     if ([topViewController isKindOfClass:AVPlayerViewController.class]) {
         [topViewController dismissViewControllerAnimated:NO completion:presentPlayer];
     }

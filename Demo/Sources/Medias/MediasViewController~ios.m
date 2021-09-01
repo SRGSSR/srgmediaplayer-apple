@@ -13,6 +13,7 @@
 #import "MultiPlayerViewController.h"
 #import "SimplePlayerViewController.h"
 #import "SegmentsPlayerViewController.h"
+#import "UIApplication+Demo.h"
 #import "UIWindow+Demo.h"
 
 @import AVKit;
@@ -113,7 +114,7 @@ static NSMutableSet<AVPlayerViewController *> *s_playerViewControllers;
 
 - (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    UIViewController *topViewController = UIApplication.sharedApplication.keyWindow.demo_topViewController;
+    UIViewController *topViewController = UIApplication.sharedApplication.demo_mainWindow.demo_topViewController;
     [topViewController presentViewController:playerViewController animated:YES completion:^{
         completionHandler(YES);
     }];
