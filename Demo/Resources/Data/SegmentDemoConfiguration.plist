@@ -216,7 +216,7 @@
 			<key>name</key>
 			<string>Real example (19h30 2020 01 06)</string>
 			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd.net/i/journ-19h30/2020/4c9b662de33d7a84ce8fba6f9077849a/journ-19h30_20200106_full_,lr3,lr2,lr1,sd,hd,fhd,.mp4.csmil/master.m3u8?caption=journ-19h30/2020/4c9b662de33d7a84ce8fba6f9077849a/journ-19h30_20200106_full_fra.m3u8:fra:Fran%C3%A7ais:sdh</string>
+			<string>https://rts-vod-amd.akamaized.net/ww/hls/10992261/3ecfab94-ddb1-335d-89b1-8ec28e3acd1d/master.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
