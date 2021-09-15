@@ -339,6 +339,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testOnDemandPlaybackStartAtTimeWithTolerances
 {
+#warning "This test fails in the iOS 15.0 simulator, see issue #108"
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
