@@ -887,8 +887,9 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     XCTAssertEqualObjects(self.mediaPlayerController.selectedSegment, segment);
 }
 
-- (void)testStartTimeNearBeginningOfSegmentWithSelectionAndTolerances
+- (void)testStartTimeAroundBeginningOfSegmentWithSelection
 {
+#warning "This test fails in the iOS 15.0 simulator, see issue #108"
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(20., NSEC_PER_SEC), CMTimeMakeWithSeconds(60., NSEC_PER_SEC))];
     
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -901,11 +902,11 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
         XCTAssertTrue([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);
         
         CMTime time = [notification.userInfo[SRGMediaPlayerLastPlaybackTimeKey] CMTimeValue];
-        TestAssertAlmostButNotEqual(time, 22., 4.);
+        TestAssertAlmostButNotEqual(time, 21., 4.);
         return YES;
     }];
     
-    [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atIndex:0 position:[SRGPosition positionAtTimeInSeconds:1.] inSegments:@[segment] withUserInfo:nil];
+    [self.mediaPlayerController playURL:SegmentsOnDemandTestURL() atIndex:0 position:[SRGPosition positionAroundTimeInSeconds:1.] inSegments:@[segment] withUserInfo:nil];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -913,8 +914,9 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     XCTAssertEqualObjects(self.mediaPlayerController.selectedSegment, segment);
 }
 
-- (void)testStartTimeNearEndOfSegmentWithSelectionAndTolerances
+- (void)testStartTimeAroundEndOfSegmentWithSelection
 {
+#warning "This test fails in the iOS 15.0 simulator, see issue #108"
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(20., NSEC_PER_SEC), CMTimeMakeWithSeconds(60., NSEC_PER_SEC))];
     
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
@@ -939,7 +941,7 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
     XCTAssertEqualObjects(self.mediaPlayerController.selectedSegment, segment);
 }
 
-- (void)testStartTimeNearSegmentEndWithSelectionButWithoutEndTolerance
+- (void)testStartTimeNearSegmentEndWithSelection
 {
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(20., NSEC_PER_SEC), CMTimeMakeWithSeconds(60., NSEC_PER_SEC))];
     

@@ -256,8 +256,10 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
     }
     
     // The information panel does not support reloading with no changes well (scroll position is lost and animations
-    // are reset). Only update when something changed.
-    if (hasChanges) {
+    // are reset). Only update when something changed. Starting with tvOS 15 reloads are better and do not require
+    // this trick anymore.
+    if (@available(tvOS 15, *)) {}
+    else if (hasChanges) {
         UIViewController *controlsViewController = self.childViewControllers.firstObject;
         if (controlsViewController) {
             if ([controlsViewController srgmediaplayer_isInfoCenterDisplayed]) {
@@ -309,7 +311,7 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
 
 @implementation UIViewController (SRGMediaPlayerViewControllerInfoCenter)
 
-- (void)srgmediaplayer_resetInfoCenter
+- (void)srgmediaplayer_resetInfoCenter API_DEPRECATED("Not needed anymore as of tvOS 15", tvos(12.0, 15.0))
 {
     NSString *ivarName = [[[NSString stringWithFormat:@"12_i346n7893f23o6798P9a432n23el7V43i2e45w78C9o2345n67t1r1234o67l90le0r"] componentsSeparatedByCharactersInSet:NSCharacterSet.decimalDigitCharacterSet] componentsJoinedByString:@""];
     Ivar ivar = class_getInstanceVariable(self.class, ivarName.UTF8String);
@@ -318,7 +320,7 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
     }
 }
 
-- (BOOL)srgmediaplayer_isInfoCenterDisplayed
+- (BOOL)srgmediaplayer_isInfoCenterDisplayed API_DEPRECATED("Not needed anymore as of tvOS 15", tvos(12.0, 15.0))
 {
     NSString *selectorName = [[[NSString stringWithFormat:@"1i23s557I7n89f05o35P7a23n4556e7A889c12t2i34v4e5"] componentsSeparatedByCharactersInSet:NSCharacterSet.decimalDigitCharacterSet] componentsJoinedByString:@""];
     SEL selector = NSSelectorFromString(selectorName);
@@ -331,7 +333,7 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
     }
 }
 
-- (void)srgmediaplayer_showInfoCenterAnimated:(BOOL)animated completion:(void (^)(void))completion
+- (void)srgmediaplayer_showInfoCenterAnimated:(BOOL)animated completion:(void (^)(void))completion API_DEPRECATED("Not needed anymore as of tvOS 15", tvos(12.0, 15.0))
 {
     NSString *selectorName = [[[NSString stringWithFormat:@"135s5h77o4w3I6n8f6o4P3a2n4e5A6n7i8m5a4t47e8d9:0c9o675m5p3l2e3t4i5o6n788:12"] componentsSeparatedByCharactersInSet:NSCharacterSet.decimalDigitCharacterSet] componentsJoinedByString:@""];
     SEL selector = NSSelectorFromString(selectorName);
@@ -344,7 +346,7 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
     }
 }
 
-- (BOOL)srgmediaplayer_hideInfoCenterAnimated:(BOOL)animated completion:(void (^)(void))completion
+- (BOOL)srgmediaplayer_hideInfoCenterAnimated:(BOOL)animated completion:(void (^)(void))completion API_DEPRECATED("Not needed anymore as of tvOS 15", tvos(12.0, 15.0))
 {
     NSString *selectorName = [[[NSString stringWithFormat:@"767h753i9d08e453I3n4f66o81P22a34n5e6A7n8i4m28a9t90e2d1:2c56o74m4p2l3e4t7i8o9n0:009"] componentsSeparatedByCharactersInSet:NSCharacterSet.decimalDigitCharacterSet] componentsJoinedByString:@""];
     SEL selector = NSSelectorFromString(selectorName);
