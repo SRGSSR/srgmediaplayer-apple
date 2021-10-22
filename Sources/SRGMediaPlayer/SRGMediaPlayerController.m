@@ -804,9 +804,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
         }
     }
-    else {
-        self.pictureInPictureController = nil;
-    }
 }
 
 - (BOOL)allowsExternalNonMirroredPlayback
@@ -2014,9 +2011,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                     break;
                 }
             }
-        }
-        else {
-            [self attachPlayer:nil toView:self.view];
         }
     }
     
