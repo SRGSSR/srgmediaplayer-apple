@@ -804,9 +804,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
         }
     }
-    else {
-        self.pictureInPictureController = nil;
-    }
 }
 
 - (BOOL)allowsExternalNonMirroredPlayback
@@ -1984,39 +1981,54 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)srg_mediaPlayerController_applicationDidEnterBackground:(NSNotification *)notification
 {
+    // The video layer must be detached in the background if we want playback not to be paused automatically.
+    // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
     if (! self.playerViewController && ! [self isPictureInPictureActive] && ! self.player.externalPlaybackActive) {
         if (self.view.window && self.mediaType == SRGMediaPlayerMediaTypeVideo) {
             switch (self.viewBackgroundBehavior) {
                 case SRGMediaPlayerViewBackgroundBehaviorAttached: {
+                    // See https://github.com/SRGSSR/srgmediaplayer-apple/issues/66#issuecomment-504943224
+                    // TODO: Can be removed when iOS 13 is the minimum supported version
                     [self.player pause];
                     break;
                 }
                     
 #if TARGET_OS_IOS
                 case SRGMediaPlayerViewBackgroundBehaviorDetachedWhenDeviceLocked: {
-                    // To determine whether a background entry is due to the lock screen being enabled or not, we need to wait a little bit.
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        if (UIDevice.srg_mediaPlayer_isLocked) {
-                            [self attachPlayer:nil toView:self.view];
-                        }
-                        else {
-                            [self.player pause];
-                        }
-                    });
+                    // To apply lock screen behavior correctly we need to wait a little bit to check whether the device
+                    // has been locked or not.
+                    if (@available(iOS 15, *)) {
+                        // Starting with iOS 15, the system will pause layers which have not been detached immediately when
+                        // the application entered background, so we must detach the layer first in all cases, then reattach
+                        // it if needed to obtain the desired behavior.
+                        [self attachPlayer:nil toView:self.view];
+                        
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            if (! UIDevice.srg_mediaPlayer_isLocked) {
+                                [self attachPlayer:self.player toView:self.view];
+                            }
+                        });
+                    }
+                    else {
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            if (UIDevice.srg_mediaPlayer_isLocked) {
+                                [self attachPlayer:nil toView:self.view];
+                            }
+                            else {
+                                // See https://github.com/SRGSSR/srgmediaplayer-apple/issues/66#issuecomment-504943224
+                                // TODO: Can be removed when iOS 13 is the minimum supported version
+                                [self.player pause];
+                            }
+                        });
+                    }
                     break;
                 }
 #endif
-                    
                 case SRGMediaPlayerViewBackgroundBehaviorDetached: {
-                    // The video layer must be detached in the background if we want playback not to be paused automatically.
-                    // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
                     [self attachPlayer:nil toView:self.view];
                     break;
                 }
             }
-        }
-        else {
-            [self attachPlayer:nil toView:self.view];
         }
     }
     
