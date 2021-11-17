@@ -844,7 +844,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Picture in picture functionality (not available on all devices). Picture in picture is an opt-in: You must set the
- *  controller `pictureInPictureEnabled` property to `YES` if you want it to offer picture in picture support for it.
+ *  controller `pictureInPictureEnabled` property to `YES` if you want it to support picture in picture. You should also
+ *  implement a picture in picture controller delegate to manage the picture in picture lifecycle (you can register
+ *  a delegate with a blocked assigned to `pictureInPictureControllerCreationBlock`).
  *
  *  Remark: When the application is sent to the background on iOS, the behavior is the same as the vanilla picture in picture
  *          controller: If the managed player layer is the one of a view controller's root view ('full screen'), picture

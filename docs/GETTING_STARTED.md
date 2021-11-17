@@ -30,11 +30,11 @@ SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewCo
 }];
 ```
 
-Please refer to `AVPlayerViewController` [documentation](https://developer.apple.com/documentation/avkit/avpictureinpicturecontroller) for further integration instructions, from picture in picture to optional settings.
+Please refer to `AVPlayerViewController` [documentation](https://developer.apple.com/documentation/avkit/avpictureinpicturecontroller) for further integration instructions, from picture in picture support to optional settings.
 
 ### Remark
 
-Picture in picture requires your application to declare the corresponding background mode capability, as well as an audio session category set to `AVAudioSessionCategoryPlayback`.
+You must opt-in for picture in picture by setting the `pictureInPictureEnabled` property to `YES`. Picture in picture also requires your application to declare the corresponding background mode capability, as well as an audio session category set to `AVAudioSessionCategoryPlayback`. 
 
 ## Designing custom players
 
