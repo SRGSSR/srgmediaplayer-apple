@@ -107,6 +107,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
 @property (nonatomic) SRGMediaPlayerSelectionReason selectionReason;
 
+@property (nonatomic, getter=isPictureInPictureEnabled) BOOL pictureInPictureEnabled;
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController) API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic) NSNumber *savedAllowsExternalPlayback;
@@ -128,7 +129,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @implementation SRGMediaPlayerController
 
 @synthesize view = _view;
-
 @synthesize pictureInPictureController = _pictureInPictureController;
 
 #pragma mark Object lifecycle
@@ -137,6 +137,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 {
     if (self = [super init]) {
         _playbackState = SRGMediaPlayerPlaybackStateIdle;
+        _pictureInPictureEnabled = NO;
         
         self.liveTolerance = SRGMediaPlayerDefaultLiveTolerance;
         self.endTolerance = SRGMediaPlayerDefaultEndTolerance;
@@ -761,6 +762,12 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.player.currentItem.textStyleRules = _textStyleRules;
 }
 
+- (void)setPictureInPictureEnabled:(BOOL)pictureInPictureEnabled
+{
+    _pictureInPictureEnabled = pictureInPictureEnabled;
+    [self updatePictureInPictureForView:self.view];
+}
+
 - (AVPictureInPictureController *)pictureInPictureController API_AVAILABLE(ios(9.0), tvos(14.0))
 {
     if (self.playerViewController) {
@@ -797,12 +804,17 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)updatePictureInPictureForView:(SRGMediaPlayerView *)view API_AVAILABLE(ios(9.0), tvos(14.0))
 {
-    AVPlayerLayer *playerLayer = view.playerLayer;
-    if (playerLayer.readyForDisplay) {
-        if (self.pictureInPictureController.playerLayer != playerLayer) {
-            self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:playerLayer];
-            self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
+    if (self.pictureInPictureEnabled) {
+        AVPlayerLayer *playerLayer = view.playerLayer;
+        if (playerLayer.readyForDisplay) {
+            if (self.pictureInPictureController.playerLayer != playerLayer) {
+                self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:playerLayer];
+                self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
+            }
         }
+    }
+    else {
+        self.pictureInPictureController = nil;
     }
 }
 

@@ -105,6 +105,8 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     self.audioOnlyImageView.image = nil;
     self.audioOnlyImageView.image = audioOnlyImage;
     
+    self.mediaPlayerController.pictureInPictureEnabled = YES;
+    
     SRGMediaPlayerView *playerView = self.mediaPlayerController.view;
     playerView.viewMode = self.media.is360 ? SRGMediaPlayerViewModeMonoscopic : SRGMediaPlayerViewModeFlat;
     

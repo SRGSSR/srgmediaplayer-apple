@@ -843,7 +843,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- *  Picture in picture functionality (not available on all devices).
+ *  Picture in picture functionality (not available on all devices). Picture in picture is an opt-in: You must set the
+ *  controller `pictureInPictureEnabled` property to `YES` if you want it to offer picture in picture support for it.
  *
  *  Remark: When the application is sent to the background on iOS, the behavior is the same as the vanilla picture in picture
  *          controller: If the managed player layer is the one of a view controller's root view ('full screen'), picture
@@ -869,6 +870,11 @@ NS_ASSUME_NONNULL_BEGIN
  *           player configuration can be properly setup and restored.
  */
 @interface SRGMediaPlayerController (PictureInPicture)
+
+/**
+ *  Set to `YES` to activate picture in picture for the controller. Default is `NO`.
+ */
+@property (nonatomic, getter=isPictureInPictureEnabled) BOOL pictureInPictureEnabled API_AVAILABLE(ios(9.0), tvos(14.0));
 
 /**
  *  Return the picture in picture controller if picture in picture is available for the device, `nil` otherwise.
