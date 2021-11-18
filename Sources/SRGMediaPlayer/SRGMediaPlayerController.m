@@ -815,7 +815,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)updatePictureInPictureForView:(SRGMediaPlayerView *)view API_AVAILABLE(ios(9.0), tvos(14.0))
 {
-    if (self.pictureInPictureEnabled) {
+    if (! self.playerViewController && self.pictureInPictureEnabled) {
         AVPlayerLayer *playerLayer = view.playerLayer;
         if (playerLayer.readyForDisplay) {
             if (self.pictureInPictureController.playerLayer != playerLayer) {
