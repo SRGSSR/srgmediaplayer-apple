@@ -43,6 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  standard Apple player user experience, at the expense of a few limitations:
  *    - 360° medias are not playable with monoscopic or stereoscopic support.
  *    - Background playback behavior cannot be customized.
+ *    - Picture in picture is always enabled (but still requires you to implement its controller delegate methods to
+ *      manage the picture in picture lifecycle).
  *
  *  If you need one of the above features you should implement your own player layout instead.
  */
