@@ -875,6 +875,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  Set to `YES` to activate picture in picture for the controller. Default is `NO`.
+ *
+ *  @discussion Setting this property has no effect when the controller is used by `SRGMediaPlayerViewController`, as
+ *              picture in picture is always enabled in this special case.
  */
 @property (nonatomic, getter=isPictureInPictureEnabled) BOOL pictureInPictureEnabled API_AVAILABLE(ios(9.0), tvos(14.0));
 
