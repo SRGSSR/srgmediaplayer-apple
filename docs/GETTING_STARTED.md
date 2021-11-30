@@ -30,11 +30,7 @@ SRGMediaPlayerViewController *mediaPlayerViewController = [[SRGMediaPlayerViewCo
 }];
 ```
 
-Please refer to `AVPlayerViewController` [documentation](https://developer.apple.com/documentation/avkit/avpictureinpicturecontroller) for further integration instructions, from picture in picture to optional settings.
-
-### Remark
-
-Picture in picture requires your application to declare the corresponding background mode capability, as well as an audio session category set to `AVAudioSessionCategoryPlayback`.
+Please refer to `AVPlayerViewController` [documentation](https://developer.apple.com/documentation/avkit/avpictureinpicturecontroller) for further integration instructions, from picture in picture support to optional settings.
 
 ## Designing custom players
 
@@ -109,6 +105,14 @@ You can also drop an `SRGAirPlayButton` onto your layout (displayed only when Ai
 #### Warning
 
 If you want users to reliably enable AirPlay playback also from the control center, you should use `SRGAirPlayButton` with your player layout, or integrate `MPRemoteCommandCenter`. These ensures your application is the current one registered with the control center when the user interacts with it, so that playback can actually be sent to an AirPlay receiver. If your application is not the current one at the moment the route is changed in the control center, playback will stay local.
+
+## Picture in picture support
+
+SRG Media Player supports picture in picture, both on iOS and on tvOS. You must opt-in for picture in picture by setting the `pictureInPictureEnabled` property to `YES` on an `SRGMediaPlayerController` instance. Picture in picture also requires your application to declare the corresponding background mode capability, as well as an audio session category set to `AVAudioSessionCategoryPlayback`.
+
+When picture in picture has been enabled your application is responsible of implementing the `AVPictureInPictureControllerDelegate` methods to manage the picture in picture lifecycle, in particular the restoration process. You can register your delegate within a block assigned to the `pictureInPictureControllerCreationBlock` property, which is called after a picture in picture controller has been made available.
+
+Note that, if you are using `SRGMediaPlayerViewController` to display the standard system player user interface, the underlying `SRGMediaPlayerController` will always have picture in picture enabled. To ensure correct integration your application must provide a `SRGMediaPlayerViewControllerDelegate` implementing picture in picture lifecycle, most notably for restoration.
 
 ## Audio session management
 
