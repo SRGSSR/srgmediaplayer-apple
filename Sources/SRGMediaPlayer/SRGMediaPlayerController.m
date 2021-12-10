@@ -107,6 +107,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic, weak) id<SRGSegment> targetSegment;           // Will be nilled when reached
 @property (nonatomic) SRGMediaPlayerSelectionReason selectionReason;
 
+@property (nonatomic, getter=isPictureInPictureEnabled) BOOL pictureInPictureEnabled API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic) AVPictureInPictureController *pictureInPictureController API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController) API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic) NSNumber *savedAllowsExternalPlayback;
@@ -128,7 +129,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @implementation SRGMediaPlayerController
 
 @synthesize view = _view;
-
+@synthesize pictureInPictureEnabled = _pictureInPictureEnabled;
 @synthesize pictureInPictureController = _pictureInPictureController;
 
 #pragma mark Object lifecycle
@@ -137,6 +138,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 {
     if (self = [super init]) {
         _playbackState = SRGMediaPlayerPlaybackStateIdle;
+        _pictureInPictureEnabled = NO;
         
         self.liveTolerance = SRGMediaPlayerDefaultLiveTolerance;
         self.endTolerance = SRGMediaPlayerDefaultEndTolerance;
@@ -761,7 +763,23 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.player.currentItem.textStyleRules = _textStyleRules;
 }
 
-- (AVPictureInPictureController *)pictureInPictureController API_AVAILABLE(ios(9.0), tvos(14.0))
+- (BOOL)isPictureInPictureEnabled
+{
+    if (self.playerViewController) {
+        return YES;
+    }
+    else {
+        return _pictureInPictureEnabled;
+    }
+}
+
+- (void)setPictureInPictureEnabled:(BOOL)pictureInPictureEnabled
+{
+    _pictureInPictureEnabled = pictureInPictureEnabled;
+    [self updatePictureInPictureForView:self.view];
+}
+
+- (AVPictureInPictureController *)pictureInPictureController
 {
     if (self.playerViewController) {
         return nil;
@@ -771,7 +789,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
 }
 
-- (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController API_AVAILABLE(ios(9.0), tvos(14.0))
+- (void)setPictureInPictureController:(AVPictureInPictureController *)pictureInPictureController
 {
     if (_pictureInPictureController) {
         [_pictureInPictureController removeObserver:self keyPath:@keypath(_pictureInPictureController.pictureInPicturePossible)];
@@ -797,12 +815,17 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)updatePictureInPictureForView:(SRGMediaPlayerView *)view API_AVAILABLE(ios(9.0), tvos(14.0))
 {
-    AVPlayerLayer *playerLayer = view.playerLayer;
-    if (playerLayer.readyForDisplay) {
-        if (self.pictureInPictureController.playerLayer != playerLayer) {
-            self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:playerLayer];
-            self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
+    if (! self.playerViewController && self.pictureInPictureEnabled) {
+        AVPlayerLayer *playerLayer = view.playerLayer;
+        if (playerLayer.readyForDisplay) {
+            if (self.pictureInPictureController.playerLayer != playerLayer) {
+                self.pictureInPictureController = [[AVPictureInPictureController alloc] initWithPlayerLayer:playerLayer];
+                self.pictureInPictureControllerCreationBlock ? self.pictureInPictureControllerCreationBlock(self.pictureInPictureController) : nil;
+            }
         }
+    }
+    else {
+        self.pictureInPictureController = nil;
     }
 }
 
