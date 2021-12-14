@@ -2007,7 +2007,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     // The video layer must be detached in the background if we want playback not to be paused automatically.
     // See https://developer.apple.com/library/archive/qa/qa1668/_index.html
     if (! self.playerViewController && ! [self isPictureInPictureActive] && ! self.player.externalPlaybackActive) {
-        if (self.view.window && self.mediaType == SRGMediaPlayerMediaTypeVideo) {
+        if (self.mediaType == SRGMediaPlayerMediaTypeVideo) {
             switch (self.viewBackgroundBehavior) {
                 case SRGMediaPlayerViewBackgroundBehaviorAttached: {
                     // See https://github.com/SRGSSR/srgmediaplayer-apple/issues/66#issuecomment-504943224
