@@ -25,9 +25,6 @@ platform :ios do
     clean_result_files
     clean_derived_data
 
-    Device = Struct.new(:platform, :name)
-    TestBuild = Struct.new(:scheme, :scheme_suffix, :in_workspace)
-
     iphone11 = Device.new('iOS', 'iPhone 11')
     appletv = Device.new('tvOS', 'Apple TV')
     devices = [iphone11, appletv]
@@ -54,6 +51,9 @@ platform :ios do
   end
 end
 
+Device = Struct.new :platform, :name
+TestBuild = Struct.new :scheme, :scheme_suffix, :in_workspace
+
 def swift_package_name
   JSON.parse((sh 'swift package dump-package'))['name']
 end
@@ -70,13 +70,11 @@ end
 def srg_run_tests(devices, test_builds)
   devices.each do |device|
     test_builds.each do |test_build|
-      begin
-        srg_xcodebuild(device, test_build)
-      rescue StandardError => e
-        raise e unless e.message.include? '** TEST FAILED **'
+      srg_xcodebuild(device, test_build)
+    rescue StandardError => e
+      raise e unless e.message.include? '** TEST FAILED **'
 
-        UI.important('One or more tests failed on ' + device.platform + ' (' + srg_xcodebuild_scheme(test_build) + '). ⚠️')
-      end
+      UI.important("One or more tests failed on #{device.platform} (#{srg_xcodebuild_scheme(test_build)}). ⚠️")
     end
   end
 end
@@ -93,7 +91,7 @@ def srg_xcodebuild(device, test_build)
 end
 
 def srg_xcodebuild_workspace(test_build)
-  test_build.in_workspace ? 'Tests/' + srg_xcodebuild_scheme(test_build) + '.xcworkspace' : nil
+  test_build.in_workspace ? "Tests/#{srg_xcodebuild_scheme(test_build)}.xcworkspace" : nil
 end
 
 def srg_xcodebuild_scheme(test_build)
@@ -101,11 +99,11 @@ def srg_xcodebuild_scheme(test_build)
 end
 
 def srg_xcodebuild_destination(device)
-  'platform=' + device.platform + ' Simulator,name=' + device.name
+  "platform=#{device.platform} Simulator,name=#{device.name}"
 end
 
 def srg_xcodebuild_result_bundle_path(device, test_build)
-  result_bundle_folder_path + test_build.scheme + '-' + device.platform
+  "#{result_bundle_folder_path}#{test_build.scheme}-#{device.platform}"
 end
 
 def srg_xcodebuild_derived_data_path
@@ -128,7 +126,7 @@ end
 # Override JUnit test suite names to split iOS and tvOS test results
 def override_junit_test_suite_names(test_builds)
   test_builds.each do |test_build|
-    Dir[test_build.scheme + '-*.xml'].each do |file_name|
+    Dir["#{test_build.scheme}-*.xml"].each do |file_name|
       override_junit_test_suite_name(file_name)
     end
   end
@@ -137,9 +135,9 @@ end
 def override_junit_test_suite_name(file_name)
   platform = file_name.split('.').first.split('-').last
   file = File.open(file_name, 'r')
-  xml = file.read.gsub('Tests" tests="', '-' + platform + '" tests="')
-  xml = xml.gsub('-tests" tests="', '-' + platform + '" tests="')
-  File.open(file_name, 'w') { |f| f.write(xml) }
+  xml = file.read.gsub('Tests" tests="', "-#{platform}\" tests=\"")
+  xml = xml.gsub('-tests" tests="', "-#{platform}\" tests=\"")
+  File.write(file_name, xml)
 end
 
 # More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md

@@ -4,16 +4,15 @@ inherit_mode:
 
 AllCops:
   Exclude:
-    - 'Carthage/**/*'
-    - 'Demo/Carthage/**/*'
     - 'vendor/**/*'
   Include:
     - 'fastlane/Pluginfile'
+  NewCops: enable
 
 # this would cause errors with long lanes
 Metrics/BlockLength:
   Enabled: true
-  ExcludedMethods: ['platform', 'for_platform']
+  IgnoredMethods: ['platform', 'for_platform']
 
 # Lane description and gem lines can be long
 Layout/LineLength:
