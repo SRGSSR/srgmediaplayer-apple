@@ -270,9 +270,11 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         NSMutableArray<SRGAlternateTracksSectionType> *sectionTypes = [NSMutableArray array];
         
         // Displayed only if additional standard playback speeds have been set
-        NSSet<NSNumber *> *supportedPlaybackRates = self.mediaPlayerController.supportedPlaybackRates;
-        if (supportedPlaybackRates.count > 1) {
+        NSSet<NSNumber *> *alternativePlaybackRates = self.mediaPlayerController.alternativePlaybackRates;
+        if (alternativePlaybackRates.count != 0) {
             [sectionTypes addObject:SRGAlternateTracksSectionTypePlaybackSpeed];
+            
+            NSSet<NSNumber *> *supportedPlaybackRates = [alternativePlaybackRates setByAddingObject:@1];
             NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES];
             self.playbackRates = [supportedPlaybackRates sortedArrayUsingDescriptors:@[sortDescriptor]];
         }

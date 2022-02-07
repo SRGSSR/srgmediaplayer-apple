@@ -1881,7 +1881,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)setPlaybackRate:(CGFloat)playbackRate
 {
-    if (! [self.supportedPlaybackRates containsObject:@(playbackRate)]) {
+    NSSet<NSNumber *> *supportedPlaybackRates = [self.alternativePlaybackRates setByAddingObject:@1];
+    if (! [supportedPlaybackRates containsObject:@(playbackRate)]) {
         return;
     }
     
@@ -1911,14 +1912,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     // TODO: Limit to 4 values at most?
     _alternativePlaybackRates = [alternativePlaybackRates filteredSetUsingPredicate:predicate];
     
-    if (! [self.supportedPlaybackRates containsObject:@(self.playbackRate)]) {
+    NSSet<NSNumber *> *supportedPlaybackRates = [self.alternativePlaybackRates setByAddingObject:@1];
+    if (! [supportedPlaybackRates containsObject:@(self.playbackRate)]) {
         self.playbackRate = 1.f;
     }
-}
-
-- (NSSet<NSNumber *> *)supportedPlaybackRates
-{
-    return [self.alternativePlaybackRates setByAddingObject:@1];
 }
 
 #pragma mark Time observers
