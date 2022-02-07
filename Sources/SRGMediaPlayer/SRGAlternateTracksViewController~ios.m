@@ -35,6 +35,8 @@ static NSString *SRGHintForMediaSelectionOption(AVMediaSelectionOption *option);
 static BOOL SRGMediaSelectionOptionHasLanguage(AVMediaSelectionOption *option, NSString *languageCode);
 static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSelectionOption *> *options, NSString *languageCode);
 
+static NSArray<NSString *> *SRGItemsForPlaybackSpeeds(NSArray<NSNumber *> *playbackSpeeds);
+
 @interface SRGAlternateTracksViewController ()
 
 @property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
@@ -43,6 +45,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 @property (nonatomic, weak) UITableView *tableView;
 
 @property (nonatomic) NSArray<SRGAlternateTracksSectionType> *sectionTypes;
+@property (nonatomic) NSArray<NSNumber *> *playbackSpeeds;
 @property (nonatomic) NSArray<AVMediaSelectionOption *> *audioOptions;
 @property (nonatomic) NSArray<AVMediaSelectionOption *> *subtitleOptions;
 
@@ -267,8 +270,11 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
         NSMutableArray<SRGAlternateTracksSectionType> *sectionTypes = [NSMutableArray array];
         
         // Displayed only if additional standard playback speeds have been set
-        if (self.mediaPlayerController.playbackSpeeds.count > 1) {
+        NSSet<NSNumber *> *playbackSpeeds = self.mediaPlayerController.playbackSpeeds;
+        if (playbackSpeeds.count > 1) {
             [sectionTypes addObject:SRGAlternateTracksSectionTypePlaybackSpeed];
+            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES];
+            self.playbackSpeeds = [playbackSpeeds sortedArrayUsingDescriptors:@[sortDescriptor]];
         }
         
         // Displayed only if several audio options are available
@@ -457,8 +463,18 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     
     if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
         SRGAlternateTracksSegmentCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(SRGAlternateTracksSegmentCell.class)];
-        [cell setItems:@[@"0.5x", @"0.75x", @"1x", @"1.5x", @"2x"] reader:^NSInteger{
-            return 0;
+        
+        @weakify(self)
+        [cell setItems:SRGItemsForPlaybackSpeeds(self.playbackSpeeds) reader:^NSInteger{
+            @strongify(self)
+            // FIXME: Quick and dirty. Must be improved
+            NSUInteger index = [self.playbackSpeeds indexOfObject:@(self.mediaPlayerController.player.rate)];
+            if (index != NSNotFound) {
+                return index;
+            }
+            else {
+                return 0;
+            }
         } writer:^(NSInteger index) {
             
         }];
@@ -695,6 +711,15 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
         }
     }
     return NO;
+}
+
+static NSArray<NSString *> *SRGItemsForPlaybackSpeeds(NSArray<NSNumber *> *playbackSpeeds)
+{
+    NSMutableArray<NSString *> *items = [NSMutableArray array];
+    for (NSNumber *playbackSpeed in playbackSpeeds) {
+        [items addObject:[NSString stringWithFormat:@"%@×", playbackSpeed]];
+    }
+    return items.copy;
 }
 
 __attribute__((constructor)) static void SRGAlternateTracksViewControllerInit(void)
