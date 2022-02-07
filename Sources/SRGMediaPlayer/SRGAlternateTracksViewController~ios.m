@@ -476,7 +476,9 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
                 return 0;
             }
         } writer:^(NSInteger index) {
-            
+            @strongify(self)
+            NSNumber *rate = self.playbackRates[index];
+            self.mediaPlayerController.playbackRate = rate.floatValue;
         }];
         return cell;
     }

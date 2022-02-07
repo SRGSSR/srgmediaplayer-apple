@@ -897,14 +897,22 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- *  Playback rate support.
+ *  Playback rate support. Changing the `AVPlayer` rate directly is not supported and leads to undefined behavior.
  */
 @interface SRGMediaPlayerController (PlaybackRate)
 
 /**
+ *  The playback rate.
+ *
+ *  @discussion This value stays the same when the player is paused, unlike `AVPlayer` rate.
+ */
+@property (nonatomic) CGFloat playbackRate;
+
+/**
  *  Standard alternative playback rates provided by the controller. Defaults to [0.5, 0.75, 1.5, 2].
  *
- *  @discussion Negative values are discarded as well as 1 (normal speed, always available).
+ *  @discussion Negative values are discarded as well as 1 (normal speed, always available) and values larger than
+ *              2 (not supported by `AVPlayer`).
  */
 @property (nonatomic, null_resettable) NSSet<NSNumber *> *alternativePlaybackRates;
 

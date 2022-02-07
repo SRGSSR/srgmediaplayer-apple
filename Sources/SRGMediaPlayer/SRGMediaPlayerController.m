@@ -112,6 +112,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController) API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic) NSNumber *savedAllowsExternalPlayback;
 
+@property (nonatomic) CGFloat playbackRate;
 @property (nonatomic) NSSet<NSNumber *> *alternativePlaybackRates;
 
 @property (nonatomic) NSNumber *savedPreventsDisplaySleepDuringVideoPlayback API_AVAILABLE(ios(12.0), tvos(12.0));
@@ -142,6 +143,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     if (self = [super init]) {
         _playbackState = SRGMediaPlayerPlaybackStateIdle;
         _pictureInPictureEnabled = NO;
+        _playbackRate = 1.f;
         
         self.liveTolerance = SRGMediaPlayerDefaultLiveTolerance;
         self.endTolerance = SRGMediaPlayerDefaultEndTolerance;
@@ -1017,13 +1019,13 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     if (self.player) {
         // Normal conditions. Simply forward to the player
         if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
-            [self.player playImmediatelyIfPossible];
+            [self.player playImmediatelyIfPossibleAtRate:self.playbackRate];
         }
         // Playback ended. Restart at the beginning
         else {
             [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero notify:NO completionHandler:^(BOOL finished) {
                 if (finished) {
-                    [self.player playImmediatelyIfPossible];
+                    [self.player playImmediatelyIfPossibleAtRate:self.playbackRate];
                 }
             }];
         }
@@ -1126,7 +1128,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)togglePlayPause
 {
-    if (self.player && self.player.rate == 1.f) {
+    if (self.player && self.player.rate != 0.f) {
         [self pause];
     }
     else {
@@ -1501,7 +1503,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                     self.lastStallDetectionDate = nil;
                 }
                 else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                    [self.player playImmediatelyIfPossible];
+                    [self.player playImmediatelyIfPossibleAtRate:self.playbackRate];
                 }
             }
         }];
@@ -1877,6 +1879,23 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 #pragma mark Playback rate
 
+- (void)setPlaybackRate:(CGFloat)playbackRate
+{
+    if (! [self.supportedPlaybackRates containsObject:@(playbackRate)]) {
+        return;
+    }
+    
+    _playbackRate = playbackRate;
+    
+    // TODO: Check behavior when playback rate is changed while the player is paused. How can we apply the new value?
+    //       Maybe set to the new value then reset to 0 so that the player remembers its new rate?
+    if (self.player.rate != 0.f && self.player.rate != playbackRate) {
+        self.player.rate = playbackRate;
+    }
+    
+    // TODO: Notify (KVO?)
+}
+
 - (NSSet<NSNumber *> *)alternativePlaybackRates
 {
     return _alternativePlaybackRates ?: [NSSet setWithObjects:@0.5, @0.75, @1.5, @2, nil];
@@ -1884,10 +1903,17 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)setAlternativePlaybackRates:(NSSet<NSNumber *> *)alternativePlaybackRates
 {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSNumber * _Nullable rate, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return rate.doubleValue > 0. && rate.doubleValue != 1.;
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSNumber * _Nullable rateNumber, NSDictionary<NSString *,id> * _Nullable bindings) {
+        float rate = rateNumber.floatValue;
+        return rate > 0.f && rate != 1.f && rate <= 2.f;
     }];
+    
+    // TODO: Limit to 4 values at most?
     _alternativePlaybackRates = [alternativePlaybackRates filteredSetUsingPredicate:predicate];
+    
+    if (! [self.supportedPlaybackRates containsObject:@(self.playbackRate)]) {
+        self.playbackRate = 1.f;
+    }
 }
 
 - (NSSet<NSNumber *> *)supportedPlaybackRates
