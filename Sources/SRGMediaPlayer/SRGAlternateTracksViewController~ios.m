@@ -480,8 +480,11 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
             return index;
         } writer:^(NSInteger index) {
             @strongify(self)
-            NSNumber *rate = self.playbackRates[index];
-            self.mediaPlayerController.playbackRate = rate.floatValue;
+            // Introduce a slight delay to avoid immediate table view reloads due to the playback rate being changed
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSNumber *rate = self.playbackRates[index];
+                self.mediaPlayerController.playbackRate = rate.floatValue;
+            });
         }];
         return cell;
     }
