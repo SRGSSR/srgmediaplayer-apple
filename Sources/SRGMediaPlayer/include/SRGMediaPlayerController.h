@@ -896,4 +896,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/**
+ *  Standard playback speeds. Used when explicit playback speed proposals are made to the user. The rate of the player
+ *  can always be set to arbitrary values using `AVPlayer` rate property.
+ */
+@interface SRGMediaPlayerController (PlaybackSpeed)
+
+/**
+ *  Standard alternative playback speeds provided by the controller. Defaults to [0.5, 0.75, 1.5, 2].
+ *
+ *  @discussion Negative values are discarded as well as 1 (normal speed).
+ */
+@property (nonatomic, null_resettable) NSSet<NSNumber *> *alternativePlaybackSpeeds;
+
+/**
+ *  The list of standard playback speeds provided by the controller. 1 is always included.
+ */
+@property (nonatomic, readonly) NSSet<NSNumber *> *playbackSpeeds;
+
+@end
+
 NS_ASSUME_NONNULL_END

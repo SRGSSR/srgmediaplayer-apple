@@ -112,6 +112,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController) API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic) NSNumber *savedAllowsExternalPlayback;
 
+@property (nonatomic) NSSet<NSNumber *> *alternativePlaybackSpeeds;
+
 @property (nonatomic) NSNumber *savedPreventsDisplaySleepDuringVideoPlayback API_AVAILABLE(ios(12.0), tvos(12.0));
 
 @property (nonatomic) SRGPosition *startPosition;                   // Will be nilled when reached
@@ -131,6 +133,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @synthesize view = _view;
 @synthesize pictureInPictureEnabled = _pictureInPictureEnabled;
 @synthesize pictureInPictureController = _pictureInPictureController;
+@synthesize alternativePlaybackSpeeds = _alternativePlaybackSpeeds;
 
 #pragma mark Object lifecycle
 
@@ -1870,6 +1873,26 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     else {
         return ! subtitleOption || [subtitleOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles];
     }
+}
+
+#pragma mark Playback speed
+
+- (NSSet<NSNumber *> *)alternativePlaybackSpeeds
+{
+    return _alternativePlaybackSpeeds ?: [NSSet setWithObjects:@0.5, @0.75, @1.5, @2, nil];
+}
+
+- (void)setAlternativePlaybackSpeeds:(NSSet<NSNumber *> *)alternativePlaybackSpeeds
+{
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSNumber * _Nullable speed, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return speed.doubleValue > 0. && speed.doubleValue != 1.;
+    }];
+    _alternativePlaybackSpeeds = [alternativePlaybackSpeeds filteredSetUsingPredicate:predicate];
+}
+
+- (NSSet<NSNumber *> *)playbackSpeeds
+{
+    return [self.alternativePlaybackSpeeds setByAddingObject:@1];
 }
 
 #pragma mark Time observers
