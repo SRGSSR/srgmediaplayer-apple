@@ -141,7 +141,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (UIColor *)cellBackgroundColor
 {
-    return self.dark ? [UIColor colorWithWhite:0.07f alpha:0.75f] : UIColor.whiteColor;
+    return [UIColor colorWithWhite:self.dark ? 0.f : 1.f alpha:0.2f];
 }
 
 - (UIColor *)headerTextColor
@@ -330,7 +330,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         UIBlurEffectStyle blurStyle = isDark ? UIBlurEffectStyleSystemMaterialDark : UIBlurEffectStyleSystemMaterialLight;
         UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:blurStyle];
         self.tableView.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        self.tableView.backgroundColor = UIColor.clearColor;
+        self.tableView.backgroundColor = [UIColor colorWithWhite:isDark ? 0.f : 1.f alpha:0.8f];
     }
     else {
         self.navigationController.navigationBar.barStyle = isDark ? UIBarStyleBlack : UIBarStyleDefault;
