@@ -22,6 +22,7 @@
 
 typedef NSString * SRGAlternateTracksSectionType NS_STRING_ENUM;
 
+static SRGAlternateTracksSectionType const SRGAlternateTracksSectionTypePlaybackSpeed = @"playback_speed";
 static SRGAlternateTracksSectionType const SRGAlternateTracksSectionTypeAudioTracks = @"audio_tracks";
 static SRGAlternateTracksSectionType const SRGAlternateTracksSectionTypeSubtitles = @"subtitles";
 
@@ -261,6 +262,11 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
         NSMutableArray<SRGAlternateTracksSectionType> *sectionTypes = [NSMutableArray array];
         
+        // Displayed only if additional standard playback speeds have been set
+        if (self.mediaPlayerController.playbackSpeeds.count > 1) {
+            [sectionTypes addObject:SRGAlternateTracksSectionTypePlaybackSpeed];
+        }
+        
         // Displayed only if several audio options are available
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
@@ -381,7 +387,10 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     SRGAlternateTracksSectionType sectionType = self.sectionTypes[section];
-    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
+    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
+        return SRGMediaPlayerLocalizedString(@"Playback speed", @"Section header title in the alternate tracks popup menu, for setting the playback speed");
+    }
+    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
         return SRGMediaPlayerLocalizedString(@"Audio", @"Section header title in the alternate tracks popup menu, for audio tracks");
     }
     else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeSubtitles]) {
@@ -416,7 +425,10 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     SRGAlternateTracksSectionType sectionType = self.sectionTypes[section];
-    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
+    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
+        return 0;
+    }
+    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
         return self.audioOptions.count;
     }
     else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeSubtitles]) {
@@ -439,7 +451,10 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
     SRGAlternateTracksSectionType sectionType = self.sectionTypes[indexPath.section];
     
-    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
+    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
+        return nil;
+    }
+    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
         UITableViewCell *cell = nil;
         
         AVMediaSelectionOption *option = self.audioOptions[indexPath.row];
@@ -552,7 +567,10 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     SRGAlternateTracksSectionType sectionType = self.sectionTypes[indexPath.section];
-    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
+    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
+        
+    }
+    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
         [self.mediaPlayerController selectMediaOption:self.audioOptions[indexPath.row] inMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
     }
     else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeSubtitles]) {
