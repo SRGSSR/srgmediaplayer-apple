@@ -14,6 +14,7 @@
 #import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "SRGAlternateTracksSegmentCell.h"
 #import "SRGMediaAccessibility.h"
 #import "SRGMediaPlayerController+Private.h"
 #import "SRGRouteDetector.h"
@@ -171,6 +172,9 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    
+    Class segmentCellClass = SRGAlternateTracksSegmentCell.class;
+    [self.tableView registerClass:segmentCellClass forCellReuseIdentifier:NSStringFromClass(segmentCellClass)];
     
     // Force properties to avoid overrides with UIAppearance
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
@@ -426,7 +430,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 {
     SRGAlternateTracksSectionType sectionType = self.sectionTypes[section];
     if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
-        return 0;
+        return 1;
     }
     else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
         return self.audioOptions.count;
@@ -452,7 +456,13 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
     SRGAlternateTracksSectionType sectionType = self.sectionTypes[indexPath.section];
     
     if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
-        return nil;
+        SRGAlternateTracksSegmentCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(SRGAlternateTracksSegmentCell.class)];
+        [cell setItems:@[@"0.5x", @"0.75x", @"1x", @"1.5x", @"2x"] reader:^NSInteger{
+            return 0;
+        } writer:^(NSInteger index) {
+            
+        }];
+        return cell;
     }
     else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
         UITableViewCell *cell = nil;
