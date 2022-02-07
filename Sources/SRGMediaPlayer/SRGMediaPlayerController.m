@@ -47,6 +47,9 @@ static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlay
 static NSString *SRGMediaPlayerControllerNameForMediaType(SRGMediaPlayerMediaType mediaType);
 static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamType streamType);
 
+static NSSet<NSNumber *> *SRGMediaPlayerSupportedAlternativePlaybackRates(NSSet<NSNumber *> *playbackRates);
+static NSSet<NSNumber *> *SRGMediaPlayerSupportedPlaybackRatesFromAlternativePlaybackRates(NSSet<NSNumber *> *alternativePlaybackRates);
+
 static SRGTimePosition *SRGMediaPlayerControllerPositionInTimeRange(SRGTimePosition *timePosition, CMTimeRange timeRange, CMTime startOffset, CMTime endOffset);
 
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOption(NSArray<AVMediaSelectionOption *> *audioOptions);
@@ -1887,7 +1890,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)setPlaybackRate:(CGFloat)playbackRate
 {
-    NSSet<NSNumber *> *supportedPlaybackRates = [self.alternativePlaybackRates setByAddingObject:@1];
+    NSSet<NSNumber *> *supportedPlaybackRates = SRGMediaPlayerSupportedPlaybackRatesFromAlternativePlaybackRates(self.alternativePlaybackRates);
     if (! [supportedPlaybackRates containsObject:@(playbackRate)]) {
         return;
     }
@@ -1903,25 +1906,26 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (NSSet<NSNumber *> *)alternativePlaybackRates
 {
-    return _alternativePlaybackRates ?: [NSSet setWithObjects:@0.5, @0.75, @1.25, @1.5, @2, nil];
+    return _alternativePlaybackRates ?: SRGMediaPlayerSupportedAlternativePlaybackRates([NSSet setWithObjects:@0.5, @0.75, @1.25, @1.5, @2, nil]);
 }
 
 - (void)setAlternativePlaybackRates:(NSSet<NSNumber *> *)alternativePlaybackRates
 {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSNumber * _Nullable rateNumber, NSDictionary<NSString *,id> * _Nullable bindings) {
-        float rate = rateNumber.floatValue;
-        return rate > 0.f && rate != 1.f && rate <= 2.f;
-    }];
-    
-    // TODO: Limit to 5 distinct values at most?
     [self willChangeValueForKey:@keypath(self.alternativePlaybackRates)];
-    _alternativePlaybackRates = [alternativePlaybackRates filteredSetUsingPredicate:predicate];
+    _alternativePlaybackRates = SRGMediaPlayerSupportedAlternativePlaybackRates(alternativePlaybackRates);
     [self didChangeValueForKey:@keypath(self.alternativePlaybackRates)];
     
-    NSSet<NSNumber *> *supportedPlaybackRates = [self.alternativePlaybackRates setByAddingObject:@1];
+    NSSet<NSNumber *> *supportedPlaybackRates = SRGMediaPlayerSupportedPlaybackRatesFromAlternativePlaybackRates(_alternativePlaybackRates);
     if (! [supportedPlaybackRates containsObject:@(self.playbackRate)]) {
         self.playbackRate = 1.f;
     }
+}
+
+- (NSArray<NSNumber *> *)supportedPlaybackRates
+{
+    NSSet<NSNumber *> *supportedPlaybackRates = SRGMediaPlayerSupportedPlaybackRatesFromAlternativePlaybackRates(self.alternativePlaybackRates);
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES];
+    return [supportedPlaybackRates sortedArrayUsingDescriptors:@[sortDescriptor]];
 }
 
 #pragma mark Time observers
@@ -2222,6 +2226,20 @@ static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamT
                      @(SRGMediaPlayerStreamTypeDVR) : @"DVR" };
     });
     return s_names[@(streamType)] ?: @"unknown";
+}
+
+static NSSet<NSNumber *> *SRGMediaPlayerSupportedAlternativePlaybackRates(NSSet<NSNumber *> *playbackRates)
+{
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSNumber * _Nullable rateNumber, NSDictionary<NSString *,id> * _Nullable bindings) {
+        float rate = rateNumber.floatValue;
+        return rate > 0.f && rate != 1.f && rate <= 2.f;
+    }];
+    return [playbackRates filteredSetUsingPredicate:predicate];
+}
+
+static NSSet<NSNumber *> *SRGMediaPlayerSupportedPlaybackRatesFromAlternativePlaybackRates(NSSet<NSNumber *> *alternativePlaybackRates)
+{
+    return [SRGMediaPlayerSupportedAlternativePlaybackRates(alternativePlaybackRates) setByAddingObject:@1];
 }
 
 // Adjust position tolerance settings so that the position is guaranteed to fall within the specified time range. Offsets

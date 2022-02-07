@@ -916,6 +916,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, null_resettable) NSSet<NSNumber *> *alternativePlaybackRates;
 
+/**
+ *  Supported playback rates in increasing order. Includes the normal speed 1.
+ */
+@property (nonatomic, readonly) NSArray<NSNumber *> *supportedPlaybackRates;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -280,13 +280,10 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         NSMutableArray<SRGAlternateTracksSectionType> *sectionTypes = [NSMutableArray array];
         
         // Displayed only if additional standard playback speeds have been set
-        NSSet<NSNumber *> *alternativePlaybackRates = self.mediaPlayerController.alternativePlaybackRates;
-        if (alternativePlaybackRates.count != 0) {
+        NSArray<NSNumber *> *supportedPlaybackRates = self.mediaPlayerController.supportedPlaybackRates;
+        if (supportedPlaybackRates.count > 1) {
             [sectionTypes addObject:SRGAlternateTracksSectionTypePlaybackSpeed];
-            
-            NSSet<NSNumber *> *supportedPlaybackRates = [alternativePlaybackRates setByAddingObject:@1];
-            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES];
-            self.playbackRates = [supportedPlaybackRates sortedArrayUsingDescriptors:@[sortDescriptor]];
+            self.playbackRates = supportedPlaybackRates;
         }
         
         // Displayed only if several audio options are available
@@ -302,7 +299,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         
         // Always display subtitle options (Automatic and None are always valid available options)
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        NSArray<AVMediaSelectionOption *> * subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+        NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
         [sectionTypes addObject:SRGAlternateTracksSectionTypeSubtitles];
         self.subtitleOptions = subtitleOptions;
         
