@@ -275,17 +275,17 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (void)reloadData
 {
+    NSMutableArray<SRGAlternateTracksSectionType> *sectionTypes = [NSMutableArray array];
+    
+    // Displayed only if additional standard playback speeds have been set
+    NSArray<NSNumber *> *supportedPlaybackRates = self.mediaPlayerController.supportedPlaybackRates;
+    if (supportedPlaybackRates.count > 1) {
+        [sectionTypes addObject:SRGAlternateTracksSectionTypePlaybackSpeed];
+        self.playbackRates = supportedPlaybackRates;
+    }
+    
     AVAsset *asset = self.mediaPlayerController.player.currentItem.asset;
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-        NSMutableArray<SRGAlternateTracksSectionType> *sectionTypes = [NSMutableArray array];
-        
-        // Displayed only if additional standard playback speeds have been set
-        NSArray<NSNumber *> *supportedPlaybackRates = self.mediaPlayerController.supportedPlaybackRates;
-        if (supportedPlaybackRates.count > 1) {
-            [sectionTypes addObject:SRGAlternateTracksSectionTypePlaybackSpeed];
-            self.playbackRates = supportedPlaybackRates;
-        }
-        
         // Displayed only if several audio options are available
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
@@ -302,11 +302,8 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
         [sectionTypes addObject:SRGAlternateTracksSectionTypeSubtitles];
         self.subtitleOptions = subtitleOptions;
-        
-        self.sectionTypes = sectionTypes.copy;
     }
     else {
-        self.sectionTypes = nil;
         self.audioOptions = nil;
         self.subtitleOptions = nil;
         
@@ -318,6 +315,8 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
             });
         }];
     }
+    
+    self.sectionTypes = sectionTypes.copy;
     
     [self.tableView reloadData];
 }

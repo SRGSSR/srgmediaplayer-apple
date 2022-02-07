@@ -151,25 +151,28 @@ static void commonInit(SRGTracksButton *self);
     if (self.alwaysHidden) {
         self.hidden = YES;
     }
-    else if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-        self.hidden = NO;
-        AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        NSArray<AVMediaSelectionOption *> *subtitleOptions = subtitleGroup ? [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] : nil;
-        
-        // Enable the button if an (optional) subtitle has been selected
-        if (subtitleGroup) {
-            AVMediaSelectionOption *currentSubtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
-            [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
-        }
-        else {
-            [self.button setImage:self.image forState:UIControlStateNormal];
-        }
-    }
     else if (self.fakeInterfaceBuilderButton) {
         self.hidden = NO;
     }
     else {
-        self.hidden = YES;
+        self.hidden = NO;
+        
+        if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
+            AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+            NSArray<AVMediaSelectionOption *> *subtitleOptions = subtitleGroup ? [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] : nil;
+            
+            // Enable the button if an (optional) subtitle has been selected
+            if (subtitleGroup) {
+                AVMediaSelectionOption *currentSubtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
+                [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
+            }
+            else {
+                [self.button setImage:self.image forState:UIControlStateNormal];
+            }
+        }
+        else {
+            [self.button setImage:self.image forState:UIControlStateNormal];
+        }
     }
 }
 
