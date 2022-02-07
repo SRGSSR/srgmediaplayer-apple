@@ -1886,15 +1886,13 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return;
     }
     
+    [self willChangeValueForKey:@keypath(self.playbackRate)];
     _playbackRate = playbackRate;
+    [self didChangeValueForKey:@keypath(self.playbackRate)];
     
-    // TODO: Check behavior when playback rate is changed while the player is paused. How can we apply the new value?
-    //       Maybe set to the new value then reset to 0 so that the player remembers its new rate?
     if (self.player.rate != 0.f && self.player.rate != playbackRate) {
         self.player.rate = playbackRate;
     }
-    
-    // TODO: Notify (KVO?)
 }
 
 - (NSSet<NSNumber *> *)alternativePlaybackRates
@@ -1909,8 +1907,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return rate > 0.f && rate != 1.f && rate <= 2.f;
     }];
     
-    // TODO: Limit to 4 values at most?
+    // TODO: Limit to 4 distinct values at most?
+    [self willChangeValueForKey:@keypath(self.alternativePlaybackRates)];
     _alternativePlaybackRates = [alternativePlaybackRates filteredSetUsingPredicate:predicate];
+    [self didChangeValueForKey:@keypath(self.alternativePlaybackRates)];
     
     NSSet<NSNumber *> *supportedPlaybackRates = [self.alternativePlaybackRates setByAddingObject:@1];
     if (! [supportedPlaybackRates containsObject:@(self.playbackRate)]) {
@@ -2133,7 +2133,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             || [key isEqualToString:@keypath(SRGMediaPlayerController.new, mediaType)]
             || [key isEqualToString:@keypath(SRGMediaPlayerController.new, timeRange)]
             || [key isEqualToString:@keypath(SRGMediaPlayerController.new, streamType)]
-            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, live)]) {
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, live)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, playbackRate)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, alternativePlaybackRates)]) {
         return NO;
     }
     else {
