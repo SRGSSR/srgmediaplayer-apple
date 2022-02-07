@@ -1897,7 +1897,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (NSSet<NSNumber *> *)alternativePlaybackRates
 {
-    return _alternativePlaybackRates ?: [NSSet setWithObjects:@0.5, @0.75, @1.5, @2, nil];
+    return _alternativePlaybackRates ?: [NSSet setWithObjects:@0.5, @0.75, @1.25, @1.5, @2, nil];
 }
 
 - (void)setAlternativePlaybackRates:(NSSet<NSNumber *> *)alternativePlaybackRates
@@ -1907,7 +1907,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return rate > 0.f && rate != 1.f && rate <= 2.f;
     }];
     
-    // TODO: Limit to 4 distinct values at most?
+    // TODO: Limit to 5 distinct values at most?
     [self willChangeValueForKey:@keypath(self.alternativePlaybackRates)];
     _alternativePlaybackRates = [alternativePlaybackRates filteredSetUsingPredicate:predicate];
     [self didChangeValueForKey:@keypath(self.alternativePlaybackRates)];
