@@ -265,6 +265,12 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.rate) options:0 block:^(MAKVONotification *notification) {
             @strongify(self) @strongify(player)
             
+            // Ensure the value stays consistent with the user setting, even if the system changes it (e.g. play / pause
+            // triggered from the picture in picture overlay).
+            if (player.rate != 0.f && player.rate != self.playbackRate) {
+                player.rate = self.playbackRate;
+            }
+            
             AVPlayerItem *playerItem = player.currentItem;
             
             // Only respond to rate changes when the item is ready to play 
