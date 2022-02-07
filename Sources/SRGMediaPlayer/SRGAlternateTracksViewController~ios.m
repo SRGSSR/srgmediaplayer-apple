@@ -300,15 +300,11 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
             self.audioOptions = nil;
         }
         
-        // Displayed if a subtitle group is available (even if empty; None and Automatic are always valid additional values)
+        // Always display subtitle options (Automatic and None are always valid available options)
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        if (subtitleGroup) {
-            [sectionTypes addObject:SRGAlternateTracksSectionTypeSubtitles];
-            self.subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-        }
-        else {
-            self.subtitleOptions = nil;
-        }
+        NSArray<AVMediaSelectionOption *> * subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
+        [sectionTypes addObject:SRGAlternateTracksSectionTypeSubtitles];
+        self.subtitleOptions = subtitleOptions;
         
         self.sectionTypes = sectionTypes.copy;
     }

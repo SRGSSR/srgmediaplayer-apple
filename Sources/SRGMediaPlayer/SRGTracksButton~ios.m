@@ -152,28 +152,17 @@ static void commonInit(SRGTracksButton *self);
         self.hidden = YES;
     }
     else if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-        // Get available tracks. The button is only available if there are subtitles and / or audio tracks to choose from. If
-        // subtitles are set, display the button in a selected state.
-        AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-        NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
-        
+        self.hidden = NO;
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         NSArray<AVMediaSelectionOption *> *subtitleOptions = subtitleGroup ? [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] : nil;
         
-        if (audioOptions.count > 1 || subtitleOptions.count != 0) {
-            self.hidden = NO;
-            
-            // Enable the button if an (optional) subtitle has been selected
-            if (subtitleGroup) {
-                AVMediaSelectionOption *currentSubtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
-                [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
-            }
-            else {
-                [self.button setImage:self.image forState:UIControlStateNormal];
-            }
+        // Enable the button if an (optional) subtitle has been selected
+        if (subtitleGroup) {
+            AVMediaSelectionOption *currentSubtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
+            [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
         }
         else {
-            self.hidden = YES;
+            [self.button setImage:self.image forState:UIControlStateNormal];
         }
     }
     else if (self.fakeInterfaceBuilderButton) {
