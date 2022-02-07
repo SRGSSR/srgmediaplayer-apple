@@ -469,14 +469,9 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         @weakify(self)
         [cell setItems:SRGItemsForPlaybackRates(self.playbackRates) reader:^NSInteger{
             @strongify(self)
-            // FIXME: Quick and dirty. Must be improved
-            NSUInteger index = [self.playbackRates indexOfObject:@(self.mediaPlayerController.player.rate)];
-            if (index != NSNotFound) {
-                return index;
-            }
-            else {
-                return 0;
-            }
+            NSUInteger index = [self.playbackRates indexOfObject:@(self.mediaPlayerController.playbackRate)];
+            NSCAssert(index != NSNotFound, @"Only supported playback rates are displayed");
+            return index;
         } writer:^(NSInteger index) {
             @strongify(self)
             NSNumber *rate = self.playbackRates[index];
