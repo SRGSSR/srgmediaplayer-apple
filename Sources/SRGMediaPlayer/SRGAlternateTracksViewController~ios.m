@@ -413,7 +413,15 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     SRGAlternateTracksSectionType sectionType = self.sectionTypes[section];
-    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
+    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
+        if (self.mediaPlayerController.playbackRate != 1.f) {
+            return SRGMediaPlayerLocalizedString(@"Some content might still be played at 1×.", @"Information footer about playback speed restrictions");
+        }
+        else {
+            return nil;
+        }
+    }
+    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
         return SRGMediaPlayerLocalizedString(@"You can enable Audio Description automatic selection in the Accessibility settings.", @"Instructions for audio customization");
     }
     else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeSubtitles]) {
