@@ -115,7 +115,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController) API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic) NSNumber *savedAllowsExternalPlayback;
 
-@property (nonatomic) CGFloat playbackRate;
+@property (nonatomic) float playbackRate;
 @property (nonatomic) NSSet<NSNumber *> *alternativePlaybackRates;
 
 @property (nonatomic) NSNumber *savedPreventsDisplaySleepDuringVideoPlayback API_AVAILABLE(ios(12.0), tvos(12.0));
@@ -1888,7 +1888,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 #pragma mark Playback rate
 
-- (void)setPlaybackRate:(CGFloat)playbackRate
+- (void)setPlaybackRate:(float)playbackRate
 {
     NSSet<NSNumber *> *supportedPlaybackRates = SRGMediaPlayerSupportedPlaybackRatesFromAlternativePlaybackRates(self.alternativePlaybackRates);
     if (! [supportedPlaybackRates containsObject:@(playbackRate)]) {

@@ -906,7 +906,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @discussion This value stays the same when the player is paused, unlike `AVPlayer` rate.
  */
-@property (nonatomic) CGFloat playbackRate;
+@property (nonatomic) float playbackRate;
 
 /**
  *  Standard alternative playback rates provided by the controller. Defaults to [0.5, 0.75, 1.5, 2].
