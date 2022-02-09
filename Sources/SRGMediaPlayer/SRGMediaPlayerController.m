@@ -47,9 +47,6 @@ static NSString *SRGMediaPlayerControllerNameForPlaybackState(SRGMediaPlayerPlay
 static NSString *SRGMediaPlayerControllerNameForMediaType(SRGMediaPlayerMediaType mediaType);
 static NSString *SRGMediaPlayerControllerNameForStreamType(SRGMediaPlayerStreamType streamType);
 
-static NSSet<NSNumber *> *SRGMediaPlayerSupportedAlternativePlaybackRates(NSSet<NSNumber *> *playbackRates);
-static NSSet<NSNumber *> *SRGMediaPlayerSupportedPlaybackRatesFromAlternativePlaybackRates(NSSet<NSNumber *> *alternativePlaybackRates);
-
 static SRGTimePosition *SRGMediaPlayerControllerPositionInTimeRange(SRGTimePosition *timePosition, CMTimeRange timeRange, CMTime startOffset, CMTime endOffset);
 
 static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticAudioDefaultOption(NSArray<AVMediaSelectionOption *> *audioOptions);
@@ -1890,8 +1887,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)setPlaybackRate:(float)playbackRate
 {
-    NSSet<NSNumber *> *supportedPlaybackRates = SRGMediaPlayerSupportedPlaybackRatesFromAlternativePlaybackRates(self.alternativePlaybackRates);
-    if (! [supportedPlaybackRates containsObject:@(playbackRate)]) {
+    if (! [self.supportedPlaybackRates containsObject:@(playbackRate)]) {
+        SRGMediaPlayerLogWarning(@"Controller", @"Attempting to set an unsupported playback rate. Ignored");
         return;
     }
     
@@ -1904,28 +1901,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
 }
 
-- (NSSet<NSNumber *> *)alternativePlaybackRates
-{
-    return _alternativePlaybackRates ?: SRGMediaPlayerSupportedAlternativePlaybackRates([NSSet setWithObjects:@0.5, @0.75, @1.25, @1.5, @2, nil]);
-}
-
-- (void)setAlternativePlaybackRates:(NSSet<NSNumber *> *)alternativePlaybackRates
-{
-    [self willChangeValueForKey:@keypath(self.alternativePlaybackRates)];
-    _alternativePlaybackRates = SRGMediaPlayerSupportedAlternativePlaybackRates(alternativePlaybackRates);
-    [self didChangeValueForKey:@keypath(self.alternativePlaybackRates)];
-    
-    NSSet<NSNumber *> *supportedPlaybackRates = SRGMediaPlayerSupportedPlaybackRatesFromAlternativePlaybackRates(_alternativePlaybackRates);
-    if (! [supportedPlaybackRates containsObject:@(self.playbackRate)]) {
-        self.playbackRate = 1.f;
-    }
-}
-
 - (NSArray<NSNumber *> *)supportedPlaybackRates
 {
-    NSSet<NSNumber *> *supportedPlaybackRates = SRGMediaPlayerSupportedPlaybackRatesFromAlternativePlaybackRates(self.alternativePlaybackRates);
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES];
-    return [supportedPlaybackRates sortedArrayUsingDescriptors:@[sortDescriptor]];
+    return @[ @0.5, @0.75, @1, @1.25, @1.5, @2 ];
 }
 
 #pragma mark Time observers
