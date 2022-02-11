@@ -81,12 +81,17 @@ end
 def srg_xcodebuild(device, test_build)
   xcodebuild(
     test: true,
+    xcargs: srg_test_xcargs,
     workspace: srg_xcodebuild_workspace(test_build),
     scheme: srg_xcodebuild_scheme(test_build),
     destination: srg_xcodebuild_destination(device),
     result_bundle_path: srg_xcodebuild_result_bundle_path(device, test_build),
     derivedDataPath: srg_xcodebuild_derived_data_path
   )
+end
+
+def srg_test_xcargs
+  '-retry-tests-on-failure'
 end
 
 def srg_xcodebuild_workspace(test_build)
@@ -121,6 +126,7 @@ def srg_trainer
     path: result_bundle_folder_path,
     output_directory: './fastlane',
     extension: raw_extension,
+    output_remove_retry_attempts: true,
     fail_build: false
   )
 end
