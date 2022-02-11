@@ -9,7 +9,7 @@
 # All lines starting with a # are ignored when running `fastlane`
 
 # This is the minimum version number required.
-fastlane_version '2.96.0'
+fastlane_version '2.201.0'
 
 default_platform :ios
 
