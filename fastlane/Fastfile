@@ -25,9 +25,9 @@ platform :ios do
     clean_result_files
     clean_derived_data
 
-    iphone11 = Device.new('iOS', 'iPhone 11')
+    iphone13 = Device.new('iOS', 'iPhone 13')
     appletv = Device.new('tvOS', 'Apple TV')
-    devices = [iphone11, appletv]
+    devices = [iphone13, appletv]
 
     scheme = swift_package_name
     swift_package_tests = TestBuild.new(scheme, '', false)
