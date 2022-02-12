@@ -37,8 +37,7 @@ platform :ios do
     srg_run_tests(devices, test_builds)
 
     # Produce JUnit files for CI
-    srg_trainer
-    override_junit_test_suite_names(test_builds)
+    srg_junit_files
   end
 
   after_all do
@@ -110,11 +109,18 @@ def srg_xcodebuild_derived_data_path
   '.build/DerivedData'
 end
 
+def srg_junit_files
+  srg_trainer
+  override_junit_test_suite_names
+  expose_junit_files
+end
+
 # Convert xcresults to JUnit files
 def srg_trainer
   trainer(
     path: result_bundle_folder_path,
     output_directory: './fastlane',
+    extension: raw_extension,
     fail_build: false
   )
 end
@@ -123,12 +129,14 @@ def result_bundle_folder_path
   './fastlane/xcresult/'
 end
 
+def raw_extension
+  '.rawjunit'
+end
+
 # Override JUnit test suite names to split iOS and tvOS test results
-def override_junit_test_suite_names(test_builds)
-  test_builds.each do |test_build|
-    Dir["#{test_build.scheme}-*.xml"].each do |file_name|
-      override_junit_test_suite_name(file_name)
-    end
+def override_junit_test_suite_names
+  Dir["*#{raw_extension}"].each do |file_name|
+    override_junit_test_suite_name(file_name)
   end
 end
 
@@ -138,6 +146,14 @@ def override_junit_test_suite_name(file_name)
   xml = file.read.gsub('Tests" tests="', "-#{platform}\" tests=\"")
   xml = xml.gsub('-tests" tests="', "-#{platform}\" tests=\"")
   File.write(file_name, xml)
+end
+
+def expose_junit_files
+  Dir["*#{raw_extension}"].each do |file_name|
+    # Rename JUnit files with correct extension
+    new_file_name = file_name.gsub(raw_extension, '.xml')
+    File.rename(file_name, new_file_name) unless File.exist?(new_file_name)
+  end
 end
 
 # More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
