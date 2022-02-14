@@ -114,6 +114,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 @property (nonatomic) float playbackRate;
 @property (nonatomic) NSSet<NSNumber *> *alternativePlaybackRates;
+@property (nonatomic) float effectivePlaybackRate;
 
 @property (nonatomic) NSNumber *savedPreventsDisplaySleepDuringVideoPlayback API_AVAILABLE(ios(12.0), tvos(12.0));
 
@@ -144,6 +145,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         _playbackState = SRGMediaPlayerPlaybackStateIdle;
         _pictureInPictureEnabled = NO;
         _playbackRate = 1.f;
+        _effectivePlaybackRate = 1.f;
         
         self.liveTolerance = SRGMediaPlayerDefaultLiveTolerance;
         self.endTolerance = SRGMediaPlayerDefaultEndTolerance;
@@ -264,12 +266,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         
         [player srg_addMainThreadObserver:self keyPath:@keypath(player.rate) options:0 block:^(MAKVONotification *notification) {
             @strongify(self) @strongify(player)
-            
-            // Ensure the value stays consistent with the user setting, even if the system changes it (e.g. play / pause
-            // triggered from the picture in picture overlay).
-            if (player.rate != 0.f && player.rate != self.playbackRate) {
-                player.rate = self.playbackRate;
-            }
             
             AVPlayerItem *playerItem = player.currentItem;
             
@@ -401,11 +397,15 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     [self didChangeValueForKey:@keypath(self.mediaType)];
 }
 
-- (void)setTimeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType live:(BOOL)live
+- (void)setTimeRange:(CMTimeRange)timeRange
+          streamType:(SRGMediaPlayerStreamType)streamType
+                live:(BOOL)live
+effectivePlaybackRate:(float)effectivePlaybackRate
 {
     BOOL timeRangeChange = ! CMTimeRangeEqual(timeRange, _timeRange);
     BOOL streamTypeChange = (streamType != _streamType);
     BOOL liveChange = (live != _live);
+    BOOL effectivePlaybackRateChange = (effectivePlaybackRate != _effectivePlaybackRate);
     
     if (timeRangeChange) {
         [self willChangeValueForKey:@keypath(self.timeRange)];
@@ -416,10 +416,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     if (liveChange) {
         [self willChangeValueForKey:@keypath(self.live)];
     }
+    if (effectivePlaybackRateChange) {
+        [self willChangeValueForKey:@keypath(self.effectivePlaybackRate)];
+    }
     
     _timeRange = timeRange;
     _streamType = streamType;
     _live = live;
+    _effectivePlaybackRate = effectivePlaybackRate;
     
     if (timeRangeChange) {
         [self didChangeValueForKey:@keypath(self.timeRange)];
@@ -429,6 +433,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
     if (liveChange) {
         [self didChangeValueForKey:@keypath(self.live)];
+    }
+    if (effectivePlaybackRateChange) {
+        [self didChangeValueForKey:@keypath(self.effectivePlaybackRate)];
     }
 }
 
@@ -582,15 +589,25 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     CMTimeRange timeRange = self.playbackInformationCached ? self.timeRange : [self timeRangeForPlayerItem:playerItem];
     SRGMediaPlayerStreamType streamType = self.playbackInformationCached ? self.streamType : [self streamTypeForPlayerItem:playerItem timeRange:timeRange];
-    BOOL live = [self isLiveForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
+    BOOL live = [self isNearLiveEdgeForPlayerItem:playerItem tolerance:self.liveTolerance timeRange:timeRange streamType:streamType];
+    float effectivePlaybackRate = [self effectivePlaybackRateForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
     
     [self updateReferenceForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
-    [self setTimeRange:timeRange streamType:streamType live:live];
+    [self setTimeRange:timeRange streamType:streamType live:live effectivePlaybackRate:effectivePlaybackRate];
     
     // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when AirPlay is
     // connected or disconnected)
     if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
         self.playbackInformationCached = YES;
+    }
+    
+    // Ensure the player rate is correct:
+    //   - If the value is changed on `AVPlayer` directly we must ensure the intended rate is restored. This can happen
+    //     if the user accesses `AVPlayer` (which is documented as undefined behavior) or if the system changes the
+    //     speed (e.g. pause / play triggered from the picture in picture overlay).
+    //   - Playback fails if `AVPlayer` crosses the live edge of a DVR stream with a rate greater than 1.
+    if (player.rate != 0.f && player.rate != effectivePlaybackRate) {
+        player.rate = effectivePlaybackRate;
     }
 }
 
@@ -643,13 +660,44 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
 }
 
-- (BOOL)isLiveForPlayerItem:(AVPlayerItem *)playerItem timeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType
+- (float)effectivePlaybackRateForPlayerItem:(AVPlayerItem *)playerItem timeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType
 {
+    static const NSTimeInterval kLiveEdgeTolerance = 1.;
+    
+    // When the distance from the live edge is below some tolerance we want the effective playback rate to be at most 1,
+    // as larger values would make playback fail when reaching the edge.
+    if ([self isNearLiveEdgeForPlayerItem:playerItem tolerance:kLiveEdgeTolerance timeRange:timeRange streamType:streamType]) {
+        return fminf(self.playbackRate, 1.f);
+    }
+    // Conversely the playback rate can be restored to the intended rate when getting away from the live edge, but this
+    // cannot happen using the same tolerance as when nearing the edge. Chunks being periodically added would otherwise make
+    // the effective playback rate oscillate between the intended value and 1, which would be awkward. By adding the live
+    // tolerance (which should be larger than a multiple of the chunk size) to the live edge tolerance we obtain a tolerance
+    // at which the desired playback rate can be reliably applied.
+    else if (! [self isNearLiveEdgeForPlayerItem:playerItem tolerance:kLiveEdgeTolerance + self.liveTolerance timeRange:timeRange streamType:streamType]) {
+        return self.playbackRate;
+    }
+    // In between both tolerances we just keep the current effective playback rate. This ensures the optimal effective
+    // playback rate is applied, whether we are nearing the edge or getting away from it.
+    else {
+        if (_effectivePlaybackRate == 1.f || _effectivePlaybackRate == self.playbackRate) {
+            return _effectivePlaybackRate;
+        }
+        else {
+            return self.playbackRate;
+        }
+    }
+}
+
+- (BOOL)isNearLiveEdgeForPlayerItem:(AVPlayerItem *)playerItem tolerance:(NSTimeInterval)tolerance timeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType
+{
+    NSAssert(tolerance >= 0., @"The tolerance must be >= 0");
+    
     if (streamType == SRGMediaPlayerStreamTypeLive) {
         return YES;
     }
     else if (streamType == SRGMediaPlayerStreamTypeDVR) {
-        return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), playerItem.currentTime)) < self.liveTolerance;
+        return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), playerItem.currentTime)) < tolerance;
     }
     else {
         return NO;
@@ -1025,13 +1073,13 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     if (self.player) {
         // Normal conditions. Simply forward to the player
         if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
-            [self.player playImmediatelyIfPossibleAtRate:self.playbackRate];
+            [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
         }
         // Playback ended. Restart at the beginning
         else {
             [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero notify:NO completionHandler:^(BOOL finished) {
                 if (finished) {
-                    [self.player playImmediatelyIfPossibleAtRate:self.playbackRate];
+                    [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
                 }
             }];
         }
@@ -1352,7 +1400,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.referenceTime = kCMTimeIndefinite;
     self.referenceDate = nil;
     
-    [self setTimeRange:kCMTimeRangeInvalid streamType:SRGMediaPlayerStreamTypeUnknown live:NO];
+    [self setTimeRange:kCMTimeRangeInvalid streamType:SRGMediaPlayerStreamTypeUnknown live:NO effectivePlaybackRate:self.playbackRate];
     
     self.playbackInformationCached = NO;
     
@@ -1509,7 +1557,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                     self.lastStallDetectionDate = nil;
                 }
                 else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                    [self.player playImmediatelyIfPossibleAtRate:self.playbackRate];
+                    [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
                 }
             }
         }];
@@ -1896,9 +1944,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     _playbackRate = playbackRate;
     [self didChangeValueForKey:@keypath(self.playbackRate)];
     
-    if (self.player.rate != 0.f && self.player.rate != playbackRate) {
-        self.player.rate = playbackRate;
-    }
+    [self updatePlaybackInformationForPlayer:self.player];
 }
 
 - (NSArray<NSNumber *> *)supportedPlaybackRates
