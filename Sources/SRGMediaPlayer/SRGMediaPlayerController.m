@@ -662,7 +662,7 @@ effectivePlaybackRate:(float)effectivePlaybackRate
 
 - (float)effectivePlaybackRateForPlayerItem:(AVPlayerItem *)playerItem timeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType
 {
-    static const NSTimeInterval kLiveEdgeTolerance = 1.;
+    static const NSTimeInterval kLiveEdgeTolerance = 5.;
     
     // When the distance from the live edge is below some tolerance we want the effective playback rate to be at most 1,
     // as larger values would make playback fail when reaching the edge.
