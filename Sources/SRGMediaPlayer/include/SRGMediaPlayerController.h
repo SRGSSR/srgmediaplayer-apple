@@ -918,7 +918,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  conditions (e.g. livestreams). The effective playback rate provides the currently applicable value.
  *  Key-value observable.
  */
-@property (nonatomic) float effectivePlaybackRate;
+@property (nonatomic, readonly) float effectivePlaybackRate;
 
 @end
 
