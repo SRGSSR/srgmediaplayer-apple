@@ -286,7 +286,6 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     
     AVAsset *asset = self.mediaPlayerController.player.currentItem.asset;
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-        // Displayed only if several audio options are available
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
         if (audioOptions.count > 1) {
@@ -297,11 +296,15 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
             self.audioOptions = nil;
         }
         
-        // Always display subtitle options (Automatic and None are always valid available options)
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
-        [sectionTypes addObject:SRGAlternateTracksSectionTypeSubtitles];
-        self.subtitleOptions = subtitleOptions;
+        if (subtitleOptions.count != 0) {
+            [sectionTypes addObject:SRGAlternateTracksSectionTypeSubtitles];
+            self.subtitleOptions = subtitleOptions;
+        }
+        else {
+            self.subtitleOptions = nil;
+        }
     }
     else {
         self.audioOptions = nil;
