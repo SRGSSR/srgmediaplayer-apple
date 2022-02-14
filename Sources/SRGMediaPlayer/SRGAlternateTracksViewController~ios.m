@@ -81,6 +81,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     if (_mediaPlayerController) {
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.currentItem.asset)];
         [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.playbackRate)];
+        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.effectivePlaybackRate)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerAudioTrackDidChangeNotification
@@ -99,6 +100,10 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
             [self reloadData];
         }];
         [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.playbackRate) options:0 block:^(MAKVONotification * _Nonnull notification) {
+            @strongify(self)
+            [self reloadData];
+        }];
+        [mediaPlayerController srg_addMainThreadObserver:self keyPath:@keypath(mediaPlayerController.effectivePlaybackRate) options:0 block:^(MAKVONotification * _Nonnull notification) {
             @strongify(self)
             [self reloadData];
         }];
@@ -414,8 +419,9 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 {
     SRGAlternateTracksSectionType sectionType = self.sectionTypes[section];
     if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
-        if (self.mediaPlayerController.playbackRate != 1.f) {
-            return SRGMediaPlayerLocalizedString(@"Some content might still be played at 1×.", @"Information footer about playback speed restrictions");
+        float effectivePlaybackRate = self.mediaPlayerController.effectivePlaybackRate;
+        if (self.mediaPlayerController.playbackRate != effectivePlaybackRate) {
+            return [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"The playback speed is restricted to %@×.", @"Information footer about playback speed restrictions"), @(effectivePlaybackRate)];
         }
         else {
             return nil;
