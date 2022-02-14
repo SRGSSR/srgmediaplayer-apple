@@ -277,12 +277,10 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 {
     NSMutableArray<SRGAlternateTracksSectionType> *sectionTypes = [NSMutableArray array];
     
-    // Displayed only if additional standard playback speeds have been set
     NSArray<NSNumber *> *supportedPlaybackRates = self.mediaPlayerController.supportedPlaybackRates;
-    if (supportedPlaybackRates.count > 1) {
-        [sectionTypes addObject:SRGAlternateTracksSectionTypePlaybackSpeed];
-        self.playbackRates = supportedPlaybackRates;
-    }
+    NSAssert(supportedPlaybackRates.count > 1, @"More than one playback speeds must be available");
+    [sectionTypes addObject:SRGAlternateTracksSectionTypePlaybackSpeed];
+    self.playbackRates = supportedPlaybackRates;
     
     AVAsset *asset = self.mediaPlayerController.player.currentItem.asset;
     if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
