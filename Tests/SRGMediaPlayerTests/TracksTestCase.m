@@ -12,7 +12,7 @@
 
 static NSURL *SwissTracksOnDemandTestURL(void)
 {
-    return [NSURL URLWithString:@"https://rts-vod-amd.akamaized.net/ww/hls/8806923/ead53ddc-4703-35bd-b6a2-c0a9231a4d62/master.m3u8"];
+    return [NSURL URLWithString:@"https://rts-vod-amd.akamaized.net/ww/8806923/f896dc42-b777-387e-9767-9e8821b502e9/master.m3u8"];
 }
 
 static NSURL *InternationalTracksOnDemandTestURL(void)
