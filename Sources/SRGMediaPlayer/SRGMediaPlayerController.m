@@ -702,12 +702,7 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     // In between both tolerances we just keep the current effective playback rate. This ensures the optimal effective
     // playback rate is applied, whether we are nearing the edge or getting away from it.
     else {
-        if (_effectivePlaybackRate == 1.f || _effectivePlaybackRate == self.playbackRate) {
-            return _effectivePlaybackRate;
-        }
-        else {
-            return self.playbackRate;
-        }
+        return (_effectivePlaybackRate == 1.f) ? _effectivePlaybackRate : self.playbackRate;
     }
 }
 
