@@ -909,7 +909,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) float playbackRate;
 
 /**
- *  Supported playback rates in increasing order. Includes the normal speed 1. Key-value observable.
+ *  Supported playback rates in increasing order. Includes the normal speed 1.
  */
 @property (nonatomic, readonly) NSArray<NSNumber *> *supportedPlaybackRates;
 
