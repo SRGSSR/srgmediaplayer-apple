@@ -68,6 +68,17 @@
                BlueprintName = "SRGMediaPlayerTests"
                ReferencedContainer = "container:">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "PlaybackTestCase/testOnDemandPlaybackStartAtTimeWithTolerances">
+               </Test>
+               <Test
+                  Identifier = "SegmentsTestCase/testStartTimeAroundBeginningOfSegmentWithSelection">
+               </Test>
+               <Test
+                  Identifier = "SegmentsTestCase/testStartTimeAroundEndOfSegmentWithSelection">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
