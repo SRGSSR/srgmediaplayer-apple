@@ -658,6 +658,30 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     }
 }
 
+/**
+ *  Calculate the effective playback rate. This is required for DVR streams which require the rate to be adjusted near
+ *  the live edge to avoid playback issues (playing in the future is not possible). This method also delivers correct
+ *  effective playback rates for on-demand and livestreams without DVR.
+ *
+ *  For a DVR livestreams this method adjusts the playback rate differently depending on where the playhead position
+ *  currently is, as follows:
+ *
+ *
+ *                               Restore to desired rate                                     Force to 1
+ *
+ *                                 ◀──────────────────                                   ──────────────────▶
+ *
+ *    ┌─────────────────────────────────────┬────────────────────────────────────────────────────┬───────────────────────────────┐
+ *    │                                     │                                                    │                               │
+ *    │      Desired effective rate         │                  Keep current rate                 │      Effective rate = 1       │
+ *    │                                     │                                                    │                               │
+ *    └─────────────────────────────────────┼────────────────────────────────────────────────────┼───────────────────────────────┤
+ *                                          │                                                    │                               │
+ *
+ *                                 kLiveEdgeTolerance +                                   kLiveEdgeTolerance                    Live
+ *                                  self.liveTolerance                                                                          edge
+ *
+ */
 - (float)effectivePlaybackRateForPlayerItem:(AVPlayerItem *)playerItem timeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType
 {
     static const NSTimeInterval kLiveEdgeTolerance = 5.;
