@@ -140,7 +140,7 @@ Do not use `[UIApplication.sharedApplication beginReceivingRemoteControlEvents]`
 
 ## Subtitles and audio tracks
 
-SRG Media Player provides on iOS a built-in `SRGTracksButton` which, when added to a player layout and bound to a media player controller, is displayed when audio or subtitle options are detected. Tapping on this button lets the user choose one of the options provided by the media being played. 
+SRG Media Player provides a built-in `SRGSettingsButton` on iOS which can be added to a player layout and bound to a media player controller. Tapping this button lets the user choose subtitles and audio tracks if the media provides several choices.
 
 Subtitle choice made using this button is persisted at the system level, and will be reapplied in subsequent playback contexts, e.g. when playing another media with `SRGMediaPlayerController`, `AVPlayerViewController` or even Safari. Conversely, choices made in other playback contexts will also determine the initial default audio and subtitle selection for `SRGMediaPlayerController`. Please refer to the [official MediaAccessibility framework documentation](https://developer.apple.com/documentation/mediaaccessibility) for more information.
 
@@ -172,6 +172,10 @@ AVTextStyleRule *rule = [[AVTextStyleRule alloc] initWithTextMarkupAttributes:@{
                                                                                  (id)kCMTextMarkupAttribute_ItalicStyle : @(YES)}];
 self.mediaPlayerController.textStyleRules = @[rule];
 ``` 
+
+## Playback rate
+
+The `SRGSettingsButton` also provides playback rate controls. The playback rate can also be changed programmatically using the dedicated API, most notably the `playbackRate` controller property. Some streams, most notably livestreams played in live conditions, might not support rates larger than 1.
 
 ## Custom resource loading and FairPlay support
 

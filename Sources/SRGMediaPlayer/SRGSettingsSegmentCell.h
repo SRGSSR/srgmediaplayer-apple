@@ -8,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SRGAlternateTracksSegmentCell : UITableViewCell
+@interface SRGSettingsSegmentCell : UITableViewCell
 
 - (void)setItems:(NSArray<NSString *> *)items reader:(NSInteger (^)(void))reader writer:(void (^)(NSInteger index))writer;
 

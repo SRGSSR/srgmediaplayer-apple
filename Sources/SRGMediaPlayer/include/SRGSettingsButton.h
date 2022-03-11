@@ -11,25 +11,25 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SRGTracksButton;
+@class SRGSettingsButton;
 
 /**
- *  Tracks button delegate protocol.
+ *  Settings button delegate protocol.
  */
 API_UNAVAILABLE(tvos)
-@protocol SRGTracksButtonDelegate <NSObject>
+@protocol SRGSettingsButtonDelegate <NSObject>
 
 @optional
 
 /**
- *  The button is about to show the track selection.
+ *  The button is about to show the settings view.
  */
-- (void)tracksButtonWillShowTrackSelection:(SRGTracksButton *)tracksButton;
+- (void)settingsButtonWillShowSettings:(SRGSettingsButton *)settingsButton;
 
 /**
- *  The track selection has been hidden.
+ *  The settings have been hidden.
  */
-- (void)tracksButtonDidHideTrackSelection:(SRGTracksButton *)tracksButton;
+- (void)settingsButtonDidHideSettings:(SRGSettingsButton *)settingsButton;
 
 @end
 
@@ -46,7 +46,7 @@ API_UNAVAILABLE(tvos)
  *  button is set to the selected state (with a corresponding image).
  */
 API_UNAVAILABLE(tvos)
-@interface SRGTracksButton : UIView
+@interface SRGSettingsButton : UIView
 
 /**
  *  The media player which the button must be associated with.
@@ -76,7 +76,7 @@ API_UNAVAILABLE(tvos)
 /**
  *  The button delegate.
  */
-@property (nonatomic, weak) IBOutlet id<SRGTracksButtonDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<SRGSettingsButtonDelegate> delegate;
 
 @end
 

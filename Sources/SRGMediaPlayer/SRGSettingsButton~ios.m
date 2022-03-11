@@ -8,29 +8,29 @@
 
 #if TARGET_OS_IOS
 
-#import "SRGTracksButton.h"
+#import "SRGSettingsButton.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "AVMediaSelectionGroup+SRGMediaPlayer.h"
 #import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
-#import "SRGAlternateTracksViewController.h"
 #import "SRGMediaPlayerNavigationController.h"
+#import "SRGSettingsViewController.h"
 #import "UIWindow+SRGMediaPlayer.h"
 
 @import libextobjc;
 
-static void commonInit(SRGTracksButton *self);
+static void commonInit(SRGSettingsButton *self);
 
-@interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate, UIPopoverPresentationControllerDelegate>
+@interface SRGSettingsButton () <SRGSettingsViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
 
 @end
 
-@implementation SRGTracksButton
+@implementation SRGSettingsButton
 
 @synthesize image = _image;
 
@@ -148,12 +148,12 @@ static void commonInit(SRGTracksButton *self);
     }
 }
 
-#pragma mark SRGAlternateTracksViewControllerDelegate protocol
+#pragma mark SRGSettingsViewControllerDelegate protocol
 
-- (void)alternateTracksViewControllerWasDismissed:(id)alternateTracksViewController
+- (void)settingsViewControllerWasDismissed:(id)settingsViewController
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
-        [self.delegate tracksButtonDidHideTrackSelection:self];
+    if ([self.delegate respondsToSelector:@selector(settingsButtonDidHideSettings:)]) {
+        [self.delegate settingsButtonDidHideSettings:self];
     }
 }
 
@@ -180,11 +180,11 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)showTracks:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonWillShowTrackSelection:)]) {
-        [self.delegate tracksButtonWillShowTrackSelection:self];
+    if ([self.delegate respondsToSelector:@selector(settingsButtonWillShowSettings:)]) {
+        [self.delegate settingsButtonWillShowSettings:self];
     }
     
-    SRGAlternateTracksViewController *tracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
+    SRGSettingsViewController *tracksViewController = [[SRGSettingsViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
                                                                                                                   userInterfaceStyle:self.userInterfaceStyle];
     tracksViewController.delegate = self;
     tracksViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -239,7 +239,7 @@ static void commonInit(SRGTracksButton *self);
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     
-    UIImage *image = [UIImage imageNamed:@"alternate_tracks" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
+    UIImage *image = [UIImage imageNamed:@"more" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
     [fakeInterfaceBuilderButton setImage:image forState:UIControlStateNormal];
     
     [self addSubview:fakeInterfaceBuilderButton];
@@ -282,7 +282,7 @@ static void commonInit(SRGTracksButton *self);
 
 #pragma mark Functions
 
-static void commonInit(SRGTracksButton *self)
+static void commonInit(SRGSettingsButton *self)
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = self.bounds;

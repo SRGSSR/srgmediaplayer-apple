@@ -8,24 +8,24 @@
 
 #if TARGET_OS_IOS
 
-#import "SRGAlternateTracksViewController.h"
+#import "SRGSettingsViewController.h"
 
 #import "AVMediaSelectionGroup+SRGMediaPlayer.h"
 #import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
-#import "SRGAlternateTracksSegmentCell.h"
 #import "SRGMediaAccessibility.h"
 #import "SRGMediaPlayerController+Private.h"
 #import "SRGRouteDetector.h"
+#import "SRGSettingsSegmentCell.h"
 
 @import libextobjc;
 
-typedef NSString * SRGAlternateTracksSectionType NS_STRING_ENUM;
+typedef NSString * SRGSettingsSectionType NS_STRING_ENUM;
 
-static SRGAlternateTracksSectionType const SRGAlternateTracksSectionTypePlaybackSpeed = @"playback_speed";
-static SRGAlternateTracksSectionType const SRGAlternateTracksSectionTypeAudioTracks = @"audio_tracks";
-static SRGAlternateTracksSectionType const SRGAlternateTracksSectionTypeSubtitles = @"subtitles";
+static SRGSettingsSectionType const SRGSettingsSectionTypePlaybackSpeed = @"playback_speed";
+static SRGSettingsSectionType const SRGSettingsSectionTypeAudioTracks = @"audio_tracks";
+static SRGSettingsSectionType const SRGSettingsSectionTypeSubtitles = @"subtitles";
 
 static BOOL SRGMediaPlayerIsViewControllerDismissed(UIViewController *viewController);
 
@@ -37,14 +37,14 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 
 static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playbackRates);
 
-@interface SRGAlternateTracksViewController ()
+@interface SRGSettingsViewController ()
 
 @property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
 @property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
 
 @property (nonatomic, weak) UITableView *tableView;
 
-@property (nonatomic) NSArray<SRGAlternateTracksSectionType> *sectionTypes;
+@property (nonatomic) NSArray<SRGSettingsSectionType> *sectionTypes;
 @property (nonatomic) NSArray<NSNumber *> *playbackRates;
 @property (nonatomic) NSArray<AVMediaSelectionOption *> *audioOptions;
 @property (nonatomic) NSArray<AVMediaSelectionOption *> *subtitleOptions;
@@ -56,7 +56,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 @end
 
-@implementation SRGAlternateTracksViewController
+@implementation SRGSettingsViewController
 
 #pragma mark Object lifecycle
 
@@ -186,7 +186,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
-    Class segmentCellClass = SRGAlternateTracksSegmentCell.class;
+    Class segmentCellClass = SRGSettingsSegmentCell.class;
     [self.tableView registerClass:segmentCellClass forCellReuseIdentifier:NSStringFromClass(segmentCellClass)];
     
     // Force properties to avoid overrides with UIAppearance
@@ -214,7 +214,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     [super viewDidDisappear:animated];
     
     if (SRGMediaPlayerIsViewControllerDismissed(self)) {
-        [self.delegate alternateTracksViewControllerWasDismissed:self];
+        [self.delegate settingsViewControllerWasDismissed:self];
     }
 }
 
@@ -275,11 +275,11 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (void)reloadData
 {
-    NSMutableArray<SRGAlternateTracksSectionType> *sectionTypes = [NSMutableArray array];
+    NSMutableArray<SRGSettingsSectionType> *sectionTypes = [NSMutableArray array];
     
     NSArray<NSNumber *> *supportedPlaybackRates = self.mediaPlayerController.supportedPlaybackRates;
     NSAssert(supportedPlaybackRates.count > 1, @"More than one playback speeds must be available");
-    [sectionTypes addObject:SRGAlternateTracksSectionTypePlaybackSpeed];
+    [sectionTypes addObject:SRGSettingsSectionTypePlaybackSpeed];
     self.playbackRates = supportedPlaybackRates;
     
     AVAsset *asset = self.mediaPlayerController.player.currentItem.asset;
@@ -287,7 +287,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
         NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
         if (audioOptions.count > 1) {
-            [sectionTypes addObject:SRGAlternateTracksSectionTypeAudioTracks];
+            [sectionTypes addObject:SRGSettingsSectionTypeAudioTracks];
             self.audioOptions = audioOptions;
         }
         else {
@@ -297,7 +297,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
         NSArray<AVMediaSelectionOption *> *subtitleOptions = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]];
         if (subtitleOptions.count != 0) {
-            [sectionTypes addObject:SRGAlternateTracksSectionTypeSubtitles];
+            [sectionTypes addObject:SRGSettingsSectionTypeSubtitles];
             self.subtitleOptions = subtitleOptions;
         }
         else {
@@ -401,15 +401,15 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    SRGAlternateTracksSectionType sectionType = self.sectionTypes[section];
-    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
-        return SRGMediaPlayerLocalizedString(@"Playback speed", @"Section header title in the alternate tracks popup menu, for setting the playback speed");
+    SRGSettingsSectionType sectionType = self.sectionTypes[section];
+    if ([sectionType isEqualToString:SRGSettingsSectionTypePlaybackSpeed]) {
+        return SRGMediaPlayerLocalizedString(@"Playback speed", @"Section header title in the settings menu, for setting the playback speed");
     }
-    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
-        return SRGMediaPlayerLocalizedString(@"Audio", @"Section header title in the alternate tracks popup menu, for audio tracks");
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeAudioTracks]) {
+        return SRGMediaPlayerLocalizedString(@"Audio", @"Section header title in the settings menu, for audio tracks");
     }
-    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeSubtitles]) {
-        return SRGMediaPlayerLocalizedString(@"Subtitles & CC", @"Section header title in the alternate tracks popup menu, for subtitles & CC tracks");
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeSubtitles]) {
+        return SRGMediaPlayerLocalizedString(@"Subtitles & CC", @"Section header title in the settings menu, for subtitles & CC tracks");
     }
     else {
         return nil;
@@ -418,8 +418,8 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    SRGAlternateTracksSectionType sectionType = self.sectionTypes[section];
-    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
+    SRGSettingsSectionType sectionType = self.sectionTypes[section];
+    if ([sectionType isEqualToString:SRGSettingsSectionTypePlaybackSpeed]) {
         float effectivePlaybackRate = self.mediaPlayerController.effectivePlaybackRate;
         if (self.mediaPlayerController.playbackRate != effectivePlaybackRate) {
             return [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"The playback speed is restricted to %@×.", @"Information footer about playback speed restrictions"), @(effectivePlaybackRate)];
@@ -428,10 +428,10 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
             return nil;
         }
     }
-    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeAudioTracks]) {
         return SRGMediaPlayerLocalizedString(@"You can enable Audio Description automatic selection in the Accessibility settings.", @"Instructions for audio customization");
     }
-    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeSubtitles]) {
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeSubtitles]) {
         NSString *autoOptionTitle = SRGMediaPlayerLocalizedString(@"Auto", @"Automatic option title to let subtitles be automatically selected based on user settings");
         NSString *autoOptionInformation = [NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"When '%@' is enabled, and if the selected audio track language differs from the device settings, subtitles or Closed Captions might be displayed automatically.", @"Instructions for subtitles auto option"), autoOptionTitle];
         return [NSString stringWithFormat:@"%@\n\n%@", autoOptionInformation, SRGMediaPlayerLocalizedString(@"You can adjust text appearance and enable Closed Captions and SDH automatic selection in the Accessibility settings.", @"Instructions for subtitles customization")];
@@ -448,14 +448,14 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    SRGAlternateTracksSectionType sectionType = self.sectionTypes[section];
-    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
+    SRGSettingsSectionType sectionType = self.sectionTypes[section];
+    if ([sectionType isEqualToString:SRGSettingsSectionTypePlaybackSpeed]) {
         return 1;
     }
-    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeAudioTracks]) {
         return self.audioOptions.count;
     }
-    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeSubtitles]) {
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeSubtitles]) {
         MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
         if (displayType == kMACaptionAppearanceDisplayTypeAlwaysOn) {
             NSString *lastSelectedLanguage = SRGMediaAccessibilityCaptionAppearanceLastSelectedLanguage(kMACaptionAppearanceDomainUser);
@@ -473,10 +473,10 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
-    SRGAlternateTracksSectionType sectionType = self.sectionTypes[indexPath.section];
+    SRGSettingsSectionType sectionType = self.sectionTypes[indexPath.section];
     
-    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
-        SRGAlternateTracksSegmentCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(SRGAlternateTracksSegmentCell.class)];
+    if ([sectionType isEqualToString:SRGSettingsSectionTypePlaybackSpeed]) {
+        SRGSettingsSegmentCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(SRGSettingsSegmentCell.class)];
         
         @weakify(self)
         [cell setItems:SRGItemsForPlaybackRates(self.playbackRates) reader:^NSInteger{
@@ -494,7 +494,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         }];
         return cell;
     }
-    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeAudioTracks]) {
         UITableViewCell *cell = nil;
         
         AVMediaSelectionOption *option = self.audioOptions[indexPath.row];
@@ -514,7 +514,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         
         return cell;
     }
-    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeSubtitles]) {
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeSubtitles]) {
         BOOL isAutomaticSelectionActive = (displayType == kMACaptionAppearanceDisplayTypeAutomatic) && self.mediaPlayerController.matchesAutomaticSubtitleSelection;
         
         // Off
@@ -606,14 +606,14 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    SRGAlternateTracksSectionType sectionType = self.sectionTypes[indexPath.section];
-    if ([sectionType isEqualToString:SRGAlternateTracksSectionTypePlaybackSpeed]) {
+    SRGSettingsSectionType sectionType = self.sectionTypes[indexPath.section];
+    if ([sectionType isEqualToString:SRGSettingsSectionTypePlaybackSpeed]) {
         
     }
-    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeAudioTracks]) {
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeAudioTracks]) {
         [self.mediaPlayerController selectMediaOption:self.audioOptions[indexPath.row] inMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
     }
-    else if ([sectionType isEqualToString:SRGAlternateTracksSectionTypeSubtitles]) {
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeSubtitles]) {
         if (indexPath.row == 0) {
             [self.mediaPlayerController selectMediaOption:nil inMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible];
             SRGMediaAccessibilityCaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
@@ -736,7 +736,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     return items.copy;
 }
 
-__attribute__((constructor)) static void SRGAlternateTracksViewControllerInit(void)
+__attribute__((constructor)) static void SRGSettingsViewControllerInit(void)
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);

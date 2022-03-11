@@ -13,17 +13,17 @@
 NS_ASSUME_NONNULL_BEGIN
 
 // Forward declarations
-@class SRGAlternateTracksViewController;
+@class SRGSettingsViewController;
 
 /**
  *  Tracks view controller delegate protocol.
  */
-@protocol SRGAlternateTracksViewControllerDelegate <NSObject>
+@protocol SRGSettingsViewControllerDelegate <NSObject>
 
 /**
  *  Called after the view controller has been dismissed.
  */
-- (void)alternateTracksViewControllerWasDismissed:(SRGAlternateTracksViewController *)alternateTracksViewController;
+- (void)settingsViewControllerWasDismissed:(SRGSettingsViewController *)settingsViewController;
 
 @end
 
@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  View controller displaying subtitles and audio tracks. For internal use.
  */
 API_UNAVAILABLE(tvos)
-@interface SRGAlternateTracksViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SRGSettingsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 /**
  *  Create an instance displaying tracks for a controller and adjusted for the provided style.
@@ -41,7 +41,7 @@ API_UNAVAILABLE(tvos)
 /**
  *
  */
-@property (nonatomic, weak) id<SRGAlternateTracksViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<SRGSettingsViewControllerDelegate> delegate;
 
 @end
 
