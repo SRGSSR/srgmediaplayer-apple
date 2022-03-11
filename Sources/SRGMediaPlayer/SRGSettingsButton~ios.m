@@ -249,7 +249,7 @@ static void commonInit(SRGSettingsButton *self);
 
 - (NSString *)accessibilityLabel
 {
-    return SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Accessibility title of the button to display the pop over view to select audio or subtitles");
+    return SRGMediaPlayerLocalizedString(@"Playback settings", @"Accessibility title of playback settings button");
 }
 
 - (UIAccessibilityTraits)accessibilityTraits
