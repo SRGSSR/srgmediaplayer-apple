@@ -33,7 +33,6 @@ static void commonInit(SRGTracksButton *self);
 @implementation SRGTracksButton
 
 @synthesize image = _image;
-@synthesize selectedImage = _selectedImage;
 
 #pragma mark Object lifecycle
 
@@ -89,23 +88,12 @@ static void commonInit(SRGTracksButton *self);
 
 - (UIImage *)image
 {
-    return _image ?: [UIImage imageNamed:@"alternate_tracks" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
+    return _image ?: [UIImage imageNamed:@"more" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
 }
 
 - (void)setImage:(UIImage *)image
 {
     _image = image;
-    [self updateAppearance];
-}
-
-- (UIImage *)selectedImage
-{
-    return _selectedImage ?: [UIImage imageNamed:@"alternate_tracks_selected" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
-}
-
-- (void)setSelectedImage:(UIImage *)selectedImage
-{
-    _selectedImage = selectedImage;
     [self updateAppearance];
 }
 
@@ -156,23 +144,7 @@ static void commonInit(SRGTracksButton *self);
     }
     else {
         self.hidden = NO;
-        
-        if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-            AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-            NSArray<AVMediaSelectionOption *> *subtitleOptions = subtitleGroup ? [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] : nil;
-            
-            // Enable the button if an (optional) subtitle has been selected
-            if (subtitleGroup) {
-                AVMediaSelectionOption *currentSubtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
-                [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
-            }
-            else {
-                [self.button setImage:self.image forState:UIControlStateNormal];
-            }
-        }
-        else {
-            [self.button setImage:self.image forState:UIControlStateNormal];
-        }
+        [self.button setImage:self.image forState:UIControlStateNormal];
     }
 }
 

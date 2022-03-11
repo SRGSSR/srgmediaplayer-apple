@@ -57,7 +57,6 @@ API_UNAVAILABLE(tvos)
  *  Image customization (a default image is used if not set).
  */
 @property (nonatomic, null_resettable) UIImage *image;
-@property (nonatomic, null_resettable) UIImage *selectedImage;
 
 /**
  *  The style to be applied to the selection popover. Default value is `SRGMediaPlayerUserInterfaceStyleUnspecified`
