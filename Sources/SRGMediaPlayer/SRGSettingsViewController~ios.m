@@ -141,7 +141,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (UIColor *)cellBackgroundColor
 {
-    return [UIColor colorWithWhite:self.dark ? 0.f : 1.f alpha:0.2f];
+    return self.dark ? [UIColor colorWithWhite:0.f alpha:0.2f] : UIColor.whiteColor;
 }
 
 - (UIColor *)headerTextColor
@@ -492,6 +492,8 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
                 self.mediaPlayerController.playbackRate = rate.floatValue;
             });
         }];
+        
+        cell.backgroundColor = self.cellBackgroundColor;
         return cell;
     }
     else if ([sectionType isEqualToString:SRGSettingsSectionTypeAudioTracks]) {

@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class SRGSettingsViewController;
 
 /**
- *  Tracks view controller delegate protocol.
+ *  Settings view controller delegate protocol.
  */
 @protocol SRGSettingsViewControllerDelegate <NSObject>
 
@@ -28,22 +28,21 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- *  View controller displaying subtitles and audio tracks. For internal use.
+ *  View controller displaying playback settings. For internal use.
  */
 API_UNAVAILABLE(tvos)
 @interface SRGSettingsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 /**
- *  Create an instance displaying tracks for a controller and adjusted for the provided style.
+ *  Create an instance displaying settings for a controller and adjusted for the provided style.
  */
 - (instancetype)initWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController userInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle;
 
 /**
- *
+ *  The view controller delegate.
  */
 @property (nonatomic, weak) id<SRGSettingsViewControllerDelegate> delegate;
 
 @end
-
 
 NS_ASSUME_NONNULL_END
