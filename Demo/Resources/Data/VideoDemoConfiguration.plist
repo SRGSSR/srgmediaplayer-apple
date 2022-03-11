@@ -8,19 +8,19 @@
 			<key>name</key>
 			<string>Livestream</string>
 			<key>url</key>
-			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8?dw=0</string>
+			<string>https://rtsc3video-lh.akamaihd.net/i/rtsc3video_ww@513975/master.m3u8?dw=0</string>
 		</dict>
 		<dict>
 			<key>name</key>
 			<string>Livestream with DVR</string>
 			<key>url</key>
-			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8</string>
+			<string>https://rtsc3video-lh.akamaihd.net/i/rtsc3video_ww@513975/master.m3u8</string>
 		</dict>
 		<dict>
 			<key>name</key>
 			<string>Livestream with DVR (with timestamps)</string>
 			<key>url</key>
-			<string>https://mcdn.daserste.de/daserste/int/master.m3u8</string>
+			<string>https://tagesschau.akamaized.net/hls/live/2020115/tagesschau/tagesschau_1/master.m3u8</string>
 		</dict>
 		<dict>
 			<key>name</key>
