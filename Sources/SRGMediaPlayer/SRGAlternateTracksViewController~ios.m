@@ -73,7 +73,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (NSString *)title
 {
-    return SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Title of the pop over view to select audio or subtitles"); 
+    return SRGMediaPlayerLocalizedString(@"Playback settings", @"Title of the playback settings popover"); 
 }
 
 - (void)setMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
