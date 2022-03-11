@@ -146,7 +146,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (UIColor *)headerTextColor
 {
-    return [UIColor colorWithWhite:0.5f alpha:1.f];
+    return self.dark ? [UIColor colorWithWhite:0.6f alpha:1.f] : [UIColor colorWithWhite:0.4f alpha:1.f];
 }
 
 - (UIPopoverPresentationController *)parentPopoverPresentationController
