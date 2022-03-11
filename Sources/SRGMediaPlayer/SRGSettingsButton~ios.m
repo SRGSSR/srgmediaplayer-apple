@@ -97,12 +97,6 @@ static void commonInit(SRGSettingsButton *self);
     [self updateAppearance];
 }
 
-- (void)setAlwaysHidden:(BOOL)alwaysHidden
-{
-    _alwaysHidden = alwaysHidden;
-    [self updateAppearance];
-}
-
 #pragma mark Overrides
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
@@ -136,10 +130,7 @@ static void commonInit(SRGSettingsButton *self);
     AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
     AVAsset *asset = playerItem.asset;
     
-    if (self.alwaysHidden) {
-        self.hidden = YES;
-    }
-    else if (self.fakeInterfaceBuilderButton) {
+    if (self.fakeInterfaceBuilderButton) {
         self.hidden = NO;
     }
     else {
