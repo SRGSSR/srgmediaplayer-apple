@@ -17,6 +17,7 @@
 #import "SRGMediaAccessibility.h"
 #import "SRGMediaPlayerController+Private.h"
 #import "SRGRouteDetector.h"
+#import "SRGSettingsHeaderView.h"
 #import "SRGSettingsSegmentCell.h"
 
 @import libextobjc;
@@ -188,6 +189,9 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     
     Class segmentCellClass = SRGSettingsSegmentCell.class;
     [self.tableView registerClass:segmentCellClass forCellReuseIdentifier:NSStringFromClass(segmentCellClass)];
+    
+    Class headerViewClass = SRGSettingsHeaderView.class;
+    [self.tableView registerClass:headerViewClass forHeaderFooterViewReuseIdentifier:NSStringFromClass(headerViewClass)];
     
     // Force properties to avoid overrides with UIAppearance
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
@@ -397,11 +401,10 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     return cell;
 }
 
-#pragma mark UITableViewDataSource protocol
+#pragma mark Type-based table view methods
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSectionWithType:(SRGSettingsSectionType)sectionType
 {
-    SRGSettingsSectionType sectionType = self.sectionTypes[section];
     if ([sectionType isEqualToString:SRGSettingsSectionTypePlaybackSpeed]) {
         return SRGMediaPlayerLocalizedString(@"Playback speed", @"Section header title in the settings menu, for setting the playback speed");
     }
@@ -414,6 +417,46 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     else {
         return nil;
     }
+}
+
+- (UIImage *)tableView:(UITableView *)tableView imageForHeaderInSectionWithType:(SRGSettingsSectionType)sectionType
+{
+    if ([sectionType isEqualToString:SRGSettingsSectionTypePlaybackSpeed]) {
+        return [UIImage imageNamed:@"playback_speed" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
+    }
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeAudioTracks]) {
+        return [UIImage imageNamed:@"audio_tracks" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
+    }
+    else if ([sectionType isEqualToString:SRGSettingsSectionTypeSubtitles]) {
+        return [UIImage imageNamed:@"subtitles" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
+    }
+    else {
+        return nil;
+    }
+}
+
+#pragma mark UITableViewDataSource protocol
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    SRGSettingsSectionType sectionType = self.sectionTypes[section];
+    NSString *title = [self tableView:tableView titleForHeaderInSectionWithType:sectionType];
+    if (title.length != 0) {
+        return SRGSettingsHeaderView.height;
+    }
+    else {
+        return 0.f;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    SRGSettingsHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass(SRGSettingsHeaderView.class)];
+    
+    SRGSettingsSectionType sectionType = self.sectionTypes[section];
+    headerView.title = [self tableView:tableView titleForHeaderInSectionWithType:sectionType];
+    headerView.image = [self tableView:tableView imageForHeaderInSectionWithType:sectionType];
+    return headerView;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
@@ -645,7 +688,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
 {
-    view.textLabel.textColor = self.headerTextColor;
+    view.tintColor = self.headerTextColor;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UITableViewHeaderFooterView *)view forSection:(NSInteger)section
