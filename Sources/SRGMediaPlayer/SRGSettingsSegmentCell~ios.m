@@ -31,8 +31,8 @@
         self.segmentedControl = segmentedControl;
         
         [NSLayoutConstraint activateConstraints:@[
-            [segmentedControl.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:16.f],
-            [segmentedControl.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-16.f],
+            [segmentedControl.leadingAnchor constraintEqualToAnchor:self.contentView.layoutMarginsGuide.leadingAnchor],
+            [segmentedControl.trailingAnchor constraintEqualToAnchor:self.contentView.layoutMarginsGuide.trailingAnchor],
             [segmentedControl.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:12.f],
             [segmentedControl.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:-12.f]
         ]];

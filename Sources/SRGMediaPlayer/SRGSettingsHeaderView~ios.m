@@ -115,8 +115,16 @@ static void commonInit(SRGSettingsHeaderView *self)
     [self addSubview:imageView];
     self.imageView = imageView;
     
+    NSLayoutConstraint *leadingAnchorConstraint = nil;
+    if (@available(iOS 13, *)) {
+        leadingAnchorConstraint = [imageView.leadingAnchor constraintEqualToAnchor:self.contentView.layoutMarginsGuide.leadingAnchor];
+    }
+    else {
+        leadingAnchorConstraint = [imageView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:16.f];
+    }
+    
     [NSLayoutConstraint activateConstraints:@[
-        [imageView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:16.f],
+        leadingAnchorConstraint,
         [imageView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:-4.f],
         [imageView.widthAnchor constraintEqualToConstant:25.f],
         [imageView.heightAnchor constraintEqualToConstant:25.f]
@@ -129,9 +137,17 @@ static void commonInit(SRGSettingsHeaderView *self)
     
     titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     
+    NSLayoutConstraint *trailingAnchorConstraint = nil;
+    if (@available(iOS 13, *)) {
+        trailingAnchorConstraint = [titleLabel.trailingAnchor constraintEqualToAnchor:self.contentView.layoutMarginsGuide.trailingAnchor];
+    }
+    else {
+        trailingAnchorConstraint = [titleLabel.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-16.f];
+    }
+    
     [NSLayoutConstraint activateConstraints:@[
         [titleLabel.leadingAnchor constraintEqualToAnchor:imageView.trailingAnchor constant:6.f],
-        [titleLabel.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-16.f],
+        trailingAnchorConstraint,
         [titleLabel.centerYAnchor constraintEqualToAnchor:imageView.centerYAnchor]
     ]];
 }
