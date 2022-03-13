@@ -37,6 +37,11 @@
             [segmentedControl.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:-12.f]
         ]];
         
+        if (@available(iOS 13, *)) {}
+        else {
+            segmentedControl.tintColor = UIColor.whiteColor;
+        }
+        
         self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
