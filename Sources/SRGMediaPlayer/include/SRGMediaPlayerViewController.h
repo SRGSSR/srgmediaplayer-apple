@@ -45,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
  *    - Background playback behavior cannot be customized.
  *    - Picture in picture is always enabled (but still requires you to implement its controller delegate methods to
  *      manage the picture in picture lifecycle).
+ *    - Interstitials, external metadata and menu items cannot be cutomized (attempting to customize them leads to
+ *      undefined behavior).
  *
  *  If you need one of the above features you should implement your own player layout instead.
  */
