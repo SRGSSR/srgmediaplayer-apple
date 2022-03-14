@@ -17,13 +17,6 @@ static void commonInit(SRGSettingsHeaderView *self);
 
 @implementation SRGSettingsHeaderView
 
-#pragma mark Class methods
-
-+ (CGFloat)height
-{
-    return 50.f;
-}
-
 #pragma mark Object lifecycle
 
 - (instancetype)initWithFrame:(CGRect)frame

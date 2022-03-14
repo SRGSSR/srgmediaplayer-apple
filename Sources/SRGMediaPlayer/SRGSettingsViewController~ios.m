@@ -442,7 +442,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     SRGSettingsSectionType sectionType = self.sectionTypes[section];
     NSString *title = [self tableView:tableView titleForHeaderInSectionWithType:sectionType];
     if (title.length != 0) {
-        return SRGSettingsHeaderView.height;
+        return 50.f;
     }
     else {
         return 0.f;

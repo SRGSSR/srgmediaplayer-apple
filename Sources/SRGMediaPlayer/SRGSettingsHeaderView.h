@@ -10,8 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SRGSettingsHeaderView : UITableViewHeaderFooterView
 
-@property (class, nonatomic, readonly) CGFloat height;
-
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic) UIImage *image;
 
