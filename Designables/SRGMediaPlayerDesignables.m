@@ -35,7 +35,7 @@ IB_DESIGNABLE
 @end
 
 IB_DESIGNABLE
-@interface SRGSettingsButton (Designable)
+@interface SRGPlaybackSettingsButton (Designable)
 
 @end
 

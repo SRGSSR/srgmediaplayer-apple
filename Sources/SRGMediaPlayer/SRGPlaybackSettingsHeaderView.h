@@ -8,9 +8,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SRGSettingsSegmentCell : UITableViewCell
+@interface SRGPlaybackSettingsHeaderView : UITableViewHeaderFooterView
 
-- (void)setItems:(NSArray<NSString *> *)items reader:(NSInteger (^)(void))reader writer:(void (^)(NSInteger index))writer;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic) UIImage *image;
 
 @end
 

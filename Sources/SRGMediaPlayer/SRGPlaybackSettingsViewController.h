@@ -13,17 +13,17 @@
 NS_ASSUME_NONNULL_BEGIN
 
 // Forward declarations
-@class SRGSettingsViewController;
+@class SRGPlaybackSettingsViewController;
 
 /**
- *  Settings view controller delegate protocol.
+ *  Playback settings view controller delegate protocol.
  */
-@protocol SRGSettingsViewControllerDelegate <NSObject>
+@protocol SRGPlaybackSettingsViewControllerDelegate <NSObject>
 
 /**
  *  Called after the view controller has been dismissed.
  */
-- (void)settingsViewControllerWasDismissed:(SRGSettingsViewController *)settingsViewController;
+- (void)playbackSettingsViewControllerWasDismissed:(SRGPlaybackSettingsViewController *)settingsViewController;
 
 @end
 
@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  View controller displaying playback settings. For internal use.
  */
 API_UNAVAILABLE(tvos)
-@interface SRGSettingsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SRGPlaybackSettingsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 /**
  *  Create an instance displaying settings for a controller and adjusted for the provided style.
@@ -41,7 +41,7 @@ API_UNAVAILABLE(tvos)
 /**
  *  The view controller delegate.
  */
-@property (nonatomic, weak) id<SRGSettingsViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<SRGPlaybackSettingsViewControllerDelegate> delegate;
 
 @end
 

@@ -4,9 +4,9 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGSettingsSegmentCell.h"
+#import "SRGPlaybackSettingsSegmentCell.h"
 
-@interface SRGSettingsSegmentCell ()
+@interface SRGPlaybackSettingsSegmentCell ()
 
 @property (nonatomic) NSArray<NSString *> *items;
 
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation SRGSettingsSegmentCell
+@implementation SRGPlaybackSettingsSegmentCell
 
 #pragma mark Object lifecycle
 

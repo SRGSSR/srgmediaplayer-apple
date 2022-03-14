@@ -11,34 +11,34 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SRGSettingsButton;
+@class SRGPlaybackSettingsButton;
 
 /**
- *  Settings button delegate protocol.
+ *  Playback settings button delegate protocol.
  */
 API_UNAVAILABLE(tvos)
-@protocol SRGSettingsButtonDelegate <NSObject>
+@protocol SRGPlaybackSettingsButtonDelegate <NSObject>
 
 @optional
 
 /**
- *  The button is about to show the settings view.
+ *  The button is about to show the playback settings view.
  */
-- (void)settingsButtonWillShowSettings:(SRGSettingsButton *)settingsButton;
+- (void)playbackSettingsButtonWillShowSettings:(SRGPlaybackSettingsButton *)playbackSettingsButton;
 
 /**
- *  The settings have been hidden.
+ *  The playback settings have been hidden.
  */
-- (void)settingsButtonDidHideSettings:(SRGSettingsButton *)settingsButton;
+- (void)playbackSettingsButtonDidHideSettings:(SRGPlaybackSettingsButton *)playbackSettingsButton;
 
 @end
 
 /**
- *  Button which provides access to the player settings (playback speeds, audio tracks and subtitles). If your controls
+ *  Button which provides access to the playback settings (playback speeds, audio tracks and subtitles). If your controls
  *  are stacked using a `UIStackView`, the layout will automatically adjust when the button appears or disappears.
  */
 API_UNAVAILABLE(tvos)
-@interface SRGSettingsButton : UIView
+@interface SRGPlaybackSettingsButton : UIView
 
 /**
  *  The media player which the button must be associated with.
@@ -61,7 +61,7 @@ API_UNAVAILABLE(tvos)
 /**
  *  The button delegate.
  */
-@property (nonatomic, weak) IBOutlet id<SRGSettingsButtonDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<SRGPlaybackSettingsButtonDelegate> delegate;
 
 @end
 

@@ -8,7 +8,7 @@
 
 #if TARGET_OS_IOS
 
-#import "SRGSettingsViewController.h"
+#import "SRGPlaybackSettingsViewController.h"
 
 #import "AVMediaSelectionGroup+SRGMediaPlayer.h"
 #import "AVPlayerItem+SRGMediaPlayer.h"
@@ -16,9 +16,9 @@
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaAccessibility.h"
 #import "SRGMediaPlayerController+Private.h"
+#import "SRGPlaybackSettingsHeaderView.h"
+#import "SRGPlaybackSettingsSegmentCell.h"
 #import "SRGRouteDetector.h"
-#import "SRGSettingsHeaderView.h"
-#import "SRGSettingsSegmentCell.h"
 
 @import libextobjc;
 
@@ -38,7 +38,7 @@ static BOOL SRGMediaSelectionOptionsContainOptionForLanguage(NSArray<AVMediaSele
 
 static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playbackRates);
 
-@interface SRGSettingsViewController ()
+@interface SRGPlaybackSettingsViewController ()
 
 @property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
 @property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
@@ -57,7 +57,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 @end
 
-@implementation SRGSettingsViewController
+@implementation SRGPlaybackSettingsViewController
 
 #pragma mark Object lifecycle
 
@@ -187,10 +187,10 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
-    Class segmentCellClass = SRGSettingsSegmentCell.class;
+    Class segmentCellClass = SRGPlaybackSettingsSegmentCell.class;
     [self.tableView registerClass:segmentCellClass forCellReuseIdentifier:NSStringFromClass(segmentCellClass)];
     
-    Class headerViewClass = SRGSettingsHeaderView.class;
+    Class headerViewClass = SRGPlaybackSettingsHeaderView.class;
     [self.tableView registerClass:headerViewClass forHeaderFooterViewReuseIdentifier:NSStringFromClass(headerViewClass)];
     
     // Force properties to avoid overrides with UIAppearance
@@ -218,7 +218,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     [super viewDidDisappear:animated];
     
     if (SRGMediaPlayerIsViewControllerDismissed(self)) {
-        [self.delegate settingsViewControllerWasDismissed:self];
+        [self.delegate playbackSettingsViewControllerWasDismissed:self];
     }
 }
 
@@ -254,7 +254,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
- 
+    
     if (@available(iOS 13, *)) {
         if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
             [self updateViewAppearance];
@@ -451,7 +451,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    SRGSettingsHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass(SRGSettingsHeaderView.class)];
+    SRGPlaybackSettingsHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:NSStringFromClass(SRGPlaybackSettingsHeaderView.class)];
     
     SRGSettingsSectionType sectionType = self.sectionTypes[section];
     headerView.title = [self tableView:tableView titleForHeaderInSectionWithType:sectionType];
@@ -519,7 +519,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     SRGSettingsSectionType sectionType = self.sectionTypes[indexPath.section];
     
     if ([sectionType isEqualToString:SRGSettingsSectionTypePlaybackSpeed]) {
-        SRGSettingsSegmentCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(SRGSettingsSegmentCell.class)];
+        SRGPlaybackSettingsSegmentCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass(SRGPlaybackSettingsSegmentCell.class)];
         
         @weakify(self)
         [cell setItems:SRGItemsForPlaybackRates(self.playbackRates) reader:^NSInteger{

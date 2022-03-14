@@ -8,7 +8,7 @@
 
 #if TARGET_OS_IOS
 
-#import "SRGSettingsButton.h"
+#import "SRGPlaybackSettingsButton.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "AVMediaSelectionGroup+SRGMediaPlayer.h"
@@ -16,21 +16,21 @@
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaPlayerNavigationController.h"
-#import "SRGSettingsViewController.h"
+#import "SRGPlaybackSettingsViewController.h"
 #import "UIWindow+SRGMediaPlayer.h"
 
 @import libextobjc;
 
-static void commonInit(SRGSettingsButton *self);
+static void commonInit(SRGPlaybackSettingsButton *self);
 
-@interface SRGSettingsButton () <SRGSettingsViewControllerDelegate, UIPopoverPresentationControllerDelegate>
+@interface SRGPlaybackSettingsButton () <SRGPlaybackSettingsViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
 
 @end
 
-@implementation SRGSettingsButton
+@implementation SRGPlaybackSettingsButton
 
 @synthesize image = _image;
 
@@ -139,12 +139,12 @@ static void commonInit(SRGSettingsButton *self);
     }
 }
 
-#pragma mark SRGSettingsViewControllerDelegate protocol
+#pragma mark SRGPlaybackSettingsViewControllerDelegate protocol
 
-- (void)settingsViewControllerWasDismissed:(id)settingsViewController
+- (void)playbackSettingsViewControllerWasDismissed:(id)playbackSettingsViewController
 {
-    if ([self.delegate respondsToSelector:@selector(settingsButtonDidHideSettings:)]) {
-        [self.delegate settingsButtonDidHideSettings:self];
+    if ([self.delegate respondsToSelector:@selector(playbackSettingsButtonDidHideSettings:)]) {
+        [self.delegate playbackSettingsButtonDidHideSettings:self];
     }
 }
 
@@ -171,17 +171,17 @@ static void commonInit(SRGSettingsButton *self);
 
 - (void)showTracks:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(settingsButtonWillShowSettings:)]) {
-        [self.delegate settingsButtonWillShowSettings:self];
+    if ([self.delegate respondsToSelector:@selector(playbackSettingsButtonWillShowSettings:)]) {
+        [self.delegate playbackSettingsButtonWillShowSettings:self];
     }
     
-    SRGSettingsViewController *tracksViewController = [[SRGSettingsViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
+    SRGPlaybackSettingsViewController *viewViewController = [[SRGPlaybackSettingsViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
                                                                                                                   userInterfaceStyle:self.userInterfaceStyle];
-    tracksViewController.delegate = self;
-    tracksViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                                           target:self
-                                                                                                           action:@selector(hideTracks:)];
-    SRGMediaPlayerNavigationController *navigationController = [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:tracksViewController];
+    viewViewController.delegate = self;
+    viewViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                                         target:self
+                                                                                                         action:@selector(hideTracks:)];
+    SRGMediaPlayerNavigationController *navigationController = [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:viewViewController];
     
     if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navigationController.modalPresentationStyle = UIModalPresentationPopover;
@@ -273,7 +273,7 @@ static void commonInit(SRGSettingsButton *self);
 
 #pragma mark Functions
 
-static void commonInit(SRGSettingsButton *self)
+static void commonInit(SRGPlaybackSettingsButton *self)
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = self.bounds;

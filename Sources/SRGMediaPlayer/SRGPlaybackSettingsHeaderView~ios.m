@@ -4,18 +4,18 @@
 //  License information is available from the LICENSE file.
 //
 
-#import "SRGSettingsHeaderView.h"
+#import "SRGPlaybackSettingsHeaderView.h"
 
-static void commonInit(SRGSettingsHeaderView *self);
+static void commonInit(SRGPlaybackSettingsHeaderView *self);
 
-@interface SRGSettingsHeaderView ()
+@interface SRGPlaybackSettingsHeaderView ()
 
 @property (nonatomic, weak) UIImageView *imageView;
 @property (nonatomic, weak) UILabel *titleLabel;
 
 @end
 
-@implementation SRGSettingsHeaderView
+@implementation SRGPlaybackSettingsHeaderView
 
 #pragma mark Object lifecycle
 
@@ -88,7 +88,7 @@ static void commonInit(SRGSettingsHeaderView *self);
 
 @end
 
-static void commonInit(SRGSettingsHeaderView *self)
+static void commonInit(SRGPlaybackSettingsHeaderView *self)
 {
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
