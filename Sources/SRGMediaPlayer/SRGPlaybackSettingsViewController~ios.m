@@ -631,7 +631,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         }
     }
     else {
-        return nil;
+        return [UITableViewCell new];
     }
 }
 

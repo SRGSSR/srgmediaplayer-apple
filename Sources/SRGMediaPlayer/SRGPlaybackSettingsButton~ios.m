@@ -127,9 +127,6 @@ static void commonInit(SRGPlaybackSettingsButton *self);
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
-    AVAsset *asset = playerItem.asset;
-    
     if (self.fakeInterfaceBuilderButton) {
         self.hidden = NO;
     }
