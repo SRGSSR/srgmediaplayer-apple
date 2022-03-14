@@ -141,7 +141,7 @@ static void commonInit(SRGPlaybackSettingsButton *self);
 
 #pragma mark SRGPlaybackSettingsViewControllerDelegate protocol
 
-- (void)playbackSettingsViewControllerWasDismissed:(id)playbackSettingsViewController
+- (void)playbackSettingsViewControllerWasDismissed:(SRGPlaybackSettingsViewController *)settingsViewController
 {
     if ([self.delegate respondsToSelector:@selector(playbackSettingsButtonDidHideSettings:)]) {
         [self.delegate playbackSettingsButtonDidHideSettings:self];
