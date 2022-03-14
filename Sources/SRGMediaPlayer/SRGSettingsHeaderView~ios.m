@@ -96,23 +96,10 @@ static void commonInit(SRGSettingsHeaderView *self);
 @end
 
 static void commonInit(SRGSettingsHeaderView *self)
-{
-    // Create a full height view to force the contentView height
-    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:backgroundView];
-    
-    [NSLayoutConstraint activateConstraints:@[
-        [backgroundView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:0.f],
-        [backgroundView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:0.f],
-        [backgroundView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:0.f],
-        [backgroundView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:0.f],
-        [backgroundView.heightAnchor constraintEqualToConstant:SRGSettingsHeaderView.height]
-    ]];
-    
+{    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:imageView];
+    [self.contentView addSubview:imageView];
     self.imageView = imageView;
     
     NSLayoutConstraint *leadingAnchorConstraint = nil;
@@ -132,7 +119,7 @@ static void commonInit(SRGSettingsHeaderView *self)
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:titleLabel];
+    [self.contentView addSubview:titleLabel];
     self.titleLabel = titleLabel;
     
     titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
