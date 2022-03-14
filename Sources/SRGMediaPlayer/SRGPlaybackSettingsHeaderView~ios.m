@@ -104,10 +104,9 @@ static void commonInit(SRGPlaybackSettingsHeaderView *self)
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     [self.contentView addSubview:titleLabel];
     self.titleLabel = titleLabel;
-    
-    titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     
     [NSLayoutConstraint activateConstraints:@[
         [titleLabel.leadingAnchor constraintEqualToAnchor:imageView.trailingAnchor constant:6.f],

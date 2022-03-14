@@ -10,8 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SRGPlaybackSettingsHeaderView : UITableViewHeaderFooterView
 
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic) UIImage *image;
+@property (nonatomic, copy, nullable) NSString *title;
+@property (nonatomic, nullable) UIImage *image;
 
 @end
 
