@@ -41,7 +41,7 @@ API_UNAVAILABLE(tvos)
 /**
  *  The view controller delegate.
  */
-@property (nonatomic, weak) id<SRGPlaybackSettingsViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SRGPlaybackSettingsViewControllerDelegate> delegate;
 
 @end
 

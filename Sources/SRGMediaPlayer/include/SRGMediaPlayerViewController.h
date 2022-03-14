@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The player view controller delegate.
  */
-@property (nonatomic, weak) id<SRGMediaPlayerViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SRGMediaPlayerViewControllerDelegate> delegate;
 
 /**
  *  Reload data (e.g. external metadata and navigation markers on tvOS) displayed by the player.

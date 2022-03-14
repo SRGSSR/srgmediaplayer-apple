@@ -61,7 +61,7 @@ API_UNAVAILABLE(tvos)
 /**
  *  The button delegate.
  */
-@property (nonatomic, weak) IBOutlet id<SRGPlaybackSettingsButtonDelegate> delegate;
+@property (nonatomic, weak, nullable) IBOutlet id<SRGPlaybackSettingsButtonDelegate> delegate;
 
 @end
 

@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The player delegate.
  */
-@property (nonatomic, weak) id<SRGPlayerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SRGPlayerDelegate> delegate;
 
 /**
  *  The time at which the player started seeking, `kCMTimeIndefinite` if no seek is currently being made.
