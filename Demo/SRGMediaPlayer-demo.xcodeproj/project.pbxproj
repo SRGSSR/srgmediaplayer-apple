@@ -358,7 +358,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SRG;
-				LastUpgradeCheck = 1310;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = "SRG SSR";
 				TargetAttributes = {
 					E69A1E661D61BEFC0064E6C1 = {
