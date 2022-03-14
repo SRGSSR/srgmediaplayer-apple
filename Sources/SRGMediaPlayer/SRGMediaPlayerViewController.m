@@ -319,7 +319,7 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
     NSMutableArray<UIAction *> *actions = [NSMutableArray array];
     for (NSNumber *rate in playbackRates) {
         @weakify(controller)
-        UIAction *action = [UIAction actionWithTitle:[NSString stringWithFormat:@"%@×", rate] image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+        UIAction *action = [UIAction actionWithTitle:[NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"%@×", @"Speed factor. Must be short"), rate] image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
             @strongify(controller)
             action.state = UIMenuElementStateOn;
             

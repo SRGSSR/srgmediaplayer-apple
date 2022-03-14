@@ -771,7 +771,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 {
     NSMutableArray<NSString *> *items = [NSMutableArray array];
     for (NSNumber *rate in playbackRates) {
-        [items addObject:[NSString stringWithFormat:@"%@×", rate]];
+        [items addObject:[NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"%@×", @"Speed factor. Must be short"), rate]];
     }
     return items.copy;
 }
