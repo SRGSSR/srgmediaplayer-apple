@@ -175,13 +175,13 @@ static void commonInit(SRGPlaybackSettingsButton *self);
         [self.delegate playbackSettingsButtonWillShowSettings:self];
     }
     
-    SRGPlaybackSettingsViewController *viewViewController = [[SRGPlaybackSettingsViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
-                                                                                                                  userInterfaceStyle:self.userInterfaceStyle];
-    viewViewController.delegate = self;
-    viewViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+    SRGPlaybackSettingsViewController *settingsViewController = [[SRGPlaybackSettingsViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
+                                                                                                                      userInterfaceStyle:self.userInterfaceStyle];
+    settingsViewController.delegate = self;
+    settingsViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                          target:self
                                                                                                          action:@selector(hideTracks:)];
-    SRGMediaPlayerNavigationController *navigationController = [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:viewViewController];
+    SRGMediaPlayerNavigationController *navigationController = [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:settingsViewController];
     
     if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navigationController.modalPresentationStyle = UIModalPresentationPopover;
