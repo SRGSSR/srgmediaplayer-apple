@@ -22,7 +22,7 @@ static NSURL *SegmentsOnDemandTestURL(void)
 
 static NSURL *SegmentsLiveTimestampTestURL(void)
 {
-    return [NSURL URLWithString:@"https://mcdn.daserste.de/daserste/int/master.m3u8"];
+    return [NSURL URLWithString:@"https://tagesschau.akamaized.net/hls/live/2020115/tagesschau/tagesschau_1/master.m3u8"];
 }
 
 @interface SegmentsTestCase : MediaPlayerBaseTestCase

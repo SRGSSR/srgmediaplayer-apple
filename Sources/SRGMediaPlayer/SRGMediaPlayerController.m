@@ -246,7 +246,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                 }
             }
             else if (playerItem.status == AVPlayerItemStatusFailed) {
-                [self stopWithUserInfo:nil];
+                [self stopWithUserInfo:nil releasePlayer:YES];
                 
                 NSError *error = SRGMediaPlayerControllerError(playerItem.error);
                 [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPlaybackDidFailNotification
@@ -1046,7 +1046,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)stop
 {
-    [self stopWithUserInfo:nil];
+    [self stopWithUserInfo:nil releasePlayer:YES];
 }
 
 - (void)seekToPosition:(SRGPosition *)position withCompletionHandler:(void (^)(BOOL))completionHandler
@@ -1055,6 +1055,11 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 }
 
 - (void)reset
+{
+    [self resetAndReleasePlayer:YES];
+}
+
+- (void)resetAndReleasePlayer:(BOOL)releasePlayer
 {
     // Save previous state information
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
@@ -1077,7 +1082,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.initialTargetSegment = nil;
     self.initialPosition = nil;
     
-    [self stopWithUserInfo:userInfo.copy];
+    [self stopWithUserInfo:userInfo.copy releasePlayer:releasePlayer];
 }
 
 #pragma mark Playback (convenience methods)
@@ -1221,7 +1226,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     SRGMediaPlayerLogDebug(@"Controller", @"Playing %@", URL);
     
-    [self reset];
+    [self resetAndReleasePlayer:NO];
     
     self.contentURL = URL;
     self.URLAsset = URLAsset;
@@ -1302,7 +1307,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
 }
 
-- (void)stopWithUserInfo:(NSDictionary *)userInfo
+- (void)stopWithUserInfo:(NSDictionary *)userInfo releasePlayer:(BOOL)releasePlayer
 {
     if ([self isPictureInPictureActive]) {
         [self stopPictureInPicture];
@@ -1323,7 +1328,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         if (_selected) {
             fullUserInfo[SRGMediaPlayerPreviousSelectedSegmentKey] = self.currentSegment;
         }
-        self.player = nil;
+        
+        if (releasePlayer) {
+            self.player = nil;
+        }
     }
     
     _selected = NO;
@@ -1669,11 +1677,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)bindToPlayerViewController:(AVPlayerViewController *)playerViewController
 {
-    if (self.playerViewController) {
+    if (self.playerViewController != playerViewController) {
         self.playerViewController.player = nil;
     }
     
-    playerViewController.player = self.player;
+    if (playerViewController.player != self.player) {
+        playerViewController.player = self.player;
+    }
+    
     self.playerViewController = playerViewController;
     
     // AVPlayerViewController works well (e.g. playback won't freeze in the simulator after a few seconds) only if
@@ -1687,7 +1698,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         return;
     }
     
-    self.playerViewController.player = nil;
+    if (self.playerViewController.player) {
+        self.playerViewController.player = nil;
+    }
     self.playerViewController = nil;
     
     // Rebind the player
@@ -1697,7 +1710,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 - (void)attachPlayer:(AVPlayer *)player toView:(SRGMediaPlayerView *)view
 {
     if (self.playerViewController) {
-        self.playerViewController.player = player;
+        if (self.playerViewController.player != player) {
+            self.playerViewController.player = player;
+        }
     }
     else {
         view.player = player;
@@ -1992,7 +2007,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)srg_mediaPlayerController_playerItemFailedToPlayToEndTime:(NSNotification *)notification
 {
-    [self stopWithUserInfo:nil];
+    [self stopWithUserInfo:nil releasePlayer:YES];
     
     NSError *error = SRGMediaPlayerControllerError(notification.userInfo[AVPlayerItemFailedToPlayToEndTimeErrorKey]);
     [NSNotificationCenter.defaultCenter postNotificationName:SRGMediaPlayerPlaybackDidFailNotification

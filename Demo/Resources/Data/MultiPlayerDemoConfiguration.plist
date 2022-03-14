@@ -12,9 +12,9 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>Tagesschau</string>
+			<string>Livestream</string>
 			<key>url</key>
-			<string>http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8?dw=0</string>
+			<string>https://rtsc3video-lh.akamaihd.net/i/rtsc3video_ww@513975/master.m3u8?dw=0</string>
 		</dict>
 		<dict>
 			<key>name</key>

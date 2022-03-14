@@ -9,7 +9,7 @@
 # All lines starting with a # are ignored when running `fastlane`
 
 # This is the minimum version number required.
-fastlane_version '2.96.0'
+fastlane_version '2.201.0'
 
 default_platform :ios
 
@@ -25,12 +25,9 @@ platform :ios do
     clean_result_files
     clean_derived_data
 
-    Device = Struct.new(:platform, :name)
-    TestBuild = Struct.new(:scheme, :scheme_suffix, :in_workspace)
-
-    iphone11 = Device.new('iOS', 'iPhone 11')
+    iphone13 = Device.new('iOS', 'iPhone 13')
     appletv = Device.new('tvOS', 'Apple TV')
-    devices = [iphone11, appletv]
+    devices = [iphone13, appletv]
 
     scheme = swift_package_name
     swift_package_tests = TestBuild.new(scheme, '', false)
@@ -40,8 +37,7 @@ platform :ios do
     srg_run_tests(devices, test_builds)
 
     # Produce JUnit files for CI
-    srg_trainer
-    override_junit_test_suite_names(test_builds)
+    srg_junit_files
   end
 
   after_all do
@@ -53,6 +49,9 @@ platform :ios do
     reset_git_repo(skip_clean: true, force: true)
   end
 end
+
+Device = Struct.new :platform, :name
+TestBuild = Struct.new :scheme, :scheme_suffix, :in_workspace
 
 def swift_package_name
   JSON.parse((sh 'swift package dump-package'))['name']
@@ -70,13 +69,11 @@ end
 def srg_run_tests(devices, test_builds)
   devices.each do |device|
     test_builds.each do |test_build|
-      begin
-        srg_xcodebuild(device, test_build)
-      rescue StandardError => e
-        raise e unless e.message.include? '** TEST FAILED **'
+      srg_xcodebuild(device, test_build)
+    rescue StandardError => e
+      raise e unless e.message.include? '** TEST FAILED **'
 
-        UI.important('One or more tests failed on ' + device.platform + ' (' + srg_xcodebuild_scheme(test_build) + '). ⚠️')
-      end
+      UI.important("One or more tests failed on #{device.platform} (#{srg_xcodebuild_scheme(test_build)}). ⚠️")
     end
   end
 end
@@ -84,6 +81,7 @@ end
 def srg_xcodebuild(device, test_build)
   xcodebuild(
     test: true,
+    xcargs: srg_test_xcargs,
     workspace: srg_xcodebuild_workspace(test_build),
     scheme: srg_xcodebuild_scheme(test_build),
     destination: srg_xcodebuild_destination(device),
@@ -92,8 +90,12 @@ def srg_xcodebuild(device, test_build)
   )
 end
 
+def srg_test_xcargs
+  '-retry-tests-on-failure'
+end
+
 def srg_xcodebuild_workspace(test_build)
-  test_build.in_workspace ? 'Tests/' + srg_xcodebuild_scheme(test_build) + '.xcworkspace' : nil
+  test_build.in_workspace ? "Tests/#{srg_xcodebuild_scheme(test_build)}.xcworkspace" : nil
 end
 
 def srg_xcodebuild_scheme(test_build)
@@ -101,15 +103,21 @@ def srg_xcodebuild_scheme(test_build)
 end
 
 def srg_xcodebuild_destination(device)
-  'platform=' + device.platform + ' Simulator,name=' + device.name
+  "platform=#{device.platform} Simulator,name=#{device.name}"
 end
 
 def srg_xcodebuild_result_bundle_path(device, test_build)
-  result_bundle_folder_path + test_build.scheme + '-' + device.platform
+  "#{result_bundle_folder_path}#{test_build.scheme}-#{device.platform}"
 end
 
 def srg_xcodebuild_derived_data_path
   '.build/DerivedData'
+end
+
+def srg_junit_files
+  srg_trainer
+  override_junit_test_suite_names
+  expose_junit_files
 end
 
 # Convert xcresults to JUnit files
@@ -117,6 +125,8 @@ def srg_trainer
   trainer(
     path: result_bundle_folder_path,
     output_directory: './fastlane',
+    extension: raw_extension,
+    output_remove_retry_attempts: true,
     fail_build: false
   )
 end
@@ -125,21 +135,31 @@ def result_bundle_folder_path
   './fastlane/xcresult/'
 end
 
+def raw_extension
+  '.rawjunit'
+end
+
 # Override JUnit test suite names to split iOS and tvOS test results
-def override_junit_test_suite_names(test_builds)
-  test_builds.each do |test_build|
-    Dir[test_build.scheme + '-*.xml'].each do |file_name|
-      override_junit_test_suite_name(file_name)
-    end
+def override_junit_test_suite_names
+  Dir["*#{raw_extension}"].each do |file_name|
+    override_junit_test_suite_name(file_name)
   end
 end
 
 def override_junit_test_suite_name(file_name)
   platform = file_name.split('.').first.split('-').last
   file = File.open(file_name, 'r')
-  xml = file.read.gsub('Tests" tests="', '-' + platform + '" tests="')
-  xml = xml.gsub('-tests" tests="', '-' + platform + '" tests="')
-  File.open(file_name, 'w') { |f| f.write(xml) }
+  xml = file.read.gsub('Tests" tests="', "-#{platform}\" tests=\"")
+  xml = xml.gsub('-tests" tests="', "-#{platform}\" tests=\"")
+  File.write(file_name, xml)
+end
+
+def expose_junit_files
+  Dir["*#{raw_extension}"].each do |file_name|
+    # Rename JUnit files with correct extension
+    new_file_name = file_name.gsub(raw_extension, '.xml')
+    File.rename(file_name, new_file_name) unless File.exist?(new_file_name)
+  end
 end
 
 # More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md

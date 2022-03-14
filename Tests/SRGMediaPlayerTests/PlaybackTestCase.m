@@ -23,22 +23,22 @@ static NSURL *ShortNonStreamedTestURL(void)
 
 static NSURL *LiveTestURL(void)
 {
-    return [NSURL URLWithString:@"http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8?dw=0"];
+    return [NSURL URLWithString:@"https://rtsc3video-lh.akamaihd.net/i/rtsc3video_ww@513975/master.m3u8?dw=0"];
 }
 
-static NSURL *DVRTestURL(void)
+static NSURL *DVRNoTimestampTestURL(void)
 {
-    return [NSURL URLWithString:@"http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8"];
+    return [NSURL URLWithString:@"https://rtsc3video-lh.akamaihd.net/i/rtsc3video_ww@513975/master.m3u8"];
 }
 
 static NSURL *DVRTimestampTestURL(void)
 {
-    return [NSURL URLWithString:@"https://mcdn.daserste.de/daserste/int/master.m3u8"];
+    return [NSURL URLWithString:@"https://tagesschau.akamaized.net/hls/live/2020115/tagesschau/tagesschau_1/master.m3u8"];
 }
 
 static NSURL *AudioOverHTTPTestURL(void)
 {
-    return [NSURL URLWithString:@"https://rtsww-a-d.rts.ch/la-1ere/programmes/c-est-pas-trop-tot/2017/c-est-pas-trop-tot_20170628_full_c-est-pas-trop-tot_007d77e7-61fb-4aef-9491-5e6b07f7f931-128k.mp3"];
+    return [NSURL URLWithString:@"https://rts-aod-dd.akamaized.net/ww/8849864/73bab428-ce6e-3ded-92cf-c84649ed766f.mp3"];
 }
 
 @interface PlaybackTestCase : MediaPlayerBaseTestCase
@@ -283,7 +283,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:nil withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -297,7 +297,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:20.] withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:20.] withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -312,7 +312,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-10. * 60.];
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:[SRGPosition positionAtDate:date] withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:[SRGPosition positionAtDate:date] withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1100,7 +1100,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL()];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL()];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1152,7 +1152,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     self.mediaPlayerController.liveTolerance = 50.;
-    [self.mediaPlayerController playURL:DVRTestURL()];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL()];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1191,7 +1191,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     }];
     
     self.mediaPlayerController.minimumDVRWindowLength = 24. * 60. * 60.;
-    [self.mediaPlayerController playURL:DVRTestURL()];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL()];
     
     [self waitForExpectationsWithTimeout:20. handler:nil];
     
@@ -1335,7 +1335,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL()];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1359,7 +1359,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePaused;
     }];
     
-    [self.mediaPlayerController prepareToPlayURL:DVRTestURL() withCompletionHandler:nil];
+    [self.mediaPlayerController prepareToPlayURL:DVRNoTimestampTestURL() withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1685,7 +1685,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:nil withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1822,7 +1822,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:200.] withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:200.] withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1843,7 +1843,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:200.] withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:200.] withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1864,7 +1864,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:200.] withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:200.] withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1886,7 +1886,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:200.] withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:[SRGPosition positionAtTimeInSeconds:200.] withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -1997,7 +1997,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:nil withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -2384,7 +2384,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:nil withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -2714,7 +2714,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRangeValue.CMTimeRangeValue);
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL()];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -2772,7 +2772,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, streamType) expectedValue:@(SRGMediaPlayerStreamTypeDVR)];
     
-    [self.mediaPlayerController playURL:DVRTestURL()];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -2832,7 +2832,7 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, live) expectedValue:@YES];
     
     self.mediaPlayerController.liveTolerance = 15.;
-    [self.mediaPlayerController playURL:DVRTestURL()];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
@@ -2965,7 +2965,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         lastDate = date;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL()];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL()];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
         [self.mediaPlayerController removePeriodicTimeObserver:periodicTimeObserver];
@@ -3082,7 +3082,7 @@ static NSURL *AudioOverHTTPTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController playURL:DVRTestURL() atPosition:nil withSegments:nil userInfo:nil];
+    [self.mediaPlayerController playURL:DVRNoTimestampTestURL() atPosition:nil withSegments:nil userInfo:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
