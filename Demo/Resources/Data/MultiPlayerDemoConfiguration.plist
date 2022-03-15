@@ -20,7 +20,7 @@
 			<key>name</key>
 			<string>Gothard 360</string>
 			<key>url</key>
-			<string>https://rtsvodww-vh.akamaihd.net/i/360/2017/2_Gothard_360_full_f_8414077-,301k,701k,1201k,2001k,.mp4.csmil/master.m3u8</string>
+			<string>https://rts-vod-amd.akamaized.net/ww/8414077/78880679-f000-3e61-a636-5186eb5d8e10/master.m3u8</string>
 			<key>is360</key>
 			<true/>
 		</dict>
