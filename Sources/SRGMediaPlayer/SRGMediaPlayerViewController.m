@@ -310,25 +310,28 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
 
 - (NSArray<UIAction *> *)playbackRateMenuActions API_AVAILABLE(tvos(15.0))
 {
-    SRGMediaPlayerController *controller = self.controller;
-    NSArray<NSNumber *> *playbackRates = controller.supportedPlaybackRates;
+    NSArray<NSNumber *> *playbackRates = self.controller.supportedPlaybackRates;
     if (playbackRates.count < 2) {
         return nil;
     }
     
     NSMutableArray<UIAction *> *actions = [NSMutableArray array];
     for (NSNumber *rate in playbackRates) {
-        @weakify(controller)
+        @weakify(self)
         UIAction *action = [UIAction actionWithTitle:[NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"%@×", @"Speed factor. Must be short"), rate] image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
-            @strongify(controller)
+            @strongify(self)
             action.state = UIMenuElementStateOn;
             
             // Introduce a slight delay to avoid immediate menu reloads due to the playback rate being changed
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                controller.playbackRate = rate.floatValue;
+                self.controller.playbackRate = rate.floatValue;
+                
+                if ([self.delegate respondsToSelector:@selector(playerViewController:didSelectPlaybackRate:)]) {
+                    [self.delegate playerViewController:self didSelectPlaybackRate:rate.floatValue];
+                }
             });
         }];
-        action.state = [rate isEqualToNumber:@(controller.playbackRate)] ? UIMenuElementStateOn : UIMenuElementStateOff;
+        action.state = [rate isEqualToNumber:@(self.controller.playbackRate)] ? UIMenuElementStateOn : UIMenuElementStateOff;
         [actions addObject:action];
     }
     return actions.copy;

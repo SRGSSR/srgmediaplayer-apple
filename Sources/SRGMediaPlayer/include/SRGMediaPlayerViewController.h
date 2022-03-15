@@ -22,6 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 #if TARGET_OS_TV
 
 /**
+ *  Called when the user changed the playback speed.
+ */
+- (void)playerViewController:(SRGMediaPlayerViewController *)playerViewController didSelectPlaybackRate:(float)playbackRate;
+
+/**
  *  Return optional external metadata to display in the Info panel.
  *
  *  @discussion For a metadata item to be presented in the Info panel, you need to provide values for the item’s identifier, value
