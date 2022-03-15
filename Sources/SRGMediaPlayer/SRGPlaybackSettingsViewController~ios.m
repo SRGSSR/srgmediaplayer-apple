@@ -647,10 +647,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     SRGSettingsSectionType sectionType = self.sectionTypes[indexPath.section];
-    if ([sectionType isEqualToString:SRGSettingsSectionTypePlaybackSpeed]) {
-        
-    }
-    else if ([sectionType isEqualToString:SRGSettingsSectionTypeAudioTracks]) {
+    if ([sectionType isEqualToString:SRGSettingsSectionTypeAudioTracks]) {
         [self.mediaPlayerController selectMediaOption:self.audioOptions[indexPath.row] inMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
     }
     else if ([sectionType isEqualToString:SRGSettingsSectionTypeSubtitles]) {
