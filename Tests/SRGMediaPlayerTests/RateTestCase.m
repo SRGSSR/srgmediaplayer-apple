@@ -15,12 +15,12 @@ static NSURL *OnDemandTestURL(void)
 
 static NSURL *LiveTestURL(void)
 {
-    return [NSURL URLWithString:@"http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8?dw=0"];
+    return [NSURL URLWithString:@"https://rtsc3video-lh.akamaihd.net/i/rtsc3video_ww@513975/master.m3u8?dw=0"];
 }
 
 static NSURL *DVRTestURL(void)
 {
-    return [NSURL URLWithString:@"http://tagesschau-lh.akamaihd.net/i/tagesschau_1@119231/master.m3u8"];
+    return [NSURL URLWithString:@"https://rtsc3video-lh.akamaihd.net/i/rtsc3video_ww@513975/master.m3u8"];
 }
 
 @import SRGMediaPlayer;
