@@ -138,6 +138,27 @@ static void commonInit(SRGPlaybackSettingsButton *self);
 
 #pragma mark SRGPlaybackSettingsViewControllerDelegate protocol
 
+- (void)playbackSettingsViewController:(SRGPlaybackSettingsViewController *)settingsViewController didSelectPlaybackRate:(float)playbackRate
+{
+    if ([self.delegate respondsToSelector:@selector(playbackSettingsButton:didSelectPlaybackRate:)]) {
+        [self.delegate playbackSettingsButton:self didSelectPlaybackRate:playbackRate];
+    }
+}
+
+- (void)playbackSettingsViewController:(SRGPlaybackSettingsViewController *)settingsViewController didSelectAudioLanguageCode:(NSString *)languageCode
+{
+    if ([self.delegate respondsToSelector:@selector(playbackSettingsButton:didSelectAudioLanguageCode:)]) {
+        [self.delegate playbackSettingsButton:self didSelectAudioLanguageCode:languageCode];
+    }
+}
+
+- (void)playbackSettingsViewController:(SRGPlaybackSettingsViewController *)settingsViewController didSelectSubtitleLanguageCode:(NSString *)languageCode
+{
+    if ([self.delegate respondsToSelector:@selector(playbackSettingsButton:didSelectSubtitleLanguageCode:)]) {
+        [self.delegate playbackSettingsButton:self didSelectSubtitleLanguageCode:languageCode];
+    }
+}
+
 - (void)playbackSettingsViewControllerWasDismissed:(SRGPlaybackSettingsViewController *)settingsViewController
 {
     if ([self.delegate respondsToSelector:@selector(playbackSettingsButtonDidHideSettings:)]) {

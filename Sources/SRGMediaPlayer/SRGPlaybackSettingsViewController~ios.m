@@ -526,8 +526,12 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
             @strongify(self)
             // Introduce a slight delay to avoid immediate table view reloads due to the playback rate being changed
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                NSNumber *rate = self.playbackRates[index];
-                self.mediaPlayerController.playbackRate = rate.floatValue;
+                float rate = self.playbackRates[index].floatValue;
+                self.mediaPlayerController.playbackRate = rate;
+                
+                if ([self.delegate respondsToSelector:@selector(playbackSettingsViewController:didSelectPlaybackRate:)]) {
+                    [self.delegate playbackSettingsViewController:self didSelectPlaybackRate:rate];
+                }
             });
         }];
         
@@ -648,18 +652,37 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     
     SRGSettingsSectionType sectionType = self.sectionTypes[indexPath.section];
     if ([sectionType isEqualToString:SRGSettingsSectionTypeAudioTracks]) {
-        [self.mediaPlayerController selectMediaOption:self.audioOptions[indexPath.row] inMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
+        AVMediaSelectionOption *option = self.audioOptions[indexPath.row];
+        [self.mediaPlayerController selectMediaOption:option inMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
+        
+        if ([self.delegate respondsToSelector:@selector(playbackSettingsViewController:didSelectAudioLanguageCode:)]) {
+            NSString *languageCode = [option.locale objectForKey:NSLocaleLanguageCode];
+            if (! [SRGMediaPlayerApplicationLocalization() isEqualToString:languageCode]) {
+                [self.delegate playbackSettingsViewController:self didSelectAudioLanguageCode:languageCode];
+            }
+            else {
+                [self.delegate playbackSettingsViewController:self didSelectAudioLanguageCode:nil];
+            }
+        }
     }
     else if ([sectionType isEqualToString:SRGSettingsSectionTypeSubtitles]) {
         if (indexPath.row == 0) {
             [self.mediaPlayerController selectMediaOption:nil inMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible];
             SRGMediaAccessibilityCaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
+            
+            if ([self.delegate respondsToSelector:@selector(playbackSettingsViewController:didSelectSubtitleLanguageCode:)]) {
+                [self.delegate playbackSettingsViewController:self didSelectSubtitleLanguageCode:nil];
+            }
         }
         else if (indexPath.row == 1) {
             [self.mediaPlayerController selectMediaOptionAutomaticallyInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible];
             SRGMediaAccessibilityCaptionAppearanceAddPreferredLanguages(kMACaptionAppearanceDomainUser);
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
+            
+            if ([self.delegate respondsToSelector:@selector(playbackSettingsViewController:didSelectSubtitleLanguageCode:)]) {
+                [self.delegate playbackSettingsViewController:self didSelectSubtitleLanguageCode:nil];
+            }
         }
         else {
             AVMediaSelectionOption *option = self.subtitleOptions[indexPath.row - 2];
@@ -670,6 +693,10 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
                 SRGMediaAccessibilityCaptionAppearanceAddSelectedLanguages(kMACaptionAppearanceDomainUser, @[languageCode]);
             }
             MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
+            
+            if ([self.delegate respondsToSelector:@selector(playbackSettingsViewController:didSelectSubtitleLanguageCode:)]) {
+                [self.delegate playbackSettingsViewController:self didSelectSubtitleLanguageCode:languageCode];
+            }
         }
     }
     

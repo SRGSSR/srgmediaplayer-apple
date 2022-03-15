@@ -21,6 +21,21 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SRGPlaybackSettingsViewControllerDelegate <NSObject>
 
 /**
+ *  Called when the user changed the playback speed.
+ */
+- (void)playbackSettingsViewController:(SRGPlaybackSettingsViewController *)settingsViewController didSelectPlaybackRate:(float)playbackRate;
+
+/**
+ *  Called when the user changed the audio language (`nil` if the default application language is selected).
+ */
+- (void)playbackSettingsViewController:(SRGPlaybackSettingsViewController *)settingsViewController didSelectAudioLanguageCode:(nullable NSString *)languageCode;
+
+/**
+ *  Called when the user changed the subtitle language (`nil` if none or automatic).
+ */
+- (void)playbackSettingsViewController:(SRGPlaybackSettingsViewController *)settingsViewController didSelectSubtitleLanguageCode:(nullable NSString *)languageCode;
+
+/**
  *  Called after the view controller has been dismissed.
  */
 - (void)playbackSettingsViewControllerWasDismissed:(SRGPlaybackSettingsViewController *)settingsViewController;

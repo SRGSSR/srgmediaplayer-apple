@@ -22,12 +22,27 @@ API_UNAVAILABLE(tvos)
 @optional
 
 /**
- *  The button is about to show the playback settings view.
+ *  Called when the user changed the playback speed.
+ */
+- (void)playbackSettingsButton:(SRGPlaybackSettingsButton *)playbackSettingsButton didSelectPlaybackRate:(float)playbackRate;
+
+/**
+ *  Called when the user changed the audio language (`nil` if the default application language is selected).
+ */
+- (void)playbackSettingsButton:(SRGPlaybackSettingsButton *)playbackSettingsButton didSelectAudioLanguageCode:(nullable NSString *)languageCode;
+
+/**
+ *  Called when the user changed the subtitle language (`nil` if none or automatic).
+ */
+- (void)playbackSettingsButton:(SRGPlaybackSettingsButton *)playbackSettingsButton didSelectSubtitleLanguageCode:(nullable NSString *)languageCode;
+
+/**
+ *  Called when the button is about to show the playback settings view.
  */
 - (void)playbackSettingsButtonWillShowSettings:(SRGPlaybackSettingsButton *)playbackSettingsButton;
 
 /**
- *  The playback settings have been hidden.
+ *  Called when the playback settings have been hidden.
  */
 - (void)playbackSettingsButtonDidHideSettings:(SRGPlaybackSettingsButton *)playbackSettingsButton;
 
