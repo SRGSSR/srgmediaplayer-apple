@@ -123,6 +123,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic) AVMediaSelectionOption *subtitleOption;
 
 @property (nonatomic, weak) AVPlayerViewController *playerViewController;
+@property (nonatomic) AVAssetImageGenerator *generator;
+@property (nonatomic) NSMutableDictionary<NSValue *, UIImage *> *previewImages;
 
 @end
 
@@ -147,6 +149,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
         self.periodicTimeObservers = [NSMutableDictionary dictionary];
         
         self.lastPlaybackTime = kCMTimeIndefinite;
+        self.previewImages = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -244,6 +247,28 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                         }
                     }
                 }
+                
+                // TODO: Should have a smart generator cache, updating itself regularly (not too often) during playback,
+                //       at least for DVR streams
+                self.generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:playerItem.asset];
+                
+                NSMutableArray<NSValue *> *times = [NSMutableArray array];
+                for (NSInteger i = 0; i < 100; ++i) {
+                    // TODO: Should use CMTimeMultiply, but carefully
+                    CMTime time = CMTimeAdd(self.timeRange.start, CMTimeMakeWithSeconds(CMTimeGetSeconds(self.timeRange.duration) * i / 100., NSEC_PER_SEC));
+                    [times addObject:[NSValue valueWithCMTime:time]];
+                }
+                
+                [self.generator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef  _Nullable imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error) {
+                    if (! imageRef) {
+                        return;
+                    }
+                    
+                    UIImage *image = [UIImage imageWithCGImage:imageRef scale:UIScreen.mainScreen.scale orientation:UIImageOrientationUp];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.previewImages[[NSValue valueWithCMTime:actualTime]] = image;
+                    });
+                }];
             }
             else if (playerItem.status == AVPlayerItemStatusFailed) {
                 [self stopWithUserInfo:nil releasePlayer:YES];
@@ -1357,6 +1382,10 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.lastPlaybackTime = kCMTimeIndefinite;
     self.lastStallDetectionDate = nil;
     
+    [self.generator cancelAllCGImageGeneration];
+    self.generator = nil;
+    [self.previewImages removeAllObjects];
+    
     [self updateTracksForPlayer:nil];
     
     if (@available(iOS 9, tvOS 14, *)) {
@@ -1967,7 +1996,32 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     return periodicTimeObserver;
 }
 
-#pragma mark SRGMediaPlayerViewDelegate protocol
+#pragma mark Preview images
+
+- (UIImage *)previewImageAtTime:(CMTime)time
+{
+    // TODO: Should be optimized. Could also have a tolerance to avoid returning a preview too far away.
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES comparator:^NSComparisonResult(NSValue * _Nonnull timeValue1, NSValue * _Nonnull timeValue2) {
+        CMTime time1 = timeValue1.CMTimeValue;
+        CMTime time2 = timeValue2.CMTimeValue;
+        return CMTimeCompare(time1, time2);
+    }];
+    NSArray<NSValue *> *times = [self.previewImages.allKeys sortedArrayUsingDescriptors:@[sortDescriptor]];
+    if (times.count > 1) {
+        for (NSInteger i = times.count - 1; i >= 0; --i) {
+            NSValue *timeValue = times[i];
+            if (CMTIME_COMPARE_INLINE(CMTimeSubtract(time, timeValue.CMTimeValue), >=, kCMTimeZero)) {
+                return self.previewImages[timeValue];
+            }
+        }
+        return self.previewImages.allValues.lastObject;
+    }
+    else {
+        return self.previewImages.allValues.firstObject;
+    }
+}
+
+#pragma mark SRGPlayer protocol
 
 - (void)mediaPlayerView:(SRGMediaPlayerView *)mediaPlayerView didMoveToWindow:(UIWindow *)window
 {

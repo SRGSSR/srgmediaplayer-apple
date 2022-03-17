@@ -136,6 +136,16 @@ API_UNAVAILABLE(tvos)
 - (void)timeSlider:(SRGTimeSlider *)slider isMovingToTime:(CMTime)time date:(nullable NSDate *)date withValue:(float)value interactive:(BOOL)interactive;
 
 /**
+ *  Called when the user starts dragging the slider.
+ */
+- (void)timeSlider:(SRGTimeSlider *)slider didStartDraggingAtTime:(CMTime)time;
+
+/**
+ *  Called when the user stopped dragging the slider.
+ */
+- (void)timeSlider:(SRGTimeSlider *)slider didStopDraggingAtTime:(CMTime)time;
+
+/**
  *  Implement to customise the value displayed by the slider `valueLabel`. If not implemented, a default presentation
  *  is used.
  *

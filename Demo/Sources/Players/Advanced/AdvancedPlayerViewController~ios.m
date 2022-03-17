@@ -20,7 +20,7 @@ const NSInteger kForwardSkipInterval = 15.;
 // To keep the view controller when picture in picture is active
 static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
-@interface AdvancedPlayerViewController () <AVPictureInPictureControllerDelegate, SRGTracksButtonDelegate, UIViewControllerTransitioningDelegate>
+@interface AdvancedPlayerViewController () <AVPictureInPictureControllerDelegate, SRGTimeSliderDelegate, SRGTracksButtonDelegate, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic) Media *media;
 
@@ -33,6 +33,8 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
 @property (nonatomic, weak) IBOutlet UIImageView *errorImageView;
 @property (nonatomic, weak) IBOutlet UIImageView *audioOnlyImageView;
+
+@property (nonatomic, weak) IBOutlet UIImageView *seekPreviewImageView;
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingActivityIndicatorView;
 
@@ -92,8 +94,12 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     self.playbackButton.playImage = [UIImage imageNamed:@"play"];
     self.playbackButton.pauseImage = [UIImage imageNamed:@"pause"];
     
+    self.timeSlider.delegate = self;
+    
     self.errorImageView.hidden = YES;
     self.audioOnlyImageView.hidden = YES;
+    
+    self.seekPreviewImageView.alpha = 0.f;
     
     // Workaround UIImage view tint color bug
     // See http://stackoverflow.com/a/26042893/760435
@@ -492,6 +498,29 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
 {
     s_advancedPlayerViewController = nil;
     self.restorationWindow = nil;
+}
+
+#pragma mark SRGTimeSliderDelegate protocol
+
+- (void)timeSlider:(SRGTimeSlider *)slider didStartDraggingAtTime:(CMTime)time
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        self.seekPreviewImageView.alpha = 1.f;
+    }];
+}
+
+- (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(float)value interactive:(BOOL)interactive
+{
+    if (interactive) {
+        self.seekPreviewImageView.image = [self.mediaPlayerController previewImageAtTime:time];
+    }
+}
+
+- (void)timeSlider:(SRGTimeSlider *)slider didStopDraggingAtTime:(CMTime)time
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        self.seekPreviewImageView.alpha = 0.f;
+    }];
 }
 
 #pragma mark SRGTracksButtonDelegate protocol
