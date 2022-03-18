@@ -509,7 +509,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     }];
 }
 
-- (void)timeSlider:(SRGTimeSlider *)slider isMovingToPlaybackTime:(CMTime)time withValue:(float)value interactive:(BOOL)interactive
+- (void)timeSlider:(SRGTimeSlider *)slider isMovingToTime:(CMTime)time date:(NSDate *)date withValue:(float)value interactive:(BOOL)interactive
 {
     if (interactive) {
         self.seekPreviewImageView.image = [self.mediaPlayerController previewImageAtTime:time];
