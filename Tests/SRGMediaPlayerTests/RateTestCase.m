@@ -364,7 +364,7 @@ static NSURL *DVRTestURL(void)
     }];
     
     self.mediaPlayerController.playbackRate = 0.5f;
-    [self.mediaPlayerController playURL:LiveTestURL()];
+    [self.mediaPlayerController playURL:DVRTestURL()];
     
     XCTAssertEqual(self.mediaPlayerController.playbackRate, 0.5f);
     XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 0.5f);
