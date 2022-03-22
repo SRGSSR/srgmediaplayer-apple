@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The player delegate.
  */
-@property (nonatomic, weak) id<SRGPlayerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SRGPlayerDelegate> delegate;
 
 /**
  *  The time at which the player started seeking, `kCMTimeIndefinite` if no seek is currently being made.
@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Attempt to play the media immediately if possible (iOS 10 and greater), otherwise normally.
  */
-- (void)playImmediatelyIfPossible;
+- (void)playImmediatelyIfPossibleAtRate:(float)rate;
 
 /**
  *  Seek to a given time with the provided tolerances, calling the specified handler on completion. The delegate

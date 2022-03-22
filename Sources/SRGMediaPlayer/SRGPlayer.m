@@ -31,13 +31,14 @@
 #pragma mark Playback
 
 // TODO: Remove when iOS / tvOS 10 is the minimum required version.
-- (void)playImmediatelyIfPossible
+- (void)playImmediatelyIfPossibleAtRate:(float)rate
 {
     if (@available(iOS 10, tvOS 10, *)) {
-        [self playImmediatelyAtRate:1.f];
+        [self playImmediatelyAtRate:rate];
     }
     else {
         [self play];
+        self.rate = rate;
     }
 }
 

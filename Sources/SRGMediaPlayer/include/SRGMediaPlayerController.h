@@ -896,4 +896,30 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/**
+ *  Playback rate support. Changing the `AVPlayer` rate directly is not supported and leads to undefined behavior.
+ */
+@interface SRGMediaPlayerController (PlaybackRate)
+
+/**
+ *  The desired playback rate. Only values provided in `supportedPlaybackRates` are allowed (attempting to apply
+ *  unsupported values does nothing). Key-value observable.
+ *
+ *  @discussion This value stays the same when the player is paused or idle.
+ */
+@property (nonatomic) float playbackRate;
+
+/**
+ *  Supported playback rates in increasing order. Includes the normal speed 1.
+ */
+@property (nonatomic, readonly) NSArray<NSNumber *> *supportedPlaybackRates;
+
+/**
+ *  The currently applicable playback rate, which might be different from the desired playback rate depending
+ *  on stream capabilities (e.g. livestreams). Key-value observable.
+ */
+@property (nonatomic, readonly) float effectivePlaybackRate;
+
+@end
+
 NS_ASSUME_NONNULL_END

@@ -1671,6 +1671,7 @@ static NSURL *SegmentsLiveTimestampTestURL(void)
 
 - (void)testPlaySelectedSegmentAtStreamEnd
 {
+#warning "This test fails in the iOS 15.3 simulator, see issue #115"
     // Precise timing information gathered from the stream itself
     Segment *segment = [Segment segmentWithTimeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(1795.045, NSEC_PER_SEC), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))];
     

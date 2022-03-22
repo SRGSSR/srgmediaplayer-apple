@@ -73,6 +73,9 @@
                   Identifier = "PlaybackTestCase/testOnDemandPlaybackStartAtTimeWithTolerances">
                </Test>
                <Test
+                  Identifier = "SegmentsTestCase/testPlaySelectedSegmentAtStreamEnd">
+               </Test>
+               <Test
                   Identifier = "SegmentsTestCase/testStartTimeAroundBeginningOfSegmentWithSelection">
                </Test>
                <Test

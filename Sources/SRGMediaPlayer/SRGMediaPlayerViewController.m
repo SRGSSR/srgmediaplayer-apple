@@ -6,6 +6,7 @@
 
 #import "SRGMediaPlayerViewController.h"
 
+#import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaPlayerController+Private.h"
 #import "SRGMediaPlayerView+Private.h"
 
@@ -128,6 +129,15 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
             [self updateView];
         }];
         [self updateView];
+        
+#if TARGET_OS_TV
+        if (@available(tvOS 15, *)) {
+            [controller addObserver:self keyPath:@keypath(controller.playbackRate) options:NSKeyValueObservingOptionInitial block:^(MAKVONotification *notification) {
+                @strongify(self)
+                [self updateTransportBarMenu];
+            }];
+        }
+#endif
         
         [NSNotificationCenter.defaultCenter addObserver:self
                                                selector:@selector(playbackDidFail:)
@@ -293,6 +303,58 @@ static UIView *SRGMediaPlayerViewControllerAudioOnlySubview(UIView *view)
     [audioOnlyView removeFromSuperview];
 #endif
 }
+
+#if TARGET_OS_TV
+
+#pragma mark Actions
+
+- (NSArray<UIAction *> *)playbackRateMenuActions API_AVAILABLE(tvos(15.0))
+{
+    NSArray<NSNumber *> *playbackRates = self.controller.supportedPlaybackRates;
+    if (playbackRates.count < 2) {
+        return nil;
+    }
+    
+    NSMutableArray<UIAction *> *actions = [NSMutableArray array];
+    for (NSNumber *rate in playbackRates) {
+        @weakify(self)
+        UIAction *action = [UIAction actionWithTitle:[NSString stringWithFormat:SRGMediaPlayerLocalizedString(@"%@×", @"Speed factor. Must be short"), rate] image:nil identifier:nil handler:^(__kindof UIAction * _Nonnull action) {
+            @strongify(self)
+            action.state = UIMenuElementStateOn;
+            
+            // Introduce a slight delay to avoid immediate menu reloads due to the playback rate being changed
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.controller.playbackRate = rate.floatValue;
+                
+                if ([self.delegate respondsToSelector:@selector(playerViewController:didSelectPlaybackRate:)]) {
+                    [self.delegate playerViewController:self didSelectPlaybackRate:rate.floatValue];
+                }
+            });
+        }];
+        action.state = [rate isEqualToNumber:@(self.controller.playbackRate)] ? UIMenuElementStateOn : UIMenuElementStateOff;
+        [actions addObject:action];
+    }
+    return actions.copy;
+}
+
+- (void)updateTransportBarMenu API_AVAILABLE(tvos(15.0))
+{
+    NSMutableArray<UIMenuElement *> *menuItems = [NSMutableArray array];
+    
+    NSArray<UIAction *> *playbackRateMenuActions = [self playbackRateMenuActions];
+    if (playbackRateMenuActions) {
+        UIMenu *playbackRateMenu = [UIMenu menuWithTitle:SRGMediaPlayerLocalizedString(@"Playback speed", @"Playback speed menu title")
+                                                   image:[UIImage systemImageNamed:@"speedometer"]
+                                              identifier:nil
+                                                 options:UIMenuOptionsSingleSelection
+                                                children:playbackRateMenuActions];
+        [menuItems addObject:playbackRateMenu];
+    }
+    
+    self.transportBarCustomMenuItems = menuItems.copy;
+}
+
+#endif
 
 #pragma mark Notifications
 

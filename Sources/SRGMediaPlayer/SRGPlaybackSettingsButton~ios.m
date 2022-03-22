@@ -8,32 +8,31 @@
 
 #if TARGET_OS_IOS
 
-#import "SRGTracksButton.h"
+#import "SRGPlaybackSettingsButton.h"
 
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "AVMediaSelectionGroup+SRGMediaPlayer.h"
 #import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
-#import "SRGAlternateTracksViewController.h"
 #import "SRGMediaPlayerNavigationController.h"
+#import "SRGPlaybackSettingsViewController.h"
 #import "UIWindow+SRGMediaPlayer.h"
 
 @import libextobjc;
 
-static void commonInit(SRGTracksButton *self);
+static void commonInit(SRGPlaybackSettingsButton *self);
 
-@interface SRGTracksButton () <SRGAlternateTracksViewControllerDelegate, UIPopoverPresentationControllerDelegate>
+@interface SRGPlaybackSettingsButton () <SRGPlaybackSettingsViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, weak) UIButton *button;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
 
 @end
 
-@implementation SRGTracksButton
+@implementation SRGPlaybackSettingsButton
 
 @synthesize image = _image;
-@synthesize selectedImage = _selectedImage;
 
 #pragma mark Object lifecycle
 
@@ -89,29 +88,12 @@ static void commonInit(SRGTracksButton *self);
 
 - (UIImage *)image
 {
-    return _image ?: [UIImage imageNamed:@"alternate_tracks" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
+    return _image ?: [UIImage imageNamed:@"more" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
 }
 
 - (void)setImage:(UIImage *)image
 {
     _image = image;
-    [self updateAppearance];
-}
-
-- (UIImage *)selectedImage
-{
-    return _selectedImage ?: [UIImage imageNamed:@"alternate_tracks_selected" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
-}
-
-- (void)setSelectedImage:(UIImage *)selectedImage
-{
-    _selectedImage = selectedImage;
-    [self updateAppearance];
-}
-
-- (void)setAlwaysHidden:(BOOL)alwaysHidden
-{
-    _alwaysHidden = alwaysHidden;
     [self updateAppearance];
 }
 
@@ -145,51 +127,42 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)updateAppearanceForMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController
 {
-    AVPlayerItem *playerItem = mediaPlayerController.player.currentItem;
-    AVAsset *asset = playerItem.asset;
-    
-    if (self.alwaysHidden) {
-        self.hidden = YES;
-    }
-    else if ([asset statusOfValueForKey:@keypath(asset.availableMediaCharacteristicsWithMediaSelectionOptions) error:NULL] == AVKeyValueStatusLoaded) {
-        // Get available tracks. The button is only available if there are subtitles and / or audio tracks to choose from. If
-        // subtitles are set, display the button in a selected state.
-        AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-        NSArray<AVMediaSelectionOption *> *audioOptions = audioGroup.options;
-        
-        AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-        NSArray<AVMediaSelectionOption *> *subtitleOptions = subtitleGroup ? [AVMediaSelectionGroup mediaSelectionOptionsFromArray:subtitleGroup.srgmediaplayer_languageOptions withoutMediaCharacteristics:@[AVMediaCharacteristicContainsOnlyForcedSubtitles]] : nil;
-        
-        if (audioOptions.count > 1 || subtitleOptions.count != 0) {
-            self.hidden = NO;
-            
-            // Enable the button if an (optional) subtitle has been selected
-            if (subtitleGroup) {
-                AVMediaSelectionOption *currentSubtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
-                [self.button setImage:[subtitleOptions containsObject:currentSubtitleOption] ? self.selectedImage : self.image forState:UIControlStateNormal];
-            }
-            else {
-                [self.button setImage:self.image forState:UIControlStateNormal];
-            }
-        }
-        else {
-            self.hidden = YES;
-        }
-    }
-    else if (self.fakeInterfaceBuilderButton) {
+    if (self.fakeInterfaceBuilderButton) {
         self.hidden = NO;
     }
     else {
-        self.hidden = YES;
+        self.hidden = NO;
+        [self.button setImage:self.image forState:UIControlStateNormal];
     }
 }
 
-#pragma mark SRGAlternateTracksViewControllerDelegate protocol
+#pragma mark SRGPlaybackSettingsViewControllerDelegate protocol
 
-- (void)alternateTracksViewControllerWasDismissed:(id)alternateTracksViewController
+- (void)playbackSettingsViewController:(SRGPlaybackSettingsViewController *)settingsViewController didSelectPlaybackRate:(float)playbackRate
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonDidHideTrackSelection:)]) {
-        [self.delegate tracksButtonDidHideTrackSelection:self];
+    if ([self.delegate respondsToSelector:@selector(playbackSettingsButton:didSelectPlaybackRate:)]) {
+        [self.delegate playbackSettingsButton:self didSelectPlaybackRate:playbackRate];
+    }
+}
+
+- (void)playbackSettingsViewController:(SRGPlaybackSettingsViewController *)settingsViewController didSelectAudioLanguageCode:(NSString *)languageCode
+{
+    if ([self.delegate respondsToSelector:@selector(playbackSettingsButton:didSelectAudioLanguageCode:)]) {
+        [self.delegate playbackSettingsButton:self didSelectAudioLanguageCode:languageCode];
+    }
+}
+
+- (void)playbackSettingsViewController:(SRGPlaybackSettingsViewController *)settingsViewController didSelectSubtitleLanguageCode:(NSString *)languageCode
+{
+    if ([self.delegate respondsToSelector:@selector(playbackSettingsButton:didSelectSubtitleLanguageCode:)]) {
+        [self.delegate playbackSettingsButton:self didSelectSubtitleLanguageCode:languageCode];
+    }
+}
+
+- (void)playbackSettingsViewControllerWasDismissed:(SRGPlaybackSettingsViewController *)settingsViewController
+{
+    if ([self.delegate respondsToSelector:@selector(playbackSettingsButtonDidHideSettings:)]) {
+        [self.delegate playbackSettingsButtonDidHideSettings:self];
     }
 }
 
@@ -216,17 +189,17 @@ static void commonInit(SRGTracksButton *self);
 
 - (void)showTracks:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(tracksButtonWillShowTrackSelection:)]) {
-        [self.delegate tracksButtonWillShowTrackSelection:self];
+    if ([self.delegate respondsToSelector:@selector(playbackSettingsButtonWillShowSettings:)]) {
+        [self.delegate playbackSettingsButtonWillShowSettings:self];
     }
     
-    SRGAlternateTracksViewController *tracksViewController = [[SRGAlternateTracksViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
-                                                                                                                  userInterfaceStyle:self.userInterfaceStyle];
-    tracksViewController.delegate = self;
-    tracksViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                                           target:self
-                                                                                                           action:@selector(hideTracks:)];
-    SRGMediaPlayerNavigationController *navigationController = [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:tracksViewController];
+    SRGPlaybackSettingsViewController *settingsViewController = [[SRGPlaybackSettingsViewController alloc] initWithMediaPlayerController:self.mediaPlayerController
+                                                                                                                      userInterfaceStyle:self.userInterfaceStyle];
+    settingsViewController.delegate = self;
+    settingsViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                                         target:self
+                                                                                                         action:@selector(hideTracks:)];
+    SRGMediaPlayerNavigationController *navigationController = [[SRGMediaPlayerNavigationController alloc] initWithRootViewController:settingsViewController];
     
     if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         navigationController.modalPresentationStyle = UIModalPresentationPopover;
@@ -275,7 +248,7 @@ static void commonInit(SRGTracksButton *self);
     fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     
-    UIImage *image = [UIImage imageNamed:@"alternate_tracks" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
+    UIImage *image = [UIImage imageNamed:@"more" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
     [fakeInterfaceBuilderButton setImage:image forState:UIControlStateNormal];
     
     [self addSubview:fakeInterfaceBuilderButton];
@@ -294,7 +267,7 @@ static void commonInit(SRGTracksButton *self);
 
 - (NSString *)accessibilityLabel
 {
-    return SRGMediaPlayerLocalizedString(@"Audio and Subtitles", @"Accessibility title of the button to display the pop over view to select audio or subtitles");
+    return SRGMediaPlayerLocalizedString(@"Playback settings", @"Accessibility title of playback settings button");
 }
 
 - (UIAccessibilityTraits)accessibilityTraits
@@ -318,7 +291,7 @@ static void commonInit(SRGTracksButton *self);
 
 #pragma mark Functions
 
-static void commonInit(SRGTracksButton *self)
+static void commonInit(SRGPlaybackSettingsButton *self)
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = self.bounds;
