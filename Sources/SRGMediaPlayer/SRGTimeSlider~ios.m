@@ -602,6 +602,28 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
 }
 
+- (void)accessibilityDecrement
+{
+    if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityDecrementFromValue:time:)]) {
+        [self.delegate timeSlider:self accessibilityDecrementFromValue:self.value time:self.time];
+    }
+    else {
+        CMTime targetTime = CMTimeSubtract(self.time, CMTimeMakeWithSeconds(15., NSEC_PER_SEC));
+        [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:nil];
+    }
+}
+
+- (void)accessibilityIncrement
+{
+    if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityIncrementFromValue:time:)]) {
+        [self.delegate timeSlider:self accessibilityIncrementFromValue:self.value time:self.time];
+    }
+    else {
+        CMTime targetTime = CMTimeAdd(self.time, CMTimeMakeWithSeconds(15., NSEC_PER_SEC));
+        [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:nil];
+    }
+}
+
 #pragma mark Interface Builder integration
 
 - (void)prepareForInterfaceBuilder

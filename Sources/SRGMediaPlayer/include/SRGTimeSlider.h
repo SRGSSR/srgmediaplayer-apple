@@ -183,6 +183,20 @@ API_UNAVAILABLE(tvos)
  */
 - (nullable NSString *)timeSlider:(SRGTimeSlider *)slider timeLeftAccessibilityLabelForValue:(float)value time:(CMTime)time date:(nullable NSDate *)date;
 
+/**
+ *  Called when the slider decrement accessibility gesture is triggered.
+ *
+ *  @discussion If not implemented the slider position is decremented by 15 seconds (if possible).
+ */
+- (void)timeSlider:(SRGTimeSlider *)slider accessibilityDecrementFromValue:(float)value time:(CMTime)time;
+
+/**
+ *  Called when the slider increment accessibility gesture is triggered.
+ *
+ *  @discussion If not implemented the slider position is incremented by 15 seconds (if possible).
+ */
+- (void)timeSlider:(SRGTimeSlider *)slider accessibilityIncrementFromValue:(float)value time:(CMTime)time;
+
 @end
 
 NS_ASSUME_NONNULL_END
