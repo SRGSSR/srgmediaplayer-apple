@@ -136,6 +136,22 @@ API_UNAVAILABLE(tvos)
 - (void)timeSlider:(SRGTimeSlider *)slider isMovingToTime:(CMTime)time date:(nullable NSDate *)date withValue:(float)value interactive:(BOOL)interactive;
 
 /**
+ *  Called when the user starts dragging the slider.
+ *
+ *  @param slider The slider for which the call is made.
+ *  @param time   The time at which the slider was moved.
+ */
+- (void)timeSlider:(SRGTimeSlider *)slider didStartDraggingAtTime:(CMTime)time;
+
+/**
+ *  Called when the user stopped dragging the slider.
+ *
+ *  @param slider The slider for which the call is made.
+ *  @param time   The time at which the slider was moved.
+ */
+- (void)timeSlider:(SRGTimeSlider *)slider didStopDraggingAtTime:(CMTime)time;
+
+/**
  *  Implement to customise the value displayed by the slider `valueLabel`. If not implemented, a default presentation
  *  is used.
  *
@@ -186,12 +202,20 @@ API_UNAVAILABLE(tvos)
 /**
  *  Called when the slider decrement accessibility gesture is triggered.
  *
+ *  @param slider The slider for which the call is made.
+ *  @param value  The corresponding slider value (in seconds).
+ *  @param time   The corresponding time.
+ *
  *  @discussion If not implemented the slider position is decremented by 15 seconds (if possible).
  */
 - (void)timeSlider:(SRGTimeSlider *)slider accessibilityDecrementFromValue:(float)value time:(CMTime)time;
 
 /**
  *  Called when the slider increment accessibility gesture is triggered.
+ *
+ *  @param slider The slider for which the call is made.
+ *  @param value  The corresponding slider value (in seconds).
+ *  @param time   The corresponding time.
  *
  *  @discussion If not implemented the slider position is incremented by 15 seconds (if possible).
  */

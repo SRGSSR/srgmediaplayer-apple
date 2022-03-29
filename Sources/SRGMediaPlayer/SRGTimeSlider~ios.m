@@ -373,6 +373,10 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         return NO;
     }
     
+    if ([self.delegate respondsToSelector:@selector(timeSlider:didStartDraggingAtTime:)]) {
+        [self.delegate timeSlider:self didStartDraggingAtTime:self.time];
+    }
+    
     return beginTracking;
 }
 
@@ -407,6 +411,10 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
                 [self.mediaPlayerController play];
             }
         }];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(timeSlider:didStopDraggingAtTime:)]) {
+        [self.delegate timeSlider:self didStopDraggingAtTime:self.time];
     }
     
     [super endTrackingWithTouch:touch withEvent:event];
