@@ -373,6 +373,10 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         return NO;
     }
     
+    if ([self.delegate respondsToSelector:@selector(timeSlider:didStartDraggingAtTime:)]) {
+        [self.delegate timeSlider:self didStartDraggingAtTime:self.time];
+    }
+    
     return beginTracking;
 }
 
@@ -407,6 +411,10 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
                 [self.mediaPlayerController play];
             }
         }];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(timeSlider:didStopDraggingAtTime:)]) {
+        [self.delegate timeSlider:self didStopDraggingAtTime:self.time];
     }
     
     [super endTrackingWithTouch:touch withEvent:event];
@@ -599,6 +607,28 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
     else {
         return [super accessibilityValue];
+    }
+}
+
+- (void)accessibilityDecrement
+{
+    if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityDecrementFromValue:time:)]) {
+        [self.delegate timeSlider:self accessibilityDecrementFromValue:self.value time:self.time];
+    }
+    else {
+        CMTime targetTime = CMTimeSubtract(self.time, CMTimeMakeWithSeconds(15., NSEC_PER_SEC));
+        [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:nil];
+    }
+}
+
+- (void)accessibilityIncrement
+{
+    if ([self.delegate respondsToSelector:@selector(timeSlider:accessibilityIncrementFromValue:time:)]) {
+        [self.delegate timeSlider:self accessibilityIncrementFromValue:self.value time:self.time];
+    }
+    else {
+        CMTime targetTime = CMTimeAdd(self.time, CMTimeMakeWithSeconds(15., NSEC_PER_SEC));
+        [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:nil];
     }
 }
 
