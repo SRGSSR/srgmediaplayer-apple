@@ -267,7 +267,7 @@ static void commonInit(SRGPlaybackSettingsButton *self);
 
 - (NSString *)accessibilityLabel
 {
-    return SRGMediaPlayerLocalizedString(@"Playback settings", @"Accessibility title of playback settings button");
+    return SRGMediaPlayerAccessibilityLocalizedString(@"Playback settings", @"Accessibility title of playback settings button");
 }
 
 - (UIAccessibilityTraits)accessibilityTraits
