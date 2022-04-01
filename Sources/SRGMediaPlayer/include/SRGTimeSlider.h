@@ -140,16 +140,20 @@ API_UNAVAILABLE(tvos)
  *
  *  @param slider The slider for which the call is made.
  *  @param time   The time at which the slider was moved.
+ *  @param date   The date corresponding to the time, if any.
+ *  @param value  The corresponding slider value (in seconds).
  */
-- (void)timeSlider:(SRGTimeSlider *)slider didStartDraggingAtTime:(CMTime)time;
+- (void)timeSlider:(SRGTimeSlider *)slider didStartDraggingAtTime:(CMTime)time date:(nullable NSDate *)date withValue:(float)value;
 
 /**
  *  Called when the user stopped dragging the slider.
  *
  *  @param slider The slider for which the call is made.
  *  @param time   The time at which the slider was moved.
+ *  @param date   The date corresponding to the time, if any.
+ *  @param value  The corresponding slider value (in seconds).
  */
-- (void)timeSlider:(SRGTimeSlider *)slider didStopDraggingAtTime:(CMTime)time;
+- (void)timeSlider:(SRGTimeSlider *)slider didStopDraggingAtTime:(CMTime)time date:(nullable NSDate *)date withValue:(float)value;
 
 /**
  *  Implement to customise the value displayed by the slider `valueLabel`. If not implemented, a default presentation

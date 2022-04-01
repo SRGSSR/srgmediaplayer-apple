@@ -373,8 +373,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         return NO;
     }
     
-    if ([self.delegate respondsToSelector:@selector(timeSlider:didStartDraggingAtTime:)]) {
-        [self.delegate timeSlider:self didStartDraggingAtTime:self.time];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:didStartDraggingAtTime:date:withValue:)]) {
+        [self.delegate timeSlider:self didStartDraggingAtTime:self.time date:self.date withValue:self.value];
     }
     
     return beginTracking;
@@ -396,8 +396,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
     
     if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToTime:date:withValue:interactive:)]) {
-        NSDate *date = [self.mediaPlayerController streamDateForTime:time];
-        [self.delegate timeSlider:self isMovingToTime:time date:date withValue:self.value interactive:YES];
+        [self.delegate timeSlider:self isMovingToTime:time date:self.date withValue:self.value interactive:YES];
     }
     
     return continueTracking;
@@ -413,8 +412,8 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         }];
     }
     
-    if ([self.delegate respondsToSelector:@selector(timeSlider:didStopDraggingAtTime:)]) {
-        [self.delegate timeSlider:self didStopDraggingAtTime:self.time];
+    if ([self.delegate respondsToSelector:@selector(timeSlider:didStopDraggingAtTime:date:withValue:)]) {
+        [self.delegate timeSlider:self didStopDraggingAtTime:self.time date:self.date withValue:self.value];
     }
     
     [super endTrackingWithTouch:touch withEvent:event];
