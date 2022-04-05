@@ -25,6 +25,9 @@
 /* Play label of the Play/Pause button */
 "Play" = "Play";
 
+/* Accessibility title of playback settings button */
+"Playback settings" = "Playback settings";
+
 /* Picture In Picture button label, when PiP is available */
 "Start Picture in Picture" = "Start Picture in Picture";
 

@@ -25,6 +25,9 @@
 /* Play label of the Play/Pause button */
 "Play" = "Jouer";
 
+/* Accessibility title of playback settings button */
+"Playback settings" = "Paramètres de lecture";
+
 /* Picture In Picture button label, when PiP is available */
 "Start Picture in Picture" = "Démarrer image dans l’image";
 

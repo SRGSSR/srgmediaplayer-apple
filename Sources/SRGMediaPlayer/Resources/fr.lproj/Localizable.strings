@@ -4,18 +4,16 @@
 /* Recommended option (Auto) to let subtitles be automatically selected based on user settings */
 "%@ (Recommended)" = "%@ (recommandé)";
 
+/* Speed factor. Must be short */
+"%@×" = "%@×";
+
 /* AirPlay device description on which device the media is played if no name provided by the system. Use with \"This media is playing on %@\" */
 "an external device" = "un appareil externe";
 
-/* Section header title in the alternate tracks popup menu, for audio tracks */
+/* Section header title in the settings menu, for audio tracks */
 "Audio" = "Audio";
 
-/* Accessibility title of the button to display the pop over view to select audio or subtitles
-   Title of the pop over view to select audio or subtitles */
-"Audio and Subtitles" = "Audio et sous-titres";
-
-/* Automatic option title to let subtitles be automatically selected based on user settings
-   Automatic option title to let subtitles be automatically selected based on user settings */
+/* Automatic option title to let subtitles be automatically selected based on user settings */
 "Auto" = "Automatique";
 
 /* Information displayed for unavailable subtitle languages */
@@ -33,11 +31,22 @@
 /* AirPlay description on which device the media is played. */
 "Playback on «%@»" = "Lecture sur «%@»";
 
-/* Section header title in the alternate tracks popup menu, for subtitles & CC tracks */
+/* Accessibility title of playback settings button
+   Title of the playback settings popover */
+"Playback settings" = "Paramètres de lecture";
+
+/* Playback speed menu title
+   Section header title in the settings menu, for setting the playback speed */
+"Playback speed" = "Vitesse de lecture";
+
+/* Section header title in the settings menu, for subtitles & CC tracks */
 "Subtitles & CC" = "Sous-titres et STC";
 
 /* Error message when the media cannot be played due to a technical error. */
 "The media cannot be played" = "Le contenu ne peut être joué";
+
+/* Information footer about playback speed restrictions */
+"The playback speed is restricted to %@×." = "La vitesse de lecture est limitée à %@×.";
 
 /* Fallback for unknown languages */
 "Unknown language" = "Langue inconnue";
