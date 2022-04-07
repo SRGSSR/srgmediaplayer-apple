@@ -37,7 +37,7 @@
 
 /* Playback speed menu title
    Section header title in the settings menu, for setting the playback speed */
-"Playback speed" = "Playback speed";
+"Playback speed" = "Spertadad da reproducziun";
 
 /* Section header title in the settings menu, for subtitles & CC tracks */
 "Subtitles & CC" = "Suttitels & CC";
@@ -46,7 +46,7 @@
 "The media cannot be played" = "Quest cuntegn na sa betg vegnir laschà ir";
 
 /* Information footer about playback speed restrictions */
-"The playback speed is restricted to %@×." = "The playback speed is restricted to %@×.";
+"The playback speed is restricted to %@×." = "La spertadad da reproducziun è limitada sin %@x.";
 
 /* Fallback for unknown languages */
 "Unknown language" = "Lingua betg enconuschenta";
