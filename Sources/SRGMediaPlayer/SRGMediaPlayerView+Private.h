@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The view delegate.
  */
-@property (nonatomic, weak) id<SRGMediaPlayerViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SRGMediaPlayerViewDelegate> delegate;
 
 @end
 

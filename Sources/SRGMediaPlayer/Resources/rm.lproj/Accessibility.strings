@@ -25,6 +25,9 @@
 /* Play label of the Play/Pause button */
 "Play" = "Laschar ir";
 
+/* Accessibility title of playback settings button */
+"Playback settings" = "Configurar Playback";
+
 /* Picture In Picture button label, when PiP is available */
 "Start Picture in Picture" = "Passar a maletg en maletg";
 

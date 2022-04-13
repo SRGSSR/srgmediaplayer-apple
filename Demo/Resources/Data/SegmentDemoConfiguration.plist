@@ -136,6 +136,44 @@
 		</dict>
 		<dict>
 			<key>name</key>
+			<string>Segment at end</string>
+			<key>url</key>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>1795045</integer>
+					<key>duration</key>
+					<integer>5000</integer>
+					<key>blocked</key>
+					<false/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Blocked segment at end</string>
+			<key>url</key>
+			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>
+			<key>segments</key>
+			<array>
+				<dict>
+					<key>name</key>
+					<string>Segment #0</string>
+					<key>startTime</key>
+					<integer>1795045</integer>
+					<key>duration</key>
+					<integer>5000</integer>
+					<key>blocked</key>
+					<true/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
 			<string>Five consecutive segments</string>
 			<key>url</key>
 			<string>https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8</string>

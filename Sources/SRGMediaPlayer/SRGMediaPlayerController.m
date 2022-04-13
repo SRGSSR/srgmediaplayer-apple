@@ -112,6 +112,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 @property (nonatomic, copy) void (^pictureInPictureControllerCreationBlock)(AVPictureInPictureController *pictureInPictureController) API_AVAILABLE(ios(9.0), tvos(14.0));
 @property (nonatomic) NSNumber *savedAllowsExternalPlayback;
 
+@property (nonatomic) float playbackRate;
+@property (nonatomic) float effectivePlaybackRate;
+
 @property (nonatomic) NSNumber *savedPreventsDisplaySleepDuringVideoPlayback API_AVAILABLE(ios(12.0), tvos(12.0));
 
 @property (nonatomic) SRGPosition *startPosition;                   // Will be nilled when reached
@@ -139,6 +142,8 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     if (self = [super init]) {
         _playbackState = SRGMediaPlayerPlaybackStateIdle;
         _pictureInPictureEnabled = NO;
+        _playbackRate = 1.f;
+        _effectivePlaybackRate = 1.f;
         
         self.liveTolerance = SRGMediaPlayerDefaultLiveTolerance;
         self.endTolerance = SRGMediaPlayerDefaultEndTolerance;
@@ -390,11 +395,15 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     [self didChangeValueForKey:@keypath(self.mediaType)];
 }
 
-- (void)setTimeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType live:(BOOL)live
+- (void)setTimeRange:(CMTimeRange)timeRange
+          streamType:(SRGMediaPlayerStreamType)streamType
+                live:(BOOL)live
+effectivePlaybackRate:(float)effectivePlaybackRate
 {
     BOOL timeRangeChange = ! CMTimeRangeEqual(timeRange, _timeRange);
     BOOL streamTypeChange = (streamType != _streamType);
     BOOL liveChange = (live != _live);
+    BOOL effectivePlaybackRateChange = (effectivePlaybackRate != _effectivePlaybackRate);
     
     if (timeRangeChange) {
         [self willChangeValueForKey:@keypath(self.timeRange)];
@@ -405,10 +414,14 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     if (liveChange) {
         [self willChangeValueForKey:@keypath(self.live)];
     }
+    if (effectivePlaybackRateChange) {
+        [self willChangeValueForKey:@keypath(self.effectivePlaybackRate)];
+    }
     
     _timeRange = timeRange;
     _streamType = streamType;
     _live = live;
+    _effectivePlaybackRate = effectivePlaybackRate;
     
     if (timeRangeChange) {
         [self didChangeValueForKey:@keypath(self.timeRange)];
@@ -418,6 +431,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
     if (liveChange) {
         [self didChangeValueForKey:@keypath(self.live)];
+    }
+    if (effectivePlaybackRateChange) {
+        [self didChangeValueForKey:@keypath(self.effectivePlaybackRate)];
     }
 }
 
@@ -571,15 +587,25 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     
     CMTimeRange timeRange = self.playbackInformationCached ? self.timeRange : [self timeRangeForPlayerItem:playerItem];
     SRGMediaPlayerStreamType streamType = self.playbackInformationCached ? self.streamType : [self streamTypeForPlayerItem:playerItem timeRange:timeRange];
-    BOOL live = [self isLiveForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
+    BOOL live = [self isNearLiveEdgeForPlayerItem:playerItem tolerance:self.liveTolerance timeRange:timeRange streamType:streamType];
+    float effectivePlaybackRate = [self effectivePlaybackRateForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
     
     [self updateReferenceForPlayerItem:playerItem timeRange:timeRange streamType:streamType];
-    [self setTimeRange:timeRange streamType:streamType live:live];
+    [self setTimeRange:timeRange streamType:streamType live:live effectivePlaybackRate:effectivePlaybackRate];
     
     // On-demand time ranges are cached because they might become unreliable in some situations (e.g. when AirPlay is
     // connected or disconnected)
     if (SRG_CMTIME_IS_DEFINITE(playerItem.duration) && SRG_CMTIMERANGE_IS_NOT_EMPTY(timeRange)) {
         self.playbackInformationCached = YES;
+    }
+    
+    // Ensure the player rate is correct:
+    //   - If the value is changed on `AVPlayer` directly we must ensure the intended rate is restored. This can happen
+    //     if the user accesses `AVPlayer` (which is documented as undefined behavior) or if the system changes the
+    //     speed (e.g. pause / play triggered from the picture in picture overlay).
+    //   - Playback fails if `AVPlayer` crosses the live edge of a DVR stream with a rate greater than 1.
+    if (player.rate != 0.f && player.rate != effectivePlaybackRate) {
+        player.rate = effectivePlaybackRate;
     }
 }
 
@@ -632,13 +658,66 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
 }
 
-- (BOOL)isLiveForPlayerItem:(AVPlayerItem *)playerItem timeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType
+/**
+ *  Calculate the effective playback rate. This is required for DVR streams which require the rate to be adjusted near
+ *  the live edge to avoid playback issues (playing in the future is not possible). This method also delivers correct
+ *  effective playback rates for on-demand and livestreams without DVR.
+ *
+ *  For a DVR livestreams this method adjusts the playback rate differently depending on where the playhead position
+ *  currently is, as follows:
+ *
+ *
+ *                               Restore to desired rate                                     Force to 1
+ *
+ *                                 ◀──────────────────                                   ──────────────────▶
+ *
+ *    ┌─────────────────────────────────────┬────────────────────────────────────────────────────┬───────────────────────────────┐
+ *    │                                     │                                                    │                               │
+ *    │      Desired effective rate         │                  Keep current rate                 │      Effective rate = 1       │
+ *    │                                     │                                                    │                               │
+ *    └─────────────────────────────────────┼────────────────────────────────────────────────────┼───────────────────────────────┤
+ *                                          │                                                    │                               │
+ *
+ *                                 kLiveEdgeTolerance +                                   kLiveEdgeTolerance                    Live
+ *                                  self.liveTolerance                                                                          edge
+ *
+ */
+- (float)effectivePlaybackRateForPlayerItem:(AVPlayerItem *)playerItem timeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType
 {
+    static const NSTimeInterval kLiveEdgeTolerance = 5.;
+    
+    if (streamType == SRGMediaPlayerStreamTypeLive) {
+        return 1.f;
+    }
+    // When the distance from the live edge is below some tolerance we want the effective playback rate to be at most 1,
+    // as larger values would make playback fail when reaching the edge.
+    else if ([self isNearLiveEdgeForPlayerItem:playerItem tolerance:kLiveEdgeTolerance timeRange:timeRange streamType:streamType]) {
+        return fminf(self.playbackRate, 1.f);
+    }
+    // Conversely the playback rate can be restored to the intended rate when getting away from the live edge, but this
+    // cannot happen using the same tolerance as when nearing the edge. Chunks being periodically added would otherwise make
+    // the effective playback rate oscillate between the intended value and 1, which would be awkward. By adding the live
+    // tolerance (which should be larger than a multiple of the chunk size) to the live edge tolerance we obtain a tolerance
+    // at which the desired playback rate can be reliably applied.
+    else if (! [self isNearLiveEdgeForPlayerItem:playerItem tolerance:kLiveEdgeTolerance + self.liveTolerance timeRange:timeRange streamType:streamType]) {
+        return self.playbackRate;
+    }
+    // In between both tolerances we just keep the current effective playback rate. This ensures the optimal effective
+    // playback rate is applied, whether we are nearing the edge or getting away from it.
+    else {
+        return (_effectivePlaybackRate == 1.f) ? _effectivePlaybackRate : self.playbackRate;
+    }
+}
+
+- (BOOL)isNearLiveEdgeForPlayerItem:(AVPlayerItem *)playerItem tolerance:(NSTimeInterval)tolerance timeRange:(CMTimeRange)timeRange streamType:(SRGMediaPlayerStreamType)streamType
+{
+    NSAssert(tolerance >= 0., @"The tolerance must be >= 0");
+    
     if (streamType == SRGMediaPlayerStreamTypeLive) {
         return YES;
     }
     else if (streamType == SRGMediaPlayerStreamTypeDVR) {
-        return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), playerItem.currentTime)) < self.liveTolerance;
+        return CMTimeGetSeconds(CMTimeSubtract(CMTimeRangeGetEnd(timeRange), playerItem.currentTime)) < tolerance;
     }
     else {
         return NO;
@@ -1014,13 +1093,13 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     if (self.player) {
         // Normal conditions. Simply forward to the player
         if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
-            [self.player playImmediatelyIfPossible];
+            [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
         }
         // Playback ended. Restart at the beginning
         else {
             [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero notify:NO completionHandler:^(BOOL finished) {
                 if (finished) {
-                    [self.player playImmediatelyIfPossible];
+                    [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
                 }
             }];
         }
@@ -1123,7 +1202,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
 
 - (void)togglePlayPause
 {
-    if (self.player && self.player.rate == 1.f) {
+    if (self.player && self.player.rate != 0.f) {
         [self pause];
     }
     else {
@@ -1341,7 +1420,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     self.referenceTime = kCMTimeIndefinite;
     self.referenceDate = nil;
     
-    [self setTimeRange:kCMTimeRangeInvalid streamType:SRGMediaPlayerStreamTypeUnknown live:NO];
+    [self setTimeRange:kCMTimeRangeInvalid streamType:SRGMediaPlayerStreamTypeUnknown live:NO effectivePlaybackRate:self.playbackRate];
     
     self.playbackInformationCached = NO;
     
@@ -1498,7 +1577,7 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
                     self.lastStallDetectionDate = nil;
                 }
                 else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                    [self.player playImmediatelyIfPossible];
+                    [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
                 }
             }
         }];
@@ -1872,6 +1951,27 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
     }
 }
 
+#pragma mark Playback rate
+
+- (void)setPlaybackRate:(float)playbackRate
+{
+    if (! [self.supportedPlaybackRates containsObject:@(playbackRate)]) {
+        SRGMediaPlayerLogWarning(@"Controller", @"Attempting to set an unsupported playback rate. Ignored");
+        return;
+    }
+    
+    [self willChangeValueForKey:@keypath(self.playbackRate)];
+    _playbackRate = playbackRate;
+    [self didChangeValueForKey:@keypath(self.playbackRate)];
+    
+    [self updatePlaybackInformationForPlayer:self.player];
+}
+
+- (NSArray<NSNumber *> *)supportedPlaybackRates
+{
+    return @[ @0.5, @0.75, @1, @1.25, @1.5, @2 ];
+}
+
 #pragma mark Time observers
 
 - (void)registerTimeObserversForPlayer:(AVPlayer *)player
@@ -2087,7 +2187,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleDefaultLanguageOp
             || [key isEqualToString:@keypath(SRGMediaPlayerController.new, mediaType)]
             || [key isEqualToString:@keypath(SRGMediaPlayerController.new, timeRange)]
             || [key isEqualToString:@keypath(SRGMediaPlayerController.new, streamType)]
-            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, live)]) {
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, live)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, playbackRate)]
+            || [key isEqualToString:@keypath(SRGMediaPlayerController.new, effectivePlaybackRate)]) {
         return NO;
     }
     else {

@@ -79,7 +79,7 @@ API_UNAVAILABLE(tvos)
 /**
  *  The button customization delegate.
  */
-@property (nonatomic, weak) id<SRGPlaybackButtonDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SRGPlaybackButtonDelegate> delegate;
 
 @end
 

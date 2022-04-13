@@ -22,6 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 #if TARGET_OS_TV
 
 /**
+ *  Called when the user changed the playback speed.
+ */
+- (void)playerViewController:(SRGMediaPlayerViewController *)playerViewController didSelectPlaybackRate:(float)playbackRate;
+
+/**
  *  Return optional external metadata to display in the Info panel.
  *
  *  @discussion For a metadata item to be presented in the Info panel, you need to provide values for the item’s identifier, value
@@ -45,6 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
  *    - Background playback behavior cannot be customized.
  *    - Picture in picture is always enabled (but still requires you to implement its controller delegate methods to
  *      manage the picture in picture lifecycle).
+ *    - Interstitials, external metadata and menu items cannot be cutomized (attempting to customize them leads to
+ *      undefined behavior).
  *
  *  If you need one of the above features you should implement your own player layout instead.
  */
@@ -64,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The player view controller delegate.
  */
-@property (nonatomic, weak) id<SRGMediaPlayerViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<SRGMediaPlayerViewControllerDelegate> delegate;
 
 /**
  *  Reload data (e.g. external metadata and navigation markers on tvOS) displayed by the player.

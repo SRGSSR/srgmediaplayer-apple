@@ -4,18 +4,16 @@
 /* Recommended option (Auto) to let subtitles be automatically selected based on user settings */
 "%@ (Recommended)" = "%@ (Recommended)";
 
+/* Speed factor. Must be short */
+"%@×" = "%@×";
+
 /* AirPlay device description on which device the media is played if no name provided by the system. Use with \"This media is playing on %@\" */
 "an external device" = "an external device";
 
-/* Section header title in the alternate tracks popup menu, for audio tracks */
+/* Section header title in the settings menu, for audio tracks */
 "Audio" = "Audio";
 
-/* Accessibility title of the button to display the pop over view to select audio or subtitles
-   Title of the pop over view to select audio or subtitles */
-"Audio and Subtitles" = "Audio and subtitles";
-
-/* Automatic option title to let subtitles be automatically selected based on user settings
-   Automatic option title to let subtitles be automatically selected based on user settings */
+/* Automatic option title to let subtitles be automatically selected based on user settings */
 "Auto" = "Auto";
 
 /* Information displayed for unavailable subtitle languages */
@@ -33,11 +31,22 @@
 /* AirPlay description on which device the media is played. */
 "Playback on «%@»" = "Playback on «%@»";
 
-/* Section header title in the alternate tracks popup menu, for subtitles & CC tracks */
+/* Accessibility title of playback settings button
+   Title of the playback settings popover */
+"Playback settings" = "Playback settings";
+
+/* Playback speed menu title
+   Section header title in the settings menu, for setting the playback speed */
+"Playback speed" = "Playback speed";
+
+/* Section header title in the settings menu, for subtitles & CC tracks */
 "Subtitles & CC" = "Subtitles & closed captions";
 
 /* Error message when the media cannot be played due to a technical error. */
 "The media cannot be played" = "The media cannot be played";
+
+/* Information footer about playback speed restrictions */
+"The playback speed is restricted to %@×." = "The playback speed is restricted to %@×.";
 
 /* Fallback for unknown languages */
 "Unknown language" = "Unknown language";

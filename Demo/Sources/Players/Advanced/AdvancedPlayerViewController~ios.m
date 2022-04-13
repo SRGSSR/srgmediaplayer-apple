@@ -20,7 +20,7 @@ const NSInteger kForwardSkipInterval = 15.;
 // To keep the view controller when picture in picture is active
 static AdvancedPlayerViewController *s_advancedPlayerViewController;
 
-@interface AdvancedPlayerViewController () <AVPictureInPictureControllerDelegate, SRGTracksButtonDelegate, UIViewControllerTransitioningDelegate>
+@interface AdvancedPlayerViewController () <AVPictureInPictureControllerDelegate, SRGPlaybackSettingsButtonDelegate, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic) Media *media;
 
@@ -494,14 +494,14 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
     self.restorationWindow = nil;
 }
 
-#pragma mark SRGTracksButtonDelegate protocol
+#pragma mark SRGPlaybackSettingsButtonDelegate protocol
 
-- (void)tracksButtonWillShowTrackSelection:(SRGTracksButton *)tracksButton
+- (void)playbackSettingsButtonWillShowSettings:(SRGPlaybackSettingsButton *)playbackSettingsButton
 {
     [self stopInactivityTracker];
 }
 
-- (void)tracksButtonDidHideTrackSelection:(SRGTracksButton *)tracksButton
+- (void)playbackSettingsButtonDidHideSettings:(SRGPlaybackSettingsButton *)playbackSettingsButton
 {
     [self restartInactivityTracker];
 }

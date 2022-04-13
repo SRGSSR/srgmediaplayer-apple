@@ -4,18 +4,16 @@
 /* Recommended option (Auto) to let subtitles be automatically selected based on user settings */
 "%@ (Recommended)" = "%@ (recumandà)";
 
+/* Speed factor. Must be short */
+"%@×" = "%@×";
+
 /* AirPlay device description on which device the media is played if no name provided by the system. Use with \"This media is playing on %@\" */
 "an external device" = "in apparat extern";
 
-/* Section header title in the alternate tracks popup menu, for audio tracks */
+/* Section header title in the settings menu, for audio tracks */
 "Audio" = "Audio";
 
-/* Accessibility title of the button to display the pop over view to select audio or subtitles
-   Title of the pop over view to select audio or subtitles */
-"Audio and Subtitles" = "Audio e suttitels";
-
-/* Automatic option title to let subtitles be automatically selected based on user settings
-   Automatic option title to let subtitles be automatically selected based on user settings */
+/* Automatic option title to let subtitles be automatically selected based on user settings */
 "Auto" = "Automatisà";
 
 /* Information displayed for unavailable subtitle languages */
@@ -33,11 +31,22 @@
 /* AirPlay description on which device the media is played. */
 "Playback on «%@»" = "Playback sin «%@»";
 
-/* Section header title in the alternate tracks popup menu, for subtitles & CC tracks */
+/* Accessibility title of playback settings button
+   Title of the playback settings popover */
+"Playback settings" = "Configurar Playback";
+
+/* Playback speed menu title
+   Section header title in the settings menu, for setting the playback speed */
+"Playback speed" = "Spertadad da reproducziun";
+
+/* Section header title in the settings menu, for subtitles & CC tracks */
 "Subtitles & CC" = "Suttitels & CC";
 
 /* Error message when the media cannot be played due to a technical error. */
 "The media cannot be played" = "Quest cuntegn na sa betg vegnir laschà ir";
+
+/* Information footer about playback speed restrictions */
+"The playback speed is restricted to %@×." = "La spertadad da reproducziun è limitada sin %@x.";
 
 /* Fallback for unknown languages */
 "Unknown language" = "Lingua betg enconuschenta";

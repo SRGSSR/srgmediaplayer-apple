@@ -1,0 +1,19 @@
+{
+  "images" : [
+    {
+      "filename" : "playback_speed.pdf",
+      "idiom" : "iphone"
+    },
+    {
+      "filename" : "playback_speed-1.pdf",
+      "idiom" : "ipad"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
+  }
+}
