@@ -152,12 +152,18 @@ static void commonInit(SRGViewModeButton *self);
 {
     // See comment in `-[SRGPictureInPictureButton prepareForInterfaceBuilder]`
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    fakeInterfaceBuilderButton.frame = self.bounds;
-    fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [fakeInterfaceBuilderButton setImage:self.viewModeMonoscopicImage forState:UIControlStateNormal];
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
+    
+    fakeInterfaceBuilderButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [fakeInterfaceBuilderButton.topAnchor constraintEqualToAnchor:self.topAnchor],
+        [fakeInterfaceBuilderButton.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+        [fakeInterfaceBuilderButton.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [fakeInterfaceBuilderButton.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
+    ]];
     
     // Hide the normal button
     self.button.hidden = YES;
@@ -205,12 +211,18 @@ static void commonInit(SRGViewModeButton *self);
 static void commonInit(SRGViewModeButton *self)
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = self.bounds;
-    button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     button.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [button addTarget:self action:@selector(srg_viewModeButton_toggleViewMode:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
     self.button = button;
+    
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [button.topAnchor constraintEqualToAnchor:self.topAnchor],
+        [button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+        [button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [button.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
+    ]];
     
     self.hidden = YES;
 }

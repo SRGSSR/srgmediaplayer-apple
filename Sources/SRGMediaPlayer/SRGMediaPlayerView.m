@@ -157,9 +157,16 @@ static void commonInit(SRGMediaPlayerView *self);
                 [self.playbackView removeFromSuperview];
                 
                 UIView<SRGMediaPlaybackView> *playbackView = [[playbackViewClass alloc] initWithFrame:self.bounds];
-                playbackView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [self addSubview:playbackView];
                 self.playbackView = playbackView;
+                
+                playbackView.translatesAutoresizingMaskIntoConstraints = NO;
+                [NSLayoutConstraint activateConstraints:@[
+                    [playbackView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                    [playbackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+                    [playbackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                    [playbackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
+                ]];
             }
             
             if (self.playbackView.player != player) {
