@@ -156,7 +156,7 @@ static void commonInit(SRGMediaPlayerView *self);
                 [self.playbackView setPlayer:nil withAssetDimensions:CGSizeZero];
                 [self.playbackView removeFromSuperview];
                 
-                UIView<SRGMediaPlaybackView> *playbackView = [[playbackViewClass alloc] initWithFrame:self.bounds];
+                UIView<SRGMediaPlaybackView> *playbackView = [[playbackViewClass alloc] initWithFrame:CGRectZero];
                 [self addSubview:playbackView];
                 self.playbackView = playbackView;
                 

@@ -52,7 +52,7 @@ static void commonInit(SRGMediaPlaybackMonoscopicView *self);
 
 static void commonInit(SRGMediaPlaybackMonoscopicView *self)
 {
-    SCNView *sceneView = [[SCNView alloc] initWithFrame:self.bounds options:nil];
+    SCNView *sceneView = [[SCNView alloc] initWithFrame:CGRectZero options:nil];
     sceneView.backgroundColor = UIColor.clearColor;
     sceneView.hidden = YES;
     sceneView.playing = YES;

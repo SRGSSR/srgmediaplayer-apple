@@ -27,7 +27,7 @@
 {
     [super awakeFromNib];
     
-    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:self.bounds];
+    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:CGRectZero];
     volumeView.showsRouteButton = NO;
     [self addSubview:volumeView];
     self.volumeView = volumeView;
