@@ -200,8 +200,6 @@ static void commonInit(SRGPictureInPictureButton *self);
     // intrinsic size is namely incorrect, leading to layout issues. It seems that using a button added in
     // -prepareForInterfaceBuilder works, though
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    fakeInterfaceBuilderButton.frame = self.bounds;
-    fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     
     UIImage *image = [UIImage imageNamed:@"picture_in_picture_start" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
@@ -209,6 +207,14 @@ static void commonInit(SRGPictureInPictureButton *self);
     
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
+    
+    fakeInterfaceBuilderButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [fakeInterfaceBuilderButton.topAnchor constraintEqualToAnchor:self.topAnchor],
+        [fakeInterfaceBuilderButton.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+        [fakeInterfaceBuilderButton.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [fakeInterfaceBuilderButton.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
+    ]];
     
     // Hide the normal button
     self.button.hidden = YES;
@@ -250,12 +256,18 @@ static void commonInit(SRGPictureInPictureButton *self);
 static void commonInit(SRGPictureInPictureButton *self)
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = self.bounds;
-    button.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     button.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [button addTarget:self action:@selector(srg_pictureInPictureButton_togglePictureInPicture:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
     self.button = button;
+    
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [button.topAnchor constraintEqualToAnchor:self.topAnchor],
+        [button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+        [button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [button.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
+    ]];
     
     self.hidden = YES;
 }

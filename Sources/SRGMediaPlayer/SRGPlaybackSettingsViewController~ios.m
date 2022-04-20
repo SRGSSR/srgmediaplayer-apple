@@ -162,9 +162,16 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     UIView *view = [[UIView alloc] initWithFrame:UIScreen.mainScreen.bounds];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:view.bounds style:UITableViewStyleGrouped];
-    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [view addSubview:tableView];
     self.tableView = tableView;
+    
+    tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [tableView.topAnchor constraintEqualToAnchor:view.topAnchor],
+        [tableView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor],
+        [tableView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor],
+        [tableView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor]
+    ]];
     
     self.view = view;
 }

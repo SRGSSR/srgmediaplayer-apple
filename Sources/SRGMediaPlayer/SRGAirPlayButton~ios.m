@@ -312,8 +312,6 @@ static void commonInit(SRGAirPlayButton *self);
     // Use a fake button for Interface Builder rendering, since the volume view (and thus its AirPlay button) is only
     // visible on a device
     UIButton *fakeInterfaceBuilderButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    fakeInterfaceBuilderButton.frame = self.bounds;
-    fakeInterfaceBuilderButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     fakeInterfaceBuilderButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     
     UIImage *image = [UIImage imageNamed:@"airplay_audio" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
@@ -321,6 +319,14 @@ static void commonInit(SRGAirPlayButton *self);
     
     [self addSubview:fakeInterfaceBuilderButton];
     self.fakeInterfaceBuilderButton = fakeInterfaceBuilderButton;
+    
+    fakeInterfaceBuilderButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [fakeInterfaceBuilderButton.topAnchor constraintEqualToAnchor:self.topAnchor],
+        [fakeInterfaceBuilderButton.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+        [fakeInterfaceBuilderButton.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [fakeInterfaceBuilderButton.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
+    ]];
     
     if (@available(iOS 11, *)) {
         self.routePickerView.hidden = YES;

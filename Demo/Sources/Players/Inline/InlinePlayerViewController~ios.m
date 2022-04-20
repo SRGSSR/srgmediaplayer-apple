@@ -69,9 +69,16 @@
 
 - (void)attachPlayerView
 {
-    self.mediaPlayerController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.mediaPlayerController.view.frame = self.playerHostView.bounds;
-    [self.playerHostView insertSubview:self.mediaPlayerController.view atIndex:0];
+    UIView *playerView = self.mediaPlayerController.view;
+    [self.playerHostView insertSubview:playerView atIndex:0];
+    
+    playerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [playerView.topAnchor constraintEqualToAnchor:self.playerHostView.topAnchor],
+        [playerView.bottomAnchor constraintEqualToAnchor:self.playerHostView.bottomAnchor],
+        [playerView.leadingAnchor constraintEqualToAnchor:self.playerHostView.leadingAnchor],
+        [playerView.trailingAnchor constraintEqualToAnchor:self.playerHostView.trailingAnchor]
+    ]];
 }
 
 - (void)detachPlayerView
