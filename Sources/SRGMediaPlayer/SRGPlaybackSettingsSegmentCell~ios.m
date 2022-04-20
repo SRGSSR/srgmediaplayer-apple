@@ -24,12 +24,12 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithFrame:self.contentView.bounds];
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
+        UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] init];
         [segmentedControl addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
         [self.contentView addSubview:segmentedControl];
         self.segmentedControl = segmentedControl;
         
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = NO;
         [NSLayoutConstraint activateConstraints:@[
             [segmentedControl.leadingAnchor constraintEqualToAnchor:self.contentView.layoutMarginsGuide.leadingAnchor],
             [segmentedControl.trailingAnchor constraintEqualToAnchor:self.contentView.layoutMarginsGuide.trailingAnchor],

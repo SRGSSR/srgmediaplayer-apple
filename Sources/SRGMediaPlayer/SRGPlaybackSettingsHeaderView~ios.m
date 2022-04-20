@@ -90,11 +90,11 @@ static void commonInit(SRGPlaybackSettingsHeaderView *self);
 
 static void commonInit(SRGPlaybackSettingsHeaderView *self)
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    UIImageView *imageView = [[UIImageView alloc] init];
     [self.contentView addSubview:imageView];
     self.imageView = imageView;
     
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [imageView.leadingAnchor constraintEqualToAnchor:self.contentView.layoutMarginsGuide.leadingAnchor],
         [imageView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:-4.f],
@@ -102,12 +102,12 @@ static void commonInit(SRGPlaybackSettingsHeaderView *self)
         [imageView.heightAnchor constraintEqualToConstant:25.f]
     ]];
     
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     [self.contentView addSubview:titleLabel];
     self.titleLabel = titleLabel;
     
+    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint activateConstraints:@[
         [titleLabel.leadingAnchor constraintEqualToAnchor:imageView.trailingAnchor constant:6.f],
         [titleLabel.trailingAnchor constraintEqualToAnchor:self.contentView.layoutMarginsGuide.trailingAnchor],

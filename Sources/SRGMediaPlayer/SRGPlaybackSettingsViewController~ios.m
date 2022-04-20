@@ -161,7 +161,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 {
     UIView *view = [[UIView alloc] initWithFrame:UIScreen.mainScreen.bounds];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:view.bounds style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     [view addSubview:tableView];
     self.tableView = tableView;
     

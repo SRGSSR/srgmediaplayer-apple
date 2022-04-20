@@ -202,38 +202,13 @@ static void commonInit(SRGTimelineView *self)
     [self addSubview:collectionView];
     self.collectionView = collectionView;
     
-    // Remove implicit constraints for views managed by autolayout
     collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    // Constraints
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView
-                                                     attribute:NSLayoutAttributeTop
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeTop
-                                                    multiplier:1.f
-                                                      constant:0.f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView
-                                                     attribute:NSLayoutAttributeBottom
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeBottom
-                                                    multiplier:1.f
-                                                      constant:0.f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView
-                                                     attribute:NSLayoutAttributeLeft
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeLeft
-                                                    multiplier:1.f
-                                                      constant:0.f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView
-                                                     attribute:NSLayoutAttributeRight
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeRight
-                                                    multiplier:1.f
-                                                      constant:0.f]];
+    [NSLayoutConstraint activateConstraints:@[
+        [collectionView.topAnchor constraintEqualToAnchor:self.topAnchor],
+        [collectionView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+        [collectionView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [collectionView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
+    ]];
     
     self.itemWidth = 60.f;
     self.itemSpacing = 4.f;

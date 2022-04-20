@@ -27,7 +27,7 @@
 {
     [super awakeFromNib];
     
-    MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:CGRectZero];
+    MPVolumeView *volumeView = [[MPVolumeView alloc] init];
     volumeView.showsRouteButton = NO;
     [self addSubview:volumeView];
     self.volumeView = volumeView;
@@ -60,7 +60,7 @@
 {
     [super prepareForInterfaceBuilder];
     
-    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:self.bounds];
+    UILabel *placeholderLabel = [[UILabel alloc] init];
     placeholderLabel.textColor = UIColor.whiteColor;
     placeholderLabel.textAlignment = NSTextAlignmentCenter;
     placeholderLabel.text = SRGMediaPlayerNonLocalizedString(@"Volume view (only visible on a device)");
