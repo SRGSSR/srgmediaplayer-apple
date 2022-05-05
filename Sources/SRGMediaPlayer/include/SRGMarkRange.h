@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SRGMarkRange (TimeConversions)
 
 /**
- *  Return the time corresponding to a mark, in the reference frame of the provided controller.
+ *  Return the `CMTimeRange` range corresponding to a mark range, in the reference frame of the provided controller.
  *
  *  @discussion Returns the raw time range if the controller is `nil`.
  */
