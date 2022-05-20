@@ -52,9 +52,7 @@
     
     UIView *containerView = [transitionContext containerView];
     
-    UIView *dimmingView = [[UIView alloc] initWithFrame:containerView.bounds];
-    dimmingView.frame = containerView.bounds;
-    dimmingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    UIView *dimmingView = [[UIView alloc] init];
     dimmingView.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.5f];
     self.dimmingView = dimmingView;
     
@@ -72,6 +70,14 @@
         NSAssert(fromView != nil, @"Dismissed view must be available");
         [containerView insertSubview:dimmingView belowSubview:fromView];
     }
+    
+    dimmingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [dimmingView.topAnchor constraintEqualToAnchor:containerView.topAnchor],
+        [dimmingView.bottomAnchor constraintEqualToAnchor:containerView.bottomAnchor],
+        [dimmingView.leadingAnchor constraintEqualToAnchor:containerView.leadingAnchor],
+        [dimmingView.trailingAnchor constraintEqualToAnchor:containerView.trailingAnchor]
+    ]];
     
     [self updateTransition:transitionContext withProgress:0.f];
 }

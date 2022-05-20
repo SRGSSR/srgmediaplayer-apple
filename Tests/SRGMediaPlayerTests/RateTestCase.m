@@ -7,6 +7,7 @@
 #import "MediaPlayerBaseTestCase.h"
 
 @import libextobjc;
+@import MAKVONotificationCenter;
 
 static NSURL *OnDemandTestURL(void)
 {
@@ -257,7 +258,7 @@ static NSURL *DVRTestURL(void)
 
 - (void)testDVRPlaybackLiveEdgeEffectivePlaybackRateAdjustments
 {
-    // Start near the edge
+    // Start at the edge
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -294,9 +295,9 @@ static NSURL *DVRTestURL(void)
     XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 1.f);
 }
 
-- (void)testDVREffectivePlaybackRateStability
+- (void)testDVRInitialFastEffectivePlaybackRateStability
 {
-    // Start near the edge
+    // Start at the edge
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
@@ -315,7 +316,7 @@ static NSURL *DVRTestURL(void)
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
     }];
     
-    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(5., NSEC_PER_SEC))] withCompletionHandler:nil];
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(15., NSEC_PER_SEC))] withCompletionHandler:nil];
     
     [self waitForExpectationsWithTimeout:10. handler:nil];
     
@@ -324,18 +325,193 @@ static NSURL *DVRTestURL(void)
     XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 1.f);
     
     // Play for a while. The effective playback rate must remain constant
-    @weakify(self)
-    id effectivePlaybackRateObserver = [self.mediaPlayerController addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.2, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time) {
-        @strongify(self)
-        XCTAssertEqual(self.mediaPlayerController.player.rate, 1.f);
-        XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 1.f);
+    id effectivePlaybackRateObservation = [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, effectivePlaybackRate) options:0 block:^(MAKVONotification *notification) {
+        XCTFail(@"No effective playback rate change must occur");
     }];
     
     [self expectationForElapsedTimeInterval:10. withHandler:nil];
     
     [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
-        [self.mediaPlayerController removePeriodicTimeObserver:effectivePlaybackRateObserver];
+        [MAKVONotificationCenter.defaultCenter removeObservation:effectivePlaybackRateObservation];
     }];
+}
+
+- (void)testDVRInitialSlowEffectivePlaybackRateStability
+{
+    // Start at the edge
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    self.mediaPlayerController.playbackRate = 0.5f;
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:10. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 0.5f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 0.5f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 0.5f);
+    
+    // Move a bit from the edge
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(15., NSEC_PER_SEC))] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:10. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 0.5f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 0.5f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 0.5f);
+    
+    // Play for a while. The effective playback rate must remain constant
+    id effectivePlaybackRateObservation = [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, effectivePlaybackRate) options:0 block:^(MAKVONotification *notification) {
+        XCTFail(@"No effective playback rate change must occur");
+    }];
+    
+    [self expectationForElapsedTimeInterval:10. withHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [MAKVONotificationCenter.defaultCenter removeObservation:effectivePlaybackRateObservation];
+    }];
+}
+
+- (void)testDVRChangedFastEffectivePlaybackRateStability
+{
+    // Start at the edge
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:10. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 1.f);
+    
+    // Move a bit from the edge
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(15., NSEC_PER_SEC))] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:10. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 1.f);
+    
+    // Change the playback rate
+    self.mediaPlayerController.playbackRate = 2.f;
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 2.f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 1.f);
+    
+    // Play for a while. The effective playback rate must remain constant
+    id effectivePlaybackRateObservation = [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, effectivePlaybackRate) options:0 block:^(MAKVONotification *notification) {
+        XCTFail(@"No effective playback rate change must occur");
+    }];
+    
+    [self expectationForElapsedTimeInterval:10. withHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [MAKVONotificationCenter.defaultCenter removeObservation:effectivePlaybackRateObservation];
+    }];
+}
+
+- (void)testDVRChangedSlowEffectivePlaybackRateStability
+{
+    // Start at the edge
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:10. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 1.f);
+    
+    // Move a bit from the edge
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(15., NSEC_PER_SEC))] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:10. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 1.f);
+    
+    // Change the playback rate
+    self.mediaPlayerController.playbackRate = 0.5f;
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 0.5f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 0.5f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 0.5f);
+    
+    // Play for a while. The effective playback rate must remain constant
+    id effectivePlaybackRateObservation = [self.mediaPlayerController addObserver:self keyPath:@keypath(SRGMediaPlayerController.new, effectivePlaybackRate) options:0 block:^(MAKVONotification *notification) {
+        XCTFail(@"No effective playback rate change must occur");
+    }];
+    
+    [self expectationForElapsedTimeInterval:10. withHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [MAKVONotificationCenter.defaultCenter removeObservation:effectivePlaybackRateObservation];
+    }];
+}
+
+- (void)testDVRSlowRateChangesNearLiveEdge
+{
+    // Start at the edge
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController playURL:DVRTestURL()];
+    
+    [self waitForExpectationsWithTimeout:10. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 1.f);
+    
+    // Move a bit from the edge
+    [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStatePlaying;
+    }];
+    
+    [self.mediaPlayerController seekToPosition:[SRGPosition positionAtTime:CMTimeSubtract(CMTimeRangeGetEnd(self.mediaPlayerController.timeRange), CMTimeMakeWithSeconds(15., NSEC_PER_SEC))] withCompletionHandler:nil];
+    
+    [self waitForExpectationsWithTimeout:10. handler:nil];
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 1.f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 1.f);
+    
+    // Change the playback rate
+    self.mediaPlayerController.playbackRate = 0.5f;
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 0.5f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 0.5f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 0.5f);
+    
+    // Change the playback rate to a higher slow rate
+    self.mediaPlayerController.playbackRate = 0.75f;
+    
+    XCTAssertEqual(self.mediaPlayerController.player.rate, 0.75f);
+    XCTAssertEqual(self.mediaPlayerController.playbackRate, 0.75f);
+    XCTAssertEqual(self.mediaPlayerController.effectivePlaybackRate, 0.75f);
 }
 
 - (void)testLivestreamFastPlayback
@@ -379,31 +555,23 @@ static NSURL *DVRTestURL(void)
 - (void)testPlaybackRateKeyValueObserving
 {
     [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, playbackRate) expectedValue:@2];
-    
     self.mediaPlayerController.playbackRate = 2.f;
-    
     [self waitForExpectationsWithTimeout:10. handler:nil];
     
     [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, playbackRate) expectedValue:@0.5];
-    
     self.mediaPlayerController.playbackRate = 0.5f;
-    
     [self waitForExpectationsWithTimeout:10. handler:nil];
 }
 
 - (void)testEffectivePlaybackRateKeyValueObserving
 {
     [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, effectivePlaybackRate) expectedValue:@2];
-    
     self.mediaPlayerController.playbackRate = 2.f;
     [self.mediaPlayerController playURL:OnDemandTestURL()];
-    
     [self waitForExpectationsWithTimeout:10. handler:nil];
     
     [self keyValueObservingExpectationForObject:self.mediaPlayerController keyPath:@keypath(SRGMediaPlayerController.new, effectivePlaybackRate) expectedValue:@0.5];
-    
     self.mediaPlayerController.playbackRate = 0.5f;
-    
     [self waitForExpectationsWithTimeout:10. handler:nil];
 }
 

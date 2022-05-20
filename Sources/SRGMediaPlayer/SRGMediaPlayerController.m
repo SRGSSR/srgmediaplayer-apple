@@ -660,20 +660,20 @@ effectivePlaybackRate:(float)effectivePlaybackRate
 
 /**
  *  Calculate the effective playback rate. This is required for DVR streams which require the rate to be adjusted near
- *  the live edge to avoid playback issues (playing in the future is not possible). This method also delivers correct
- *  effective playback rates for on-demand and livestreams without DVR.
+ *  the live edge to avoid playback issues (playing in the future is not possible) as chunks are added near the live
+ *  edge. This method also delivers correct effective playback rates for on-demand and livestreams without DVR.
  *
  *  For a DVR livestreams this method adjusts the playback rate differently depending on where the playhead position
  *  currently is, as follows:
  *
  *
- *                               Restore to desired rate                                     Force to 1
+ *                               Restore to desired rate                                 Limit to 1 at most
  *
  *                                 ◀──────────────────                                   ──────────────────▶
  *
  *    ┌─────────────────────────────────────┬────────────────────────────────────────────────────┬───────────────────────────────┐
  *    │                                     │                                                    │                               │
- *    │      Desired effective rate         │                  Keep current rate                 │      Effective rate = 1       │
+ *    │           Desired rate              │                  Keep current rate                 │         Max rate = 1          │
  *    │                                     │                                                    │                               │
  *    └─────────────────────────────────────┼────────────────────────────────────────────────────┼───────────────────────────────┤
  *                                          │                                                    │                               │
@@ -702,10 +702,10 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     else if (! [self isNearLiveEdgeForPlayerItem:playerItem tolerance:kLiveEdgeTolerance + self.liveTolerance timeRange:timeRange streamType:streamType]) {
         return self.playbackRate;
     }
-    // In between both tolerances we just keep the current effective playback rate. This ensures the optimal effective
-    // playback rate is applied, whether we are nearing the edge or getting away from it.
+    // In between both tolerances, and if fast playback speed is desired, we keep the current effective playback rate. This
+    // ensures the optimal effective playback rate is applied, whether we are nearing the edge or getting away from it.
     else {
-        return (_effectivePlaybackRate == 1.f) ? _effectivePlaybackRate : self.playbackRate;
+        return (self.playbackRate > 1.f && _effectivePlaybackRate == 1.f) ? _effectivePlaybackRate : self.playbackRate;
     }
 }
 

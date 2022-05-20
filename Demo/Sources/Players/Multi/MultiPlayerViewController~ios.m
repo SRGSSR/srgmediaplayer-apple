@@ -115,9 +115,15 @@
             self.airPlayButton.mediaPlayerController = mediaPlayerController;
             
             UIView *playerView = mediaPlayerController.view;
-            playerView.frame = self.mainPlayerView.bounds;
-            playerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self.mainPlayerView addSubview:playerView];
+            
+            playerView.translatesAutoresizingMaskIntoConstraints = NO;
+            [NSLayoutConstraint activateConstraints:@[
+                [playerView.topAnchor constraintEqualToAnchor:self.mainPlayerView.topAnchor],
+                [playerView.bottomAnchor constraintEqualToAnchor:self.mainPlayerView.bottomAnchor],
+                [playerView.leadingAnchor constraintEqualToAnchor:self.mainPlayerView.leadingAnchor],
+                [playerView.trailingAnchor constraintEqualToAnchor:self.mainPlayerView.trailingAnchor]
+            ]];
         }
         else {
             mediaPlayerController.playerConfigurationBlock = ^(AVPlayer * _Nonnull player) {

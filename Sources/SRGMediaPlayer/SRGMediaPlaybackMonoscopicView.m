@@ -52,12 +52,19 @@ static void commonInit(SRGMediaPlaybackMonoscopicView *self);
 
 static void commonInit(SRGMediaPlaybackMonoscopicView *self)
 {
-    SCNView *sceneView = [[SCNView alloc] initWithFrame:self.bounds options:nil];
-    sceneView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    SCNView *sceneView = [[SCNView alloc] init];
     sceneView.backgroundColor = UIColor.clearColor;
     sceneView.hidden = YES;
     sceneView.playing = YES;
     sceneView.delegate = self;
     [self addSubview:sceneView];
     self.sceneView = sceneView;
+    
+    sceneView.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [sceneView.topAnchor constraintEqualToAnchor:self.topAnchor],
+        [sceneView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+        [sceneView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+        [sceneView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
+    ]];
 }
