@@ -1867,25 +1867,41 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     }
     
     if ([characteristic isEqualToString:AVMediaCharacteristicAudible]) {
-        [playerItem selectMediaOption:option ?: SRGMediaPlayerControllerAutomaticAudioDefaultOption(group.options) inMediaSelectionGroup:group];
+        AVMediaSelectionOption *audioOption = option ?: SRGMediaPlayerControllerAutomaticAudioDefaultOption(group.options);
+        [playerItem selectMediaOption:audioOption inMediaSelectionGroup:group];
         
         // If Automatic has been set for subtitles, changing the audio must update the subtitles accordingly
         MACaptionAppearanceDisplayType displayType = MACaptionAppearanceGetDisplayType(kMACaptionAppearanceDomainUser);
-        if (displayType == kMACaptionAppearanceDisplayTypeAutomatic) {
+        AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        if (subtitleGroup) {
             // Provide the selected audio option as context information, so that update is consistent when using AirPlay as well
             // (we cannot use `-selectMediaOptionAutomaticallyInMediaSelectionGroupWithCharacteristic:`) as the audio selection
             // takes more time over AirPlay, yielding the old value for a short while.
-            AVMediaSelectionGroup *subtitleGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
-            if (subtitleGroup) {
-                AVMediaSelectionOption *subtitleOption = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(subtitleGroup.srgmediaplayer_languageOptions, option);
-                [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:subtitleGroup];
+            switch (displayType) {
+                case kMACaptionAppearanceDisplayTypeAutomatic: {
+                    AVMediaSelectionOption *subtitleOption = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(subtitleGroup.srgmediaplayer_languageOptions, audioOption);
+                    [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:subtitleGroup];
+                    break;
+                }
+                    
+                case kMACaptionAppearanceDisplayTypeForcedOnly: {
+                    NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
+                    AVMediaSelectionOption *subtitleOption = SRGMediaPlayerControllerSubtitleForcedLanguageOption(subtitleGroup.srgmediaplayer_languageOptions, audioLanguage);
+                    [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:subtitleGroup];
+                    break;
+                }
+                    
+                case kMACaptionAppearanceDisplayTypeAlwaysOn: {
+                    break;
+                }
             }
         }
     }
     else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionOption *audioOption = [self selectedMediaOptionInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
         NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
-        [playerItem selectMediaOption:option ?: SRGMediaPlayerControllerSubtitleForcedLanguageOption(group.options, audioLanguage) inMediaSelectionGroup:group];
+        AVMediaSelectionOption *subtitleOption = option ?: SRGMediaPlayerControllerSubtitleForcedLanguageOption(group.options, audioLanguage);
+        [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:group];
     }
     
     [self updateTracksForPlayer:self.player];
