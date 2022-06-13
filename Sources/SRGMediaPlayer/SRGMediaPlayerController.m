@@ -1899,9 +1899,14 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     }
     else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionOption *audioOption = [self selectedMediaOptionInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
-        NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
-        AVMediaSelectionOption *subtitleOption = option ?: SRGMediaPlayerControllerSubtitleForcedLanguageOption(group.options, audioLanguage);
-        [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:group];
+        if (option) {
+            [playerItem selectMediaOption:option inMediaSelectionGroup:group];
+        }
+        else {
+            NSString *audioLanguage = [audioOption.locale objectForKey:NSLocaleLanguageCode];
+            AVMediaSelectionOption *subtitleOption = SRGMediaPlayerControllerSubtitleForcedLanguageOption(group.options, audioLanguage);
+            [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:group];
+        }
     }
     
     [self updateTracksForPlayer:self.player];
