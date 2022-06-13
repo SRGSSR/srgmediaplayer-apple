@@ -2375,11 +2375,13 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerAutomaticSubtitleDefaultO
     
     if (audioLanguage && ! [audioLanguage isEqualToString:applicationLanguage]) {
         NSArray<AVMediaCharacteristic> *characteristics = CFBridgingRelease(MACaptionAppearanceCopyPreferredCaptioningMediaCharacteristics(kMACaptionAppearanceDomainUser));
-        return SRGMediaPlayerControllerSubtitleDefaultAlwaysOnLanguageOption(subtitleOptions, applicationLanguage, characteristics);
+        AVMediaSelectionOption *subtitleOption = SRGMediaPlayerControllerSubtitleDefaultAlwaysOnLanguageOption(subtitleOptions, applicationLanguage, characteristics);
+        if (subtitleOption) {
+            return subtitleOption;
+        }
     }
-    else {
-        return SRGMediaPlayerControllerSubtitleForcedLanguageOption(subtitleOptions, audioLanguage);
-    }
+    
+    return SRGMediaPlayerControllerSubtitleForcedLanguageOption(subtitleOptions, audioLanguage);
 }
 
 // Return the default subtitle option which should be selected in the provided list, based on on `MediaAccessibility` settings (an audio option can be provided to help
