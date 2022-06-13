@@ -1897,11 +1897,11 @@ effectivePlaybackRate:(float)effectivePlaybackRate
         }
     }
     else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
-        AVMediaSelectionOption *audioOption = [self selectedMediaOptionInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
         if (option) {
             [playerItem selectMediaOption:option inMediaSelectionGroup:group];
         }
         else {
+            AVMediaSelectionOption *audioOption = [self selectedMediaOptionInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
             AVMediaSelectionOption *subtitleOption = SRGMediaPlayerControllerSubtitleForcedLanguageOption(group.options, audioOption);
             [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:group];
         }
