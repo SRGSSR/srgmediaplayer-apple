@@ -1810,8 +1810,8 @@ effectivePlaybackRate:(float)effectivePlaybackRate
         return nil;
     }
     
-    AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:mediaCharacteristic];
-    return audioGroup ? [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:audioGroup] : nil;
+    AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:mediaCharacteristic];
+    return group ? [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:group] : nil;
 }
 
 - (void)updateTracksForPlayer:(AVPlayer *)player
