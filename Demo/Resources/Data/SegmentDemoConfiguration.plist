@@ -363,7 +363,7 @@
 			<key>name</key>
 			<string>Segments in DVR stream</string>
 			<key>url</key>
-			<string>https://rtsc3video-lh.akamaihd.net/i/rtsc3video_ww@513975/master.m3u8</string>
+			<string>https://rtsc3video.akamaized.net/hls/live/2042837/c3video/3/playlist.m3u8</string>
 			<key>segments</key>
 			<array>
 				<dict>
