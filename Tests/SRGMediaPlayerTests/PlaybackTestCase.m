@@ -1082,8 +1082,6 @@ static NSURL *AudioOverHTTPTestURL(void)
     
     XCTAssertEqual(self.mediaPlayerController.streamType, SRGMediaPlayerStreamTypeLive);
     XCTAssertTrue(self.mediaPlayerController.live);
-    // FIXME: New RTS Couleur 3 stream has #EXT-X-PROGRAM-DATE-TIME and the diff is more than 1 second
-    XCTAssertTrue([NSDate.date timeIntervalSinceDate:self.mediaPlayerController.currentDate] < 40.);
     
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         return [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue] == SRGMediaPlayerPlaybackStateIdle;
