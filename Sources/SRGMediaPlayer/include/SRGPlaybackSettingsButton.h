@@ -66,12 +66,12 @@ API_UNAVAILABLE(tvos)
 @property (nonatomic, null_resettable) UIImage *image;
 
 /**
- *  The style to be applied to the settings popover. Default value is `SRGMediaPlayerUserInterfaceStyleUnspecified`
+ *  The style to be applied to the settings popover. Default value is `UIUserInterfaceStyleUnspecified`
  *  (default dark appearance prior to iOS 13, and based on dark mode settings for iOS 13 and above).
  *
  *  @discussion The style will be applied the next time the popover is opened.
  */
-@property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
+@property (nonatomic) UIUserInterfaceStyle userInterfaceStyle;
 
 /**
  *  The button delegate.

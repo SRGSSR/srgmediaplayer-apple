@@ -1093,13 +1093,13 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     if (self.player) {
         // Normal conditions. Simply forward to the player
         if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
-            [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
+            [self.player playImmediatelyAtRate:self.effectivePlaybackRate];
         }
         // Playback ended. Restart at the beginning
         else {
             [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero notify:NO completionHandler:^(BOOL finished) {
                 if (finished) {
-                    [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
+                    [self.player playImmediatelyAtRate:self.effectivePlaybackRate];
                 }
             }];
         }
@@ -1577,7 +1577,7 @@ effectivePlaybackRate:(float)effectivePlaybackRate
                     self.lastStallDetectionDate = nil;
                 }
                 else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                    [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
+                    [self.player playImmediatelyAtRate:self.effectivePlaybackRate];
                 }
             }
         }];

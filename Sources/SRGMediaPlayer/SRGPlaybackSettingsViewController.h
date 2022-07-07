@@ -51,7 +51,7 @@ API_UNAVAILABLE(tvos)
 /**
  *  Create an instance displaying settings for a controller and adjusted for the provided style.
  */
-- (instancetype)initWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController userInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle;
+- (instancetype)initWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController userInterfaceStyle:(UIUserInterfaceStyle)userInterfaceStyle;
 
 /**
  *  The view controller delegate.

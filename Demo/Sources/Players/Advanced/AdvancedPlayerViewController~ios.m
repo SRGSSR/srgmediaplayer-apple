@@ -183,9 +183,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         }
     }
     
-    if (@available(iOS 11, *)) {
-        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    }
+    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -314,9 +312,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
             animations();
             [self.view layoutIfNeeded];
         } completion:^(BOOL finished) {
-            if (@available(iOS 11, *)) {
-                [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-            }
+            [self setNeedsUpdateOfHomeIndicatorAutoHidden];
         }];
     }
     else {
