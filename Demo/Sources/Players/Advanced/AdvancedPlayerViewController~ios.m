@@ -139,21 +139,9 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
                                            selector:@selector(playbackDidFail:)
                                                name:SRGMediaPlayerPlaybackDidFailNotification
                                              object:self.mediaPlayerController];
-    
-    NSNotificationName voiceOverNotificationName = nil;
-#if !TARGET_OS_MACCATALYST
-    if (@available(iOS 11, *)) {
-#endif
-        voiceOverNotificationName = UIAccessibilityVoiceOverStatusDidChangeNotification;
-#if !TARGET_OS_MACCATALYST
-    }
-    else {
-        voiceOverNotificationName = UIAccessibilityVoiceOverStatusChanged;
-    }
-#endif
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(accessibilityVoiceOverStatusDidChange:)
-                                               name:voiceOverNotificationName
+                                               name:UIAccessibilityVoiceOverStatusDidChangeNotification
                                              object:nil];
     
     @weakify(self)
