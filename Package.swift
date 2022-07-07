@@ -10,7 +10,7 @@ let package = Package(
     name: "SRGMediaPlayer",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v9),
+        .iOS(.v12),
         .tvOS(.v12)
     ],
     products: [
