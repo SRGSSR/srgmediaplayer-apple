@@ -5,27 +5,27 @@
         "package": "libextobjc",
         "repositoryURL": "https://github.com/SRGSSR/libextobjc.git",
         "state": {
-          "branch": null,
-          "revision": "30ee5b73bdf57a826978aa146881277f22369be1",
-          "version": "0.6.0-srg3"
+          "branch": "master",
+          "revision": "9c9a7327410fe3f7cdb695965ced43b9a7766ee0",
+          "version": null
         }
       },
       {
         "package": "MAKVONotificationCenter",
         "repositoryURL": "https://github.com/SRGSSR/MAKVONotificationCenter.git",
         "state": {
-          "branch": null,
-          "revision": "60395e0601ffd4a784856b423d4cac558366276d",
-          "version": "1.0.0-srg5"
+          "branch": "master",
+          "revision": "8bde3cdc872085bd31f4cfe546bdf8e6932a0806",
+          "version": null
         }
       },
       {
         "package": "SRGLogger",
         "repositoryURL": "https://github.com/SRGSSR/srglogger-apple.git",
         "state": {
-          "branch": null,
-          "revision": "5840af9ccbbc23a1269ff53feb3832f56ffde1eb",
-          "version": "3.0.2"
+          "branch": "feature/ios16-tvos16-xcode14",
+          "revision": "36fd041b78224b77d8dd348511dbf6ed8cd88d68",
+          "version": null
         }
       }
     ]
