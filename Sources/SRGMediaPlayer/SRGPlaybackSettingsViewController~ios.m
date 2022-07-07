@@ -587,7 +587,12 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
                 cell = [self subtitleCellForTableView:tableView];
                 
                 AVMediaSelectionOption *selectedOption = [self.mediaPlayerController selectedMediaOptionInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible];
-                cell.detailTextLabel.text = SRGHintForMediaSelectionOption(selectedOption) ?: SRGMediaPlayerLocalizedString(@"None", @"Label displayed when no subtitles have been selected in automatic mode");
+                if (! [selectedOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]) {
+                    cell.detailTextLabel.text = SRGHintForMediaSelectionOption(selectedOption);
+                }
+                else {
+                    cell.detailTextLabel.text = nil;
+                }
             }
             else {
                 cell = [self defaultCellForTableView:tableView];
