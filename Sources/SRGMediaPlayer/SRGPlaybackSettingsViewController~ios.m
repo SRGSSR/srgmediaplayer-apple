@@ -11,7 +11,6 @@
 #import "SRGPlaybackSettingsViewController.h"
 
 #import "AVMediaSelectionGroup+SRGMediaPlayer.h"
-#import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaAccessibility.h"
