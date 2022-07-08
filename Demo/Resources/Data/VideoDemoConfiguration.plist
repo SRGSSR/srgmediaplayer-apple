@@ -8,13 +8,13 @@
 			<key>name</key>
 			<string>Livestream</string>
 			<key>url</key>
-			<string>https://rtsc3video-lh.akamaihd.net/i/rtsc3video_ww@513975/master.m3u8?dw=0</string>
+			<string>https://rtsc3video.akamaized.net/hls/live/2042837/c3video/3/playlist.m3u8?dw=0</string>
 		</dict>
 		<dict>
 			<key>name</key>
 			<string>Livestream with DVR</string>
 			<key>url</key>
-			<string>https://rtsc3video-lh.akamaihd.net/i/rtsc3video_ww@513975/master.m3u8</string>
+			<string>https://rtsc3video.akamaized.net/hls/live/2042837/c3video/3/playlist.m3u8</string>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -62,7 +62,7 @@
 			<key>name</key>
 			<string>How women are taking on the Cresta Run</string>
 			<key>url</key>
-			<string>https://srgplayerswivod-vh.akamaihd.net/i/44785866/,video,.mp4.csmil/master.m3u8</string>
+			<string>https://swi-vod.akamaized.net/videoJson/44785866/master.m3u8</string>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -82,7 +82,7 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>10vor10 subject with buggy subtitles (Akamai issue)</string>
+			<string>10vor10 subject with buggy subtitles (Akamai MLS 3 issue)</string>
 			<key>url</key>
 			<string>https://hdvodsrforigins3-vh.akamaihd.net/i/assets/video/10vor10/2020/06/10vor10_20200610_215034_21058070_v_webcast_h264_,q40,q10,q20,q30,q50,.mp4.csmil/master.m3u8?start=66.4&amp;end=554.52&amp;caption=srf%2F26a1de9a-7b3e-460f-a3c2-24421b00217a%2Fepisode%2Fde%2Fvod%2Fvod.m3u8%3Ade%3ADeutsch%3Asdh&amp;webvttbaseurl=www.srf.ch%2Fsubtitles</string>
 		</dict>

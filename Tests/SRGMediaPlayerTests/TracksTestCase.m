@@ -193,6 +193,130 @@ static NSURL *InternationalTracksOnDemandTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
 }
 
+- (void)testForcedOnlyBehaviorWithForcedSubtitles
+{
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
+    
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
+        
+        AVMediaSelectionOption *subtitleOption = notification.userInfo[SRGMediaPlayerTrackKey];
+        XCTAssertEqualObjects([subtitleOption.locale objectForKey:NSLocaleLanguageCode], @"en");
+        XCTAssertTrue([subtitleOption hasMediaCharacteristic:AVMediaCharacteristicLegible]);
+        XCTAssertTrue([subtitleOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:InternationalTracksOnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertEqualObjects([self selectedLanguageCodeInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible], @"en");
+}
+
+- (void)testAutomaticBehaviorWithForcedSubtitles
+{
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
+    
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
+        
+        AVMediaSelectionOption *subtitleOption = notification.userInfo[SRGMediaPlayerTrackKey];
+        XCTAssertEqualObjects([subtitleOption.locale objectForKey:NSLocaleLanguageCode], @"en");
+        XCTAssertTrue([subtitleOption hasMediaCharacteristic:AVMediaCharacteristicLegible]);
+        XCTAssertTrue([subtitleOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:InternationalTracksOnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertEqualObjects([self selectedLanguageCodeInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible], @"en");
+}
+
+- (void)testAlwaysOnBehaviorWithForcedSubtitles
+{
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
+    MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)@"en");
+    
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
+        
+        AVMediaSelectionOption *subtitleOption = notification.userInfo[SRGMediaPlayerTrackKey];
+        XCTAssertEqualObjects([subtitleOption.locale objectForKey:NSLocaleLanguageCode], @"en");
+        XCTAssertTrue([subtitleOption hasMediaCharacteristic:AVMediaCharacteristicLegible]);
+        XCTAssertFalse([subtitleOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:InternationalTracksOnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertEqualObjects([self selectedLanguageCodeInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible], @"en");
+}
+
+- (void)testForcedOnlyBehaviorWithoutForcedSubtitles
+{
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeForcedOnly);
+    
+    [self expectationForElapsedTimeInterval:2. withHandler:nil];
+    
+    id subtitleTrackObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No subtitle track change is expected");
+    }];
+    
+    [self.mediaPlayerController playURL:SwissTracksOnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:subtitleTrackObserver];
+    }];
+    
+    XCTAssertNil([self selectedLanguageCodeInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible]);
+}
+
+- (void)testAutomaticBehaviorWithoutForcedSubtitles
+{
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
+    
+    [self expectationForElapsedTimeInterval:2. withHandler:nil];
+    
+    id subtitleTrackObserver = [NSNotificationCenter.defaultCenter addObserverForName:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        XCTFail(@"No subtitle track change is expected");
+    }];
+    
+    [self.mediaPlayerController playURL:SwissTracksOnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:^(NSError * _Nullable error) {
+        [NSNotificationCenter.defaultCenter removeObserver:subtitleTrackObserver];
+    }];
+    
+    XCTAssertNil([self selectedLanguageCodeInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible]);
+}
+
+- (void)testAlwaysOnBehaviorWithoutForcedSubtitles
+{
+    MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAlwaysOn);
+    MACaptionAppearanceAddSelectedLanguage(kMACaptionAppearanceDomainUser, (__bridge CFStringRef _Nonnull)@"fr");
+    
+    [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
+        XCTAssertNil(notification.userInfo[SRGMediaPlayerPreviousTrackKey]);
+        
+        AVMediaSelectionOption *subtitleOption = notification.userInfo[SRGMediaPlayerTrackKey];
+        XCTAssertEqualObjects([subtitleOption.locale objectForKey:NSLocaleLanguageCode], @"fr");
+        XCTAssertTrue([subtitleOption hasMediaCharacteristic:AVMediaCharacteristicLegible]);
+        XCTAssertFalse([subtitleOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]);
+        return YES;
+    }];
+    
+    [self.mediaPlayerController playURL:SwissTracksOnDemandTestURL()];
+    
+    [self waitForExpectationsWithTimeout:30. handler:nil];
+    
+    XCTAssertEqualObjects([self selectedLanguageCodeInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicLegible], @"fr");
+}
+
 - (void)testSubtitleStyleCustomization
 {
     MACaptionAppearanceSetDisplayType(kMACaptionAppearanceDomainUser, kMACaptionAppearanceDisplayTypeAutomatic);
@@ -227,8 +351,13 @@ static NSURL *InternationalTracksOnDemandTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     [self expectationForSingleNotification:SRGMediaPlayerSubtitleTrackDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        XCTAssertNil([[notification.userInfo[SRGMediaPlayerPreviousTrackKey] locale] objectForKey:NSLocaleLanguageCode]);
-        XCTAssertEqualObjects([[notification.userInfo[SRGMediaPlayerTrackKey] locale] objectForKey:NSLocaleLanguageCode], @"ja");
+        AVMediaSelectionOption *previousSubtitleOption = notification.userInfo[SRGMediaPlayerPreviousTrackKey];
+        XCTAssertEqualObjects([previousSubtitleOption.locale objectForKey:NSLocaleLanguageCode], @"en");
+        XCTAssertTrue([previousSubtitleOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]);
+        
+        AVMediaSelectionOption *subtitleOption = notification.userInfo[SRGMediaPlayerTrackKey];
+        XCTAssertEqualObjects([subtitleOption.locale objectForKey:NSLocaleLanguageCode], @"ja");
+        XCTAssertFalse([subtitleOption hasMediaCharacteristic:AVMediaCharacteristicContainsOnlyForcedSubtitles]);
         return YES;
     }];
     
