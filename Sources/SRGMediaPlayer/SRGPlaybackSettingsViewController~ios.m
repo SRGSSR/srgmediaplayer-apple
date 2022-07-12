@@ -223,6 +223,13 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     }
 }
 
+#pragma mark Rotation
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAll;
+}
+
 #pragma mark Status bar
 
 - (UIStatusBarStyle)preferredStatusBarStyle

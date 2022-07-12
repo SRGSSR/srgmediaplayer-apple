@@ -12,6 +12,18 @@
 
 @implementation SRGMediaPlayerNavigationController
 
+#pragma mark Rotation
+
+- (BOOL)shouldAutorotate
+{
+    return [self.topViewController shouldAutorotate];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return [self.topViewController supportedInterfaceOrientations];
+}
+
 #pragma mark Status bar
 
 - (UIStatusBarStyle)preferredStatusBarStyle
