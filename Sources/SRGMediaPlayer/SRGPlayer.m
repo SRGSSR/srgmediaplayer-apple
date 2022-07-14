@@ -30,18 +30,6 @@
 
 #pragma mark Playback
 
-// TODO: Remove when iOS / tvOS 10 is the minimum required version.
-- (void)playImmediatelyIfPossibleAtRate:(float)rate
-{
-    if (@available(iOS 10, tvOS 10, *)) {
-        [self playImmediatelyAtRate:rate];
-    }
-    else {
-        [self play];
-        self.rate = rate;
-    }
-}
-
 // Might be called from a background thread, in which case the completion handler might as well
 - (void)seekToTime:(CMTime)time toleranceBefore:(CMTime)toleranceBefore toleranceAfter:(CMTime)toleranceAfter completionHandler:(void (^)(BOOL finished))completionHandler
 {

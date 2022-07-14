@@ -16,7 +16,7 @@ The SRG Media Player library provides a simple way to add universal audio / vide
 
 ## Compatibility
 
-The library is suitable for applications running on iOS 9, tvOS 12 and above. The project is meant to be compiled with the latest Xcode version.
+The library is suitable for applications running on iOS 12, tvOS 12 and above. The project is meant to be compiled with the latest Xcode version.
 
 ## Contributing
 

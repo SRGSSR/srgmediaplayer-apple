@@ -2,7 +2,7 @@
 MARKETING_VERSION = 7.0.3
 
 // Deployment targets
-IPHONEOS_DEPLOYMENT_TARGET = 9.0
+IPHONEOS_DEPLOYMENT_TARGET = 12.0
 TVOS_DEPLOYMENT_TARGET = 12.0
 
 // Configuration to have a single target built for all platforms

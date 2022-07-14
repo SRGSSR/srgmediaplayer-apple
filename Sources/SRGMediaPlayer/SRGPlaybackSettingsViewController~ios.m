@@ -11,7 +11,6 @@
 #import "SRGPlaybackSettingsViewController.h"
 
 #import "AVMediaSelectionGroup+SRGMediaPlayer.h"
-#import "AVPlayerItem+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGMediaAccessibility.h"
@@ -41,7 +40,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 @interface SRGPlaybackSettingsViewController ()
 
 @property (nonatomic) SRGMediaPlayerController *mediaPlayerController;
-@property (nonatomic) SRGMediaPlayerUserInterfaceStyle userInterfaceStyle;
+@property (nonatomic) UIUserInterfaceStyle userInterfaceStyle;
 
 @property (nonatomic, weak) UITableView *tableView;
 
@@ -61,7 +60,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 #pragma mark Object lifecycle
 
-- (instancetype)initWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController userInterfaceStyle:(SRGMediaPlayerUserInterfaceStyle)userInterfaceStyle
+- (instancetype)initWithMediaPlayerController:(SRGMediaPlayerController *)mediaPlayerController userInterfaceStyle:(UIUserInterfaceStyle)userInterfaceStyle
 {
     if (self = [super init]) {
         self.mediaPlayerController = mediaPlayerController;
@@ -124,9 +123,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
 
 - (BOOL)isDark
 {
-    // TODO: Remove SRGMediaPlayerUserInterfaceStyle once SRG Media Player is requiring iOS 12 and above, and
-    //       use UIUserInterfaceStyle instead.
-    if (self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleUnspecified) {
+    if (self.userInterfaceStyle == UIUserInterfaceStyleUnspecified) {
         if (@available(iOS 13, *)) {
             return self.traitCollection.userInterfaceStyle != UIUserInterfaceStyleLight;
         }
@@ -136,7 +133,7 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
         }
     }
     else {
-        return self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleDark;
+        return self.userInterfaceStyle == UIUserInterfaceStyleDark;
     }
 }
 
@@ -183,8 +180,8 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     // The style must only be overridden when forced, otherwise no traits change will occur when dark mode is toggled
     // in the system settings.
     if (@available(iOS 13, *)) {
-        if (self.userInterfaceStyle != SRGMediaPlayerUserInterfaceStyleUnspecified) {
-            self.navigationController.overrideUserInterfaceStyle = (self.userInterfaceStyle == SRGMediaPlayerUserInterfaceStyleDark) ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
+        if (self.userInterfaceStyle != UIUserInterfaceStyleUnspecified) {
+            self.navigationController.overrideUserInterfaceStyle = (self.userInterfaceStyle == UIUserInterfaceStyleDark) ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight;
         }
         else {
             self.navigationController.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
@@ -204,18 +201,15 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[self.class]];
     navigationBarAppearance.barTintColor = nil;
     navigationBarAppearance.tintColor = nil;
+    navigationBarAppearance.prefersLargeTitles = NO;
     navigationBarAppearance.titleTextAttributes = nil;
+    navigationBarAppearance.largeTitleTextAttributes = nil;
     navigationBarAppearance.translucent = YES;
     navigationBarAppearance.shadowImage = nil;
     navigationBarAppearance.backIndicatorImage = nil;
     navigationBarAppearance.backIndicatorTransitionMaskImage = nil;
     [navigationBarAppearance setTitleVerticalPositionAdjustment:0.f forBarMetrics:UIBarMetricsDefault];
     [navigationBarAppearance setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-    
-    if (@available(iOS 11, *)) {
-        navigationBarAppearance.prefersLargeTitles = NO;
-        navigationBarAppearance.largeTitleTextAttributes = nil;
-    }
     
     [self updateViewAppearance];
 }
@@ -227,6 +221,13 @@ static NSArray<NSString *> *SRGItemsForPlaybackRates(NSArray<NSNumber *> *playba
     if (SRGMediaPlayerIsViewControllerDismissed(self)) {
         [self.delegate playbackSettingsViewControllerWasDismissed:self];
     }
+}
+
+#pragma mark Rotation
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAll;
 }
 
 #pragma mark Status bar
