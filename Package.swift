@@ -22,7 +22,7 @@ let package = Package(
     dependencies: [
         .package(name: "libextobjc", url: "https://github.com/SRGSSR/libextobjc.git", .branch("master")),
         .package(name: "MAKVONotificationCenter", url: "https://github.com/SRGSSR/MAKVONotificationCenter.git", .branch("master")),
-        .package(name: "SRGLogger", url: "https://github.com/SRGSSR/srglogger-apple.git", .branch("feature/ios16-tvos16-xcode14"))
+        .package(name: "SRGLogger", url: "https://github.com/SRGSSR/srglogger-apple.git", .branch("develop"))
     ],
     targets: [
         .target(

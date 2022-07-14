@@ -23,8 +23,8 @@
         "package": "SRGLogger",
         "repositoryURL": "https://github.com/SRGSSR/srglogger-apple.git",
         "state": {
-          "branch": "feature/ios16-tvos16-xcode14",
-          "revision": "36fd041b78224b77d8dd348511dbf6ed8cd88d68",
+          "branch": "develop",
+          "revision": "3b7c04bccfb6714d2ea9589e98591ed9088d128e",
           "version": null
         }
       }
