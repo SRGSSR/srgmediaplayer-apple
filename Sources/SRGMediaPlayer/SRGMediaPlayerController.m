@@ -350,8 +350,6 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleForcedLanguageOpt
 
 - (void)setPlaybackState:(SRGMediaPlayerPlaybackState)playbackState withUserInfo:(NSDictionary *)userInfo
 {
-    NSAssert(NSThread.isMainThread, @"Not the main thread. Ensure important changes must be notified on the main thread. Fix");
-    
     if (_playbackState == playbackState) {
         return;
     }
@@ -1815,8 +1813,6 @@ effectivePlaybackRate:(float)effectivePlaybackRate
 
 - (void)updateTracksForPlayer:(AVPlayer *)player
 {
-    NSAssert(NSThread.isMainThread, @"Expected to be called on the main thread");
-    
     AVMediaSelectionOption *audioOption = [self selectedOptionForPlayer:player withMediaCharacteristic:AVMediaCharacteristicAudible];
     if (audioOption != self.audioOption && ! [audioOption isEqual:self.audioOption]) {
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
