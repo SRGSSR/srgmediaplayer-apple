@@ -3,14 +3,14 @@
 import PackageDescription
 
 struct ProjectSettings {
-    static let marketingVersion: String = "7.0.3"
+    static let marketingVersion: String = "7.1.0"
 }
 
 let package = Package(
     name: "SRGMediaPlayer",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v9),
+        .iOS(.v12),
         .tvOS(.v12)
     ],
     products: [
@@ -20,9 +20,9 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(name: "libextobjc", url: "https://github.com/SRGSSR/libextobjc.git", .exact("0.6.0-srg3")),
-        .package(name: "MAKVONotificationCenter", url: "https://github.com/SRGSSR/MAKVONotificationCenter.git", .exact("1.0.0-srg5")),
-        .package(name: "SRGLogger", url: "https://github.com/SRGSSR/srglogger-apple.git", .upToNextMinor(from: "3.0.0"))
+        .package(name: "libextobjc", url: "https://github.com/SRGSSR/libextobjc.git", .exact("0.6.0-srg4")),
+        .package(name: "MAKVONotificationCenter", url: "https://github.com/SRGSSR/MAKVONotificationCenter.git", .exact("1.0.0-srg6")),
+        .package(name: "SRGLogger", url: "https://github.com/SRGSSR/srglogger-apple.git", .upToNextMinor(from: "3.1.0"))
     ],
     targets: [
         .target(

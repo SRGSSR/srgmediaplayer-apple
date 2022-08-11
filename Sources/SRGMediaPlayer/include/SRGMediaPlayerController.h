@@ -339,8 +339,7 @@ NS_ASSUME_NONNULL_BEGIN
  *              to this state without going through the paused state.
  *
  *              For an on-demand stream, the default position is its start, for DVR streams its end. When playing a DVR
- *              stream and the position is contained within the first chunk, playback might start at the end of the stream
- *              (iOS 11 and above) or at the specified position (older iOS versions).
+ *              stream and the position is contained within the first chunk, playback starts at the end of the stream.
  */
 - (void)prepareToPlayURL:(NSURL *)URL
               atPosition:(nullable SRGPosition *)position

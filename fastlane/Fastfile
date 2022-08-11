@@ -17,7 +17,7 @@ platform :ios do
   before_all do
     ensure_git_status_clean
 
-    xcversion(version: '~> 13')
+    xcversion(version: '~> 14')
   end
 
   desc 'Run library tests'

@@ -18,15 +18,13 @@
 
 NSString * const SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification = @"SRGMediaPlayerWirelessRoutesAvailableDidChangeNotification";
 
-API_AVAILABLE(ios(11.0)) static SRGRouteDetector *s_routeDetector;
+static SRGRouteDetector *s_routeDetector;
 
 __attribute__((constructor)) static void SRGRouteDetectorInit(void)
 {
-    if (@available(iOS 11, *)) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            s_routeDetector = [[SRGRouteDetector alloc] init];
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        s_routeDetector = [[SRGRouteDetector alloc] init];
+    });
 }
 
 @interface SRGRouteDetector ()

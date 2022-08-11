@@ -50,11 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CMTime seekTargetTime;
 
 /**
- *  Attempt to play the media immediately if possible (iOS 10 and greater), otherwise normally.
- */
-- (void)playImmediatelyIfPossibleAtRate:(float)rate;
-
-/**
  *  Seek to a given time with the provided tolerances, calling the specified handler on completion. The delegate
  *  methods are called iff `notify` is set to `YES`.
  *

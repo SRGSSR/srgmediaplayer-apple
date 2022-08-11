@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SRGSSR/libextobjc.git",
         "state": {
           "branch": null,
-          "revision": "30ee5b73bdf57a826978aa146881277f22369be1",
-          "version": "0.6.0-srg3"
+          "revision": "9c9a7327410fe3f7cdb695965ced43b9a7766ee0",
+          "version": "0.6.0-srg4"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SRGSSR/MAKVONotificationCenter.git",
         "state": {
           "branch": null,
-          "revision": "60395e0601ffd4a784856b423d4cac558366276d",
-          "version": "1.0.0-srg5"
+          "revision": "8bde3cdc872085bd31f4cfe546bdf8e6932a0806",
+          "version": "1.0.0-srg6"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SRGSSR/srglogger-apple.git",
         "state": {
           "branch": null,
-          "revision": "5840af9ccbbc23a1269ff53feb3832f56ffde1eb",
-          "version": "3.0.2"
+          "revision": "dd98468422044b53e283d970809b8502e1ef5b8d",
+          "version": "3.1.0"
         }
       }
     ]

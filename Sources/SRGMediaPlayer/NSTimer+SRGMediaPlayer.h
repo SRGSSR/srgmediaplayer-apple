@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSTimer (SRGMediaPlayer)
 
 /**
- *  Create a block-based timer (a feature only available since iOS 10), scheduled with common run loop modes.
+ *  Create a block-based timer scheduled with common run loop modes.
  */
 + (NSTimer *)srgmediaplayer_timerWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)(NSTimer *timer))block;
 

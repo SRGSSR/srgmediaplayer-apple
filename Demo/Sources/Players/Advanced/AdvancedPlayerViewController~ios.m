@@ -139,21 +139,9 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
                                            selector:@selector(playbackDidFail:)
                                                name:SRGMediaPlayerPlaybackDidFailNotification
                                              object:self.mediaPlayerController];
-    
-    NSNotificationName voiceOverNotificationName = nil;
-#if !TARGET_OS_MACCATALYST
-    if (@available(iOS 11, *)) {
-#endif
-        voiceOverNotificationName = UIAccessibilityVoiceOverStatusDidChangeNotification;
-#if !TARGET_OS_MACCATALYST
-    }
-    else {
-        voiceOverNotificationName = UIAccessibilityVoiceOverStatusChanged;
-    }
-#endif
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(accessibilityVoiceOverStatusDidChange:)
-                                               name:voiceOverNotificationName
+                                               name:UIAccessibilityVoiceOverStatusDidChangeNotification
                                              object:nil];
     
     @weakify(self)
@@ -195,9 +183,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
         }
     }
     
-    if (@available(iOS 11, *)) {
-        [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-    }
+    [self setNeedsUpdateOfHomeIndicatorAutoHidden];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -326,9 +312,7 @@ static AdvancedPlayerViewController *s_advancedPlayerViewController;
             animations();
             [self.view layoutIfNeeded];
         } completion:^(BOOL finished) {
-            if (@available(iOS 11, *)) {
-                [self setNeedsUpdateOfHomeIndicatorAutoHidden];
-            }
+            [self setNeedsUpdateOfHomeIndicatorAutoHidden];
         }];
     }
     else {

@@ -8,7 +8,6 @@
 
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "AVMediaSelectionGroup+SRGMediaPlayer.h"
-#import "AVPlayerItem+SRGMediaPlayer.h"
 #import "CMTime+SRGMediaPlayer.h"
 #import "CMTimeRange+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
@@ -1092,13 +1091,13 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     if (self.player) {
         // Normal conditions. Simply forward to the player
         if (self.playbackState != SRGMediaPlayerPlaybackStateEnded) {
-            [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
+            [self.player playImmediatelyAtRate:self.effectivePlaybackRate];
         }
         // Playback ended. Restart at the beginning
         else {
             [self.player seekToTime:kCMTimeZero toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero notify:NO completionHandler:^(BOOL finished) {
                 if (finished) {
-                    [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
+                    [self.player playImmediatelyAtRate:self.effectivePlaybackRate];
                 }
             }];
         }
@@ -1576,7 +1575,7 @@ effectivePlaybackRate:(float)effectivePlaybackRate
                     self.lastStallDetectionDate = nil;
                 }
                 else if ([NSDate.date timeIntervalSinceDate:self.lastStallDetectionDate] >= 5.) {
-                    [self.player playImmediatelyIfPossibleAtRate:self.effectivePlaybackRate];
+                    [self.player playImmediatelyAtRate:self.effectivePlaybackRate];
                 }
             }
         }];
@@ -1809,7 +1808,7 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     }
     
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:mediaCharacteristic];
-    return group ? [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:group] : nil;
+    return group ? [playerItem.currentMediaSelection selectedMediaOptionInMediaSelectionGroup:group] : nil;
 }
 
 - (void)updateTracksForPlayer:(AVPlayer *)player
@@ -1925,7 +1924,7 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     }
     else if ([characteristic isEqualToString:AVMediaCharacteristicLegible]) {
         AVMediaSelectionGroup *audioGroup = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
-        AVMediaSelectionOption *audioOption = audioGroup ? [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:audioGroup] : nil;
+        AVMediaSelectionOption *audioOption = audioGroup ? [playerItem.currentMediaSelection selectedMediaOptionInMediaSelectionGroup:audioGroup] : nil;
         AVMediaSelectionOption *subtitleOption = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(group.srgmediaplayer_languageOptions, audioOption);
         [playerItem selectMediaOption:subtitleOption inMediaSelectionGroup:group];
     }
@@ -1946,7 +1945,7 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     }
     
     AVMediaSelectionGroup *group = [asset mediaSelectionGroupForMediaCharacteristic:characteristic];
-    return group ? [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:group] : nil;
+    return group ? [playerItem.currentMediaSelection selectedMediaOptionInMediaSelectionGroup:group] : nil;
 }
 
 - (BOOL)matchesAutomaticSubtitleSelection
@@ -1966,7 +1965,7 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     NSArray<AVMediaSelectionOption *> *subtitleOptions = subtitleGroup.srgmediaplayer_languageOptions;
     AVMediaSelectionOption *audioOption = [self selectedMediaOptionInMediaSelectionGroupWithCharacteristic:AVMediaCharacteristicAudible];
     AVMediaSelectionOption *defaultSubtitleOption = SRGMediaPlayerControllerAutomaticSubtitleDefaultOption(subtitleOptions, audioOption);
-    AVMediaSelectionOption *subtitleOption = [playerItem srgmediaplayer_selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
+    AVMediaSelectionOption *subtitleOption = [playerItem.currentMediaSelection selectedMediaOptionInMediaSelectionGroup:subtitleGroup];
     if (defaultSubtitleOption) {
         return [defaultSubtitleOption isEqual:subtitleOption];
     }

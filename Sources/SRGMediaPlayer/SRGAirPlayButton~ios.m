@@ -13,7 +13,6 @@
 #import "AVRoutePickerView+SRGMediaPlayer.h"
 #import "AVAudioSession+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
-#import "MPVolumeView+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
 #import "SRGRouteDetector.h"
 #import "UIScreen+SRGMediaPlayer.h"
@@ -24,9 +23,7 @@ static void commonInit(SRGAirPlayButton *self);
 
 @interface SRGAirPlayButton ()
 
-@property (nonatomic, weak) MPVolumeView *volumeView;
-@property (nonatomic, weak) AVRoutePickerView *routePickerView API_AVAILABLE(ios(11.0));
-
+@property (nonatomic, weak) AVRoutePickerView *routePickerView;
 @property (nonatomic, weak) UIButton *fakeInterfaceBuilderButton;
 
 @end
@@ -121,18 +118,6 @@ static void commonInit(SRGAirPlayButton *self);
     }
 }
 
-- (UIImage *)audioImage
-{
-    // `AVRoutePickerView`: Image is already the one we want if not specified
-    if (@available(iOS 11, *)) {
-        return _audioImage;
-    }
-    // `MPVolumeView`: Use bundled AirPlay icon when no image is specified.
-    else {
-        return _audioImage ?: [UIImage imageNamed:@"airplay_audio" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
-    }
-}
-
 - (void)setAudioImage:(UIImage *)audioImage
 {
     _audioImage = audioImage;
@@ -190,16 +175,7 @@ static void commonInit(SRGAirPlayButton *self);
 {
     [super layoutSubviews];
     
-    if (@available(iOS 11, *)) {
-        self.routePickerView.frame = self.bounds;
-    }
-    else {
-        // Ensure proper resizing behavior of the volume view AirPlay button.
-        self.volumeView.frame = self.bounds;
-        
-        UIButton *airPlayButton = self.volumeView.srg_airPlayButton;
-        airPlayButton.frame = self.volumeView.bounds;
-    }
+    self.routePickerView.frame = self.bounds;
 }
 
 - (CGSize)intrinsicContentSize
@@ -207,11 +183,8 @@ static void commonInit(SRGAirPlayButton *self);
     if (self.fakeInterfaceBuilderButton) {
         return self.fakeInterfaceBuilderButton.intrinsicContentSize;
     }
-    else if (@available(iOS 11, *)) {
-        return self.routePickerView.intrinsicContentSize;
-    }
     else {
-        return self.volumeView.srg_airPlayButton.intrinsicContentSize;
+        return self.routePickerView.intrinsicContentSize;
     }
 }
 
@@ -231,50 +204,26 @@ static void commonInit(SRGAirPlayButton *self);
     
     // `AVRoutePickerView` is a button with no image, with layers representing the AirPlay icon instead. If we need
     // to display an image the original icon layers needs to be hidden first.
-    if (@available(iOS 11, *)) {
-        if (@available(iOS 13, *)) {
-            self.routePickerView.prioritizesVideoDevices = (mediaType == SRGMediaPlayerMediaTypeVideo);
-        }
-        
-        BOOL hasImage = (image != nil);
-        
-        airPlayButton = self.routePickerView.srg_airPlayButton;
-        airPlayButton.imageView.contentMode = hasImage ? UIViewContentModeCenter : UIViewContentModeScaleToFill;
-        
-        self.routePickerView.activeTintColor = self.activeTintColor;
-        self.routePickerView.srg_isOriginalIconHidden = hasImage;
+    if (@available(iOS 13, *)) {
+        self.routePickerView.prioritizesVideoDevices = (mediaType == SRGMediaPlayerMediaTypeVideo);
     }
-    // For `MPVolumeView` we must use a custom image to be able to apply a tint color. The button color is automagically
-    // inherited from the enclosing view (this works both at runtime and when rendering in Interface Builder)
-    else {
-        airPlayButton = self.volumeView.srg_airPlayButton;
-        airPlayButton.showsTouchWhenHighlighted = NO;
-        airPlayButton.tintColor = AVAudioSession.srg_isAirPlayActive ? self.activeTintColor : self.tintColor;
-    }
+    
+    BOOL hasImage = (image != nil);
+    
+    airPlayButton = self.routePickerView.srg_airPlayButton;
+    airPlayButton.imageView.contentMode = hasImage ? UIViewContentModeCenter : UIViewContentModeScaleToFill;
+    
+    self.routePickerView.activeTintColor = self.activeTintColor;
+    self.routePickerView.srg_isOriginalIconHidden = hasImage;
     
     [airPlayButton setImage:image forState:UIControlStateNormal];
     [airPlayButton setImage:image forState:UIControlStateSelected];
-    
-    BOOL (^multipleRoutesDetected)(void) = ^{
-#if !TARGET_OS_MACCATALYST
-        if (@available(iOS 11, *)) {
-#endif
-            return SRGRouteDetector.sharedRouteDetector.multipleRoutesDetected;
-#if !TARGET_OS_MACCATALYST
-        }
-        else {
-            // For `MPVolumeView` to return correct route availability information, it must be installed in a view
-            // hierarchy.
-            return self.volumeView.areWirelessRoutesAvailable;
-        }
-#endif
-    };
     
     if (self.alwaysHidden) {
         self.hidden = YES;
     }
     else if (mediaPlayerController) {
-        if (multipleRoutesDetected()) {
+        if (SRGRouteDetector.sharedRouteDetector.multipleRoutesDetected) {
             self.hidden = NO;
         }
         else {
@@ -282,7 +231,7 @@ static void commonInit(SRGAirPlayButton *self);
         }
     }
     else {
-        self.hidden = ! self.fakeInterfaceBuilderButton && ! multipleRoutesDetected();
+        self.hidden = ! self.fakeInterfaceBuilderButton && ! SRGRouteDetector.sharedRouteDetector.multipleRoutesDetected;
     }
 }
 
@@ -328,12 +277,7 @@ static void commonInit(SRGAirPlayButton *self);
         [fakeInterfaceBuilderButton.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
     ]];
     
-    if (@available(iOS 11, *)) {
-        self.routePickerView.hidden = YES;
-    }
-    else {
-        self.volumeView.hidden = YES;
-    }
+    self.routePickerView.hidden = YES;
 }
 
 #pragma mark Accessibility
@@ -364,17 +308,10 @@ static void commonInit(SRGAirPlayButton *self);
 
 static void commonInit(SRGAirPlayButton *self)
 {
-    if (@available(iOS 11, *)) {
-        AVRoutePickerView *routePickerView = [[AVRoutePickerView alloc] initWithFrame:self.bounds];
-        [self addSubview:routePickerView];
-        self.routePickerView = routePickerView;
-    }
-    else {
-        MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:self.bounds];
-        volumeView.showsVolumeSlider = NO;
-        [self addSubview:volumeView];
-        self.volumeView = volumeView;
-    }
+    AVRoutePickerView *routePickerView = [[AVRoutePickerView alloc] initWithFrame:self.bounds];
+    [self addSubview:routePickerView];
+    self.routePickerView = routePickerView;
+    
     self.hidden = YES;
 }
 
