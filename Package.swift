@@ -20,9 +20,9 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(name: "libextobjc", url: "https://github.com/SRGSSR/libextobjc.git", .branch("master")),
-        .package(name: "MAKVONotificationCenter", url: "https://github.com/SRGSSR/MAKVONotificationCenter.git", .branch("master")),
-        .package(name: "SRGLogger", url: "https://github.com/SRGSSR/srglogger-apple.git", .branch("develop"))
+        .package(name: "libextobjc", url: "https://github.com/SRGSSR/libextobjc.git", .exact("0.6.0-srg4")),
+        .package(name: "MAKVONotificationCenter", url: "https://github.com/SRGSSR/MAKVONotificationCenter.git", .exact("1.0.0-srg6")),
+        .package(name: "SRGLogger", url: "https://github.com/SRGSSR/srglogger-apple.git", .upToNextMinor(from: "3.1.0"))
     ],
     targets: [
         .target(
