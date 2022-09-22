@@ -9,7 +9,7 @@
 # All lines starting with a # are ignored when running `fastlane`
 
 # This is the minimum version number required.
-fastlane_version '2.201.0'
+fastlane_version '2.210.1'
 
 default_platform :ios
 
@@ -25,9 +25,9 @@ platform :ios do
     clean_result_files
     clean_derived_data
 
-    iphone13 = Device.new('iOS', 'iPhone 13')
+    iphone14 = Device.new('iOS', 'iPhone 14')
     appletv = Device.new('tvOS', 'Apple TV')
-    devices = [iphone13, appletv]
+    devices = [iphone14, appletv]
 
     scheme = swift_package_name
     swift_package_tests = TestBuild.new(scheme, '', false)
