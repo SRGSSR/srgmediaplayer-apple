@@ -363,7 +363,6 @@
 				TargetAttributes = {
 					E69A1E661D61BEFC0064E6C1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = VMGRRW6SG7;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -575,7 +574,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_ENTITLEMENTS = "SRGMediaPlayer-demo.entitlements";
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				DEVELOPMENT_TEAM = ABW92QGFZ7;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -602,7 +601,7 @@
 				CODE_SIGN_ENTITLEMENTS = "SRGMediaPlayer-demo.entitlements";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = VMGRRW6SG7;
+				DEVELOPMENT_TEAM = ABW92QGFZ7;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
