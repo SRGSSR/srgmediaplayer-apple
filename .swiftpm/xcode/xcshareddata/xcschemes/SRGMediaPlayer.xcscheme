@@ -73,6 +73,9 @@
                   Identifier = "PlaybackTestCase/testFixedStreamEndWithBuggyAkamaiMLS3StreamWithSubtitles">
                </Test>
                <Test
+                  Identifier = "PlaybackTestCase/testNonStreamedMediaPlayback">
+               </Test>
+               <Test
                   Identifier = "PlaybackTestCase/testOnDemandPlaybackStartAtTimeWithTolerances">
                </Test>
                <Test
