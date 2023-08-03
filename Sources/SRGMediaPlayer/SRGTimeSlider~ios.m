@@ -23,10 +23,6 @@ static void commonInit(SRGTimeSlider *self);
 
 static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 {
-    NSCAssert(seconds >= 0, @"A non-negative number of seconds is expected");
-    NSCAssert(!isnan(seconds), @"A number of seconds is expected");
-    NSCAssert(!isinf(seconds), @"A non-infinite number of seconds is expected");
-    
     if (seconds < 60. * 60.) {
         static NSDateComponentsFormatter *s_dateComponentsFormatter;
         static dispatch_once_t s_onceToken;
