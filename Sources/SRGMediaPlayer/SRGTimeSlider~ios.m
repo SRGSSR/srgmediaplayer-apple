@@ -13,6 +13,7 @@
 #import "CMTimeRange+SRGMediaPlayer.h"
 #import "MAKVONotificationCenter+SRGMediaPlayer.h"
 #import "NSBundle+SRGMediaPlayer.h"
+#import "NSDate+SRGMediaPlayer.h"
 #import "SRGMediaPlayerController+Private.h"
 #import "UIBezierPath+SRGMediaPlayer.h"
 
@@ -22,8 +23,6 @@ static void commonInit(SRGTimeSlider *self);
 
 static NSString *SRGTimeSliderFormatter(NSTimeInterval seconds)
 {
-    NSCAssert(seconds >= 0, @"A non-negative number of seconds is expected");
-    
     if (seconds < 60. * 60.) {
         static NSDateComponentsFormatter *s_dateComponentsFormatter;
         static dispatch_once_t s_onceToken;
@@ -353,8 +352,14 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
             }
             else {
                 NSTimeInterval interval = self.maximumValue - self.value;
-                self.timeLeftValueLabel.text = [NSString stringWithFormat:@"-%@", SRGTimeSliderFormatter(interval)];
-                self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(interval)];
+                if (SRG_NSTIMEINTERVAL_IS_VALID(interval) && interval >= 0) {
+                    self.timeLeftValueLabel.text = SRGTimeSliderFormatter(interval);
+                    self.timeLeftValueLabel.accessibilityLabel = [NSString stringWithFormat:SRGMediaPlayerAccessibilityLocalizedString(@"%@ remaining", @"Label on slider for time remaining"), SRGTimeSliderAccessibilityFormatter(interval)];
+                }
+                else {
+                    self.timeLeftValueLabel.text = SRGMediaPlayerNonLocalizedString(@"--:--");
+                    self.timeLeftValueLabel.accessibilityLabel = nil;
+                }
             }
         }
         else {
