@@ -844,6 +844,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 
 - (void)testNonStreamedMediaPlayback
 {
+#warning "This test fails in the iOS and tvOS simulator since Mac OS 13.4, see issue #124"
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
         XCTAssertEqual([notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue], SRGMediaPlayerPlaybackStatePreparing);
         XCTAssertFalse([notification.userInfo[SRGMediaPlayerSelectedKey] boolValue]);

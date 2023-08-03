@@ -12,6 +12,5 @@ xcuserdata
 /fastlane/*.xml
 
 /vendor
-/.bundle
 
 .vscode
