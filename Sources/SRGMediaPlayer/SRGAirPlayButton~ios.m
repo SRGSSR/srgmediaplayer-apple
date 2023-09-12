@@ -211,8 +211,10 @@ static void commonInit(SRGAirPlayButton *self);
     BOOL hasImage = (image != nil);
     
     airPlayButton = self.routePickerView.srg_airPlayButton;
-    airPlayButton.imageView.contentMode = hasImage ? UIViewContentModeCenter : UIViewContentModeScaleToFill;
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        airPlayButton.imageView.contentMode = hasImage ? UIViewContentModeCenter : UIViewContentModeScaleToFill;
+    });
+
     self.routePickerView.activeTintColor = self.activeTintColor;
     self.routePickerView.srg_isOriginalIconHidden = hasImage;
     
