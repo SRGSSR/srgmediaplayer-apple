@@ -234,20 +234,9 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleForcedLanguageOpt
                     };
                     
                     SRGTimePosition *startTimePosition = [self timePositionForPosition:self.startPosition inSegment:self.targetSegment applyEndTolerance:YES];
-                    if (CMTIME_COMPARE_INLINE(startTimePosition.time, ==, kCMTimeZero)) {
-                        // Default position. Nothing to do.
-                        completionBlock(YES);
-                    }
-                    else {
-                        if (CMTIME_COMPARE_INLINE(startTimePosition.time, !=, kCMTimeZero)) {
-                            [player seekToTime:startTimePosition.time toleranceBefore:startTimePosition.toleranceBefore toleranceAfter:startTimePosition.toleranceAfter notify:NO completionHandler:^(BOOL finished) {
-                                completionBlock(finished);
-                            }];
-                        }
-                        else {
-                            completionBlock(YES);
-                        }
-                    }
+                    [player seekToTime:startTimePosition.time toleranceBefore:startTimePosition.toleranceBefore toleranceAfter:startTimePosition.toleranceAfter notify:NO completionHandler:^(BOOL finished) {
+                        completionBlock(finished);
+                    }];
                 }
             }
             else if (playerItem.status == AVPlayerItemStatusFailed) {
