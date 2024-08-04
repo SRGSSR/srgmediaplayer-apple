@@ -234,9 +234,12 @@ static AVMediaSelectionOption *SRGMediaPlayerControllerSubtitleForcedLanguageOpt
                     };
                     
                     SRGTimePosition *startTimePosition = [self timePositionForPosition:self.startPosition inSegment:self.targetSegment applyEndTolerance:YES];
-                    [player seekToTime:startTimePosition.time toleranceBefore:startTimePosition.toleranceBefore toleranceAfter:startTimePosition.toleranceAfter notify:NO completionHandler:^(BOOL finished) {
-                        completionBlock(finished);
-                    }];
+                    if (CMTIME_COMPARE_INLINE(startTimePosition.time, !=, kCMTimeZero) || self.streamType == SRGMediaPlayerStreamTypeOnDemand) {
+                        [player seekToTime:startTimePosition.time toleranceBefore:startTimePosition.toleranceBefore toleranceAfter:startTimePosition.toleranceAfter notify:NO completionHandler:completionBlock];
+                    }
+                    else {
+                        completionBlock(YES);
+                    }
                 }
             }
             else if (playerItem.status == AVPlayerItemStatusFailed) {
