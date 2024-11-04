@@ -2,6 +2,9 @@
 
 [![GitHub releases](https://img.shields.io/github/v/release/SRGSSR/srgmediaplayer-apple)](https://github.com/SRGSSR/srgmediaplayer-apple/releases) [![platform](https://img.shields.io/badge/platfom-ios%20%7C%20tvos-blue)](https://github.com/SRGSSR/srgmediaplayer-apple) [![SPM compatible](https://img.shields.io/badge/SPM-compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager) [![GitHub license](https://img.shields.io/github/license/SRGSSR/srgmediaplayer-apple)](https://github.com/SRGSSR/srgmediaplayer-apple/blob/master/LICENSE) 
 
+> [!IMPORTANT]
+> SRG Media Player is no longer under active development and has been replaced with a [modern successor](https://swiftpackageindex.com/SRGSSR/pillarbox-apple/documentation/pillarboxplayer), written in Swift, available from our [Pillarbox](https://github.com/SRGSSR/pillarbox-apple) ecosystem.
+
 ## About
 
 The SRG Media Player library provides a simple way to add universal audio / video playback support to any application. It provides:
