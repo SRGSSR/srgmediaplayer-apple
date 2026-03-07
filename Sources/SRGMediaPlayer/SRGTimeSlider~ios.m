@@ -104,7 +104,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     if (_mediaPlayerController) {
         [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
-        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.currentItem.loadedTimeRanges)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerPlaybackStateDidChangeNotification
@@ -123,12 +122,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
             if (! self.tracking && mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
                 [self updateDisplayWithTime:time];
             }
-        }];
-        
-        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.loadedTimeRanges) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self)
-            // Only redraw the slider tracks (more efficient, as time labels do not need any update).
-            [self setNeedsDisplay];
         }];
         [self updateDisplayWithTime:mediaPlayerController.currentTime];
         
@@ -186,8 +179,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         NSDate *date = [self.mediaPlayerController streamDateForTime:time];
         [self.delegate timeSlider:self isMovingToTime:time date:date withValue:self.value interactive:NO];
     }
-    
-    [self setNeedsDisplay];
+
     [self updateTimeRangeLabelsWithTime:time];
 }
 
@@ -320,7 +312,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     
     if (continueTracking && [self isDraggable]) {
         [self updateTimeRangeLabelsWithTime:time];
-        [self setNeedsDisplay];
     }
     
     if (self.seekingDuringTracking) {
@@ -372,8 +363,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToTime:date:withValue:interactive:)]) {
             [self.delegate timeSlider:self isMovingToTime:self.time date:self.date withValue:self.value interactive:NO];
         }
-        
-        [self setNeedsDisplay];
+
         [self updateTimeRangeLabelsWithTime:self.time];
     }
 }
@@ -439,15 +429,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         CMTime targetTime = CMTimeAdd(self.time, CMTimeMakeWithSeconds(15., NSEC_PER_SEC));
         [self.mediaPlayerController seekToPosition:[SRGPosition positionAroundTime:targetTime] withCompletionHandler:nil];
     }
-}
-
-#pragma mark Interface Builder integration
-
-- (void)prepareForInterfaceBuilder
-{
-    [super prepareForInterfaceBuilder];
-    
-    [self setNeedsDisplay];
 }
 
 @end
