@@ -61,16 +61,6 @@ API_UNAVAILABLE(tvos)
 @property (nonatomic, weak, nullable) IBOutlet UILabel *valueLabel;
 
 /**
- *  The thickness of the slider track. Defaults to 3, minimum is 1.
- */
-@property (nonatomic) IBInspectable CGFloat trackThickness;
-
-/**
- *  Buffering bar color (defaults to dark gray).
- */
-@property (nonatomic, null_resettable) IBInspectable UIColor *bufferingTrackColor;
-
-/**
  *  The time corresponding to the current slider position.
  *
  *  @discussion While dragging, this property may not reflect the value current time property of the asset being played.

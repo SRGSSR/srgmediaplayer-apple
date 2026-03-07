@@ -68,9 +68,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 @interface SRGTimeSlider ()
 
 @property (nonatomic, weak) id periodicTimeObserver;
-@property (nonatomic) UIColor *overriddenThumbTintColor;
-@property (nonatomic) UIColor *overriddenMaximumTrackTintColor;
-@property (nonatomic) UIColor *overriddenMinimumTrackTintColor;
 
 @property (nonatomic) NSArray<NSValue *> *previousLoadedTimeRanges;
 
@@ -150,54 +147,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     // A slider knob can be dragged iff it corresponds to a valid range
     return self.minimumValue != self.maximumValue;
-}
-
-- (void)setTrackThickness:(CGFloat)trackThickness
-{
-    if (trackThickness >= 1.f) {
-        _trackThickness = trackThickness;
-    }
-    else {
-        _trackThickness = 1.f;
-    }
-}
-
-- (void)setBufferingTrackColor:(UIColor *)bufferingTrackColor
-{
-    _bufferingTrackColor = bufferingTrackColor ?: UIColor.darkGrayColor;
-}
-
-// Override color properties since the default superclass behavior is to remove corresponding images, which we here
-// already set in commonInit() and want to preserve
-
-- (UIColor *)thumbTintColor
-{
-    return self.overriddenThumbTintColor ?: UIColor.whiteColor;
-}
-
-- (void)setThumbTintColor:(UIColor *)thumbTintColor
-{
-    self.overriddenThumbTintColor = thumbTintColor;
-}
-
-- (UIColor *)minimumTrackTintColor
-{
-    return self.overriddenMinimumTrackTintColor ?: UIColor.whiteColor;
-}
-
-- (void)setMinimumTrackTintColor:(UIColor *)minimumTrackTintColor
-{
-    self.overriddenMinimumTrackTintColor = minimumTrackTintColor;
-}
-
-- (UIColor *)maximumTrackTintColor
-{
-    return self.overriddenMaximumTrackTintColor ?: UIColor.blackColor;
-}
-
-- (void)setMaximumTrackTintColor:(UIColor *)maximumTrackTintColor
-{
-    self.overriddenMaximumTrackTintColor = maximumTrackTintColor;
 }
 
 #pragma mark Overrides
@@ -402,48 +351,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     [super endTrackingWithTouch:touch withEvent:event];
 }
 
-#pragma mark Images
-
-- (UIImage *)emptyImage
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, 2.f, 2.f)];
-    UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, 0.f);
-    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    [UIColor.clearColor set];
-    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return viewImage;
-}
-
-- (UIImage *)thumbImage
-{
-    UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0.f, 0.f, 15.f, 15.f)];
-    return [path srg_imageWithColor:self.thumbTintColor];
-}
-
-#pragma mark Overrides
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    // As of iOS 14 `UISlider` is made of an internal `_UISlideriOSVisualElement` which contains the usual `UIView` tracks
-    // and `UIImageView` knob. When using `-drawRect:` for custom drawing the internal slider might still be seen,
-    // especially when displayed in a modal displayed with `UIModalPresentationCustom`. To fix this issue we hide
-    // the tracks since we draw them ourselves.
-    // TODO: Disable / remove this fix when possible.
-    if (@available(iOS 14, *)) {
-        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(UIView * _Nullable view, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return ! [view isKindOfClass:UIImageView.class];
-        }];
-        NSArray<UIView *> *trackViews = [self.subviews.firstObject.subviews filteredArrayUsingPredicate:predicate];
-        [trackViews enumerateObjectsUsingBlock:^(UIView * _Nonnull view, NSUInteger idx, BOOL * _Nonnull stop) {
-            view.hidden = YES;
-        }];
-    }
-}
-
 #pragma mark Helpers
 
 - (float)resetValue
@@ -549,23 +456,9 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 
 static void commonInit(SRGTimeSlider *self)
 {
-    // Apply default colors
-    self.bufferingTrackColor = nil;
-    
     self.minimumValue = 0.f;                    // Always 0
     self.maximumValue = 0.f;
     self.value = 0.f;
-    
-    self.trackThickness = 3.f;
-    
-    UIImage *triangle = [self emptyImage];
-    UIImage *image = [triangle resizableImageWithCapInsets:UIEdgeInsetsMake(1.f, 1.f, 1.f, 1.f)];
-    
-    [self setMinimumTrackImage:image forState:UIControlStateNormal];
-    [self setMaximumTrackImage:image forState:UIControlStateNormal];
-    
-    [self setThumbImage:[self thumbImage] forState:UIControlStateNormal];
-    [self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
     
     self.seekingDuringTracking = YES;
     self.knobLivePosition = SRGTimeSliderLiveKnobPositionLeft;
