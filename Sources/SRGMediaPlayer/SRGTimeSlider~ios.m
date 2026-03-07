@@ -200,28 +200,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     self.overriddenMaximumTrackTintColor = maximumTrackTintColor;
 }
 
-// Take into account the non-standard smaller knob we installed in commonInit()
-
-- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds
-{
-    CGRect trackFrame = [super trackRectForBounds:self.bounds];
-    CGRect thumbRect = [super thumbRectForBounds:self.bounds trackRect:trackFrame value:self.value];
-    return CGRectMake(CGRectGetMinX(trackFrame),
-                      CGRectGetMinY(trackFrame),
-                      CGRectGetMidX(thumbRect) - CGRectGetMinX(trackFrame),
-                      CGRectGetHeight(trackFrame));
-}
-
-- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds
-{
-    CGRect trackFrame = [super trackRectForBounds:self.bounds];
-    CGRect thumbRect = [super thumbRectForBounds:self.bounds trackRect:trackFrame value:self.value];
-    return CGRectMake(CGRectGetMidX(thumbRect),
-                      CGRectGetMinY(trackFrame),
-                      CGRectGetMaxX(trackFrame) - CGRectGetMidX(thumbRect),
-                      CGRectGetHeight(trackFrame));
-}
-
 #pragma mark Overrides
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
@@ -464,86 +442,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
             view.hidden = YES;
         }];
     }
-}
-
-#pragma mark Drawing
-
-- (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [self drawMaximumTrack:context];
-    [self drawMinimumTrack:context];
-    
-    void (^drawTimeRanges)(NSArray<NSValue *> *) = ^(NSArray<NSValue *> *timeRanges) {
-        for (NSValue *value in timeRanges) {
-            CMTimeRange timeRange = [value CMTimeRangeValue];
-            [self drawBufferingTrackForRange:timeRange context:context];
-        }
-    };
-    
-    // In general, draw all loaded time ranges
-    if (self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
-        NSArray<NSValue *> *loadedTimeRanges = self.mediaPlayerController.player.currentItem.loadedTimeRanges;
-        drawTimeRanges(loadedTimeRanges);
-        self.previousLoadedTimeRanges = loadedTimeRanges;
-    }
-    // If the player is seeking, find whether the player is seeking within one of the previous time ranges we
-    // were displaying (though it might change during the seek). While this remains true, display the same ranges
-    // as before (even if they are not perfectly up to date), so that the track never jumps erratically.
-    else {
-        for (NSValue *timeRange in self.previousLoadedTimeRanges) {
-            if (CMTimeRangeContainsTime(timeRange.CMTimeRangeValue, self.time)) {
-                drawTimeRanges(self.previousLoadedTimeRanges);
-                return;
-            }
-        }
-    }
-}
-
-- (void)drawMaximumTrack:(CGContextRef)context
-{
-    CGRect trackFrame = [self maximumValueImageRectForBounds:self.bounds];
-    
-    CGContextSetLineWidth(context, self.trackThickness);
-    CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, CGRectGetMinX(trackFrame), CGRectGetMidY(self.bounds));
-    CGContextAddLineToPoint(context, CGRectGetMaxX(trackFrame), CGRectGetMidY(self.bounds));
-    CGContextSetStrokeColorWithColor(context, self.maximumTrackTintColor.CGColor);
-    CGContextStrokePath(context);
-}
-
-- (void)drawBufferingTrackForRange:(CMTimeRange)timeRange context:(CGContextRef)context
-{
-    CGFloat duration = CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.duration);
-    if (isnan(duration)) {
-        return;
-    }
-    
-    CGRect trackFrame = [self trackRectForBounds:self.bounds];
-    
-    CGFloat minX = CGRectGetMinX(trackFrame) + CGRectGetWidth(trackFrame) / duration * CMTimeGetSeconds(timeRange.start);
-    CGFloat maxX = CGRectGetMinX(trackFrame) + CGRectGetWidth(trackFrame) / duration * CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange));
-    
-    CGContextSetLineWidth(context, self.trackThickness);
-    CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, minX, CGRectGetMidY(self.bounds));
-    CGContextAddLineToPoint(context, maxX, CGRectGetMidY(self.bounds));
-    CGContextSetStrokeColorWithColor(context, self.bufferingTrackColor.CGColor);
-    CGContextStrokePath(context);
-}
-
-- (void)drawMinimumTrack:(CGContextRef)context
-{
-    CGRect barFrame = [self minimumValueImageRectForBounds:self.bounds];
-    
-    CGContextSetLineWidth(context, self.trackThickness);
-    CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, CGRectGetMinX(barFrame), CGRectGetMidY(self.bounds));
-    CGContextAddLineToPoint(context, CGRectGetWidth(barFrame), CGRectGetMidY(self.bounds));
-    CGContextSetStrokeColorWithColor(context, self.minimumTrackTintColor.CGColor);
-    CGContextStrokePath(context);
 }
 
 #pragma mark Helpers
