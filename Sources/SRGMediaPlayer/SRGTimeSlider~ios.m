@@ -68,9 +68,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 @interface SRGTimeSlider ()
 
 @property (nonatomic, weak) id periodicTimeObserver;
-@property (nonatomic) UIColor *overriddenThumbTintColor;
-@property (nonatomic) UIColor *overriddenMaximumTrackTintColor;
-@property (nonatomic) UIColor *overriddenMinimumTrackTintColor;
 
 @property (nonatomic) NSArray<NSValue *> *previousLoadedTimeRanges;
 
@@ -107,7 +104,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     if (_mediaPlayerController) {
         [_mediaPlayerController removePeriodicTimeObserver:self.periodicTimeObserver];
-        [_mediaPlayerController removeObserver:self keyPath:@keypath(_mediaPlayerController.player.currentItem.loadedTimeRanges)];
         
         [NSNotificationCenter.defaultCenter removeObserver:self
                                                       name:SRGMediaPlayerPlaybackStateDidChangeNotification
@@ -127,12 +123,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
                 [self updateDisplayWithTime:time];
             }
         }];
-        
-        [mediaPlayerController addObserver:self keyPath:@keypath(mediaPlayerController.player.currentItem.loadedTimeRanges) options:0 block:^(MAKVONotification *notification) {
-            @strongify(self)
-            // Only redraw the slider tracks (more efficient, as time labels do not need any update).
-            [self setNeedsDisplay];
-        }];
         [self updateDisplayWithTime:mediaPlayerController.currentTime];
         
         [NSNotificationCenter.defaultCenter addObserver:self
@@ -150,76 +140,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
 {
     // A slider knob can be dragged iff it corresponds to a valid range
     return self.minimumValue != self.maximumValue;
-}
-
-- (void)setTrackThickness:(CGFloat)trackThickness
-{
-    if (trackThickness >= 1.f) {
-        _trackThickness = trackThickness;
-    }
-    else {
-        _trackThickness = 1.f;
-    }
-}
-
-- (void)setBufferingTrackColor:(UIColor *)bufferingTrackColor
-{
-    _bufferingTrackColor = bufferingTrackColor ?: UIColor.darkGrayColor;
-}
-
-// Override color properties since the default superclass behavior is to remove corresponding images, which we here
-// already set in commonInit() and want to preserve
-
-- (UIColor *)thumbTintColor
-{
-    return self.overriddenThumbTintColor ?: UIColor.whiteColor;
-}
-
-- (void)setThumbTintColor:(UIColor *)thumbTintColor
-{
-    self.overriddenThumbTintColor = thumbTintColor;
-}
-
-- (UIColor *)minimumTrackTintColor
-{
-    return self.overriddenMinimumTrackTintColor ?: UIColor.whiteColor;
-}
-
-- (void)setMinimumTrackTintColor:(UIColor *)minimumTrackTintColor
-{
-    self.overriddenMinimumTrackTintColor = minimumTrackTintColor;
-}
-
-- (UIColor *)maximumTrackTintColor
-{
-    return self.overriddenMaximumTrackTintColor ?: UIColor.blackColor;
-}
-
-- (void)setMaximumTrackTintColor:(UIColor *)maximumTrackTintColor
-{
-    self.overriddenMaximumTrackTintColor = maximumTrackTintColor;
-}
-
-// Take into account the non-standard smaller knob we installed in commonInit()
-
-- (CGRect)minimumValueImageRectForBounds:(CGRect)bounds
-{
-    CGRect trackFrame = [super trackRectForBounds:self.bounds];
-    CGRect thumbRect = [super thumbRectForBounds:self.bounds trackRect:trackFrame value:self.value];
-    return CGRectMake(CGRectGetMinX(trackFrame),
-                      CGRectGetMinY(trackFrame),
-                      CGRectGetMidX(thumbRect) - CGRectGetMinX(trackFrame),
-                      CGRectGetHeight(trackFrame));
-}
-
-- (CGRect)maximumValueImageRectForBounds:(CGRect)bounds
-{
-    CGRect trackFrame = [super trackRectForBounds:self.bounds];
-    CGRect thumbRect = [super thumbRectForBounds:self.bounds trackRect:trackFrame value:self.value];
-    return CGRectMake(CGRectGetMidX(thumbRect),
-                      CGRectGetMinY(trackFrame),
-                      CGRectGetMaxX(trackFrame) - CGRectGetMidX(thumbRect),
-                      CGRectGetHeight(trackFrame));
 }
 
 #pragma mark Overrides
@@ -259,8 +179,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         NSDate *date = [self.mediaPlayerController streamDateForTime:time];
         [self.delegate timeSlider:self isMovingToTime:time date:date withValue:self.value interactive:NO];
     }
-    
-    [self setNeedsDisplay];
+
     [self updateTimeRangeLabelsWithTime:time];
 }
 
@@ -393,7 +312,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     
     if (continueTracking && [self isDraggable]) {
         [self updateTimeRangeLabelsWithTime:time];
-        [self setNeedsDisplay];
     }
     
     if (self.seekingDuringTracking) {
@@ -424,128 +342,6 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     [super endTrackingWithTouch:touch withEvent:event];
 }
 
-#pragma mark Images
-
-- (UIImage *)emptyImage
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, 2.f, 2.f)];
-    UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, 0.f);
-    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    [UIColor.clearColor set];
-    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return viewImage;
-}
-
-- (UIImage *)thumbImage
-{
-    UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0.f, 0.f, 15.f, 15.f)];
-    return [path srg_imageWithColor:self.thumbTintColor];
-}
-
-#pragma mark Overrides
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    // As of iOS 14 `UISlider` is made of an internal `_UISlideriOSVisualElement` which contains the usual `UIView` tracks
-    // and `UIImageView` knob. When using `-drawRect:` for custom drawing the internal slider might still be seen,
-    // especially when displayed in a modal displayed with `UIModalPresentationCustom`. To fix this issue we hide
-    // the tracks since we draw them ourselves.
-    // TODO: Disable / remove this fix when possible.
-    if (@available(iOS 14, *)) {
-        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(UIView * _Nullable view, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return ! [view isKindOfClass:UIImageView.class];
-        }];
-        NSArray<UIView *> *trackViews = [self.subviews.firstObject.subviews filteredArrayUsingPredicate:predicate];
-        [trackViews enumerateObjectsUsingBlock:^(UIView * _Nonnull view, NSUInteger idx, BOOL * _Nonnull stop) {
-            view.hidden = YES;
-        }];
-    }
-}
-
-#pragma mark Drawing
-
-- (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [self drawMaximumTrack:context];
-    [self drawMinimumTrack:context];
-    
-    void (^drawTimeRanges)(NSArray<NSValue *> *) = ^(NSArray<NSValue *> *timeRanges) {
-        for (NSValue *value in timeRanges) {
-            CMTimeRange timeRange = [value CMTimeRangeValue];
-            [self drawBufferingTrackForRange:timeRange context:context];
-        }
-    };
-    
-    // In general, draw all loaded time ranges
-    if (self.mediaPlayerController.playbackState != SRGMediaPlayerPlaybackStateSeeking) {
-        NSArray<NSValue *> *loadedTimeRanges = self.mediaPlayerController.player.currentItem.loadedTimeRanges;
-        drawTimeRanges(loadedTimeRanges);
-        self.previousLoadedTimeRanges = loadedTimeRanges;
-    }
-    // If the player is seeking, find whether the player is seeking within one of the previous time ranges we
-    // were displaying (though it might change during the seek). While this remains true, display the same ranges
-    // as before (even if they are not perfectly up to date), so that the track never jumps erratically.
-    else {
-        for (NSValue *timeRange in self.previousLoadedTimeRanges) {
-            if (CMTimeRangeContainsTime(timeRange.CMTimeRangeValue, self.time)) {
-                drawTimeRanges(self.previousLoadedTimeRanges);
-                return;
-            }
-        }
-    }
-}
-
-- (void)drawMaximumTrack:(CGContextRef)context
-{
-    CGRect trackFrame = [self maximumValueImageRectForBounds:self.bounds];
-    
-    CGContextSetLineWidth(context, self.trackThickness);
-    CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, CGRectGetMinX(trackFrame), CGRectGetMidY(self.bounds));
-    CGContextAddLineToPoint(context, CGRectGetMaxX(trackFrame), CGRectGetMidY(self.bounds));
-    CGContextSetStrokeColorWithColor(context, self.maximumTrackTintColor.CGColor);
-    CGContextStrokePath(context);
-}
-
-- (void)drawBufferingTrackForRange:(CMTimeRange)timeRange context:(CGContextRef)context
-{
-    CGFloat duration = CMTimeGetSeconds(self.mediaPlayerController.player.currentItem.duration);
-    if (isnan(duration)) {
-        return;
-    }
-    
-    CGRect trackFrame = [self trackRectForBounds:self.bounds];
-    
-    CGFloat minX = CGRectGetMinX(trackFrame) + CGRectGetWidth(trackFrame) / duration * CMTimeGetSeconds(timeRange.start);
-    CGFloat maxX = CGRectGetMinX(trackFrame) + CGRectGetWidth(trackFrame) / duration * CMTimeGetSeconds(CMTimeRangeGetEnd(timeRange));
-    
-    CGContextSetLineWidth(context, self.trackThickness);
-    CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, minX, CGRectGetMidY(self.bounds));
-    CGContextAddLineToPoint(context, maxX, CGRectGetMidY(self.bounds));
-    CGContextSetStrokeColorWithColor(context, self.bufferingTrackColor.CGColor);
-    CGContextStrokePath(context);
-}
-
-- (void)drawMinimumTrack:(CGContextRef)context
-{
-    CGRect barFrame = [self minimumValueImageRectForBounds:self.bounds];
-    
-    CGContextSetLineWidth(context, self.trackThickness);
-    CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextMoveToPoint(context, CGRectGetMinX(barFrame), CGRectGetMidY(self.bounds));
-    CGContextAddLineToPoint(context, CGRectGetWidth(barFrame), CGRectGetMidY(self.bounds));
-    CGContextSetStrokeColorWithColor(context, self.minimumTrackTintColor.CGColor);
-    CGContextStrokePath(context);
-}
-
 #pragma mark Helpers
 
 - (float)resetValue
@@ -567,8 +363,7 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
         if ([self.delegate respondsToSelector:@selector(timeSlider:isMovingToTime:date:withValue:interactive:)]) {
             [self.delegate timeSlider:self isMovingToTime:self.time date:self.date withValue:self.value interactive:NO];
         }
-        
-        [self setNeedsDisplay];
+
         [self updateTimeRangeLabelsWithTime:self.time];
     }
 }
@@ -636,38 +431,15 @@ static NSString *SRGTimeSliderAccessibilityFormatter(NSTimeInterval seconds)
     }
 }
 
-#pragma mark Interface Builder integration
-
-- (void)prepareForInterfaceBuilder
-{
-    [super prepareForInterfaceBuilder];
-    
-    [self setNeedsDisplay];
-}
-
 @end
 
 #pragma mark Static functions
 
 static void commonInit(SRGTimeSlider *self)
 {
-    // Apply default colors
-    self.bufferingTrackColor = nil;
-    
     self.minimumValue = 0.f;                    // Always 0
     self.maximumValue = 0.f;
     self.value = 0.f;
-    
-    self.trackThickness = 3.f;
-    
-    UIImage *triangle = [self emptyImage];
-    UIImage *image = [triangle resizableImageWithCapInsets:UIEdgeInsetsMake(1.f, 1.f, 1.f, 1.f)];
-    
-    [self setMinimumTrackImage:image forState:UIControlStateNormal];
-    [self setMaximumTrackImage:image forState:UIControlStateNormal];
-    
-    [self setThumbImage:[self thumbImage] forState:UIControlStateNormal];
-    [self setThumbImage:[self thumbImage] forState:UIControlStateHighlighted];
     
     self.seekingDuringTracking = YES;
     self.knobLivePosition = SRGTimeSliderLiveKnobPositionLeft;

@@ -26,16 +26,10 @@ typedef NS_ENUM(NSInteger, SRGTimeSliderLiveKnobPosition) {
 
 /**
  *  A slider displaying the playback position of the associated media player controller (with optional time and remaining
- *  time labels) and providing a way to seek to any position. The slider also display which part of the media has already
- *  been buffered.
+ *  time labels) and providing a way to seek to any position.
  *
  *  Simply install an instance somewhere onto your custom player interface and bind to a media player controller. You
  *  can also bind two labels for displaying the time and the remaining time.
- *
- *  Slider colors can be customized as follows:
- *    - `minimumTrackTintColor`: Elapsed time track color (defaults to white).
- *    - `maximumTrackTintColor`: Remaining time track color (defaults to black).
- *    - `thumbTintColor`: Thumb color (defaults to white).
  */
 API_UNAVAILABLE(tvos)
 @interface SRGTimeSlider : UISlider
@@ -59,16 +53,6 @@ API_UNAVAILABLE(tvos)
  *  Outlet which must be bound to the label displaying the current time.
  */
 @property (nonatomic, weak, nullable) IBOutlet UILabel *valueLabel;
-
-/**
- *  The thickness of the slider track. Defaults to 3, minimum is 1.
- */
-@property (nonatomic) IBInspectable CGFloat trackThickness;
-
-/**
- *  Buffering bar color (defaults to dark gray).
- */
-@property (nonatomic, null_resettable) IBInspectable UIColor *bufferingTrackColor;
 
 /**
  *  The time corresponding to the current slider position.
