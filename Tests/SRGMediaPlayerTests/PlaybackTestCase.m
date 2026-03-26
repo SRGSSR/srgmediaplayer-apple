@@ -2168,7 +2168,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     // Wait until preparing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        SRGPlaybackButtonState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+        SRGMediaPlayerPlaybackState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
         if (playbackState == SRGMediaPlayerPlaybackStatePlaying) {
             return YES;
         }
@@ -2188,7 +2188,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     // Wait until preparing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        SRGPlaybackButtonState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+        SRGMediaPlayerPlaybackState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
         if (playbackState == SRGMediaPlayerPlaybackStatePaused) {
             return YES;
         }
