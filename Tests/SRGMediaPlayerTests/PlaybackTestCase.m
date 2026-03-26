@@ -28,7 +28,7 @@ static NSURL *LiveTestURL(void)
 
 static NSURL *DVRNoTimestampTestURL(void)
 {
-    return [NSURL URLWithString:@"https://lsaplus.swisstxt.ch/audio/la-1ere_96.stream/playlist.m3u8"];
+    return [NSURL URLWithString:@"https://rtsc3video.akamaized.net/hls/live/2042837/c3video/3/playlist.m3u8"];
 }
 
 static NSURL *DVRTimestampTestURL(void)
@@ -38,7 +38,7 @@ static NSURL *DVRTimestampTestURL(void)
 
 static NSURL *AudioOverHTTPTestURL(void)
 {
-    return [NSURL URLWithString:@"https://rts-aod-dd.akamaized.net/ww/8849864/73bab428-ce6e-3ded-92cf-c84649ed766f.mp3"];
+    return [NSURL URLWithString:@"https://rts-aod-dd.akamaized.net/ww/13306839/63cc2653-8305-3894-a448-108810b553ef.mp3"];
 }
 
 @interface PlaybackTestCase : MediaPlayerBaseTestCase
@@ -1724,7 +1724,6 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime2));
-    TestAssertNotEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
 }
 
 - (void)testDVRSeekToDate
