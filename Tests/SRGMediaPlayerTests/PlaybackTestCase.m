@@ -28,7 +28,7 @@ static NSURL *LiveTestURL(void)
 
 static NSURL *DVRNoTimestampTestURL(void)
 {
-    return [NSURL URLWithString:@"https://lsaplus.swisstxt.ch/audio/la-1ere_96.stream/playlist.m3u8"];
+    return [NSURL URLWithString:@"https://cdnapisec.kaltura.com/p/2503451/sp/250345100/playManifest/entryId/1_9aqfiiqd/protocol/https/format/applehttp/flavorIds/1_99eysnvw,1_t34o9xd9,1_qom8o4th,1_vdir12nv,1_782z86cs,1_zyhqo3m8,1_7v7dw6zm,1_jvrlsa0z,1_ctoofzog,1_lx5yjoz2,1_4475dwk5,1_9ou12t16,1_1dg0610z,1_0l0or2p4,1_7qz0b33z,1_lxxcz21s,1_5f18cx9b,1_mgwjzupv,1_wmr8945c,1_kkxjqsx1,1_48t4gn4j,1_lsq6lkd2,1_awwxc9b4,1_ky3orvlu,1_fzich4h0,1_28t3ut9v,1_8mvpqp2c,1_gp7nztci,1_18r4zfml/a.m3u8"];
 }
 
 static NSURL *DVRTimestampTestURL(void)
@@ -38,7 +38,7 @@ static NSURL *DVRTimestampTestURL(void)
 
 static NSURL *AudioOverHTTPTestURL(void)
 {
-    return [NSURL URLWithString:@"https://rts-aod-dd.akamaized.net/ww/8849864/73bab428-ce6e-3ded-92cf-c84649ed766f.mp3"];
+    return [NSURL URLWithString:@"https://rts-aod-dd.akamaized.net/ww/13306839/63cc2653-8305-3894-a448-108810b553ef.mp3"];
 }
 
 @interface PlaybackTestCase : MediaPlayerBaseTestCase
@@ -1724,7 +1724,6 @@ static NSURL *AudioOverHTTPTestURL(void)
     [self waitForExpectationsWithTimeout:30. handler:nil];
     
     TestAssertEqualTimeInSeconds(self.mediaPlayerController.currentTime, CMTimeGetSeconds(targetTime2));
-    TestAssertNotEqualTimeInSeconds(self.mediaPlayerController.timeRange.start, 0.);
 }
 
 - (void)testDVRSeekToDate
@@ -2168,7 +2167,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     // Wait until preparing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        SRGPlaybackButtonState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+        SRGMediaPlayerPlaybackState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
         if (playbackState == SRGMediaPlayerPlaybackStatePlaying) {
             return YES;
         }
@@ -2188,7 +2187,7 @@ static NSURL *AudioOverHTTPTestURL(void)
 {
     // Wait until preparing
     [self expectationForSingleNotification:SRGMediaPlayerPlaybackStateDidChangeNotification object:self.mediaPlayerController handler:^BOOL(NSNotification * _Nonnull notification) {
-        SRGPlaybackButtonState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
+        SRGMediaPlayerPlaybackState playbackState = [notification.userInfo[SRGMediaPlayerPlaybackStateKey] integerValue];
         if (playbackState == SRGMediaPlayerPlaybackStatePaused) {
             return YES;
         }

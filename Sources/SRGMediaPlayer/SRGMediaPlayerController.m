@@ -543,7 +543,7 @@ effectivePlaybackRate:(float)effectivePlaybackRate
 
 - (CMTimeRange)timeRangeForPlayerItem:(AVPlayerItem *)playerItem
 {
-    if (playerItem.status != AVPlayerStatusReadyToPlay) {
+    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
         return kCMTimeRangeInvalid;
     }
     
@@ -606,7 +606,7 @@ effectivePlaybackRate:(float)effectivePlaybackRate
     }
     
     // The presentation size is zero before the item is ready to play, see `presentationSize` documentation.
-    if (playerItem.status != AVPlayerStatusReadyToPlay) {
+    if (playerItem.status != AVPlayerItemStatusReadyToPlay) {
         return;
     }
     
