@@ -6,7 +6,7 @@ all: test-ios test-tvos
 .PHONY: test-ios
 test-ios:
 	@echo "Running iOS unit tests..."
-	@xcodebuild test -scheme SRGMediaPlayer -destination 'platform=iOS Simulator,name=iPhone 11' 2> /dev/null
+	@xcodebuild test -scheme SRGMediaPlayer -destination 'platform=iOS Simulator,name=iPhone 17' 2> /dev/null
 	@echo "... done.\n"
 
 .PHONY: test-tvos

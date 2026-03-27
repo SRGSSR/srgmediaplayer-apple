@@ -8,13 +8,7 @@
 			<key>name</key>
 			<string>La 1ere - MP3</string>
 			<key>url</key>
-			<string>http://stream.srg-ssr.ch/m/la-1ere/mp3_128</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>La 1ere - AAC HTTP</string>
-			<key>url</key>
-			<string>http://stream.srg-ssr.ch/m/la-1ere/aacp_96</string>
+			<string>https://stream.srg-ssr.ch/srgssr/la-1ere/mp3/128</string>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -24,21 +18,9 @@
 		</dict>
 		<dict>
 			<key>name</key>
-			<string>SRF 1 HLS DVR</string>
-			<key>url</key>
-			<string>http://lsaplus.swisstxt.ch/audio/drs1_96.stream/playlist.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
 			<string>La 1ère HLS DVR</string>
 			<key>url</key>
-			<string>http://lsaplus.swisstxt.ch/audio/rsp_96.stream/playlist.m3u8</string>
-		</dict>
-		<dict>
-			<key>name</key>
-			<string>SRF 2 Livestream mp3</string>
-			<key>url</key>
-			<string>http://streaming.swisstxt.ch/m/drs2/mp3_128</string>
+			<string>https://stxt-audiostreaming.akamaized.net/hls/live/2117380/la-1ere/master.m3u8</string>
 		</dict>
 	</array>
 </dict>
